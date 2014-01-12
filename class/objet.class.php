@@ -369,9 +369,21 @@ un nécromancien ( la suite est déchirée ).<br />
   			$perso->sauver();
         $princ->add_maj_perso();
       }
+      $perso->supprime_objet($this->get_texte(), 1);
       return true;
     }
     return false;
   }
+  }
+
+  /**
+   * Mettre un slot
+   */
+  function mettre_slot(&$perso, &$princ, $niveau) { return false; }
+
+  /**
+   * Mettre une gemme ou en retirer une
+   */
+  function enchasser(&$perso, &$princ, $niveau) { return false; }
 }
 ?>

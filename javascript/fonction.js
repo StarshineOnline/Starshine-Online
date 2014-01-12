@@ -458,21 +458,6 @@ function showSoundPanel() {
 
 function charge_tab(elt, id)
 {
-  /*mess = "";
-  for(i=0; i<elt.attributes.length; i++)
-  {
-    att = elt.attributes.item(i);
-    mess += att.name + " : " + att.value + "\n";
-  }
-  alert( mess);
-  /*e.preventDefault();
-  $(this).tab('show');*/
-  //alert( e.delegateTarget.getAttribute("data-url") );
   $("#"+id).load(elt.getAttribute("data-url"));
-  /*var i = e.target.indexOf("#");
-  alert(i);
-  var id = e.target.substr(i);
-  //$(id).load( e.delegateTarget.attr("data-url"), function(){ $(e.delegateTarget.parent).tab(); alert("charged"); });
-  alert(id + " : " + e.delegateTarget.getAttribute("data-url"));*/
 }
 

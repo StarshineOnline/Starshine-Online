@@ -212,34 +212,35 @@ class grimoire extends objet_invent
         $princ->add( new interf_alerte('danger', true) )->add_message('Impossible de lire ce grimoire : il n\'est pas destiné à votre classe !');
   			return false;
   		}
-      switch( $this->type )
+    }
+    switch( $this->type )
+    {
+    case 'comp_jeu':
+    case 'comp_combat':
+      return apprend_competence($this->type, $this->id_apprend, $perso, null, true, $princ);
+    case 'sort_jeu':
+    case 'sort_combat':
+      return apprend_sort($this->type, $this->id_apprend, $perso, null, true, $princ);
+    case 'comp_combat':
+      $comp = $perso->get_comp( $this->attr_perso );
+      if( $comp === false )
       {
-      case 'comp_jeu':
-      case 'comp_combat':
-        return apprend_competence($this->type, $this->id_apprend, $perso, null, true, $princ);
-      case 'sort_jeu':
-      case 'sort_combat':
-        return apprend_sort($this->type, $this->id_apprend, $perso, null, true, $princ);
-      case 'comp_combat':
-        $comp = $perso->get_comp( $this->attr_perso );
-        if( $comp === false )
-        {
-          $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous ne la connaissez pas !');
-    			return false;
-        }
-        $permet = classe_permet::create('id_classe', $perso->get_id_classe());
-        if( $comp >= $permet->get_permet() )
-        {
-          $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes !');
-    			return false;
-        }
-        $comp += $this->ajout_attr;
-        if( $comp >= $permet->get_permet() )
-          $comp = $permet->get_permet();
-        $perso->set_comp($this->attr_perso, $comp);
-        $princ->add( new interf_alerte('success', true) )->add_message('Compétence entraînée.');
-  			return true;
+        $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous ne la connaissez pas !');
+  			return false;
       }
+      $permet = classe_permet::create('id_classe', $perso->get_id_classe());
+      if( $comp >= $permet->get_permet() )
+      {
+        $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes !');
+  			return false;
+      }
+      $comp += $this->ajout_attr;
+      if( $comp >= $permet->get_permet() )
+        $comp = $permet->get_permet();
+      $perso->set_comp($this->attr_perso, $comp);
+      $princ->add( new interf_alerte('success', true) )->add_message('Compétence entraînée.');
+      $perso->supprime_objet($this->get_texte(), 1);
+			return true;
     }
   }
 }

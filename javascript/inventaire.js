@@ -2,12 +2,14 @@ filtre = "";
 
 function drop_func( event, ui )
 {
-  var objet = ui.draggable[0].id.substr(11);
+  var drag = ui.draggable;
+  var objet = drag[0].id.substr(11);
   var drop = this.id.substr(5);
   switch( drop )
   {
   case 'hotel_vente':
     show_modal("inventaire.php?action=hotel_vente&objet="+objet);
+    drag.animate(drag.data("ui-draggable").originalPosition,"slow");
     break
   default:
     $("#information").load("inventaire.php?action=drop"+filtre+"&objet="+objet+"&drop="+drop);

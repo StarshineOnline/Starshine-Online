@@ -575,6 +575,43 @@ class interf_form extends interf_bal_cont
     if( $action )
       $this->set_attribut('method', $method);
   }
+
+  /**
+   * Affiche un champ en utilisany la librairie bootstrap pour le style
+   *
+   * @param  $type          type de champ
+   * @param  $name          nom du champ
+   * @param  $placeholder   texte situé dans le champ s'il est vide (ou null s'il n'y en a pas)
+   * @param  $value         valeur de départ (ou null s'il n'y en a pas)
+   * @param  $avant         texte ou boutton situé avant le champ (ou null s'il n'y en a pas)
+   * @param  $apres         texte ou boutton situé après le champ (ou null s'il n'y en a pas)
+   *
+   * @return    Élément "input"
+   */
+  function add_champ_bs($type, $name, $placeholder=null, $value=null, $avant=null, $apres=null)
+  {
+    $div = $this->add( new interf_bal_cont('div', null, 'input-group') );
+    if( $avant )
+    {
+      if( !is_object($avant) )
+        $avant = new interf_bal_smpl('span', $avant, null, 'input-group-addon');
+      $div->add( $avant );
+    }
+    $chp = $div->add( new interf_bal_smpl('input', null, null, 'form-control') );
+    $chp->set_attribut('type', $type);
+    $chp->set_attribut('name', $name);
+    if( $value )
+      $chp->set_attribut('value', $value);
+    if( $placeholder )
+      $chp->set_attribut('placeholder', $placeholder);
+    if( $apres )
+    {
+      if( !is_object($apres) )
+        $apres = new interf_bal_smpl('span', $apres, null, 'input-group-addon');
+      $div->add( $apres );
+    }
+    return $chp;
+  }
 }
 
 /**
@@ -603,7 +640,7 @@ class interf_ens_chps extends interf_bal_cont
 }
 
 /**
- * Calsse gérant un chamo de formulaire (de type input)
+ * Classe gérant un chamo de formulaire (de type input)
  * Peut aussi afficher un texte avant le  champ.
  */
 class interf_chp_form extends interf_bal_smpl
@@ -616,9 +653,10 @@ class interf_chp_form extends interf_bal_smpl
    * @param  $label   texte à afficher avant le champ.
    * @param  $value   valeur par défaut.
    */
-  function __construct($type, $name, $label=false, $value=false)
+  function __construct($type, $name, $label=false, $value=false, $id=null, $classe=null)
   {
-    $this->balise = 'input';
+    interf_bal_smpl::__construct('input', '', $id, $classe);
+    //$this->balise = 'input';
     $this->set_attribut('type', $type);
     $this->set_attribut('name', $name);
     if( $value )

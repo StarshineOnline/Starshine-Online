@@ -315,7 +315,8 @@ class interf_vente_hotel extends interf_dialogBS
       return;
     }
     $this->ajout_btn('Annuler', 'fermer');
-    $this->ajout_btn('Vendre', '', 'primary');
+    $btn = $this->ajout_btn('Vendre', '', 'primary');
+    $btn->set_attribut('onclick', '');
 
     $objet =  objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
     $prix = $objet->get_prix_vente() * 2;
@@ -323,20 +324,21 @@ class interf_vente_hotel extends interf_dialogBS
     $case = new map_case( $perso->get_pos() );
     $R = new royaume( $case->get_royaume() );
 
+    $taxe = $R->get_taxe_diplo($perso->get_race()) / 100;
     $form = $this->add( new interf_form('javascript:envoiInfo(\'inventaire.php\', \'information\');', 'get') );
     $form->set_attribut('name', 'formulaire');
-    $form->add( new interf_txt('Mettre en vente à l\'hotel des ventes pour ') );
-    $chp1 = $form->add( new interf_chp_form('text', 'prix', false, $prix) );
-    $chp1->set_attribut('onchange', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($perso->get_race()) / 100));
-    $chp1->set_attribut('onkeyup', 'formulaire.comm.value = formulaire.prix.value * '.($R->get_taxe_diplo($perso->get_race()) / 100));
-    $form->add( new interf_txt(' Stars') );
+    $chp1 = $form->add_champ_bs('number', 'prix', null, $prix, 'Prix de vente', 'stars');
+    $chp1->set_attribut('onchange', 'formulaire.comm.value = Math.Round(formulaire.prix.value * '.$taxe.')');
+    $chp1->set_attribut('onkeyup', 'formulaire.comm.value = Math.Round(formulaire.prix.value * '.$taxe.')');
+    $chp1->set_attribut('min', 0);
+    $chp1->set_attribut('max', $prixmax);
+    $chp1->set_attribut('step', 1);
     $form->add( new interf_bal_smpl('br') );
-    $form->add( new interf_txt('Taxe : ') );
-    $chp2 = $form->add( new interf_chp_form('text', 'comm', false, $prix * $R->get_taxe_diplo($perso->get_race()) / 100) );
+    $chp2 = $form->add_champ_bs('text', 'comm', null, $prix * $taxe, 'Taxe', 'stars');
     $chp2->set_attribut('disabled', 'true');
     $form->add( new interf_bal_smpl('br') );
-    $form->add( new interf_txt('Maximum = '.$prixmax.' stars.') );
-    $form->add( new interf_bal_smpl('br') );
+    $chp3 = $form->add_champ_bs('text', 'max', null, $prixmax, 'Maximum', 'stars');
+    $chp3->set_attribut('disabled', 'true');
     $form->add( new interf_chp_form('hidden', 'action', false, 'ventehotel') );
   }
 }

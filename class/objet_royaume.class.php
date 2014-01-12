@@ -543,6 +543,7 @@ class objet_royaume extends objet_invent
     }
 
     $princ->add( new interf_alerte('success') )->add_message($batiment->get_nom().' posé avec succès');
+    $perso->supprime_objet($this->get_texte(), 1);
   }
 
   function deposer(&$perso, &$princ)
@@ -556,10 +557,11 @@ class objet_royaume extends objet_invent
 		$requete = 'INSERT INTO depot_royaume VALUES (NULL, '.$this->id.', '.$R->get_id().')';
 		$db->query($requete);
     $princ->add( new interf_alerte('success') )->add_message('Objet posé avec succès.');
+    $perso->supprime_objet($this->get_texte(), 1);
     return true;
   }
 
   /// TODO: logguer ?
-  function vendre_marchand() { return false; }
-  function vendre_hdv() { return false; }
+  function vendre_marchand(&$perso, &$princ) { return false; }
+  function vendre_hdv(&$perso, &$princ, $prix) { return false; }
 }

@@ -14,6 +14,7 @@ abstract class objet_invent extends table
 	protected $type;  ///< Type de l'objet (epee, hache, dos, potion_hp,… ).
 	protected $prix;  ///< Prix de l'objet en magasin.
 	protected $identifie = true;  ///< Indique si l'objet a été identifié
+	protected $texte;  ///< Forme textuelle
 	
 	// Renvoie le nom de l'objet
 	function get_nom()
@@ -94,6 +95,18 @@ abstract class objet_invent extends table
 	{
     $this->identifie = $identifie;
 	}
+
+	// Renvoie la forme textuelle
+	function get_texte()
+	{
+		return $this->texte;
+	}
+
+	/// Modifie la forme textuelle
+	function set_texte($texte)
+	{
+		$this->texte = $texte;
+	}
 	
 	/**
 	 * Constructeur
@@ -137,28 +150,28 @@ abstract class objet_invent extends table
   {
     // nombre d'objet "stackés"
 		$decomp = explode('x', $objet);
-		$objet = $decomp[0];
+		$obj = $decomp[0];
 		$stack = $decomp[1];
     // enchantement par une gemme
-		$decomp = explode('e', $objet);
-		$objet = $decomp[0];
+		$decomp = explode('e', $obj);
+		$obj = $decomp[0];
 		$enchantement = $decomp[1];
     // slot disponible
-		$decomp = explode('s', $objet);
-		$objet = $decomp[0];
-		$slot = $decomp[1];
+		$decomp = explode('s', $obj);
+		$obj = $decomp[0];
+		$slot = count($decomp)>1 ? $decomp[1] : null;
     // catégorie & id
-    if( $objet[0] == 'h' )
+    if( $obj[0] == 'h' )
     {
       $ident = false;
-      $cat = $objet[1];
-      $id = substr($objet, 2);
+      $cat = $obj[1];
+      $id = substr($obj, 2);
     }
     else
     {
       $ident = true;
-      $cat = $objet[0];
-      $id = substr($objet, 1);
+      $cat = $obj[0];
+      $id = substr($obj, 1);
     }
     switch($cat)
     {
@@ -189,6 +202,7 @@ abstract class objet_invent extends table
     default:
       die("catégorie d'objet inconnue : '$cat'");
     }
+    $obj->set_texte($objet);
     $obj->set_nombre($stack);
     $obj->set_enchantement($enchantement);
     $obj->set_slot($slot);
@@ -201,6 +215,22 @@ abstract class objet_invent extends table
 	{
 		return array('nom'=>'s', 'type'=>'s', 'prix'=>'i');
 	}
+
+  /// recompose la forme textuelle de l'objet
+  function recompose_texte()
+  {
+    $type = $this->texte[0] == 'h' ? $this->texte[1] : $this->texte[0];
+    $this->texte = ($this->identifie ? '' : 'h').$type.$this->id;
+    $nbr = $this->get_nombre();
+    if( $nbr > 1 )
+      $this->texte .= 'x'.$nbr;
+    $slot = $sthis->get_slot();
+    if( $slot !== null )
+      $this->texte .= 's'.$slot;
+    $enchant = $sthis->get_enchantement();
+    if( $enchant !== null )
+      $this->texte .= 'e'.$enchant;
+  }
 
 	/// Méthode renvoyant l'image de l'objet
 	public function get_image() { return null; }
@@ -287,13 +317,55 @@ abstract class objet_invent extends table
   {
     $prix = $this->get_prix_vente();
     $perso->add_star( $prix );
+    $perso->supprime_objet( $this->get_texte() );
     return true;
   }
 
   /**
    * Mettre à l'hotel des ventes
    */
-  function vendre_hdv(&$perso, &$princ) { return false; }
+  function vendre_hdv(&$perso, &$princ, $prix)
+  {
+    // On vérifie que le prix est positif
+    if( $prix < 0 )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('L\'objet ne peut être vendu : le prix n\'est pas valide !');
+      return false;
+    }
+    // On vérifie que le prix est bien inférieure au prix max
+    /// TODO : loguer les tentatives de triche
+    /// TODO : centraliser prix max
+    if( $prix > $this->get_prix_vente() * 10 )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Vous voulez vendre cet objet trop chère, le commissaire priseur n\'en veut pas !');
+      return false;
+    }
+    $case = new map_case( $perso->get_pos() );
+    $R = new royaume( $case->get_royaume() );
+    // On vérifie que le personnage a assez de star pour payer les taxes
+    $taxe = round($prix * $R->get_taxe_diplo($perso->get_race()) / 100);
+    if( $taxe > $perso->get_star() )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('L\'objet ne peut être vendu : vous n\'avez pas assez de stars pour payer la commission !');
+      return false;
+    }
+    // On reverse les taxes au royaume
+		$perso->supprime_objet($this->get_texte(), 1);
+		$perso->set_star($perso->get_star() - $taxe);
+		$perso->sauver();
+		$R->set_star($R->get_star() + $taxe);
+		$R->sauver();
+		$requete = "UPDATE argent_royaume SET hv = hv + ".$taxe." WHERE race = '".$R->get_race()."'";
+		$db->query($requete);
+    // On ajoute l'objet dans l'hotel de ville
+		$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$perso->get_id().", ".sSQL($_GET['prix']).", 1, '".$R->get_race()."', ".time().")";
+		$req = $db->query($requete);
+    // On enregistre dans les logs
+    log_admin::log('mis en vente HV', $joueur->get_nom().' vend '.$this->nom.' ('.$this->id.') pour '.$prix.' stars. Taxes : '.$taxe.' stars');
+    // réussi
+    $princ->add( new interf_alerte('success', true) )->add_message('Vous mettez en vente '.$this->nom.' pour '.$prix.' stars. Taxes : '.$taxe.' stars');
+    return true;
+  }
 
   /**
    * Identifier
@@ -345,6 +417,16 @@ abstract class objet_invent extends table
 		}
 		$perso->sauver(); // On sauve a la fin pour les PA
   }
+
+  /**
+   * Mettre un slot
+   */
+  function mettre_slot(&$perso, &$princ, $niveau) { return false; }
+
+  /**
+   * Mettre une gemme ou en retirer une
+   */
+  function enchasser(&$perso, &$princ, $niveau) { return false; }
 }
 
 class zone_invent extends objet_invent
@@ -374,13 +456,14 @@ class zone_invent extends objet_invent
       case 'slot_2':
       case 'slot_3':
         return 'PA : 10';
+      case 'enchasser':
+        return 'PA : 20';
       case 'identifier':
         return 'PA : 1';
       case 'vendre_marchand':
       case 'hotel_vente':
       case 'depot':
       case 'utiliser':
-      case 'enchasser':
         return null;
       default:
         return 'vide';

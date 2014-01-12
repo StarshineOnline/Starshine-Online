@@ -110,5 +110,86 @@ abstract class objet_equip extends objet_invent
   /**
    */
   abstract function get_emplacement();
+
+  /**
+   * Mettre un slot
+   */
+
+  function mettre_slot(&$perso, &$princ, $niveau)
+  {
+    // On vérifie que le personnage a assez de PA
+    if( $perso->get_pa() < 10 )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Vous pas assez de PA !');
+      return false;
+    }
+    // On vérifie que l'objet n'a pas déjà un slot
+    if( $this->get_slot() !== null )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Cet objet &agrave; d&eacute;j&agrave; un slot !');
+      return false;
+    }
+    /// On vérifie que le slot n'est supérieur à la valeur max
+    /// TODO: loguer les tentatives de triche + centraliser valeur max ?
+    if( $niveau > 3 )
+    {
+      $princ->add( new interf_alerte('danger', true) )->add_message('Niveau de slot invalide !');
+      return false;
+    }
+    // on test
+    /// TODO : centraliser la difficulté
+		switch($niveau)
+		{
+		case '1' :
+			$difficulte = 10;
+		break;
+		case '2' :
+			$difficulte = 30;
+		break;
+		case '3' :
+			$difficulte = 100;
+		break;
+		}
+    $test = comp_sort::test_potentiel($perso->get_forge(), $difficulte);
+    if( $test )
+    {
+      $this->set_slot($niveau);
+      $princ->add( new interf_alerte('success', true) )->add_message('Réussite !');
+
+			// Augmentation du compteur de l'achievement
+			$achiev = $perso->get_compteur('objets_slot');
+			$achiev->set_compteur($achiev->get_compteur() + 1);
+			$achiev->sauver();
+    }
+    else
+    {
+      $this->set_slot(0);
+      $princ->add( new interf_alerte('danger', true) )->add_message('Echec... l\'objet ne pourra plus être enchâssable.') );
+    }
+    // Augmentation de l'attribut
+		$augmentation = augmentation_competence('forge', $perso, 2);
+		if ($augmentation[1] == 1)
+		{
+			$perso->set_forge($augmentation[0]);
+			$perso->sauver();
+		}
+    // Enregistrement dans l'inventaire & on retire les PA
+    $anc = $this->get_texte();
+    $this->recompose_texte();
+		$perso->set_inventaire_slot_partie( $this->get_texte(), $anc);
+		$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
+		$perso->set_pa($perso->get_pa() - 10);
+		$perso->sauver();
+
+    return $test;
+  }
+
+  /**
+   * Mettre une gemme ou en retirer une
+   */
+  function enchasser(&$perso, &$princ, $niveau)
+  {
+    return false;
+  }
 }
 ?>
