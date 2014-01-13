@@ -182,18 +182,32 @@ else if(!array_key_exists('direction', $_GET))
 			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()." </span>";
 			$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
 			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
-			
-			if( $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression )
+
+			// Possibilité ou non de supprimer un batiment attribuant des points des victoire lors de sa destruction		
+			if($construction->get_point_victoire() > 0 && $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression_pv )
 			{
-  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  				echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
   					<a onclick=\"if(confirm('Voulez-vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
   				</span>";
-      }
-      else
+      		}
+      		elseif($construction->get_point_victoire() > 0 && $construction->get_hp() < $batiment->get_hp() * $G_prct_vie_suppression_pv )
 			{
-  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
-  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer un bâtiment qui a moins de ".floor($G_prct_vie_suppression*100)."% de ses HP.'></span>";
-      }
+  				echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer ce bâtiment si il a moins de ".floor($G_prct_vie_suppression_pv*100)."% de ses HP.'></span>";
+      		}
+      		
+      		// Possibilité ou non de supprimer un batiment n'attribuant pas des points des victoire lors de sa destruction
+      		elseif($construction->get_point_victoire() == 0 && $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression_nopv )
+      		{
+      			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<a onclick=\"if(confirm('Voulez-vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
+  				</span>";
+      		}
+      		else
+      		{
+      			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer ce bâtiment si il a moins de ".floor($G_prct_vie_suppression_nopv*100)."% de ses HP.'></span>";
+      		}
 			echo "</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}									
 		}
