@@ -34,15 +34,21 @@ if($W_distance <= 3)
 	echo 'Position - X : '.$arme->get_x().' - Y : '.$arme->get_y().'<br />';
 	echo 'Distance de tir : '.$batiment->get_bonus('portee').' case.<br />';
 	echo 'Temps avant de pouvoir tirer : ';
-	$pat = false;
+	$peut_tirer = false;
 	if($arme->peut_attaquer())
 	{
 		echo 'Pret à tirer !';
-		$pat = true;
+		$peut_tirer = true;
 	}
 	else
 		echo transform_sec_temp($arme->get_rechargement() - time());
 	echo '<br />';
+  if( $joueur->grade->get_rang() < $batiment->get_bonus('rang_manip') )
+	 $peut_tirer = false;
+  if( $joueur->get_pa() < $cout_pa )
+	 $peut_tirer = false;
+  if( $joueur->grade->get_rang() < $batiment->get_bonus('rang_manip') )
+	 $peut_tirer = false;
 	
 	$cout_pa = $arme->get_cout_attaque($joueur);
 	if( $joueur->get_pa() < $cout_pa )
@@ -58,6 +64,7 @@ if($W_distance <= 3)
 	
 	$requete = "SELECT * FROM construction WHERE x >= ".$x_min." AND x <= ".$x_max." AND y >= ".$y_min." AND y <= ".$y_max;
 	$req_bp = $db->query($requete);
+
 	echo '<ul>';
 	if($db->num_rows > 0)
 	{
@@ -71,7 +78,7 @@ if($W_distance <= 3)
 				$pos = 'rel_'.$rel[0].'_'.$rel[1];
 
 				echo "<li style='clear:both;' onmouseover=\"$('#pos_".$pos."').addClass('pos_over');\" onmouseout=\"$('#pos_".$pos."').removeClass('pos_over');\"><span style='float:left;width:110px;'>".$row_bp['nom']." ".$royaume_arme->get_race()."</span><span style='float:left;width:90px;'> X : ".$row_bp['x']." - Y : ".$row_bp['y']."</span>";
-				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a></li>';
+				if($peut_tirer && $W_distance == 0) echo ' - <a href="attaque.php?type=siege&table=construction&id_arme_de_siege='.$arme->get_id().'&id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a></li>';
 			}
 		}
 		echo '</ul>';
@@ -92,25 +99,30 @@ if($W_distance <= 3)
 				$pos = 'rel_'.$rel[0].'_'.$rel[1];
 				
 				echo "<li style='clear:both;' onmouseover=\"$('#pos_".$pos."').addClass('pos_over');\" onmouseout=\"$('#pos_".$pos."').removeClass('pos_over');\"><span style='float:left;width:110px;'>".$row_bp['nom']." ".$royaume_arme->get_race()."</span><span style='float:left;width:90px;'>X : ".$row_bp['x']." - Y : ".$row_bp['y']."</span>";
-				if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a></li>';
+				if($peut_tirer && $W_distance == 0) echo ' - <a href="attaque.php?table=placement&amp;type=siege&amp;id_arme_de_siege='.$arme->get_id().'&amp;id_batiment='.$row_bp['id'].'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a></li>';
 			}
 		}
 		echo '</ul>';
 	}
 	
-	$requete = 'SELECT map.x as x, map.y as y, nom FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0 AND royaume.race != "'.$joueur->get_race().'"';
+	$requete = 'SELECT map.x as x, map.y as y, nom, race FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0 AND royaume.race != "'.$joueur->get_race().'"';
 					//'AND royaume.race != "'.$joueur->get_race().'"';
 	$req_v = $db->query($requete);
 	$row_v = $db->read_assoc($req_v);
 	if($db->num_rows > 0)
 	{
-		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
-		echo $row_v['nom'];
-		$id = convert_in_pos($row_v['x'], $row_v['y']);
-		if($pat && $joueur->grade->get_rang() >= $batiment->get_bonus('rang_manip') && $joueur->get_pa() >= $cout_pa && $W_distance == 0) {
-			echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='
-				.$arme->get_id().'&id_ville='.$id
-				.'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a>';
+    $roy_perso = new royaume( $Trace[$joueur->get_race()]['numrace'] );
+    $diplo = $roy_perso->get_diplo($row_v['race']);
+    if( $diplo >= 8 )
+    {
+  		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
+  		echo $row_v['nom'];
+  		$id = convert_in_pos($row_v['x'], $row_v['y']);
+  		if($peut_tirer && $W_distance == 0) {
+  			echo ' - <a href="attaque.php?type=ville&amp;id_arme_de_siege='
+  				.$arme->get_id().'&id_ville='.$id
+  				.'" onclick="return envoiInfo(this.href, \'information\');">Attaquer avec l\'arme de siège ('.$cout_pa.' PA)</a>';
+      }
 		}
 	}
 }
