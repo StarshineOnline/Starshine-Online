@@ -8,7 +8,6 @@ function get_url_invent(options)
 
 function ajout_filtre_form(id)
 {
-  //alert("coucou");
   var elt = document.getElementById(id);
   var chp_page = document.createElement("input");
   chp_page.type = 'hidden';
@@ -63,28 +62,3 @@ function show_modal(url)
   $("#modal").modal('show');
   $("#modal").load(url);
 }
-
-/*function dragndrop(source, cible, page)
-{
-	// on rend les objets de l'inventaire draggable
-	$( source ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });
-	// les drop zones n'acceptent que les drag du meme type
-	$( cible ).droppable({accept: source, activeClass: "invent_cible", hoverClass: "invent_hover",
-	   drop: function( event, ui )
-     {
-				$( this ).addClass( "ui-state-highlight" );
-				// il peut y avoir plusieurs objets pour la meme cible
-				$( source ).each(function(index, objet)
-        {
-				  var id = $(this).attr("id");
-					//var testclass=source.replace(".","")+" ui-draggable ui-draggable-dragging"
-					//alert(id+" VS "+source);
-					if(source == "#" + id)
-					{
-            $("#information").load(page+"?action=equip&key_slot="+id.substr(11));
-				  }
-			 });
-
-    }
-	});
-};*/

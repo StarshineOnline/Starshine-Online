@@ -112,8 +112,8 @@ class interf_invent_equip extends interf_tableau
         {
           $desequip = false;
           $obj = new zone_invent($loc, $objet === 'lock', $perso);
-    		}//.($desequip?' equip':'')
-        $td->add( new interf_objet_invent($obj, $desequip, $loc, $desequip?'equipe':'', 'drop_'.$loc) );
+    		}
+        $td->add( new interf_objet_invent($obj, $loc, $desequip?'equipe':'', 'drop_'.$loc) );
         if( $desequip )
           interf_base::code_js( '$( "#drop_'.$loc.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
@@ -184,9 +184,9 @@ class interf_invent_sac extends interf_cont
           }
           else
               $drags = 'drag_identifier';
-            $div = $this->cols[$col]->add( new interf_objet_invent($objet, false, null, $drags, 'invent_slot'.$i) );
-          if( $objet->est_identifie() )
-            $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.'inventaire.php?action=infos&id='.$invent.'\', \''.$objet->get_nom().'\')');
+            $div = $this->cols[$col]->add( new interf_objet_invent($objet, null, $drags, 'invent_slot'.$i) );
+          /*if( $objet->est_identifie() )
+            $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.'inventaire.php?action=infos&id='.$invent.'\', \''.$objet->get_nom().'\')');*/
           interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
         }
         $i++;
@@ -201,7 +201,7 @@ class interf_invent_sac extends interf_cont
  */
 class interf_objet_invent extends interf_bal_cont
 {
-  function __construct($objet, $desequip, $partie, $drags, $id=false)
+  function __construct($objet, $partie, $drags, $id=false)
   {
     global $Gtrad, $id_elt_ajax, $db;
     interf_bal_cont::__construct('div', $id, ($objet?'inventaire2 ':' ').$drags);
@@ -222,21 +222,11 @@ class interf_objet_invent extends interf_bal_cont
       $enchant = null;
       $infos = null;
     }
-    if($image /*or $desequip*/)
+    if($image)
     {
-      $img = new  interf_bal_smpl('img');
+      $img = $this->add(new  interf_bal_smpl('img') );
       $img->set_attribut('src', $image);
       $img->set_attribut('style', 'float : left;');
-  		/*if($desequip)
-  		{
-        $lien = new interf_bal_cont('a');
-        $lien->set_attribut('href', 'inventaire.php?action=desequip&amp;partie='.$partie.'&amp;filtre='.$slot);
-        $lien->set_attribut('onclick', 'return envoiInfo(this.href, \''.$id_elt_ajax.'\');');
-        $this->add($lien);
-        $lien->add($img);
-  		}
-  		else*/
-        $this->add($img);
     }
     $this->add( new interf_bal_smpl('strong', $nom) );
     if( $enchant )
@@ -250,6 +240,8 @@ class interf_objet_invent extends interf_bal_cont
       //$this->add( new interf_txt($infos) );
       $this->add( new interf_bal_smpl('span', $infos, false, 'infos') );
     }
+    if( $objet->est_identifie() && $drags )
+      $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'\', \''.$objet->get_nom().'\')');
   }
 }
 

@@ -171,17 +171,13 @@ function envoiFichier(formulaire, position)
 
 function chargerPopover(elt, id, pos, url, titre)
 {
-  //$('#' + elt).popover({html:true, placement:pos, container:'#'+elt, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"<script>$('#"+id+"').load('"+url+"', function() { var popover = $('#"+elt+"').popover('popover'); alert(popover); popover.show(); } );</script></div>"});
   var e = $('#' + elt);
   e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>"});
   $.get(url, function(d)
     {
-        e.data('popover').options.content = d;
+        e.data('bs.popover').options.content = d;
         e.popover('show');
-        //e.popover({content: d}).popover('show');
-        //alert(e+" : "+d);
     });
-  //$('#' + elt).popover({html:true, placement:pos, title: truc});
   document.getElementById(elt).onclick = "";
 }
 

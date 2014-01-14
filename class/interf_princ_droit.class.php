@@ -36,9 +36,8 @@ class interf_princ_droit extends interf_princ_ob
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
-
     $this->ligne('<h2>'.$this->titre.'</h2>');
-    $this->ouvre('div class=windows_right');
+    $this->ouvre('div class="windows_right"');
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
   protected function fin()
