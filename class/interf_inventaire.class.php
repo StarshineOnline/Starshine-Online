@@ -10,64 +10,51 @@
  */
 class interf_inventaire extends interf_cont
 {
-  protected $perso;  ///< Objet représentant le personnage dont il faut afficher l'inventaire.
-  protected $adresse = 'inventaire.php';  ///< Adresse de la page.
-  protected $invent;  ///< Inventaire à afficher.
+  //protected $perso;  ///< Objet représentant le personnage dont il faut afficher l'inventaire.
+  const url = 'inventaire.php';  ///< Adresse de la page.
+  /*protected $invent;  ///< Inventaire à afficher.
   protected $slot;  ///< Slot à afficher.
   protected $onglets;  ///< Onglets principal.
-  protected $onglets_slots;  ///< Onglets des slots.
+  protected $onglets_slots;  ///< Onglets des slots.*/
   /**
    * Constructeur
    * @param $perso      Objet représentant le personnage dont il faut afficher l'inventaire.
-   * @param $page       Inventaire à afficher
+   * @param $invent     Inventaire à afficher
    * @param $slot       Slot à afficher
+   * @param $modif      Indique si on peut modifier l'interface.
    */
-  function __construct(&$perso, $adresse, $invent, $slot)
+  function __construct(&$perso, $invent, $slot, $modif=true)
   {
-    $this->perso = &$perso;
-    $this->adresse = $adresse;
+    /*$this->perso = &$perso;
+    //$this->adresse = $adresse;
     $this->invent = $invent;
-    $this->slot = $slot;
+    $this->slot = $slot;*/
     // Javascript
     $script = $this->add( new interf_bal_smpl('script') );
     $script->set_attribut('type', 'text/javascript');
     $script->set_attribut('src', './javascript/inventaire.js');
     // onglets principal
-    $this->onglets = $this->add( new interf_onglets('onglets_princ', 'invent') );
-    $this->onglets->add_onglet('Personnage', 'inventaire.php?action=princ&page=perso', 'perso', $invent=='perso');
-    $this->onglets->add_onglet('Créature', 'inventaire.php?action=princ&page=pet', 'pet', $invent=='pet');
-    $this->onglets->add_onglet('Actions', 'inventaire.php?action=princ&page=actions', 'actions', $invent=='actions');
+    $onglets = $this->add( new interf_onglets('onglets_princ', 'invent', 'invent') );
+    $onglets->add_onglet('Personnage', self::url.'?action=princ&page=perso', 'perso', $invent=='perso');
+    $onglets->add_onglet('Créature', self::url.'?action=princ&page=pet', 'pet', $invent=='pet');
+    $onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'actions', $invent=='actions');
+    $onglets->add( new interf_invent_equip($perso, $invent, $modif) );
     // un peu d'espace
-    //$this->add( new interf_bal_smpl('div', '', false, 'spacer') );
     $this->add( new interf_bal_smpl('br') );
     // onglets des slots
-    $this->onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots') );
-    $this->onglets_slots->add_onglet('Utile', 'inventaire.php?action=sac&slot=utile', 'utile', $slot=='utile');
-    $this->onglets_slots->add_onglet('Equipement', 'inventaire.php?action=sac&slot=equipement', 'equip', $slot=='equip');
-    $this->onglets_slots->add_onglet('Royaume', 'inventaire.php?action=sac&slot=royaume', 'royaume', $slot=='royaume');
-    $this->onglets_slots->add_onglet('Artisanat', 'inventaire.php?action=sac&slot=artisanat', 'royaume', $slot=='royaume');
-  }
-  
-  /**
-   * Affiche le contenu de l'inventaire
-   * @param $type   'perso' ou 'pet'.
-   * @param $modif   Indique si on peut modifier l'interface.
-   */
-  function set_contenu($type='perso', $modif=true)
-  {
-    $this->onglets->add( new interf_invent_equip($this->perso, $type, $modif) );
-  }
-  
-  //
-  function affiche_slots($modif=true)
-  {
-    $this->onglets_slots->add( new interf_invent_sac($this->perso, $this->slot) );
+    $onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots', 'invent') );
+    $onglets_slots->add_onglet('Utile', self::url.'?action=sac&slot=utile', 'utile', $slot=='utile');
+    $onglets_slots->add_onglet('Equipement', self::url.'?action=sac&slot=equipement', 'equip', $slot=='equipement');
+    $onglets_slots->add_onglet('Royaume', self::url.'?action=sac&slot=royaume', 'royaume', $slot=='royaume');
+    $onglets_slots->add_onglet('Artisanat', self::url.'?action=sac&slot=artisanat', 'royaume', $slot=='artisanat');
+    $onglets_slots->add( new interf_invent_sac($perso, $slot, $modif) );
+    interf_base::code_js( '$( "#slots" ).droppable({accept: ".equipe", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
   }
 }
 
 class interf_invent_equip extends interf_tableau
 {
-  function __construct(&$perso, $type)
+  function __construct(&$perso, $type, $modif=true)
   {
     interf_tableau::__construct();
     $this->set_entete(false);
@@ -81,7 +68,7 @@ class interf_invent_equip extends interf_tableau
                               'main_droite',        'torse',      'main_gauche',
                               'main',               'ceinture',   'doigt',
                               'moyen_accessoire',   'jambe',      'dos',
-                              'petit_accessoire',   'chaussure',  'petit_accessoire');
+                              'petit_accessoire_1', 'chaussure',  'petit_accessoire_2');
       $invent = $perso->inventaire();
       break;
     case 'pet':
@@ -125,14 +112,15 @@ class interf_invent_equip extends interf_tableau
         {
           $desequip = false;
           $obj = new zone_invent($loc, $objet === 'lock', $perso);
-    		}
-        $td->add( new interf_objet_invent($obj, $desequip, $loc, $this->slot, 'drop_'.$loc) );
+    		}//.($desequip?' equip':'')
+        $td->add( new interf_objet_invent($obj, $desequip, $loc, $desequip?'equipe':'', 'drop_'.$loc) );
+        if( $desequip )
+          interf_base::code_js( '$( "#drop_'.$loc.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
       $compteur++;
-      interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.$loc.'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
-      //interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: "#invent_slot12", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func);' );
+      interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 15).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
     }
-    //interf_base::code_js( 'init_dragndrop();' );
+    interf_base::code_js('page = "'.$type.'"');
   }
 }
 
@@ -169,45 +157,42 @@ class interf_invent_sac extends interf_cont
       $i = 0;
       $arme_de_siege = 0;
     	$perso->restack_objet();
-      //$js = 'function init_dragndrop() {';
     	foreach($perso->get_inventaire_slot_partie() as $invent)
     	{
         $objet = objet_invent::factory($invent);
         $col = $objet->get_colone($type);
         if( $col !== false )
         {
-          $drags = '';
-          if( $type == 'equipement' )
-            $drags .= 'drag_'.$objet->get_emplacement();
-          if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
+          if( $objet->est_identifie() )
           {
-            if( $type == 'royaume' )
-              $drags .= ' drag_depot';
-            else
-              $drags .= ' drag_vendre_marchand drag_hotel_vente';
+            $drags = '';
+            if( $type == 'equipement' )
+              $drags .= 'drag_'.$objet->get_emplacement();
+            if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
+            {
+              if( $type == 'royaume' )
+                $drags .= ' drag_depot';
+              else
+                $drags .= ' drag_vendre_marchand drag_hotel_vente';
+            }
+            if( $objet->est_utilisable() )
+                $drags .= ' drag_utiliser';
+            if( $objet->est_slotable() )
+                $drags .= ' drag_slot_1 drag_slot_2 drag_slot_3';
+            if( $objet->est_enchassable() )
+                $drags .= ' drag_enchasser';
           }
-          $div = $this->cols[$col]->add( new interf_objet_invent($objet, false, null, $drags, 'invent_slot'.$i) );
+          else
+              $drags = 'drag_identifier';
+            $div = $this->cols[$col]->add( new interf_objet_invent($objet, false, null, $drags, 'invent_slot'.$i) );
           if( $objet->est_identifie() )
             $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.'inventaire.php?action=infos&id='.$invent.'\', \''.$objet->get_nom().'\')');
-          /*if( $type == 'equipement' )
-            $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_'.$objet->get_emplacement().'", "inventaire.php");';
-          if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
-          {
-            if( $type == 'royaume' )
-              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_depot", "inventaire.php");';
-            else
-            {
-              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_vendre_marchand", "inventaire.php");';
-              $js .= 'dragndrop("#invent_slot'.$i.'", "#drop_hotel_vente", "inventaire.php");';
-            }
-          }*/
           interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
         }
         $i++;
       }
-      /*$script = $this->add( new interf_bal_smpl('script', $js.'} init_dragndrop();') );
-      $script->set_attribut('type', 'text/javascript');*/
     }
+    interf_base::code_js('slot = "'.$type.'"');
   }
 }
 
@@ -315,8 +300,7 @@ class interf_vente_hotel extends interf_dialogBS
       return;
     }
     $this->ajout_btn('Annuler', 'fermer');
-    $btn = $this->ajout_btn('Vendre', '', 'primary');
-    $btn->set_attribut('onclick', '');
+    $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'vente_hdv\', \'information\');', 'primary');
 
     $objet =  objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
     $prix = $objet->get_prix_vente() * 2;
@@ -325,7 +309,7 @@ class interf_vente_hotel extends interf_dialogBS
     $R = new royaume( $case->get_royaume() );
 
     $taxe = $R->get_taxe_diplo($perso->get_race()) / 100;
-    $form = $this->add( new interf_form('javascript:envoiInfo(\'inventaire.php\', \'information\');', 'get') );
+    $form = $this->add( new interf_form('inventaire.php?action=vente_hotel&objet='.$index, 'vente_hdv') );
     $form->set_attribut('name', 'formulaire');
     $chp1 = $form->add_champ_bs('number', 'prix', null, $prix, 'Prix de vente', 'stars');
     $chp1->set_attribut('onchange', 'formulaire.comm.value = Math.Round(formulaire.prix.value * '.$taxe.')');
@@ -340,6 +324,112 @@ class interf_vente_hotel extends interf_dialogBS
     $chp3 = $form->add_champ_bs('text', 'max', null, $prixmax, 'Maximum', 'stars');
     $chp3->set_attribut('disabled', 'true');
     $form->add( new interf_chp_form('hidden', 'action', false, 'ventehotel') );
+    interf_base::code_js('ajout_filtre_form("vente_hdv");');
+  }
+}
+
+/**
+ * Boite de dialogue pour les gemmes
+ */
+class interf_enchasser extends interf_dialogBS
+{
+  function __construct(&$perso, $index)
+  {
+    global $G_place_inventaire;
+
+    $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
+    // Chances de succès
+    $niveau = $objet->est_enchassable();
+		switch($niveau)
+		{
+			case 1 :
+				$difficulte = 10;
+			break;
+			case 2 :
+				$difficulte = 30;
+			break;
+			case 3 :
+				$difficulte = 100;
+			break;
+		}
+    $chances = pourcent_reussite($perso->get_forge(), $difficulte);;
+    if( $objet->get_enchantement() )
+    {
+      interf_dialogBS::__construct('Enlever une gemme');
+      $this->add( new interf_bal_smpl('span', 'Permet de récupérer une gemme enchasser dans un objet.', null, 'small') );
+      $alert = $this->add( new interf_alerte('info', false) );
+      $alert->add( new interf_bal_smpl('b', 'Attention, ') );
+      $alert->add_message( 'l\'objet sera détruit !' );
+      $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
+      $this->ajout_btn('Annuler', 'fermer');
+      $this->ajout_btn('Enlever', '$(\'#modal\').modal(\'hide\');envoiInfo(\'inventaire.php?action=recup_gemme&objet'.$index.'\', \'information\');', 'primary');
+    }
+    else if( $niveau )
+    {
+      interf_dialogBS::__construct('Enchasser une gemme');
+      /// Doit-on chercher une gemme ou un objet sloté ?
+      $obj_txt = $objet->get_texte();
+      $objs = array();
+      if( $obj_txt['0'] == 'g' )
+      {
+        $cle = 's'.$niveau;
+        for($i=0; $i<$G_place_inventaire; $i++)
+        {
+          $obj = $perso->get_inventaire_slot_partie($i);
+          if( strpos($obj, $cle) !== false && $obj[0] != 'h' )
+          {
+            $objs[$i] = $obj;
+          }
+        }
+        $type = 'un objet avec un slot de niveau '.$niveau;
+        $var1 = 'gemme';
+        $var2 = 'objet';
+      }
+      else
+      {
+        for($i=0; $i<$G_place_inventaire; $i++)
+        {
+          $obj = $perso->get_inventaire_slot_partie($i);
+          if( $obj[0] == 'g' )
+          {
+            $o = objet_invent::factory($obj);
+            if( $o->get_niveau() == $niveau )
+              $objs[$i] = $obj;
+          }
+        }
+        $type = 'une gemme de niveau '.$niveau;
+        $var1 = 'objet';
+        $var2 = 'gemme';
+      }
+      // on recherce
+      if( count($objs) )
+      {
+        $this->add( new interf_txt('Choisissez '.$type.' pour l\'enchassement : ') );
+        $form = $this->add( new interf_form('inventaire.php?action=enchasse&'.$var1.'='.$index, 'enchasser') );
+        $choix = $form->add( new interf_select_form($var2, 'enchasser') );
+        foreach( $objs as $i=>$o )
+        {
+          $obj = objet_invent::factory($o);
+          $choix->add_option($obj->get_nom(), $i);
+        }
+        $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
+        $this->ajout_btn('Annuler', 'fermer');
+        $btn = $this->ajout_btn('Enchasser', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'enchasser\', \'information\');', 'primary');
+        interf_base::code_js('ajout_filtre_form("enchasser");');
+      }
+      else
+      {
+        $this->add( new interf_alerte('danger', false) )->add_message('Vous devez avoir '.$type.' !');
+        $this->ajout_btn('Ok', 'fermer', 'danger');
+      }
+    }
+    else
+    {
+      interf_dialogBS::__construct('Erreur');
+      /// TODO: loguer
+      $this->add( new interf_alerte('danger', false) )->add_message('Objet invalide !');
+      $this->ajout_btn('Ok', 'fermer', 'danger');
+    }
   }
 }
 ?>

@@ -111,10 +111,22 @@ abstract class objet_equip extends objet_invent
    */
   abstract function get_emplacement();
 
+  /// Indique si l'objet est slotable
+  function est_slotable() { return $this->identifie ? $this->slot === null && $this->enchantement === null : false; }
+
+  /// Indique si l'objet est enchassable (renvoie le niveau de la gemme)
+  function est_enchassable()
+  {
+    if( !$this->identifie )
+      return false;
+    if( $this->enchantement )
+      return $this->enchantement;
+    return $this->slot;
+  }
+
   /**
    * Mettre un slot
    */
-
   function mettre_slot(&$perso, &$princ, $niveau)
   {
     // On vérifie que le personnage a assez de PA
@@ -172,13 +184,9 @@ abstract class objet_equip extends objet_invent
 			$perso->set_forge($augmentation[0]);
 			$perso->sauver();
 		}
-    // Enregistrement dans l'inventaire & on retire les PA
-    $anc = $this->get_texte();
+    // on recompose la version textuelle & retire les PA
     $this->recompose_texte();
-		$perso->set_inventaire_slot_partie( $this->get_texte(), $anc);
-		$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
 		$perso->set_pa($perso->get_pa() - 10);
-		$perso->sauver();
 
     return true;
   }
@@ -202,7 +210,7 @@ abstract class objet_equip extends objet_invent
     // on vérifie qu'il n'y a un slot du bon niveau
     if( $this->get_slot() != $gemme->get_niveau() )
     {
-      $princ->add( new interf_alerte('danger', true) )->add_message('L\objet n\'a pas le bon slot !');
+      $princ->add( new interf_alerte('danger', true) )->add_message('L\'objet n\'a pas le bon slot !');
       return false;
     }
     // on test
@@ -250,22 +258,18 @@ abstract class objet_equip extends objet_invent
 			$perso->set_forge($augmentation[0]);
 			$perso->sauver();
 		}
-    // Enregistrement dans l'inventaire & on retire les PA
-    $anc = $this->get_texte();
+    // on recompose la version textuelle & retire les PA
     $this->recompose_texte();
-		$perso->set_inventaire_slot_partie( $this->get_texte(), $anc);
-		$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
 		$perso->set_pa($perso->get_pa() - 20);
-		$perso->sauver();
     return true;
   }
 
   /**
    * Retirer une gemme
    */
-  /*function enchasser(&$perso, &$princ)
+  function recup_gemme(&$perso, &$princ)
   {
     return true;
-  }*/
+  }
 }
 ?>

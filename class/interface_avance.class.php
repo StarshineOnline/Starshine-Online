@@ -23,19 +23,15 @@ class interf_onglets extends interf_bal_cont
    */
   function __construct($id_tabs, $id_cont, $class_cont=false)
   {
-    interf_bal_cont::__construct('div', $id_cont, /*'tab-pane '.*/$class_cont);
+    interf_bal_cont::__construct('div', $id_cont, $class_cont);
     $this->haut = $this->add( new interf_bal_cont('ul', $id_tabs, 'nav nav-tabs') );
     $this->divs = array();
     $this->id = $id_cont;
-    //self::code_js( '$(function() { $(\'#'.$id_tabs.'\').tab(); $(\'#'.$id_tabs.'\').bind(\'show\', charge_tab); });' );
-    //self::code_js( '$(\''.$id_tabs.' a\').click(function (e) { e.preventDefault() $(this).tab(\'show\') });' );
-    //self::code_js( '$(\''.$id_tabs.' a\').click(function (e) { charge_tab(e, "'.$id_cont.'") };' );
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
     $this->haut->affiche();
-    //$this->ligne('<div class="spacer"></div>');
     interf_bal_cont::debut();
   }
   /**
@@ -45,10 +41,10 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function /*&*/add_onglet($nom, $adresse, $id, $selection=false)
+  function add_onglet($nom, $adresse, $id, $selection=false)
   {
     $classe = 'tab-pane';//
-    $li = $this->haut->add( new interf_elt_menu($nom, /*'#'.$id*/'', 'charge_tab(this, \''.$this->id.'\');') );
+    $li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
     $lien = $li->get_lien();
     if($selection)
     {
@@ -80,10 +76,18 @@ class interf_alerte extends interf_bal_cont
 {
   function __construct($type=null, $ferme=true, $id=null)
   {
-    $classe = 'alert'.($type ? ' '.$type : '');
+    $classe = 'alert'.($type ? ' alert-'.$type : '');
+    if( $ferme )
+      $classe .= ' alert-dismissable';
     interf_bal_cont::__construct('div', $id, $classe);
     if( $ferme )
-      interf_base::code_js( '$("'.($id?'#'.$id:'.alert').'").alert();' );
+    {
+      //interf_base::code_js( '$("'.($id?'#'.$id:'.alert').'").alert();' );
+      $btn = $this->add( new interf_bal_smpl('button', '&times;', null, 'close') );
+      $btn->set_attribut('type', 'button');
+      $btn->set_attribut('data-dismiss', 'alert');
+      $btn->set_attribut('aria-hidden', 'true');
+    }
   }
 
   function add_message($msg)
@@ -222,6 +226,7 @@ class interf_dialogBS extends interf_princ
     }
     $this->ferme('div');
     $this->ferme('div');
+    $this->affiche_js();
   }
 }
 ?>

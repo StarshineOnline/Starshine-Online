@@ -194,6 +194,9 @@ class gemme extends objet_invent
     else
       return false;
   }
+
+  /// Indique si l'objet est slotable
+  function est_enchassable() { return $this->identifie ? $this->niveau : false; }
 }
 
 class gemme_enchassee extends effect

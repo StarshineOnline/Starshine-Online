@@ -451,7 +451,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 
 
 /***************************************************
-  Header Menu
+  Inventaire
  ***************************************************/
 
 
@@ -469,7 +469,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   color:#222;
 }
 
-#slots, #invent
+.invent
 {
   border-left: solid white 1px;
   border-right: solid white 1px;
@@ -479,8 +479,6 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   border-bottom-right-radius: 9px;
   padding-top: 2px;
   padding-bottom: 2px;
-  /*-moz-border-radius:9px;
-  -webkit-border-radius:9px;*/
 }
 
 .col_invent

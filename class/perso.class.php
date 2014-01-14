@@ -1417,6 +1417,7 @@ class perso extends entite
 		global $db, $G_erreur;
 		$equip = false;
 		$conditions = array();
+    // TODO: vérifier que l'objet est bien possédé et intégré sa supression du sac
 		if($objet_d = decompose_objet($objet))
 		{
 			//print_r($objet_d);

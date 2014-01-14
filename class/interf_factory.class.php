@@ -32,25 +32,14 @@ class interf_factory
   /**
    * Renvoie la bonne instance de la classe pour afficher l'inventaire
    * @param $perso      Objet représentant le personnage dont il faut afficher l'inventaire
-   * @param $adresse    Adresse de la page
-   * @param $slot       slot à afficher
+   * @param $invent     Inventaire à afficher
+   * @param $slot       Slot à afficher
+   * @param $modif      Indique si on peut modifier l'interface.
    */
-  function creer_inventaire(&$perso, $adresse, $slot)
+  function creer_inventaire(&$perso, $invent, $slot, $modif)
   {
     include_once('interf_inventaire.class.php');
-    return new interf_inventaire($perso, $adresse, 'perso', $slot);
-  }
-  /**
-   * Renvoie la bonne instance de la classe pour afficher un slot de l'inventaire
-   * @param $perso      Objet représentant le personnage dont il faut afficher l'inventaire
-   * @param $adresse    Adresse de la page
-   * @param $slot       slot à afficher
-   * @param $slot       Slot à afficher
-   * @param $modif      indique si on peut modifier l'inventaire
-   */
-  function creer_inventaire_slot(&$perso, $adresse, $slot, $modif)
-  {
-    return new interf_inventaire_slot($perso, $adresse, $slot, $modif);
+    return new interf_inventaire($perso, $invent, $slot, $modif);
   }
   /**
    * Renvoie la bonne instance de la classe pour afficher les informations sur un objet (dans un popover)
@@ -81,6 +70,13 @@ class interf_factory
   {
     include_once('interf_inventaire.class.php');
     return new interf_vente_hotel($perso, $index);
+  }
+  /*
+   */
+  function creer_enchasser(&$perso, $index)
+  {
+    include_once('interf_inventaire.class.php');
+    return new interf_enchasser($perso, $index);
   }
 }
 ?>

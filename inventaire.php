@@ -25,212 +25,124 @@ if(array_key_exists('id_perso', $_GET))
 	$bonus = recup_bonus($_GET['id_perso']);
 	if(array_key_exists(20, $bonus) AND check_affiche_bonus($bonus[20], $joueur, $perso))
 	{
-		$joueur_id = $_GET['id_perso'];
+    $perso = new perso($_GET['id_perso']);
 	}
 	else exit();
 }
 else
 {
-	$visu = false;
-	$joueur_id = $_SESSION['ID'];
+  $perso = joueur::get_perso();
+	$visu = $perso->est_mort();
 }
-$joueur = new perso($joueur_id);
 
 switch( $action )
 {
 case 'princ':
   $princ = new interf_princ_cont();
-  $princ->add( $interf->creer_invent_equip($joueur, $_GET['page'], !$visu) );
+  $princ->add( $interf->creer_invent_equip($perso, $_GET['page'], !$visu) );
   exit;
 case 'sac':
   $princ = new interf_princ_cont();
-  $princ->add( $interf->creer_invent_sac($joueur, $_GET['slot'], !$visu) );
+  $princ->add( $interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
   exit;
 case 'hotel_vente':
-  $princ = $interf->creer_vente_hotel($joueur, $_GET['objet']);
+  $princ = $interf->creer_vente_hotel($perso, $_GET['objet']);
+  exit;
+case 'gemme':
+  $princ = $interf->creer_enchasser($perso, $_GET['objet']);
   exit;
 }
 
-//Filtre
-if(array_key_exists('filtre', $_GET))
-{
-  $filtre = $_GET['filtre'];
-  $filtre_url = '&amp;filtre='.$_GET['filtre'];
-}
-else
-{
-  $filtre = 'utile';
-  $filtre_url = '&amp;filtre=utile';
-}
-$W_requete = 'SELECT royaume, type, info FROM map WHERE x ='.$joueur->get_x()
-		 .' and y = '.$joueur->get_y();
-$W_req = $db->query($W_requete);
-$W_row = $db->read_assoc($W_req);
-$R = new royaume($W_row['royaume']);
+//Filtres
+$page = array_key_exists('page', $_GET) ? $_GET['page'] : 'perso';
+$slot = array_key_exists('slot', $_GET) ? $_GET['slot'] : 'utile';
 
 $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if( !$visu && $action )
 {
-  verif_mort($joueur, 1);
+  $obj = $perso->get_inventaire_slot_partie($_GET['objet']);
 	switch($action)
 	{
-		case 'desequip' :
-			if(!$joueur->desequip($_GET['partie']))
-        $princ->add_message($G_erreur, false);
-		break;
-		case 'equip' :
-			if($joueur->equip_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'])))
+    /// TODO : faire plus de vérifications
+    case 'grand_accessoire':
+    case 'tete':
+    case 'cou':
+    case 'main_droite':
+    case 'torse':
+    case 'main_gauche':
+    case 'main':
+    case 'ceinture':
+    case 'doigt':
+    case 'moyen_accessoire':
+    case 'jambe':
+    case 'dos':
+    case 'petit_accessoire_1':
+    case 'chaussure':
+    case 'petit_accessoire_2':
+      echo 'objet à équiper : '.$_GET['objet'].' -> '.$obj.'<br>';
+			if($perso->equip_objet($obj))
 			{
 				//On supprime l'objet de l'inventaire
-				$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
-				$joueur->sauver();
+				$perso->supprime_objet($obj, 1);
+				$perso->sauver();
 			}
 			else
-				$princ->add_message($G_erreur, false);
-		break;
-		case 'utilise' :
-			switch($_GET['type'])
-			{
-				case 'drapeau' :
-				break;
-				case 'identification' :
-				break;
-			case 'grimoire':
-				break;
-			default:
-				error_log('Utilisation d\'un objet invalide: '.$_GET['type']);
-			}
-		break;
-		//Dépot de l'objet au dépot militaire
-		case 'depot' :
-		break;
-		case 'vente' :
-		break;
-		case 'ventehotel' :
-		break;
-		case 'ventehotel2' :
-		break;
-		case 'slot' :
-		break;
-		case 'slot2' :
-		break;
-		case 'enchasse' :
-			$gemme = decompose_objet($joueur->get_inventaire_slot_partie($_GET['key_slot']));
-			$requete = "SELECT * FROM gemme WHERE id = ".$gemme['id_objet'];
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			switch($row['type'])
-			{
-				case 'arme' :
-					$type = 'a';
-				break;
-				case 'armure' :
-					$type = 'p';
-				break;
-				case 'accessoire' :
-					$type = 'm';
-				break;
-			}
-			switch($row['niveau'])
-			{
-				case 1 :
-					$difficulte = 10;
-				break;
-				case 2 :
-					$difficulte = 30;
-				break;
-				case 3 :
-					$difficulte = 100;
-				break;
-			}
-			$craft = $joueur->get_forge();
-			if($joueur->get_race() == 'scavenger') $craft = round($craft * 1.45);
-			if($joueur->get_accessoire() !== false)
-			{
-				$accessoire = $joueur->get_accessoire();
-				if($accessoire->type == 'fabrication')
-					$craft = round($craft * (1 + ($accessoire->effet / 100)));
-			}
-
-			// Gemme de fabrique : augmente de effet % le craft
-			if ($joueur->get_enchantement()!== false &&
-					$joueur->is_enchantement('forge')) {
-				$craft += round($craft * ($joueur->get_enchantement('forge','effet') / 100));
-			}
-
-			$opt = new interf_menu('Dans quel objet voulez vous enchâsser cette gemme de niveau '.$row['niveau'].' ?', '', '');
-      $princ->add($opt);
-			//Recherche des objets pour enchassement possible
-			$i = 0;
-			while($i <= $G_place_inventaire)
-			{
-				if($joueur->get_inventaire_slot_partie($i) != '')
-				{
-					$objet_i = decompose_objet($joueur->get_inventaire_slot_partie($i));
-					//echo '<br />'.$joueur->get_inventaire_slot()[$i].'<br />';
-					if($objet_i['identifier'] AND $objet_i['categorie'] != 'r')
-					{
-						if($objet_i['categorie'] == 'a') $table = 'arme';
-						elseif($objet_i['categorie'] == 'p') $table = 'armure';
-						elseif($objet_i['categorie'] == 'm') $table = 'accessoire';
-						elseif($objet_i['categorie'] == 'o') $table = 'objet';
-						elseif($objet_i['categorie'] == 'g') $table = 'gemme';
-						else {
-							print_debug("table introuvable pour $objet_i[categorie]");
-							$i++;
-							continue;
-						}
-						$requete = "SELECT type FROM ".$table." WHERE id = ".$objet_i['id_objet'];
-						$req_i = $db->query($requete);
-						$row_i = $db->read_row($req_i);
-						$check = true;
-						$j = 0;
-						$parties = explode(';', $row['partie']);
-						$count = count($parties);
-						if (strlen($row['partie']) > 0) $check = false;
-						while(!$check AND $j < $count)
-						{
-							if($parties[$j] == $row_i[0]) $check = true;
-							//echo $parties[$j].' '.$row_i[0].'<br />';
-							$j++;
-						}
-						if($check AND ($objet_i['categorie'] == $type) AND ($objet_i['slot'] >= $row['niveau']))
-						{
-							$nom = nom_objet($joueur->get_inventaire_slot_partie($i));
-							$chance_reussite = pourcent_reussite($craft, $difficulte);
-							//On peut mettre la gemme
-							$elt = new interf_bal_cont('li');
-        			$opt->add($elt);
-        			$lien = new interf_bal_smpl('a', $nom.' / slot niveau '.$objet_i['slot']);
-        			$lien->set_attribut('href', 'inventaire.php?action=enchasse2&amp;key_slot='.$_GET['key_slot'].'&amp;key_slot2='.$i.'&amp;niveau='.$row['niveau'].$filtre_url);
-        			$lien->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
-        			$elt->add($lien);
-        			$elt->add( new interf_txt(' ') );
-        			$elt->add( new interf_bal_smpl('span', $chance_reussite.'% de chance de réussite', false, 'xsmall') );
-        			unset($elt, $lien);
-						}
-					}
-				}
-				$i++;
-			}
-			echo '
-			</ul>';
-		break;
-		case 'enchasse2' :
-		break;
+				$princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
+      break;
+	  case 'desequip' :
+			if(!$perso->desequip($_GET['objet']))
+        $princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
+      break;
+	  case 'utilise' :
+      $objet = objet_invent::factory( $obj );
+      $objet->utiliser($perso, $princ);
+      break;
+	  case 'depot' :
+      $objet = objet_invent::factory( $obj );
+      $objet->deposer($perso, $princ);
+      break;
+	  case 'slot_1' :
+	  case 'slot_2' :
+	  case 'slot_3' :
+      $objet = objet_invent::factory( $obj );
+      if( $objet->mettre_slot($perso, $princ, $action[5]) )
+      {
+        $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
+  		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
+        $perso->sauver();
+      }
+      break;
+		case 'vente_hotel':
+      $objet = objet_invent::factory( $obj );
+      $objet->vendre_hdv($perso, $princ, $_GET['prix']);
+		  break;
+		case 'vente':
+      $objet = objet_invent::factory( $obj );
+      $objet->vendre_marchand($perso, $princ);
+		  break;
+		case 'enchasse':
+      $objet = objet_invent::factory( $obj );
+      $gemme = objet_invent::factory( $perso->get_inventaire_slot_partie($_GET['gemme']) );
+      if( $objet->enchasser($perso, $princ, $gemme) )
+      {
+        $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
+  		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
+        $perso->sauver();
+      }
+		  break;
+		case 'recup_gemme':
+      $objet = objet_invent::factory( $obj );
+      $objet->recup_gemme($perso, $princ);
+		  break;
 	}
 	refresh_perso();
 }
 
-$perso = new perso($joueur_id);
-$invent = $interf->creer_inventaire($perso, 'inventaire.php', $filtre);
-$princ->add($invent);
-$invent->set_contenu('perso', !$visu);
-$invent->affiche_slots();
+$princ->add( $interf->creer_inventaire($perso, $page, $slot, !$visu) );
 
 // Augmentation du compteur de l'achievement
-$achiev = $joueur->get_compteur('nbr_arme_siege');
+$achiev = $perso->get_compteur('nbr_arme_siege');
 $achiev->set_compteur(intval($arme_de_siege));
 $achiev->sauver();
 ?>

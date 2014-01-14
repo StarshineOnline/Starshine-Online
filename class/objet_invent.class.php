@@ -155,7 +155,7 @@ abstract class objet_invent extends table
     // enchantement par une gemme
 		$decomp = explode('e', $obj);
 		$obj = $decomp[0];
-		$enchantement = $decomp[1];
+		$enchantement = count($decomp)>1 ? $decomp[1] : null;
     // slot disponible
 		$decomp = explode('s', $obj);
 		$obj = $decomp[0];
@@ -200,6 +200,7 @@ abstract class objet_invent extends table
       $obj = new objet_royaume($id);
       break;
     default:
+      debug_print_backtrace();
       die("catégorie d'objet inconnue : '$cat'");
     }
     $obj->set_texte($objet);
@@ -224,10 +225,10 @@ abstract class objet_invent extends table
     $nbr = $this->get_nombre();
     if( $nbr > 1 )
       $this->texte .= 'x'.$nbr;
-    $slot = $sthis->get_slot();
+    $slot = $this->get_slot();
     if( $slot !== null )
       $this->texte .= 's'.$slot;
-    $enchant = $sthis->get_enchantement();
+    $enchant = $this->get_enchantement();
     if( $enchant !== null )
       $this->texte .= 'e'.$enchant;
   }
@@ -272,11 +273,17 @@ abstract class objet_invent extends table
    */
   abstract function get_colone($partie);
 
-  /**
-   */
+  /// Indique si l'objet est utilisable
   function est_utilisable() { return false; }
 
+  /// Indique si l'objet est slotable
+  function est_slotable() { return false; }
+
+  /// Indique si l'objet est slotable
+  function est_enchassable() { return false; }
+
   /**
+   * Utilise l'objet
    */
   function utiliser(&$perso, &$princ) { return false; }
 
@@ -426,7 +433,12 @@ abstract class objet_invent extends table
   /**
    * Mettre une gemme ou en retirer une
    */
-  function enchasser(&$perso, &$princ, $niveau) { return false; }
+  function enchasser(&$perso, &$princ, $gemme) { return false; }
+
+  /**
+   * Retirer une gemme
+   */
+  function recup_gemme(&$perso, &$princ) { return false; }
 }
 
 class zone_invent extends objet_invent
@@ -438,7 +450,7 @@ class zone_invent extends objet_invent
   {
     global $Gtrad;
     $this->type = $zone;
-    $this->nom = $Gtrad[$zone];
+    $this->nom = $Gtrad[substr($zone, 0, 16)];
     $this->lock = $lock;
     $this->perso = &$perso;
   }

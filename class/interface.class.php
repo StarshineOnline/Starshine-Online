@@ -567,9 +567,9 @@ class interf_form extends interf_bal_cont
    * @param  $action    action à effectuer lors de la validation du formulaire.
    * @param  $method    méthode à utiliser pour l'envoie des données.
    */
-  function __construct($action = false, $method = false)
+  function __construct($action = null, $id=null, $method = 'get', $classe=null)
   {
-    $this->balise = 'form';
+    interf_bal_cont::__construct('form', $id, $classe);
     if( $action )
       $this->set_attribut('action', $action);
     if( $action )

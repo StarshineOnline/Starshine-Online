@@ -235,6 +235,12 @@ class objet extends objet_equip
     }
   }
 
+  /// Indique si l'objet est slotable
+  function est_slotable() { return false; }
+
+  /// Indique si l'objet est slotable
+  function est_enchassable() { return false; }
+
   function utiliser(&$perso, &$princ)
   {
     if( $perso->get_hp() <= 0 )
@@ -384,5 +390,10 @@ un nécromancien ( la suite est déchirée ).<br />
    * Mettre une gemme ou en retirer une
    */
   function enchasser(&$perso, &$princ, $niveau) { return false; }
+
+  /**
+   * Retirer une gemme
+   */
+  function recup_gemme(&$perso, &$princ) { return false; }
 }
 ?>
