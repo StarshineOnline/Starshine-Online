@@ -252,8 +252,12 @@ elseif($_GET['direction'] == 'suppr_construction')
 	if($construction->get_royaume() == $royaume->get_id())
 	{
 		$batiment = new batiment($construction->get_id_batiment());
-		//On vérifie que la construction a plus de 10% de ses PV max
-		if($construction->get_hp() > ($batiment->get_hp() * $G_prct_vie_suppression))
+		//On vérifie que la construction a plus de 50% (ou 90%) de ses PV max
+		if(
+		( $construction->get_point_victoire() > 0 && $construction->get_hp() >= ($batiment->get_hp() * $G_prct_vie_suppression_pv) )
+		or
+		( $construction->get_point_victoire() == 0 && $construction->get_hp() >= ($batiment->get_hp() * $G_prct_vie_suppression_nopv) )
+		)
 		{
 			$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 			if($db->query($requete))
