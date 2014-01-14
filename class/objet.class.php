@@ -188,7 +188,7 @@ class objet extends objet_equip
     return $infos ? $infos : null;
   }
 
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     switch( $this->type )
     {

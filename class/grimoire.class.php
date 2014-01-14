@@ -192,7 +192,7 @@ class grimoire extends objet_invent
     return $vals;
   }
 
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     if( $partie == 'utile' )
       return 1;

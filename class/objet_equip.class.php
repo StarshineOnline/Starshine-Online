@@ -46,7 +46,7 @@ abstract class objet_equip extends objet_invent
 		return $this->enchantement;
   }
 	/// Modifie l'enchantement par gemme
-	function set_stack($enchantement)
+	function set_enchantement($enchantement)
 	{
 		$this->enchantement = $enchantement;
 	}
@@ -227,16 +227,17 @@ abstract class objet_equip extends objet_invent
 			$difficulte = 100;
 		break;
 		}
-    if( comp_sort::test_potentiel($perso->get_forge(), $difficulte) )
+    $test = comp_sort::test_potentiel($perso->get_forge(), $difficulte);
+    if( $test )
     {
 			//Craft réussi
       $princ->add( new interf_alerte('success', true) )->add_message('Réussite !');
 			$this->set_enchantement( $gemme->get_id() );
 			$this->set_slot(null);
-      $perso->supprime_objet($perso->get_inventaire_slot_partie( $gemme->get_texte()), 1);
+      //$perso->supprime_objet($perso->get_inventaire_slot_partie( $gemme->get_texte()), 1);
 
 			// Augmentation du compteur de l'achievement
-			$achiev = $joueur->get_compteur('objets_slotted');
+			$achiev = $perso->get_compteur('objets_slotted');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
     }
@@ -254,14 +255,11 @@ abstract class objet_equip extends objet_invent
     // Augmentation de l'attribut
 		$augmentation = augmentation_competence('forge', $perso, 2);
 		if ($augmentation[1] == 1)
-		{
 			$perso->set_forge($augmentation[0]);
-			$perso->sauver();
-		}
     // on recompose la version textuelle & retire les PA
     $this->recompose_texte();
 		$perso->set_pa($perso->get_pa() - 20);
-    return true;
+    return $test;
   }
 
   /**

@@ -117,7 +117,7 @@ class accessoire extends objet_equip
     return $vals;
   }
 
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     if( $partie == 'equipement' )
       return 2;

@@ -32,3 +32,6 @@ ALTER TABLE `grimoire` CHANGE `classe_requis` `classe_requis` TEXT CHARACTER SET
 -- on modifie la table gemme
 ALTER TABLE gemme ADD `prix` INT NOT NULL ;
 UPDATE gemme SET prix = POW(8, niveau + 1) * 10;
+
+-- Objets
+UPDATE objet SET stack = '20' WHERE id = 2;

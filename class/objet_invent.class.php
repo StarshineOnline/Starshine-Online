@@ -256,7 +256,10 @@ abstract class objet_invent extends table
   {
     $enchant = $this->get_enchantement();
     if( $enchant )
-      return $enchant->get_description();
+    {
+      $gemme = new gemme( $enchant );
+      return 'enchantement '.$gemme->get_enchantement_nom();
+    }
     else
     {
       $slot = $this->get_slot();
@@ -271,7 +274,20 @@ abstract class objet_invent extends table
 
   /**
    */
-  abstract function get_colone($partie);
+  function get_colone($partie)
+  {
+    if( $this->identifie )
+      return $this->get_colone_int($partie);
+    else if( $partie == 'utile' )
+      return 2;
+    else
+      return false;
+  }
+
+
+  /**
+   */
+  protected abstract function get_colone_int($partie);
 
   /// Indique si l'objet est utilisable
   function est_utilisable() { return false; }
@@ -312,7 +328,8 @@ abstract class objet_invent extends table
     $enchant = $this->get_enchantement();
 		if($enchant)
 		{
-			$modif_prix = 1 + ($enchant->get_niveau() / 2);
+      $gemme = new gemme( $enchant );
+			$modif_prix = 1 + ($gemme->get_niveau() / 2);
 		}
 		return floor($this->get_prix() * $modif_prix / $G_taux_vente);
   }
@@ -333,6 +350,7 @@ abstract class objet_invent extends table
    */
   function vendre_hdv(&$perso, &$princ, $prix)
   {
+    global $db;
     // On vérifie que le prix est positif
     if( $prix < 0 )
     {
@@ -362,13 +380,13 @@ abstract class objet_invent extends table
 		$perso->sauver();
 		$R->set_star($R->get_star() + $taxe);
 		$R->sauver();
-		$requete = "UPDATE argent_royaume SET hv = hv + ".$taxe." WHERE race = '".$R->get_race()."'";
+		$requete = 'UPDATE argent_royaume SET hv = hv + '.$taxe.' WHERE race = "'.$R->get_race().'"';
 		$db->query($requete);
     // On ajoute l'objet dans l'hotel de ville
-		$requete = "INSERT INTO hotel VALUES (NULL, '".$objet_id."', ".$perso->get_id().", ".sSQL($_GET['prix']).", 1, '".$R->get_race()."', ".time().")";
+		$requete = 'INSERT INTO hotel VALUES (NULL, "'.$this->get_texte().'", '.$perso->get_id().', '.$prix.', 1, "'.$R->get_race().'", '.time().')';
 		$req = $db->query($requete);
     // On enregistre dans les logs
-    log_admin::log('mis en vente HV', $joueur->get_nom().' vend '.$this->nom.' ('.$this->id.') pour '.$prix.' stars. Taxes : '.$taxe.' stars');
+    log_admin::log('mis en vente HV', $perso->get_nom().' vend '.$this->nom.' ('.$this->id.') pour '.$prix.' stars. Taxes : '.$taxe.' stars');
     // réussi
     $princ->add( new interf_alerte('success', true) )->add_message('Vous mettez en vente '.$this->nom.' pour '.$prix.' stars. Taxes : '.$taxe.' stars');
     return true;
@@ -403,17 +421,19 @@ abstract class objet_invent extends table
     {
 			//On remplace l'objet par celui identifiée
       /// TODO: à refaire
-			$obj = mb_substr($perso->get_inventaire_slot_partie($slot), 1);
-			$perso->set_inventaire_slot_partie($obj, $slot);
+			//$obj = mb_substr($perso->get_inventaire_slot_partie($slot), 1);
+      $this->identifie = true;
+      $this->recompose_texte();
+			$perso->set_inventaire_slot_partie($this->get_texte(), $slot);
 			$perso->set_inventaire_slot(serialize($perso->get_inventaire_slot_partie(false, true)));
       $msg = $princ->add( new interf_alerte('success') );
       $msg->add_message('Identification réussie !');
       $msg->add( new interf_bal_smpl('br') );
-      $msg->add_message('L\'objet est : '.$this->get_nom);
-      log_admin::log('identification', $perso->get_nom().' a identifié '.$this->nom());
+      $msg->add_message('L\'objet est : '.$this->nom);
+      log_admin::log('identification', $perso->get_nom().' a identifié '.$this->nom);
     }
 		else
-      $princ->add_message('L\'identification n\'a pas marché…', false);
+      $princ->add( new interf_alerte('danger') )->add_message('L\'identification n\'a pas marché…', false);
 		//On supprime l'objet de l'inventaire
 		$perso->supprime_objet('o2', 1);
 
@@ -510,6 +530,6 @@ class zone_invent extends objet_invent
 
   public function get_noms_infos($complet=true) {}
   public function get_valeurs_infos($complet=true) {}
-  function get_colone($partie) { return false; }
+  function get_colone_int($partie) { return false; }
 }
 ?>

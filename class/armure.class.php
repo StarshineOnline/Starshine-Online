@@ -157,7 +157,7 @@ class armure extends objet_invent
     return 'PP : '.$this->PP.' - PM : '.$this->PM;
   }
 
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     if( $partie == 'equipement' )
       return 1;

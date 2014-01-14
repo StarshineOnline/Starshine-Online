@@ -245,7 +245,7 @@ class arme extends objet_equip
       return 'Dégâts : '.$this->degat;
   }
 	
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     if( $partie == 'equipement' )
       return 0;

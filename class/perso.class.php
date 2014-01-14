@@ -1241,7 +1241,7 @@ class perso extends entite
 	/**
 	 * Recherche un objet dans l'inventaire
 	 * @param  $id_objet   Id de l'objet.
-	 * @return   si trouvé tableau avec en première position de le nomrbe d'objet 
+	 * @return   si trouvé tableau avec en première position de le nombre d'objets
 	 *           dans la pile et en deuxième la position dans l'inventaire, false
 	 *           si non trouvé.   	 
 	 */	
@@ -1309,7 +1309,6 @@ class perso extends entite
 		{
 			$objet = $this->recherche_objet($id_objet);
 			//Vérification si objet "stacké"
-			//print_r($objet);
 			$stack = explode('x', $inventaire[$objet[1]]);
 			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
 			else array_splice($inventaire, $objet[1], 1);

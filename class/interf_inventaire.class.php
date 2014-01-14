@@ -135,7 +135,7 @@ class interf_invent_sac extends interf_cont
     switch( $type )
     {
     case 'utile':
-      $cols = array('alchimie', 'grimoires', 'quêtes');
+      $cols = array('alchimie', 'grimoires', 'trouvailles');
       break;
     case 'equipement':
       $cols = array('armes', 'armures', 'accessoires');
@@ -211,18 +211,23 @@ class interf_objet_invent extends interf_bal_cont
       $nbr = $objet->get_nombre();
       if( $nbr > 1 )
         $nom .= ' X '.$nbr;
+      $image = $objet->get_image();
+      $enchant = $objet->get_info_enchant();
+      $infos = $objet->get_info_princ();
     }
     else
+    {
       $nom = 'Objet non indentifié';
-    $image = $objet->get_image();
-    if($image or $desequip)
+      $image = 'image/interface/inventaire/Unknown.png';
+      $enchant = null;
+      $infos = null;
+    }
+    if($image /*or $desequip*/)
     {
       $img = new  interf_bal_smpl('img');
       $img->set_attribut('src', $image);
       $img->set_attribut('style', 'float : left;');
-      $img->set_attribut('title', 'Déséquiper');
-      $img->set_attribut('alt', 'Déséquiper');
-  		if($desequip)
+  		/*if($desequip)
   		{
         $lien = new interf_bal_cont('a');
         $lien->set_attribut('href', 'inventaire.php?action=desequip&amp;partie='.$partie.'&amp;filtre='.$slot);
@@ -230,21 +235,20 @@ class interf_objet_invent extends interf_bal_cont
         $this->add($lien);
         $lien->add($img);
   		}
-  		else
+  		else*/
         $this->add($img);
     }
     $this->add( new interf_bal_smpl('strong', $nom) );
-    $enchant = $objet->get_info_enchant();
     if( $enchant )
     {
       $this->add( new interf_bal_smpl('br') );
       $this->add( new interf_bal_smpl('span', $enchant, false, 'xsmall') );
     }
-    $infos = $objet->get_info_princ();
     if( $infos )
     {
       $this->add( new interf_bal_smpl('br') );
-      $this->add( new interf_txt($infos) );
+      //$this->add( new interf_txt($infos) );
+      $this->add( new interf_bal_smpl('span', $infos, false, 'infos') );
     }
   }
 }
@@ -323,7 +327,6 @@ class interf_vente_hotel extends interf_dialogBS
     $form->add( new interf_bal_smpl('br') );
     $chp3 = $form->add_champ_bs('text', 'max', null, $prixmax, 'Maximum', 'stars');
     $chp3->set_attribut('disabled', 'true');
-    $form->add( new interf_chp_form('hidden', 'action', false, 'ventehotel') );
     interf_base::code_js('ajout_filtre_form("vente_hdv");');
   }
 }
@@ -414,7 +417,7 @@ class interf_enchasser extends interf_dialogBS
         }
         $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
         $this->ajout_btn('Annuler', 'fermer');
-        $btn = $this->ajout_btn('Enchasser', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'enchasser\', \'information\');', 'primary');
+        $btn = $this->ajout_btn('Enchasser', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'enchasser\', \'information\'); alert(\'ok\');', 'primary');
         interf_base::code_js('ajout_filtre_form("enchasser");');
       }
       else

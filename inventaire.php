@@ -80,7 +80,6 @@ if( !$visu && $action )
     case 'petit_accessoire_1':
     case 'chaussure':
     case 'petit_accessoire_2':
-      echo 'objet à équiper : '.$_GET['objet'].' -> '.$obj.'<br>';
 			if($perso->equip_objet($obj))
 			{
 				//On supprime l'objet de l'inventaire
@@ -90,21 +89,21 @@ if( !$visu && $action )
 			else
 				$princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
       break;
-	  case 'desequip' :
-			if(!$perso->desequip($_GET['objet']))
+	  case 'desequip':
+			if(!$perso->desequip($_GET['zone'], $page=='pet'))
         $princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
       break;
-	  case 'utilise' :
+	  case 'utilise':
       $objet = objet_invent::factory( $obj );
       $objet->utiliser($perso, $princ);
       break;
-	  case 'depot' :
+	  case 'depot':
       $objet = objet_invent::factory( $obj );
       $objet->deposer($perso, $princ);
       break;
-	  case 'slot_1' :
-	  case 'slot_2' :
-	  case 'slot_3' :
+	  case 'slot_1':
+	  case 'slot_2':
+	  case 'slot_3':
       $objet = objet_invent::factory( $obj );
       if( $objet->mettre_slot($perso, $princ, $action[5]) )
       {
@@ -128,12 +127,17 @@ if( !$visu && $action )
       {
         $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
-        $perso->sauver();
+        $perso->supprime_objet($gemme->get_texte(), 1);
       }
+      $perso->sauver();
 		  break;
 		case 'recup_gemme':
       $objet = objet_invent::factory( $obj );
       $objet->recup_gemme($perso, $princ);
+		  break;
+		case 'identifier':
+      $objet = objet_invent::factory( $obj );
+      $objet->identifier($perso, $princ, $_GET['objet']);
 		  break;
 	}
 	refresh_perso();

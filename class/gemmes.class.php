@@ -187,7 +187,7 @@ class gemme extends objet_invent
     return $vals;
   }
 
-	function get_colone($partie)
+	function get_colone_int($partie)
   {
     if( $partie == 'artisanat' )
       return 2;

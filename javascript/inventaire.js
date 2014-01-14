@@ -32,11 +32,14 @@ function drop_func( event, ui )
   case 'hotel_vente':
     show_modal( get_url_invent("action=hotel_vente&objet="+objet) );
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
-    break
+    break;
   case 'enchasser':
     show_modal( get_url_invent("action=gemme&objet="+objet) );
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
-    break
+    break;
+  case 'desequip':
+    $("#information").load( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
+    break;
   default:
     $("#information").load( get_url_invent("action="+drop+"&objet="+objet) );
   }
