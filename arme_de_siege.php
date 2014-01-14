@@ -113,7 +113,7 @@ if($W_distance <= 3)
 	{
     $roy_perso = new royaume( $Trace[$joueur->get_race()]['numrace'] );
     $diplo = $roy_perso->get_diplo($row_v['race']);
-    if( $diplo >= 8 )
+    if( $diplo >= 5 )
     {
   		echo '<h4><span class="titre_info">Ville à portée</span></h4>';
   		echo $row_v['nom'];
