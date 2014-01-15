@@ -264,6 +264,14 @@ class objet_royaume extends objet_invent
       return false;
   }
 
+  /// Méthode renvoyant l'info principale sur l'objet
+  public function get_info_princ()
+  {
+    if( joueur::get_perso()->is_buff('convalescence') )
+      return 'PA : 10';
+    return null;
+  }
+
   function est_utilisable() { return true; }
 
   function utiliser(&$perso, &$princ)
@@ -299,8 +307,8 @@ class objet_royaume extends objet_invent
 		}
 
     // Coût en pa
-    $pa = $joueur->is_buff('convalescence') ? 10 : 0;
-		if( $pa && $joueur->get_pa() < $pa )
+    $pa = $perso->is_buff('convalescence') ? 10 : 0;
+		if( $pa && $perso->get_pa() < $pa )
 		{
       $princ->add( new interf_alerte('danger', true) )->add_message('Vous n\'avez pas assez de PA !');
 			return false;
@@ -548,8 +556,9 @@ class objet_royaume extends objet_invent
 
   function deposer(&$perso, &$princ)
   {
-    global $R; /// TODO à améliorer
-		if ($R->get_race() != $joueur->get_race())
+    $case = new map_case( $perso->get_pos() );
+    $R = new royaume( $case->get_royaume() );
+		if ($R->get_race() != $perso->get_race())
 		{
       $princ->add( new interf_alerte('danger') )->add_message('Impossible de poser au dépot '.$R->get_race());
       return false;

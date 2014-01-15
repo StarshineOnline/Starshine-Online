@@ -30,6 +30,21 @@ class interf_factory
     return new interf_princ_droit($titre);
   }
   /**
+   * Méthode affichant le résultat d'ine action
+   */
+  function afficher_resultat(&$princ, &$resultat, $ferme=true)
+  {
+    $msg = $resultat->get_message();
+    $types = array('success','danger','warning','info');
+    if( $msg )
+      $princ->add( new interf_alerte($types[$resultat->get_type()],$ferme) )->add_message( nl2br($msg) );
+  }
+  /**
+   * @name Inventaire
+   * Méthodes pour créer les interfaces de l'inventaire
+   */
+  /// @{}
+  /**
    * Renvoie la bonne instance de la classe pour afficher l'inventaire
    * @param $perso      Objet représentant le personnage dont il faut afficher l'inventaire
    * @param $invent     Inventaire à afficher
@@ -78,5 +93,6 @@ class interf_factory
     include_once('interf_inventaire.class.php');
     return new interf_enchasser($perso, $index);
   }
+  /// @}
 }
 ?>

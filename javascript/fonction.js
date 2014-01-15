@@ -454,6 +454,12 @@ function showSoundPanel() {
 
 function charge_tab(elt, id)
 {
-  $("#"+id).load(elt.getAttribute("data-url"));
+  var e = $("#"+id);
+  if( !e.html().trim().length )
+  {
+    e.html( getWait() );
+    e.load(elt.getAttribute("data-url"));
+  }
+  //$("#"+id).load(elt.getAttribute("data-url"));
 }
 

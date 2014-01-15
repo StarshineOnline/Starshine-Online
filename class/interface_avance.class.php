@@ -12,8 +12,9 @@
 class interf_onglets extends interf_bal_cont
 {
   protected $haut;  ///< liste des onglets.
+  protected $contenu;
   protected $id;
-  //protected $divs;  ///< balises divs contenant le contenu de chaque onglets.
+  protected $divs;  ///< balises divs contenant le contenu de chaque onglets.
 
   /**
    * Constructeur
@@ -25,15 +26,16 @@ class interf_onglets extends interf_bal_cont
   {
     interf_bal_cont::__construct('div', $id_cont, $class_cont);
     $this->haut = $this->add( new interf_bal_cont('ul', $id_tabs, 'nav nav-tabs') );
+    $this->contenu = $this->add( new interf_bal_cont('div', null, 'tab-content') );
     $this->divs = array();
     $this->id = $id_cont;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
-  protected function debut()
+  /*protected function debut()
   {
     $this->haut->affiche();
     interf_bal_cont::debut();
-  }
+  }*/
   /**
    * Ajoute un onglet.
    * @param  $nom         nom à afficher sur l'onglet
@@ -41,10 +43,13 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function add_onglet($nom, $adresse, $id, $selection=false)
+  function add_onglet($nom, $adresse, $id, $classe, $selection=false)
   {
-    $classe = 'tab-pane';//
-    $li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
+    $classe .= ' tab-pane';
+    if( $selection )
+      $classe .= ' active';
+    //$li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
+    $li = $this->haut->add( new interf_elt_menu($nom, '#'.$id, 'charge_tab(this, \''.$id.'\');') );
     $lien = $li->get_lien();
     if($selection)
     {
@@ -53,9 +58,11 @@ class interf_onglets extends interf_bal_cont
     }
     $lien->set_attribut('data-toggle', 'tab');
     $li->set_attribut('data-url', $adresse);
-    /*$div = $this->add( new interf_bal_cont('div', $id, $classe) );
+    /*if( !$selection )
+      $this->divs[] = $id;*/
+    $div =  $this->contenu->add( new interf_bal_cont('div', $id, $classe) );
     $this->divs[$id] = &$div;
-    return $div;*/
+    return $div;
   }
 
   /**
@@ -63,10 +70,10 @@ class interf_onglets extends interf_bal_cont
    *
    * @param  $id  id de l'élément
    */
-  /*function &get_onglet($id)
+  function &get_onglet($id)
   {
     return $this->divs[$id];
-  }*/
+  }
 }
 
 /**

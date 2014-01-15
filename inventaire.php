@@ -61,6 +61,7 @@ $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if( !$visu && $action )
 {
+  //echo "action : $action<br/>";
   $obj = $perso->get_inventaire_slot_partie($_GET['objet']);
 	switch($action)
 	{
@@ -93,7 +94,7 @@ if( !$visu && $action )
 			if(!$perso->desequip($_GET['zone'], $page=='pet'))
         $princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
       break;
-	  case 'utilise':
+	  case 'utiliser':
       $objet = objet_invent::factory( $obj );
       $objet->utiliser($perso, $princ);
       break;

@@ -34,20 +34,20 @@ class interf_inventaire extends interf_cont
     $script->set_attribut('type', 'text/javascript');
     $script->set_attribut('src', './javascript/inventaire.js');
     // onglets principal
-    $onglets = $this->add( new interf_onglets('onglets_princ', 'invent', 'invent') );
-    $onglets->add_onglet('Personnage', self::url.'?action=princ&page=perso', 'perso', $invent=='perso');
-    $onglets->add_onglet('Créature', self::url.'?action=princ&page=pet', 'pet', $invent=='pet');
-    $onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'actions', $invent=='actions');
-    $onglets->add( new interf_invent_equip($perso, $invent, $modif) );
+    $onglets = $this->add( new interf_onglets('onglets_princ', 'invent'/*, 'invent'*/) );
+    $onglets->add_onglet('Personnage', self::url.'?action=princ&page=perso', 'tab_perso', 'invent', $invent=='perso');
+    $onglets->add_onglet('Créature', self::url.'?action=princ&page=pet', 'tab_pet', 'invent', $invent=='pet');
+    $onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'tab_actions', 'invent', $invent=='actions');
+    $onglets->get_onglet('tab_'.$invent)->add( new interf_invent_equip($perso, $invent, $modif) );
     // un peu d'espace
     $this->add( new interf_bal_smpl('br') );
     // onglets des slots
-    $onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots', 'invent') );
-    $onglets_slots->add_onglet('Utile', self::url.'?action=sac&slot=utile', 'utile', $slot=='utile');
-    $onglets_slots->add_onglet('Equipement', self::url.'?action=sac&slot=equipement', 'equip', $slot=='equipement');
-    $onglets_slots->add_onglet('Royaume', self::url.'?action=sac&slot=royaume', 'royaume', $slot=='royaume');
-    $onglets_slots->add_onglet('Artisanat', self::url.'?action=sac&slot=artisanat', 'royaume', $slot=='artisanat');
-    $onglets_slots->add( new interf_invent_sac($perso, $slot, $modif) );
+    $onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots'/*, 'invent'*/) );
+    $onglets_slots->add_onglet('Utile', self::url.'?action=sac&slot=utile', 'tab_utile', 'invent', $slot=='utile');
+    $onglets_slots->add_onglet('Equipement', self::url.'?action=sac&slot=equipement', 'tab_equipement', 'invent', $slot=='equipement');
+    $onglets_slots->add_onglet('Royaume', self::url.'?action=sac&slot=royaume', 'tab_royaume', 'invent', $slot=='royaume');
+    $onglets_slots->add_onglet('Artisanat', self::url.'?action=sac&slot=artisanat', 'tab_artisanat', 'invent', $slot=='artisanat');
+    $onglets_slots->get_onglet('tab_'.$slot)->add( new interf_invent_sac($perso, $slot, $modif) );
     interf_base::code_js( '$( "#slots" ).droppable({accept: ".equipe", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
   }
 }
@@ -113,7 +113,7 @@ class interf_invent_equip extends interf_tableau
           $desequip = false;
           $obj = new zone_invent($loc, $objet === 'lock', $perso);
     		}
-        $td->add( new interf_objet_invent($obj, $loc, $desequip?'equipe':'', 'drop_'.$loc) );
+        $td->add( new interf_objet_invent($obj, $desequip?'equipe':'', 'drop_'.$loc) );
         if( $desequip )
           interf_base::code_js( '$( "#drop_'.$loc.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
@@ -184,10 +184,8 @@ class interf_invent_sac extends interf_cont
           }
           else
               $drags = 'drag_identifier';
-            $div = $this->cols[$col]->add( new interf_objet_invent($objet, null, $drags, 'invent_slot'.$i) );
-          /*if( $objet->est_identifie() )
-            $div->set_attribut('onclick', 'chargerPopover(\'invent_slot'.$i.'\', \'infos_'.$i.'\', \'left\', \''.'inventaire.php?action=infos&id='.$invent.'\', \''.$objet->get_nom().'\')');*/
-          interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
+            $div = $this->cols[$col]->add( new interf_objet_invent($objet, $drags, 'invent_slot'.$i) );
+          interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid", start:start_drag, stop:stop_drag });' );
         }
         $i++;
       }
@@ -201,7 +199,7 @@ class interf_invent_sac extends interf_cont
  */
 class interf_objet_invent extends interf_bal_cont
 {
-  function __construct($objet, $partie, $drags, $id=false)
+  function __construct($objet, $drags, $id=false)
   {
     global $Gtrad, $id_elt_ajax, $db;
     interf_bal_cont::__construct('div', $id, ($objet?'inventaire2 ':' ').$drags);
@@ -209,15 +207,17 @@ class interf_objet_invent extends interf_bal_cont
     {
       $nom = $objet->get_nom();
       $nbr = $objet->get_nombre();
-      if( $nbr > 1 )
-        $nom .= ' X '.$nbr;
+      $this->set_attribut('data-nombre', $nbr);
+      $this->set_attribut('data-prix', $objet->get_prix_vente());
       $image = $objet->get_image();
       $enchant = $objet->get_info_enchant();
       $infos = $objet->get_info_princ();
     }
     else
     {
+      $this->set_attribut('data-nombre', 0);
       $nom = 'Objet non indentifié';
+      $nbr = 0;
       $image = 'image/interface/inventaire/Unknown.png';
       $enchant = null;
       $infos = null;
@@ -228,13 +228,15 @@ class interf_objet_invent extends interf_bal_cont
       $img->set_attribut('src', $image);
       $img->set_attribut('style', 'float : left;');
     }
-    $this->add( new interf_bal_smpl('strong', $nom) );
+    $this->add( new interf_bal_smpl('strong', $nom, null, 'nom_obj') );
+    if( $nbr > 1 )
+      $this->add( new interf_bal_smpl('strong', ' X '.$nbr) );
     if( $enchant )
     {
       $this->add( new interf_bal_smpl('br') );
       $this->add( new interf_bal_smpl('span', $enchant, false, 'xsmall') );
     }
-    if( $infos )
+    //if( $infos )
     {
       $this->add( new interf_bal_smpl('br') );
       //$this->add( new interf_txt($infos) );
