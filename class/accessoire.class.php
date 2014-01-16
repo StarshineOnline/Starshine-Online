@@ -12,6 +12,7 @@ class accessoire extends objet_equip
 {
 	protected $description;  ///< Description de l'objet.
 	protected $puissance;  ///< Puissance nécessaire pour porter l'objet.
+	protected $taille;  ///< Taille de l'accessoire.
 
 	/// Retourne la description de l'objet.
 	function get_description()
@@ -35,6 +36,18 @@ class accessoire extends objet_equip
 	{
 		$this->puissance = $puissance;
 		$this->champs_modif[] = 'puissance';
+	}
+
+	/// Retourne la taille de l'accessoire.
+	function get_taille()
+	{
+		return $this->taille;
+	}
+	/// Modifie la taille de l'accessoire.
+	function set_taille($taille)
+	{
+		$this->taille = $taille;
+		$this->champs_modif[] = 'taille';
 	}
 
 	/**

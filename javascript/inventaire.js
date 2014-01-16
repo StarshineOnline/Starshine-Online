@@ -110,7 +110,7 @@ function vente(id)
     var pied = creer_element("div", null, "panel-footer", vente);
     pied.style = "text-align:right;";
     var btns = creer_element("div", null, "btn-group btn-group-xs", pied);
-    creer_bouton("Annuler", btns, '$("#information").load( get_url_invent() );', "default");
+    creer_bouton("Annuler", btns, /*'$("#information").load( get_url_invent() );'*/'annuler_vente();', "default");
     creer_bouton("Vendre", btns, "vendre();", "primary");
     var table = creer_element("table", null, "table", corps);
     var thead = creer_element("thead", null, null, table);
@@ -155,7 +155,7 @@ function vente(id)
       objets_vente[index].nombre = ui.value;
       calcul_total();
     } });
-    input.style = "width: 30px; height:10px;";
+    input.style = "width: 30px; height:12px;";
     input.setAttribute("onkeyup", "javascript:calcul_prix("+index+");");
   }
   else
@@ -197,19 +197,36 @@ function suppr_obj_vente(index)
   calcul_total();
 }
 
+function annuler_vente()
+{
+  for(var i=0; i<objets_vente.length; i++)
+  {
+    if( objets_vente[i].nombre )
+    {
+      var obj = $("#invent_slot"+objets_vente[i].slot);
+      obj.animate(obj.data("ui-draggable").originalPosition,"slow");
+      obj.show();
+    }
+  }
+  var elt = document.getElementById("vente");
+  elt.parentNode.removeChild( elt );
+  objets_vente = new Array();
+}
+
 function vendre()
 {
   var objs = "";
   for(var i=0; i<objets_vente.length; i++)
   {
-    if( objs.nombre )
+    if( objets_vente[i].nombre )
     {
       if( objs.length )
-        tot += "+";
-      tot += objets_vente[i].slot + "x" + objets_vente[i].nombre;
+        objs += "-";
+      objs += objets_vente[i].slot + "x" + objets_vente[i].nombre;
     }
   }
-  $("#information").load( get_url_invent("action=vendre&objets="+objs) );
+  $("#information").load( get_url_invent("action=vente&objets="+objs) );
+  alert(get_url_invent("action=vente&objets="+objs));
 }
 
 function start_drag(event, ui)

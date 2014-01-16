@@ -61,8 +61,8 @@ $princ = $interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if( !$visu && $action )
 {
-  //echo "action : $action<br/>";
-  $obj = $perso->get_inventaire_slot_partie($_GET['objet']);
+  if( array_key_exists('objet', $_GET) )
+    $obj = $perso->get_inventaire_slot_partie($_GET['objet']);
 	switch($action)
 	{
     /// TODO : faire plus de vérifications
@@ -118,8 +118,20 @@ if( !$visu && $action )
       $objet->vendre_hdv($perso, $princ, $_GET['prix']);
 		  break;
 		case 'vente':
-      $objet = objet_invent::factory( $obj );
-      $objet->vendre_marchand($perso, $princ);
+      $objets = explode('-', $_GET['objets']);
+      $stars = 0;
+      foreach($objets as $objet)
+      {
+        $obj = explode('x', $objet);
+        $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj[0]) );
+        if( $objet->get_nombre() >= $obj[1] )
+          $stars += $objet->vendre_marchand($perso, $princ, $obj[1]);
+        else
+          $princ->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
+        
+      }
+      if( $stars )
+        $princ->add( new interf_alerte('success') )->add_message('Objet(s) vendu(s) pour '.$stars.' stars.');
 		  break;
 		case 'enchasse':
       $objet = objet_invent::factory( $obj );

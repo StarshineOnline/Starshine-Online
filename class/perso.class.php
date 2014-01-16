@@ -1158,7 +1158,7 @@ class perso extends entite
 		}
 		return $this->bouclier;
 	}
-	/// Renvoie l'accessoire. Enregistre les enchantements et les effets. 
+	/// Renvoie l'accessoire. Enregistre les enchantements et les effets.
 	function get_accessoire()
 	{
 		if(!isset($this->accessoire))

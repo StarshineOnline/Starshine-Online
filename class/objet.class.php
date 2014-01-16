@@ -30,8 +30,18 @@ class objet extends objet_equip
 	}
 
   /// Renvoie la description de l'objet
-	function get_description()
+	function get_description($format=false)
 	{
+    if($format)
+    {
+      $texte = $this->description;
+    	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
+    	{
+    		$get = 'get_'.$regs[1];
+    		$texte = str_replace('%'.$regs[1].'%', $this->$get(), $texte);
+    	}
+      return $texte;
+    }
 		return $this->description;
 	}
 	/// Modifie la description de l'objet
@@ -169,7 +179,7 @@ class objet extends objet_equip
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->stack, $this->description, $this->prix);
+    $vals = array($this->stack, $this->get_description(true), $this->prix);
     return $vals;
   }
 
@@ -263,13 +273,13 @@ class objet extends objet_equip
     switch( $this->type )
     {
 		case 'potion_vie' :
-      $princ->add( new interf_alerte(null, true) )->add_message('Vous utilisez une '.$this->nom.' elle vous redonne '.$this->effet.' points de vie');
-      $perso->add_hp($row['effet']);
+      $princ->add( new interf_alerte('success', true) )->add_message('Vous utilisez une '.$this->nom.' elle vous redonne '.$this->effet.' points de vie');
+      $perso->add_hp($this->get_effet());
       $utilise = true;
       $modif_perso = true;
 
 			// Augmentation du compteur de l'achievement
-			$achiev = $joueur->get_compteur('use_potion');
+			$achiev = $perso->get_compteur('use_potion');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 		break;
@@ -296,7 +306,7 @@ class objet extends objet_equip
 		break;
 		case 'globe_pa' :
 				$perso->add_pa( $this->effet );
-        $princ->add( new interf_alerte('', true) )->add_message('Vous utilisez un '.$this->nom);
+        $princ->add( new interf_alerte('success', true) )->add_message('Vous utilisez un '.$this->nom);
         $utilise = true;
         $modif_perso = true;
 		break;

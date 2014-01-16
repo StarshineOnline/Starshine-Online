@@ -337,12 +337,13 @@ abstract class objet_invent extends table
   /**
    * Vendre au marchand
    */
-  function vendre_marchand(&$perso, &$princ)
+  function vendre_marchand(&$perso, &$princ, $nombre)
   {
     $prix = $this->get_prix_vente();
-    $perso->add_star( $prix );
-    $perso->supprime_objet( $this->get_texte() );
-    return true;
+    $stars = $prix * $nombre;
+    $perso->add_star( $stars );
+    $perso->supprime_objet($this->get_texte(), $nombre);
+    return $stars;
   }
 
   /**

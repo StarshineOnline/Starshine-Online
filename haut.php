@@ -88,7 +88,7 @@ if(!isset($root)) $root = '';
 
 if (isset($site) && $site)
 {
-	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css~./css/jquery-ui-1.7.3.custom.css;script:./javascript/jquery/jquery-2.0.2.min.js~./javascript/jquery/jquery-ui-1.8.10.custom.min.js~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
+	print_head("css:./css/site.css~./css/jquery.lightbox-0.5.css~./css/jquery-ui-1.7.3.custom.css;script:./javascript/jquery/jquery-2.0.2.min.js~./javascript/jquery/jquery.ui.all.css~./javascript/jquery/jquery.lightbox-0.5.min.js~./javascript/jquery/jquery.dataTables.min.js~./javascript/fonction.js~./javascript/site.js;title:StarShine, le jeu qu'il tient ses plannings !");
 }
 else
 {
@@ -96,7 +96,7 @@ else
 	{
 		$html 			= new html();
 		$html->title	= "Starshine, un jeu de l'espace !";
-		$html->css		= array('./css/texture.css','./css/bootstrap.css','./css/texture_low.css','./css/interfacev3.css','./css/jquery-ui-1.10.3.custom.min.css');
+		$html->css		= array('./css/texture.css','./css/bootstrap.css','./css/texture_low.css','./css/interfacev3.css','./css/jquery.ui.all.css');
 		$html->scripts = array('./javascript/jquery/jquery-2.0.2.min.js','./javascript/bootstrap.min.js','./javascript/bootstrap-theme.min.js','./javascript/jquery/jquery-ui-1.10.3.custom.min.js','./javascript/jquery/jquery.dataTables.min.js','./javascript/fonction.js','./javascript/overlib/overlib.js','./javascript/jquery/jquery.hoverIntent.minified.js','./javascript/jquery/jquery.cluetip.min.js','./javascript/jquery/atooltip.min.jquery.js');
 		$html->header();
 	}

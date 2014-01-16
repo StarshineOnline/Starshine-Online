@@ -35,3 +35,7 @@ UPDATE gemme SET prix = POW(8, niveau + 1) * 10;
 
 -- Objets
 UPDATE objet SET stack = '20' WHERE id = 2;
+
+-- Accessoires
+ALTER TABLE `accessoire` ADD `taille` VARCHAR( 5 ) NOT NULL DEFAULT 'grand' AFTER `nom`;
+UPDATE accessoire SET taille = 'moyen' WHERE id <= 9 OR id = 20;

@@ -40,8 +40,8 @@ class interf_princ_droit extends interf_princ_ob
   function add_maj_perso()
   {
     $img = $this->add( new interf_bal_smpl('img') );
-    $img->set_attribute('src', 'image/pixel.gif');
-    $img->set_attribute('onLoad', 'envoiInfo("infoperso.php?javascript=oui", "perso");');
+    $img->set_attribut('src', 'image/pixel.gif');
+    $img->set_attribut('onLoad', 'envoiInfo("infoperso.php?javascript=oui", "perso");');
   }
 }
 
