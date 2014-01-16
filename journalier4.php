@@ -298,7 +298,7 @@ foreach($tab_royaume as $race => $royaume)
 		$perso_implode = implode(',', $persos);
 		//On sélectionne les buffs à modifier
 		$ids_buff = array();
-		$requete = "SELECT id FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
+		$requete = "SELECT id, id_perso FROM buff WHERE type = 'famine' AND id_perso IN (".$perso_implode.")";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
@@ -308,20 +308,20 @@ foreach($tab_royaume as $race => $royaume)
 		//On supprime les perso qui ont déjà un buff pour mettre à jour
 		foreach($ids_buff as $buff)
 		{
-			unset($persos[$buff['id_joueur']]);
+			unset($persos[$buff['id_perso']]);
 			$buffs[] = $buff['id'];
 		}
 		$buffs_implode = implode(',', $buffs);
 		if(count($buffs) > 0)
 		{
-			$requete = 'UPDATE buff SET effet = effet + FLOOR( ('.$debuff.'-effet) / 3 ) WHERE id IN ('.$buffs_implode.')';
+			$requete = 'UPDATE buff SET effet = effet + FLOOR( 2 * ATAN(('.$debuff.'-effet)/2) - 0.5 ) WHERE id IN ('.$buffs_implode.')';
 			$db->query($requete);
 		}
 		$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
 		foreach($persos as $joueur)
 		{
 			//Lancement du buff
-			lance_buff('famine', $joueur, $debuff, 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
+			lance_buff('famine', $joueur, min(floor($debuff/3), 3), 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 		}
 		$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
 
@@ -331,8 +331,8 @@ foreach($tab_royaume as $race => $royaume)
 	}
 }
 // Nettoyage
-$requete = "UPDATE buff SET effet = 50 WHERE type = 'famine' AND effet > 50";
-$db->query($requete);
+/*$requete = "UPDATE buff SET effet = 25 WHERE type = 'famine' AND effet > 50";
+$db->query($requete);*/
 $requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
 $db->query($requete);
 
