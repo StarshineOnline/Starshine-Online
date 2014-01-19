@@ -46,8 +46,8 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 
-$princ = $interf->creer_princ_droit('Inventaire du Personnage');
-$invent = $interf->creer_inventaire($joueur, 'inventaire.php', $filtre);
+$princ = $G_interf->creer_princ_droit('Inventaire du Personnage');
+$invent = $G_interf->creer_inventaire($joueur, 'inventaire.php', $filtre);
 $princ->add($invent);
 ?>
 <?php

@@ -17,6 +17,6 @@ if(array_key_exists('filtre', $_GET)) $filtre = $_GET['filtre'];
 else $filtre = 'utile';
 
 $princ = new interf_princ_cont();
-$invent = $interf->creer_inventaire_slot($joueur, 'inventaire.php?filtre='.$filtre.'&amp;', $filtre, true);
+$invent = $G_interf->creer_inventaire_slot($joueur, 'inventaire.php?filtre='.$filtre.'&amp;', $filtre, true);
 $princ->add($invent);
 ?>

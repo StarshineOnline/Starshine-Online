@@ -22,6 +22,14 @@ class interf_factory
     return new interf_factory();
   }
   /**
+   * interface du jeu
+   */
+  function creer_jeu()
+  {
+    include_once('interf_sso.class.php');
+    return new interf_jeu();
+  }
+  /**
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit
    * @param $titre  titre du panneau.
    */

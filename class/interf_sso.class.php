@@ -1,0 +1,75 @@
+<?php
+/**
+ * @file interf_sso.class.ph
+ * Interface principale de SSO
+ */
+
+/**
+ * Classe de base pour l'interface principale de SSO
+ */
+class interf_sso extends interf_html
+{
+  function __construct()
+  {
+    interf_html::__construct("Starshine Online", 'utf-8', false);
+    // Méta-informations
+    $this->meta('language', 'fr');
+    $this->meta_http('content-type', 'text/html; charset=utf-8');
+    $this->meta_http('content-language', 'fr');
+    // feuilles de style
+    $this->css('css/jquery.ui.all.css');
+    $this->css('css/bootstrap.css');
+    $this->css('css/bootstrap-theme.min.css');
+    // javascript
+    $this->javascript('javascript/jquery/jquery-2.0.2.min.js');
+    $this->javascript('javascript/jquery/jquery-ui-1.10.3.custom.min.js');
+    $this->javascript('javascript/jquery/dataTables.min.js');
+    $this->javascript('javascript/bootstrap.min.js');
+    $this->javascript('javascript/fonction.js');
+  }
+}
+
+/**
+ * Classe de base pour pages internes
+ * Concerne toutes les pages une fois connecté
+ */
+abstract class interf_sso_int extends interf_sso
+{
+  protected $menu;
+  function __construct()
+  {
+    interf_sso::__construct();
+    // feuilles de style
+    $this->css('css/texture.css');
+    $this->css('css/texture_low.css');
+    $this->css('css/interfacev3.css');
+    // javascript
+    $this->javascript('javascript/jquery/jquery.hoverIntent.minified.js');
+    $this->javascript('javascript/jquery/jquery.cluetip.min.js');
+    $this->javascript('javascript/jquery/atooltip.min.jquery.js');
+    $this->javascript('javascript/overlib/overlib.js');
+    // Barre de menu
+    $joueur = joueur::factory();
+    $this->menu = $this->add( new interf_navbar(null, 'barre_menu', 'navbar-inverse') );
+    $this->menu_droite();
+    $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
+    $menu_joueur->add( new interf_elt_menu('Options', '#', 'affichePopUp(\'option.php\');') );
+    $menu_joueur->add( new interf_elt_menu('Son', '#', 'showSoundPanel();') );
+    $menu_joueur->add( new interf_elt_menu('Signaler un bug', 'http://bug.starshine-online.com/') );
+    $menu_joueur->add( new interf_elt_menu('Points Shine <span class="badge">'.joueur::get_perso()->get_point_sso().'</span>', '#', 'envoiInfo(\'point_sso.php\', \'information\');') );
+    $admin = $joueur->get_droits() & joueur::droit_interf_admin;
+    $persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) or $joueur->get_droits() & joueur::droit_pnj;
+    if( $admin or $persos )
+    {
+      $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
+      if( $persos )
+        $menu_joueur->add( new interf_elt_menu('Changer de perso', 'changer_perso.php', 'return envoiInfo(this.href, \'information\');') );
+      if( $admin )
+        $menu_joueur->add( new interf_elt_menu('Administration', 'http://www.starshine-online.com/admin/') );
+    }
+    $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
+    $menu_joueur->add( new interf_elt_menu('Deconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
+  }
+  abstract function menu_droite();
+}
+?>

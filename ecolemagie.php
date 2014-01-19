@@ -31,7 +31,7 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
-$princ = $interf->creer_princ_droit('');
+$princ = $G_interf->creer_princ_droit('');
 
 ?>
 <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="ecolemagie.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Ecole de Magie </a></legend>

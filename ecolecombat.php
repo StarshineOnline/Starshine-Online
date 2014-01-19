@@ -33,7 +33,7 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
-$princ = $interf->creer_princ_droit('');
+$princ = $G_interf->creer_princ_droit('');
 
 ?>
 

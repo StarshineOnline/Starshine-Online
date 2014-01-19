@@ -108,7 +108,7 @@ abstract class interf_base
    */
   protected function texte_balise($balise, $inter=null, $attributs=null)
   {
-    if( $inter )
+    if( $inter !== null )
       return '<'.$balise.$this->texte_attributs($attributs).' >'.$inter.'</'.$balise.'>';
     else
       return'<'.$balise.$this->texte_attributs($attributs).' />';
@@ -318,6 +318,19 @@ class interf_bal_smpl extends interf_smpl
   {
     $this->attributs[$nom] = $val;
   }
+  /**
+   * Ajoute une infobulle compatible avec la librairie Bootstrap
+   *
+   * @param  $texte   Texte du tooltip.
+   * @param  $pos     Position du tooltip
+   */
+  function set_tooltip($texte, $pos=null)
+  {
+    $this->set_attribut('title', $texte);
+    $this->set_attribut('data-toggle', 'tooltip');
+    if( $pos )
+      $this->set_attribut('data-placement', $pos);
+  }
 }
 
 /**
@@ -387,6 +400,19 @@ class interf_bal_cont extends interf_cont
   {
     $this->attributs[$nom] = $val;
   }
+  /**
+   * Ajoute une infobulle compatible avec la librairie Bootstrap
+   *
+   * @param  $texte   Texte du tooltip.
+   * @param  $pos     Position du tooltip
+   */
+  function set_tooltip($texte, $pos=null)
+  {
+    $this->set_attribut('title', $texte);
+    $this->set_attribut('data-toggle', 'tooltip');
+    if( $pos )
+      $this->set_attribut('data-placement', $pos);
+  }
 }
 
 /**
@@ -398,15 +424,19 @@ class interf_html extends interf_princ_ob
 {
   private $titre;   ///< Titre de la page.
   private $entete = array();  ///< contenu de l'en-tête sous forme de tableau de lignes.
+  private $encodage;  /// Encodage de la page
+  private $xhtml;  /// version du langage XHTML utilisé ou false si ce n'est pas du XHTML
   
   /**
    * Constructeur
    * @param  $titre   titre de la page.
    */
-  function __construct($titre)
+  function __construct($titre, $encodage='utf-8', $xhtml='1.1')
   {
     interf_princ_ob::__construct();
     $this->titre = $titre;
+    $this->encodage = $encodage;
+    $this->xhtml = $xhtml;
   }
   /**
    * Ajoute un lien vers un fichier CSS
@@ -428,12 +458,32 @@ class interf_html extends interf_princ_ob
   {
     $this->entete[] ='<script src="'.$fichier.'"  type="text/javascript"></script>';
   }
+  /**
+   * Ajout d'une balise meta
+   */
+  function meta($nom, $contenu)
+  {
+    $this->entete[] ='<meta name="'.$nom.'"  content="'.$contenu.'"/>';
+  }
+  /**
+   * Ajout d'une balise meta
+   */
+  function meta_http($equiv, $contenu)
+  {
+    $this->entete[] ='<meta name="'.$nom.'"  content="'.$contenu.'"/>';
+  }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
+    if( $this->xhtml )
+    {
+      $this->ligne('<?xml version="'.$this->xhtml.'"" encoding="'.$this->encodage.'"?'.'>');
+      $this->ligne('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">');
+    }
     $this->ouvre('html');
     $this->ouvre('head');
     $this->balise('title', $this->titre);
+    $this->ligne('<meta charset="'.$this->encodage.'"/>');
     foreach($this->entete as $lgn)
     {
       $this->ligne($lgn);
@@ -456,7 +506,7 @@ class interf_html extends interf_princ_ob
  */
 class interf_elt_menu extends interf_bal_cont
 {
-  private $lien;   ///< balise de lien.
+  protected $lien;   ///< balise de lien.
   /**
    * Constructeur
    * @param  $nom
@@ -467,15 +517,11 @@ class interf_elt_menu extends interf_bal_cont
    */
   function __construct($nom, $lien, $onclick=false, $id=false, $classe=false)
   {
-    /*$inter = '<a href="'.$lien;
-    if( $onclick )
-      $inter .= '" onclick="'.$onclick;
-    $inter .= '">'.$nom.'</a>';*/
     interf_bal_cont::__construct('li', $id, $classe);
-    $this->lien = $this->add( new interf_bal_smpl('a', $nom) );
+    $this->lien = self::add( new interf_bal_smpl('a', $nom) );
     $this->lien->set_attribut('href', $lien);
     if( $onclick )
-      $this->set_attribut('onclick', $onclick);
+      $this->lien->set_attribut('onclick', $onclick);
   }
 
   function &get_lien()

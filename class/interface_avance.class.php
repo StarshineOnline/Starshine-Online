@@ -236,4 +236,63 @@ class interf_dialogBS extends interf_princ
     $this->affiche_js();
   }
 }
+
+/**
+ * Barre de navigation
+ */
+class interf_navbar extends interf_bal_cont
+{
+  protected $menu;
+  protected $gauche;
+  protected $droite = null;
+
+  function __construct($titre=null, $id=null, $classe=null)
+  {
+    interf_bal_cont::__construct('nav', $id, 'navbar '.$classe);
+    $cont = /*$this->*/parent::add( new interf_bal_cont('div', null, 'container') );
+    $header = $cont->add( new interf_bal_cont('div', null, 'navbar-header') );
+    $collapse = $header->add( new interf_bal_cont('button', null, 'navbar-toggle') );
+    $collapse->set_attribut('data-toggle', 'collapse');
+    $collapse->set_attribut('data-target', 'navbar');
+    $collapse->add( new interf_bal_smpl('span', 'Afficher / cacher menu', null, 'sr-only') );
+    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
+    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
+    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
+    if( $titre )
+      $collapse->add( new interf_bal_smpl('a', $titre, '', 'navbar-brand') )->set_attribut('href', '#');
+    $this->menu = $cont->add( new interf_bal_cont('div', 'navbar', 'collapse navbar-collapse') );
+    $this->gauche = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav') );
+  }
+
+  function &add_elt($elt, $gauche=true)
+  {
+    if( $gauche )
+      return $this->gauche->add( $elt );
+    else
+    {
+      if( !$this->droite )
+        $this->droite = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav navbar-right') );
+      return $this->droite->add( $elt );
+    }
+  }
+}
+
+/**
+ * Menus déroulant dan une barre de navigation
+ */
+class interf_nav_deroul extends interf_elt_menu
+{
+  protected $liste;
+  function __construct($nom, $id=null)
+  {
+    interf_elt_menu::__construct($nom.'<b class="caret"></b>', '#', false, $id, 'dropdown');
+    $this->lien->set_attribut('class', 'dropdown-toggle');
+    $this->lien->set_attribut('data-toggle', 'dropdown');
+    $this->liste = interf_cont::add( new interf_bal_cont('ul', null, 'dropdown-menu') );
+  }
+  function &add($elt)
+  {
+    $this->liste->add($elt);
+  }
+}
 ?>

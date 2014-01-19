@@ -5,16 +5,17 @@ if (file_exists('root.php'))
 //session_start();
 header ("Content-type: image/png");
 include_once(root.'inc/fp.php');
+
 $im = imagecreatefrompng('image/carte.png');
 $rouge = imagecolorallocate($im, 255, 0, 0);
 $orange = imagecolorallocate($im, 255, 140, 0);
 //Positionnement du perso sur la carte
 $joueur = new perso($_SESSION['ID']);
-$x = ($joueur->get_x() - 1) * 3;
-$y = ($joueur->get_y() - 1) * 3;
+$perso_x = ($joueur->get_x() - 1) * 3;
+$perso_y = ($joueur->get_y() - 1) * 3;
 $x_fin = (($joueur->get_x() - 1) * 3) + 2;
 $y_fin = (($joueur->get_y() - 1) * 3) + 2;
-imagefilledrectangle($im, $x, $y, $x_fin, $y_fin, $rouge);
+imagefilledrectangle($im, $perso_x, $perso_y, $x_fin, $y_fin, $rouge);
 //Positionnement des membres du groupe
 if($joueur->get_groupe() > 0)
 {
@@ -32,6 +33,21 @@ if($joueur->get_groupe() > 0)
 		}
 	}
 }
-imagepng ($im);
+
+
+
+if( array_key_exists('vue', $_GET) )
+{
+  $vue = $_GET['vue'] * 3;
+  $taille = 2 * $vue + 3;
+  $img2 = imagecreatetruecolor($taille, $taille);
+  $pos_x = max($perso_x - $vue, 0);
+  $pos_y = max($perso_y - $vue, 0);
+  imagecopy($img2, $im, 0, 0, $pos_x, $pos_y, $taille, $taille);
+  imagepng($img2);
+  imagedestroy($img2);
+}
+else
+  imagepng($im);
 imagedestroy($im);
 ?>

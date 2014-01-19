@@ -84,7 +84,7 @@ function __autoload($class_name)
 }
 
 // Fabrique de l'interface
-$interf = interf_factory::factory();
+$G_interf = interf_factory::factory();
 
 
 function fin_script()

@@ -14,7 +14,7 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 // Infos sur un objet
 if( $action == 'infos' )
 {
-  $interf->creer_infos_objet($_GET['id']);
+  $G_interf->creer_infos_objet($_GET['id']);
   exit;
 }
 
@@ -39,17 +39,17 @@ switch( $action )
 {
 case 'princ':
   $princ = new interf_princ_cont();
-  $princ->add( $interf->creer_invent_equip($perso, $_GET['page'], !$visu) );
+  $princ->add( $G_interf->creer_invent_equip($perso, $_GET['page'], !$visu) );
   exit;
 case 'sac':
   $princ = new interf_princ_cont();
-  $princ->add( $interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
+  $princ->add( $G_interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
   exit;
 case 'hotel_vente':
-  $princ = $interf->creer_vente_hotel($perso, $_GET['objet']);
+  $princ = $G_interf->creer_vente_hotel($perso, $_GET['objet']);
   exit;
 case 'gemme':
-  $princ = $interf->creer_enchasser($perso, $_GET['objet']);
+  $princ = $G_interf->creer_enchasser($perso, $_GET['objet']);
   exit;
 }
 
@@ -57,7 +57,7 @@ case 'gemme':
 $page = array_key_exists('page', $_GET) ? $_GET['page'] : 'perso';
 $slot = array_key_exists('slot', $_GET) ? $_GET['slot'] : 'utile';
 
-$princ = $interf->creer_princ_droit('Inventaire du Personnage');
+$princ = $G_interf->creer_princ_droit('Inventaire du Personnage');
 //Switch des actions
 if( !$visu && $action )
 {
@@ -156,7 +156,7 @@ if( !$visu && $action )
 	refresh_perso();
 }
 
-$princ->add( $interf->creer_inventaire($perso, $page, $slot, !$visu) );
+$princ->add( $G_interf->creer_inventaire($perso, $page, $slot, !$visu) );
 
 // Augmentation du compteur de l'achievement
 $achiev = $perso->get_compteur('nbr_arme_siege');
