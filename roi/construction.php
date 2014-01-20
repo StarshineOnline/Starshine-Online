@@ -281,8 +281,9 @@ elseif($_GET['direction'] == 'suppr_construction')
 			}
 			else echo '<h5>Erreur dans la requête</h5>';
 		}
-		else echo '<h5>Ce batiment ne vous appartient pas</h5>';
+		else echo '<h5>Impossible de détruire cette construction sans risquer la vie des ouvriers. Il faut d''abord la réparer.</h5>';
 	}
+	else echo '<h5>Cette construction ne vous appartient pas</h5>';
 }
 elseif($_GET['direction'] == 'up_construction')
 {
