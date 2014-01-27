@@ -238,12 +238,12 @@ else if(!array_key_exists('direction', $_GET))
 }
 elseif ($RAZ_ROYAUME)
 {
-	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	echo "<h5>Gestion impossible quand la capitale est mise à sac.</h5>";
 	exit(0);
 }
 elseif($joueur->is_buff('debuff_rvr'))
 {
-	echo '<h5>RvR impossible pendant la trêve</h5>';
+	echo "<h5>RvR impossible pendant la trêve.</h5>";
 }
 elseif($_GET['direction'] == 'suppr_construction')
 {
@@ -279,11 +279,11 @@ elseif($_GET['direction'] == 'suppr_construction')
 					supprime_bourg($row[1]);
 				}
 			}
-			else echo '<h5>Erreur dans la requête</h5>';
+			else echo "<h5>Erreur dans la requête.</h5>";
 		}
-		else echo '<h5>Impossible de détruire cette construction sans risquer la vie des ouvriers. Il faut d''abord la réparer.</h5>';
+		else echo "<h5>Impossible de détruire cette construction sans risquer la vie des ouvriers. Il faut d'abord la réparer.</h5>";
 	}
-	else echo '<h5>Cette construction ne vous appartient pas</h5>';
+	else echo "<h5>Cette construction ne vous appartient pas.</h5>";
 }
 elseif($_GET['direction'] == 'up_construction')
 {
@@ -315,7 +315,7 @@ elseif($_GET['direction'] == 'up_construction')
 	}
 	else
 	{
-		echo "<h5>Construction impossible à upgrader</h5>";
+		echo "<h5>Construction impossible à upgrader.</h5>";
 	}
 
 
