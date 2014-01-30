@@ -77,7 +77,7 @@ abstract class table
 		global $db;
 		if( $this->id > 0 )
 		{
-			if(count($this->champs_modif) > 0)
+			if( $force || count($this->champs_modif) > 0 )
 			{
 				if($force) $champs = $this->get_liste_update();
 				else
@@ -85,11 +85,11 @@ abstract class table
 					$champs = '';
 					foreach($this->champs_modif as $champ)
 					{
-            $val = $this->get_champ($champ);
-            if( $val === null )
-              $val = 'NULL';
-            else
-              $val = '"'.mysql_escape_string($val).'"';
+						$val = $this->get_champ($champ);
+						if( $val === null )
+							$val = 'NULL';
+						else
+							$val = '"'.mysql_escape_string($val).'"';
 						$champs[] .= $champ.' = '.$val;
 					}
 					$champs = implode(', ', $champs);

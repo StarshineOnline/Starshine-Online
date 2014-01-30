@@ -1,20 +1,24 @@
 <?php
 if (file_exists('root.php'))
-  include_once('root.php');
+	include_once('root.php');
 
 include_once(root.'inc/fp.php');
-if(isset($_SESSION['nom']) || $admin)
+
+$possedeUnPerso = false;
+if(isset($_SESSION['nom']))
 {
-  $check = true;
+	$possedeUnPerso = true;
 }
-elseif( isset($_SESSION['pseudo']) )
+$estUnUtilisateur = false;
+if( isset($_SESSION['pseudo']) )
 {
-  $check = 0;
+	$estUnUtilisateur = true;
 }
-elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
+
+if(!$possedeUnPerso && !$estUnUtilisateur && !array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
-  $s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');
-  header("X-strpos: $s");
+	$s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');
+	header("X-strpos: $s");
 	header("Location: index.php");
 }
 
@@ -23,8 +27,15 @@ elseif(!array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/ind
 $identification = new identification();
 
 $erreur_login = '';
+//Déconnexion du joueur
+if (isset($_GET['deco']) AND !isset($_POST['log']))
+{
+	$identification->deconnexion();
+	$possedeUnPerso = false;
+	$estUnUtilisateur = false;
+}
 //Connexion du joueur
-if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom', $_SESSION))
+elseif( (isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !$possedeUnPerso )
 {
 	if(isset($_POST['log']))
 	{
@@ -39,34 +50,17 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		if (!isset($_SESSION['password'])) $_SESSION['password'] = '';
 	}
 	if(isset($_POST['auto_login']) && $_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
-	$check = $identification->connexion($nom, $password, $autologin);
-	if($check)
+	$estConnexionReussie = $identification->connexion($nom, $password, $autologin);
+	if(isset($_SESSION['nom']))
 	{
-    // hook pour les hash de mdp forum et jabber
-    if( array_key_exists('id_joueur', $_SESSION) && array_key_exists('password', $_SESSION) )
-    {
-      $joueur_hook = new joueur($_SESSION['id_joueur']);
-      $mod = false;
-      if( !$joueur_hook->get_mdp_forum() )
-      {
-        $joueur_hook->set_mdp_forum( sha1($_SESSION['password']) );
-        $mod = true;
-      }
-      if( !$joueur_hook->get_mdp_jabber() )
-      {
-        $joueur_hook->set_mdp_jabber( md5($_SESSION['password']) );
-        $mod = true;
-      }
-      if($mod)
-        $joueur_hook->sauver();
-      $perso = new perso($_SESSION['ID']);
-      if( !$perso->get_password() )
-      {
-        $perso->set_password( md5($_SESSION['password']) );
-        $perso->sauver();
-      }
-    }
-      
+		$possedeUnPerso = true;
+	}
+	if( isset($_SESSION['pseudo']) )
+	{
+		$estUnUtilisateur = true;
+	}
+	if($estConnexionReussie)
+	{
 		?>
 		<script language="javascript" type="text/javascript">
 		<!--
@@ -76,15 +70,12 @@ if((isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !array_key_exists('nom',
 		<?php
 	}
 }
-//Déconnexion du joueur
-if (isset($_GET['deco']) AND !isset($_POST['log']))
-{
-	$identification->deconnexion();
-}
 $journal = '';
 
-if(array_key_exists('nom', $_SESSION)) $joueur = new perso($_SESSION['ID']);
-if(!isset($root)) $root = '';
+if($possedeUnPerso)
+	$joueur = new perso($_SESSION['ID']);
+if(!isset($root))
+	$root = '';
 //check_undead_players();
 if (isset($site) && $site)
 {
