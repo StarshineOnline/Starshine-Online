@@ -279,14 +279,14 @@ verif_mort($joueur, 1);
 				//Positionnement de la construction
 				if($_GET['type'] == 'arme_de_siege')
 				{
-          $distance = 1;
-          $rez = $batiment->get_bonus('rez');
+					$distance = 1;
+					$rez = 0;
 				}//max($row['temps_construction'] * $distance, $row['temps_construction_min']);
 				else
-        {
-				  $distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-					$rez = 0;
-        }
+				{
+					$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+					$rez = $batiment->get_bonus('rez');
+				}
         $time = time() + max($batiment->get_temps_construction() * $distance, $batiment->get_temps_construction_min());
 
         $requete = 'INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez, point_victoire) VALUES (?,?,?,?,?,?,?,?,?,?,?)';
