@@ -523,9 +523,10 @@ class sort_combat_vent extends sort_combat
 		// On regarde s'il y a un gain de PA
 		if( $this->test_de(100, $this->get_effet2()) )
 		{
-      $actif = $attaque->get_joueur();
-			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
-			$actif->set_pa($actif->get_pa() + 1);
+			$actif = $attaque->get_actif();
+			$joueur = $attaque->get_joueur();
+			echo '&nbsp;&nbsp;<strong>'.$joueur->get_nom().'</strong> gagne 1 PA<br />';
+			$joueur->set_pa($joueur->get_pa() + 1);
 		}
   }
 }
