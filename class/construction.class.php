@@ -95,7 +95,7 @@ class construction extends entitenj_constr
 	* @param date_construction   Date de construction du bâtiment
 	* @param point_victoire      Nombre de points de victoire gagnés lorsque le bâtiment est détruit
 	*/
-	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = 0, $rechargement = 0, $image = '', $date_construction = 0, $point_victoire = 0)
+	function __construct($id = 0, $id_batiment = 0, $x = 0, $y = 0, $royaume = 0, $hp = 0, $nom = '', $type = '', $rez = 0, $rechargement = 0, $image = '', $date_construction = 0, $point_victoire = 0, $rattrapage = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -104,10 +104,11 @@ class construction extends entitenj_constr
 		}
 		else
 		{
-      entitenj_constr::__construct($id, $id_batiment, $x, $y, $royaume, $hp, $nom, $type, $rez, $point_victoire);
+			entitenj_constr::__construct($id, $id_batiment, $x, $y, $royaume, $hp, $nom, $type, $rez, $point_victoire);
 			$this->rechargement = $rechargement;
 			$this->date_construction = $date_construction;
 			$this->image = $image;
+			$this->rattrapage = $rattrapage;
 		}
 	}
 
@@ -121,22 +122,23 @@ class construction extends entitenj_constr
 		$this->rechargement = $vals['rechargement'];
 		$this->date_construction = $vals['date_construction'];
 		$this->image = $vals['image'];
+		$this->rattrapage = $vals['rattrapage'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_constr::get_liste_champs().', rechargement, date_construction, image';
+    return entitenj_constr::get_liste_champs().', rechargement, date_construction, image, rattrapage';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return entitenj_constr::get_valeurs_insert().', '.$this->rechargement.', '.$this->date_construction.', "'.mysql_escape_string($this->image).'"';
+		return entitenj_constr::get_valeurs_insert().', '.$this->rechargement.', '.$this->date_construction.', "'.mysql_escape_string($this->image).'", '.$this->rattrapage.'';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return entitenj_constr::get_liste_update().', rechargement = '.$this->rechargement.', date_construction = '.$this->date_construction.', image = "'.mysql_escape_string($this->image).'"';
+		return entitenj_constr::get_liste_update().', rechargement = '.$this->rechargement.', date_construction = '.$this->date_construction.', image = "'.mysql_escape_string($this->image).'", rattrapage = '.$this->rattrapage.'';
 	}
 	
   /// Renvoie le nom de la table (par défaut le nom de la classe)

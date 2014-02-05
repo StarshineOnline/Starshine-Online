@@ -11,13 +11,13 @@ abstract class table
 	/// Renvoie le nom du champ servant d'identifiant
 	protected function get_champ_id()
 	{
-    return 'id';
-  }
-  /// Renvoie le nom de la table (par défaut le nom de la classe)
-  protected function get_table()
-  {
-    return get_called_class();
-  }
+		return 'id';
+	}
+	/// Renvoie le nom de la table (par défaut le nom de la classe)
+	protected function get_table()
+	{
+		return get_called_class();
+	}
 	
 	/// Renvoie l'id de l'élément dans la table
 	function get_id()
@@ -34,44 +34,44 @@ abstract class table
 	 * Charge un élément de la base de donnée ou directement à partid d'un tableau
 	 * @param $id    Id (clé primaire) de l'élément dans la table ou tableau contenant les valeurs des données.
 	 */
-  protected function charger($id)
-  {
+	protected function charger($id)
+	{
 		global $db;
 		if( is_array($id) )
 		{
-      $this->init_tab( $id );
-    }
-    else
-    {
-  		$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
-  		$req = $db->query($requete);
-  		if( $db->num_rows($req) )
-  		{
-  		  $this->init_tab( $db->read_assoc($req) );
-      }
-      else
-      {
-        $this->__construct();
-        $this->id = $id;
-      }
-    }
-  }
+			$this->init_tab( $id );
+		}
+		else
+		{
+			$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
+			$req = $db->query($requete);
+			if( $db->num_rows($req) )
+			{
+				$this->init_tab( $db->read_assoc($req) );
+			}
+			else
+			{
+				$this->__construct();
+				$this->id = $id;
+			}
+		}
+	}
 	/**
 	 * Initialise les données membres à l'aide d'un tableau
 	 * @param array $vals    Tableau contenant les valeurs des données.
 	 */
-  protected function init_tab($vals)
-  {
-    $this->id = $vals['id'];
-  }
+	protected function init_tab($vals)
+	{
+		$this->id = $vals['id'];
+	}
 	
 	/**
-   * Sauvegarde automatiquement l'élément dans la base de donnée.
-   * Si c'est un nouvel objet utilise INSERT sinon UPDATE.
-   *    
+	 * Sauvegarde automatiquement l'élément dans la base de donnée.
+	 * Si c'est un nouvel objet utilise INSERT sinon UPDATE.
+	 *
 	 * @param bool $force    Force la mis à jour de tous les attributs de l'objet 
 	 *                       si true, sinon uniquement ceux qui ont été modifiés.
-   */   
+	 */
 	function sauver($force = false)
 	{
 		global $db;
@@ -108,11 +108,11 @@ abstract class table
 		}
 	}
 
-  /// Renvoie la valeur d'un champ de la base de donnée
-  protected function get_champ($champ)
-  {
-    return $this->{$champ};
-  }
+	/// Renvoie la valeur d'un champ de la base de donnée
+	protected function get_champ($champ)
+	{
+		return $this->{$champ};
+	}
   
 	/// Renvoie la liste des champs pour une insertion dans la base
 	abstract protected function get_liste_champs();
@@ -133,16 +133,16 @@ abstract class table
 	}
 
 	/**
-	* Crée un tableau d'objets respectant certains critères
-	* @param array|string $champs    Champs servant a trouver les résultats
-	* @param array|string  $valeurs  Valeurs servant a trouver les résultats
-	* @param string  $ordre          Ordre de tri
-	* @param bool|string $keys       Si false, stockage en tableau classique, si string 
-	*                                stockage avec sous tableau en fonction du champ $keys
-	* @param bool  $key_unique       Indique si la clé est unique ou non (si elle est unique
-	*                                pour chaque clé il y a un seul objet, sinon il y a un tableau d'objets)
-	* @return array     Liste d'objets
-	*/
+	 * Crée un tableau d'objets respectant certains critères
+	 * @param array|string $champs    Champs servant a trouver les résultats
+	 * @param array|string  $valeurs  Valeurs servant a trouver les résultats
+	 * @param string  $ordre          Ordre de tri
+	 * @param bool|string $keys       Si false, stockage en tableau classique, si string 
+	 *                                stockage avec sous tableau en fonction du champ $keys
+	 * @param bool  $key_unique       Indique si la clé est unique ou non (si elle est unique
+	 *                                pour chaque clé il y a un seul objet, sinon il y a un tableau d'objets)
+	 * @return array     Liste d'objets
+	 */
 	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique=false)
 	{
 		global $db;
@@ -187,14 +187,14 @@ abstract class table
 	}
 
 	/**
-	* Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
-	* @param string      $classe     Classe des objets à créer
-	* @param string      $table      Table ou chercher
-	* @param string      $cond       Condition (+ éventuellement tri)
-	* @param bool|string $keys       Si false, stockage en tableau classique, si string
-	*                                stockage avec sous tableau en fonction du champ $keys
-	* @return array     Liste d'objets
-	*/
+	 * Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
+	 * @param string      $classe     Classe des objets à créer
+	 * @param string      $table      Table ou chercher
+	 * @param string      $cond       Condition (+ éventuellement tri)
+	 * @param bool|string $keys       Si false, stockage en tableau classique, si string
+	 *                                stockage avec sous tableau en fonction du champ $keys
+	 * @return array     Liste d'objets
+	 */
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{
 		global $db;
@@ -207,20 +207,94 @@ abstract class table
 			while($row = $db->read_assoc($req))
 			{
 				if(!$keys)
-          $return[] = new $classe($row);
+					$return[] = new $classe($row);
 				else
-          $return[$row[$keys]][] = new $classe($row);
+					$return[$row[$keys]][] = new $classe($row);
 			}
-		  return $return;
+			return $return;
 		}
 		else
-      $return = array();
+			$return = array();
 	}
 	
 	/// Affiche l'objet sous forme de string
 	function __toString()
 	{
-    return 'id = '.$this->get_id().', '.$this->get_liste_update();
+		return 'id = '.$this->get_id().', '.$this->get_liste_update();
+
 	}
-} 
-?>
+	
+	/**
+	 * Recherche et retourne le premier objet correspondant
+	 *
+	 * @param array $params Tableau de conditions, de la forme array('nom_champ_table' => 'valeur')
+	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
+	 * @return Object Le premier objet correspondant à la demande, si aucun objet ne correspond la fonction retourne null
+	 */
+	public static function findOneBy($params = array(), $orders = array())
+	{
+		global $db;
+		$result = null;
+		
+		$className = get_called_class();
+		$results = $className::findBy($params, $orders);
+		if(!empty($results))
+			$result = current($results);
+		
+		return $result;
+	}
+	
+	/**
+	 * Recherche et retourne tous les objets
+	 *
+	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
+	 * @return array[Object] Tableau contenant tous les objets, peut être vide
+	 */
+	public static function findAll($orders = array())
+	{
+		$className = get_called_class();
+		return $className::findBy(array(), $orders);
+	}
+	
+	/**
+	 * Recherche et retourne tous les objets correspondants
+	 *
+	 * @param array $params Tableau de conditions, de la forme array('nom_champ_table' => 'valeur')
+	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
+	 * @return array[Object] Tableau contenant tous les objets correspondants, peut être vide
+	 */
+	public static function findBy($params = array(), $orders = array())
+	{
+		global $db;
+		$results = array();
+		
+		$requete = '';
+		$requete .= 'SELECT * FROM '.self::get_table();
+		$requete .= ' WHERE 1';
+		foreach($params as $key => $value){
+			$requete .= ' AND';
+			$requete .= " $key = $value";
+		}
+		if(!empty($orders))
+		{
+			$requete .= ' ORDER BY';
+			$first = true;
+			foreach($orders as $key => $value)
+			{
+				if($first) $first = false;
+				else $requete .= ',';
+				$requete .= " $key $value";
+			}
+		}
+		
+		$req = $db->query($requete);
+		
+		$className = get_called_class();
+		while($row = $db->read_assoc($req))
+		{
+			$results[] = new $className($row);
+		}
+		
+		return $results;
+	}
+}

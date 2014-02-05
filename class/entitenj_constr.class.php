@@ -117,7 +117,7 @@ abstract class entitenj_constr extends entnj_incarn
 		}
 		else
 		{
-      entnj_incarn::__construct($nom, $x, $y, $hp, $id);
+			entnj_incarn::__construct($nom, $x, $y, $hp, $id);
 			$this->id_batiment = $id_batiment;
 			$this->royaume = $royaume;
 			$this->type = $type;

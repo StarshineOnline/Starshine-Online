@@ -76,10 +76,10 @@ class map_case
 		}
 		elseif( (func_num_args() == 2) && is_numeric($id) && is_numeric($info))
 		{ // Beurk beurk ...
-			$requeteSQL = $db->query("SELECT info, decor, royaume, type FROM map WHERE x = $id and y = $info");
+			$requeteSQL = $db->query("SELECT id, info, decor, royaume, type FROM map WHERE x = $id and y = $info");
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
+				list($this->id, $this->info, $this->decor, $this->royaume, $this->type) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->x = $id;
@@ -362,12 +362,20 @@ class map_case
 	function check_case($check = false)
 	{
 		global $db, $Gtrad;
-		// Toutes les cases ou seulement une en particulier ?
+		
+		// Toutes les cases, certaines cases ou seulement une en particulier ?
+		$where = '';
 		if($check == 'all')
 		{
-			$where = '1';
+			$where .= '1';
 		}
-		else $where = '(x = '.$this->get_x().') AND (y = '.$this->get_y().')';
+		elseif(is_int($check))
+		{
+			$where .= 'x >= '.($this->get_x() - $check).' AND x <= '.($this->get_x() + $check).'';
+			$where .= ' AND y >= '.($this->get_y() - $check).' AND y <= '.($this->get_y() + $check).'';
+		}
+		else
+			$where .= '(x = '.$this->get_x().') AND (y = '.$this->get_y().')';
 		// Recherche des constructions terminées
 		$requete = "SELECT * FROM placement WHERE ".$where." AND fin_placement <= ".time();
 		$req = $db->query($requete);
