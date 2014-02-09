@@ -43,7 +43,19 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			<script type="text/javascript">
 			$(function()
 			{
-				$('#screenshot_box a').lightBox({fixedNavigation:true});
+				$('#screenshot_box a').lightBox({
+					fixedNavigation:true,
+					overlayBgColor: '#000000',
+					overlayOpacity: 0.6,
+					imageLoading: 'image/jquery-lightbox/loading.gif',
+					imageBtnClose: 'image/jquery-lightbox/btn-close.gif',
+					imageBtnPrev: 'image/jquery-lightbox/btn-prev.gif',
+					imageBtnNext: 'image/jquery-lightbox/btn-next.gif',
+					imageBlank: 'image/jquery-lightbox/blank.gif',
+					containerResizeSpeed: 350,
+					txtImage: 'Image',
+					txtOf: 'sur'
+				});
 			});
 			</script>
 			<ul>
