@@ -51,85 +51,33 @@ if (array_key_exists('xmax', $_GET)) $xmax = $_GET['xmax'];
 if (array_key_exists('ymax', $_GET)) $ymax = $_GET['ymax'];
 
 ?>
-
-<div id='rosedesvents'>
-	   <a id='rose_div_hg'></a>
-	   <a id='rose_div_h' href="?ymin=<?php echo ($ymin - 4); ?>&xmin=<?php echo $xmin; ?>"></a>
-	   <a id='rose_div_hd'></a>
-	   <a id='rose_div_cg'href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo $ymin; ?>"></a>
-	   <a id='rose_div_c'></a>
-	   <a id='rose_div_cd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo $ymin; ?>"></a>
-	   <a id='rose_div_bg'></a>
-	   <a id='rose_div_b' href="?ymin=<?php echo ($ymin + 4); ?>&xmin=<?php echo $xmin; ?>"></a>
-	   <a id='rose_div_bd'></a>
-</div>
-
 	<div class="mapedit">
-	<table cellpadding="0" cellspacing="0">
-	<tr class="tabnoir">
-		<td>
-		</td>
-<?php
-	
-	for ($i = $xmin; $i <= $xmax; $i++)
-	{
-		echo '<td style="text-align : center;">'.$i.'</td>';
-	}
-	
-	$x = 0;
-	$y = 0;
-	
-	$j = 0;
-	
-	$index = 0;
-	
-	//Affichage de la map
-	$y_map = $ymin;
-	while($y_map < $ymax)
-	{
-		$x_map = $xmin;
-		while($x_map < $xmax)
-		{
-			$positioncase = convert_in_pos($x_map, $y_map);
-			$requete = "SELECT * FROM map WHERE ID = ".$positioncase;
-			$req = $db->query($requete);
-			if ($x_map == $xmin)
-			{
-				echo '</tr>
-				<tr>
-					<td class="tabnoir">
-						'.$y_map.'
-					</td>';
-			}
-			if($db->num_rows > 0)
-			{
-				$row = $db->read_assoc($req);
-				//Affichage de la case
-				$coord = convert_in_coord($row['ID']);
-				$rowid = $row['ID'];
-				$W_terrain_case = $row['decor'];				
-				echo '
-					<td class="decor tex'.$W_terrain_case.'" id="case'.$positioncase.'" onClick="clickTexture('.$positioncase.')">
-						<input type="hidden" name="hidden'.$positioncase.'" value="'.$W_terrain_case.'" id="input'.$positioncase.'" />
-					</td>';
-			}
-			else
-			{
-				//affichage case noire
-					echo '
-						<td class="decor texblack" id="case'.$positioncase.'" onClick="clickTexture('.$positioncase.')">
-							<input type="hidden" name="hidden'.$positioncase.'" value="" id="input'.$positioncase.'" />
-						</td>';
-			}
-			$x_map++;
-		}
-		$y_map++;
-	}
-	?>
-	</tr>
-	</table>
+		<div class="rosedesvents">
+			<a id='rose_div_hg' href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_h' href="?xmin=<?php echo $xmin; ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo $xmax; ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_hd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_cg'href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo $ymin; ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo $ymax; ?>"></a>
+			<a id='rose_div_c'></a>
+			<a id='rose_div_cd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo $ymin; ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo $ymax; ?>"></a>
+			<a id='rose_div_bg' href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_b' href="?xmin=<?php echo $xmin; ?>&ymin=<?php echo ($ymin + 4); ?>&xmax=<?php echo $xmax; ?>&ymax=<?php echo ($ymax + 4); ?>"></a>
+			<a id='rose_div_bd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+		</div>
+		<?php
+		$xCentre = floor(($xmin+$xmax)/2);
+		$yCentre = floor(($ymin+$ymax)/2);
+		$champVision = floor(($xmax-$xmin)/2);
+		$map = new map($xCentre, $yCentre, $champVision, '', true);
+		$map->onclick = '';
+		$map->donjon = false;
+		$map->xmin = $xmin;
+		$map->xmax = $xmax;
+		$map->ymin = $ymin;
+		$map->ymax = $ymax;
+		
+		$map->affiche();
+		?>
 	</div>
-
 </div>
 </body>
 </html>

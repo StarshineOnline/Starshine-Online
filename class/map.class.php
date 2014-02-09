@@ -1,12 +1,11 @@
 <?php // -*- mode: php; tab-width: 2 -*-
 if (file_exists('../root.php'))
-  include_once('../root.php');
+	include_once('../root.php');
 
 class map
 {
 	public $x;
 	public $y;
-	public $champ_vision;
 	public $root;
 	public $xmin;
 	public $xmax;
@@ -22,18 +21,18 @@ class map
 	public $show_royaume_button;
 	public $affiche_terrain;
 	public $arene = false;
-  public $dont_use_relative_coords = false;
+	public $dont_use_relative_coords = false;
 	private $affiche_royaume;
-
+	
 	private $tooltip_txt = '';
 	private $tooltips = array();
-
+	
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
-    global $G_max_x, $G_max_y;
+		global $G_max_x, $G_max_y;
+		
 		$this->x = $x;
 		$this->y = $y;
-		$this->champ_vision = $champ_vision;
 		$this->root = $root;
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
@@ -41,13 +40,12 @@ class map
 		$this->onclick_status = false;
 		$this->cache_monstre = false;
 		$this->affiche_royaume = false;
-		$this->case_affiche = ($this->champ_vision * 2) + 1;
 		$this->troisd = $troisd;
 		$this->affiche_terrain = false;
-
+		
 		//$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume, show_only);";
 		$this->show_royaume_button = '';
-
+		
 		if(!$this->donjon)
 		{
 			$limite_x = $G_max_x;
@@ -58,18 +56,37 @@ class map
 			$limite_x = 500;
 			$limite_y = 500;
 		}
-
-    $this->is_masked = self::is_masked_coordinates($x, $y);
-    $this->is_nysin = self::is_nysin($x, $y);
-
-		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
-		elseif($this->x > ($limite_x - $this->champ_vision))		{ $this->xmax = $limite_x;		$this->xmin = $this->x - ($this->case_affiche - ($limite_x - $this->x + 1)); }
-		else												{ $this->xmin = $this->x - $this->champ_vision;	$this->xmax = $this->x + $this->champ_vision; };
 		
-		if($this->y < ($this->champ_vision + 1))		{ $this->ymin = 1;		$this->ymax = $this->y + ($this->case_affiche - ($this->y)); }
-		elseif($this->y > ($limite_y - $this->champ_vision))	{ $this->ymax = $limite_y;		$this->ymin = $this->y - ($this->case_affiche - ($limite_y - $this->y + 1)); }
-		else											{ $this->ymin = $this->y - $this->champ_vision; 	$this->ymax = $this->y + $this->champ_vision; }
-
+		$this->is_masked = self::is_masked_coordinates($x, $y);
+		$this->is_nysin = self::is_nysin($x, $y);
+		
+		$case_affiche = ($champ_vision * 2) + 1;
+		if($this->x < ($champ_vision + 1)){
+			$this->xmin = 1;
+			$this->xmax = $this->x + ($case_affiche - $this->x);
+		}
+		elseif($this->x > ($limite_x - $champ_vision)){
+			$this->xmax = $limite_x;
+			$this->xmin = $this->x - ($case_affiche - ($limite_x - $this->x + 1));
+		}
+		else{
+			$this->xmin = $this->x - $champ_vision;
+			$this->xmax = $this->x + $champ_vision;
+		}
+		
+		if($this->y < ($champ_vision + 1)){
+			$this->ymin = 1;
+			$this->ymax = $this->y + ($case_affiche - $this->y);
+		}
+		elseif($this->y > ($limite_y - $champ_vision)){
+			$this->ymax = $limite_y;
+			$this->ymin = $this->y - ($case_affiche - ($limite_y - $this->y + 1));
+		}
+		else{
+			$this->ymin = $this->y - $champ_vision;
+			$this->ymax = $this->y + $champ_vision;
+		}
+		
 		$this->map = array();
 	}
 
@@ -85,8 +102,8 @@ class map
 	{
 		global $db;
 		global $Gcouleurs;
-
-    $this->load_map_calques();
+		
+		$this->load_map_calques();
 		if($this->donjon && !$this->arene && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
@@ -339,7 +356,9 @@ class map
 		}
 		else // --- CARTE NORMALE ---
 		{
-			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(20 + ($taille_cellule * $this->case_affiche)).'px;">';
+			$nombreCaseX = $this->xmax - $this->xmin + 1;
+			$nombreCaseY = $this->ymax - $this->ymin + 1;
+			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $nombreCaseX)).'px;height:'.round(20 + ($taille_cellule * $nombreCaseY)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
 				echo "<ul id=\"".$classe_css['map_bord_haut']."\">
 					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" rel=\"option_map.php\" ";if (!empty($class_css['resolution'])) {echo "class=\"".$class_css['resolution']."\" ";} echo "onclick=\"$this->show_royaume_button\">&nbsp;</li>";

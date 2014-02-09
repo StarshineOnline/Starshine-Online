@@ -469,7 +469,9 @@ ul.onglet-hotel li { display:inline; }
  ***************************************************/
 #editcarte { width:100%; }
 .selecteur { float:left; }
-.mapedit { float:left; }
+.mapedit { float:left; position:relative; }
+.mapedit .rosedesvents { position:absolute; left:20px; top:20px; width:75px; z-index:1; }
+.mapedit .div_map { background: #E0C072; }
 
 /***************************************************
   Tableau
