@@ -212,14 +212,16 @@ foreach($casesVisibles as $case) {
 				if ($perso->get_id() == $persos[$i]->get_id()) {
 					$pc = $doc->createElement('pc');
 					cpyToAttr($pc, $persos[$i], array(
-						'nom', 'race', 'classe', 'level','melee', 'distance',
-						'esquive', 'blocage', 'exp', 'incantation', 'sort_vie',
-						'sort_element', 'sort_mort', 'craft', 'honneur'
+						'nom', 'race', 'classe', 'level', 'exp'
+						, 'honneur', 'reputation', 'frag', 'mort', 'crime'
+						, 'melee', 'distance', 'esquive', 'blocage', 'dressage'
+						, 'artisanat', 'survie'
+						, 'incantation', 'sort_vie', 'sort_element', 'sort_mort'
 					));
 					$urlImage = $persos[$i]->get_image();
 					$image = pathinfo($urlImage, PATHINFO_FILENAME);
 					$pc->setAttribute('image', $image);
-					$pc->setAttribute('mort', (($perso->est_mort()) ? 'true' : 'false'));
+					$pc->setAttribute('est_mort', (($perso->est_mort()) ? 'true' : 'false'));
 					$square->appendChild($pc);
 				}
 			}
@@ -253,19 +255,21 @@ foreach($casesVisibles as $case) {
 				if( !$persos[$i]->est_cache_niveau($perso) )
 				{
 					$pc->setAttribute('level', $persos[$i]->get_level());
+					$pc->setAttribute('exp', $persos[$i]->get_exp());
 				}
 				if( !$persos[$i]->est_cache_stat($perso) )
 				{
 					cpyToAttr($pc, $persos[$i], array(
-						'melee', 'distance', 'esquive', 'blocage',
-						'exp', 'incantation', 'sort_vie',
-						'sort_element', 'sort_mort', 'craft', 'honneur'
+						'honneur', 'reputation', 'frag', 'mort', 'crime'
+						, 'melee', 'distance', 'esquive', 'blocage', 'dressage'
+						, 'artisanat', 'survie'
+						, 'incantation', 'sort_vie', 'sort_element', 'sort_mort'
 					));
 				}
 				$urlImage = $persos[$i]->get_image('', 'high', $perso);
 				$image = pathinfo($urlImage, PATHINFO_FILENAME);
 				$pc->setAttribute('image', $image);
-				$pc->setAttribute('mort', (($persos[$i]->est_mort()) ? 'true' : 'false'));
+				$pc->setAttribute('est_mort', (($persos[$i]->est_mort()) ? 'true' : 'false'));
 				$square->appendChild($pc);
 			}
 		}
