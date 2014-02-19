@@ -41,13 +41,11 @@ elseif( (isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !$possedeUnPerso )
 	{
 		$nom = $_POST['nom'];
 		$password = md5($_POST['password']);
-		$_SESSION['password'] = $_POST['password'];
 	}
 	else
 	{
 		$nom = $_COOKIE['nom'];
 		$password = $_COOKIE['password'];
-		if (!isset($_SESSION['password'])) $_SESSION['password'] = '';
 	}
 	if(isset($_POST['auto_login']) && $_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
 	$estConnexionReussie = $identification->connexion($nom, $password, $autologin);
