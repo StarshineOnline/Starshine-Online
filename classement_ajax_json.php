@@ -347,7 +347,7 @@ foreach($aResults as $k => $aRow)
 			elseif( $aColumns[$i] == 'nom' ){
 				$urlImage = $p->get_image('', 'high', $perso);
 				$classe = $p->get_classe($perso);
-				$data = '<img src="'.$urlImage.'" alt="'.$Gtrad[$aRow['race']].' - '.$classe.'" title="'.$Gtrad[$aRow['race']].' - '.$classe.'" style="width: 20px; height: 20px; vertical-align: middle;"/> '.$aRow['nom'];
+				$data = '<img src="'.$urlImage.'" alt="'.$Gtrad[$aRow['race']].' - '.$classe.'" title="'.$Gtrad[$aRow['race']].' - '.$classe.'" /> '.$aRow['nom'];
 			}
 		}
 		

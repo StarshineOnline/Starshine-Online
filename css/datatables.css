@@ -24,6 +24,13 @@ table.dataTable tfoot th {
 
 table.dataTable td {
 	padding: 1px 10px;
+	height: 20px;
+}
+
+table.dataTable td img {
+	width: 20px;
+	height: 20px;
+	vertical-align: middle;
 }
 
 table.dataTable td.center,
