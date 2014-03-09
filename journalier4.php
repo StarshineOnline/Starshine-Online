@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 //JOURNALIER RESSOURCES DE ROYAUME //
-$mail = '';
+
 
 function __autoload($class_name)
 {
@@ -71,28 +71,28 @@ foreach($ressources as $royaume=>$packs)
 	if (!array_key_exists($royaume, $Trace)) {
 		continue;
 	}
-  $mail_packs = '';
+  $msg_packs = '';
 	foreach($packs as $terr=>$nbr_packs)
 	{
-	  if( $mail_packs )
-      $mail_packs .= ', ';
-    $mail_packs .= $nbr_packs.' '.$terr;
+	  if( $msg_packs )
+      $msg_packs .= ', ';
+    $msg_packs .= $nbr_packs.' '.$terr;
     if( $terr == 'Bâtiment' )
       continue;
     // test pour s'il faut utiliser utf8_decode ou non
-    $mail_gains = '';
+    $msg_gains = '';
 		$gains_pack = $ress[$terr];
 		foreach($gains_pack as $rsrc=>$gain)
 		{
-		  if( $mail_gains )
-		    $mail_gains .= ', ';
+		  if( $msg_gains )
+		    $msg_gains .= ', ';
 			$ressource_final[$royaume][$rsrc] += $gain * floor($nbr_packs);
 			if($rsrc == 'Nourriture') $tot_nou += $gain * floor($nbr_packs);
-			$mail_gains .= ($gain * floor($nbr_packs)).' '.$rsrc;
+			$msg_gains .= ($gain * floor($nbr_packs)).' '.$rsrc;
 		}
-		$mail_packs .= ' ('.$mail_gains.')';
+		$msg_packs .= ' ('.$msg_gains.')';
 	}
-  $mail .= $royaume.' : '.$mail_packs."\n";
+  echo $royaume.' : '.$msg_packs."\n";
 }
 
 
@@ -198,7 +198,7 @@ foreach($ressource_final as $key => $value)
 	$requete = "UPDATE royaume SET pierre = pierre + ".$value['Pierre'].", bois = bois + ".$value['Bois'].", eau = eau + ".$value['Eau'].", sable = sable + ".$value['Sable'].", charbon = charbon + ".$value['Charbon'].", essence = essence + ".$value['Essence Magique'].", star = star + ".$value['Star'].", food = food + ".$value['Nourriture']." WHERE race = '".$key."'";
 	$db->query($requete);
 	$requete = "UPDATE stat_jeu SET ".$key." = '".$implode_stat."' WHERE date = '".$date."'";
-	$mail .= $requete."\n";
+	echo $requete."\n";
 	$db->query($requete);
 }
 
@@ -206,16 +206,6 @@ foreach($ressource_final as $key => $value)
 $food_total = $tot_nou;//ceil($tot_nou * 1.01);
 $requete = "UPDATE stat_jeu SET food = ".$food_total." WHERE date = '".$date."'";
 $db->query($requete);
-
-//Nourriture
-//On récupère la food nécessaire par habitant
-/*$requete = "SELECT food, nombre_joueur FROM stat_jeu WHERE date = '".$date_hier."'";
-$req = $db->query($requete);
-$row = $db->read_assoc($req);
-if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
-else $food_necessaire = 0;
-
-$mail .= 'Nourriture nécessaire '.$food_necessaire."\n";*/
 
 //On récupère les infos des royaumes
 $requete = "SELECT id, race, food, conso_food FROM royaume WHERE id != 0";
@@ -232,20 +222,8 @@ foreach($roy as $r)
 }
 foreach($tab_royaume as $race => $royaume)
 {
-	//On prend en compte la nourriture en bourse dans les stocks
-	/*
-	$requete = "SELECT SUM(nombre) as food_bourse FROM bourse_royaume WHERE actif = 1 AND ressource = 'food' AND id_royaume = ".$royaume['id'];
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	$food_bourse = $row['food_bourse'];
-	
-	$royaume['food_necessaire'] = floor($food_necessaire * $royaume['actif'] * 0.95) + floor(0.05 * ($royaume['food'] + $food_bourse));
-	*/
-	//echo $royaume['race'].' '.$royaume['food_necessaire'].'<br />';
 	//Si ya assez de food
 	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
-	//$royaume['food'] = 0; //-- test --
-	//$royaume['food_necessaire'] = 1000; //-- test --
 	
 	// La durée du debuff famine n'intervient pas dans les règles donc il faut s'assurer qu'il n'influence pas la disparition du debuff,
 	// il faut donc réactualiser sa valeur régulièrement.
@@ -317,28 +295,20 @@ foreach($tab_royaume as $race => $royaume)
 			$requete = 'UPDATE buff SET effet = effet + FLOOR( 2 * ATAN(('.$debuff.'-effet)/2) - 0.5 ) WHERE id IN ('.$buffs_implode.')';
 			$db->query($requete);
 		}
-		$mail .= "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
+		echo "Mis à jour du buff famine sur ".count($buffs)." ".$race.", effet + ".$debuff.".\n";
 		foreach($persos as $joueur)
 		{
 			//Lancement du buff
 			lance_buff('famine', $joueur, min(floor($debuff/3), 3), 0, $duree, 'Famine', 'Vos HP et MP max sont réduits de %effet%%', 'perso', 1, 0, 0, 0);
 		}
-		$mail .= "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
+		echo "Lancement du buff famine sur ".count($persos)." ".$race.", effet : ".$debuff.".\n";
 
 		$requete = "UPDATE royaume SET food = 0 WHERE id = ".$royaume['id'];
-		$mail .= $requete."\n";
+		echo $requete."\n";
 		$db->query($requete);
 	}
 }
 // Nettoyage
-/*$requete = "UPDATE buff SET effet = 25 WHERE type = 'famine' AND effet > 50";
-$db->query($requete);*/
 $requete = "DELETE FROM buff WHERE type = 'famine' AND effet <= 0";
 $db->query($requete);
-
-$mail_send = getenv('SSO_MAIL');
-if ($mail_send == null || $mail_send == '')
-		 $mail_send = 'starshineonline@gmail.com';
-mail($mail_send, 'Starshine - Script journalier 4 du '.$date, $mail);
-
 ?>

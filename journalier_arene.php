@@ -3,7 +3,7 @@ if (file_exists('root.php'))
   include_once('root.php');
 ?><?php
 include_once(root.'class/db.class.php');
-//Récéption des variables de connexion ?a base et connexion ?ette base
+//Récéption des variables de connexion à la base et connexion à cette base
 include_once(root.'connect.php');
 include_once(root.'connect_log.php');
 

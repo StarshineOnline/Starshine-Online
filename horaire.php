@@ -46,7 +46,7 @@ include_once(root.'class/inventaire.class.php');
 include_once(root.'class/gemmes.class.php');
 
 //On regarde si sworling est là
-$requete = "SELECT id FROM map_monstre WHERE type = 56";
+$requete = 'SELECT id FROM map_monstre WHERE type = 56';
 $req = $db->query($requete);
 $x = ceil(rand(0, $G_max_x));
 $y = ceil(rand(0, $G_max_y));
@@ -54,15 +54,15 @@ $y = ceil(rand(0, $G_max_y));
 if($db->num_rows > 0)
 {
 	$row = $db->read_assoc($req);
-	$requete = "UPDATE map_monstre SET x = ".$x.", y = ".$y." WHERE id = ".$row['id']; 
+	$requete = 'UPDATE map_monstre SET x = '.$x.', y = '.$y.' WHERE id = '.$row['id']; 
 }
 //Il n'existe pas, on le recréé
 else
 {
-	$requete = "INSERT INTO map_monstre VALUES('','56','".$x."','".$y."','1',"
-    .(time() + 360000).")";
+	$requete = 'INSERT INTO map_monstre VALUES("",56,'.$x.','.$y.',1,(time() + 360000))';
 }
 $db->query($requete);
+echo 'Sworling déplacé en '.$x.' / '.$y."\n";
 
 //Squelette pour la quête myriandre
 $requete = "SELECT id FROM map_monstre WHERE type = 57";
@@ -81,6 +81,7 @@ else
 		" m.id, d.x, d.y, m.hp, $mort from monstre m, donjon d".
     " where m.id = 57 and d.nom = 'Myriandre'";
 	$db->query($requete);
+	echo "Squelette de Myriandre réssuscité\n";
 }
 
 //Création de la carte des conflits
@@ -103,7 +104,7 @@ while($row = $db->read_assoc($req))
 	$conflits[$row['cx']][$row['cy']] = $row['tot'];
 }
 
-echo 'Création de la carte des conflits<br />';
+echo 'Création de la carte des conflits\n';
 
 $im = imagecreate (600, 600)
    or die ("Impossible d'initialiser la bibliothèque GD");
@@ -152,6 +153,7 @@ try
   $events = event::create('statut', event::en_cours);
   foreach($events as $event)
   {
+  	echo "\nEvent : ".$event->get_nom()."\n";
     $event->horaire();
   }
 }
