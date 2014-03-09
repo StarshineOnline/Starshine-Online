@@ -200,16 +200,26 @@ function menu_change(input_name)
 
 }
 
-function adresse(tri, i, race)
+function adresse(typeClassement, raceClassement)
 {
-	if(i == '') i = document.getElementById('i').value;
-	if(tri == '') tri = document.getElementById('tri').value;
-	else
-	{
-		if(i != 'moi') i = 0;
-	}
-	if(race == '') race = document.getElementById('race').value;
-	envoiInfo('classement_ajax.php?tri=' + tri + '&i=' + i + '&race=' + race + '&javascript=true', 'table_classement');
+	if(typeClassement == '')
+		typeClassement = document.getElementById('classement').value;
+	if(raceClassement == '')
+		raceClassement = document.getElementById('race').value;
+	
+	var sSearch = $('#classement_table_filter input').val();
+	var iDisplayLength = parseInt( $('#classement_table_length select').val() );
+	
+	var url = 'classement_ajax.php' + '?' + 'ajax=true';
+	if(typeClassement != '')
+		url += '&' + 'classement=' + encodeURIComponent(typeClassement);
+	if(raceClassement != '')
+		url += '&' + 'race=' + encodeURIComponent(raceClassement);
+	if(sSearch != undefined)
+		url += '&' + 'sSearch=' + encodeURIComponent(sSearch);
+	if( !isNaN(iDisplayLength) )
+		url += '&' + 'iDisplayLength=' + encodeURIComponent(iDisplayLength);
+	envoiInfo(url, 'table_classement');
 }
 
 function adresse_groupe(tri, i, race)

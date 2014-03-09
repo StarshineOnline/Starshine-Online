@@ -59,9 +59,9 @@ if (array_key_exists('ymax', $_GET)) $ymax = $_GET['ymax'];
 			<a id='rose_div_cg'href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo $ymin; ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo $ymax; ?>"></a>
 			<a id='rose_div_c'></a>
 			<a id='rose_div_cd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo $ymin; ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo $ymax; ?>"></a>
-			<a id='rose_div_bg' href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_bg' href="?xmin=<?php echo ($xmin - 4); ?>&ymin=<?php echo ($ymin + 4); ?>&xmax=<?php echo ($xmax - 4); ?>&ymax=<?php echo ($ymax + 4); ?>"></a>
 			<a id='rose_div_b' href="?xmin=<?php echo $xmin; ?>&ymin=<?php echo ($ymin + 4); ?>&xmax=<?php echo $xmax; ?>&ymax=<?php echo ($ymax + 4); ?>"></a>
-			<a id='rose_div_bd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo ($ymin - 4); ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo ($ymax - 4); ?>"></a>
+			<a id='rose_div_bd' href="?xmin=<?php echo ($xmin + 4); ?>&ymin=<?php echo ($ymin + 4); ?>&xmax=<?php echo ($xmax + 4); ?>&ymax=<?php echo ($ymax + 4); ?>"></a>
 		</div>
 		<?php
 		$xCentre = floor(($xmin+$xmax)/2);

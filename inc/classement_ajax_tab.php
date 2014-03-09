@@ -15,7 +15,7 @@
 	$tab_classement['reputation']['affiche'] = true;
 	$tab_classement['reputation']['affiche_niveau'] = false;
 	$tab_classement['star']['nom'] = 'Les plus fortunés';
-	$tab_classement['star']['champ'] = '';
+	$tab_classement['star']['champ'] = 'Stars';
 	$tab_classement['star']['affiche'] = false;
 	$tab_classement['star']['affiche_niveau'] = false;
 	$tab_classement['melee']['nom'] = 'Les meilleurs combattants';
@@ -26,7 +26,7 @@
 	$tab_classement['esquive']['champ'] = 'Esquive';
 	$tab_classement['esquive']['affiche'] = true;
 	$tab_classement['esquive']['affiche_niveau'] = false;
-	$tab_classement['blocaga']['nom'] = 'Les meilleurs bloqueurs';
+	$tab_classement['blocage']['nom'] = 'Les meilleurs bloqueurs';
 	$tab_classement['blocage']['champ'] = 'Blocage';
 	$tab_classement['blocage']['affiche'] = true;
 	$tab_classement['blocage']['affiche_niveau'] = false;
