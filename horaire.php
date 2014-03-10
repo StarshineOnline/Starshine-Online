@@ -104,7 +104,7 @@ while($row = $db->read_assoc($req))
 	$conflits[$row['cx']][$row['cy']] = $row['tot'];
 }
 
-echo 'Création de la carte des conflits\n';
+echo "Création de la carte des conflits\n";
 
 $im = imagecreate (600, 600)
    or die ("Impossible d'initialiser la bibliothèque GD");
