@@ -67,8 +67,8 @@ while($row = $db->read_array($req))
 $mort = time() + 22000000;
 $id_plan = 145;
 // Les cases considérées
-$sql_cases = 'select x,y from map where ''.
-  'x > 25 and x < 50 and y > 205 and y < 235 and info in (15,25)'';
+$sql_cases = 'select x,y from map where '.
+  'x > 25 and x < 50 and y > 205 and y < 235 and info in (15,25)';
 // Les cases occupées par le plan dans les cases en question
 $sql_cases_occupees = 'select c.x,c.y from map_monstre mm, ($sql_cases) c '.
   'where c.x = mm.x and c.y = mm.y and nc.x = c.x and nc.y = c.y and '.

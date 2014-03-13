@@ -115,10 +115,10 @@ $color2 = imagecolorallocate($im, 0xff, 0x00, 0x00);
 $black = imagecolorallocate($im, 0x00, 0x00, 0x00);
 $carte = 'image/carte_conflit.png';
 
-$i = 0;
+$i = 1;
 while($i <= 20)
 {
-	$j = 0;
+	$j = 1;
 	while($j <= 20)
 	{
 		if($conflits[$i][$j] > ($total / 20))

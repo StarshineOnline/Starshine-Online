@@ -66,6 +66,7 @@ while($row = $db->read_assoc($req))
 
 //print_r($ress);
 //Ressource normale
+$tot_nou = 0;
 foreach($ressources as $royaume=>$packs)
 {
 	if (!array_key_exists($royaume, $Trace)) {
@@ -77,9 +78,8 @@ foreach($ressources as $royaume=>$packs)
 	  if( $msg_packs )
       $msg_packs .= ', ';
     $msg_packs .= $nbr_packs.' '.$terr;
-    if( $terr == 'Bâtiment' )
+    if( $terr == 'Bâtiment' || $terr == 'Donjon' )
       continue;
-    // test pour s'il faut utiliser utf8_decode ou non
     $msg_gains = '';
 		$gains_pack = $ress[$terr];
 		foreach($gains_pack as $rsrc=>$gain)
@@ -122,13 +122,12 @@ while($row = $db->read_assoc($req))
 {
 	$batiment[$row['id']] = $row;
 }
-//@TODO gérer les mines dans construction
+///@TODO gérer les mines dans construction
 $requete = "SELECT * FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
 	$terrain = type_terrain($row['info']);
-	//echo /*utf8_decode(*/$terrain[1]/*)*/;
 	$ress_terrain = $ress[ $terrain[1] ];
 	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
 	if($batiment[$row['id_batiment']]['specialite'] != 0)
@@ -196,6 +195,7 @@ foreach($ressource_final as $key => $value)
 	$explode_stat[25] = $value['Nourriture'];
 	$implode_stat = implode(';', $explode_stat);
 	$requete = "UPDATE royaume SET pierre = pierre + ".$value['Pierre'].", bois = bois + ".$value['Bois'].", eau = eau + ".$value['Eau'].", sable = sable + ".$value['Sable'].", charbon = charbon + ".$value['Charbon'].", essence = essence + ".$value['Essence Magique'].", star = star + ".$value['Star'].", food = food + ".$value['Nourriture']." WHERE race = '".$key."'";
+	echo $requete."\n";
 	$db->query($requete);
 	$requete = "UPDATE stat_jeu SET ".$key." = '".$implode_stat."' WHERE date = '".$date."'";
 	echo $requete."\n";
@@ -223,7 +223,7 @@ foreach($roy as $r)
 foreach($tab_royaume as $race => $royaume)
 {
 	//Si ya assez de food
-	$mail .= "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
+	echo "Race : ".$race." - Nécessaire : ".$royaume['food_necessaire']." / Possède : ".$royaume['food']."\n";
 	
 	// La durée du debuff famine n'intervient pas dans les règles donc il faut s'assurer qu'il n'influence pas la disparition du debuff,
 	// il faut donc réactualiser sa valeur régulièrement.
