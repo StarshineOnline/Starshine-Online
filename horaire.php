@@ -153,12 +153,14 @@ try
   $events = event::create('statut', event::en_cours);
   foreach($events as $event)
   {
-  	echo "\nEvent : ".$event->get_nom()."\n";
+  	echo "Event : ".$event->get_nom()."\n";
     $event->horaire();
   }
 }
 catch(Exception $e)
 {
+	echo 'erreur : '.$e."\n";
 }
+echo "\n";
 
 ?>
