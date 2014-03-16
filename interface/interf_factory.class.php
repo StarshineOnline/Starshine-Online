@@ -5,8 +5,8 @@
  * Fabrique (abstraite) pour les classes de l'interface
  */
  
-include_once(root.'class/interface.class.php');
-include_once(root.'class/interface_avance.class.php');
+include_once(root.'interface/interface.class.php');
+include_once(root.'interface/interface_avance.class.php');
 
 /**
  * Fabrique (abstraite) pour les classes de l'interface par défaut.
@@ -26,7 +26,7 @@ class interf_factory
    */
   function creer_jeu()
   {
-    include_once('interf_sso.class.php');
+    include_once(root.'interface/interf_jeu.class.php');
     return new interf_jeu();
   }
   /**
@@ -61,7 +61,7 @@ class interf_factory
    */
   function creer_inventaire(&$perso, $invent, $slot, $modif)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_inventaire($perso, $invent, $slot, $modif);
   }
   /**
@@ -70,35 +70,35 @@ class interf_factory
    */
   function creer_infos_objet($objet)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_infos_objet($objet);
   }
   /*
    */
   function creer_invent_equip(&$perso, $type, $modif)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_invent_equip($perso, $type, $modif, $id);
   }
   /*
    */
   function creer_invent_sac(&$perso, $type, $modif)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_invent_sac($perso, $type, $modif);
   }
   /*
    */
   function creer_vente_hotel(&$perso, $index)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_vente_hotel($perso, $index);
   }
   /*
    */
   function creer_enchasser(&$perso, $index)
   {
-    include_once('interf_inventaire.class.php');
+    include_once(root.'interface/interf_inventaire.class.php');
     return new interf_enchasser($perso, $index);
   }
   /// @}

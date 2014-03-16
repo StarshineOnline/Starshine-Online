@@ -3,6 +3,7 @@
  * @file interf_jeu.class.php
  * Interface principale du jeu
  */
+include_once(root.'interface/interf_sso.class.php');
 
 /**
  * Classe pour l'interface de jeu
