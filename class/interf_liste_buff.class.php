@@ -13,10 +13,10 @@ class interf_liste_buff extends interf_bal_cont
 				if($buff->get_debuff() == $debuffs)
 				{
           $li = $this->add( new interf_bal_cont('li', null, 'buff') );
-          $li->add( new interf_bal_smpl('img') );
-          $li->set_attribut('src', 'image/buff/".$buff->get_type()."_p.png');
-          $li->set_attribut('alt', $buff->get_type());
-          creer_buff_duree($li, $buff);
+          $img = $li->add( new interf_bal_smpl('img') );
+          $img->set_attribut('src', 'image/buff/'.$buff->get_type().'_p.png');
+          $img->set_attribut('alt', $buff->get_type());
+          $this->creer_buff_duree($li, $buff);
 				}
 			}
     }
@@ -52,8 +52,8 @@ class interf_liste_buff extends interf_bal_cont
   protected function creer_buff_duree(&$elt, &$buff)
   {
     $ratio = floor(100 * (($buff->get_fin() - time()) / ($buff->get_duree())));
-    $pere = $elt->add( new interf_bal_cont('div', null, 'progress barre_buff') );
-    $fils = $pere->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-danger') );
+    $pere = $elt->add( new interf_bal_cont('div', null, 'progress barre_buff jauge_buff') );
+    $fils = $pere->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-info') );
     $fils->set_attribut('style', 'width:'.$ratio);
   }
 }

@@ -65,7 +65,7 @@ abstract class interf_sso_int extends interf_sso
       if( $persos )
         $menu_joueur->add( new interf_elt_menu('Changer de perso', 'changer_perso.php', 'return envoiInfo(this.href, \'information\');') );
       if( $admin )
-        $menu_joueur->add( new interf_elt_menu('Administration', 'http://www.starshine-online.com/admin/') );
+        $menu_joueur->add( new interf_elt_menu('Administration', './admin/') );
     }
     $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
     $menu_joueur->add( new interf_elt_menu('Deconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
