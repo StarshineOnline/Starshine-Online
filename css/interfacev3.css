@@ -204,6 +204,27 @@ a:hover
   width: 100% !important;
 }
 
+.jauge_groupe
+{
+	position: absolute;
+	width:24px;
+	height:24px;
+	border-radius: 50%;
+	border: 1px solid #888888;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+	top: 2px;
+}
+
+.membre_hp
+{
+	right:30px;
+}
+
+.membre_mp
+{
+	right:2px;
+}
+
 .bulle_valeur
 {
   position:absolute;
@@ -244,17 +265,72 @@ barre_buff
   margin-top:1px;
 }
 
+#joueur_groupe, #perso_groupe
+{
+	height: 110px;
+  left: 559px;
+  position: absolute;
+  top: 6px;
+  width: 600px;
+}
+
+#joueur_groupe ul, #perso_groupe ul { float:left; }
+
+#joueur_groupe li, #perso_groupe li
+{
+	/*cursor:pointer;*/
+	font-size:8pt;
+	padding:0 0 2px;
+	background:  rgba(255, 255, 255, 0.2);
+  border: 1px solid #BBBBBB;
+	position: relative;
+  border-radius: 2px;
+	margin:2px;
+	float:left;
+	height:50px;
+	width:210px;
+}
+
+.joueur_groupe_pseudo, .perso_groupe_nom 
+{
+	/*line-height:16px;*/
+	width:125px;
+	/*text-indent: 3px;*/
+  margin-top: 2px;
+  margin-left: 5px;
+}
+
+.perso_groupe_chef
+{
+	font-weight:bold;
+}
+
+.groupe_activite
+{
+	float: left;
+	display: inline-block;
+	width:11px;
+	height:11px;
+  border-radius: 50%;
+  border: 1px solid #888888;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+.activite_hibern { background: white; }
+.activite_ban { background: #d9534f; }
+.activite_supppr { background: black; }
+.activite_inactif { background: grey; }
+.activite_actif { background: #f0ad4e; }
+.activite_tres_actif { background: #428bca; }
+.activite_connecte { background: #5cb85c; }
+
 #joueur_Psso { cursor:pointer; background:transparent url(./../image/pointshine.png) left no-repeat; width:16px; height:16px; position:absolute; top:0; left:85px; }
 #joueur_LV { width:24px; height:24px; text-align:center; line-height:24px; font-size:8pt; font-weight:bold; background:transparent url(./../image/LV.png) left no-repeat; }
 #joueur_onglets { position:absolute; left:88px; top:65px; width:225px; padding:0 0 0 10px; }
 #joueur_onglets_index,#joueur_onglets_forums,#joueur_onglets_options,#joueur_onglets_exit { float:left; width:250px; text-align:left; padding-left:5px; font-size:.9em; }
 #joueur_onglets_forums img { height:15px; }
 #joueur_type { position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
-.joueur_groupe_activitenoir,.joueur_groupe_activiterouge,.joueur_groupe_activitebleu,.joueur_groupe_activitevert { margin:0; float:left; width:11px; height:11px; margin:2px; }
-.joueur_groupe_activitenoir { background:transparent url(../image/groupes/noir.png) center; }
-.joueur_groupe_activiterouge { background:transparent url(../image/groupes/rouge.png) center; }
-.joueur_groupe_activitebleu { background:transparent url(../image/groupes/bleu.png) center; }
-.joueur_groupe_activitevert { background:transparent url(../image/groupes/vert.png) center; }
 #buff_list ul { float:left; list-style-type:none; text-align:center; width:220px; }
 .buff { position:relative; float:left; height:19px; padding:0; margin:0 2px; cursor:pointer; }
 
@@ -262,23 +338,13 @@ barre_buff
 .buff_dispo img {border-radius: 3px;}
 .buff_nondispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px;  background: rgba(0, 0, 0, 0.2) url(./../image/interface/cadena.png) ;  }
 .buff_duree_restante { position:absolute; bottom:0; left:0; }
-
-#joueur_groupe { height: 110px;
-    left: 559px;
-    position: absolute;
-    top: 6px;
-    width: 600px; }
 #joueur_groupe_bouton { width:35px; float:left; text-align : center;}
-#joueur_groupe ul {float:left; }
+
 #mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; margin : auto;position: absolute;display: none;}
 #info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; margin : auto; margin-top : 12px; margin-bottom : 7px;position: absolute;display: none;}
 #info_groupe:hover { background-position:top; }
 #info_groupe:active { background-position:bottom; }
-#joueur_groupe li { cursor:pointer; font-size:8pt; padding:0 0 2px;background:  rgba(255, 255, 255, 0.2);
-    border: 1px solid #BBBBBB;position: relative;
-    border-radius: 2px; margin:2px;float:left;height:45px;width:200px; }
-#joueur_groupe .inactif { background:  rgba(0, 0, 0, 0.2);}
-.joueur_groupe_pseudo { float:left; line-height:16px; width:125px;text-indent: 3px; }
+
 .joueur_groupe_ischef { float:left; width:16px; height : 16px; display : block; margin-right : 2px;}
 .joueur_groupe_barre_hp { position: absolute; width:20px; height:20px;border-radius: 50%;border: 1px solid #888888;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);right:30px; }
 .joueur_groupe_barre_mp { position: absolute; width:20px; height:20px; border-radius: 50%;border: 1px solid #888888;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);right:5px;}

@@ -20,6 +20,7 @@ class interf_barre_perso extends interf_bal_cont
     $this->creer_infos_vie();
     $this->creer_infos_perso();
     $this->creer_infos_pos();
+    $this->creer_infos_groupe();
   }
   protected function creer_infos_vie()
   {
@@ -41,9 +42,9 @@ class interf_barre_perso extends interf_bal_cont
     $nom->add( new interf_bal_smpl('span', ucwords($this->perso->get_nom()), 'nom') );
     $nom->add( new interf_bal_smpl('span', $titre[1]) );
     // jauges
-    $this->creer_jauge('hp', 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), 'danger');
-    $this->creer_jauge('mp', 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()));
-    $this->creer_jauge('pa', 'Points d\'action', $this->perso->get_pa(), $G_PA_max, 'success');
+    $this->creer_jauge($this->infos_vie, 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), true, 'danger', 'hp');
+    $this->creer_jauge($this->infos_vie, 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()), true, false, 'mp');
+    $this->creer_jauge($this->infos_vie, 'Points d\'action', $this->perso->get_pa(), $G_PA_max, true, 'success', 'pa');
     $this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())));
   }
   protected function creer_infos_perso()
@@ -80,17 +81,18 @@ class interf_barre_perso extends interf_bal_cont
     $img = $pos->add( new interf_bal_smpl('img') );
     $img->set_attribut('src', 'carte_perso.php?vue=11');
   }
-  protected function creer_jauge($type, $nom, $valeur, $maximum, $style=false)
-  {
-    $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_'.$type, 'jauge_bulle progress') );
+	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, $style=false, $type=null)
+	{
+    $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_'.$type:'', ($grand?'jauge_bulle':'jauge_groupe membre_'.$type).' progress') );
     $jauge->set_tooltip($nom.' : '.$valeur.' / '.$maximum, 'right');
     /*$jauge->set_attribut('title', $nom.' : '.$valeur.' / '.$maximum);
     $jauge->set_attribut('data-toggle', 'tooltip');
     $jauge->set_attribut('data-placement', 'right');*/
     $barre = $jauge->add( new interf_bal_cont('div', null, 'bulle progress-bar'.($style?' progress-bar-'.$style:'')) );
     $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
-    $jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
-  }
+    if( $grand )
+			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
+	}
   protected function creer_jauge_xp($valeur, $maximum, $progression)
   {
     $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_xp', 'jauge_barre progress') );
@@ -102,5 +104,74 @@ class interf_barre_perso extends interf_bal_cont
     $barre->set_attribut('style', 'width:'.$progression.'%');
     $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum, 'xp', 'barre_valeur') );
   }
+  protected function creer_infos_groupe()
+  {
+  	if( $this->perso->get_groupe() != 0 )
+		{
+			$groupe = new groupe($this->perso->get_groupe());
+			$div = $this->add( new interf_bal_cont('div', 'perso_groupe') );
+			$liste = $div->add( new interf_bal_cont('ul') );
+			
+			// Membres du groupe
+			$nombre_joueur_groupe = 1;
+			foreach($groupe->get_membre_joueur() as $membre)
+			{
+				if($this->perso->get_id() != $membre->get_id())
+				{
+					$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
+					$nombre_joueur_groupe++;
+				}
+			}
+		}
+  }
+  protected function creer_infos_membre($liste, $membre, $groupe, $index)
+  {
+  	$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index) );
+  	
+		switch( $membre->get_statut() )
+		{
+		case 'hibern':
+			$this->creer_activite('hibern', 'Le personnage hiberne', $li);
+			break;
+		case 'inactif':
+			$this->creer_activite('inactif', 'Le personnage est inactif', $li);
+			break;
+		case 'ban':
+			$this->creer_activite('ban', 'Le personnage est banni jusqu\'au '.date('d/m/Y', $membre->get_fin_ban()), $li);
+			break;
+		case 'suppr':
+			$this->creer_activite('suppr', 'Le personnage a été supprimé', $li);
+			break;
+		case 'actif':
+			$duree = time() - $membre->get_dernieraction();
+		  if( $duree > royaume::duree_actif )
+				$this->creer_activite('actif', 'Le personnage est moyennement actif', $li);
+			elseif( $duree > 60 )
+				$this->creer_activite('tres_actif', 'Le personnage est actif', $li);
+			else
+				$this->creer_activite('connecte', 'Le personnage vient de se connecter', $li);
+			break;
+		default:
+			log_admin::log('bug', 'statut du personnage "'.$membre->get_nom().'" inconnu : '.$membre->get_statut());
+			break;
+		}
+		$classe = 'perso_groupe_nom';
+  	if( $membre->get_id() == $groupe->get_id_leader() )
+  		$classe .= ' perso_groupe_chef';
+  	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
+  	$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
+    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, false, 'mp');
+    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
+    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
+    $pos->add( new interf_txt(' - ') );
+    $pos->add( new interf_bal_smpl('span', 'dist. : '.calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y())), null, 'membre_pos') );
+    /*$buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+    $buffs->add( new interf_liste_buff($membre, false, true) );*/
+	}
+	protected function creer_activite($type, $message, $li)
+	{
+		$span = $li->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type) );
+		$span->set_attribut('title', $message);
+	}
 }
 ?>
