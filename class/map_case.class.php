@@ -424,14 +424,15 @@ class map_case
 		}
 	}
 
-	function is_ville($bourg = false, $bonus = false)
+	function is_ville($bourg = false, $bonus = false, &$royaume=null)
 	{
+		$royaume = $this->royaume;
 		if($this->type == 1) return true;
 		else
 		{
 			if($bourg)
 			{
-				if(!$bourg)
+				if(!$bourg) /// TODO: ????
 				{
 					$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
 					if(!$bonus && count($construction) > 0) return true;
@@ -439,6 +440,7 @@ class map_case
 				else
 				{
 					$construction = construction::create(array('x', 'y'), array($this->get_x(), $this->get_y()));
+					$royaume = $construction[0]->get_royaume();
 					$batiment = new batiment($construction[0]->get_id_batiment());
 					if(!$bonus) $bonus = 'taverne'; // ????
 					if ($batiment->has_bonus($bonus)) return true;
