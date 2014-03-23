@@ -1,6 +1,9 @@
 <?php
 class interf_liste_buff extends interf_bal_cont
 {
+	const buffs = 1;
+	const debuffs = 2;
+	const tous = 3;
   function __construct(&$perso, $debuffs=false, $aff_vide=false)
   {
     global $db;
@@ -10,7 +13,7 @@ class interf_liste_buff extends interf_bal_cont
 		{
 			foreach($buffs as $buff)
 			{//-- Listing des buffs
-				if($buff->get_debuff() == $debuffs)
+				if($buff->get_debuff() == $debuffs) // ($buff->get_debuff() && $type & self::debuffs) || (!$buff->get_debuff() && $type & self::buffs)
 				{
           $li = $this->add( new interf_bal_cont('li', null, 'buff') );
           $img = $li->add( new interf_bal_smpl('img') );
@@ -24,7 +27,6 @@ class interf_liste_buff extends interf_bal_cont
     {
       $grade = $perso->get_grade();
       $case_buff_dispo = $grade->get_nb_buff() - $perso->get_nb_buff();
-      echo "case vides : $case_buff_dispo<br/>";
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
         $li = $this->add( new interf_bal_smpl('li', '&nbsp;', null, 'buff_dispo') );

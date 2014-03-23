@@ -16,6 +16,25 @@ a:hover
   text-decoration:none;
 }
 
+#barre_menu
+{
+	border-radius : 0px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-bottom: 0px;
+	min-height: 30px;
+	background: rgba(0, 0, 0, 0.5);
+	/*background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0px, rgba(0, 0, 0, 0.4) 100%);
+	background-color: rgba(0, 0, 0, 0.5);*/
+}
+
+#barre_menu a
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
 #conteneur { width:985px; margin:auto; min-height:100%; }
 #conteneur_back { z-index:2; width:1000px; margin:0 auto;  min-height:120%; }
@@ -84,7 +103,7 @@ a:hover
   position:relative;
   background-color:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;
-  background-position : 8px 4px;
+  background-position : 8px 3px;
   background-repeat: no-repeat;
   margin-left:16px;
 }
@@ -161,19 +180,28 @@ a:hover
   font-size: 10px;
   height: 24px;
   left: 56px;
-  padding: 0 0 0 18px;
+  padding: 0 0 0 24px;
   position: absolute;
-  text-align: center;
-  top: 29px;
-  width: 46px;
+  /*text-align: center;*/
+  top: 18px;
+  width: 60px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-#joueur_buffs_nom, #perso_buffs { position:absolute; height:42px; top: 68px; left:11px;}
+#joueur_buffs_nom, #perso_buffs
+{
+	position:absolute;
+	height:42px;
+	top: 65px;
+	left:11px;
+}
 
 .joueur_heure, #perso_heure
 {
   position:absolute;
-  left: 469px;
+  left: 473px;
   background-repeat:no-repeat;
   width:78px;
   text-indent:28px;
@@ -193,9 +221,57 @@ a:hover
   border-radius: 4px;
 }
 
+
+
+#perso_stars
+{
+	font-size:8pt;
+	background:transparent url(./../image/starsv3.png) left no-repeat;
+	width:70px;
+	height:24px;
+	line-height:24px;
+	padding:0 0 0 16px;
+	position:absolute;
+	top:40px;
+	left:60px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.perso_script
+{
+	position: absolute;
+	background: transparent left no-repeat;
+	background-size: 16px 16px;
+	left: 130px;
+	padding-left: 16px;
+  font-size: 10px;
+  width: 85px;
+  white-space:nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 16px;
+}
+
+#perso_attaque
+{
+	top: 16px;
+}
+
+#perso_defense
+{
+	top: 32px;
+}
+
+#perso_dresse
+{
+	top: 48px;
+}
+
 #joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:68px; }
 
-.joueur_position 	{position:absolute;left:470px;top:34px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;background: rgba(0, 0, 0, 0.1);padding:2px; border-radius: 4px;}
+/*.joueur_position 	{position:absolute;left:470px;top:34px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;background: rgba(0, 0, 0, 0.1);padding:2px; border-radius: 4px;}*/
 
 .bulle
 {
@@ -242,7 +318,7 @@ a:hover
 #race_classe
 {
   position:absolute;
-  top:6px;
+  top:/*6*/2px;
   left:60px;
 }
 
@@ -256,7 +332,7 @@ a:hover
   position:relative;
   text-align:center;
   width:210px;
-  margin-top: 6px;
+  margin-top: 20px;
 }
 
 barre_buff
@@ -270,13 +346,12 @@ barre_buff
 	height: 110px;
   left: 559px;
   position: absolute;
-  top: 6px;
-  width: 600px;
+  top: 4px;
 }
 
 #joueur_groupe ul, #perso_groupe ul { float:left; }
 
-#joueur_groupe li, #perso_groupe li
+#joueur_groupe li, #perso_groupe li.membre_groupe
 {
 	/*cursor:pointer;*/
 	font-size:8pt;
@@ -287,7 +362,7 @@ barre_buff
   border-radius: 2px;
 	margin:2px;
 	float:left;
-	height:50px;
+	height:52px;
 	width:210px;
 }
 
@@ -315,6 +390,11 @@ barre_buff
   border: 1px solid #888888;
   margin-left: 2px;
   margin-top: 2px;
+}
+
+.membre_lieu
+{
+	margin-left: 5px;
 }
 
 .activite_hibern { background: white; }

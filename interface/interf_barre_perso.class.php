@@ -49,7 +49,7 @@ class interf_barre_perso extends interf_bal_cont
   }
   protected function creer_infos_perso()
   {
-    global $Gtrad;
+    global $Gtrad, $db;
     // Race & classe
     $this->infos_perso = $this->add( new interf_bal_cont('div', 'infos_perso') );
     $this->infos_perso->set_attribut('style', 'background-image:url(\'./image/interface/fond_info_perso_'.$this->perso->get_race_a().'.png\');');
@@ -58,10 +58,55 @@ class interf_barre_perso extends interf_bal_cont
     $race_classe->add( new interf_bal_smpl('span', ucwords($this->perso->get_classe()), 'classe') );
     // Honneur & réputation
     $ph = $this->infos_perso->add( new interf_bal_cont('div', 'perso_ph') );
-    $ph->set_attribut('titre', 'Votre honneur : '.$this->perso->get_honneur().' / Votre réputation : '.$this->perso->get_reputation());
+    $ph->set_attribut('title', 'Votre honneur : '.$this->perso->get_honneur().' / Votre réputation : '.$this->perso->get_reputation());
     $ph->add( new interf_bal_smpl('span', $this->perso->get_honneur(), 'honneur') );
     $ph->add( new interf_bal_smpl('br') );
     $ph->add( new interf_bal_smpl('span', $this->perso->get_reputation(), 'reputation') );
+    // stars
+    $stars = $this->infos_perso->add( new interf_bal_smpl('div', $this->perso->get_star(), 'perso_stars') );
+    $stars->set_attribut('title', 'Votre argent : '.$this->perso->get_star().' stars');
+    //$stars->add( new interf_bal_smpl('span', $this->perso->get_star()) );
+    // attaque
+    /// TODO: passer à l'objet
+    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    $att = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'], 'perso_attaque', 'perso_script') );
+    $arme = $this->perso->get_arme();
+    if( $arme )
+    {
+    	$arme = new arme($arme->id);
+    	$nom_arme = $arme->get_nom();
+			$att->set_attribut('style', 'background-image:url(\''.$arme->get_image().'\');');
+		}
+		else
+			$nom_arme = 'aucune';
+    $att->set_attribut('title', 'Votre arme : '.$nom_arme.' − Votre script d\'attaque : '.$row['nom']);
+    // défense
+    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
+    $req = $db->query($requete);
+    $row = $db->read_assoc($req);
+    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'], 'perso_defense', 'perso_script') );
+    $bouclier = $this->perso->get_bouclier();
+    if( $bouclier )
+    {
+    	$bouclier = new arme($bouclier->id);
+    	$nom_bouclier = $bouclier->get_nom();
+			$def->set_attribut('style', 'background-image:url(\''.$bouclier->get_image().'\');');
+		}
+		else
+			$nom_arme = 'aucun';
+    $def->set_attribut('title', 'Votre bouclier : '.$nom_bouclier.' − Votre script de défense : '.$row['nom']);
+    // créature dressée
+    $creature = $this->perso->get_pet();
+    if( $creature )
+    {
+    	$creat = $this->infos_perso->add( new interf_bal_smpl('div', $creature->get_nom(), 'perso_dresse', 'perso_script') );
+    	$monstre = new monstre( $creature->get_id_monstre() );
+    	/// TODO: utiliser une méthode pour obtenir l'image
+			$creat->set_attribut('style', 'background-image:url(\'./image/monstre/'.$monstre->get_lib().'.png\');');
+    	$creat->set_attribut('title', 'Votre créature principale : '.$creature->get_nom().' ('.$monstre->get_nom().')');
+		}
     // Buffs & debuffs
     $liste = $this->infos_perso->add( new interf_bal_cont('div', 'perso_buffs') );
     $buffs = $liste->add( new interf_bal_cont('div', 'liste_buffs') );
@@ -126,7 +171,7 @@ class interf_barre_perso extends interf_bal_cont
   }
   protected function creer_infos_membre($liste, $membre, $groupe, $index)
   {
-  	$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index) );
+  	$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index, 'membre_groupe') );
   	
 		switch( $membre->get_statut() )
 		{
@@ -165,8 +210,10 @@ class interf_barre_perso extends interf_bal_cont
     $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
     $pos->add( new interf_txt(' - ') );
     $pos->add( new interf_bal_smpl('span', 'dist. : '.calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y())), null, 'membre_pos') );
-    /*$buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
-    $buffs->add( new interf_liste_buff($membre, false, true) );*/
+    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+    $buffs->add( new interf_liste_buff($membre, false) );/**/
+    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+    $debuffs->add( new interf_liste_buff($membre, true) );
 	}
 	protected function creer_activite($type, $message, $li)
 	{
