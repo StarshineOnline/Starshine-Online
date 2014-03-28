@@ -361,7 +361,7 @@ class map_case
 	 */ 
 	function check_case($check = false)
 	{
-		global $db, $Gtrad;
+		global $db;
 		
 		// Toutes les cases, certaines cases ou seulement une en particulier ?
 		$where = '';
@@ -377,7 +377,7 @@ class map_case
 		else
 			$where .= '(x = '.$this->get_x().') AND (y = '.$this->get_y().')';
 		// Recherche des constructions terminées
-		$requete = "SELECT * FROM placement WHERE ".$where." AND fin_placement <= ".time();
+		$requete = "SELECT p.*, b.image batiment_image FROM placement p INNER JOIN batiment b ON b.id = p.id_batiment WHERE ".$where." AND fin_placement <= ".time();
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
@@ -412,7 +412,7 @@ class map_case
 				$construction->set_nom($row['nom']);
 				$construction->set_type($row['type']);
 				$construction->set_rez($row['rez']);
-				$construction->set_image($Gtrad[$row['nom']]);
+				$construction->set_image($row['batiment_image']);
 				$construction->set_date_construction(time());
 				$construction->set_point_victoire($row['point_victoire']);
 				//Insertion de la construction

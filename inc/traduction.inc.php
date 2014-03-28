@@ -188,43 +188,6 @@ $Gtrad['affinite7'] = 'Superbe';
 
 
 /**
- * @name Bâtiments
- * Traduction des bâtiments
- * @{  
- */
-$Gtrad['Poste avancé'] = 'poste_avance';
-$Gtrad['Fortin'] = 'fortin';
-$Gtrad['Fort'] = 'fort';
-$Gtrad['Forteresse'] = 'forteresse';
-$Gtrad['drapeau'] = 'drapeau';
-$Gtrad['Tour de guet'] = 'tour_de_guet';
-$Gtrad['Tour de garde'] = 'tour_de_garde';
-$Gtrad['Tour de mages'] = 'tour_de_mage';
-$Gtrad['Tour d archers'] = 'tour_archer';
-$Gtrad['Bourgade'] = 'bourgade';
-$Gtrad['Petit bourg'] = 'petit_bourg';
-$Gtrad['Bourg'] = 'bourg';
-$Gtrad['Palissade'] = 'palissade';
-$Gtrad['Mur'] = 'mur';
-$Gtrad['Muraille'] = 'muraille';
-$Gtrad['Grande Muraille'] = 'grande_muraille';
-$Gtrad['Bélier'] = 'belier';
-$Gtrad['Catapulte'] = 'catapulte';
-$Gtrad['Trébuchet'] = 'trebuchet';
-$Gtrad['Baliste'] = 'baliste';
-$Gtrad['Mine'] = 'mine';
-$Gtrad['Extracteur'] = 'mine';
-$Gtrad['Ferme'] = 'mine';
-$Gtrad['Puits'] = 'mine';
-$Gtrad['Scierie'] = 'mine';
-$Gtrad['Carrière de sable'] = 'mine';
-$Gtrad['Péage'] = 'mine';
-$Gtrad['Puits a essence'] = 'mine';
-$Gtrad['Meule'] = 'mine';
-//@}
-
-
-/**
  * @name Ressources
  * Traduction des ressources.
  * @{
