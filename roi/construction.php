@@ -96,7 +96,7 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste Armes de sieges sur votre territoire</legend>";
+		echo "<legend>Liste des Armes de sièges sur votre territoire</legend>";
 		$boutique_class = 't1';
 		echo "<ul>";		
 		while($row = $db->read_assoc($req))
@@ -146,19 +146,19 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste de vos batiments</legend>";	
+		echo "<legend>Liste de vos bâtiments</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';		
 		while($row = $db->read_assoc($requete))
 		{
 			$construction = new construction($row['id']);
+			$batiment = $construction->get_batiment();
 
 			$tmp = "HP - ".$construction->get_hp();
 			echo "
 			<li class='$boutique_class'  onclick=\"minimap(".$construction->get_x().",".$construction->get_y().")\">
 				<span style='display:block;width:320px;float:left;'>
-					<img src='../image/batiment_low/".$construction->get_image()."_04.png' style='vertical-align : top;' title='".$construction->get_nom()."' /> ".$construction->get_nom();
-			$batiment = new batiment($construction->get_id_batiment());
+					<img src='../image/batiment_low/".$batiment->get_image()."_04.png' style='vertical-align : top;' title='".$construction->get_nom()."' /> ".$construction->get_nom();
 			
 			//On peut l'upragder si il y a un suivant
 			if($batiment->get_suivant() && !$joueur->is_buff('debuff_rvr'))
@@ -219,7 +219,7 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste des objets disponibles dans votre depot militaire</legend>";	
+		echo "<legend>Liste des objets disponibles dans votre dépôt militaire</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
@@ -296,7 +296,6 @@ elseif($_GET['direction'] == 'up_construction')
 		// On modifie la contruction
 		$construction->set_id_batiment($batiment->get_id());
 		$construction->set_nom($batiment->get_nom());
-		$construction->set_image($batiment->get_image());
 		$construction->set_date_construction(time());
 		$construction->set_hp($construction->get_hp() + $batiment->get_hp() - $ancien_batiment->get_hp());
 		$construction->set_point_victoire($batiment->get_point_victoire());

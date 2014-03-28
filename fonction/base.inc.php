@@ -3074,25 +3074,29 @@ function list_joueurs_visu($joueur, $distance) {
  *
  * @return les construction dans la visu sous forme d'un tableau de lignes
  */
-function list_construction_visu($joueur, $distance) {
+function list_construction_visu($joueur, $distance)
+{
 	global $db;
-  global $Gtrad;
-
+	global $Gtrad;
+	
 	$ret = array();
-
+	
 	// Calcul de la visu
 	$x = $joueur->get_x(); $y = $joueur->get_y();
 	$pos1 = convert_in_pos($x, $y);
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
-
-
+	
   	// Recherche des constructions
-	$requete = "select x, y, c.id, image, r.race ".
-    "from construction c, royaume r ".
-    "where r.id = c.royaume and x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$requete = "
+		SELECT c.x, c.y, c.id, b.image, r.race
+		FROM	construction c
+				INNER JOIN batiment b ON b.id = c.id_batiment
+				INNER JOIN royaume r ON r.id = c.royaume
+		WHERE c.x >= $lx AND c.x <= $gx AND c.y >= $ly AND c.y <= $gy
+	";
 	$req = $db->query($requete);
-	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
+	// Ajout des constructions dans le tableau si la distance pythagoricienne est bonne
 	$ret = array();
 	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
@@ -3100,36 +3104,40 @@ function list_construction_visu($joueur, $distance) {
 			$dst = calcul_distance_pytagore($pos1, $pos2);
 			if ($dst <= $distance && $dst != 0)
 			{
-        $bat = recupbatiment($row['id'], 'construction');
-        $bat['distance'] = $dst;
-        $bat['x'] = $row['x'];
-        $bat['y'] = $row['y'];
-        $bat['royaume'] = $Gtrad[$row['race']];
-        $bat['image'] = 'batiment/'.$row['image'].'_04';
+				$bat = recupbatiment($row['id'], 'construction');
+				$bat['distance'] = $dst;
+				$bat['x'] = $row['x'];
+				$bat['y'] = $row['y'];
+				$bat['royaume'] = $Gtrad[$row['race']];
+				$bat['image'] = 'batiment/'.$row['image'].'_04';
 				$ret[] = $bat;
 			}
 		}
 	}
+	
 	// Recherche des placements
-	$requete = "select x, y, c.id, r.race, royaume ".
-    "from placement c, royaume r ".
-    "where r.id = c.royaume and x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$requete = "
+		SELECT p.x, p.y, p.id, p.royaume, b.image, r.race
+		FROM	placement p
+				INNER JOIN batiment b ON b.id = p.id_batiment
+				INNER JOIN royaume r ON r.id = p.royaume
+		WHERE p.x >= $lx AND p.x <= $gx AND p.y >= $ly AND p.y <= $gy
+	";
 	$req = $db->query($requete);
-	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
+	// Ajout des placements dans le tableau si la distance pythagoricienne est bonne
 	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
 			$pos2 = convert_in_pos($row['x'], $row['y']);
 			$dst = calcul_distance_pytagore($pos1, $pos2);
 			if ($dst <= $distance)
 			{
-        $bat = recupbatiment($row['id'], 'placement');
-        $bat['distance'] = $dst;
-        $bat['x'] = $row['x'];
-        $bat['y'] = $row['y'];
-        $bat['royaume'] = $Gtrad[$row['race']];
-        $bat['nom'] .= ' en construction';
-        // Mieux à faire ici ??
-        $bat['image'] = 'drapeaux/drapeau_'.$row['royaume'];
+				$bat = recupbatiment($row['id'], 'placement');
+				$bat['distance'] = $dst;
+				$bat['x'] = $row['x'];
+				$bat['y'] = $row['y'];
+				$bat['royaume'] = $Gtrad[$row['race']];
+				$bat['nom'] .= ' en construction';
+				$bat['image'] = 'drapeaux/'.$row['image'].'_'.$row['royaume'];
 				$ret[] = $bat;
 			}
 		}

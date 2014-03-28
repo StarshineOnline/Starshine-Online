@@ -27,12 +27,12 @@ class bourg extends construction
 	{
 		global $db;
 		$this->mines = array();
-		$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement, image FROM construction WHERE type = 'mine' AND rechargement = ".$this->get_id();
+		$requete = "SELECT id, royaume, id_batiment, x, y, hp, nom, type, rez, rechargement FROM construction WHERE type = 'mine' AND rechargement = ".$this->get_id();
 		$req_m = $db->query($requete);
 		$i = 0;
 		while($row_m = $db->read_assoc($req_m))
 		{
-			$this->mines[$i] = new mine($row_m[id]);
+			$this->mines[$i] = new mine($row_m['id']);
 			if($ressource) $this->mines[$i]->get_ressources();
 			$i++;
 		}

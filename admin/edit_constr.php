@@ -43,7 +43,6 @@ if( array_key_exists('action', $_GET) )
     $c->set_royaume($_POST['royaume']);
     $c->set_type('arme_de_siege');
     $c->set_id_batiment(52);
-    $c->set_image('belier');
     $c->sauver();
     break;
   case 'nouv_plac':

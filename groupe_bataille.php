@@ -63,7 +63,11 @@ if(array_key_exists('affiche_bataille', $_GET))
 		$reperes = $bataille->get_reperes('tri_type');
 		$batiments = array();
 		$dimensions = dimension_map($bataille->get_x(), $bataille->get_y(), 11);
-		$requete = "SELECT x, y, hp, nom, type, image FROM construction WHERE royaume = ".$R->get_id()." AND x >= ".$dimensions['xmin']." AND x <= ".$dimensions['xmax']." AND y >= ".$dimensions['ymin']." AND y <= ".$dimensions['ymax'];
+		$requete = "
+			SELECT c.x, c.y, c.hp, c.nom, c.type, b.image
+			FROM construction c INNER JOIN batiment b ON c.id_batiment = b.id
+			WHERE c.royaume = ".$R->get_id()." AND c.x >= ".$dimensions['xmin']." AND c.x <= ".$dimensions['xmax']." AND c.y >= ".$dimensions['ymin']." AND c.y <= ".$dimensions['ymax']."
+		";
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{

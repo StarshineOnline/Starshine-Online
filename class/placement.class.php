@@ -14,22 +14,14 @@ class placement extends entitenj_constr
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
-  // @{
+	// @{
 	protected $debut_placement; ///< Date du début de la construction
 	protected $fin_placement; ///< Date de la fin de la construction
 
-  /// Renvoie l'image du bâtiment
+	/// Renvoie l'image du bâtiment
 	function get_image()
 	{
-		if(!isset($this->image))
-		{
-			global $db;
-			$requete = "SELECT image FROM batiment WHERE id = ".$this->id_batiment;
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-			$this->image = $row['image'];
-		}
-		return $this->image;
+		$this->get_batiment()->get_image();
 	}
 
 	/// Renvoie la date du début de la construction
@@ -47,7 +39,7 @@ class placement extends entitenj_constr
 	function get_date_debut()
 	{
 		return $this->debut_placement;
-  }
+	}
 
 	/// Renvoie la date de la fin de la construction
 	function get_fin_placement()
@@ -66,12 +58,12 @@ class placement extends entitenj_constr
 	{
 		return $this->fin_placement - $this->debut_placement;
 	}
-  /// Renvoie le temps restant de construction
+	/// Renvoie le temps restant de construction
 	function get_temps_restant()
 	{
 		return $this->fin_placement - time();
 	}
-  /// Renvoie le temps écouylé depuis le début de la construction
+	/// Renvoie le temps écouylé depuis le début de la construction
 	function get_temps_ecoule()
 	{
 		return time() - $this->debut_placement;
@@ -82,7 +74,7 @@ class placement extends entitenj_constr
 	 * @name Accès à la base de données
 	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
-  // @{
+	// @{
 	/**
 	* Constructeur
 	* @param id                  Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
@@ -107,7 +99,7 @@ class placement extends entitenj_constr
 		}
 		else
 		{
-      entitenj_constr::__construct($id, $id_batiment, $x, $y, $royaume, $hp, $nom, $type, $rez, $point_victoire);
+			entitenj_constr::__construct($id, $id_batiment, $x, $y, $royaume, $hp, $nom, $type, $rez, $point_victoire);
 			$this->debut_placement = $debut_placement;
 			$this->fin_placement = $fin_placement;
 		}
@@ -119,18 +111,18 @@ class placement extends entitenj_constr
 	 * Initialise les données membres à l'aide d'un tableau
 	 * @param array $vals    Tableau contenant les valeurs des données.
 	 */
-  protected function init_tab($vals)
-  {
-    entitenj_constr::init_tab($vals);
+	protected function init_tab($vals)
+	{
+		entitenj_constr::init_tab($vals);
 		$this->debut_placement = $vals['debut_placement'];
 		$this->fin_placement = $vals['fin_placement'];
-  }
+	}
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_constr::get_liste_champs().', debut_placement, fin_placement';
-  }
+		return entitenj_constr::get_liste_champs().', debut_placement, fin_placement';
+	}
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
@@ -155,19 +147,19 @@ class placement extends entitenj_constr
 	}
 
 	/// Renvoie le coefficient pour modifier les caractéristique
-  function get_coeff_carac()
-  {
-    if($this->type == 'arme_de_siege')
-      return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total();
-    else
-      return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
-  }
+	function get_coeff_carac()
+	{
+		if($this->type == 'arme_de_siege')
+			return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total();
+		else
+			return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
+	}
 	/// Renvoie le coefficient pour modifier les compétences
-  function get_coeff_comp(&$perso, &$def)
-  {
-    if($this->type == 'arme_de_siege')
-      return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total();
-    else
-      return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
-  }
+	function get_coeff_comp(&$perso, &$def)
+	{
+		if($this->type == 'arme_de_siege')
+			return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total();
+		else
+			return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
+	}
 }
