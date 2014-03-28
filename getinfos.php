@@ -138,7 +138,7 @@ $requete_placements = "
 $req_placements = $db->query($requete_placements);
 // Requête pour l'affichage des bâtiments dans le périmètre de vision
 // Différents types à l'heure actuelle : 'arme_de_siege' 'mur' 'mine' 'bourg' 'fort' 'tour'
-// Les drapeaux ne font pas partie des bâtiments construits car une fois construits ils disparaissent et modifie le royaume de la case sur laquelle il se trouvait.
+// Les drapeaux ne font pas partie des bâtiments construits car une fois construits ils disparaissent et modifie le royaume de la case sur laquelle ils se trouvaient.
 $requete_batiments = "
 	SELECT c.x, c.y, c.type, c.nom, c.hp, c.royaume, b.image, b.hp hp_max
 	FROM
@@ -297,7 +297,7 @@ foreach($casesVisibles as $case) {
 				cpyToAttr($placement, $row_pl[$i], array('type', 'nom', 'royaume', 'hp', 'hp_max', 'debut_placement', 'fin_placement'));
 				$image = '';
 				if($row_pl[$i]['type'] == 'drapeau') {
-					$image = 'drapeau_'.$row_pl[$i]['royaume'];
+					$image = $row_pl[$i]['image'].'_'.$row_pl[$i]['royaume'];
 				}
 				else {
 					$temps_passe = time() - $row_pl[$i]['debut_placement'];
