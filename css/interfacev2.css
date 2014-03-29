@@ -32,6 +32,7 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 #popup_marge { min-height:470px; margin:auto; width:800px; }
 #popup .titre { padding:10px 0; font-size:17px; }
 #popup ul { padding:4px 0; }
+#table_classement { text-align: left; }
 .changer { background:transparent url(../image/interface/changer.png) no-repeat top left; display:inline-block; height:16px; width:16px; cursor:pointer!important; margin-top:3px }
 .interf_admin { background:transparent url(../image/icone/admin.png) no-repeat top left; display:inline-block; height:16px; width:16px; cursor:pointer!important; margin-top:3px }
 .fermer { background:transparent url(../image/interface/rouge.png) no-repeat top left; display:inline-block; height:16px; width:16px; cursor:pointer!important; }

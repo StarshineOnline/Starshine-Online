@@ -7,6 +7,7 @@ if(array_key_exists('ajax', $_GET))
 //Tableau des classements
 include_once(root.'inc/classement_ajax_tab.php');
 
+// Récupération des paramètres utilisateurs
 $typeClassement = 'honneur';
 if( isset($_GET['classement']) )
 	$typeClassement = $_GET['classement'];
@@ -20,6 +21,7 @@ $iDisplayLength = 10;
 if( isset($_GET['iDisplayLength']) && is_numeric($_GET['iDisplayLength']) )
 	$iDisplayLength = (int) $_GET['iDisplayLength'];
 
+// Définition d'autres paramètres
 $aColumns = array('rank', 'nom');
 $aColumnsDisplay = array('#', 'Nom');
 if($tab_classement[$typeClassement]['affiche']){
@@ -30,16 +32,27 @@ if($tab_classement[$typeClassement]['affiche_niveau']){
 	$aColumns[] = 'level';
 	$aColumnsDisplay[] = 'Niveau';
 }
-// Chaîne de caractères représentant les colonnes qui ne sont pas 'searchable'
-$bSearchableString = '';
-$first = true;
+
+$aColumnDefs = array();
+if( ($idCol = array_search('rank', $aColumns)) !== false )
+{
+	// Les colonnes qui ne sont pas 'sortable'
+	$columnDefs[] = array('bSortable' => false, 'aTargets' => array($idCol));
+}
+if( ($idCol = array_search('nom', $aColumns)) !== false )
+{
+	// Les colonnes avec une largeur imposée
+	$columnDefs[] = array('sWidth' => '230px', 'aTargets' => array($idCol));
+}
+$notSearchableColumns = array();
 foreach($aColumns as $k => $c){
 	if($c != 'nom')
-	{
-		if($first) $first=false;
-		else $bSearchableString .= ', ';
-		$bSearchableString .= $k;
-	}
+		$notSearchableColumns[] = $k;
+}
+if( !empty($notSearchableColumns) )
+{
+	// Les colonnes qui ne sont pas 'searchable'
+	$columnDefs[] = array('bSearchable' => false, 'aTargets' => $notSearchableColumns);
 }
 
 $target = 'classement_ajax_json.php'.'?'.'race='.urlencode($raceClassement).'&'.'classement='.urlencode($typeClassement);
@@ -72,6 +85,7 @@ $target = 'classement_ajax_json.php'.'?'.'race='.urlencode($raceClassement).'&'.
 <script type="text/javascript">
 var oTable = $('#classement_table').dataTable({
 	"sAjaxSource": <?php echo json_encode($target); ?>,
+	"bAutoWidth": false,
 	"bProcessing": true,
 	"bServerSide": true,
 	"bStateSave": false,
@@ -80,10 +94,7 @@ var oTable = $('#classement_table').dataTable({
 	"oSearch": {"sSearch": <?php echo json_encode($sSearch); ?>},
 	"bSort": false,
 	"aaSorting": [[ 2, "desc" ], [ 1, "asc" ]],
-	"aoColumnDefs": [
-		{ "bSortable": false, "aTargets": [ 0 ] },
-		<?php if($bSearchableString != ''): ?>{ "bSearchable": false, "aTargets": [ <?php echo $bSearchableString; ?> ] }<?php endif ?>
-	],
+	"aoColumnDefs": <?php echo json_encode($columnDefs); ?>,
 	"oLanguage": {
 		"sInfo": "_START_ à _END_ sur _TOTAL_",
 		"sInfoEmpty": "Pas de résultat",
