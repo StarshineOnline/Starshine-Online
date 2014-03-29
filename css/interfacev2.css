@@ -5,7 +5,7 @@
 html { width:100%; height:100%; }
 body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repeat-x; width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
-#conteneur { width:985px; margin:auto; min-height:100%; }
+#conteneur { width:985px; margin:auto; min-height:100%; position:relative; }
 #conteneur_back { z-index:2; width:1000px; margin:0 auto; background:transparent url(../image/interface/global2.png) repeat-y center; min-height:120%; }
 #bas { clear:both; width:1000px; margin:0 auto; text-align:center; font-size:9px; }
 #centre { margin-top:3px; margin-left:7px; float:left; height:100%; z-index:3; }
@@ -207,7 +207,8 @@ body { margin:0; padding:0; background:#7e909c url(../image/v2/bg_site.png) repe
 /***************************************************
   Vrac
  ***************************************************/
-#loading { background:#E7CF98 url(./../image/ajax-loader-bar.gif) no-repeat scroll left center; height:25px; margin-left:393px; position:absolute; top:0; width:220px; -moz-border-radius-bottomleft:10px; -moz-border-radius-bottomright:10px; -webkit-border-bottom-right-radius:10px; -webkit-border-bottom-left-radius:10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; z-index:1; }
+#loading { background:#E7CF98 url(./../image/ajax-loader-bar.gif) no-repeat scroll left center; width:220px; height:25px; position:absolute; top:0; left:393px; -moz-border-radius-bottomleft:10px; -moz-border-radius-bottomright:10px; -webkit-border-bottom-right-radius:10px; -webkit-border-bottom-left-radius:10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; z-index:1; }
+#loading_information { position:absolute; top:50px; left:393px; z-index:1; }
 #messagerie_menu { text-align:center; }
 #messagerie_menu span { padding:2px; margin:2px; cursor:pointer!important; }
 .message_prev { background:transparent url(./../image/interface/previous_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:left; }
@@ -530,7 +531,21 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 /***********************************
  Pet
  **********************************/
-.monstre img
+.monstre button.no_style
+{
+	border: 0;
+	background: transparent;
+	padding: 0;
+	margin: 0 6px;
+}
+
+.monstre button
+{
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.monstre img.left
 {
 	float : left;
 	margin : 0 10px 0 0;
@@ -542,6 +557,21 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 }
 
 .monstre .monstre_name
+{
+	width: 140px;
+	padding: 2px 2px;
+}
+
+.monstre .monstre_name:focus
+{
+	padding: 0;
+	border-left-width: 2px;
+	border-right-width: 2px;
+	border-bottom-width: 2px;
+	border-top-width: 2px;
+}
+
+.monstre .monstre_name.not_focused
 {
 	border : 0px;
 	background : transparent;
