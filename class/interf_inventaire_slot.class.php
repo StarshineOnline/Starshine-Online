@@ -134,10 +134,10 @@ class interf_inventaire_slot extends interf_bal_cont
     			  if ($objet_d['identifier'])
     				  $echo = description_objet($invent);
     				else
-    					$echo = 'Objet non indentifié';
+    					$echo = 'Objet non indentifié.';
     			
             $li = $this->add( new interf_bal_cont('li') );
-            $li->set_attribut('onmouseover', 'return '.make_overlib($echo));
+            $li->set_attribut('onmouseover', 'return '.make_overlib(addslashes(htmlspecialchars($echo))));
             $li->set_attribut('onmouseout', 'return nd();');
             $span = $li->add(new interf_bal_cont('span', false, 'inventaire_span') );
             $span->set_attribut('style', 'width:150px');

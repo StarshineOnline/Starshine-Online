@@ -270,17 +270,32 @@ function description_objet($id_objet)
 			else $pa = '';
 			if($row['mp'] > 0) $mp = '<tr><td>MP<br /></td><td>'.$row['mp'].'</td></tr>';
 			else $mp = '';
-			$description .= '<strong>'.$row['nom'].'</strong><br /><table><tr><td>Type</td><td>'.$Gtrad[$row['type']].'</td></tr><tr><td>Stack</td><td>'.$row['stack'].'</td></tr><tr><td>Description</td></tr><tr><td>'.addslashes(description($row['description'], $row)).'</td></tr><tr><td>Prix HT<br /><span class=\\\'xsmall\\\'>(en magasin)</span></td><td>'.$row['prix'].'</td></tr>'.$pa.$mp.'</table>';
+			$description .= '<strong>'.$row['nom'].'</strong><br /><table><tr><td>Type</td><td>'.$Gtrad[$row['type']].'</td></tr><tr><td>Stack</td><td>'.$row['stack'].'</td></tr><tr><td>Description</td></tr><tr><td>'.description($row['description'], $row).'</td></tr><tr><td>Prix HT<br /><span class=\\\'xsmall\\\'>(en magasin)</span></td><td>'.$row['prix'].'</td></tr>'.$pa.$mp.'</table>';
 		break;
 		case 'r' :
-			$requete = "SELECT * FROM objet_royaume WHERE id = ".$objet['id_objet'];
+			$requete = "
+				SELECT *, o.nom nom, o.type type, b.description description
+				FROM objet_royaume o INNER JOIN batiment b ON o.id_batiment = b.id
+				WHERE o.id = ".$objet['id_objet']."
+			";
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			$keys = array_keys($row);
-			$description .= '<strong>'.$row['nom'].'</strong><br /><table> <tr> <td> Type </td> <td> '.$row['type'].' </td>';
+			$description .= '<strong>'.$row['nom'].'</strong><br />';
+			$description .= '<table>';
+			$description .= '<tr>';
+			$description .= '<td>Type</td><td>'.$row['type'].'</td>';
+			$description .= '</tr>';
 			if ($joueur->is_buff('convalescence'))
-				$description .= 'Cout en PA : 10';
-			$description .= '</tr></table>';
+			{
+				$description .= '<tr>';
+				$description .= '<td>Coût en PA</td><td>10</td>';
+				$description .= '</tr>';
+			}
+			$description .= '<tr>';
+			$description .= '<td>Description</td><td>'.nl2br(htmlspecialchars($row['description'])).'</td>';
+			$description .= '</tr>';
+			$description .= '</table>';
 		break;
 		case 'h' :
 			$description = 'Objet non identifié';
