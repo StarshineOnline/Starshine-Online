@@ -357,7 +357,7 @@ verif_mort($joueur, 1);
   										//Positionnement du drapeau
   										$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
   										$time = time() + max($row['temps_construction'] * $distance, $row['temps_construction_min']);
-  										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', 'drapeau', 0)";
+  										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$db->escape($row['nom'])."', 0)";
   										$db->query($requete);
       								// Coût en PA si en convalescence
       								if( $joueur->is_buff('convalescence') )

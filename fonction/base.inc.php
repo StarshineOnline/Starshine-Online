@@ -3217,7 +3217,7 @@ function pose_drapeau_roi($x, $y)
 	global $joueur;
 	global $db;
 	global $Trace;
-  global $G_max_x, $G_max_y;
+	global $G_max_x, $G_max_y;
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
@@ -3236,19 +3236,27 @@ function pose_drapeau_roi($x, $y)
 	$req = $db->query("select 1 from placement where x = $x and y = $y");
 	if ($db->num_rows($req) > 0) security_block(URL_MANIPULATION); // case pas libre !!
 
-	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	$req = $db->query("
+		SELECT temps_construction, b.id bid, b.nom bnom, o.id oid
+		FROM	depot_royaume d
+				INNER JOIN objet_royaume o ON d.id_objet = o.id
+				INNER JOIN batiment b ON o.id_batiment = b.id
+		WHERE o.type = 'drapeau' AND b.hp = 1 AND d.id_royaume = $race
+	");
 	if ($db->num_rows($req) < 1) {
-		echo "<h5>Plus de drapeaux au dépôt</h5>";
+		echo "<h5>Plus de drapeaux au dépôt.</h5>";
 		return false;
 	}
 	$row = $db->read_assoc($req);
 
-	$drapeau_id = $row['id'];
+	$drapeau_id = $row['bid'];
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit 1");
 	$distance = abs($Trace[$joueur->get_race()]['spawn_x'] - $x) + abs($Trace[$joueur->get_race()]['spawn_y'] - $y);
 	$time = time() + ($row['temps_construction'] * $distance);
-	$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('drapeau', $x, $y, '$race', ".
-		time().", '$time', $drapeau_id, 1, 'drapeau', 0)";
+	$requete = "
+		INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
+		VALUES ('drapeau', $x, $y, '$race', ".time().", '$time', $drapeau_id, 1, '".$db->escape($row['bnom'])."', 0)
+	";
 	$req = $db->query($requete);
 }
 
@@ -3257,7 +3265,7 @@ function pose_drapeau_roi_all()
 	global $joueur;
 	global $db;
 	global $Trace;
-  global $G_max_x, $G_max_y;
+	global $G_max_x, $G_max_y;
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
@@ -3269,7 +3277,13 @@ function pose_drapeau_roi_all()
 	$race = $Trace[$joueur->get_race()]['numrace'];
 
 	
-	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	$req = $db->query("
+		SELECT temps_construction, b.id bid, b.nom bnom, o.id oid
+		FROM	depot_royaume d
+				INNER JOIN objet_royaume o ON o.id = d.id_objet
+				INNER JOIN batiment b ON b.id = o.id_batiment
+		WHERE o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race
+	");
 	$nb_drapeaux = $db->num_rows($req);
 	if ($nb_drapeaux < 1) {
 		echo "<h5>Plus de drapeaux au dépôt</h5>";
@@ -3285,7 +3299,11 @@ function pose_drapeau_roi_all()
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit $nb");
 	$time = time();
 	$expr_distance = '(abs('.$Trace[$joueur->get_race()]['spawn_x'].' - x) + abs('.$Trace[$joueur->get_race()]['spawn_y'].' - y))';
-	$req = $db->query("insert into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) select 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[id], 1, 'drapeau', 0 from tmp_adj_lib limit $nb;");
+	$req = $db->query("
+		INSERT into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
+		SELECT 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[bid], 1, '".$db->escape($row['bnom'])."', 0
+		FROM tmp_adj_lib limit $nb;
+	");
 	return $nb;
 }
 
