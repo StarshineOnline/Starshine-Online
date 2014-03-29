@@ -320,15 +320,19 @@ verif_mort($joueur, 1);
 			switch($_GET['type'])
 			{
 				case 'drapeau' :
-				  if ($joueur->is_buff('debuff_rvr'))
+					if ($joueur->is_buff('debuff_rvr'))
 					{
-            $princ->add_message('RvR impossible pendant la trêve', false);
+						$princ->add_message('RvR impossible pendant la trêve', false);
 						break;
 					}
 					if ($W_row['type'] != 1 && $W_row['type'] != 4)
 					{
 						//Cherche infos sur l'objet
-						$requete = "SELECT *, batiment.id AS batiment_id  FROM objet_royaume RIGHT JOIN batiment ON batiment.id = objet_royaume.id_batiment WHERE objet_royaume.id = ".sSQL($_GET['id_objet']);
+						$requete = "
+							SELECT *, b.id AS batiment_id, b.nom batiment_nom
+							FROM objet_royaume o INNER JOIN batiment b ON b.id = o.id_batiment
+							WHERE o.id = ".sSQL($_GET['id_objet']."
+						");
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
 
@@ -336,9 +340,9 @@ verif_mort($joueur, 1);
 						if((($R->get_diplo($joueur->get_race()) > 6 && $R->get_diplo($joueur->get_race()) != 127) OR $R->get_nom() == 'Neutre') AND !is_donjon($joueur->get_x(), $joueur->get_y()))
 						{
 							//Si c'est un petit drapeau, on vérifie qu'on est uniquement sur neutre
-							if($row['nom'] == 'Petit Drapeau' && $R->get_nom() != 'Neutre')
+							if($row['batiment_nom'] == 'Petit Drapeau' && $R->get_nom() != 'Neutre')
 							{
-                $princ->add_message('Vous ne pouvez pas poser de petit drapeau sur une case non neutre !', false);
+								$princ->add_message('Vous ne pouvez pas poser de petit drapeau sur une case non neutre !', false);
 							}
 							else
 							{
@@ -352,109 +356,112 @@ verif_mort($joueur, 1);
 									$req = $db->query($requete);
 									if($db->num_rows <= 0)
 									{
-                    if( !$joueur->is_buff('convalescence') OR $joueur->get_pa() >= 10 )
-                    {
-  										//Positionnement du drapeau
-  										$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
-  										$time = time() + max($row['temps_construction'] * $distance, $row['temps_construction_min']);
-  										$requete = "INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$db->escape($row['nom'])."', 0)";
-  										$db->query($requete);
-      								// Coût en PA si en convalescence
-      								if( $joueur->is_buff('convalescence') )
-      								{
-      								  $joueur->set_pa( $joueur->get_pa() - 10 );
-                      }
-  										//On supprime l'objet de l'inventaire
-  										$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
-  										$joueur->sauver();
-  										$princ->add_message('Drapeau posé avec succès');
+										if( !$joueur->is_buff('convalescence') OR $joueur->get_pa() >= 10 )
+										{
+											//Positionnement du drapeau
+											$distance = calcul_distance(convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']), ($joueur->get_pos()));
+											$time = time() + max($row['temps_construction'] * $distance, $row['temps_construction_min']);
+											$requete = "
+												INSERT INTO placement (id, type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
+												VALUES ('', 'drapeau', '".$joueur->get_x()."', '".$joueur->get_y()."', '".$Trace[$joueur->get_race()]['numrace']."', ".time().", '".$time."', '".$row['batiment_id']."', '".$row['hp']."', '".$db->escape($row['batiment_nom'])."', 0)
+											";
+											$db->query($requete);
+											// Coût en PA si en convalescence
+											if( $joueur->is_buff('convalescence') )
+											{
+												$joueur->set_pa( $joueur->get_pa() - 10 );
+											}
+											//On supprime l'objet de l'inventaire
+											$joueur->supprime_objet($joueur->get_inventaire_slot_partie($_GET['key_slot'], true), 1);
+											$joueur->sauver();
+											$princ->add_message('Drapeau posé avec succès');
 
-  										// Augmentation du compteur de l'achievement
-  										$achiev = $joueur->get_compteur('pose_drapeaux');
-  										$achiev->set_compteur($achiev->get_compteur() + 1);
-  										$achiev->sauver();
+											// Augmentation du compteur de l'achievement
+											$achiev = $joueur->get_compteur('pose_drapeaux');
+											$achiev->set_compteur($achiev->get_compteur() + 1);
+											$achiev->sauver();
 
-  										if ($W_row['info'] == 1)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 2)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_foret');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 3)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_sable');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 4)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_glace');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 6)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 7)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_marais');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 8)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_route');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-  										if ($W_row['info'] == 9)
-  										{
-  											// Augmentation du compteur de l'achievement
-  											$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
-  											$achiev->set_compteur($achiev->get_compteur() + 1);
-  											$achiev->sauver();
-  										}
-                    }
-                    else
-                    {
-                      $princ->add_message('Vous n\'avez pas assez de PA !', false);
-                    }
+											if ($W_row['info'] == 1)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 2)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_foret');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 3)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 4)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_glace');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 6)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 7)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_marais');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 8)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_route');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+											if ($W_row['info'] == 9)
+											{
+												// Augmentation du compteur de l'achievement
+												$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
+												$achiev->set_compteur($achiev->get_compteur() + 1);
+												$achiev->sauver();
+											}
+										}
+										else
+										{
+											$princ->add_message('Vous n\'avez pas assez de PA !', false);
+										}
 									}
 									else
 									{
-                    $princ->add_message('Il y a déjà un batiment sur cette case !', false);
+										$princ->add_message('Il y a déjà un batiment sur cette case !', false);
 									}
 								}
 								else
 								{
-                  $princ->add_message('Il y a déjà un batiment en construction sur cette case !', false);
+									$princ->add_message('Il y a déjà un batiment en construction sur cette case !', false);
 								}
 							}
 						}
 						else
 						{
-              $princ->add_message('Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre', false);
+							$princ->add_message('Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre', false);
 						}
 					}
 					else
 					{
-            $princ->add_message('Vous ne pouvez pas poser de drapeau sur ce type de terrain', false);
+						$princ->add_message('Vous ne pouvez pas poser de drapeau sur ce type de terrain', false);
 					}
 				break;
 				case 'identification' :
