@@ -15,6 +15,7 @@ class bourg extends construction
 				$this->mine_max = 1;
 			break;
 			case 'Petit bourg' :
+			case 'Petit Bourg' :
 				$this->mine_max = 2;
 			break;
 			case 'Bourg' :
