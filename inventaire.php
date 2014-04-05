@@ -331,8 +331,8 @@ verif_mort($joueur, 1);
 						$requete = "
 							SELECT *, b.id AS batiment_id, b.nom batiment_nom
 							FROM objet_royaume o INNER JOIN batiment b ON b.id = o.id_batiment
-							WHERE o.id = ".sSQL($_GET['id_objet']."
-						");
+							WHERE o.id = ".sSQL($_GET['id_objet'])."
+						";
 						$req = $db->query($requete);
 						$row = $db->read_assoc($req);
 
