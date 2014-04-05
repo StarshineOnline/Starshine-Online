@@ -14,6 +14,8 @@ if ($G_maintenance)
 }
 else
 {
+	error_reporting(E_ALL);
+
 	include_once (root."../jpgraph/src/jpgraph.php");
 	include_once (root."../jpgraph/src/jpgraph_pie.php");
 	include_once (root."../jpgraph/src/jpgraph_pie3d.php");
@@ -75,7 +77,7 @@ else
       $z = 0;
       $data = array();
       $dates = array();
-      include_once(root.'inc/races.inc.php');
+      include_once(root.'inc/race.inc.php');
       $races = array_keys($Trace);
     	foreach($races as $r)
     	{
@@ -147,6 +149,7 @@ else
 			if(!in_array($keys[$j], $strips))
 			{
 				$donnees = explode(';', $row[$keys[$j]]);
+				$data = array_fill(0, 10, 0);
 				if(count($donnees) > 2)
 				{
 					$data[0] += $donnees[2];
@@ -184,7 +187,7 @@ else
 	$graph->xaxis->SetTickLabels($sources);
 	$graph->Stroke('images/test_admin.jpg');*/
 	?>
-	<img src="images/test_admin.jpg" />
+	<!--<img src="images/test_admin.jpg" />-->
 	<?php
 	include_once(root.'bas.php');
 }

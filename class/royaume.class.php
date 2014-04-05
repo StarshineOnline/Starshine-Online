@@ -224,7 +224,7 @@ class royaume
       $row = $db->read_array($res);
       $cases_tot = $row['tot'];
       // Consommation totale
-      $requete = 'SELECT SUM(food) AS food FROM royaume';
+      $requete = 'SELECT SUM(food) AS food FROM royaume WHERE id > 0';
       $res = $db->query($requete);
       $row = $db->read_array($res);
       $stocks = $row['food'];
@@ -250,10 +250,13 @@ class royaume
   /// Met-à-jour la consommation de nourriture
   function maj_conso_food()
   {
-    $diff = $this->get_conso_food_th() - $this->get_conso_food();
-    if($diff < - 50) $diff = -50;
+  	$cons_th = $this->get_conso_food_th();
+    $anc_diff = $diff = $cons_th - $this->get_conso_food();
+    if($diff < -50) $diff = -50;
     else if($diff > 25) $diff = 25;
+    echo 'maj conso '.$this->race.' : théorique='.$cons_th.' - actuel='.$this->get_conso_food().' - écart='.$anc_diff.' - ajustement='.$diff;
     $this->set_conso_food( $this->get_conso_food() + $diff);
+    echo ' - nouvelle conso='.$this->get_conso_food()."\n";
   }
 
   /**
