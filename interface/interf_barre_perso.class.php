@@ -124,7 +124,7 @@ class interf_barre_perso extends interf_bal_cont
     $span = $heure->add( new interf_bal_smpl('span', substr(date_sso(time()),0,-3), 'heure') );
     $pos = $this->add( new interf_bal_cont('a', 'perso_position') );
     $img = $pos->add( new interf_bal_smpl('img') );
-    $img->set_attribut('src', 'carte_perso.php?vue=11');
+    $img->set_attribut('src', 'carte_perso.php?vue=12');
   }
 	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, $style=false, $type=null)
 	{

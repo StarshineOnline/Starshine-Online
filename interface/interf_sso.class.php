@@ -20,6 +20,7 @@ class interf_sso extends interf_html
     $this->css('css/jquery.ui.all.css');
     $this->css('css/bootstrap.css');
     $this->css('css/bootstrap-theme.min.css');
+    $this->css('css/icones.css');
     // javascript
     $this->javascript('javascript/jquery/jquery-2.0.2.min.js');
     $this->javascript('javascript/jquery/jquery-ui-1.10.3.custom.min.js');

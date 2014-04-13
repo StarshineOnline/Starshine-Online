@@ -225,6 +225,8 @@ abstract class table
 	* @param bool|string $keys       Si false, stockage en tableau classique, si string
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @return array     Liste d'objets
+	* 
+	* @TODO: supprimer ?		
 	*/
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{
@@ -246,6 +248,48 @@ abstract class table
 		}
 		else
       $return = array();
+	}
+	
+	static function get_valeurs($champs, $cond, $rangement=true)
+	{
+		global $db;
+		if( is_array($champs) )
+			$champs = implode(',', $champs);
+		if( is_string($rangement) )
+			$ordre = ' ORDER BY '.$rangement;
+		else
+		{
+			$ordre= '';
+			if( is_array($rangement) )
+				$champs .= ', CONCAT_WS("|",'.implode(',', $rangement).') AS get_valeurs_cle';
+		}
+		
+		
+		$requete = 'SELECT '.$champs.' FROM '.static::get_table().' WHERE '.$cond.$ordre;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			if( $rangement === false )
+				return $db->read_object($req);
+			else if( is_array($rangement) )
+			{
+				$liste = array();
+				while( $row = $db->read_assoc($req) )
+				{
+					$liste[ $row['get_valeurs_cle'] ] = $row;
+				}
+			}
+			else
+			{
+				$liste = array();
+				while( $row = $db->read_assoc($req) )
+				{
+					$liste[] = $row;
+				}
+			}
+			return $liste;
+		}
+		return null;
 	}
 	
 	/// Affiche l'objet sous forme de string

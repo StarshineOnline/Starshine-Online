@@ -35,13 +35,22 @@ a:hover
 	padding-bottom: 5px;
 }
 
+#barre_menu .container
+{
+	width: 1000px;
+	padding: 0px;
+}
+
+#navbar
+{
+	padding-left: 0px;
+}
+
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
 #conteneur { width:985px; margin:auto; min-height:100%; }
 #conteneur_back { z-index:2; width:1000px; margin:0 auto;  min-height:120%; }
 #bas { clear:both; width:1000px; margin:0 auto; text-align:center; font-size:9px; }
 #centre { margin-top:3px; margin-left:7px; float:left; height:100%; z-index:3; }
-#deplacement { float:left; vertical-align:top; text-align:right; width:50px; margin-left:5px; }
-#information { height:100%; width:47%; float:left; z-index:1; margin-left:6px; }
 #information fieldset { background:rgba(255,255,255,0.5);box-shadow:0 2px 3px -1px #AEB1B8;border-color: #CACACA #CACACA;
     border-style: solid solid none;
     border-width: 1px 1px medium; }
@@ -58,7 +67,7 @@ a:hover
 #perso_menu .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; font-style:normal; font-weight:bold; }
 .pos_over { background:transparent url(../image/interface/2.png) center; display:block; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; height:58px!important; width:58px!important; }
 #perso_contenu { margin:auto; min-height:110px; padding:5px;position: relative; }
-#contenu_jeu { margin:0 auto; width:100%; }
+#contenu_jeu { margin:0 auto; width:100%; position:relative; }
 #popup { margin-left:130px; position:absolute; top:60px; z-index:99!important; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
 #popup a { color:#EEE; }
 #popup_menu { cursor:move; background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
@@ -97,29 +106,31 @@ a:hover
 /*-- Infos perso ------------------------------------------------------*/
 #infos_perso
 {
-  float:left;
-  width:220px;
-  height:109px;
-  position:relative;
+  position:absolute;
+  left: 212px;
+  width:223px;
+  height:112px;
   background-color:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;
-  background-position : 8px 3px;
+  background-position : 8px 4px;
   background-repeat: no-repeat;
   margin-left:16px;
+  top: 3px;
 }
 
 #infos_vie
 {
-  float:left;
-  width:205px;
-  height:109px;
-  position:relative;
+  position:absolute;
+  left: 8px;
+  width:207px;
+  height:112px;
   background:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;
+  top: 3px;
 }
 
 
-.joueur_barre, .jauge_barre
+.jauge_barre
 {
   font-size:10px !important;
   color:white;
@@ -131,7 +142,7 @@ a:hover
   background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
 }
 
-.joueur_bulle, .jauge_bulle
+.jauge_bulle
 {
   height: 54px;
   font-size:10px !important;
@@ -151,7 +162,6 @@ a:hover
   width: 16px;
 }
 
-#joueur_nom { position:relative;  position:relative; text-align:left; width:210px; margin-top:5px; cursor:pointer; left:10px;}
 #nom_perso
 {
   display: block;
@@ -167,14 +177,14 @@ a:hover
   text-decoration:none;
 }
 
-#joueur_HP, #perso_hp {  top:25px;left:10px;}
-#joueur_MP, #perso_mp { top:25px; left:75px;  }
+#perso_hp {  top:28px;left:10px;}
+#perso_mp { top:28px; left:75px;  }
 
-#joueur_PA, #perso_pa {  top:25px; left:140px; }
+#perso_pa {  top:28px; left:140px; }
 
-#joueur_XP, #perso_xp {   left: 10px; top: 87px; width:180px; }
+#perso_xp {   left: 10px; top: 90px; width:180px; }
 
-#joueur_PH, #perso_ph
+#perso_ph
 {
   background:transparent url(./../image/honneur.png) left no-repeat;
   font-size: 10px;
@@ -182,26 +192,27 @@ a:hover
   left: 56px;
   padding: 0 0 0 24px;
   position: absolute;
-  /*text-align: center;*/
   top: 18px;
   width: 60px;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 95%;
+	padding-top: 3px;
 }
 
-#joueur_buffs_nom, #perso_buffs
+#perso_buffs
 {
 	position:absolute;
 	height:42px;
-	top: 65px;
+	top: 67px;
 	left:11px;
 }
 
-.joueur_heure, #perso_heure
+#perso_heure
 {
   position:absolute;
-  left: 473px;
+  left: 471px;
   background-repeat:no-repeat;
   width:78px;
   text-indent:28px;
@@ -209,19 +220,17 @@ a:hover
   line-height:24px;
 }
 
-.joueur_position, #perso_position
+#perso_position
 {
   display:block;
   position:absolute;
-  left:470px;
-  top:40px;
+  left:465px;
+  top:36px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;
   background: rgba(0, 0, 0, 0.1);
   padding:2px;
   border-radius: 4px;
 }
-
-
 
 #perso_stars
 {
@@ -232,7 +241,7 @@ a:hover
 	line-height:24px;
 	padding:0 0 0 16px;
 	position:absolute;
-	top:40px;
+	top:42px;
 	left:60px;
   white-space:nowrap;
   overflow: hidden;
@@ -247,7 +256,7 @@ a:hover
 	left: 130px;
 	padding-left: 16px;
   font-size: 10px;
-  width: 85px;
+  width: 87px;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -268,10 +277,6 @@ a:hover
 {
 	top: 48px;
 }
-
-#joueur_PO { font-size:8pt; background:transparent url(./../image/starsv2.png) left no-repeat; width:50px; height:24px; line-height:24px; text-align:center; padding:0 0 0 24px; position:absolute; top:87px; left:68px; }
-
-/*.joueur_position 	{position:absolute;left:470px;top:34px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1) inset;background: rgba(0, 0, 0, 0.1);padding:2px; border-radius: 4px;}*/
 
 .bulle
 {
@@ -305,7 +310,7 @@ a:hover
 {
   position:absolute;
   width:100%;
-  top: 18px;
+  top: 19px;
   left: 0px;
 }
 
@@ -313,21 +318,23 @@ a:hover
 {
   position:absolute;
   width:100%;
+  top: -1px;
 }
 
 #race_classe
 {
   position:absolute;
-  top:/*6*/2px;
+  top: 2px;
   left:60px;
 }
 
-#buff_list, #liste_buffs
+#liste_buffs
 {
   position:relative;
   text-align:center;
 }
-#debuff_list, #liste_debuffs
+
+#liste_debuffs
 {
   position:relative;
   text-align:center;
@@ -341,36 +348,38 @@ barre_buff
   margin-top:1px;
 }
 
-#joueur_groupe, #perso_groupe
+#perso_groupe
 {
 	height: 110px;
-  left: 559px;
+  left: 558px;
   position: absolute;
-  top: 4px;
+  top: 3px;
 }
 
-#joueur_groupe ul, #perso_groupe ul { float:left; }
+#perso_groupe ul { float:left; }
 
-#joueur_groupe li, #perso_groupe li.membre_groupe
+#perso_groupe li.membre_groupe
 {
-	/*cursor:pointer;*/
 	font-size:8pt;
-	padding:0 0 2px;
+	padding:0 1px 2px;
 	background:  rgba(255, 255, 255, 0.2);
   border: 1px solid #BBBBBB;
 	position: relative;
   border-radius: 2px;
 	margin:2px;
 	float:left;
-	height:52px;
-	width:210px;
+	height:53px;
+	width:212px;
 }
 
-.joueur_groupe_pseudo, .perso_groupe_nom 
+.membre_buffs
 {
-	/*line-height:16px;*/
+	margin-top: 2px;
+}
+
+.perso_groupe_nom 
+{
 	width:125px;
-	/*text-indent: 3px;*/
   margin-top: 2px;
   margin-left: 5px;
 }
@@ -405,59 +414,274 @@ barre_buff
 .activite_tres_actif { background: #428bca; }
 .activite_connecte { background: #5cb85c; }
 
-#joueur_Psso { cursor:pointer; background:transparent url(./../image/pointshine.png) left no-repeat; width:16px; height:16px; position:absolute; top:0; left:85px; }
-#joueur_LV { width:24px; height:24px; text-align:center; line-height:24px; font-size:8pt; font-weight:bold; background:transparent url(./../image/LV.png) left no-repeat; }
-#joueur_onglets { position:absolute; left:88px; top:65px; width:225px; padding:0 0 0 10px; }
-#joueur_onglets_index,#joueur_onglets_forums,#joueur_onglets_options,#joueur_onglets_exit { float:left; width:250px; text-align:left; padding-left:5px; font-size:.9em; }
-#joueur_onglets_forums img { height:15px; }
-#joueur_type { position:relative; width:210px; float:left; text-align:left; font-size:8pt; height:12px; }
-#buff_list ul { float:left; list-style-type:none; text-align:center; width:220px; }
 .buff { position:relative; float:left; height:19px; padding:0; margin:0 2px; cursor:pointer; }
 
 .buff_dispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px; box-shadow:  0 1px 2px 0px rgba(0, 0, 0, 0.5) inset;border-radius: 3px; }
 .buff_dispo img {border-radius: 3px;}
 .buff_nondispo { position:relative; float:left; height:16px; width:16px; padding:0; margin:0 2px;  background: rgba(0, 0, 0, 0.2) url(./../image/interface/cadena.png) ;  }
-.buff_duree_restante { position:absolute; bottom:0; left:0; }
-#joueur_groupe_bouton { width:35px; float:left; text-align : center;}
 
-#mail_groupe { cursor:pointer; width:32px; height:32px; background:transparent url(../image/message.png) center no-repeat; margin : auto;position: absolute;display: none;}
-#info_groupe { cursor:pointer; width:21px; height:21px; background:transparent url(../image/interface/information.png) center; margin : auto; margin-top : 12px; margin-bottom : 7px;position: absolute;display: none;}
-#info_groupe:hover { background-position:top; }
-#info_groupe:active { background-position:bottom; }
+/*-- Partie gauche de l'interface ---------------------------------------------------*/
 
-.joueur_groupe_ischef { float:left; width:16px; height : 16px; display : block; margin-right : 2px;}
-.joueur_groupe_barre_hp { position: absolute; width:20px; height:20px;border-radius: 50%;border: 1px solid #888888;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);right:30px; }
-.joueur_groupe_barre_mp { position: absolute; width:20px; height:20px; border-radius: 50%;border: 1px solid #888888;background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);right:5px;}
+#deplacement
+{
+	position: absolute;
+	width: 505px;
+	height: 505px;
+	margin-top : 5px;
+}
+
+#cadre_gauche
+{
+	border: 1px solid #080808;
+	height: 495px;
+	width: 495px;
+	margin-left: 10px;
+	margin-top: 10px;
+	border-radius: 10px;
+	border-top-left-radius: 20px;
+}
+
+#depl_disque
+{
+	top:0px;
+	left:0px;
+	width: 93px;
+	height: 93px;
+	position: absolute;
+	border-radius: 50%;
+	border: 1px solid #080808;
+	background: #888;
+	z-index: 1;
+	overflow:hidden;
+}
+
+#depl_barre_haut
+{
+	position: absolute;
+	height: 50px;
+	width: 494px;
+	background: rgba(0, 0, 0, 0.5);
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-left: 80px;
+	font-size: 40px;
+	vertical-align: middle;
+	text-align: center;
+}
+
+#depl_barre_gauche
+{
+	width: 50px;
+	height: 494px;
+	background: rgba(0, 0, 0, 0.5);
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	padding-top: 87px;
+}
+
+#depl_centre
+{
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+	height: 445px;
+	width: 445px;
+	border-left: 1px solid #777;
+	border-top: 1px solid #777;
+	border-bottom-right-radius: 10px;
+	background: rgba(255, 255, 255, 0.2);
+}
+
+#menu_panneaux
+{
+	margin-left: 1px;
+	width: 50px;
+}
+
+#menu_panneaux ul
+{
+	margin-left: -2px;
+}
+
+#menu_panneaux a
+{
+	margin: auto;
+	display: block;
+	padding: 7px 2px 2px;
+	border-bottom: 1px solid #777;
+	height: 57px;
+	width: 46px;
+	text-align: center;
+	font-size: 9px;
+	color: #ddd;
+}
+
+#menu_panneaux .icon, #menu_carte .icon
+{
+	font-size: 30px;
+}
+
+#menu_ville_carte a
+{
+	border-top: 1px solid #777;
+}
+
+#menu_panneaux a:hover, #menu_carte a:hover
+{
+	background: rgba(255, 255, 255, 0.2);
+	color: #fff;
+}
+
+#menu_carte ul
+{
+	margin-top: -4px;
+}
+
+#menu_carte li
+{
+	display: inline-block;
+	margin-left: -12px;
+}
+
+#menu_carte a
+{
+	margin: 2px 0px 2px 0px;
+	height: 47px;
+	min-width: 50px;
+	display: block;
+	padding: 5px;
+	border-right: 1px solid #777;
+	color: #ddd;
+	font-size: 10px;
+	text-align: center;
+}
+
+#menu_carte li:first-child a
+{
+	border-left: 1px solid #777;
+}
 
 /*-- Rose des vents ---------------------------------------------------*/
-#rosedesvents { width:75px; height:75px; position:absolute; left:13px; top:13px; z-index:1;opacity: 0.5; }
-#rose_div_hg { background:transparent url(./../image/rosedesvent/nordouest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_hg:hover { background-position:top; }
-#rose_div_hg:active { background-position:bottom; }
-#rose_div_h { background:transparent url(./../image/rosedesvent/nord.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_h:hover { background-position:top; }
-#rose_div_h:active { background-position:bottom; }
-#rose_div_hd { background:transparent url(./../image/rosedesvent/nordest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_hd:hover { background-position:top; }
-#rose_div_hd:active { background-position:bottom; }
-#rose_div_cg { background:transparent url(./../image/rosedesvent/ouest.png) center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
-#rose_div_cg:hover { background-position:top; }
-#rose_div_cg:active { background-position:bottom; }
-#rose_div_c { background:transparent url(./../image/rosedesvent/rafraichir.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_c:hover { background-position:top; }
-#rose_div_c:active { background-position:bottom; }
-#rose_div_cd { background:transparent url(./../image/rosedesvent/est.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_cd:hover { background-position:top; }
-#rose_div_cd:active { background-position:bottom; }
-#rose_div_bg { background:transparent url(./../image/rosedesvent/sudouest.png) center; width:25px; height:25px; cursor:pointer; float:left; clear:both; }
-#rose_div_bg:hover { background-position:top; }
-#rose_div_bg:active { background-position:bottom; }
-#rose_div_b { background:transparent url(./../image/rosedesvent/sud.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_b:hover { background-position:top; }
-#rose_div_b:active { background-position:bottom; }
-#rose_div_bd { background:transparent url(./../image/rosedesvent/sudest.png) center; width:25px; height:25px; cursor:pointer; float:left; }
-#rose_div_bd:hover { background-position:top; }
-#rose_div_bd:active { background-position:bottom; }
+
+#depl_disque a
+{
+	position: absolute;
+	display: block;
+	height: 31px;
+	width: 31px;
+	color: #ddd;
+	font-size: 20px;
+}
+
+a#depl_disque_centre
+{
+	top:26px;
+	left:26px;
+	width: 40px;
+	height: 40px;
+	position: absolute;
+	display: block;
+	border-radius: 50%;
+	border: 1px solid #080808;
+	color: #ddd;
+	font-size: 25px;
+	padding-top: 5px;
+	text-align: center;
+	z-index: 2;
+	background: #888;
+}
+
+#depl_disque a:hover
+{
+	background: #bbb;
+	color: #444;
+}
+
+a#depl_haut_gauche
+{
+	top: 0px;
+	left: 0px;
+	padding-left: 15px;
+	padding-top: 15px;
+	font-size: 17px;
+}
+
+#depl_haut
+{
+	top: 0px;
+	left: 30px;
+	text-align: center;
+	padding-top: 3px;
+}
+
+a#depl_haut_droite
+{
+	top: 0px;
+	left: 60px;
+	padding-left: 0px;
+	padding-top: 15px;
+	font-size: 17px;
+}
+
+#depl_gauche
+{
+	top: 31px;
+	padding-left: 3px;
+	padding-top: 5px;
+}
+
+#depl_droite
+{
+	top: 31px;
+	padding-top: 3px;
+	right: 0px;
+	padding-right: 3px;
+	text-align: right;
+}
+
+a#depl_bas_gauche
+{
+	bottom: 0px;
+	left: 0px;
+	padding-left: 15px;
+	font-size: 17px;
+}
+
+#depl_bas
+{
+	bottom: 0px;
+	left: 30px;
+	text-align: center;
+	padding-top: 8px;
+}
+
+a#depl_bas_droite
+{
+	bottom: 0px;
+	left: 60px;
+	padding-left: 0px;
+	font-size: 17px;
+}
+
+
+/*-- Partie droite de l'interface ---------------------------------------------------*/
+
+
+#information
+{
+	position: absolute;
+	height:100%;
+	min-height: 500px;
+	width:480px;
+	z-index:1;
+	margin-left:6px;
+	right: 0px;
+	margin-top : 15px;
+	background: rgba(255, 255, 255, 0.2);
+	border: 1px solid #777;
+	border-radius: 10px;
+	padding: 10px 4px 10px 4px;
+}
 
 /*-- Overlib ----------------------------------------------------------*/
 .overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; z-index:100 !important;}
@@ -475,16 +699,70 @@ barre_buff
 #cluetip a {color : #444; text-decoration : none;}
 #cluetip a:hover {color : #888;}
 
-/*-- Map --------------------------------------------------------------*/
-#carte { width:445px; height:100%; float:left; margin:0; clear:both; z-index:500; }
+/*-- Carte --------------------------------------------------------------*/
+
+
+
+
+#carte
+{
+	/*width:445px;
+	height:100%;
+	float:left;
+	margin:0;
+	clear:both;
+	z-index:500;*/
+	color:/*#ddd*/rgba(0, 0, 0, 0.5);
+}
+
+#carte th
+{
+	width: 20px;
+	height: 60px;
+}
+
+#carte td
+{
+	width: 60px;
+	height: 60px;
+}
+
+#carte_bord_haut
+{
+	height: 20px /*!important*/;
+	/*cursor:pointer;
+	padding-bottom:0;
+	cursor:default;*/
+}
+
+#carte_bord_haut th
+{
+	/*float:left;*/
+	width:60px;
+	height:inherit;
+	line-height:20px;
+	text-align:center;
+}
+
+#carte_bord_haut_gauche
+{
+	width:20px !important;
+	/*height:inherit;*/
+}
+
+#carte_bord_haut_x, #carte_bord_haut_y
+{
+	color:black!important;
+	font-weight:bold;
+}
+
+
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
 #carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
 #carte a,.visu a { color:#444; text-decoration:none; }
 #carte a:hover,.visu a:hover { color:#888; text-decoration:none; }
 
 #carte ul { list-style:none; padding:0; margin:0; }
-#map_bord_haut { height:20px!important; cursor:pointer; padding-bottom:0; cursor:default; }
-#map_bord_haut li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
 #map_bord_haut2 li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
 #map_bord_haut_gauche { width:20px!important; height:inherit; }
 #map_bord_haut_gauche2 { width:25px!important; height:inherit; }
@@ -747,7 +1025,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   height:51px;
   margin: 2px;
   padding: 2px;
-  font-size:.8em;
+  font-size:11px;
   text-align:center;
   vertical-align:top;
   background-image:url(../image/interface/1.png);

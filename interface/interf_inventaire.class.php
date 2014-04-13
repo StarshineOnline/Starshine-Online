@@ -30,7 +30,7 @@ class interf_inventaire extends interf_cont
     $this->invent = $invent;
     $this->slot = $slot;*/
     // Javascript
-    $script = $this->add( new interf_bal_smpl('script') );
+    $script = $this->add( new interf_bal_smpl('script', '') );
     $script->set_attribut('type', 'text/javascript');
     $script->set_attribut('src', './javascript/inventaire.js');
     // onglets principal

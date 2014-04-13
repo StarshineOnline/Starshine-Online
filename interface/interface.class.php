@@ -518,7 +518,9 @@ class interf_elt_menu extends interf_bal_cont
   function __construct($nom, $lien, $onclick=false, $id=false, $classe=false)
   {
     interf_bal_cont::__construct('li', $id, $classe);
-    $this->lien = self::add( new interf_bal_smpl('a', $nom) );
+    $this->lien = self::add( new interf_bal_cont('a') );
+    if($nom)
+			$this->lien->add( new interf_txt($nom) );
     $this->lien->set_attribut('href', $lien);
     if( $onclick )
       $this->lien->set_attribut('onclick', $onclick);
@@ -786,11 +788,11 @@ class interf_tableau extends interf_bal_cont
 {
   protected $lgn_act = null;  ///< Ligne actuelle du tableau.
   protected $entete;   ///< Indique si la ligne actuelle est l'en-tête.
-  function __construct()
+  function __construct($id=false, $classe=false, $id_lgn1=null, $classe_lgn1=null, $entete=true)
   {
-    $this->balise = 'table';
-    $this->nouv_ligne();
-    $this->entete = true;
+  	parent::__construct('table', $id, $classe);
+    $this->nouv_ligne($id_lgn1, $classe_lgn1);
+    $this->entete = $entete;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()

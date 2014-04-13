@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-class map
+class map extends table
 {
 	public $x;
 	public $y;

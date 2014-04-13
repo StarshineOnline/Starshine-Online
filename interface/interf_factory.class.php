@@ -37,6 +37,13 @@ class interf_factory
   {
     return new interf_princ_droit($titre);
   }
+  /*
+   */
+  function creer_cadre_carte()
+  {
+    include_once(root.'interface/interf_gauche.class.php');
+    return new interf_cadre_carte();
+  }
   /**
    * Méthode affichant le résultat d'ine action
    */
