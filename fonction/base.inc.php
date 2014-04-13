@@ -1630,12 +1630,12 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		}
 		echo '
 		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-		Maximum de la compétence '.$competence.' = '.$max.'<br />';
+		Valeur maximale en '.$competence.' : '.$max.'<br />';
 		// On se base sur le joueur et non le perso, sinon on perds les montees
 		// des rounds precedents vu qu'on ne sauve qu'a la fin
 		$val_competence = $joueur->get_comp($competence, true);
 
-		echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
+		echo 'Valeur actuelle en '.$competence.' : '.$val_competence.'<br />
 		Difficulté : '.$difficulte.'<br />';
 		// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
 		if($val_competence < $max)
@@ -1648,16 +1648,25 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
 			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 			$R_retour[1] = false;
-			echo 'Chances : dé de : '.$reussite.' doit être inférieur à '.$chance.' <i>'.($chance * 100 / $reussite).'% de chance</i><br />';
-			echo 'Résultat : '.$numero.'<br />';
+			echo 'Chances : <br />';
+			echo 'Jet d\'un dé à : '.$reussite.' faces.<br />';
+			echo 'Le résultat doit être inférieur à <b>'.round($chance,0).'</b> <br />
+				   soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence.'<br />';
+			echo 'Résultat : <b>'.$numero.'</b><br />';
 			//Si le numero est inférieur a chance, alors la compétence augmente d'un
 			if($numero < $chance)
 			{
 				//Augmentation de la compétence
 				$R_retour[0] = $val_competence + 1;
+				echo '<br />';
+				
 
 				//Indique que la compétence a augmenté
 				$R_retour[1] = true;
+			}
+			else
+			{
+				echo 'La compétence n\'augmente pas.<br /><br />';
 			}
 		}
 		echo '</div>';
