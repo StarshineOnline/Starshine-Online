@@ -503,7 +503,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 					<div id="debug'.$debugs.'" class="debug">
 						Probabilité de réussir l\'anticipation : '.(100 - $chance_reussite).'%<br />
 						Le résultat doit être supérieur à <b>'.$chance_reussite.'</b> pour anticipation.<br />
-						Résultat : <b> '.$rand.' </b><br />.
+						Résultat : <b> '.$rand.'</b><br />
 					</div>';
 				$debugs++;
 				// Echec
