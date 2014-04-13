@@ -1630,7 +1630,7 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		}
 		echo '
 		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-		Valeur maximale en '.$competence.' : '.$max.'<br />';
+		<br />Valeur maximale en '.$competence.' : '.$max.'<br />';
 		// On se base sur le joueur et non le perso, sinon on perds les montees
 		// des rounds precedents vu qu'on ne sauve qu'a la fin
 		$val_competence = $joueur->get_comp($competence, true);
@@ -1658,15 +1658,13 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			{
 				//Augmentation de la compétence
 				$R_retour[0] = $val_competence + 1;
-				echo '<br />';
-				
 
 				//Indique que la compétence a augmenté
 				$R_retour[1] = true;
 			}
 			else
 			{
-				echo 'La compétence n\'augmente pas.<br /><br />';
+				echo 'La compétence n\'augmente pas.<br />';
 			}
 		}
 		echo '</div>';
