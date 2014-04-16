@@ -45,7 +45,7 @@ else
 							$infos[ $lgn[0] ] = $lgn[1];
 						}
 						if( $admin )
-							echo 'Dossier : <i>'.$infos['dossier'].'<i><br/>';
+							echo 'Dossier : <i>'.$infos['dossier'].'</i><br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=journalier">Journalier 1</a> : ':'Journalier 1 : ').($infos['journalier1']==0?'ok':'erreur').'<br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=journalier2">Journalier 2</a> : ':'Journalier 2 : ').($infos['journalier2']==0?'ok':'erreur').'<br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=journalier3">Journalier 3</a> : ':'Journalier 3 : ').($infos['journalier3']==0?'ok':'erreur').'<br/>';
@@ -64,15 +64,15 @@ else
 							$infos[ $lgn[0] ] = $lgn[1];
 						}
 						if( $admin )
-							echo 'Dossier : <i>'.$infos['dossier'].'<i><br/>';
-						echo ($admin?'<a href="logs_scripts.php?script=horaire">Horraire</a> : ':'Horraire : ').($infos['horaire']==0?'ok':'erreur').'<br/>';
+							echo 'Dossier : <i>'.$infos['dossier'].'</i><br/>';
+						echo ($admin?'<a href="logs_scripts.php?script=horaire">Horaire</a> : ':'Horaire : ').($infos['horaire']==0?'ok':'erreur').'<br/>';
 					}
 					fclose($fich);
 					$fich = fopen($G_logs.'calendrier.txt', 'r');
 					if( $fich )
 					{
 						echo '<b>Horaire</b><br/>';
-						echo 'Date : <i>'.fgets($fich).'<i><br/>';
+						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
 						while( $lgn = fgets($fich) )
 						{
@@ -144,7 +144,7 @@ else
 							}
 							else
 								echo 'erreur distant : '.$lgn.'<br/>';
-							echo 'Compte : <i>'.$infos['email'].'<i><br/>';
+							echo 'Compte : <i>'.$infos['email'].'</i><br/>';
 							if($jour)
 							{
 								echo 'Journalier:<br />';
