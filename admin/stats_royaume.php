@@ -68,7 +68,7 @@ include_once(root.'inc/fp.php');
       $lineplot = new LinePlot($data[$r]);
       $graph->Add($lineplot);
     }
-	  //$graph->Stroke();
+	  $graph->Stroke();
   }
 
 ?>
