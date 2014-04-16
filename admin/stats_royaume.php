@@ -3,6 +3,8 @@
 	  include_once('../root.php');
 	$admin = true;
 	
+	error_reporting( E_ALL );
+	
 	$textures = false;
 include_once(root.'inc/fp.php');
 	setlocale(LC_ALL, 'fr_FR');
@@ -66,7 +68,7 @@ include_once(root.'inc/fp.php');
       $lineplot = new LinePlot($data[$r]);
       $graph->Add($lineplot);
     }
-	  $graph->Stroke();
+	  //$graph->Stroke();
   }
 
 ?>
