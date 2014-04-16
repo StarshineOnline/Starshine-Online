@@ -162,7 +162,7 @@ else
 								echo 'Fichier : '.$infos_mois['Titre'].'<br/>';
 								foreach( $mois as $fich )
 									echo $fich.'<br />';
-								echo 'Taille : '.(round($infos_mois['Taille']/1000)/1000).' MO<br/>';
+								echo 'Taille : '.(round($infos_mois['Taille']/1000)/1000).' Mo<br/>';
 								echo 'Transfert : '.$infos_mois['md5'].'<br/>';
 								$suppr = explode(',', $infos_mois['Suppression']);
 								echo 'Ancien supprimé ('.$suppr[0].') : '.$suppr[1].'<br/>';

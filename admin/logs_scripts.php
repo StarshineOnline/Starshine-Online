@@ -16,13 +16,16 @@ $date =  array_key_exists('date', $_GET) ? $_GET['date'] : date('d/m/Y');
 $elts = explode('/', $date);
 
 
+if( joueur::factory()->get_droits() & joueur::droit_admin )
+{
 ?>
   <script type='text/javascript' src='../javascript/jquery/jquery-ui-timepicker-addon.js'></script>
 	<div id="contenu">
 		<div id="centre3">
       <div>
-        <form id="form_date" method="get" action="logs_scripts.php?script=">
+        <form id="form_date" method="get" action="logs_scripts.php">
           Date de début :
+          <input type="hidden" name="script" value="<?php echo $script; ?>" />
           <input name="date" type="text" id="date" value="<?php echo $date; ?>" />
           <input type="submit" value="Voir" />
         </form>
@@ -36,7 +39,7 @@ $elts = explode('/', $date);
 <?php
 			$addr = $G_logs.$elts[2].'/'.$elts[1].'/'.$elts[0].'/'.$script.'.log';
 			$fich = fopen($addr, 'r');
-			if( $fich && (joueur::factory()->get_droits() & joueur::admin) )
+			if( $fich )
 			{
 				while( $lgn = fgets($fich) )
 				{
@@ -44,10 +47,12 @@ $elts = explode('/', $date);
 				}
 				fclose($fich);
 			}
+			echo 'erreur fichier : '.$addr;
 ?>
 			</div>
 		</div>
 	</div>
 <?php
+}
 include_once(root.'bas.php');
 ?>
