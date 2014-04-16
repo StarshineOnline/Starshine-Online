@@ -56,7 +56,7 @@ else
 					if( $fich )
 					{
 						echo '<b>Horaire</b><br/>';
-						echo 'Date : <i>'.fgets($fich).'<i><br/>';
+						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
 						while( $lgn = fgets($fich) )
 						{
@@ -88,7 +88,7 @@ else
 						if( $fich )
 						{
 							echo '<b>Sauvegarde</b><br/>';
-							echo 'Date : <i>'.fgets($fich).'<i><br/>';
+							echo 'Date : <i>'.fgets($fich).'</i><br/>';
 							$infos = array();
 							$infos_jour = array();
 							$infos_mois = array();
