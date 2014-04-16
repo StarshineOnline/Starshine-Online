@@ -33,11 +33,11 @@ if( joueur::factory()->get_droits() & joueur::droit_admin )
       <script type="text/javascript">
         $( "#date" ).datepicker();
         $( "#date" ).datepicker("option", "dateFormat", "dd/mm/yy");
-				$( "#date" ).datepicker("setDate",  new Date(<?php echo $elts[2].','.$elts[1].','.$elts[0] ?>) );
+				$( "#date" ).datepicker("setDate",  new Date(<?php echo $elts[2].','.($elts[1]-1).','.($elts[0]-1) ?>) );
       </script>
       <div style="border: solid 1px gray;">
 <?php
-			$addr = $G_logs.$elts[2].'/'.$elts[1].'/'.$elts[0].'/'.$script.'.log';
+			$addr = $G_logs.$elts[2].'/'.$elts[1].'/'.($elts[0]-1).'/'.$script.'.log';
 			$fich = fopen($addr, 'r');
 			if( $fich )
 			{
