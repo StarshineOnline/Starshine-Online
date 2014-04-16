@@ -71,7 +71,7 @@ else
     if( array_key_exists('stat', $_GET) )
     {
       $stat = $_GET['stat'];
-      $date = date("Y-m-d");
+      /*$date = date("Y-m-d");
       $requete = 'SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB("'.$date.'", INTERVAL 31 DAY) ORDER BY date;';
 	    $req = $db->query($requete);
       $z = 0;
@@ -122,7 +122,8 @@ else
       if(file_exists($img))
         unlink($img);
   	  $graph->Stroke($img);
-      echo '<img src="'.$img.'" />';
+      echo '<img src="'.$img.'" />';*/
+      echo '<img src="stats_royaume.php?stat='.$stat.'" />';
     }
 
 	/*$sources[0] = 'HV';
