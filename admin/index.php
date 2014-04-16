@@ -37,7 +37,7 @@ else
 					if( $fich )
 					{
 						echo '<b>Journaliers</b><br/>';
-						echo 'Date : <i>'.fgets($fich).'<i><br/>';
+						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
 						while( $lgn = fgets($fich) )
 						{
