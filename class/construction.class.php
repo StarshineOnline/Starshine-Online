@@ -183,5 +183,32 @@ class construction extends entitenj_constr
     $this->set_rechargement( time() + $recharg - $reduc );
     $this->sauver();
   }
+
+  /**
+   * Renvoie les images et positions des constructions dans une zone donnée sous forme de tableau
+   * @param  $x_min     Valeur minimale de la coordonnée x
+   * @param  $x_max    Valeur maximale de la coordonnée x
+   * @param  $y_min     Valeur minimale de la coordonnée y
+   * @param  $y_max    Valeur maximale de la coordonnée y
+   * @return    tableau contenant les positions et l'image
+   */
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true)
+  {
+    global $db;
+		$requete = 'SELECT x, y, b.image FROM '.static::get_table().' AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max;
+    $req = $db->query($requete);
+    $res = array();
+    while( $row = $db->read_object($req) )
+    {
+      $row->image = self::make_url_image($row->image, $grd_img);
+      $res[] = $row;
+    }
+    return $res;
+  }
+
+  protected static function make_url_image($image, $grd_img=true)
+  {
+    return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_04.png';
+  }
 }
 ?>

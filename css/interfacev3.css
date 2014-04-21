@@ -65,7 +65,6 @@ a:hover
 #perso_menu .menu { float:left; }
 #perso_menu .menu2 { float:left;margin-top: -3px; }
 #perso_menu .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; font-style:normal; font-weight:bold; }
-.pos_over { background:transparent url(../image/interface/2.png) center; display:block; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; height:58px!important; width:58px!important; }
 #perso_contenu { margin:auto; min-height:110px; padding:5px;position: relative; }
 #contenu_jeu { margin:0 auto; width:100%; position:relative; }
 #popup { margin-left:130px; position:absolute; top:60px; z-index:99!important; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
@@ -756,6 +755,25 @@ a#depl_bas_droite
 	font-weight:bold;
 }
 
+.carte_contenu
+{
+  width:/*56*/58px;
+  height:/*56*/58px;
+  margin:/*2*/1px;
+  background:transparent url(image/pixel.gif) center no-repeat;
+}
+
+.pos_over
+{
+  background:transparent url(../image/interface/2.png) center;
+  background-color: #baccf780;
+  display:block;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  border-radius: 5px;
+  height:58px!important;
+  width:58px!important;
+}
 
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
 #carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }

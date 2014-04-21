@@ -187,6 +187,25 @@ abstract class interf_cont extends interf_base
       interf_base::$courrant = &$fils;
     return $fils;
   }
+  /// Insert un élément entre celui-ci et ces fils
+  function &insert(&$fils)
+  {
+    $fils->fils = $this->fils;
+    $this->fils = array(&$fils);
+    interf_base::$courrant = &$fils;
+    return $fils;
+  }
+  /*
+   * Renvoie un fils précis ou tous les fils
+   * @param  $fils  indice du fils ou null pour tous les fils
+   * @return    fils demandé ou tableau contenant tous les fils
+   */
+  function get_fils($fils=null)
+  {
+    if( $fils === null )
+      return $this->fils;
+    return $this->fils[$fils];
+  }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut() {}
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
@@ -318,6 +337,17 @@ class interf_bal_smpl extends interf_smpl
   {
     $this->attributs[$nom] = $val;
   }
+  /*
+   * Renvoie un attribut précis ou tous les attributs
+   * @param  $nom  indice de l'attribut ou null pour tous les attributs
+   * @return    attribut demandé ou tableau contenant tous les attributs
+   */
+  function get_attribut($nom=null)
+  {
+    if( $nom === null )
+      return $this->attributs;
+    return $this->attributs[$nom];
+  }
   /**
    * Ajoute une infobulle compatible avec la librairie Bootstrap
    *
@@ -399,6 +429,17 @@ class interf_bal_cont extends interf_cont
   function set_attribut($nom, $val)
   {
     $this->attributs[$nom] = $val;
+  }
+  /*
+   * Renvoie un attribut précis ou tous les attributs
+   * @param  $nom  indice de l'attribut ou null pour tous les attributs
+   * @return    attribut demandé ou tableau contenant tous les attributs
+   */
+  function get_attribut($nom=null)
+  {
+    if( $nom === null )
+      return $this->attributs;
+    return $this->attributs[$nom];
   }
   /**
    * Ajoute une infobulle compatible avec la librairie Bootstrap
