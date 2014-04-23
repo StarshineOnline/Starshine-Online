@@ -6,7 +6,7 @@
 	error_reporting( E_ALL );
 	
 	$textures = false;
-include_once(root.'inc/fp.php');
+	include_once(root.'inc/fp.php');
 	setlocale(LC_ALL, 'fr_FR');
 	
 	

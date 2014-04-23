@@ -214,12 +214,6 @@ while($row = $db->read_assoc($req))
 {
 	$tab_royaume[$row['race']] = array('id' => $row['id'], 'food' => $row['food'], 'food_necessaire' => $row['conso_food']);
 }
-$roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
-foreach($roy as $r)
-{
-  $r->maj_conso_food();
-  $r->sauver();
-}
 foreach($tab_royaume as $race => $royaume)
 {
 	//Si ya assez de food

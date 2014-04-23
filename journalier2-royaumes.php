@@ -76,13 +76,14 @@ $tableau_race = array();
 $roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
 foreach($roy as $r)
 {
-  $tableau_race[$r->get_race()] = array_pad(array(), 30, 0);
+  $tableau_race[$r->get_race()] = array_pad(array(), 31, 0);
   $tableau_race[$r->get_race()][26] = $r->get_habitants_actif();
   $tableau_race[$r->get_race()][27] = $r->get_facteur_entretien();
   $tableau_race[$r->get_race()][28] = $r->get_facteur_entretien_th();
   $tableau_race[$r->get_race()][29] = $r->get_conso_food();
   $tableau_race[$r->get_race()][30] = $r->get_conso_food_th();
   $r->maj_facteur_entretien();
+  $r->maj_conso_food();
   $r->sauver();
 }
 
