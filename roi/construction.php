@@ -42,7 +42,7 @@ else if(!array_key_exists('direction', $_GET))
 			$royaume_req = new royaume($row['r']);
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
-			<li class='$boutique_class'>
+			<li class='$boutique_class' onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:220px;float:left;'>";
 			
 				if ($row['type'] == 'arme_de_siege')
