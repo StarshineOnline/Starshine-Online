@@ -158,7 +158,7 @@ class construction extends entitenj_constr
 		$recharg = $this->get_batiment()->get_bonus('rechargement');
 		//$date_tir = $this->get_rechargement() - $reduc;
 		$retard = time() - $this->get_rechargement();
-		if( $retard > 172800 )
+		if( $retard > 43200 )
 		{
 			$reduc = 0;
 			$this->set_rattrapage(0);
