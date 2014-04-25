@@ -158,17 +158,22 @@ class construction extends entitenj_constr
 		$recharg = $this->get_batiment()->get_bonus('rechargement');
 		//$date_tir = $this->get_rechargement() - $reduc;
 		$retard = time() - $this->get_rechargement();
-		if( $retard > 43200 )
+		// On remt à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de ratrapage)
+		if( $retard > 86400 )
 		{
 			$reduc = 0;
 			$this->set_rattrapage(0);
 		}
 		else
 		{
-			$diff = $this->get_date_debut() - $this->get_rechargement();
+			$rattrap = $this->get_rattrapage();
+			// On augmente pas le rattrapage sur les cibles posées récement (après le moment où on pouvait tirer moins le temps à rattrapper)
+			$diff = $cible->get_date_debut() - $this->get_rechargement() + $rattrap;
 			if( $diff > 0 )
 				$retard -= $diff;
-			$rattrap = $this->get_rattrapage() + $retard;
+			if( $retard > 0 )
+				$rattrap += $retard;
+			// Calcul du moment du prochain tir
 			$reduc = min($rattrap, $recharg/2);
 			$rattrap -= $reduc;
 			$this->set_rattrapage( $rattrap );
