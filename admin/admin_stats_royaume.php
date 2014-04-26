@@ -14,6 +14,8 @@ if ($G_maintenance)
 }
 else
 {
+	error_reporting(E_ALL);
+
 	include_once (root."../jpgraph/src/jpgraph.php");
 	include_once (root."../jpgraph/src/jpgraph_pie.php");
 	include_once (root."../jpgraph/src/jpgraph_pie3d.php");
@@ -56,7 +58,7 @@ else
       <option value="22">Charbon gagné</option>
       <option value="23">Essence gagnée</option>
       <option value="24">Routes</option>
-      <option value="25">Nourrituregagnée</option>
+      <option value="25">Nourriture gagnée</option>
       <option value="26">Très actifs</option>
       <option value="27">Facteur d'entretien actuel</option>
       <option value="28">Facteur d'entretien théorique</option>
@@ -69,13 +71,13 @@ else
     if( array_key_exists('stat', $_GET) )
     {
       $stat = $_GET['stat'];
-      $date = date("Y-m-d");
+      /*$date = date("Y-m-d");
       $requete = 'SELECT *, EXTRACT(YEAR FROM date) as year, EXTRACT(MONTH FROM date) as month, EXTRACT(DAY FROM date) as day FROM stat_jeu WHERE date > DATE_SUB("'.$date.'", INTERVAL 31 DAY) ORDER BY date;';
 	    $req = $db->query($requete);
       $z = 0;
       $data = array();
       $dates = array();
-      include_once(root.'inc/races.inc.php');
+      include_once(root.'inc/race.inc.php');
       $races = array_keys($Trace);
     	foreach($races as $r)
     	{
@@ -120,7 +122,8 @@ else
       if(file_exists($img))
         unlink($img);
   	  $graph->Stroke($img);
-      echo '<img src="'.$img.'" />';
+      echo '<img src="'.$img.'" />';*/
+      echo '<img src="stats_royaume.php?stat='.$stat.'" />';
     }
 
 	/*$sources[0] = 'HV';
@@ -147,6 +150,7 @@ else
 			if(!in_array($keys[$j], $strips))
 			{
 				$donnees = explode(';', $row[$keys[$j]]);
+				$data = array_fill(0, 10, 0);
 				if(count($donnees) > 2)
 				{
 					$data[0] += $donnees[2];
@@ -184,7 +188,7 @@ else
 	$graph->xaxis->SetTickLabels($sources);
 	$graph->Stroke('images/test_admin.jpg');*/
 	?>
-	<img src="images/test_admin.jpg" />
+	<!--<img src="images/test_admin.jpg" />-->
 	<?php
 	include_once(root.'bas.php');
 }

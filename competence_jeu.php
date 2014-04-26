@@ -64,7 +64,7 @@ else
 	}
 	$i = 0;
 	$type = '';
-	$magies = array('favoris');
+	$magies = array();
 	$magie = '';
 	$requete = "SELECT * FROM comp_jeu GROUP BY comp_assoc";
 	$req = $db->query($requete);
@@ -76,6 +76,8 @@ else
 			$magies[] = $row['comp_assoc'];
 		}
 	}
+	
+	echo '<a href="competence_jeu.php?tri=favoris" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_favoris.png" alt="'.$Gtrad['favoris'].'" title="'.$Gtrad['favoris'].'" onmouseover="this.src = \'image/icone/favorishover.png\'" onmouseout="this.src = \'image/icone_favoris.png\'"/></a> ';
 ?>
 <div id="livre">
 	<div id="livre_gauche_physique">

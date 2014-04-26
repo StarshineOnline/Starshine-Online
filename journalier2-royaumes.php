@@ -23,39 +23,7 @@ $requete .= " SET point_victoire = point_victoire + (select count(1) from map wh
 $requete .= ", point_victoire_total = point_victoire_total + (select count(1) from map where type = 3 and royaume = r.id and r.id <> 0)";
 $req = $db->query($requete);
 
-//Entretien des batiments et constructions
-/*$semaine = time() - (3600 * 24 * 7);
-$royaumes = array();
-// On récupère le niveau moyen
-$requete = "select sum(level)/count(id) moy from perso WHERE statut = 'actif'";
-$req = $db->query($requete);
-$row = $db->read_row($req);
-$moyenne_niveau = floor($row[0] - 1.5); // Bastien : on fait -1.5 pour eviter
-if ($moyenne_niveau < 1)                // les escaliers, il faut qu'une race
-  $moyenne_niveau = 1;                  // soit vraiment a la bourre pour
-                                        // creer des grosses marches
-//On récupère le nombre d'habitants très actifs suivant le niveau moyen
-if ($moyenne_niveau > 3)
-{
-	echo "Niveau de référence pour l'entretien: 4\n\n";
-	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > 3 AND dernier_connexion > $semaine GROUP BY race";
-} else {
-	echo "Niveau de référence pour l'entretien: $moyenne_niveau\n\n";
-	$requete = "SELECT race, COUNT(*) as tot FROM perso WHERE level > $moyenne_niveau AND dernier_connexion > $semaine GROUP BY race";
-}
-$req = $db->query($requete);
-while($row = $db->read_row($req))
-{
-	$habitants[$row[0]] = $row[1];
-}
-$min_habitants = min($habitants);
-$ii = 0;
-$keys = array_keys($habitants);
-while($ii < count($habitants))
-{
-	$royaumes[$Trace[$keys[$ii]]['numrace']]['ratio'] = $habitants[$keys[$ii]] / $min_habitants;
-	$ii++;
-}*/
+
 //On récupère les stars de chaque royaume
 $requete = "SELECT id, star, facteur_entretien FROM royaume WHERE id <> 0 ORDER BY id ASC";
 $req = $db->query($requete);
@@ -108,16 +76,16 @@ $tableau_race = array();
 $roy = royaume::create(null, null, 'id ASC', false, 'id <> 0');
 foreach($roy as $r)
 {
-  $tableau_race[$r->get_race()] = array_pad(array(), 30, 0);
+  $tableau_race[$r->get_race()] = array_pad(array(), 31, 0);
   $tableau_race[$r->get_race()][26] = $r->get_habitants_actif();
   $tableau_race[$r->get_race()][27] = $r->get_facteur_entretien();
   $tableau_race[$r->get_race()][28] = $r->get_facteur_entretien_th();
   $tableau_race[$r->get_race()][29] = $r->get_conso_food();
   $tableau_race[$r->get_race()][30] = $r->get_conso_food_th();
   $r->maj_facteur_entretien();
+  $r->maj_conso_food();
   $r->sauver();
 }
-//print_r($tableau_race);
 
 //PHASE 1, entretien des batiments internes
 //On récupère les couts d'entretiens
@@ -197,6 +165,7 @@ foreach($royaumes as $royaume)
 			//Suppression du batiment
 			else
 			{
+        log_admin::log('journalier', 'Destruction d\'une construction '.$royaume.' pour manque d\'entretien (HP: '.$vie.')');
 				$requete = "DELETE FROM construction WHERE id = ".$keys[$i];
 			}
 			$db->query($requete);

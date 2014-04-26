@@ -16,10 +16,10 @@ $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 
 $case = new map_case(array('x' => $joueur->get_x(), 'y' => $joueur->get_y()));
-if(!$case->is_ville(true, 'taverne')) exit();
+if(!$case->is_ville(true, 'taverne', $royaume)) exit();
 
 
-$R = new royaume($W_row['royaume']);
+$R = new royaume($royaume);
 
 if ($R->is_raz() && $W_row['type'] == 1 && $joueur->get_x() <= 190 && $joueur->get_y() <= 190)
 {

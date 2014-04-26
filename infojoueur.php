@@ -82,7 +82,18 @@ if(array_key_exists(12, $bonus) AND check_affiche_bonus($bonus[12], $joueur, $pe
 }
 ?><br />
 <?php echo ucfirst($classe); ?> - niveau <?php echo $niveau; ?><br />
-Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?> / Methode pythagorienne : <?php echo calcul_distance_pytagore(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?>
+<?php
+if( (($perso->get_groupe() == $joueur->get_groupe()) && $joueur->get_groupe() != 0))
+{
+	echo'HP du joueur : '.$perso->get_hp().' / '.$perso->get_hp_maximum().' ';?><br /><?php
+	echo'MP du joueur : '.$perso->get_mp().' / '.$perso->get_mp_maximum().' ';?><br /><?php
+}
+?>
+Position du joueur : <?php echo $perso->get_x(); ?> / <?php echo $perso->get_y(); ?> <br />
+Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?> / Methode pythagorienne : <?php echo calcul_distance_pytagore(convert_in_pos($joueur->get_x(), $joueur->get_y()), $W_case); ?><br />
+
+
+
 <h4><span class="titre_info">Actions</span></h4>
 <table>
 <?php

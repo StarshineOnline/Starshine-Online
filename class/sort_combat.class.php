@@ -207,7 +207,7 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    */
-  function lance(/*&$actif, &$passif, &$effets*/&$attaque)
+  function lance(&$attaque)
   {
     global $log_combat, $G_round_total;
     $actif = &$attaque->get_actif();
@@ -222,11 +222,8 @@ class sort_combat extends sort
   		$round += 1;
   	$rectif_augm = $round / $G_round_total;
 
-		//$log_combat .= 's'.$this->get_id();
     $attaque->add_log_combat('s'.$this->get_id());
   	// Application des effets de début de round
-  	/*foreach($effets as $effet)
-  		$effet->debut_round($actif, $passif);*/
     $attaque->applique_effet('debut_round');
 
     // Chances de lancer le sort
@@ -242,7 +239,6 @@ class sort_combat extends sort
     else
   	{
   		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' rate le lancement de '.$this->get_nom().'</span><br />';
-  		//$log_combat .= "~l";
       $attaque->add_log_combat('~l');
   	}
   	
@@ -265,40 +261,34 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    */
-  function action(/*&$actif, &$passif, &$effets*/&$attaque)
+  function action(&$attaque)
   {
     global $log_combat;
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-	  // Calcul de la PM
-		$pm = $passif->get_pm();
-		// Application des effets de PM
-		/*foreach($effets as $effet)
-			$pm = $effet->calcul_pm($actif, $passif, $pm);*/
+    
+    // Calcul de la PM
+    $pm = $passif->get_pm();
+    // Application des effets de PM
     $attaque->applique_effet('calcul_pm', $pm);
-		
-		
-		// Calcul des potentiels toucher et parer
-		$potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
-		$potentiel_parer = $passif->get_potentiel_parer_magique($pm);
-		// Application des effets de potentiel toucher
-		/*foreach($effets as $effet)
-			$potentiel_toucher = $effet->calcul_attaque_magique($actif, $passif, $potentiel_toucher);*/
+    
+    
+    // Calcul des potentiels toucher et parer
+    $potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
+    $potentiel_parer = $passif->get_potentiel_parer_magique($pm);
+    // Application des effets de potentiel toucher
     $attaque->applique_effet('calcul_attaque_magique', $potentiel_toucher);
-		// Application des effets de potentiel parer
-		/*foreach($effets as $effet)
-			$potentiel_parer = $effet->calcul_defense_magique($actif, $passif, $potentiel_parer);*/
+    // Application des effets de potentiel parer
     $attaque->applique_effet('calcul_defense_magique', $potentiel_parer);
-			
+    
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer) )
       $this->touche($attaque);
     else
-		{
-			echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
-			//$log_combat .= "~m";
+    {
+      echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
       $attaque->add_log_combat('~m');
-		}
+    }
   }
 
   /**
@@ -307,27 +297,23 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    */
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     global $log_combat;
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-    $attaque->set_degats( $this->get_effet() /*+ $this->bonus_degats($attaque)*/ );
+    $attaque->set_degats( $this->get_effet() );
     $attaque->applique_effet('calcul_bonus_degats_magiques');
-    /*$degats = */$this->calcul_degats($attaque);
+    $this->calcul_degats($attaque);
     $attaque->set_type_degats($this->get_type());
     // Application des effets de degats magiques
-    /*foreach($effets as $effet)
-      $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());*/
     $attaque->applique_effet('inflige_degats_magiques');
     $degats = $attaque->get_degats();
 	if($actif->is_buff('buff_surpuissance')) $degats += $actif->get_buff('buff_surpuissance', 'effet');
     echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
-    //$log_combat .= "~".$degats;
     $attaque->add_log_combat('~'.$degats);
     $passif->set_hp($passif->get_hp() - $degats);
-		//return $degats;
   }
 
   /**
@@ -337,17 +323,14 @@ class sort_combat extends sort
    * @param  $effets  Effets
    * @deprecated
    */
-  function bonus_degats(/*&$actif, &$passif, &$effets*/&$attaque)
+  function bonus_degats(&$attaque)
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
 		$bonus_degats_magique = 0;
 		// Application des effets de degats magiques
-		/*foreach($effets as $effet)
-			$bonus_degats_magique = $effet->calcul_bonus_degats_magiques($actif, $passif, $bonus_degats_magique, $this->get_type());*/
     $attaque->applique_effet('calcul_bonus_degats_magiques');
-		//$bonus_degats_magique += $facteur_degats_arme;
 		$bonus_degats_magique += $actif->get_buff('buff_surpuissance', 'effet');
 		return $bonus_degats_magique;
   }
@@ -359,7 +342,7 @@ class sort_combat extends sort
    * @param  $effets  Effets
    * @param  $degat   Facteur de dégats du sort.
    */
-  function calcul_degats(/*&$actif, &$passif, &$effets, $degat*/&$attaque)
+  function calcul_degats(&$attaque)
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
@@ -374,13 +357,18 @@ class sort_combat extends sort
       $degat += $row['enchantement_effet'];
       $dbg_msg .= "La ".$row['nom'].' augmente les dégâts de '. $row['enchantement_effet'].'<br />';
     }
-
+	
     $get_carac_assoc = 'get_'.$this->get_carac_assoc();
     $de_degat = $this->calcule_des($actif->$get_carac_assoc(), $degat);
     $attaque->set_degats( $this->lance_des($de_degat) );
     $this->critiques($attaque);
+	
+	// Calcul de la PM
+    $pm = $passif->get_pm();
+    // Application des effets de PM
+    $attaque->applique_effet('calcul_pm', $pm);
     //Diminution des dégâts grâce à l'armure magique
-    $reduction = $this->calcul_pp(($passif->get_pm() * $passif->get_puissance()) / 12);
+    $reduction = $this->calcul_pp(($pm * $passif->get_puissance()) / 12);
     $degat_avant = $attaque->get_degats();
     $degat = round($degat_avant * $reduction);
     if($degat < $degat_avant)
@@ -388,11 +376,7 @@ class sort_combat extends sort
 
     $attaque->set_degats($degat);
     // Application des modifications des dégâts
-    /*foreach($effets as $effet)
-      $degat = $effet->calcul_degats_magiques($actif, $passif, $degat, $this->get_type());*/
     $attaque->applique_effet('calcul_degats_magiques');
-
-    //return $degat;
   }
 
   /**
@@ -401,7 +385,7 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $degat   Facteur de dégats de base.
    */
-  function critiques(/*&$actif, &$passif, $degat*/&$attaque)
+  function critiques(&$attaque)
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
@@ -411,12 +395,10 @@ class sort_combat extends sort
   	$actif_chance_critique = ($actif->get_volonte() * 50);
   	if(array_key_exists('buff_furie_magique', $actif->buff))
       $actif_chance_critique = $actif_chance_critique  * (1 + ($actif->get_buff('buff_furie_magique', 'effet') / 100));
-  	//$debugs++;
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
   		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
-  		//$log_combat .= '!';
       $attaque->add_log_combat('!');
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
@@ -449,14 +431,14 @@ class sort_combat_degat_etat extends sort_combat
     $this->duree_etat = $duree;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     parent::touche($attaque);
     $this->ajout_etat($attaque);
   }
   
   /// Ajoute l'état
-  protected function ajout_etat(/*&$actif, &$passif*/&$attaque)
+  protected function ajout_etat(&$attaque)
   {
     if( $this->etat === null )
       $etat = $this->get_etat_lie();
@@ -498,7 +480,7 @@ class sort_combat_degat_etat extends sort_combat
 class sort_combat_etat extends sort_combat_degat_etat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function action(/*&$actif, &$passif, &$effets*/&$attaque)
+  function action(&$attaque)
   {
     if( $this->get_cible() == comp_sort::cible_perso )
     {
@@ -510,7 +492,7 @@ class sort_combat_etat extends sort_combat_degat_etat
     }
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $this->ajout_etat($attaque);
   	echo '&nbsp;&nbsp;<strong>'.$attaque->get_actif()->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
@@ -535,15 +517,16 @@ class sort_combat_etat extends sort_combat_degat_etat
 class sort_combat_vent extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     parent::touche($attaque);
 		// On regarde s'il y a un gain de PA
 		if( $this->test_de(100, $this->get_effet2()) )
 		{
-      $actif = $attaque->get_joueur();
-			echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> gagne 1 PA<br />';
-			$actif->set_pa($actif->get_pa() + 1);
+			$actif = $attaque->get_actif();
+			$joueur = $attaque->get_joueur();
+			echo '&nbsp;&nbsp;<strong>'.$joueur->get_nom().'</strong> gagne 1 PA<br />';
+			$joueur->set_pa($joueur->get_pa() + 1);
 		}
   }
 }
@@ -552,7 +535,7 @@ class sort_combat_vent extends sort_combat
 class sort_combat_sacrifice extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     parent::touche($attaque);
 	$attaque->get_actif()->set_hp(0);
@@ -563,7 +546,7 @@ class sort_combat_sacrifice extends sort_combat
 class sort_combat_lapidation extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     parent::touche($attaque);
 		// On regarde si la cible est étourdie
@@ -580,15 +563,13 @@ class sort_combat_lapidation extends sort_combat
 class sort_combat_foudre extends sort_combat
 {
   /// Méthode calculant les dégâts
-  function calcul_degats(/*&$actif, &$passif, &$effets, $degat*/&$attaque)
+  function calcul_degats(&$attaque)
   {
     $degat = parent::calcul_degats($attaque);
 		// On ajoute pas a la stack d'effet car on a besoin de savoir tout de suite si la foudre passe ou pas pour le +1 degats
 		$foudre = new globe_foudre(15, true);
 		if ($foudre->magnetise($attaque) == false)
-			//$degat++;
       $attaque->add_degats(1);
-		//return $degat;
   }
 }
 
@@ -596,7 +577,7 @@ class sort_combat_foudre extends sort_combat
 class sort_combat_sang extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $actif = &$attaque->get_actif();
 		$cout_hp = ceil($actif->get_hp_max() * $this->get_effet2() / 100);
@@ -621,7 +602,7 @@ class sort_combat_drain extends sort_combat
     $this->drain = $drain;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $actif = &$attaque->get_actif();
 		parent::touche($attaque);
@@ -641,7 +622,7 @@ class sort_combat_drain extends sort_combat
 class sort_combat_vortex_mana extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $actif = &$attaque->get_actif();
 		parent::touche($attaque);
@@ -658,13 +639,11 @@ class sort_combat_vortex_mana extends sort_combat
 class sort_combat_bris_os extends sort_combat
 {
   /// Méthode calculant les dégâts
-  function calcul_degats(/*&$actif, &$passif, &$effets*/&$attaque)
+  function calcul_degats(&$attaque)
   {
-    /*$degat = */parent::calcul_degats($attaque);
+    parent::calcul_degats($attaque);
 		if($attaque->get_passif()->etat['paralysie']['duree'] > 0)
-      //$degat = round($degat * 1.6);
       $attaque->mult_degats(1.6);
-		//return $degat;
   }
 }
 
@@ -672,7 +651,7 @@ class sort_combat_bris_os extends sort_combat
 class sort_combat_brul_mana extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $passif = &$attaque->get_passif();
 		$brule_mana = $this->get_effet();
@@ -687,7 +666,7 @@ class sort_combat_brul_mana extends sort_combat
 class sort_combat_silence extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
@@ -734,7 +713,7 @@ class sort_combat_aura extends sort_combat_etat
     $this->message = $message;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function action(/*&$actif, &$passif, &$effets*/&$attaque)
+  function action(&$attaque)
   {
     $this->ajout_etat($attaque);
 		echo '&nbsp;&nbsp;'.$this->message.' <strong>'.$attaque->get_actif()->get_nom().'</strong> !<br />';
@@ -766,7 +745,7 @@ class sort_combat_debuff extends sort_combat
       $this->debuff = $debuff;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $passif = &$attaque->get_passif();
 		parent::touche($attaque);
@@ -779,7 +758,7 @@ class sort_combat_debuff extends sort_combat
 class sort_combat_enracinement extends sort_combat_debuff
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $passif = &$attaque->get_passif();
 		sort_combat::touche($attaque);
@@ -797,13 +776,13 @@ class sort_combat_enracinement extends sort_combat_debuff
 class sort_combat_tsunami extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/$attaque)
+  function touche($attaque)
   {
 		parent::touche($attaque);
 		self::projection($attaque, $this->get_effet2());
   }
   
-  protected static function projection(/*&$actif, &$passif, $effet*/&$attaque, $effet)
+  protected static function projection(&$attaque, $effet)
   {
     global $db;
     $actif = &$attaque->get_actif();
@@ -902,7 +881,7 @@ class sort_combat_tsunami extends sort_combat
 class sort_combat_empalement extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
@@ -910,8 +889,6 @@ class sort_combat_empalement extends sort_combat
     $attaque->set_degats( $this->get_effet() + $this->bonus_degats($attaque) );
     $degat = $this->calcul_degats($attaque);
     // Application des effets de degats magiques
-    /*foreach($effets as $effet)
-      $effet->inflige_degats_magiques($actif, $passif, $degats, $this->get_type());*/
     $attaque->applique_effet('inflige_degats_magiques');
 		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
 		if ($passif->get_hp() > $degat)
@@ -937,7 +914,7 @@ class sort_combat_empalement extends sort_combat
 class sort_combat_cri_abom extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     global $db;
     $actif = &$attaque->get_actif();
@@ -990,7 +967,7 @@ class sort_combat_nostalgie extends sort_combat_debuff
     parent::__construct($tbl, $debuff);
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
 		parent::touche($attaque);
@@ -1002,7 +979,7 @@ class sort_combat_nostalgie extends sort_combat_debuff
 class sort_combat_absorb extends sort_combat
 {
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
-  function touche(/*&$actif, &$passif, &$effets*/&$attaque)
+  function touche(&$attaque)
   {
     $passif = &$attaque->get_passif();
     $description = 'Vous êtes complétement déstabilisé et ne voyez plus rien pendant quelques secondes. En revenant à vous, vous avez la douloureuse impression que vos gestes vous ont échappé.';

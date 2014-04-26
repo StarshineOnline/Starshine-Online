@@ -15,23 +15,21 @@ $bonus = recup_bonus($joueur->get_id());
 			//Changement de l'état
 			if(array_key_exists('etat', $_GET))
 			{
-				//Si besoin de modifier dans la table personnage
-				if($id == 7 OR $id == 8 OR $id == 11)
+				switch($id)
 				{
-					switch($id)
-					{
-						case 7 :
-							$joueur->set_cache_classe($_GET['etat']);
-						break;
-						case 8 :
-							$joueur->set_cache_stat($_GET['etat']);
-						break;
-						case 11 :
-							$joueur->set_cache_niveau($_GET['etat']);
-						break;
-					}
-					$joueur->sauver();
+					case bonus_perso::CACHE_CLASSE_ID :
+						$joueur->set_cache_classe($_GET['etat']);
+					break;
+					case bonus_perso::CACHE_STATS_ID :
+						$joueur->set_cache_stat($_GET['etat']);
+					break;
+					case bonus_perso::CACHE_NIVEAU_ID :
+						$joueur->set_cache_niveau($_GET['etat']);
+					break;
 				}
+				// On modifie dans la table perso, si nécessaire
+				$joueur->sauver();
+				
 				$bonus_total = recup_bonus_total($joueur->get_id());
 				$requete = "UPDATE bonus_perso SET etat = ".sSQL($_GET['etat'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 				$db->query($requete);

@@ -1,0 +1,1 @@
+ALTER TABLE `construction` DROP `image` ;

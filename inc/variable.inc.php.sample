@@ -188,8 +188,10 @@ define('BASE', 'http://www.starshine-online.com/');
 	$G_tps_reparation = 3 * 24 * 60 * 60;
 	//@}
 	
-	/// Vie minimale que doit avoir un bâtiment "hors-ville" pour pouvoir être supprimé par ses propriétaires(en pourcent)
-	$G_prct_vie_suppression = .1;
+	/// Vie minimale que doit avoir un bâtiment "hors-ville" n'attribuant pas de pv lors de sa destruction pour pouvoir être supprimé par ses propriétaires(en pourcent)
+	$G_prct_vie_suppression_nopv = .5;
+	/// Vie minimale que doit avoir un bâtiment "hors-ville" attribuants de pv lors de sa destruction pour pouvoir être supprimé par ses propriétaires(en pourcent)
+	$G_prct_vie_suppression_pv = .9;
 				 
 				 
   /// id d'utilisateur du forum à utiliser pour les posts automatiques

@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 
 $joueur = joueur::factory();
 
-if( !($joueur->get_droits() & joueur::droit_interf_admin) )
+if( !($joueur instanceof joueur) || !($joueur->get_droits() & joueur::droit_interf_admin) )
 {
   header("HTTP/1.1 401 Unauthorized" );
   exit();

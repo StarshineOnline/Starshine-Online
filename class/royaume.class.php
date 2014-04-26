@@ -224,7 +224,7 @@ class royaume
       $row = $db->read_array($res);
       $cases_tot = $row['tot'];
       // Consommation totale
-      $requete = 'SELECT SUM(food) AS food FROM royaume';
+      $requete = 'SELECT SUM(food) AS food FROM royaume WHERE id > 0';
       $res = $db->query($requete);
       $row = $db->read_array($res);
       $stocks = $row['food'];
@@ -250,10 +250,13 @@ class royaume
   /// Met-à-jour la consommation de nourriture
   function maj_conso_food()
   {
-    $diff = $this->get_conso_food_th() - $this->get_conso_food();
-    if($diff < - 50) $diff = -50;
+  	$cons_th = $this->get_conso_food_th();
+    $anc_diff = $diff = $cons_th - $this->get_conso_food();
+    if($diff < -50) $diff = -50;
     else if($diff > 25) $diff = 25;
+    echo 'maj conso '.$this->race.' : théorique='.$cons_th.' - actuel='.$this->get_conso_food().' - écart='.$anc_diff.' - ajustement='.$diff;
     $this->set_conso_food( $this->get_conso_food() + $diff);
+    echo ' - nouvelle conso='.$this->get_conso_food()."\n";
   }
 
   /**
@@ -441,6 +444,8 @@ class royaume
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
+
+      log_admin::log('debug', 'Création d\'un royaume : '.$requete, true);
 		}
 	}
 
@@ -1300,20 +1305,26 @@ class royaume
 		return ($this->bois + $this->charbon + $this->eau + $this->essence + $this->food + $this->pierre + $this->sable);
 	}
 
-	function supprime_ressources($pourcent)
+	function supprime_ressources($perte)
 	{
-		$this->set_bois(floor($this->bois / (1 + ($pourcent / 100))));
-		$this->set_charbon(floor($this->charbon / (1 + ($pourcent / 100))));
-		$this->set_eau(floor($this->eau / (1 + ($pourcent / 100))));
-		$this->set_essence(floor($this->essence / (1 + ($pourcent / 100))));
-		$this->set_food(floor($this->food / (1 + ($pourcent / 100))));
-		$this->set_pierre(floor($this->pierre / (1 + ($pourcent / 100))));
-		$this->set_sable(floor($this->sable / (1 + ($pourcent / 100))));
+    $res = array('bois', 'charbon', 'eau', 'essence', 'food', 'pierre', 'sable');
+    $types = array();
+    foreach( $res as $type )
+    {
+      if( $this->$type >= 1000 )
+        $types[] = $type;
+    }
+    if( count($types) == 0 )
+      return false;
+    $type = $types[rand(0,count($types)-1)];
+    $methode = 'set_'.$type;
+    $this->$methode($this->$type - $perte);
+    return $type;
 	}
 
 	function verif_hp()
 	{
-		if($this->capitale_hp <= 0 && $this->fin_raz_capitale < time())
+		if($this->id && $this->capitale_hp <= 0 && $this->fin_raz_capitale < time())
 		{
 			$this->set_capitale_hp(30000);
 			$this->sauver();
@@ -1343,7 +1354,7 @@ class royaume
 		$row = $db->read_assoc($req);
 		if($row['statut'] == 'actif')
 		{
-			$this->pp = 150 * ($row['level'] * $row['level']) + 50 * $row['level'];
+			$this->pp = 250 * ($row['level'] * $row['level']) + 1000 * $row['level'];
       $this->level_mur = $row['level'];
 		}
 		else

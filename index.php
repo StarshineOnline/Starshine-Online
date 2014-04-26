@@ -16,7 +16,7 @@ include_once(root.'haut.php');
 </div>
 <div id='accueil'>
 <?PHP
-if( $check === false )
+if( $estConnexionReussie === false )
    echo '<div id="dialog" title="Erreur">'.$erreur_login.'</div><script type="text/javascript">$("#dialog").dialog();</script>';
   if( file_exists(root.'pub.php') )
     include_once(root.'pub.php');
@@ -43,7 +43,19 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			<script type="text/javascript">
 			$(function()
 			{
-				$('#screenshot_box a').lightBox({fixedNavigation:true});
+				$('#screenshot_box a').lightBox({
+					fixedNavigation:true,
+					overlayBgColor: '#000000',
+					overlayOpacity: 0.6,
+					imageLoading: 'image/jquery-lightbox/loading.gif',
+					imageBtnClose: 'image/jquery-lightbox/btn-close.gif',
+					imageBtnPrev: 'image/jquery-lightbox/btn-prev.gif',
+					imageBtnNext: 'image/jquery-lightbox/btn-next.gif',
+					imageBlank: 'image/jquery-lightbox/blank.gif',
+					containerResizeSpeed: 350,
+					txtImage: 'Image',
+					txtOf: 'sur'
+				});
 			});
 			</script>
 			<ul>
@@ -162,7 +174,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<div id='creation_box' style='display:none;'>
   		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
   		<?php
-  		if( $check === 0 or $_SESSION['droits'] & joueur::droit_staf )
+  		if( ($estUnUtilisateur && !$possedeUnPerso) or $_SESSION['droits'] & joueur::droit_staf )
   		{
   		?>
   		<div style='width:165px;float:left;'>
@@ -200,7 +212,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
   		</div>
   		<?php
       }
-      else if( !isset($check) or $check === false )
+      else if( !$estUnUtilisateur && !$possedeUnPerso )
       {
   		?>
   		<h3>Création du compte joueur</h3>
@@ -232,7 +244,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 	</div>
 
 			<?php
-			if( !isset($_SESSION['nom']) AND !isset($_SESSION['pseudo']) )
+			if( !$estUnUtilisateur && !$possedeUnPerso )
 			{
 			?>
 				<div id='login'>
@@ -252,7 +264,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			else
 			{
 				echo "<div id='login_ok'>";
-				if( $check )
+				if( $possedeUnPerso )
 				  echo "<a href='interface.php'>Entrez dans le monde de Starshine-Online</a> / ";
         else
         {

@@ -54,10 +54,6 @@ include_once('journalier2-encheres.php');
 // Grades
 include_once('journalier2-grades.php');
 
-$mail_send = getenv('SSO_MAIL');
-if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';
-mail($mail_send, 'Starshine - Script journalier du '.$date, $mail);
-
 echo "Done\n";
 
 ?>

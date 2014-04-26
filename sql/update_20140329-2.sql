@@ -1,0 +1,1 @@
+UPDATE pet p INNER JOIN monstre m ON m.id = p.id_monstre SET p.nom = m.nom WHERE p.nom = '' ;

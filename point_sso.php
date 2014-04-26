@@ -43,11 +43,11 @@ if(array_key_exists('action', $_GET))
 						}
 						if($check)
 						{
-							ajout_bonus($_GET['id'], $joueur->get_id());
+							if( in_array($_GET['id'], array(bonus_perso::CACHE_GRADE_ID, bonus_perso::CACHE_CLASSE_ID, bonus_perso::CACHE_STATS_ID, bonus_perso::CACHE_NIVEAU_ID)) )
+								$joueur->ajout_bonus_shine($_GET['id'], '', 1);
+							else
+								$joueur->ajout_bonus_shine($_GET['id']);
 							$joueur->set_point_sso($joueur->get_point_sso() - $row['point']);
-							//Si le bonus est cache grade ou cache classe on l'insere aussi dans la bdd
-							if($_GET['id'] == 7) $joueur->set_cache_classe(1);
-							elseif($_GET['id'] == 8) $joueur->set_cache_stat(1);
 							$joueur->sauver();
 							$bonus = recup_bonus($joueur->get_id());
 						}

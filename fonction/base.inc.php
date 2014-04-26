@@ -1630,12 +1630,12 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		}
 		echo '
 		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-		Maximum de la compétence '.$competence.' = '.$max.'<br />';
+		<br />Valeur maximale en '.$competence.' : '.$max.'<br />';
 		// On se base sur le joueur et non le perso, sinon on perds les montees
 		// des rounds precedents vu qu'on ne sauve qu'a la fin
 		$val_competence = $joueur->get_comp($competence, true);
 
-		echo 'Valeur actuelle de la compétence : '.$val_competence.'<br />
+		echo 'Valeur actuelle en '.$competence.' : '.$val_competence.'<br />
 		Difficulté : '.$difficulte.'<br />';
 		// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
 		if($val_competence < $max)
@@ -1648,8 +1648,11 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
 			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 			$R_retour[1] = false;
-			echo 'Chances : dé de : '.$reussite.' doit être inférieur à '.$chance.' <i>'.($chance * 100 / $reussite).'% de chance</i><br />';
-			echo 'Résultat : '.$numero.'<br />';
+			echo 'Chances : <br />';
+			echo 'Jet d\'un dé à : '.$reussite.' faces.<br />';
+			echo 'Le résultat doit être inférieur à <b>'.round($chance,0).'</b> <br />
+				   soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence.'<br />';
+			echo 'Résultat : <b>'.$numero.'</b><br />';
 			//Si le numero est inférieur a chance, alors la compétence augmente d'un
 			if($numero < $chance)
 			{
@@ -1658,6 +1661,10 @@ function augmentation_competence($competence, $joueur, $difficulte)
 
 				//Indique que la compétence a augmenté
 				$R_retour[1] = true;
+			}
+			else
+			{
+				echo 'La compétence n\'augmente pas.<br />';
 			}
 		}
 		echo '</div>';
@@ -3073,25 +3080,29 @@ function list_joueurs_visu($joueur, $distance) {
  *
  * @return les construction dans la visu sous forme d'un tableau de lignes
  */
-function list_construction_visu($joueur, $distance) {
+function list_construction_visu($joueur, $distance)
+{
 	global $db;
-  global $Gtrad;
-
+	global $Gtrad;
+	
 	$ret = array();
-
+	
 	// Calcul de la visu
 	$x = $joueur->get_x(); $y = $joueur->get_y();
 	$pos1 = convert_in_pos($x, $y);
 	$lx = $x - $distance; $gx = $x + $distance;
 	$ly = $y - $distance; $gy = $y + $distance;
-
-
+	
   	// Recherche des constructions
-	$requete = "select x, y, c.id, image, r.race ".
-    "from construction c, royaume r ".
-    "where r.id = c.royaume and x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$requete = "
+		SELECT c.x, c.y, c.id, b.image, r.race
+		FROM	construction c
+				INNER JOIN batiment b ON b.id = c.id_batiment
+				INNER JOIN royaume r ON r.id = c.royaume
+		WHERE c.x >= $lx AND c.x <= $gx AND c.y >= $ly AND c.y <= $gy
+	";
 	$req = $db->query($requete);
-	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
+	// Ajout des constructions dans le tableau si la distance pythagoricienne est bonne
 	$ret = array();
 	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
@@ -3099,36 +3110,40 @@ function list_construction_visu($joueur, $distance) {
 			$dst = calcul_distance_pytagore($pos1, $pos2);
 			if ($dst <= $distance && $dst != 0)
 			{
-        $bat = recupbatiment($row['id'], 'construction');
-        $bat['distance'] = $dst;
-        $bat['x'] = $row['x'];
-        $bat['y'] = $row['y'];
-        $bat['royaume'] = $Gtrad[$row['race']];
-        $bat['image'] = 'batiment/'.$row['image'].'_04';
+				$bat = recupbatiment($row['id'], 'construction');
+				$bat['distance'] = $dst;
+				$bat['x'] = $row['x'];
+				$bat['y'] = $row['y'];
+				$bat['royaume'] = $Gtrad[$row['race']];
+				$bat['image'] = 'batiment/'.$row['image'].'_04';
 				$ret[] = $bat;
 			}
 		}
 	}
+	
 	// Recherche des placements
-	$requete = "select x, y, c.id, r.race, royaume ".
-    "from placement c, royaume r ".
-    "where r.id = c.royaume and x >= $lx and x <= $gx and y >= $ly and y <= $gy";
+	$requete = "
+		SELECT p.x, p.y, p.id, p.royaume, b.image, r.race
+		FROM	placement p
+				INNER JOIN batiment b ON b.id = p.id_batiment
+				INNER JOIN royaume r ON r.id = p.royaume
+		WHERE p.x >= $lx AND p.x <= $gx AND p.y >= $ly AND p.y <= $gy
+	";
 	$req = $db->query($requete);
-	// Ajout des persos dans le tableau si la distance pythagoricienne est bonne
+	// Ajout des placements dans le tableau si la distance pythagoricienne est bonne
 	if ($db->num_rows > 0) {
 		while ($row = $db->read_assoc($req)) {
 			$pos2 = convert_in_pos($row['x'], $row['y']);
 			$dst = calcul_distance_pytagore($pos1, $pos2);
 			if ($dst <= $distance)
 			{
-        $bat = recupbatiment($row['id'], 'placement');
-        $bat['distance'] = $dst;
-        $bat['x'] = $row['x'];
-        $bat['y'] = $row['y'];
-        $bat['royaume'] = $Gtrad[$row['race']];
-        $bat['nom'] .= ' en construction';
-        // Mieux à faire ici ??
-        $bat['image'] = 'drapeaux/drapeau_'.$row['royaume'];
+				$bat = recupbatiment($row['id'], 'placement');
+				$bat['distance'] = $dst;
+				$bat['x'] = $row['x'];
+				$bat['y'] = $row['y'];
+				$bat['royaume'] = $Gtrad[$row['race']];
+				$bat['nom'] .= ' en construction';
+				$bat['image'] = 'drapeaux/'.$row['image'].'_'.$row['royaume'];
 				$ret[] = $bat;
 			}
 		}
@@ -3208,7 +3223,7 @@ function pose_drapeau_roi($x, $y)
 	global $joueur;
 	global $db;
 	global $Trace;
-  global $G_max_x, $G_max_y;
+	global $G_max_x, $G_max_y;
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
@@ -3227,19 +3242,27 @@ function pose_drapeau_roi($x, $y)
 	$req = $db->query("select 1 from placement where x = $x and y = $y");
 	if ($db->num_rows($req) > 0) security_block(URL_MANIPULATION); // case pas libre !!
 
-	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	$req = $db->query("
+		SELECT temps_construction, b.id bid, b.nom bnom, o.id oid
+		FROM	depot_royaume d
+				INNER JOIN objet_royaume o ON d.id_objet = o.id
+				INNER JOIN batiment b ON o.id_batiment = b.id
+		WHERE o.type = 'drapeau' AND b.hp = 1 AND d.id_royaume = $race
+	");
 	if ($db->num_rows($req) < 1) {
-		echo "<h5>Plus de drapeaux au dépôt</h5>";
+		echo "<h5>Plus de drapeaux au dépôt.</h5>";
 		return false;
 	}
 	$row = $db->read_assoc($req);
 
-	$drapeau_id = $row['id'];
+	$drapeau_id = $row['bid'];
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit 1");
 	$distance = abs($Trace[$joueur->get_race()]['spawn_x'] - $x) + abs($Trace[$joueur->get_race()]['spawn_y'] - $y);
 	$time = time() + ($row['temps_construction'] * $distance);
-	$requete = "INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) VALUES('drapeau', $x, $y, '$race', ".
-		time().", '$time', $drapeau_id, 1, 'drapeau', 0)";
+	$requete = "
+		INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
+		VALUES ('drapeau', $x, $y, '$race', ".time().", '$time', $drapeau_id, 1, '".$db->escape($row['bnom'])."', 0)
+	";
 	$req = $db->query($requete);
 }
 
@@ -3248,7 +3271,7 @@ function pose_drapeau_roi_all()
 	global $joueur;
 	global $db;
 	global $Trace;
-  global $G_max_x, $G_max_y;
+	global $G_max_x, $G_max_y;
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
 	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
@@ -3260,7 +3283,13 @@ function pose_drapeau_roi_all()
 	$race = $Trace[$joueur->get_race()]['numrace'];
 
 	
-	$req = $db->query("SELECT temps_construction, b.id id, o.id oid from depot_royaume d, objet_royaume o, batiment b where o.id = d.id_objet and o.id_batiment = b.id and o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race");
+	$req = $db->query("
+		SELECT temps_construction, b.id bid, b.nom bnom, o.id oid
+		FROM	depot_royaume d
+				INNER JOIN objet_royaume o ON o.id = d.id_objet
+				INNER JOIN batiment b ON b.id = o.id_batiment
+		WHERE o.type = 'drapeau' and b.hp = 1 and d.id_royaume = $race
+	");
 	$nb_drapeaux = $db->num_rows($req);
 	if ($nb_drapeaux < 1) {
 		echo "<h5>Plus de drapeaux au dépôt</h5>";
@@ -3276,7 +3305,11 @@ function pose_drapeau_roi_all()
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit $nb");
 	$time = time();
 	$expr_distance = '(abs('.$Trace[$joueur->get_race()]['spawn_x'].' - x) + abs('.$Trace[$joueur->get_race()]['spawn_y'].' - y))';
-	$req = $db->query("insert into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez) select 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[id], 1, 'drapeau', 0 from tmp_adj_lib limit $nb;");
+	$req = $db->query("
+		INSERT into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
+		SELECT 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[bid], 1, '".$db->escape($row['bnom'])."', 0
+		FROM tmp_adj_lib limit $nb;
+	");
 	return $nb;
 }
 
@@ -3543,7 +3576,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'mort_regen' :
           $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
+          lance_buff('mort_regen', $joueur->get_id(), 1, 0, $duree, $maladie['nom'], description('Vous mourrez lors de votre prochaine regénération', array()), 'perso', 1, 0, 0);
           break;
         case 'plus_cout_attaque' :
           $duree = 12 * 60 * 60;
@@ -3555,7 +3588,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'regen_negative' :
           $duree = 24 * 60 * 60;
-          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénérations vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :
           $joueur->set_hp(1);
@@ -3563,8 +3596,8 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           $bloque_regen = true;
           break;
         case 'high_regen' :
-          $duree = $effet_explode[1] * 60 * 60;
-          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+          $duree = 4 * 60 * 60;
+          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Votre  prochaine regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
           break;
       }
     }

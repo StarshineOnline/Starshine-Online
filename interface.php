@@ -13,7 +13,6 @@ if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
 else
 {
 	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
-	var_dump($_SESSION);
 	exit();
 }
 

@@ -17,17 +17,15 @@ include_once(root.'fonction/base.inc.php');
 //Inclusion du fichier contenant les logs admin
 include_once(root.'class/log_admin.class.php');
 
-$date = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 1, date("Y")));
+$date = date('Y-m-d', mktime(0, 0, 0, date('m') , date('d') - 1, date('Y')));
 
 $log = new log_admin();
 
-echo "Simulation de Génération des monstres sur la carte\n";
-
 //Récupération du nombre de joueurs par niveau
-$requete = "SELECT level, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY level";
+$requete = 'SELECT level, COUNT(*) as total FROM perso WHERE statut = "actif" GROUP BY level';
 $req = $db->query($requete);
 
-$mail = "\nGénération des monstres\n\n";
+echo "Génération des monstres\n\n";
 
 while($row = $db->read_assoc($req))
 {
@@ -35,7 +33,7 @@ while($row = $db->read_assoc($req))
 }
 
 //Récupération du nombre de monstres par niveau
-$requete = "SELECT level, mm.type, COUNT(1) as total FROM map_monstre mm, monstre m WHERE mm.type = m.id GROUP BY level, type ORDER BY level ASC";
+$requete = 'SELECT level, mm.type, COUNT(1) as total FROM map_monstre mm, monstre m WHERE mm.type = m.id GROUP BY level, type ORDER BY level ASC';
 $req = $db->query($requete);
 
 $tot = 0;
@@ -54,14 +52,8 @@ while($row = $db->read_assoc($req))
 	$monstre[$row['level']]['tot_type'] += 1;
 }
 
-/*$nbr_monstre = 1000;
-$nbr_perso = 750;
-$level_moyen = 6;
-$joueur[1] = 10;
-*/
-
 $arenes = array();
-$requete = "SELECT * FROM arenes";
+$requete = 'SELECT * FROM arenes';
 $req = $db->query($requete);
 while($row = $db->read_array($req))
 {
@@ -75,25 +67,23 @@ while($row = $db->read_array($req))
 $mort = time() + 22000000;
 $id_plan = 145;
 // Les cases considérées
-$sql_cases = "select x,y from map where ".
-  "x > 25 and x < 50 and y > 205 and y < 235 and info in (15,25)";
+$sql_cases = 'select x,y from map where '.
+  'x > 25 and x < 50 and y > 205 and y < 235 and info in (15,25)';
 // Les cases occupées par le plan dans les cases en question
-$sql_cases_occupees = "select c.x,c.y from map_monstre mm, ($sql_cases) c ".
-  "where c.x = mm.x and c.y = mm.y and nc.x = c.x and nc.y = c.y and ".
-  "mm.type = $id_plan";
+$sql_cases_occupees = 'select c.x,c.y from map_monstre mm, ('.$sql_cases.') c '.
+  'where c.x = mm.x and c.y = mm.y and nc.x = c.x and nc.y = c.y and '.
+  'mm.type = '.$id_plan;
 // Les cases en questions MOINS les cases occupées parmis elles
-$sql_cases_vides = "select nc.x, nc.y from ($sql_cases) nc ".
-  "where not exists ($sql_cases_occupees)";
+$sql_cases_vides = 'select nc.x, nc.y from ('.$sql_cases.') nc '.
+  'where not exists ('.$sql_cases_occupees.')';
 // La jointure sur les caracs du mob
-$sql_insert = "select m.id, f.x, f.y, m.hp, $mort ".
-  "from monstre m, ($sql_cases_vides) f where m.id = $id_plan";
+$sql_insert = 'select m.id, f.x, f.y, m.hp, '.$mort.
+  ' from monstre m, ('.$sql_cases_vides.') f where m.id = '.$id_plan;
 // L'insert
-$db->query("insert into map_monstre(type,x,y,hp,mort_naturelle) $sql_insert");
+$db->query('insert into map_monstre(type,x,y,hp,mort_naturelle) '.$sql_insert);
 
 //Sélection des monstres
-$requete = "SELECT * FROM monstre ORDER BY level";
-//$requete = "SELECT * FROM monstre WHERE id > 140 ORDER BY level";
-//$requete = "SELECT * FROM monstre WHERE id = 210 ORDER BY level";
+$requete = 'SELECT * FROM monstre ORDER BY level';
 $req = $db->query($requete);
 $check_virgule = false;
 $total_monstre = 0;
@@ -113,7 +103,7 @@ $stmt_insert->bind_param('iiiis', $id, $insert_x, $insert_y, $hp, $mort_naturell
 
 while($row = $db->read_array($req))
 {
-	echo "Gestion de l'id $row[id]: $row[nom]\n";
+	echo 'Gestion de l\'id '.$row['id'].' : '.$row['nom']."\n";
 	$tot_monstre = 0;
 	//Génération de monstres sur la carte dont l'identifiant est generation_id
 	$id = $row['id'];
@@ -188,7 +178,7 @@ while($row = $db->read_array($req))
 		$ratio = $up / $down;
 		if($ratio > 50) $ratio = 50;
 		$limite = $ratio * 10000;
-		$requete = "SELECT x, y, info FROM map WHERE ".$where;
+		$requete = 'SELECT x, y, info FROM map WHERE '.$where;
 		echo $requete."\n";
 		$req2 = $db->query($requete);
 		while($row2 = $db->read_array($req2))
@@ -209,7 +199,7 @@ while($row = $db->read_array($req))
 					$check = true;
 					if($spawn == 0)
 					{
-						$requete = "SELECT id FROM map_monstre WHERE x = ".$row2['x']." AND y = ".$row2['y']." AND type = ".$id;
+						$requete = 'SELECT id FROM map_monstre WHERE x = '.$row2['x'].' AND y = '.$row2['y'].' AND type = '.$id;
 						$req4 = $db->query($requete);
 						echo $requete."\n";
 						if($db->num_rows > 0) $check = false;
@@ -230,12 +220,10 @@ while($row = $db->read_array($req))
 			}
 		}
 	}
-	$next_line = $nom." : ".$tot_monstre." - Up : ".$up." / Down : ".$down." / Ratio : ".$ratio."\n";
-	echo $next_line;
-	$mail .= $next_line;
+	echo $nom.' : '.$tot_monstre.' - Up : '.$up.' / Down : '.$down.' / Ratio : '.$ratio."\n\n";
 }
 
-echo "insert done\n";
+echo "insert done\n\n\n";
 
 //Si le premier du mois, pop des boss de donjons
 if(date("j") == 1)
@@ -243,7 +231,7 @@ if(date("j") == 1)
   echo "Gestion des pops de boss de donjon\n";
 	$log->send(0, 'journalier', 'Jour 1: pop des boss de donjon');
 	//Myriandre
-	$requete = "SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75";
+	$requete = 'SELECT type FROM map_monstre WHERE type = 64 OR type = 65 OR type = 75';
 	$db->query($requete);
 	//Si il n'est pas là on le fait pop
 	if($db->num_rows == 0)
@@ -251,26 +239,26 @@ if(date("j") == 1)
     echo "pop de devoris\n";
 		$time = time() + 100000000;
 		$requete = "INSERT INTO map_monstre VALUES(NULL, '64','21','217','6400',"
-      .$time.")";
+      .$time.')';
 		$db->query($requete);
-		$mail .= "Pop de Devorsis\n";
+		echo "Pop de Devorsis\n";
 		$log->send(0, 'journalier', 'Pop de Devorsis');
 	}
 	//Donjon Gob
 	//Draconides, on teste la présence des draconides et des rois
-	$requete = "SELECT type FROM map_monstre WHERE type in (125, 126, 123, 149)";
+	$requete = 'SELECT type FROM map_monstre WHERE type in (125, 126, 123, 149)';
 	$db->query($requete);
 	//S'ils ne sont pas là on les fait pop
 	if($db->num_rows == 0)
 	{
 		$time = time() + 100000000;
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'125','38','284','5000',"
-      .$time.")";
+      .$time.')';
 		$req = $db->query($requete);
 		$requete = "INSERT INTO map_monstre VALUES(NULL,'126','11','287','5000',"
-      .$time.")";
+      .$time.')';
 		$db->query($requete);
-		$mail .= "Pop du construct draconide 1, construct draconide 2\n";
+		echo "Pop du construct draconide 1, construct draconide 2\n";
 		$log->send(0, 'journalier', 'Pop des construct draconide');
 	}
   else
@@ -280,9 +268,5 @@ if(date("j") == 1)
     $log->send(0, 'journalier', "pas de pop des draconides, présent: $type");
   }
 }
-$mail .= $db->error();
-
-$mail_send = getenv('SSO_MAIL');
-if ($mail_send == null || $mail_send == '') $mail_send = 'starshineonline@gmail.com';
-mail($mail_send, 'Starshine - Génération des monstres du '.$date, $mail);
+echo "\n\n".$db->error();
 ?>

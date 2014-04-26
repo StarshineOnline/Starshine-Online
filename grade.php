@@ -14,7 +14,7 @@ $db->query($requete);
 while($iii < $count_race)
 {
 	$tab_perso = array();
-	$requete = "SELECT * FROM perso WHERE race = '".$races[$iii]."' AND dernier_connexion >= ".$time_limit." AND rang_royaume <> 6 AND rang_royaume <> 1 AND statut = 'actif' ORDER BY honneur DESC";
+	$requete = 'SELECT * FROM perso WHERE race = "'.$races[$iii].'" AND dernier_connexion >= '.$time_limit.' AND rang_royaume <> 6 AND rang_royaume <> 1 AND statut = "actif" ORDER BY honneur DESC';
 	//echo $requete.'<br />';
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
@@ -25,7 +25,7 @@ while($iii < $count_race)
 	$count = count($tab_perso);
 	$check = true;
 	
-	$requete = "SELECT * FROM grade WHERE facteur <> 0 ORDER BY facteur";
+	$requete = 'SELECT * FROM grade WHERE facteur <> 0 ORDER BY facteur';
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req) AND $check)
 	{
@@ -36,9 +36,9 @@ while($iii < $count_race)
 		{
 			if($tab_perso[$i]['honneur'] >= $row['honneur'])
 			{
-				echo $row['nom'].' des '.$races[$iii].' - '.$tab_perso[$i]['nom'].'<br />';
+				echo $row['nom'].' des '.$races[$iii].' - '.$tab_perso[$i]['nom']."\n";
 				//mis à jour du perso
-				$requete = "UPDATE perso SET rang_royaume = ".$row['id']." WHERE id = ".$tab_perso[$i]['id']." AND rang_royaume != ".$row['id'];
+				$requete = 'UPDATE perso SET rang_royaume = '.$row['id'].' WHERE id = '.$tab_perso[$i]['id'].' AND rang_royaume != '.$row['id'];
 				$req_up = $db->query($requete);
 				//Si ya changement
 				if($db->rows_affected > 0)
@@ -46,12 +46,12 @@ while($iii < $count_race)
 					//Si le grade est chef ou plus et qu'il n'est pas criminel on donne accès au forum des officiers
 					if($row['rang'] > 2 AND $tab_perso[$i]['amende'] == 0)
 					{
-						$requete = "UPDATE punbbusers SET group_id = ".$groupe[$tab_perso[$i]['race']][2]." WHERE username = '".$tab_perso[$i]['nom']."'";
+						$requete = 'UPDATE punbbusers SET group_id = '.$groupe[$tab_perso[$i]['race']][2].' WHERE username = "'.$tab_perso[$i]['nom'].'"';
 					}
 					//Sinon on supprime l'accès
 					else
 					{
-						$requete = "UPDATE punbbusers SET group_id = ".$groupe[$tab_perso[$i]['race']][0]." WHERE username = '".$tab_perso[$i]['nom']."'";
+						$requete = 'UPDATE punbbusers SET group_id = '.$groupe[$tab_perso[$i]['race']][0].' WHERE username = "'.$tab_perso[$i]['nom'].'"';
 					}
 					$db_forum->query($requete);
 				}

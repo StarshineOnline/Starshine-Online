@@ -121,15 +121,6 @@ class botte extends effect
 	}
 
 	function peut_agir(&$actif, $cond) {
-    /*if (isset($passif['enchantement']['evasion'])) {
-      $chance = $passif['enchantement']['evasion']['effet'];
-      $de = rand(1, 100);
-      $this->debug("Evasion: $de doit être inférieur à $chance");
-      if ($de <= $chance) {
-        $this->message($passif->get_nom().'esquive totalement la botte');
-        return false;
-      }
-    }*/
 		if( isset($actif->precedent[$cond]) && $actif->precedent[$cond] )
 		{
       $this->debug('La botte agit !');
@@ -158,14 +149,14 @@ class maitrise_bouclier extends competence
 		if ($passif->bouclier() AND $passif->is_competence('maitrise_bouclier')) $effects[] = new maitrise_bouclier($acteur != 'attaquant');
 	}
 
-  function calcul_bloquage(/*&$actif, &$passif*/&$attaque) {
+  function calcul_bloquage(&$attaque) {
     $passif = $attaque->get_passif();
     $this->used = true;
     $passif->set_potentiel_bloquer( $passif->get_potentiel_bloquer() * (
       1 + ($passif->get_competence2('maitrise_bouclier')->get_valeur() / 1000)) );
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_passif(), 6);
     }
@@ -184,14 +175,14 @@ class maitrise_dague extends competence
 		$effects[] = new maitrise_dague($acteur == 'attaquant');      
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
       (1 + ($actif->get_competence2('maitrise_dague')->get_valeur() / 1000)));
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_actif(), 6);
     }
@@ -210,15 +201,14 @@ class maitrise_epee extends competence
 			$effects[] = new maitrise_epee($acteur == 'attaquant');      
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
       (1 + ($actif->get_competence2('maitrise_epee')->get_valeur() / 1000)));
-    //$actif['maitrise_epee'] = $actif['competences']['maitrise_epee'];
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_actif(), 6);
     }
@@ -237,15 +227,14 @@ class maitrise_hache extends competence
 			$effects[] = new maitrise_hache($acteur == 'attaquant');      
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
       (1 + ($actif->get_competence2('maitrise_hache')->get_valeur() / 1000)));
-    //$actif['maitrise_hache'] = $actif['competences']['maitrise_hache'];
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_actif(), 6);
     }
@@ -264,15 +253,14 @@ class maitrise_arc extends competence
 			$effects[] = new maitrise_arc($acteur == 'attaquant');      
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
     $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
       (1 + ($actif->get_competence2('maitrise_arc')->get_valeur() / 1000)));
-    //$actif['maitrise_arc'] = $actif['competences']['maitrise_arc'];
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_actif(), 6);
     }
@@ -291,17 +279,15 @@ class maitrise_critique extends competence
 			$effects[] = new maitrise_critique($acteur == 'attaquant');      
 	}
 
-  function calcul_critique(/*&$actif, &$passif, $chance_critique*/&$attaque) {
+  function calcul_critique(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
     
     $attaque->valeur *=
       1 + ($actif->get_competence2('maitrise_critique')->get_valeur() / 1000);
-    //$actif['maitrise_critique'] = $actif['competences']['maitrise_critique'];
-    //return $chance_critique;
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->used) {
       $this->test_montee($attaque->get_actif(), 6);
     }
@@ -319,15 +305,14 @@ class art_critique extends competence
     $this->begin = 0; // S'applique en premier, puisque addition
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     if ($this->critique) {
       $this->test_montee($attaque->get_actif(), 3.5);
     }
   }
 
-  function calcul_mult_critique(/*&$actif, &$passif, $mult*/&$attaque) {
+  function calcul_mult_critique(&$attaque) {
     $this->critique = true;
-    //return $mult + $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
     $attaque->valeur += $attaque->get_actif()->get_competence2('art_critique')->get_valeur();
   }
 }
@@ -340,7 +325,7 @@ class preparation extends comp_comb
 		$this->effet = $this->effet / 100 + 1;
 	}
 
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
 		$attaque->get_passif()->potentiel_parer *= $this->effet;
 	}
 }
@@ -348,41 +333,30 @@ class preparation extends comp_comb
 /* Précision chirurgicale */
 class precision_chirurgicale extends comp_comb
 {
-  function __construct($aLevel = 1) {
-    parent::__construct('posture_critique', $aLevel + 2);
+	function __construct($aLevel = 1) {
+		parent::__construct('posture_critique', $aLevel + 2);
 		$this->effet = $this->effet / 100 + 1;
 	}
-
-  function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) {
-		//return $chance * $this->effet;
-    $this->valeur *=$this->effet;
+	
+	// Calcule la nouvelle chance de critique
+	function calcul_critique(&$attaque) {
+		$attaque->valeur *= $this->effet;
 	}
 }
 
 /* Botte du scorpion */
 class botte_scorpion extends botte
 {
-  /*function __construct($aLevel = 1) {
-    parent::__construct('esquive', 'botte_scorpion', $aLevel);
-		$this->effet = $this->effet / 100 + 1;
-	}*/
-
-  function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque) {
+  function calcul_critique(&$attaque) {
 		if ($this->peut_agir($attaque->get_actif(), 'esquive'))
 			$attaque->valeur *= (1 + $this->effet/100);
-		/*else
-			return $chance;*/
 	}	
 }
 
 /* Botte du crabe */
 class botte_crabe extends botte
 {
-  /*function __construct($aLevel = 1) {
-    parent::__construct('esquive', 'botte_crabe', $aLevel);
-	}*/
-
-  function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+  function inflige_degats(&$attaque) {
     $passif = $attaque->get_passif();
 		if ($this->peut_agir($attaque->get_actif(), 'esquive')) {
 			if ( comp_sort::test_de(100, $this->effet) ) {
@@ -397,12 +371,7 @@ class botte_crabe extends botte
 /* Botte de l'aigle */
 class botte_aigle extends botte
 {
-  /*function __construct($aLevel = 1) {
-    parent::__construct('esquive', 'botte_aigle', $aLevel);
-		$this->effet = $this->effet / 100 + 1;
-	}*/
-
-  function debut_round(/*&$actif, &$passif*/&$attaque) {
+  function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
 		if ($this->peut_agir($actif, 'esquive'))
 			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
@@ -412,11 +381,7 @@ class botte_aigle extends botte
 /* Botte du chat */
 class botte_chat extends botte
 {
-  /*function __construct($effet, $effet2, $duree=1) {
-    parent::__construct('critique', $effet, $effet2, $duree);
-	}*/
-
-  function debut_round(/*&$actif, &$passif*/&$attaque)  {
+  function debut_round(&$attaque)  {
     $actif = $attaque->get_actif();
 		if ($this->peut_agir($actif, 'critique')) {
 			$actif->etat['botte_chat']['effet'] = $this->effet;
@@ -429,7 +394,7 @@ class botte_chat extends botte
 class botte_chien extends botte
 {
 
-  function debut_round(/*&$actif, &$passif*/&$attaque)  {
+  function debut_round(&$attaque)  {
     $actif = $attaque->get_actif();
 		if ($this->peut_agir($actif, 'critique')) {
 			$actif->etat['botte_blocage']['effet'] = $this->effet;
@@ -440,18 +405,17 @@ class botte_chien extends botte
 // Botte du scolopendre
 class botte_scolopendre extends botte
 {
-  function calcul_critique(/*&$actif, &$passif, $chance*/&$attaque)
+  function calcul_critique(&$attaque)
   {
 		if( $this->peut_agir($attaque->get_actif(), 'bloque') )
 			$attaque->valeur *= (1 + $this->effet/100);
-		//return $chance;
 	}
 }
 
 // Botte de la tortue
 class botte_tortue extends botte
 {
-  function debut_round(/*&$actif, &$passif*/&$attaque)
+  function debut_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		if( $this->peut_agir($actif, 'bloque') )
@@ -462,7 +426,7 @@ class botte_tortue extends botte
 // Botte du rhinocéros
 class botte_rhinoceros extends botte
 {
-  function debut_round(/*&$actif, &$passif*/&$attaque)
+  function debut_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		if( $this->peut_agir($actif, 'touche') )
@@ -476,7 +440,7 @@ class botte_rhinoceros extends botte
 // Botte du tigre
 class botte_tigre extends botte
 {
-  function debut_round(/*&$actif, &$passif*/&$attaque)
+  function debut_round(&$attaque)
   {
     $actif = $attaque->get_actif();
 		if( $this->peut_agir($actif, 'touche') )
@@ -487,12 +451,10 @@ class botte_tigre extends botte
 // Botte de l'ours
 class botte_ours extends botte
 {
-  function calcul_degats(/*&$actif, &$passif, $degats*/&$attaque)
+  function calcul_degats(&$attaque)
   {
 		if( $this->peut_agir($attaque->get_actif(), 'touche') )
-			//return $degats + $this->effet;
       $attaque->add_degats($this->effet);
-		//return $degats;
 	}
 }
 
@@ -507,14 +469,13 @@ class fleche_poison extends comp_comb {
 		$this->poison = false;
 	}
 
-  function calcul_arme(/*&$actif, &$passif, $arme*/&$attaque) {
+  function calcul_arme(&$attaque) {
     $this->debug("boost du facteur d'arme - fleche empoisonnee: $arme -> ".
                  ($arme + $this->effet));
-		//return $arme + $this->effet;
     $attaque->valeur += $this->effet;
 	}
 
-  function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+  function inflige_degats(&$attaque) {
     $pot_att = $attaque->get_actif()->get_force() + $this->effet;
     $pot_def = $attaque->get_passif()->get_volonte();
     $de_att = rand(0, $pot_att);
@@ -526,10 +487,9 @@ class fleche_poison extends comp_comb {
     } else {
       $this->notice("Le poison n'agit pas");
     }
-	  //return $degats;
 	}
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     $passif = $attaque->get_passif();
 		if ($this->poison) {
       $this->hit('<strong>'.$passif->get_nom().'</strong> est empoisonné pour '.
@@ -541,24 +501,20 @@ class fleche_poison extends comp_comb {
 }
 
 abstract class magnetique extends effect {
-	//var $nb;
-	//var $chance;
 	var $titre;
 	var $hit;
 
-	function __construct($aName/*, $aNb*/) {
+	function __construct($aName) {
 		parent::__construct($aName);
-		//$this->nb = $aNb;
 		$this->titre = 'L\'effet magnétique';
 		$this->hit = false;
 	}
 
-	function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+	function inflige_degats(&$attaque) {
 		$this->hit = true;
-		//return $degats;
 	}
 
-	function fin_round(/*&$actif, &$passif*/&$attaque) {
+	function fin_round(&$attaque) {
 		if ($this->hit)
 			$this->magnetise($attaque);
 	}
@@ -568,66 +524,49 @@ abstract class magnetique extends effect {
   /// Supprime un buff ou un niveau de buff
   abstract function suppr_buff($buff, &$passif);
 
-	function magnetise(/*&$actif, &$passif*/&$attaque)
+	function magnetise(&$attaque)
 	{
     $passif = $attaque->get_passif();
-		//chance de débuffer
-		//$rand = rand(0, 100);
-		//Le débuff marche
-		//$this->debug($this->chance.'/ 100 => '.$rand);
-		if(/*$rand <= $this->chance*/ $this->test_chance($passif) )
+		if( $this->test_chance($passif) )
 		{
-			//$nb_buff_suppr = rand(1, $this->nb);
-			//echo $nb_buff_suppr.'<br />';
 			$passif_buff = $passif->get_buff();
-			/*for($i = 0; $i < $nb_buff_suppr; $i++)
-			{*/
-				// BD: on doit ne prendre que les vrais
-				$keys = array();
-				foreach ($passif_buff as $nbuff => $buff)
+			// BD: on doit ne prendre que les vrais
+			$keys = array();
+			foreach ($passif_buff as $nbuff => $buff)
+			{
+				if ($buff->get_debuff() == 1) continue;
+				if ($buff->get_id() == '') continue;
+				if (!$buff->get_supprimable()) continue;
+				$keys[] = $nbuff;
+			}
+			$count = count($keys);
+			if($count > 0)
+			{
+				$rand = rand(0, ($count - 1));
+				if ($passif_buff[$keys[$rand]]->get_id() == '')
 				{
-					if ($buff->get_debuff() == 1) continue;
-					if ($buff->get_id() == '') continue;
-					if (!$buff->get_supprimable()) continue;
-					$keys[] = $nbuff;
+					// Ne doit pas arriver, mais arrive parfois
+					error_log('On ne va pas reussir a supprimer le buff');
+					error_log('Buffs: '.print_r($passif->get_buff(), true));
+					error_log('Rand: '.$rand);
+					error_log('Actif: '.print_r($attaque->get_actif(), true));
+					error_log('Passif: '.print_r($passif, true));
+					$this->notice($this->titre.' aurait du supprimer un buff, '
+												.'mais une erreur est survenue. Pr&eacute;venez un '
+												.'administrateur. (Irulan si possible)');
 				}
-				$count = count($keys);
-				//echo $count.'<br />';
-				if($count > 0)
+				else
 				{
-					$rand = rand(0, ($count - 1));
-					if ($passif_buff[$keys[$rand]]->get_id() == '')
-					{
-						// Ne doit pas arriver, mais arrive parfois
-						error_log('On ne va pas reussir a supprimer le buff');
-						error_log('Buffs: '.print_r($passif->get_buff(), true));
-						error_log('Rand: '.$rand);
-						error_log('Actif: '.print_r($attaque->get_actif(), true));
-						error_log('Passif: '.print_r($passif, true));
-						$this->notice($this->titre.' aurait du supprimer un buff, '
-													.'mais une erreur est survenue. Pr&eacute;venez un '
-													.'administrateur. (Irulan si possible)');
-					}
-					else
-					{
-						/*global $db;
-						$this->message($this->titre.' supprime le buff '.$passif_buff[$keys[$rand]]->get_nom());
-						$passif->supprime_buff($keys[$rand]);
-						$passif_buff[$keys[$rand]]->supprimer();
-						unset($passif_buff[$keys[$rand]]);*/
-						$this->suppr_buff($passif_buff[$keys[$rand]], $passif);
-					}
+					$this->suppr_buff($passif_buff[$keys[$rand]], $passif);
 				}
-				else {
-					//$this->message($this->titre.' ne supprime pas de buff - plus de buff');
-					$this->message($this->titre.' n\'a pas de buff sur lequel agir');
-				}
-			//}
+			}
+			else {
+				$this->message($this->titre.' n\'a pas de buff sur lequel agir');
+			}
 			return true;
 		}
 		else
 		{
-			//$this->message($this->titre.' ne supprime pas de buff');
 			$this->message($this->titre.' n\'agit pas');
 			return false;
 		}
@@ -642,7 +581,6 @@ class globe_foudre extends magnetique {
     $this->titre = 'Le globe de foudre';
 		$this->hit = $aHit;
 		$this->chance = $achance;
-		//$this->message("Construction de ".$this->titre);
   }
   /// Test si l'effet agit ou non
   function test_chance(&$passif)
@@ -664,7 +602,7 @@ class fleche_magnetique extends magnetique {
   private $potentiel; ///< potentiel de réussite
   private $nbr_max;  ///< nombre maximum de niveaux retités
 	function __construct($nbr_max, $potentiel) {
-		parent::__construct('fleche_magnetique'/*, $aNb*/);
+		parent::__construct('fleche_magnetique');
 		$this->titre = 'La flèche magnétique';
 		$this->potentiel = $potentiel;
 		$this->nbr_max = $nbr_max;
@@ -679,11 +617,9 @@ class fleche_magnetique extends magnetique {
   /// Supprime un niveau buff
   function suppr_buff($buff, &$passif)
   {
-    //$buffs = sort_jeu::create('type', $buff->get_type(), 'incantation DESC');
     $buffs = sort_jeu::create('nom', $buff->get_nom());
     if( !$buffs )
     {
-      //$buffs = comp_jeu::create('type', $buff->get_type(), 'comp_requis DESC');
       $buffs = comp_jeu::create('nom', $buff->get_nom());
     }
     if( !$buffs )
@@ -692,23 +628,6 @@ class fleche_magnetique extends magnetique {
       return;
     }
 
-    /*$nouv = false;
-    $nbr = $nbr_red = rand(1, $this->nbr_max);
-    foreach($buffs as $b)
-    {
-      if( $nouv )
-      {
-        $nbr--;
-        if( $nbr == 0 )
-        {
-          if( substr($b->get_nom(), 0, 11) != '(Personnel)' )
-            $nouv = $b;
-          break;
-        }
-      }
-      else if( $b->get_nom() == $buff->get_nom() )
-        $nouv = true;
-    }*/
     $nouv = $buffs[0]->get_obj_requis();
     $nbr = $nbr_red = rand(1, $this->nbr_max);
     while( $nouv && $nbr )
@@ -717,12 +636,6 @@ class fleche_magnetique extends magnetique {
       $nbr--;
     }
 
-    /*if( $nouv === false )
-    {
-      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom(). 'n\'a pu être retrouvé. Pr&eacute;venez un administrateur.');
-      return;
-    }
-    else if( $nouv === true )*/
     if( $nouv )
     {
       $this->message($this->titre.' réduit le buff '.$buff->get_nom().' de '.$nbr_red.' niveau'.($nbr_red>1?'x.':'.'));
@@ -750,12 +663,11 @@ class fleche_sable extends comp_comb {
     $this->effet2 = $aEffet2;
 	}
 
-	function inflige_degats(/*&$actif, &$passif, $degats*/&$attaque) {
+	function inflige_degats(&$attaque) {
     $passif = $attaque->get_passif();
     $passif->etat['fleche_sable']['effet'] = $this->effet;
     $passif->etat['fleche_sable']['duree'] = $this->duree;
     $this->notice($passif->get_nom().' est ensablé pour '.$this->duree.' rounds');
-		//return $degats - $this->effet;
 	}
   
 }
@@ -764,27 +676,27 @@ class fleche_sable extends comp_comb {
  * Bouclier protecteur
  */
 class bouclier_protecteur extends etat {
-
-  function __construct($aEffet) {
-    parent::__construct($aEffet, 'Bouclier protecteur');
-    $this->order = effect::$FIN_ADD;
+	
+	function __construct($aEffet) {
+		parent::__construct($aEffet, 'Bouclier protecteur');
+		$this->order = effect::$FIN_ADD;
 	}
-
+	
 	static function factory(&$effects, &$actif, &$passif, $acteur = '') {
 		if (array_key_exists('bouclier_protecteur', $passif->etat)) {
 			$effects[] = new bouclier_protecteur($passif->etat['bouclier_protecteur']['effet']);
 		}
 	}
 	
-	function calcul_pm(/*&$actif, &$passif, $pm*/&$attaque) {
-    $passif = $attaque->get_passif();
-    $bloque = $passif->bouclier()->degat;
+	// Calcule la nouvelle protection magique
+	function calcul_pm(&$attaque) {
+		$passif = $attaque->get_passif();
+		$bloque = $passif->bouclier()->degat;
 		if($passif->is_buff('bouclier_terre'))
-      $bloque += $passif->get_buff('bouclier_terre', 'effet');
+			$bloque += $passif->get_buff('bouclier_terre', 'effet');
 		$pluspm = $this->effet * $bloque;
-		$this->debug($this->nom.' augmente la PM de '.$pluspm);
-		//return $pm + $pluspm;
-    $this->valeur += $pluspm;
+		$attaque->valeur += $pluspm;
+		$this->debug($this->nom.' augmente la PM de '.$pluspm.' (valeur : '.$attaque->valeur.')');
 	}
 }
 
@@ -797,7 +709,7 @@ class vol_a_la_tire extends comp_comb {
     $this->effet2 = $aEffet2;
   }
 
-  function fin_round(/*&$actif, &$passif*/&$attaque) {
+  function fin_round(&$attaque) {
     $vol = rand(1, $this->effet2);
     $this->notice($attaque->get_actif()->get_nom().' vole '.$vol.' stars !');
     $obj = $attaque->get_passif()->get_objet();

@@ -225,20 +225,20 @@ function check_existing_account($new_account, $perso = true, $joueur = false, $l
     $count++;
    }
 
-  $admin = '';
+  $mailMessage = '';
 
   $requete = "select nom from jabber_admin where replace(nom, ' ', '_') = replace('$accnt', ' ', '_')";
   $req = $db->query($requete);
   while ($row = $db->read_row($req)) {
-    $admin .= "Tentative de spoof de pseudo admin: '$new_account' \n";
-    $admin .= print_r($_SERVER, true);
+    $mailMessage .= "Tentative de spoof de pseudo admin: '$new_account' \n";
+    $mailMessage .= print_r($_SERVER, true);
     $count++;
   }
 
-  if ($count > 0 && $admin != '') {
+  if ($count > 0 && $mailMessage != '') {
     $mail_send = 'starshineonline@gmail.com';
     //$mail_send = 'bastien@geekwu.org';
-    mail($mail_send, 'Starshine - spoof de nom admin', $mail);
+    mail($mail_send, 'Starshine - spoof de nom admin', $mailMessage);
   }
 
   return $count;

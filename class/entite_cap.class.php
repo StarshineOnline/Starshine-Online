@@ -14,7 +14,7 @@ class entite_cap extends entite
   function __construct($royaume)
   {
     $coef = 1;
-    $carac = 16 + $royaume->get_level_mur();
+    $carac = 30 + $royaume->get_level_mur() * 5;
 		$facteur = 40;
 		$this->action = '!';
 		$this->arme_type = 'epee';
@@ -23,7 +23,7 @@ class entite_cap extends entite
 		$this->x = $royaume->x;
 		$this->y = $royaume->y;
 		$this->hp = $royaume->get_capitale_hp();
-		$this->hp_max = 30000;
+		$this->hp_max = 50000;
 		$this->reserve = 0;
 		$this->pa = 100;
 		$this->nom = "";
@@ -32,7 +32,7 @@ class entite_cap extends entite
 		$this->pm = 0;
 		$this->pm_para = 0;
 		$this->distance_tir = 1;
-		$this->esquive = 40 * $carac;
+		$this->esquive = 100 * $carac;
 		$this->distance = 0;
 		$this->melee = 0;
 		$this->incantation = 0;
@@ -62,22 +62,23 @@ class entite_cap extends entite
   }
 
   /// Action effectuées à la fin d'un combat
-  function fin_defense(&$perso, $R, $pet, $degats=null)
+  function fin_defense(&$perso, $R, $pet, $degats, $batiment)
   {
-  		global $Trace;
+  	global $Trace, $Gtrad;
 		//hasard pour différente actions de destruction sur la ville.
 		//Si il y a assez de ressources en ville
 		$suppr_hp = true;
-		if($this->royaume->total_ressources() > 1000)
+		$rand = rand(1, 100);
+		//Premier cas, on supprime les ressources
+		if($rand >= 50)
 		{
-			$rand = rand(1, 100);
-			//Premier cas, on supprime les ressources
-			if($rand >= 50)
-			{
-				$suppr_hp = false;
-				$this->royaume->supprime_ressources($degats / 100);
-				echo '<h6>L\'attaque détruit des ressources au royaume '.$Gtrad[$this->royaume->get_race()].'</h6><br />';
-			}
+      $pertes = $degats * 5;
+			$type = $this->royaume->supprime_ressources($pertes);
+      if( $type )
+      {
+  			echo '<h6>L\'attaque détruit '.$pertes.' unités de '.$Gtrad[$type].' au royaume '.$Gtrad[$this->royaume->get_race()].'</h6><br />';
+  			$suppr_hp = false;
+      }
 		}
 		//Sinon on attaque les batiments ou la ville
 		if($suppr_hp)

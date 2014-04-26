@@ -184,23 +184,6 @@ while ($row = $db->read_assoc($req)) {
 	$cases[$row['x']][$row['y']]->set_row($row);
 }
 
-echo '<a href="index.php">Retour</a>';
-
-$size = 'min-width: '.(($xmax - $xmin) * 60 + 45).'px; min-height: '.
-(($ymax - $ymin) * 60 + 20).'px;';
-echo '<table cellpadding="0" cellspacing="0" style="'.$size.'"><tr><th></th>';
-for ($x = $xmin; $x <= $xmax; $x++) {
-	echo "<th>$x</th>";
-}
-echo '</tr>';
-for ($y = $ymin; $y <= $ymax; $y++) {
-	echo "\n<tr><th>$y</th>";
-	for ($x = $xmin; $x <= $xmax; $x++) {
-		$cases[$x][$y]->prnt();
-	}
-	echo '</tr>';
-}
-echo '</table>';
 
 function decal($sens, $sens2 = '') {
 	global $xmin;
@@ -249,27 +232,48 @@ function decal($sens, $sens2 = '') {
 	}
 	echo "?xmin=${nxmin}&amp;ymin=${nymin}&amp;xmax=${nxmax}&amp;ymax=${nymax}";
 }
+?>
 
+<div><a href="index.php">Retour</a></div>
+<div class="mapedit">
+	<div id='rosedesvents'>
+		<a id='rose_div_hg' href="<?php decal('haut', 'gauche'); ?>"></a>
+		<a id='rose_div_h' href="<?php decal('haut'); ?>"></a>
+		<a id='rose_div_hd' href="<?php decal('haut', 'droite'); ?>"></a>
+		<a id='rose_div_cg' href="<?php decal('gauche'); ?>"></a>
+		<a id='rose_div_c' href="<?php decal(''); ?>"></a>
+		<a id='rose_div_cd' href="<?php decal('droite'); ?>"></a>
+		<a id='rose_div_bg' href="<?php decal('bas', 'gauche'); ?>"></a>
+		<a id='rose_div_b' href="<?php decal('bas'); ?>"></a>
+		<a id='rose_div_bd' href="<?php decal('bas', 'droite'); ?>"></a>
+	</div>
+	<?php $size = 'min-width: '.(($xmax - $xmin) * 60 + 45).'px; min-height: '.(($ymax - $ymin) * 60 + 20).'px;'; ?>
+	<table cellpadding="0" cellspacing="0" style="<?php echo $size; ?>">
+		<tr>
+			<th></th>
+			<?php for ($x = $xmin; $x <= $xmax; $x++): ?>
+				<th><?php echo $x; ?></th>
+			<?php endfor ?>
+		</tr>
+		<?php for ($y = $ymin; $y <= $ymax; $y++): ?>
+			<tr>
+				<th><?php echo $y; ?></th>
+				<?php for ($x = $xmin; $x <= $xmax; $x++): ?>
+					<?php $cases[$x][$y]->prnt(); ?>
+				<?php endfor ?>
+			</tr>
+		<?php endfor ?>
+	</table>
+</div>
+
+<?php
 if (isset($_SESSION['last_query']) && $_SESSION['last_query'] != null) {
 	echo '<div id="lastq" title="Last query"><pre>'.
 		$_SESSION['last_query'].'</pre></div>';
 	$add_js_start = '$("#lastq").dialog({ position: [\'left\',\'top\'] });';
 	$_SESSION['last_query'] = null;
 }
-
 ?>
-
-<div id='rosedesvents'>
-  <a id='rose_div_hg' href="<?php decal('haut', 'gauche'); ?>"></a>
-  <a id='rose_div_h' href="<?php decal('haut'); ?>"></a>
-  <a id='rose_div_hd' href="<?php decal('haut', 'droite'); ?>"></a>
-  <a id='rose_div_cg' href="<?php decal('gauche'); ?>"></a>
-  <a id='rose_div_c' href="<?php decal(''); ?>"></a>
-  <a id='rose_div_cd' href="<?php decal('droite'); ?>"></a>
-  <a id='rose_div_bg' href="<?php decal('bas', 'gauche'); ?>"></a>
-  <a id='rose_div_b' href="<?php decal('bas'); ?>"></a>
-  <a id='rose_div_bd' href="<?php decal('bas', 'droite'); ?>"></a>
-</div>
 
 <div id="infoscase" title="Informations"></div>
 

@@ -40,8 +40,9 @@ class joueur extends table
 		@param int(11) $droits Niveau d'acces du joueur (0 par défaut)
 		@param String $email Adresse internet du joueur(null par défaut)
 		@param String $mdp_forum Hash du mot de passe pour le forum (null par défaut)
+		@param String $mdp_jabber Hash du mot de passe pour jabber (vide par défaut)
 	*/
-	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 64, $email = '', $mdp_forum='')
+	function __construct($id=0, $login = '', $mdp = '', $pseudo = '', $droits = 64, $email = '', $mdp_forum='', $mdp_jabber='')
 	{
 		//Verification nombre d'arguments pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -57,6 +58,7 @@ class joueur extends table
 			$this->droits = $droits;
 			$this->email = $email;
 			$this->mdp_forum = $mdp_forum;
+			$this->mdp_jabber = $mdp_jabber;
 		}
 
 	}
@@ -66,13 +68,15 @@ class joueur extends table
 	 */
   protected function init_tab($vals)
   {
-    table::init_tab($vals);
+		table::init_tab($vals);
 		$this->login = $vals['login'];
 		$this->mdp = $vals['mdp'];
 		$this->pseudo = $vals['pseudo'];
 		$this->droits = $vals['droits'];
 		$this->email = $vals['email'];
 		$this->mdp_forum = $vals['mdp_forum'];
+		$this->mdp_jabber = $vals['mdp_jabber'];
+		
   }
 
   /// Factory créant un objet correspondant à l'ID du joueur connecté
@@ -230,17 +234,17 @@ class joueur extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return 'login, mdp, pseudo, droits, email, mdp_forum';
+    return 'login, mdp, pseudo, droits, email, mdp_forum, mdp_jabber';
   }
 	/// Renvoie la liste des valeurs des champs pour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'", "'.mysql_escape_string($this->mdp_forum).'"';
+		return '"'.mysql_escape_string($this->login).'", "'.$this->mdp.'", "'.mysql_escape_string($this->pseudo).'", "'.$this->droits.'", "'.mysql_escape_string($this->email).'", "'.mysql_escape_string($this->mdp_forum).'", "'.mysql_escape_string($this->mdp_jabber).'"';
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'", mdp_forum = "'.mysql_escape_string($this->mdp_forum).'"';
+		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'", mdp_forum = "'.mysql_escape_string($this->mdp_forum).'", mdp_jabber = "'.mysql_escape_string($this->mdp_jabber).'"';
 	}
 
 }

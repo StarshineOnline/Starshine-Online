@@ -6,8 +6,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 include_once('journalier2-head.php');
 
 // Mise en archive de la population de chaque royaume
-$mail .= "\nJoueur et Stars de chaque royaume\n\n";
-echo "Mise en archive des stars et population de chaque royaume\n";
+echo "\nMise en archive des stars et population de chaque royaume\n";
 
 $requete = "SELECT race, COUNT(*) as total FROM perso WHERE statut = 'actif' GROUP BY race";
 $req = $db->query($requete);
@@ -16,7 +15,7 @@ while($row = $db->read_array($req))
 {
 	$total += $row['total'];
 	$tableau_race[$row['race']][0] = $row['total'];
-	$mail .= $row['race']." - Joueurs : ".$row['total']."\n";
+	echo $row['race']." - Joueurs : ".$row['total'];
 }
 
 // Mise en archive des stars de chaque royaume
@@ -25,7 +24,7 @@ $req = $db->query($requete);
 while($row = $db->read_array($req))
 {
 	if($row['race'] != '') $tableau_race[$row['race']][1] = $row['star'];
-	$mail .= " - Stars : ".$row['star']."\n";
+	echo ' - Stars : '.$row['star']."\n";
 }
 
 //Nombre de joueurs total et niveau moyen

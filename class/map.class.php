@@ -1,12 +1,11 @@
 <?php 
 if (file_exists('../root.php'))
-  include_once('../root.php');
+	include_once('../root.php');
 
 class map extends table
 {
 	public $x;
 	public $y;
-	public $champ_vision;
 	public $root;
 	public $xmin;
 	public $xmax;
@@ -22,18 +21,18 @@ class map extends table
 	public $show_royaume_button;
 	public $affiche_terrain;
 	public $arene = false;
-  public $dont_use_relative_coords = false;
+	public $dont_use_relative_coords = false;
 	private $affiche_royaume;
-
+	
 	private $tooltip_txt = '';
 	private $tooltips = array();
-
+	
 	function __construct($x, $y, $champ_vision = 3, $root = '', $donjon = false, $resolution = 'high', $troisd = false)
 	{
-    global $G_max_x, $G_max_y;
+		global $G_max_x, $G_max_y;
+		
 		$this->x = $x;
 		$this->y = $y;
-		$this->champ_vision = $champ_vision;
 		$this->root = $root;
 		$this->resolution = $resolution;
 		$this->donjon = $donjon;
@@ -41,13 +40,12 @@ class map extends table
 		$this->onclick_status = false;
 		$this->cache_monstre = false;
 		$this->affiche_royaume = false;
-		$this->case_affiche = ($this->champ_vision * 2) + 1;
 		$this->troisd = $troisd;
 		$this->affiche_terrain = false;
-
+		
 		//$this->show_royaume_button = "javascript:affiche_royaume=!affiche_royaume;deplacement('centre', cache_monstre, affiche_royaume, show_only);";
 		$this->show_royaume_button = '';
-
+		
 		if(!$this->donjon)
 		{
 			$limite_x = $G_max_x;
@@ -58,18 +56,37 @@ class map extends table
 			$limite_x = 500;
 			$limite_y = 500;
 		}
-
-    $this->is_masked = self::is_masked_coordinates($x, $y);
-    $this->is_nysin = self::is_nysin($x, $y);
-
-		if($this->x < ($this->champ_vision + 1))			{ $this->xmin = 1;		$this->xmax = $this->x + ($this->case_affiche - ($this->x)); }
-		elseif($this->x > ($limite_x - $this->champ_vision))		{ $this->xmax = $limite_x;		$this->xmin = $this->x - ($this->case_affiche - ($limite_x - $this->x + 1)); }
-		else												{ $this->xmin = $this->x - $this->champ_vision;	$this->xmax = $this->x + $this->champ_vision; };
 		
-		if($this->y < ($this->champ_vision + 1))		{ $this->ymin = 1;		$this->ymax = $this->y + ($this->case_affiche - ($this->y)); }
-		elseif($this->y > ($limite_y - $this->champ_vision))	{ $this->ymax = $limite_y;		$this->ymin = $this->y - ($this->case_affiche - ($limite_y - $this->y + 1)); }
-		else											{ $this->ymin = $this->y - $this->champ_vision; 	$this->ymax = $this->y + $this->champ_vision; }
-
+		$this->is_masked = self::is_masked_coordinates($x, $y);
+		$this->is_nysin = self::is_nysin($x, $y);
+		
+		$case_affiche = ($champ_vision * 2) + 1;
+		if($this->x < ($champ_vision + 1)){
+			$this->xmin = 1;
+			$this->xmax = $this->x + ($case_affiche - $this->x);
+		}
+		elseif($this->x > ($limite_x - $champ_vision)){
+			$this->xmax = $limite_x;
+			$this->xmin = $this->x - ($case_affiche - ($limite_x - $this->x + 1));
+		}
+		else{
+			$this->xmin = $this->x - $champ_vision;
+			$this->xmax = $this->x + $champ_vision;
+		}
+		
+		if($this->y < ($champ_vision + 1)){
+			$this->ymin = 1;
+			$this->ymax = $this->y + ($case_affiche - $this->y);
+		}
+		elseif($this->y > ($limite_y - $champ_vision)){
+			$this->ymax = $limite_y;
+			$this->ymin = $this->y - ($case_affiche - ($limite_y - $this->y + 1));
+		}
+		else{
+			$this->ymin = $this->y - $champ_vision;
+			$this->ymax = $this->y + $champ_vision;
+		}
+		
 		$this->map = array();
 	}
 
@@ -85,8 +102,8 @@ class map extends table
 	{
 		global $db;
 		global $Gcouleurs;
-
-    $this->load_map_calques();
+		
+		$this->load_map_calques();
 		if($this->donjon && !$this->arene && $this->y > 190)
 		{
 			$xmin = $this->xmin + 1;
@@ -151,6 +168,183 @@ class map extends table
 		}
 
 			echo '<div class="div_map" style="width : '.round(17 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(17 + ($taille_cellule * $this->case_affiche)).'px;">';
+				$x_pos = $x_init;
+				$y_pos = $y_init;
+				$z_index = 200;
+				$case = 0;
+				for($y_map = $this->ymin; $y_map <= $this->ymax; $y_map++)
+				{
+          $y_coord = $this->is_masked ? '*' : $y_map;
+					if( ($y_map % 2) == 0) { $moins = 1; } else { $moins = 0; };
+					echo "<ul>
+						   <li class=\"bord_bas\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$y_coord<br/>Y</li>";
+					$z_index --;
+					$x_pos += floor($w_box / 2);
+					$y_pos -= floor($h_box / 2);
+					
+					for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
+					{
+						$background = "";
+						if( ($x_map == $this->x) && ($y_map == $this->y) && is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["PNJ"]))
+						{//-- Affichage des PNJ ---------------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["PNJ"][0]["image"])) 		{ $background = "background-image : url(".$this->map[$x_map][$y_map]["PNJ"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Drapeaux"]))
+						{//-- Affichage des Drapeaux ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Drapeaux"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Drapeaux"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments"]))
+						{//-- Affichage des Batiments ---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Batiments_ennemi"]))
+						{//-- Affichage des Batiments Ennemis---------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"])) { $background = "background-image : url(".$this->map[$x_map][$y_map]["Batiments_ennemi"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Joueurs"]))
+						{//-- Affichage des Joueurs -----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Joueurs"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Joueurs"][0]["image"].") !important;"; };
+						}
+						elseif(is_array($this->map[$x_map][$y_map]["Monstres"]) && !$this->cache_monstre)
+						{//-- Affichage des Monstres ----------------------------------//
+							if(!empty($this->map[$x_map][$y_map]["Monstres"][0]["image"])) 	{ $background = "background-image : url(".$this->map[$x_map][$y_map]["Monstres"][0]["image"].") !important;"; };
+						}
+						switch(calcul_distance_pytagore(convert_in_pos($this->x, $this->y), convert_in_pos($x_map, $y_map)))
+						{
+							case 0 : $opacity = ""; break;
+							case 1 : $opacity = ""; break;
+							case 2 : $opacity = "opacity:0.9;"; break;
+							case 3 : $opacity = "opacity:0.8;"; break;
+							case 4 : $opacity = "opacity:0.7;"; break;
+							case 5 : $opacity = "opacity:0.5;"; break;
+							case 6 : $opacity = "opacity:0.3;"; break;
+							case 7 : $opacity = "opacity:0.2;"; break;
+							case 8 : $opacity = "opacity:0.1;"; break;
+							default : $opacity = "opacity:0.1;"; break;
+						}
+							if(   (count($this->map[$x_map][$y_map]["Batiments"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Batiments_ennemi"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Reperes"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["PNJ"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Joueurs"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Monstres"]) > 0)
+							|| (count($this->map[$x_map][$y_map]["Drapeaux"]) > 0)
+							|| $this->affiche_terrain)
+							{
+							$overlib = "<ul>";
+	
+							if ($this->affiche_terrain)
+							{
+								$type_terrain = type_terrain($MAPTAB[$x_map][$y_map]["type"]);
+								$ressources_terrain = '';
+								$ressource_array = ressource_terrain($type_terrain[1]);
+								//my_dump($ressource_array);
+								if (is_array($ressource_array))
+									foreach ($ressource_array as $ress => $val)
+										if ($val > 0) {
+											if (strlen($ressources_terrain))
+												$ressources_terrain .= ', ';
+											else 
+												$ressources_terrain = '<br />';
+											$ressources_terrain .= "$ress:&nbsp;$val";
+										}
+								$overlib .= "<li class='overlib_batiments'><span>Terrain</span>&nbsp;-&nbsp;$type_terrain[1]$ressources_terrain</li>";
+							}
+	
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Reperes"]); $i++) 			{ $overlib .= "<li class='overlib_batiments'><span>Mission</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Reperes"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Batiment</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Batiments_ennemi"]); $i++) 	{ $overlib .= "<li class='overlib_batiments'><span>Batiment ennemi</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Batiments_ennemi"][$i]["nom"]."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["PNJ"]); $i++)				{ $overlib .= "<li class='overlib_batiments'><span>PNJ</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["PNJ"][$i]["nom"])."</li>"; }
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Joueurs"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Joueurs"][$i]))
+								{
+									$all = ' HP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["hp_max"].' - MP : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp"].' / '.$this->map[$x_map][$y_map]["Joueurs"][$i]["mp_max"].' - PA : '.$this->map[$x_map][$y_map]["Joueurs"][$i]["pa"];
+	
+								}
+								else $all = '';
+								$overlib .= "<li class='overlib_joueurs'><span>".$this->map[$x_map][$y_map]["Joueurs"][$i]["nom"]."</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Joueurs"][$i]["race"])." - Niv.".$this->map[$x_map][$y_map]["Joueurs"][$i]["level"].$all."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Monstres"]); $i++)
+							{
+								if(array_key_exists('hp', $this->map[$x_map][$y_map]["Monstres"][$i])) $hp = ' - HP : '.$this->map[$x_map][$y_map]["Monstres"][$i]['hp'];
+								else $hp = '';
+								$overlib .= "<li class='overlib_monstres'><span>Monstre</span>&nbsp;-&nbsp;".$this->map[$x_map][$y_map]["Monstres"][$i]["nom"]." x".$this->map[$x_map][$y_map]["Monstres"][$i]["tot"].$hp."</li>";
+							}
+							for($i = 0; $i < count($this->map[$x_map][$y_map]["Drapeaux"]); $i++)			{ $overlib .= "<li class='overlib_batiments'><span>Construction</span>&nbsp;-&nbsp;".ucwords($this->map[$x_map][$y_map]["Drapeaux"][$i]["nom"])."</li>"; }
+	
+							$overlib .= "</ul>";
+							$this->tooltip_txt .=  '<div style="display: none" id="TT_'.
+								$case.'">'.$overlib."</div>\n";
+							$this->tooltips[] = $case;
+							$overlib = "";
+
+						}
+						else { $overlib = ""; }
+
+					
+						if(is_array($MAPTAB[$x_map][$y_map])) { $class_map = "decor tex".$MAPTAB[$x_map][$y_map]["decor"]; } else { $class_map = "decor texblack"; };
+						
+						echo "<li class='".$class_map."' style='top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;'>";
+						echo " <div class='map_contenu' 
+									id=\"marq$case\" 
+									style=\"".$background.$border.$opacity."margin-top:-15px;width:100px;\" ";
+						if(!empty($overlib))
+						{
+							echo "	onmouseover=\"return overlib('$overlib', BGCLASS, 'overlib', BGCOLOR, '', FGCOLOR, '');\" 
+							   		onmouseout=\"return nd();\" ";
+						}
+						if (in_array($case, $this->tooltips))
+						{
+							echo " rel=\"#TT_${case}\" ";
+						}
+						if($this->onclick_status)
+						{
+							$onclick = str_replace('%%id%%', $MAPTAB[$x_map][$y_map]['id'], $this->onclick);
+						}
+						else $onclick = $this->onclick;
+						echo " 		onclick=\"".$onclick."\" 
+							   ><span id=\"pos_".$MAPTAB[$x_map][$y_map]["id"]."\">".$repere."</span></div><!-- .map_contenu #marq$case -->
+							  </li>";	
+						
+						echo "</li>";
+						$z_index --;
+						$x_pos += floor($w_box / 2);
+						$y_pos -= floor($h_box / 2);
+						$case ++;
+					}
+					$z_index = 200;
+					$x_init += floor($w_box / 2);	$x_pos = $x_init;
+					$y_init += floor($h_box / 2);	$y_pos = $y_init;
+					echo "</ul>";
+				}	
+				echo "<ul>
+					   <li id=\"bord_gauche\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\"></li>";
+				$z_index --;
+				$x_pos += floor($w_box / 2);
+				$y_pos -= floor($h_box / 2);
+				for($x_map = $this->xmin; $x_map <= $this->xmax; $x_map++)
+				{
+          $x_coord = $this->is_masked ? '*' : $x_map;
+					echo " <li class=\"bord_haut\" style=\"top:".$y_pos."px;left:".$x_pos."px;z-index:$z_index;\">$x_coord<br/>X</li>";
+					$z_index --;
+					$x_pos += floor($w_box / 2);
+					$y_pos -= floor($h_box / 2);
+				}
+				echo "</ul>";
+			}
+			echo "  </div>";
+		
+		}
+		else // --- CARTE NORMALE ---
+		{
+			$nombreCaseX = $this->xmax - $this->xmin + 1;
+			$nombreCaseY = $this->ymax - $this->ymin + 1;
+			echo '<div class="div_map" style="width : '.round(20 + ($taille_cellule * $nombreCaseX)).'px;height:'.round(20 + ($taille_cellule * $nombreCaseY)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
 				include_once(root."deplacementjeu.php");
 				
@@ -487,76 +681,41 @@ class map extends table
 			$ymin = $this->ymin;
 			$ymax = $this->ymax;
 		}
-		if($all) $champs .= ', hp_max, mp, mp_max, pa ';
-		else $champs = '';
-		$requete = "SELECT id, nom, level, race, x, y, classe, cache_classe, cache_niveau, hp".$champs."
-								 FROM perso 
-								 WHERE (( (x >= ".$xmin.") AND (x <= ".$xmax.") ) 
-								 AND ( (y >= ".$ymin.") AND (y <= ".$ymax.") ))  
-								 AND statut='actif' 
-								 ORDER BY y ASC, x ASC, dernier_connexion DESC;";
-		$RqJoueurs = $db->query($requete);
-		if($db->num_rows($RqJoueurs) > 0)
+		
+		$where = "( (x >= $xmin) AND (x <= $xmax) AND (y >= $ymin) AND (y <= $ymax) ) AND statut = 'actif'";
+		$order = 'y ASC, x ASC, dernier_connexion DESC';
+		$persos = perso::create(null, null, $order, false, $where);
+		
+		foreach($persos as $perso)
 		{
-			$joueurs = 0;
-			while($objJoueurs = $db->read_object($RqJoueurs))
+			if( !$race_only || $perso->get_race() == $race )
 			{
-				if($race_only AND $objJoueurs->race != $race)
-				{
+				// Prend en compte les effets qui peuvent agir sur le perso, utile notamment pour l'effet "camouflage" qui peut modifier l'image du perso
+				$perso->check_specials();
 				
-				}
-				else
+				// Spectateur fictif de race $race
+				$spectateur = new perso();
+				$spectateur->set_race($race);
+				
+				$mapPerso = array();
+				$mapPerso["id"] = $perso->get_id();
+				$mapPerso["nom"] = htmlspecialchars($perso->get_nom());
+				$mapPerso["level"] = $perso->get_level();
+				if($perso->est_cache_niveau($spectateur))
+					$mapPerso["level"] = 'xxx';
+				$mapPerso["race"] = $Gtrad[$perso->get_race()];
+				$mapPerso["classe"] = $perso->get_classe($spectateur);
+				$mapPerso["hp"] = $perso->get_hp();
+				if($all)
 				{
-					$joueurs = count($this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"]);
-
-					$image = "";
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["id"] = $objJoueurs->id;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["nom"] = htmlspecialchars($objJoueurs->nom);
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = $objJoueurs->level;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["race"] = $Gtrad[$objJoueurs->race];
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = $objJoueurs->classe;
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp"] = $objJoueurs->hp;
-					if($all)
-					{
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["hp_max"] = floor($objJoueurs->hp_max);
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp"] = $objJoueurs->mp;
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["mp_max"] = floor($objJoueurs->mp_max);
-						$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["pa"] = $objJoueurs->pa;
-					}
-					{//-- Vérification des bonus liés au points shine
-						//Si c'est pas lui même
-						if($objJoueurs->id != $_SESSION['id'])
-						{
-							if($objJoueurs->cache_classe == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-							elseif($objJoueurs->cache_classe == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"] = "combattant"; }
-							if($objJoueurs->cache_niveau == 2)	{ $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
-							elseif($objJoueurs->cache_niveau == 1 && $objJoueurs->race != $race) { $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["level"] = "xxx"; }
-						}
-					}
-					{//-- Vérification du camouflage, ce qui oblige à instancier :(
-						$tmp_perso = new perso($objJoueurs->id);
-						$tmp_perso->check_specials();
-						if ($tmp_perso->get_race_a() != $objJoueurs->race)
-							$objJoueurs->race = $tmp_perso->get_race_a();
-					}
-					{//-- Vérification que l'image de classe existe ($Tclasse est contenue dans ./inc/classe.inc.php)
-						$classe = $this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["classe"];
-						if($this->resolution == 'low')
-						{
-							$image = $this->root."image/personnage_low/".$objJoueurs->race."/".$objJoueurs->race;
-						}
-						else
-						{
-							$image = $this->root."image/personnage/".$objJoueurs->race."/".$objJoueurs->race;
-						}
-						if(file_exists($image."_".$Tclasse[$classe]["type"].".png")) 		{ $image .= "_".$Tclasse[$classe]["type"].".png"; }
-						elseif(file_exists($image."_".$Tclasse[$classe]["type"].".gif")) 	{ $image .= "_".$Tclasse[$classe]["type"].".gif"; }
-						elseif(file_exists($image.".png")) 									{ $image .= ".png"; }
-						elseif(file_exists($image.".gif"))  								{ $image .= ".gif"; }
-						else 																{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
-					}			
-					$this->map[$objJoueurs->x][$objJoueurs->y]["Joueurs"][$joueurs]["image"] = $image;
+					$mapPerso["hp_max"] = floor($perso->get_hp_max());
+					$mapPerso["mp"] = $perso->get_mp();
+					$mapPerso["mp_max"] = floor($perso->get_mp_max());
+					$mapPerso["pa"] = $perso->get_pa();
 				}
+				$mapPerso["image"] = $perso->get_image($this->root, $this->resolution, $spectateur);
+				
+				$this->map[$perso->get_x()][$perso->get_y()]["Joueurs"][] = $mapPerso;
 			}
 		}
 	}

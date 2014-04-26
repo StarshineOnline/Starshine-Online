@@ -6,7 +6,7 @@ include_once(root.'inc/fp.php');
 
   if(array_key_exists('perso', $_GET))
   {
-    $_SESSION['nom'] = urldecode($_GET['perso']);
+    $_SESSION['nom'] = $_GET['perso'];
     $_SESSION['ID'] = $_GET['id'];
     //Mis à jour de la dernière connexion
 		$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_GET['id'];

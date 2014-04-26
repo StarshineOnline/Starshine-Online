@@ -42,7 +42,7 @@ else if(!array_key_exists('direction', $_GET))
 			$royaume_req = new royaume($row['r']);
 			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
-			<li class='$boutique_class'>
+			<li class='$boutique_class' onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:220px;float:left;'>";
 			
 				if ($row['type'] == 'arme_de_siege')
@@ -64,11 +64,39 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</ul>";
 	echo "</fieldset>";	
 	}
+	
+
+	$requete = $db->query("SELECT *, placement.royaume AS r, placement.type FROM placement WHERE royaume = ".$royaume->get_id()." AND type != 'drapeau' AND x <= 190 AND y <= 190");
+	if ($db->num_rows($requete)>0)
+	{
+		echo "<fieldset>";
+		echo "<legend>Liste de vos bâtiments en construction</legend>";
+		echo "<ul>";
+		$boutique_class = 't1';
+		while($row = $db->read_assoc($requete))
+		{
+			$royaume_req = new royaume($row['r']);
+			if (empty($Gtrad[$royaume_req->get_race()])){$nom = 'Neutre';}else{$nom = $Gtrad[$royaume_req->get_race()];}
+			$tmp = transform_sec_temp($row['fin_placement'] - time());
+			echo "
+			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"\" onmouseout='return nd();'>
+				<span style='display:block;width:420px;float:left;'>
+					<img src='../image/batiment_low/".$row['type']."_04.png' style='width:19px;' alt='Batiment' /> ".$row['nom']." - fin de construction dans ".$tmp."
+							</span>
+				<span style='display:block;width:100px;float:left;'>X : ".$row['x']." - Y : ".$row['y']."</span>
+			</li>";
+			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
+		}
+		echo "</ul>";
+		echo "</fieldset>";
+	}	
+	
+	
 	$req = $db->query("SELECT *, construction.royaume AS r, construction.type FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'arme_de_siege' AND construction.royaume != ".$royaume->get_id()." AND map.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste Armes de sieges sur votre territoire</legend>";
+		echo "<legend>Liste des Armes de sièges sur votre territoire</legend>";
 		$boutique_class = 't1';
 		echo "<ul>";		
 		while($row = $db->read_assoc($req))
@@ -89,7 +117,7 @@ else if(!array_key_exists('direction', $_GET))
 	echo "</fieldset>";	
 	}
 	
-	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190");
+	$req = $db->query("SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190 ORDER BY fin_placement ASC");
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
@@ -100,7 +128,7 @@ else if(!array_key_exists('direction', $_GET))
 		{
 			$royaume_req = new royaume($row['r']);
 			if (empty($Gtrad[$royaume_req->get_race()])){$nom = 'Neutre';}else{$nom = $Gtrad[$royaume_req->get_race()];}
-			$tmp = transform_sec_temp($row['fin_placement'] - time())."avant fin de construction";
+			$tmp = transform_sec_temp($row['fin_placement'] - time())." avant fin de construction";
 			echo "
 			<li class='$boutique_class' onclick=\"minimap(".$row['x'].",".$row['y'].")\" onmousemove=\"".make_overlib($tmp)."\" onmouseout='return nd();'>
 				<span style='display:block;width:420px;float:left;'>
@@ -113,23 +141,24 @@ else if(!array_key_exists('direction', $_GET))
 		echo "</ul>";
 		echo "</fieldset>";
 	}
-	$requete = $db->query("SELECT id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190");
+
+	$requete = $db->query("SELECT *, id FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190 ORDER BY type, date_construction ASC");
 	if ($db->num_rows($requete)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste de vos batiments</legend>";	
+		echo "<legend>Liste de vos bâtiments</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';		
 		while($row = $db->read_assoc($requete))
 		{
 			$construction = new construction($row['id']);
+			$batiment = $construction->get_batiment();
 
 			$tmp = "HP - ".$construction->get_hp();
 			echo "
 			<li class='$boutique_class'  onclick=\"minimap(".$construction->get_x().",".$construction->get_y().")\">
 				<span style='display:block;width:320px;float:left;'>
-					<img src='../image/batiment_low/".$construction->get_image()."_04.png' style='vertical-align : top;' title='".$construction->get_nom()."' /> ".$construction->get_nom();
-			$batiment = new batiment($construction->get_id_batiment());
+					<img src='../image/batiment_low/".$batiment->get_image()."_04.png' style='vertical-align : top;' title='".$construction->get_nom()."' /> ".$construction->get_nom();
 			
 			//On peut l'upragder si il y a un suivant
 			if($batiment->get_suivant() && !$joueur->is_buff('debuff_rvr'))
@@ -150,21 +179,35 @@ else if(!array_key_exists('direction', $_GET))
 				
 			//my_dump($batiment);
 			//my_dump($construction);
-			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()."</span>";
+			echo "<span style='display:block;width:100px;float:left;'> X : ".$construction->get_x()." - Y : ".$construction->get_y()." </span>";
 			$longueur = round(100 * ($construction->get_hp() / $batiment->get_hp()), 2);
 			echo "<img style='display:block;width:100px;float:left;height:6px;padding-top:5px;' src='genere_barre_hp.php?longueur=".$longueur."' alt='".$construction->get_hp()." / ".$batiment->get_hp()."' title='".$construction->get_hp()." / ".$batiment->get_hp()."'>";
-			
-			if( $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression )
+
+			// Possibilité ou non de supprimer un batiment attribuant des points des victoire lors de sa destruction		
+			if($construction->get_point_victoire() > 0 && $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression_pv )
 			{
-  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  				echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
   					<a onclick=\"if(confirm('Voulez-vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
   				</span>";
-      }
-      else
+      		}
+      		elseif($construction->get_point_victoire() > 0 && $construction->get_hp() < $batiment->get_hp() * $G_prct_vie_suppression_pv )
 			{
-  			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
-  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer un bâtiment qui a moins de ".floor($G_prct_vie_suppression*100)."% de ses HP.'></span>";
-      }
+  				echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer ce bâtiment si il a moins de ".floor($G_prct_vie_suppression_pv*100)."% de ses HP.'></span>";
+      		}
+      		
+      		// Possibilité ou non de supprimer un batiment n'attribuant pas des points des victoire lors de sa destruction
+      		elseif($construction->get_point_victoire() == 0 && $construction->get_hp() >= $batiment->get_hp() * $G_prct_vie_suppression_nopv )
+      		{
+      			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<a onclick=\"if(confirm('Voulez-vous supprimer ce ".$construction->get_nom()." ?')) {return envoiInfo('construction.php?direction=suppr_construction&amp;id=".$construction->get_id()."', 'message_confirm');} else {return false;};\"><img src='../image/interface/croix_quitte.png' alt='suppression' title='Supprimer.'/></a>
+  				</span>";
+      		}
+      		else
+      		{
+      			echo "<span style='display:block;width:30px;float:left;cursor:pointer;padding-left:4px;'>
+  					<img src='../image/interface/croix_quitte_gris.png'/ alt='suppression impossibe' title='Vous ne pouvez pas supprimer ce bâtiment si il a moins de ".floor($G_prct_vie_suppression_nopv*100)."% de ses HP.'></span>";
+      		}
 			echo "</li>";
 			if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}									
 		}
@@ -176,7 +219,7 @@ else if(!array_key_exists('direction', $_GET))
 	if ($db->num_rows($req)>0)
 	{
 		echo "<fieldset>";	
-		echo "<legend>Liste des objets disponibles dans votre depot militaire</legend>";	
+		echo "<legend>Liste des objets disponibles dans votre dépôt militaire</legend>";	
 		echo "<ul>";
 		$boutique_class = 't1';
 		while($row = $db->read_assoc($req))
@@ -195,12 +238,12 @@ else if(!array_key_exists('direction', $_GET))
 }
 elseif ($RAZ_ROYAUME)
 {
-	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
+	echo "<h5>Gestion impossible quand la capitale est mise à sac.</h5>";
 	exit(0);
 }
 elseif($joueur->is_buff('debuff_rvr'))
 {
-	echo '<h5>RvR impossible pendant la trêve</h5>';
+	echo "<h5>RvR impossible pendant la trêve.</h5>";
 }
 elseif($_GET['direction'] == 'suppr_construction')
 {
@@ -209,8 +252,12 @@ elseif($_GET['direction'] == 'suppr_construction')
 	if($construction->get_royaume() == $royaume->get_id())
 	{
 		$batiment = new batiment($construction->get_id_batiment());
-		//On vérifie que la construction a plus de 10% de ses PV max
-		if($construction->get_hp() > ($batiment->get_hp() * $G_prct_vie_suppression))
+		//On vérifie que la construction a plus de 50% (ou 90%) de ses PV max
+		if(
+		( $construction->get_point_victoire() > 0 && $construction->get_hp() >= ($batiment->get_hp() * $G_prct_vie_suppression_pv) )
+		or
+		( $construction->get_point_victoire() == 0 && $construction->get_hp() >= ($batiment->get_hp() * $G_prct_vie_suppression_nopv) )
+		)
 		{
 			$requete = "DELETE FROM construction WHERE id = ".sSQL($_GET['id']);
 			if($db->query($requete))
@@ -232,10 +279,11 @@ elseif($_GET['direction'] == 'suppr_construction')
 					supprime_bourg($row[1]);
 				}
 			}
-			else echo '<h5>Erreur dans la requête</h5>';
+			else echo "<h5>Erreur dans la requête.</h5>";
 		}
-		else echo '<h5>Ce batiment ne vous appartient pas</h5>';
+		else echo "<h5>Impossible de détruire cette construction sans risquer la vie des ouvriers. Il faut d'abord la réparer.</h5>";
 	}
+	else echo "<h5>Cette construction ne vous appartient pas.</h5>";
 }
 elseif($_GET['direction'] == 'up_construction')
 {
@@ -248,7 +296,6 @@ elseif($_GET['direction'] == 'up_construction')
 		// On modifie la contruction
 		$construction->set_id_batiment($batiment->get_id());
 		$construction->set_nom($batiment->get_nom());
-		$construction->set_image($batiment->get_image());
 		$construction->set_date_construction(time());
 		$construction->set_hp($construction->get_hp() + $batiment->get_hp() - $ancien_batiment->get_hp());
 		$construction->set_point_victoire($batiment->get_point_victoire());
@@ -267,7 +314,7 @@ elseif($_GET['direction'] == 'up_construction')
 	}
 	else
 	{
-		echo "<h5>Construction impossible à upgrader</h5>";
+		echo "<h5>Construction impossible à upgrader.</h5>";
 	}
 
 

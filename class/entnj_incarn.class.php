@@ -55,8 +55,8 @@ abstract class entnj_incarn extends placable
 	*/
 	function __construct($nom = '', $x = 0, $y = 0, $hp = 0, $id = -1)
 	{
-    placable::__construct($nom, $x, $y, $id);
-    $this->hp = $hp;
+		placable::__construct($nom, $x, $y, $id);
+		$this->hp = $hp;
 	}
 	
 	/**

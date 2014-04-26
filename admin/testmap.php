@@ -12,17 +12,19 @@ if (!array_key_exists('droits', $_SESSION) or
 
 ?>
 <a href="admin_2.php">Revenir à l'administration</a>
-<?php
-$map = new map(95, 95, 95,'../');
+<div class="mapedit">
+	<?php
+	$map = new map(95, 95, 95,'../');
 
-$map->get_pnj();
-$map->get_joueur('neutre');
-$map->get_drapeau();
-$map->get_batiment();
-$map->onclick_status = false;
-//$map->get_monstre($level);
+	$map->get_pnj();
+	$map->get_joueur('neutre');
+	$map->get_drapeau();
+	$map->get_batiment();
+	$map->onclick_status = false;
+	//$map->get_monstre($level);
 
-//if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
+	//if(isset($_GET['cache_monstre'])) $map->change_cache_monstre();
 
-$map->affiche();
-?>
+	$map->affiche();
+	?>
+</div>

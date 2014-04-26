@@ -62,10 +62,74 @@ class perso extends entite
 		$this->race = $race;
 		$this->champs_modif[] = 'race';
 	}
-	/// Renvoie le nom de la classe
-	function get_classe()
+	/**
+	 * Renvoie le nom de la classe du perso
+	 * Si on définit un spectateur, renvoie la classe du perso visible par le perso spectateur
+	 *
+	 * @param perso $spectateur Personnage qui voit le perso, ou null si on ne se place pas d'un point de vue spectateur
+	 * @return string
+ 	*/
+	function get_classe($spectateur = null)
 	{
-		return $this->classe;
+		if( is_null($spectateur) )
+			return $this->classe;
+		else
+		{
+			$classe = $this->classe;
+			
+			if( $this->est_cache_classe($spectateur) )
+			{
+				$classe = "combattant";
+			}
+			
+			return $classe;
+		}
+	}
+	/**
+	 * Renvoie l'url relative de l'image de classe du perso
+	 * Si on définit un spectateur, renvoie l'url relative de l'image de classe du perso visible par le perso spectateur
+	 *
+	 * @param string $root Préfixe de l'url relative (utile si on veut afficher une image depuis une url appelante pointant vers un autre dossier que le dossier parent du dossier image/)
+	 * @param string $resolution 'high' (par défaut) ou 'low'
+	 * @param perso $spectateur Personnage qui voit le perso, ou null si on ne se place pas d'un point de vue spectateur
+	 * @return string
+ 	*/
+	function get_image($root = '', $resolution = 'high', $spectateur = null)
+	{
+		global $Tclasse; // $Tclasse est contenue dans ./inc/classe.inc.php
+		$image = '';
+		
+		$dossierPersonnage = 'personnage';
+		if($resolution == 'low')
+		{
+			$dossierPersonnage = 'personnage_low';
+		}
+		$race = $this->get_race_a();
+		$classe = $this->get_classe($spectateur);
+		
+		$imageBase = $root."image/".$dossierPersonnage."/".$race."/".$race;
+		
+		// Vérification que l'image de classe existe
+		$image = $imageBase."_".$Tclasse[$classe]["type"].".png";
+		if( !file_exists($image) )
+		{
+			$image = $imageBase."_".$Tclasse[$classe]["type"].".gif";
+			if( !file_exists($image) )
+			{
+				$image = $imageBase.".png";
+				if( !file_exists($image) )
+				{
+					$image = $imageBase.".gif";
+					if( !file_exists($image) )
+					{
+						// Si aucun des fichiers n'existe autant ne rien mettre
+						$image = "";
+					}
+				}
+			}
+		}
+		
+		return $image;
 	}
 	/// Modifie le nom de la classe
 	function set_classe($classe)
@@ -121,12 +185,14 @@ class perso extends entite
 	{
 		if(!$id_bonus)
 		{
-			$this->bonus_shine = bonus_perso::create(array('id_perso'), array($this->id));
+			if(!isset($this->bonus_shine))
+				$this->bonus_shine = bonus_perso::create(array('id_perso'), array($this->id));
 			return $this->bonus_shine;
 		}
 		else
 		{
-			if(!isset($this->bonus_shine)) $this->get_bonus_shine();
+			if(!isset($this->bonus_shine))
+				$this->get_bonus_shine();
 			foreach($this->bonus_shine as $bonus)
 			{
 				if($bonus->get_id_bonus() == $id_bonus)
@@ -134,6 +200,30 @@ class perso extends entite
 			}
 		}
 		return false;
+	}
+	/**
+	 * Permet d'ajouter un bonus shine au perso
+	 *
+	 * @param int $idBonus Identifiant du bonus shine
+	 * @param string $valeur Chaîne de caractères représentant l'état du bonus shine pour le perso
+	 * @param int $etat Entier représentant l'état du bonus shine pour le perso
+ 	*/
+	function ajout_bonus_shine($idBonus, $valeur = '', $etat = 0)
+	{
+		$bonusPerso = new bonus_perso(0, $this->get_id(), $idBonus, $valeur, $etat);
+		if(isset($this->bonus_shine))
+			$this->bonus_shine[] = $bonusPerso;
+		$bonusPerso->sauver();
+		
+		// On modifie cache_classe, cache_stat ou cache_niveau, si nécessaire
+		if($idBonus == bonus_perso::CACHE_CLASSE_ID)
+			$this->set_cache_classe($etat);
+		elseif($idBonus == bonus_perso::CACHE_STATS_ID)
+			$this->set_cache_stat($etat);
+		elseif($idBonus == bonus_perso::CACHE_NIVEAU_ID)
+			$this->set_cache_niveau($etat);
+		// On sauve cache_classe, cache_stat ou cache_niveau dans la bdd, si nécessaire
+		$this->sauver();
 	}
 	/// Renvoie les points d'honneur.
 	function get_honneur()
@@ -293,6 +383,31 @@ class perso extends entite
 		$this->cache_classe = $cache_classe;
 		$this->champs_modif[] = 'cache_classe';
 	}
+	/**
+	 * Définit si le perso a choisi de cacher sa classe pour le spectateur donné en paramètre
+	 *
+	 * @param perso $spectateur Personnage qui voit le perso
+	 * @return bool Returns true si le perso a choisi de cacher sa classe au $spectateur, false sinon
+ 	*/
+	function est_cache_classe($spectateur)
+	{
+		$spectateurId = 0;
+		$spectateurRace = '';
+		if( $spectateur instanceof perso )
+		{
+			$spectateurId = $spectateur->get_id();
+			$spectateurRace = $spectateur->get_race();
+		}
+		
+		if( $this->get_id() != $spectateurId )
+		{
+			if( $this->get_cache_classe() == 2 || ($this->get_cache_classe() == 1 && $this->get_race() != $spectateurRace) ){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	/// Renvoie à qui il faut cacher les stats
 	function get_cache_stat()
 	{
@@ -304,6 +419,31 @@ class perso extends entite
 		$this->cache_stat = $cache_stat;
 		$this->champs_modif[] = 'cache_stat';
 	}
+	/**
+	 * Définit si le perso a choisi de cacher ses stats pour le spectateur donné en paramètre
+	 *
+	 * @param perso $spectateur Personnage qui voit le perso
+	 * @return bool Returns true si le perso a choisi de cacher ses stats au $spectateur, false sinon
+ 	*/
+	function est_cache_stat($spectateur)
+	{
+		$spectateurId = 0;
+		$spectateurRace = '';
+		if( $spectateur instanceof perso )
+		{
+			$spectateurId = $spectateur->get_id();
+			$spectateurRace = $spectateur->get_race();
+		}
+		
+		if( $this->get_id() != $spectateurId )
+		{
+			if( $this->get_cache_stat() == 2 || ($this->get_cache_stat() == 1 && $this->get_race() != $spectateurRace) ){
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	/// Renvoie à qui il faut cacher le niveau
 	function get_cache_niveau()
 	{
@@ -314,6 +454,58 @@ class perso extends entite
 	{
 		$this->cache_niveau = $cache_niveau;
 		$this->champs_modif[] = 'cache_niveau';
+	}
+	/**
+	 * Définit si le perso a choisi de cacher son niveau pour le spectateur donné en paramètre
+	 *
+	 * @param perso $spectateur Personnage qui voit le perso
+	 * @return bool Returns true si le perso a choisi de cacher son niveau au $spectateur, false sinon
+ 	*/
+	function est_cache_niveau($spectateur)
+	{
+		$spectateurId = 0;
+		$spectateurRace = '';
+		if( $spectateur instanceof perso )
+		{
+			$spectateurId = $spectateur->get_id();
+			$spectateurRace = $spectateur->get_race();
+		}
+		
+		if( $this->get_id() != $spectateurId )
+		{
+			if( $this->get_cache_niveau() == 2 || ($this->get_cache_niveau() == 1 && $this->get_race() != $spectateurRace) ){
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	/**
+	 * Définit si le perso a choisi de cacher son grade pour le spectateur donné en paramètre
+	 *
+	 * @param perso $spectateur Personnage qui voit le perso
+	 * @return bool Returns true si le perso a choisi de cacher son grade au $spectateur, false sinon
+ 	*/
+	function est_cache_grade($spectateur)
+	{
+		$spectateurId = 0;
+		$spectateurRace = '';
+		if( $spectateur instanceof perso )
+		{
+			$spectateurId = $spectateur->get_id();
+			$spectateurRace = $spectateur->get_race();
+		}
+		
+		$bonusCacheGrade = $this->get_bonus_shine(bonus_perso::CACHE_GRADE_ID);
+		// Si le $spectateur n'est pas le perso lui-même  &&  Si le "bonus cache grade" du perso est défini
+		if( $this->get_id() != $spectateurId && $bonusCacheGrade instanceof bonus_perso )
+		{
+			if( $bonusCacheGrade->get_etat() == 2 || ($bonusCacheGrade->get_etat() == 1 && $this->get_race() != $spectateurRace) ){
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	/// Renvoie le nombre de points beta
 	function get_beta()
@@ -2230,6 +2422,7 @@ class perso extends entite
 	function check_perso($last_action = true)
 	{
 		$this->check_specials();
+		
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// On vérifie que le personnage est vivant
@@ -2493,6 +2686,10 @@ class perso extends entite
 	}
   // @}
 
+	/**
+	 * Prend en compte les effets qui peuvent agir sur le perso, notamment les effets de son inventaire
+	 * 
+ 	*/
 	function check_specials() {
 		$this->check_materiel();
 		// Gestion de la forme de demon
@@ -3705,9 +3902,9 @@ class perso extends entite
 		global $db;
 		if( $this->id > 0 )
 		{
-			if(count($this->champs_modif) > 0)
+			if( $force || count($this->champs_modif) > 0 )
 			{
-				if($force) $champs = 'mort = '.$this->mort.', nom = "'.mysql_escape_string($this->nom).'", password = "'.mysql_escape_string($this->password).'", email = "'.mysql_escape_string($this->email).'", exp = "'.mysql_escape_string($this->exp).'", honneur = "'.mysql_escape_string($this->honneur).'", reputation = "'.mysql_escape_string($this->reputation).'", level = "'.mysql_escape_string($this->level).'", rang_royaume = "'.mysql_escape_string($this->rang_royaume).'", vie = "'.mysql_escape_string($this->vie).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", race = "'.mysql_escape_string($this->race).'", classe = "'.mysql_escape_string($this->classe).'", classe_id = "'.mysql_escape_string($this->classe_id).'", inventaire = "'.mysql_escape_string($this->inventaire).'", inventaire_pet = "'.mysql_escape_string($this->inventaire_pet).'", inventaire_slot = "'.mysql_escape_string($this->inventaire_slot).'", pa = "'.mysql_escape_string($this->pa).'", dernieraction = "'.mysql_escape_string($this->dernieraction).'", action_a = "'.mysql_escape_string($this->action_a).'", action_d = "'.mysql_escape_string($this->action_d).'", sort_jeu = "'.mysql_escape_string($this->sort_jeu).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'", comp_jeu = "'.mysql_escape_string($this->comp_jeu).'", star = "'.mysql_escape_string($this->star).'", x = "'.mysql_escape_string($this->x).'", y = "'.mysql_escape_string($this->y).'", groupe = "'.mysql_escape_string($this->groupe).'", hp = "'.mysql_escape_string($this->hp).'", hp_max = "'.mysql_escape_string($this->hp_max).'", mp = "'.mysql_escape_string($this->mp).'", mp_max = "'.mysql_escape_string($this->mp_max).'", melee = "'.mysql_escape_string($this->melee).'", distance = "'.mysql_escape_string($this->distance).'", esquive = "'.mysql_escape_string($this->esquive).'", blocage = "'.mysql_escape_string($this->blocage).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_element = "'.mysql_escape_string($this->sort_element).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", identification = "'.mysql_escape_string($this->identification).'", craft = "'.mysql_escape_string($this->craft).'", alchimie = "'.mysql_escape_string($this->alchimie).'", architecture = "'.mysql_escape_string($this->architecture).'", forge = "'.mysql_escape_string($this->forge).'", survie = "'.mysql_escape_string($this->survie).'", dressage = "'.mysql_escape_string($this->dressage).'", facteur_magie = "'.mysql_escape_string($this->facteur_magie).'", facteur_sort_vie = "'.mysql_escape_string($this->facteur_sort_vie).'", facteur_sort_mort = "'.mysql_escape_string($this->facteur_sort_mort).'", facteur_sort_element = "'.mysql_escape_string($this->facteur_sort_element).'", regen_hp = "'.mysql_escape_string($this->regen_hp).'", maj_hp = "'.mysql_escape_string($this->maj_hp).'", maj_mp = "'.mysql_escape_string($this->maj_mp).'", point_sso = "'.mysql_escape_string($this->point_sso).'", quete = "'.mysql_escape_string($this->quete).'", quete_fini = "'.mysql_escape_string($this->quete_fini).'", dernier_connexion = "'.mysql_escape_string($this->dernier_connexion).'", statut = "'.mysql_escape_string($this->statut).'", fin_ban = "'.mysql_escape_string($this->fin_ban).'", frag = "'.mysql_escape_string($this->frag).'", crime = "'.mysql_escape_string($this->crime).'", amende = "'.mysql_escape_string($this->amende).'", teleport_roi = "'.mysql_escape_string($this->teleport_roi).'", cache_classe = "'.mysql_escape_string($this->cache_classe).'", cache_stat = "'.mysql_escape_string($this->cache_stat).'", cache_niveau = "'.mysql_escape_string($this->cache_niveau).'", max_pet = "'.mysql_escape_string($this->max_pet).'", beta = "'.mysql_escape_string($this->beta).'", tuto = "'.mysql_escape_string($this->tuto).'"';
+				if($force) $champs = 'mort = '.$this->mort.', nom = "'.mysql_escape_string($this->nom).'", password = "'.mysql_escape_string($this->password).'", email = "'.mysql_escape_string($this->email).'", exp = "'.mysql_escape_string($this->exp).'", honneur = "'.mysql_escape_string($this->honneur).'", reputation = "'.mysql_escape_string($this->reputation).'", level = "'.mysql_escape_string($this->level).'", rang_royaume = "'.mysql_escape_string($this->rang_royaume).'", vie = "'.mysql_escape_string($this->vie).'", forcex = "'.mysql_escape_string($this->forcex).'", dexterite = "'.mysql_escape_string($this->dexterite).'", puissance = "'.mysql_escape_string($this->puissance).'", volonte = "'.mysql_escape_string($this->volonte).'", energie = "'.mysql_escape_string($this->energie).'", race = "'.mysql_escape_string($this->race).'", classe = "'.mysql_escape_string($this->classe).'", classe_id = "'.mysql_escape_string($this->classe_id).'", inventaire = "'.mysql_escape_string($this->inventaire).'", inventaire_pet = "'.mysql_escape_string($this->inventaire_pet).'", inventaire_slot = "'.mysql_escape_string($this->inventaire_slot).'", pa = "'.mysql_escape_string($this->pa).'", dernieraction = "'.mysql_escape_string($this->dernieraction).'", action_a = "'.mysql_escape_string($this->action_a).'", action_d = "'.mysql_escape_string($this->action_d).'", sort_jeu = "'.mysql_escape_string($this->sort_jeu).'", sort_combat = "'.mysql_escape_string($this->sort_combat).'", comp_combat = "'.mysql_escape_string($this->comp_combat).'", comp_jeu = "'.mysql_escape_string($this->comp_jeu).'", star = "'.mysql_escape_string($this->star).'", x = "'.mysql_escape_string($this->x).'", y = "'.mysql_escape_string($this->y).'", groupe = "'.mysql_escape_string($this->groupe).'", hp = "'.mysql_escape_string($this->hp).'", hp_max = "'.mysql_escape_string($this->hp_max).'", mp = "'.mysql_escape_string($this->mp).'", mp_max = "'.mysql_escape_string($this->mp_max).'", melee = "'.mysql_escape_string($this->melee).'", distance = "'.mysql_escape_string($this->distance).'", esquive = "'.mysql_escape_string($this->esquive).'", blocage = "'.mysql_escape_string($this->blocage).'", incantation = "'.mysql_escape_string($this->incantation).'", sort_vie = "'.mysql_escape_string($this->sort_vie).'", sort_element = "'.mysql_escape_string($this->sort_element).'", sort_mort = "'.mysql_escape_string($this->sort_mort).'", identification = "'.mysql_escape_string($this->identification).'", craft = "'.mysql_escape_string($this->craft).'", alchimie = "'.mysql_escape_string($this->alchimie).'", architecture = "'.mysql_escape_string($this->architecture).'", forge = "'.mysql_escape_string($this->forge).'", survie = "'.mysql_escape_string($this->survie).'", dressage = "'.mysql_escape_string($this->dressage).'", facteur_magie = "'.mysql_escape_string($this->facteur_magie).'", facteur_sort_vie = "'.mysql_escape_string($this->facteur_sort_vie).'", facteur_sort_mort = "'.mysql_escape_string($this->facteur_sort_mort).'", facteur_sort_element = "'.mysql_escape_string($this->facteur_sort_element).'", regen_hp = "'.mysql_escape_string($this->regen_hp).'", maj_hp = "'.mysql_escape_string($this->maj_hp).'", maj_mp = "'.mysql_escape_string($this->maj_mp).'", point_sso = "'.mysql_escape_string($this->point_sso).'", quete = "'.mysql_escape_string($this->quete).'", quete_fini = "'.mysql_escape_string($this->quete_fini).'", dernier_connexion = "'.mysql_escape_string($this->dernier_connexion).'", statut = "'.mysql_escape_string($this->statut).'", fin_ban = "'.mysql_escape_string($this->fin_ban).'", frag = "'.mysql_escape_string($this->frag).'", crime = "'.mysql_escape_string($this->crime).'", amende = "'.mysql_escape_string($this->amende).'", teleport_roi = "'.mysql_escape_string($this->teleport_roi).'", cache_classe = "'.mysql_escape_string($this->cache_classe).'", cache_stat = "'.mysql_escape_string($this->cache_stat).'", cache_niveau = "'.mysql_escape_string($this->cache_niveau).'", max_pet = "'.mysql_escape_string($this->max_pet).'", beta = "'.mysql_escape_string($this->beta).'", tuto = "'.mysql_escape_string($this->tuto).'", id_joueur = '.($this->id_joueur?$this->id_joueur:'NULL').', date_creation = '.$this->date_creation.'';
 				else
 				{
 					$champs = '';
@@ -3761,7 +3958,7 @@ class perso extends entite
 			}
 			foreach($array_champs as $key => $champ)
 			{
-				$where[] = $champ .' = \''.mysql_escape_string($array_valeurs[$key]).'\'';
+				$where[] = $champ .' = \''.sSQL($array_valeurs[$key]).'\'';
 			}
 			$where = implode(' AND ', $where);
 			if($champs === 0)
@@ -3770,7 +3967,7 @@ class perso extends entite
 			}
 		}
 
-		$requete = "SELECT id, mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, tuto FROM perso WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, tuto, id_joueur, date_creation FROM perso WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -3781,6 +3978,8 @@ class perso extends entite
 			}
 		}
 		else $return = array();
+    /*$dbg = 'perso::create : '.$requete.' ('.var_export($array_champs, true).' - '.var_export($array_valeurs, true).')';
+    log_admin::log('debug', $dbg, true);*/
 		return $return;
 	}
 
@@ -3891,7 +4090,7 @@ class perso extends entite
 	private $camouflage = null;
 	function get_camouflage()
 	{
-		return $camouflage;
+		return $this->camouflage;
 	}
 
 	function get_race_a()

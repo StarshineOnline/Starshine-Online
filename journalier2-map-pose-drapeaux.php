@@ -5,7 +5,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 
 include_once('journalier2-head.php');
 
-echo "Création de l'image de la carte de pose de drapeaux\n";
+echo "\nCréation de l'image de la carte de pose de drapeaux\n";
 $im = imagecreatefrompng('image/carte.png');
 if (!$im) {
 	die ("Impossible d'initialiser la bibliothèque GD");

@@ -40,7 +40,7 @@ body {}
 #rose_div_cg:hover 		{ background-position:top; }
 #rose_div_cg:active 	{ background-position:bottom; }
 
-#rose_div_c 	{ background:transparent url('../../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_c 	{ background:transparent url('./../image/rosedesvent/rafraichir.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 #rose_div_c:hover 		{ background-position:top; }
 #rose_div_c:active 	{ background-position:bottom; }
 
@@ -52,7 +52,7 @@ body {}
 #rose_div_bg:hover 		{ background-position:top; }
 #rose_div_bg:active 	{ background-position:bottom; }
 
-#rose_div_b 	{ background:transparent url('../../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
+#rose_div_b 	{ background:transparent url('./../image/rosedesvent/sud.png') center; width:25px; height:25px; cursor:pointer; float:left; }
 #rose_div_b:hover 		{ background-position:top; }
 #rose_div_b:active 	{ background-position:bottom; }
 
@@ -74,18 +74,6 @@ body {}
 .boite_co span {float:left;width:60px;}
 .boite_co input {float:left;border:1px solid #CCC;}
 .boite_co p {clear:both;}
-#editcarte
-{
-	width : 100%;
-}
-.selecteur
-{
-	float : left;
-}
-.mapedit
-{
-	float : left;
-}
 .infoperso {
 	vertical-align : top;
 	float : left;
@@ -829,6 +817,11 @@ ul.onglet-hotel li
 .mapedit
 {
 	float : left;
+	position : relative;
+}
+.mapedit > table
+{
+	background : #E0C072;
 }
 
 

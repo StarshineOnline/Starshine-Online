@@ -5,11 +5,11 @@ if (isset($_SERVER['REMOTE_ADDR'])) die('Forbidden connection from '.$_SERVER['R
 
 include_once('journalier2-head.php');
 
-$mail .= "\nStars pour les nouveaux joueurs\n\n";
+echo "\nStars pour les nouveaux joueurs\n";
 //Calcul des stars pour nouveau joueur
 $count = count($tableau_race);
 print_r($tableau_race);
-echo "\n";
+
 $keys = array_keys($tableau_race);
 $i = 0;
 while($i < $count)

@@ -200,14 +200,17 @@ function affiche_perso_visu($joueur, $W_row, $position="")
 		$facteur_honneur = ($row_diplo[0] * 0.2) - 0.8;
 	}
 
-	if ($facteur_honneur < 0) $facteur_honneur = 0;
-	if(array_key_exists(6, $bonus) AND !check_affiche_bonus($bonus[6], $joueur, $perso)) $chaine_nom = $perso->get_nom();
-	else $chaine_nom = $W_row['gnom'].' '.$perso->get_nom();
+	if ($facteur_honneur < 0)
+		$facteur_honneur = 0;
+	
+	$chaine_nom = $perso->get_nom();
+	if( !$perso->est_cache_grade($joueur) )
+		$chaine_nom = $W_row['gnom'].' '.$chaine_nom;
+	
 	$echo = $Gtrad['diplo'.$diplo].' => XP : '.($facteur_xp * 100).'% - Honneur : '.($facteur_honneur * 100).'%';
 	
-	if($perso->get_cache_classe() == 2)	{  echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_guerrier.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';  }
-	elseif($perso->get_cache_classe() == 1 && $joueur->get_race_a() != $perso->get_race_a()) { echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_guerrier.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />'; }
-	else { echo '<img src="image/personnage/'.$perso->get_race_a().'/'.$perso->get_race_a().'_'.$Tclasse[$perso->get_classe()]["type"].'.png" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';}
+	$srcImage = $perso->get_image('', 'high', $joueur);
+	echo '<img src="'.$srcImage.'" alt="'.$perso->get_race_a().'" title="'.$perso->get_race_a().'" style="vertical-align: middle;height:21px;float:left;width:21px;" />';
 	
 	echo '<span style="font-weight : bold;float:left;width:290px;margin-left:15px;"><a href="infojoueur.php?ID='.$perso->get_id().'&poscase='.$perso->get_case().'" onclick="return envoiInfo(this.href, \'information\');" onclick="return nd();" onmouseover="return '.make_overlib($echo).'" onmouseout="return nd();">';
 	

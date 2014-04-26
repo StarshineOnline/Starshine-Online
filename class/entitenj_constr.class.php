@@ -15,27 +15,51 @@ abstract class entitenj_constr extends entnj_incarn
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
   // @{
-	protected $id_batiment;  ///< Id de la définition du bâtiment
+	protected $batiment = null; ///< Objet de classe 'batiment' : définition du bâtiment
+	protected $id_batiment; ///< Id de la définition du bâtiment
 	protected $royaume; ///< Royaume auquel appartient le bâtiment
 	protected $type; ///< Type de bâtiment
 	protected $rez; ///< Pourcentage de HP/MP à la rez ou distance de vision des tours (encore utilisé ?)
 	protected $point_victoire; ///< Nombre de points de victoire gagnés lorsque le bâtiment est détruit
 
+	/// Alias de get_batiment()
+	/// Implémentation de la fonction abstraite get_def() de la classe entnj_incarn
+	function get_def()
+	{
+		return $this->get_batiment();
+	}
+	/// Renvoie l'objet représentant la définition du bâtiment
+	function get_batiment()
+	{
+		if(is_null($this->batiment))
+		{
+			$this->batiment = new batiment($this->id_batiment);
+		}
+		return $this->batiment;
+	}
+	/// Modifie l'objet représentant la définition du bâtiment
+	function set_batiment($batiment)
+	{
+		$this->batiment = $batiment;
+		if( $batiment->get_id() != $this->id_batiment )
+		{
+			$this->set_id_batiment($batiment->get_id());
+		}
+	}
 	/// Renvoie l'id de la définition du bâtiment
 	function get_id_batiment()
 	{
 		return $this->id_batiment;
 	}
-	/// Renvoie l'objet représentant la définition
-	function get_def()
-	{
-		return new batiment($this->id_batiment);
-	}
-	/// Modifie l'id de la définition du batiment
+	/// Modifie l'id de la définition du bâtiment
 	function set_id_batiment($id_batiment)
 	{
 		$this->id_batiment = $id_batiment;
 		$this->champs_modif[] = 'id_batiment';
+		if( !is_null($this->batiment) && $this->batiment->get_id() != $id_batiment )
+		{
+			$this->set_batiment(new batiment($id_batiment));
+		}
 	}
 
 	/// Renvoie le royaume auquel appartient le bâtiment
@@ -117,7 +141,7 @@ abstract class entitenj_constr extends entnj_incarn
 		}
 		else
 		{
-      entnj_incarn::__construct($nom, $x, $y, $hp, $id);
+			entnj_incarn::__construct($nom, $x, $y, $hp, $id);
 			$this->id_batiment = $id_batiment;
 			$this->royaume = $royaume;
 			$this->type = $type;
