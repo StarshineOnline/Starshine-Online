@@ -58,7 +58,7 @@ class interf_gauche extends interf_bal_cont
 /// Classe pour la partie gauche de l'interface quand il faut montrer la carte
 class interf_cadre_carte extends interf_gauche
 {
-	function __construct()
+	function __construct($carte=null)
 	{
 		parent::__construct();
 		// Menu carte
@@ -93,7 +93,7 @@ class interf_cadre_carte extends interf_gauche
 		$perso = joueur::get_perso();
 		$x = $perso->get_x();
 		$y = $perso->get_y();
-		$this->centre->add( new interf_carte($x, $y) );
+		$this->centre->add( $carte ? $carte : new interf_carte($x, $y) );
 	}
 }
 ?>

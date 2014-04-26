@@ -162,4 +162,36 @@ class placement extends entitenj_constr
 		else
 			return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
 	}
+
+  /**
+   * Renvoie les images et positions des constructions dans une zone donnée sous forme de tableau
+   * @param  $x_min     Valeur minimale de la coordonnée x
+   * @param  $x_max    Valeur maximale de la coordonnée x
+   * @param  $y_min     Valeur minimale de la coordonnée y
+   * @param  $y_max    Valeur maximale de la coordonnée y
+   * @return    tableau contenant les positions et l'image
+   */
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true)
+  {
+    global $db;
+		$requete = 'SELECT x, y, b.image, b.type, p.debut_placement, p.fin_placement FROM '.static::get_table().' AS p INNER JOIN batiment AS b ON p.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max;
+    $req = $db->query($requete);
+    $res = array();
+    while( $row = $db->read_object($req) )
+    {
+      $avanc = (time() - $row->debut_placement) / ($row->fin_placement - $row->debut_placement);
+      $row->image = self::make_url_image($row->image, $row->type, $avanc, $grd_img);
+      $res[] = $row;
+    }
+    return $res;
+  }
+
+  protected static function make_url_image($image, $type, $avancement, $grd_img=true)
+  {
+    $doss = $type=='drapeau' ? 'drapeau' : 'batiment';
+    if(!$grd_img)
+      $doss .= '_low';
+    $avanc = ceil(3 * $avancement);
+    return 'image/'.$doss.'/'.$image.'_0'.$avanc.'.png';
+  }
 }

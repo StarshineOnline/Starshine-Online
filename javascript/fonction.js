@@ -1,4 +1,17 @@
 // -*- tab-width: 2 -*-
+function charger(page)
+{
+	$.get(page, null, function(data)
+  {
+    $(data).find('div').each( function()
+    {
+      var id = $(this).attr('id');
+      $('#'+id).html( $(this).html() );
+    });
+  }, 'xml');
+	return false;
+}
+
 function envoiInfoPost(page,position)
 {
 	function Affiche(requete){$(position).innerHTML = requete.responseText; Hidechargement();}

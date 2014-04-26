@@ -39,10 +39,10 @@ class interf_factory
   }
   /*
    */
-  function creer_cadre_carte()
+  function creer_cadre_carte($carte=null)
   {
     include_once(root.'interface/interf_gauche.class.php');
-    return new interf_cadre_carte();
+    return new interf_cadre_carte($carte);
   }
   /**
    * Méthode affichant le résultat d'ine action

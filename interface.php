@@ -73,4 +73,6 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
 
 
 $princ = $G_interf->creer_jeu();
+$princ->set_gauche();
+$princ->set_droite();
 ?>

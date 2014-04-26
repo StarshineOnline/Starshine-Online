@@ -55,7 +55,7 @@ abstract class interf_sso_int extends interf_sso
     $this->menu_droite();
     $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
     $menu_joueur->add( new interf_elt_menu('Options', '#', 'affichePopUp(\'option.php\');') );
-    $menu_joueur->add( new interf_elt_menu('Son', '#', 'showSoundPanel();') );
+    //$menu_joueur->add( new interf_elt_menu('Son', '#', 'showSoundPanel();') );
     $menu_joueur->add( new interf_elt_menu('Signaler un bug', 'http://bug.starshine-online.com/') );
     $menu_joueur->add( new interf_elt_menu('Points Shine <span class="badge">'.joueur::get_perso()->get_point_sso().'</span>', '#', 'envoiInfo(\'point_sso.php\', \'information\');') );
     $admin = $joueur->get_droits() & joueur::droit_interf_admin;
@@ -71,6 +71,6 @@ abstract class interf_sso_int extends interf_sso
     $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
     $menu_joueur->add( new interf_elt_menu('Deconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
   }
-  abstract function menu_droite();
+  abstract protected function menu_droite();
 }
 ?>
