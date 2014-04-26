@@ -666,10 +666,23 @@ class sort_guerison extends sort_jeu
           }
         }
       }
+      $min = $cible->get_vie() + $perso->get_puissance();
+      $max = $this->get_effet()*3600;
+      
       if(count($debuff_tab) > 0)
       {
-        $requete = "DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";";
-        $db->query($requete);
+        $reduction = rand($min,$max);
+        $id_debuff = $debuff_tab[rand(0, count($debuff_tab)-1)];
+        $requete = "SELECT `fin` FROM buff WHERE id=".$id_debuff.";";
+        $req = $db->query($requete);
+		$row = $db->read_assoc($req);
+        $fin = $row['fin'];
+        $fin -= $reduction;
+        if ($fin <= 0)
+			$requete2 = "Delete FROM buff WHERE id=".$id_debuff.";";
+		else
+			$requete2 = "UPDATE buff SET fin =".$fin." WHERE id=".$id_debuff.";";
+		$db->query($requete2);
         $action = true;
       }
       else
@@ -677,10 +690,6 @@ class sort_guerison extends sort_jeu
         echo "Impossible de lancer de lancer le sort. ".addslashes($cible->get_nom())." n&apos;a aucun debuff.<br/>";
       };
     }
-    $type_cible = $cible->get_race()=='neutre'?'monstre':'perso';
-    $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-    if ($groupe) $groupe = '&amp;groupe=yes'; else $groupe = '';
-    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$this->get_id().$groupe.$lanceur_url.$groupe_href."', 'information')\">Utiliser de nouveau cette compétence</a>";
     return $action;
   }
 }
