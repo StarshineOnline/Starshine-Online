@@ -224,14 +224,6 @@ abstract class table
 	}
 
 	/**
-	 * Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
-	 * @param string      $classe     Classe des objets à créer
-	 * @param string      $table      Table ou chercher
-	 * @param string      $cond       Condition (+ éventuellement tri)
-	 * @param bool|string $keys       Si false, stockage en tableau classique, si string
-	 *                                stockage avec sous tableau en fonction du champ $keys
-	 * @return array     Liste d'objets
-	 */
 	* Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
 	* @param string      $classe     Classe des objets à créer
 	* @param string      $table      Table ou chercher

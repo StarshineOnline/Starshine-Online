@@ -199,11 +199,11 @@ class interf_carte extends interf_tableau
     foreach($pnj as $p)
     {
       // S'il y a déjà un contenu on passe au suivant.
-      $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
+      $fils = $this->cases[ $p['y'] ][ $p['x'] ]->get_fils(0);
       if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
         continue;
-      $div = $this->cases[ $b['y'] ][ $p['x'] ]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\'image/pnj/'.$b['image'].'.png\');');
+      $div = $this->cases[ $p['y'] ][ $p['x'] ]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+      $div->set_attribut('style', 'background-image: url(\'image/pnj/'.$p['image'].'.png\');');
     }
   }
 
