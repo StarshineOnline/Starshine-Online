@@ -105,6 +105,7 @@ if(array_key_exists('name', $_GET))
 else
 {
 	$pets = $joueur->get_pets(true);
+	$cpt =0;
 ?>
 	<fieldset>
 		<legend>Mes créatures <?php echo $joueur->nb_pet(); ?> / <?php echo $joueur->get_max_pet(); ?></legend>
@@ -112,16 +113,16 @@ else
 			<?php foreach($pets as $pet): ?>
 				<?php $pet->get_monstre(); ?>
 				<div class="monstre">
-					<h3>
-						<?php if($pet->get_principale() == 1): ?>
-							<img class="left" src="image/icone/couronne.png" />
+					<?php if($pet->get_principale() == 1): ?>
+						<div id='info_case'><h4><span class="titre_info">Créature principale</span></h4></div><h3><?php endif ?>
 							<form action="" onsubmit="$('#loading_information').load('gestion_monstre.php?id=<?php echo $pet->get_id(); ?>&name=' + $('#monstre_name_<?php echo $pet->get_id(); ?>').val(), function(){$(this).show().delay(1500).fadeOut(1000); $('#monstre_name_<?php echo $pet->get_id(); ?>').blur();}); return false;">
 								<input type="text" class="monstre_name not_focused" id="monstre_name_<?php echo $pet->get_id(); ?>" value="<?php echo htmlspecialchars($pet->get_nom()); ?>" onfocus="$(this).removeClass('not_focused');" onblur="$(this).addClass('not_focused');" />
 								<button class="no_style" type="button" onclick="$('#monstre_name_<?php echo $pet->get_id(); ?>').focus();" title="Modifier le nom de votre créature"><img src="image/edit.png" alt="edit" /></button>
 								<button class="no_style" type="submit" title="Valider la modification"><img style="width:16px;" src="image/valid.png" alt="submit" /></button>
 							</form>
-						<?php endif ?>
+						
 					</h3>
+					
 					<img class="left" src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" />
 					<div class="monstre_infos">
 						<a href="gestion_monstre.php?soin=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'information');" title="Soigner, puissance : <?php echo $joueur->soin_pet(); ?>"><span style="float : right;">Soin <span class="xsmall">(vous coûte <?php echo ceil($joueur->get_hp_max() / 10); ?> HP / 1 PA)</span></span></a>
@@ -142,8 +143,18 @@ else
 						if($pet->get_principale() == 0)
 							echo'<a href="gestion_monstre.php?principale='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Définir comme créature principale</a>';
 						?>
-					</div>
+						<?php $script_attaque = recupaction_all($pet->get_action_a(), true);
+						$script_defense = recupaction_all($pet->get_action_d(), true);?>
+						<div >Script :<?php 
+						echo '<a href="actions_pet.php?id_pet='.$pet->get_id().'" onclick="return envoiInfo(this.href, \'information\');">' ?>
+						[<?php echo $script_attaque['nom']; ?>]</div></a><br />
+						</div>
 				</div>
+				</div>
+				<?php if ($cpt == 0): ?>
+					<div id='info_case'><h4><span class="titre_info">Autre(s) créature(s)</span></h4></div>
+					<?php $cpt++;
+					endif ?>
 			<?php endforeach ?>
 		<?php else: ?>
 			<h5>Vous n'avez pas de monstre.</h5>
