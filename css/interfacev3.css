@@ -16,36 +16,6 @@ a:hover
   text-decoration:none;
 }
 
-#barre_menu
-{
-	border-radius : 0px;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	margin-bottom: 0px;
-	min-height: 30px;
-	background: rgba(0, 0, 0, 0.5);
-	/*background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0px, rgba(0, 0, 0, 0.4) 100%);
-	background-color: rgba(0, 0, 0, 0.5);*/
-}
-
-#barre_menu a
-{
-	padding-top: 5px;
-	padding-bottom: 5px;
-}
-
-#barre_menu .container
-{
-	width: 1000px;
-	padding: 0px;
-}
-
-#navbar
-{
-	padding-left: 0px;
-}
-
 #top { display:block; width:1000px; margin:0 auto; z-index:5; }
 #conteneur { width:985px; margin:auto; min-height:100%; }
 #conteneur_back { z-index:2; width:1000px; margin:0 auto;  min-height:120%; }
@@ -94,6 +64,46 @@ a:hover
 #news { width:830px; float:left; }
 #mort {float: left; width: 50%;}
 #mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px;margin:8px;}
+
+/*-- Correction bootstrap --------------------------------------------------*/
+
+#barre_menu
+{
+	border-radius : 0px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-bottom: 0px;
+	min-height: 30px;
+	background: rgba(0, 0, 0, 0.5);
+	/*background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.6) 0px, rgba(0, 0, 0, 0.4) 100%);
+	background-color: rgba(0, 0, 0, 0.5);*/
+}
+
+#barre_menu a
+{
+	padding-top: 5px;
+	padding-bottom: 5px;
+	line-height: 30px;
+}
+
+#barre_menu .container
+{
+	width: 1000px;
+	padding: 0px;
+}
+
+#barre_menu .navbar-brand
+{
+	font-size: 30px;
+  margin-left: -5px;
+  height: auto;
+}
+
+#navbar
+{
+	padding-left: 0px;
+}
 
 /*-- Basics elements --------------------------------------------------*/
 #global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
@@ -515,7 +525,7 @@ barre_buff
 	color: #ddd;
 }
 
-#menu_panneaux .icon, #menu_carte .icon
+#menu_panneaux .icone, #menu_carte .icone
 {
 	font-size: 30px;
 }
@@ -584,7 +594,7 @@ a#depl_disque_centre
 	border: 1px solid #080808;
 	color: #ddd;
 	font-size: 25px;
-	padding-top: 5px;
+	padding-top: 6px;
 	text-align: center;
 	z-index: 2;
 	background: #888;
@@ -1375,6 +1385,68 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 }
 
 /*-- wait --------------------------------------------------*/
+
+
+
+/*.icone-charger, .icone-charger2, .icone-charger3, .icone-charger4*/
+#icone-sso.icone-charger2, .icone-charger2
+{
+	transform: rotate(30deg);
+  animation-name:charger_rot;
+  animation-duration:1.76s;
+  animation-iteration-count:infinite;
+  animation-direction:linear;
+  -webkit-border-radius:12px;
+  -webkit-animation-name:charger_rot;
+  -webkit-animation-duration:1.76s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:linear;
+  /*-ms-border-radius:12px;
+  -ms-animation-name:charger_rot;
+  -ms-animation-duration:1.76s;
+  -ms-animation-iteration-count:infinite;
+  -ms-animation-direction:linear;*/
+}
+
+@keyframes charger_rot
+{
+  0%{transform: rotate(0deg);}
+  12.5%{transform: rotate(45deg);}
+  25%{transform: rotate(90deg);}
+  37.5%{transform: rotate(135deg);}
+  50%{transform: rotate(180deg);}
+  62.5%{transform: rotate(225deg);}
+  75%{transform: rotate(270deg);}
+  87.5%{transform: rotate(315deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@keyframes charger_rot
+{
+  0%{transform: rotate(0deg);}
+  12.5%{transform: rotate(45deg);}
+  25%{transform: rotate(90deg);}
+  37.5%{transform: rotate(135deg);}
+  50%{transform: rotate(180deg);}
+  62.5%{transform: rotate(225deg);}
+  75%{transform: rotate(270deg);}
+  87.5%{transform: rotate(315deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@-webkit-keyframes charger_rot
+{
+  0%{transform: rotate(0deg);}
+  12.5%{transform: rotate(45deg);}
+  25%{transform: rotate(90deg);}
+  37.5%{transform: rotate(135deg);}
+  50%{transform: rotate(180deg);}
+  62.5%{transform: rotate(225deg);}
+  75%{transform: rotate(270deg);}
+  87.5%{transform: rotate(315deg);}
+  100%{transform: rotate(360deg);}
+}
+
 .wait
 {
   position:relative;
@@ -1534,11 +1606,4 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 {
   0%{background-color:#000000}
   100%{background-color:#FFFFFF}
-}
-
-/*-- Correction bootstrap --------------------------------------------------*/
-
-.nav-tabs
-{
-  margin-bottom: 0px;
 }

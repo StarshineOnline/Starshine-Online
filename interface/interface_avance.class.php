@@ -246,7 +246,7 @@ class interf_navbar extends interf_bal_cont
   protected $gauche;
   protected $droite = null;
 
-  function __construct($titre=null, $id=null, $classe=null)
+  function __construct($titre=null, $id=null, $classe=null, $id_titre=null, $class_titre=null)
   {
     interf_bal_cont::__construct('nav', $id, 'navbar '.$classe);
     $cont = /*$this->*/parent::add( new interf_bal_cont('div', null, 'container') );
@@ -258,8 +258,8 @@ class interf_navbar extends interf_bal_cont
     $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
     $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
     $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
-    if( $titre )
-      $collapse->add( new interf_bal_smpl('a', $titre, '', 'navbar-brand') )->set_attribut('href', '#');
+    if( $titre !== null )
+      $header->add( new interf_bal_smpl('a', $titre, $id_titre, 'navbar-brand '.$class_titre) )->set_attribut('href', '#');
     $this->menu = $cont->add( new interf_bal_cont('div', 'navbar', 'collapse navbar-collapse') );
     $this->gauche = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav') );
   }

@@ -16,20 +16,21 @@ class interf_jeu extends interf_sso_int
   function __construct()
   {
     interf_sso_int::__construct();
-    $this->menu->add_elt( new interf_elt_menu('Diplomatie', '#', 'affichePopUp(\'diplomatie.php\');') );
-    $this->menu->add_elt( new interf_elt_menu('Cartes', '#', 'affichePopUp(\'royaume.php\');') );
-    $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
-    $autres->add( new interf_elt_menu('Message d\'Accueil', '#', 'affichePopUp(\'message_accueil.php?affiche=all\');') );
-    $autres->add( new interf_elt_menu('Bestiaire', '#', 'affichePopUp(\'liste_monstre.php\');') );
-    $autres->add( new interf_elt_menu('Background', '#', 'affichePopUp(\'background.php\');') );
-    $autres->add( new interf_elt_menu('Statistiques', '#', 'affichePopUp(\'stats2.php?graph=carte_royaume\');') );
-    $autres->add( new interf_elt_menu('Classement', '#', 'affichePopUp(\'classement.php\');') );
-
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', '', '') );
     $msg->get_lien()->add( new interf_bal_smpl('span', 12, 'nbr_msg', 'badge') );
     $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', '', '') );
     $ech->get_lien()->add( new interf_bal_smpl('span', 1, 'nbr_echg', 'badge') );
     $this->menu->add_elt( new interf_elt_menu('Groupe', '', '') );
+    $this->menu->add_elt( new interf_elt_menu('Royaume', '#', 'affichePopUp(\'royaume.php\');') );
+
+    $this->menu->add_elt( new interf_elt_menu('Diplomatie', '#', 'affichePopUp(\'diplomatie.php\');') );
+    $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
+    $autres->add( new interf_elt_menu('Message d\'Accueil', '#', 'affichePopUp(\'message_accueil.php?affiche=all\');') );
+    $autres->add( new interf_elt_menu('Cartes', '#', 'affichePopUp(\'royaume.php\');') );
+    $autres->add( new interf_elt_menu('Bestiaire', '#', 'affichePopUp(\'liste_monstre.php\');') );
+    $autres->add( new interf_elt_menu('Background', '#', 'affichePopUp(\'background.php\');') );
+    $autres->add( new interf_elt_menu('Statistiques', '#', 'affichePopUp(\'stats2.php?graph=carte_royaume\');') );
+    $autres->add( new interf_elt_menu('Classement', '#', 'affichePopUp(\'classement.php\');') );
 
     $cont = $this->add( new interf_bal_cont('div', 'contenu') );
     $perso = $cont->add( new interf_bal_cont('header', 'perso') );

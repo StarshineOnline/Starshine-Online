@@ -51,7 +51,7 @@ abstract class interf_sso_int extends interf_sso
     $this->javascript('javascript/overlib/overlib.js');
     // Barre de menu
     $joueur = joueur::factory();
-    $this->menu = $this->add( new interf_navbar(null, 'barre_menu', 'navbar-inverse') );
+    $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso1') );
     $this->menu_droite();
     $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
     $menu_joueur->add( new interf_elt_menu('Options', '#', 'affichePopUp(\'option.php\');') );
