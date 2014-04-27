@@ -16,21 +16,30 @@ class interf_jeu extends interf_sso_int
   function __construct()
   {
     interf_sso_int::__construct();
-    $msg = $this->menu->add_elt( new interf_elt_menu('Messages', '', '') );
+    $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return envoiInfo(this.href, \'information\');') );
     $msg->get_lien()->add( new interf_bal_smpl('span', 12, 'nbr_msg', 'badge') );
-    $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', '', '') );
+    $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', 'liste_echange.php', 'return envoiInfo(this.href, \'information\');') );
     $ech->get_lien()->add( new interf_bal_smpl('span', 1, 'nbr_echg', 'badge') );
-    $this->menu->add_elt( new interf_elt_menu('Groupe', '', '') );
-    $this->menu->add_elt( new interf_elt_menu('Royaume', '#', 'affichePopUp(\'royaume.php\');') );
+    $this->menu->add_elt( new interf_elt_menu('Groupe', 'infogroupe.php', 'return envoiInfo(this.href, \'information\');') );
+    $perso = joueur::get_perso();
+    /// TODO: à améliorer
+		if( $perso->get_grade() == 1 || $perso->get_grade() == 6 )
+		{
+			$royaume = $this->menu->add_elt( new interf_nav_deroul('Royaume') );
+			$royaume->add( new interf_elt_menu('Gestion du royaume', 'roi/index.php') );
+			$royaume->add( new interf_elt_menu('Vie du royaume', 'vie_royaume.php', 'return envoiInfo(this.href, \'depl_centre\');') );
+		}
+		else
+    	$this->menu->add_elt( new interf_elt_menu('Royaume', 'vie_royaume.php', 'return envoiInfo(this.href, \'depl_centre\');') );
 
-    $this->menu->add_elt( new interf_elt_menu('Diplomatie', '#', 'affichePopUp(\'diplomatie.php\');') );
+    $this->menu->add_elt( new interf_elt_menu('Diplomatie', 'diplomatie.php', 'return affichePopUp(this.href);') );
     $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
-    $autres->add( new interf_elt_menu('Message d\'Accueil', '#', 'affichePopUp(\'message_accueil.php?affiche=all\');') );
-    $autres->add( new interf_elt_menu('Cartes', '#', 'affichePopUp(\'royaume.php\');') );
-    $autres->add( new interf_elt_menu('Bestiaire', '#', 'affichePopUp(\'liste_monstre.php\');') );
-    $autres->add( new interf_elt_menu('Background', '#', 'affichePopUp(\'background.php\');') );
-    $autres->add( new interf_elt_menu('Statistiques', '#', 'affichePopUp(\'stats2.php?graph=carte_royaume\');') );
-    $autres->add( new interf_elt_menu('Classement', '#', 'affichePopUp(\'classement.php\');') );
+    $autres->add( new interf_elt_menu('Message d\'Accueil', 'message_accueil.php?affiche=all', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Cartes', 'royaume.php', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Bestiaire', 'liste_monstre.php', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Background', 'background.php', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Statistiques', 'stats2.php?graph=carte_royaume', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Classement', 'classement.php', 'return affichePopUp(this.href);') );
 
     $cont = $this->add( new interf_bal_cont('div', 'contenu') );
     $perso = $cont->add( new interf_bal_cont('header', 'perso') );

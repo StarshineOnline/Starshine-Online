@@ -59,6 +59,7 @@ case 'bas-droite';
 	$y++;
 	$diagonale = true;
 	break;
+case 'raffraichir':
 default:
 	$mouvement = false;
 }
@@ -166,7 +167,12 @@ if( $donjon && $peu_bouger )
 // TODO: à refaire
 /*if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
 check_son_ambiance();*/
-$carte = $interf_princ->set_carte( new interf_carte($x, $y) );
-$interf_princ->maj_perso();
-$interf_princ->maj_ville();
+if( $action )
+{
+	$carte = $interf_princ->set_carte( new interf_carte($x, $y) );
+	$interf_princ->maj_perso();
+	$interf_princ->maj_ville();
+}
+else
+	$carte = $interf_princ->set_gauche();
 ?>

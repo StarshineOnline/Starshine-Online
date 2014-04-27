@@ -30,7 +30,7 @@ class interf_gauche extends interf_bal_cont
 		}
 		else
 		{
-			$carte = $menu->add( new interf_elt_menu('', 'deplacement.php', 'return envoiInfo(this.href, \'depl_centre\');', 'menu_ville_carte') );
+			$carte = $menu->add( new interf_elt_menu('', 'deplacement.php', 'return envoiInfo(this.href, \'deplacement\');', 'menu_ville_carte') );
 			$carte->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-carte') );
 			$carte->get_lien()->add( new interf_txt('Carte') );
 		}
