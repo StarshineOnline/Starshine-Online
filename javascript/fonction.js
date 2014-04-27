@@ -20,7 +20,7 @@ function aff_ico_charger()
 
 function aff_ico_sso()
 {
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso1";
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso";
 }
 
 function aff_ico_bug()

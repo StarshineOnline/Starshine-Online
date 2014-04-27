@@ -493,7 +493,7 @@ barre_buff
 	position: absolute;
 	bottom: 0px;
 	right: 0px;
-	height: 445px;
+	min-height: 445px;
 	width: 445px;
 	border-left: 1px solid #777;
 	border-top: 1px solid #777;
@@ -607,7 +607,6 @@ a#depl_disque_centre
 }
 
 #depl_disque a:active { color:black; }
-/*#depl_disque a:focus { text-decoration:none; }*/
 
 a#depl_haut_gauche
 {
@@ -682,7 +681,6 @@ a#depl_bas_droite
 #information
 {
 	position: absolute;
-	height:100%;
 	min-height: 500px;
 	width:480px;
 	z-index:1;

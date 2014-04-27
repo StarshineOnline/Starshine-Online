@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?r2w9nh');
-	src:url('fonts/sso-icones.eot?#iefixr2w9nh') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?r2w9nh') format('woff'),
-		url('fonts/sso-icones.ttf?r2w9nh') format('truetype'),
-		url('fonts/sso-icones.svg?r2w9nh#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?-b5ue0d');
+	src:url('fonts/sso-icones.eot?#iefix-b5ue0d') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?-b5ue0d') format('woff'),
+		url('fonts/sso-icones.ttf?-b5ue0d') format('truetype'),
+		url('fonts/sso-icones.svg?-b5ue0d#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -23,11 +23,17 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icone-sso:before {
+	content: "\e60b";
+}
 .icone-sso1:before {
 	content: "\e606";
 }
 .icone-sso2:before {
 	content: "\e607";
+}
+.icone-sso3:before {
+	content: "\e609";
 }
 .icone-chateau:before {
 	content: "\e603";
