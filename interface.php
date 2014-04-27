@@ -69,10 +69,11 @@ verif_mort($joueur, 1);
 
 $joueur->check_perso();
 
-$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
+$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y()); // utile ?
 
 
 $princ = $G_interf->creer_jeu();
+//$princ->verif_mort($joueur);
 $princ->set_gauche();
 $princ->set_droite();
 ?>

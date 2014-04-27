@@ -1,15 +1,31 @@
 // -*- tab-width: 2 -*-
 function charger(page)
 {
-	$.get(page, null, function(data)
-  {
-    $(data).find('div').each( function()
+	aff_ico_charger();
+  $.get(page, "ajax=1", function(data)
+	{
+  	aff_ico_sso();
+    $(data).find('section').each( function()
     {
-      var id = $(this).attr('id');
-      $('#'+id).html( $(this).html() );
+      $('#'+this.id).html( this.innerHTML );
     });
-  }, 'xml');
+	});
 	return false;
+}
+
+function aff_ico_charger()
+{
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-charger2";
+}
+
+function aff_ico_sso()
+{
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso1";
+}
+
+function aff_ico_bug()
+{
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-debug";
 }
 
 function envoiInfoPost(page,position)
@@ -350,6 +366,8 @@ $(function () {
 		$("#debug_log_button").hide();
 
 		$("#popup").ajaxError(function(e, jqxhr, settings, exception) {
+			alert(jqxhr.status);
+						aff_ico_bug();
 				if (jqxhr.status == 403) {
 						// Sans doute un security_block, pop erreur
 						$('#popup').show();
@@ -357,11 +375,11 @@ $(function () {
 						$('#popup_content h1').css('color', 'red');
 				} else {
 						// On loggue dans un cadre caché
-						$('#debug_log').append('<p>status : '+jqxhr.status+' - '+jqxhr.statusText+'<br/>url: ' + settings.url + '</p>');
+						/*$('#debug_log').append('<p>status : '+jqxhr.status+' - '+jqxhr.statusText+'<br/>url: ' + settings.url + '</p>');
 						$('#debug_log').append(jqxhr.responseText);
 						$('#debug_log').append('<hr/>');
 						// On fait apparaître le bouton de debug
-						$('#debug_log_button').show();
+						$('#debug_log_button').show();*/
 				}
 		});
 });
@@ -483,6 +501,5 @@ function charge_tab(elt, id)
     e.html( getWait() );
     e.load(elt.getAttribute("data-url"));
   }
-  //$("#"+id).load(elt.getAttribute("data-url"));
 }
 

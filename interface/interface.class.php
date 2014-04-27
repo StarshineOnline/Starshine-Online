@@ -260,14 +260,14 @@ abstract class interf_princ_ob extends interf_princ
 /**
  * Classe de base pour les éléments principaux contenant d'autres éléments
  */
-class interf_princ_cont extends interf_princ
+/*class interf_princ_cont extends interf_princ
 {
   /// Destructeur
   function __destruct()
   {
     $this->affiche();
   }
-}
+}*/
 
 /**
  * Classe gérant l'affichage de texte.

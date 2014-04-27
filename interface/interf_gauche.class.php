@@ -25,7 +25,7 @@ class interf_gauche extends interf_bal_cont
 		if( $bouton_ville )
 		{
 			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return envoiInfo(this.href, \'depl_centre\');', 'menu_ville_carte') );
-			$ville->get_lien()->add( new interf_bal_smpl('div', '', null, 'icon icon-ville') );
+			$ville->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-ville') );
 			$ville->get_lien()->add( new interf_txt('Ville') );
 		}
 		else
@@ -60,7 +60,8 @@ class interf_cadre_carte extends interf_gauche
 {
 	function __construct($carte=null)
 	{
-		parent::__construct();
+		$perso = joueur::get_perso();
+		parent::__construct( is_ville($perso->get_x(), $perso->get_y()) == 1 );
 		// Menu carte
 		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
 		$royaumes = $menu->add( new interf_elt_menu('', 'option_map.php?action=affiche_royaumes&val=0', 'return envoiInfo(this.href, \'depl_centre\');') );
@@ -80,15 +81,33 @@ class interf_cadre_carte extends interf_gauche
 		$monstres->get_lien()->set_attribut('title', 'Afficher / masquer les monstres');
 		
 		// Rose des vents
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_gauche', 'icone icone-haut-gauche') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut', 'icone icone-haut') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_droite', 'icone icone-haut-droite') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_gauche', 'icone icone-gauche') );
+		$haut_gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_gauche', 'icone icone-haut-gauche') );
+		$haut_gauche->set_attribut('href', 'deplacement.php?action=haut-gauche');
+		$haut_gauche->set_attribut('onClick', 'return  charger(this.href);');
+		$haut = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut', 'icone icone-haut') );
+		$haut->set_attribut('href', 'deplacement.php?action=haut');
+		$haut->set_attribut('onClick', 'return  charger(this.href);');
+		$haut_droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_droite', 'icone icone-haut-droite') );
+		$haut_droite->set_attribut('href', 'deplacement.php?action=haut-droite');
+		$haut_droite->set_attribut('onClick', 'return  charger(this.href);');
+		$gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_gauche', 'icone icone-gauche') );
+		$gauche->set_attribut('href', 'deplacement.php?action=gauche');
+		$gauche->set_attribut('onClick', 'return  charger(this.href);');
 		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_disque_centre', 'icone icone-rafraichir') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_droite', 'icone icone-droite') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_gauche', 'icone icone-bas-gauche') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas', 'icone icone-bas') );
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_droite', 'icone icone-bas-droite') );
+		$recharger->set_attribut('href', 'deplacement.php?action=rafraichir');
+		$recharger->set_attribut('onClick', 'return  charger(this.href);');
+		$droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_droite', 'icone icone-droite') );
+		$droite->set_attribut('href', 'deplacement.php?action=droite');
+		$droite->set_attribut('onClick', 'return  charger(this.href);');
+		$bas_gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_gauche', 'icone icone-bas-gauche') );
+		$bas_gauche->set_attribut('href', 'deplacement.php?action=bas-gauche');
+		$bas_gauche->set_attribut('onClick', 'return  charger(this.href);');
+		$bas = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas', 'icone icone-bas') );
+		$bas->set_attribut('href', 'deplacement.php?action=bas');
+		$bas->set_attribut('onClick', 'return  charger(this.href);');
+		$bas_droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_droite', 'icone icone-bas-droite') );
+		$bas_droite->set_attribut('href', 'deplacement.php?action=bas-droite');
+		$bas_droite->set_attribut('onClick', 'return  charger(this.href);');
 		
 		$perso = joueur::get_perso();
 		$x = $perso->get_x();

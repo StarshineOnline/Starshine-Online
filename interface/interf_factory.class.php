@@ -27,7 +27,10 @@ class interf_factory
   function creer_jeu()
   {
     include_once(root.'interface/interf_jeu.class.php');
-    return new interf_jeu();
+  	if( array_key_exists('ajax', $_GET) &&  $_GET['ajax'] == 1 )
+  		return new interf_jeu_ajax();
+  	else
+    	return new interf_jeu();
   }
   /**
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit
@@ -45,7 +48,7 @@ class interf_factory
     return new interf_cadre_carte($carte);
   }
   /**
-   * Méthode affichant le résultat d'ine action
+   * Méthode affichant le résultat d'une action
    */
   function afficher_resultat(&$princ, &$resultat, $ferme=true)
   {
@@ -54,6 +57,12 @@ class interf_factory
     if( $msg )
       $princ->add( new interf_alerte($types[$resultat->get_type()],$ferme) )->add_message( nl2br($msg) );
   }
+  /// Message d'accueil
+  function creer_accueil()
+  {
+  	// provisoire
+  	return $this->creer_inventaire(joueur::get_perso(), 'perso', 'utile', true);
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

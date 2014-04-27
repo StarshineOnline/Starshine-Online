@@ -100,8 +100,7 @@ function fin_script()
     $msg = $err['message'].' (fichier : '.$err['file'].', ligne : '.$err['line'].', url : '.$_SERVER['REQUEST_URI'].')';
     if( !count(log_admin::create(array('type', 'message'),array('bug', $msg))) )
     {
-  		$log = new log_admin();
-  		$log->send($idPerso, 'bug', $msg, true);
+  		log_admin::log('bug', $msg);
     }
     echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistré et pourra être consulté par les dévelopeurs.</h5>';
   }

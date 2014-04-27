@@ -10,7 +10,7 @@ a
   color: #333;
   cursor: pointer;
 }
-a:hover
+a:hover, a:focus
 {
   color: #666;
   text-decoration:none;
@@ -435,14 +435,14 @@ barre_buff
 {
 	position: absolute;
 	width: 505px;
-	height: 505px;
+	min-height: 505px;
 	margin-top : 5px;
 }
 
 #cadre_gauche
 {
 	border: 1px solid #080808;
-	height: 495px;
+	min-height: 495px;
 	width: 495px;
 	margin-left: 10px;
 	margin-top: 10px;
@@ -600,11 +600,14 @@ a#depl_disque_centre
 	background: #888;
 }
 
-#depl_disque a:hover
+#depl_disque a:hover, #depl_disque a:active
 {
 	background: #bbb;
 	color: #444;
 }
+
+#depl_disque a:active { color:black; }
+/*#depl_disque a:focus { text-decoration:none; }*/
 
 a#depl_haut_gauche
 {
@@ -1388,37 +1391,15 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 
 
 
-/*.icone-charger, .icone-charger2, .icone-charger3, .icone-charger4*/
-#icone-sso.icone-charger2, .icone-charger2
+#icone-sso.icone-charger, #icone-sso.icone-charger2, #icone-sso.icone-charger3, #icone-sso.icone-charger4
 {
-	transform: rotate(30deg);
   animation-name:charger_rot;
   animation-duration:1.76s;
   animation-iteration-count:infinite;
-  animation-direction:linear;
-  -webkit-border-radius:12px;
   -webkit-animation-name:charger_rot;
   -webkit-animation-duration:1.76s;
   -webkit-animation-iteration-count:infinite;
   -webkit-animation-direction:linear;
-  /*-ms-border-radius:12px;
-  -ms-animation-name:charger_rot;
-  -ms-animation-duration:1.76s;
-  -ms-animation-iteration-count:infinite;
-  -ms-animation-direction:linear;*/
-}
-
-@keyframes charger_rot
-{
-  0%{transform: rotate(0deg);}
-  12.5%{transform: rotate(45deg);}
-  25%{transform: rotate(90deg);}
-  37.5%{transform: rotate(135deg);}
-  50%{transform: rotate(180deg);}
-  62.5%{transform: rotate(225deg);}
-  75%{transform: rotate(270deg);}
-  87.5%{transform: rotate(315deg);}
-  100%{transform: rotate(360deg);}
 }
 
 @keyframes charger_rot
@@ -1436,15 +1417,15 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 
 @-webkit-keyframes charger_rot
 {
-  0%{transform: rotate(0deg);}
-  12.5%{transform: rotate(45deg);}
-  25%{transform: rotate(90deg);}
-  37.5%{transform: rotate(135deg);}
-  50%{transform: rotate(180deg);}
-  62.5%{transform: rotate(225deg);}
-  75%{transform: rotate(270deg);}
-  87.5%{transform: rotate(315deg);}
-  100%{transform: rotate(360deg);}
+  0%{-webkit-transform: rotate(0deg);}
+  12.5%{-webkit-transform: rotate(45deg);}
+  25%{-webkit-transform: rotate(90deg);}
+  37.5%{-webkit-transform: rotate(135deg);}
+  50%{-webkit-transform: rotate(180deg);}
+  62.5%{-webkit-transform: rotate(225deg);}
+  75%{-webkit-transform: rotate(270deg);}
+  87.5%{-webkit-transform: rotate(315deg);}
+  100%{-webkit-transform: rotate(360deg);}
 }
 
 .wait
