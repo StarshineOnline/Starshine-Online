@@ -165,7 +165,7 @@ class interf_carte extends interf_tableau
     global $Tclasse, $db;
     /// TODO: à améliorer
     if( $perso )
-      $requete = 'SELECT id FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
+      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
     else
       $requete = 'SELECT * FROM perso WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND statut="actif" GROUP BY x, y ORDER BY level DESC';
     $req = $db->query($requete);
