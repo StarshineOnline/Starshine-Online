@@ -171,7 +171,7 @@ class interf_carte extends interf_tableau
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
-      $p = perso($row);
+      $p = new perso($row);
       // S'il y a déjà un contenu on passe au suivant.
       $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
       if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
