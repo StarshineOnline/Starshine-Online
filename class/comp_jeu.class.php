@@ -246,26 +246,44 @@ class comp_esprit_libre extends comp_jeu
   function lance($perso)
   {
     global $db;
-		//-- Suppression d'un debuff au hasard
-		$debuff_tab = array();
-		foreach($perso->get_buff() as $debuff)
-		{
-			if($debuff->get_debuff() == 1 && $debuff->get_supprimable())
+    foreach ($perso->get_buff() as $debuff)
+    {
+		if($debuff->get_debuff() == 1)
 			{
+			  if($debuff->is_supprimable())
+			  {
 				$debuff_tab[] = $debuff->get_id();
+			  }
 			}
-		}
-		if(count($debuff_tab) > 0)
-		{
-			$db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
-      $action = true;
-		}
-		else
-		{
-      echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun debuff.<br/>";
-      $action = false;
+      }
+      
+    if(count($debuff_tab) > 0)
+    {
+		$id_debuff = $debuff_tab[rand(0, count($debuff_tab)-1)];
+	}
+	$buff = buff::create('id', $id_debuff);
+	
+	$debuff = sort_jeu::create('nom', $buff[0]->get_nom());
+	
+	// On recherche si le sort a un antécédent
+    $nouv = $debuff[0]->get_obj_requis();
+    $action= false;
+    //Si il a un antécédent on le modifie
+	if( $nouv )
+    {
+		  $buff[0]->set_nom( $nouv->get_nom() );
+		  $buff[0]->set_effet( $nouv->get_effet() );
+		  $buff[0]->set_effet2( $nouv->get_effet2() );
+		  $buff[0]->set_description( $nouv->get_description() );
+		  $buff[0]->sauver();
+		  $action = true;
     }
-
+    else //sinon on le supprime
+    {
+      $perso->supprime_buff( $buff[0]->get_type() );
+	  $buff[0]->supprimer();
+	  $action = true;
+    }
 		echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		return $action;
   }
