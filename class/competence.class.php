@@ -630,6 +630,7 @@ class fleche_magnetique extends magnetique {
 
     $nouv = $buffs[0]->get_obj_requis();
     $nbr = $nbr_red = rand(1, $this->nbr_max);
+    $nbr--;
     while( $nouv && $nbr )
     {
       $nouv = $nouv->get_obj_requis();

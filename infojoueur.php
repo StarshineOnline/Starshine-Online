@@ -168,7 +168,7 @@ if($joueur->get_groupe() == $perso->get_groupe() && $joueur->get_groupe() != 0 &
 		//Listing des debuffs
 		foreach($perso->get_buff() as $buff)
 		{
-			if($buff->get_debuff() == 1 AND ( $buff->get_type() != ('debuff_groupe' OR 'convalescence')))
+			if($buff->get_debuff() == 1 AND $buff->get_supprimable())
 			{
 				echo '<img src="image/buff/'.$buff->get_type().'_p.png" alt="'.$buff->get_type().'" onmouseover="'.make_overlib('<strong>'.$buff->get_nom().'</strong><br />'.description($buff->get_description(), $buff).'<br />Durée '.transform_sec_temp($buff->get_fin() - time())).'" onmouseout="return nd();" />';
 			}
