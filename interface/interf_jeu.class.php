@@ -87,8 +87,8 @@ class interf_jeu extends interf_sso_int
 		// On remplie les parties gauche et droites si elles sont vides
 		if( !$this->gauche->get_fils() )
 			$his->set_gauche();
-		if( !$this->droite->get_fils() )
-			$this->set_droite();
+		/*if( !$this->droite->get_fils() )
+			$this->set_droite();*/
 		parent::affiche($tab);
 	}
 }

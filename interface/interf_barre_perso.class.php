@@ -149,6 +149,12 @@ class interf_barre_perso extends interf_bal_cont
     $barre->set_attribut('style', 'width:'.$progression.'%');
     $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum, 'xp', 'barre_valeur') );
   }
+	protected function creer_jauge_mort($parent, $grand=false)
+	{
+    $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_hp':'', ($grand?'jauge_bulle':'jauge_groupe membre_hp').' progress') );
+    $jauge->set_tooltip('Ce personnage est mort.');
+    $jauge->add( new interf_bal_cont('span', null, 'icone icone-mort') );
+	}
   protected function creer_infos_groupe()
   {
   	if( $this->perso->get_groupe() != 0 )
@@ -204,7 +210,10 @@ class interf_barre_perso extends interf_bal_cont
   	if( $membre->get_id() == $groupe->get_id_leader() )
   		$classe .= ' perso_groupe_chef';
   	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
-  	$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
+  	if( $membre->get_hp() > 0 )
+			$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
+		else
+			$this->creer_jauge_mort($li);
     $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, false, 'mp');
     $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
     $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );

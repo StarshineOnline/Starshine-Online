@@ -310,6 +310,14 @@ a:hover, a:focus
 	right:30px;
 }
 
+.membre_hp .icone-mort
+{
+	color: #888;
+	line-height: 21px;
+	font-size: 17px;
+	margin-left: 3px;
+}
+
 .membre_mp
 {
 	right:2px;
