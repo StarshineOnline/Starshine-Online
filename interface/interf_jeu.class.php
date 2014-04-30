@@ -80,7 +80,8 @@ class interf_jeu extends interf_sso_int
   protected function menu_droite()
   {
     $this->menu->add_elt(new interf_elt_menu('Wiki', 'http://wiki.starshine-online.com/'), false);
-    $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
+    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
+    $forum->get_lien()->add( new interf_bal_smpl('span', 42, 'nbr_posts', 'badge') );
   }
   function affiche($tab = 0)
 	{
