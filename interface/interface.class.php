@@ -529,7 +529,6 @@ class interf_html extends interf_princ_ob
     {
       $this->ligne($lgn);
     }
-    $this->affiche_js();
     $this->ferme('head');
     $this->ouvre('body');
   }

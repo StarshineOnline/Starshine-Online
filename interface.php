@@ -7,6 +7,7 @@ $connexion = true;
 //Inclusion du haut du document html
 $interface_v2 = true;
 $interf_obj = true;
+
 include_once(root.'haut.php');
 if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
 	$joueur = new perso($_SESSION['ID']);

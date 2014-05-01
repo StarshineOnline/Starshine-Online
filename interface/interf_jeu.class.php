@@ -10,6 +10,7 @@ include_once(root.'interface/interf_sso.class.php');
  */
 class interf_jeu extends interf_sso_int
 {
+	protected $contenu;
   protected $gauche;
   protected $droite;
 
@@ -41,10 +42,10 @@ class interf_jeu extends interf_sso_int
     $autres->add( new interf_elt_menu('Statistiques', 'stats2.php?graph=carte_royaume', 'return affichePopUp(this.href);') );
     $autres->add( new interf_elt_menu('Classement', 'classement.php', 'return affichePopUp(this.href);') );
 
-    $cont = $this->add( new interf_bal_cont('div', 'contenu') );
-    $perso = $cont->add( new interf_bal_cont('header', 'perso') );
+    $this->contenu = $this->add( new interf_bal_cont('div', 'contenu') );
+    $perso = $this->contenu->add( new interf_bal_cont('header', 'perso') );
     $perso->add( new interf_barre_perso() );
-    $cont_jeu = $cont->add( new interf_bal_cont('main', 'contenu_jeu') );
+    $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
   }
@@ -71,6 +72,12 @@ class interf_jeu extends interf_sso_int
   }
   function set_dialogue($fils)
   {
+  	$dlg = $this->contenu->add( new interf_bal_cont('div', 'modal', 'modal fade') );
+  	$dlg->set_attribut('role', 'dialog');
+  	$dlg->set_attribut('tabindex', '-1');
+  	$dlg->set_attribut('aria-labelledby', 'modalLabel');
+  	$dlg->code_js('$("#modal").modal("show");');
+  	return $dlg->add( $fils );
   }
   function verif_mort($perso) 
   {
@@ -86,10 +93,10 @@ class interf_jeu extends interf_sso_int
   function affiche($tab = 0)
 	{
 		// On remplie les parties gauche et droites si elles sont vides
-		if( !$this->gauche->get_fils() )
-			$his->set_gauche();
-		/*if( !$this->droite->get_fils() )
-			$this->set_droite();*/
+	if( !$this->gauche->get_fils() )
+			$this->set_gauche();
+		if( !$this->droite->get_fils() )
+			$this->set_droite();
 		parent::affiche($tab);
 	}
 }
@@ -144,6 +151,8 @@ class interf_jeu_ajax extends interf_princ_ob
   }
   function set_dialogue($fils)
   {
+    $cont = $this->add( new interf_bal_cont('section', 'modal') );
+    return $cont->add($fils);
   }
   function verif_mort($perso) 
   {

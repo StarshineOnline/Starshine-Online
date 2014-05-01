@@ -117,6 +117,13 @@ class interf_factory
     include_once(root.'interface/interf_inventaire.class.php');
     return new interf_enchasser($perso, $index);
   }
+  /*
+   */
+  function creer_liste_perso(&$persos, $page)
+  {
+    include_once(root.'interface/interf_liste_persos.class.php');
+    return new interf_liste_persos($persos, $page);
+  }
   /// @}
 }
 ?>

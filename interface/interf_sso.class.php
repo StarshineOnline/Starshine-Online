@@ -64,7 +64,7 @@ abstract class interf_sso_int extends interf_sso
     {
       $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
       if( $persos )
-        $menu_joueur->add( new interf_elt_menu('Changer de perso', 'changer_perso.php', 'return envoiInfo(this.href, \'information\');') );
+        $menu_joueur->add( new interf_elt_menu('Changer de perso', 'changer_perso.php', 'return charger(this.href);') );
       if( $admin )
         $menu_joueur->add( new interf_elt_menu('Administration', './admin/') );
     }

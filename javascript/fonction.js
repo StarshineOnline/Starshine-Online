@@ -1,4 +1,5 @@
 // -*- tab-width: 2 -*-
+
 function charger(page)
 {
 	aff_ico_charger();
@@ -7,7 +8,28 @@ function charger(page)
   	aff_ico_sso();
     $(data).find('section').each( function()
     {
-      $('#'+this.id).html( this.innerHTML );
+    	switch(this.id)
+    	{
+    	case "modal":
+			  var modal = document.getElementById("modal");
+			  if( !modal )
+			  {
+			    var cont =  document.getElementById("contenu");
+			    modal = document.createElement("div");
+			    modal.id = "modal";
+			    modal.className = "modal fade";
+			    modal.setAttribute("role", "dialog");
+			    modal.tabIndex = "-1";
+			    modal.setAttribute("aria-labelledby", "modalLabel");
+			    cont.appendChild(modal);
+      		modal.innerHTML =  this.innerHTML;
+			  }
+  			$("#modal").modal('show');
+  			//alert(this.innerHTML);
+    		break;
+    	default:
+      	$('#'+this.id).html( this.innerHTML );
+			}
     });
 	});
 	return false;

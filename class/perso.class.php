@@ -3727,7 +3727,7 @@ class perso extends entite
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id = $id['id'];
+			$this->id = $id['ID'];
 			$this->mort = $id['mort'];
 			$this->nom = $id['nom'];
 			$this->password = $id['password'];
@@ -3967,7 +3967,7 @@ class perso extends entite
 			}
 		}
 
-		$requete = "SELECT id, mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, tuto, id_joueur, date_creation FROM perso WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT * FROM perso WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
