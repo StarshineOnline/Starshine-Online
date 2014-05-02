@@ -29,7 +29,7 @@ class interf_liste_buff extends interf_bal_cont
       $case_buff_dispo = $grade->get_nb_buff() - $perso->get_nb_buff();
 			for($b = 0; $b < $case_buff_dispo; $b++)
 			{
-        $li = $this->add( new interf_bal_smpl('li', '&nbsp;', null, 'buff_dispo') );
+        $li = $this->add( new interf_bal_smpl('li', '&nbsp;', null, 'buff_dispo icone icone-cadenas-ouvert') );
         $li->set_tooltip('Vous pouvez encore recevoir '.$case_buff_dispo.' buffs.', 'bottom');
 			}
       if( $grade->get_nb_buff(true) < 10 )
@@ -45,7 +45,7 @@ class interf_liste_buff extends interf_bal_cont
             else
               $texte .= ' (encore '.($g->get_honneur() - $perso->get_honneur()).')';
           }
-          $li = $this->add( new interf_bal_smpl('li', '&nbsp;', null, 'buff_nondispo') );
+          $li = $this->add( new interf_bal_smpl('li', '&nbsp;', null, 'buff_nondispo icone icone-cadenas-ferme') );
           $li->set_tooltip($texte.'.', 'bottom');
         }
   		}

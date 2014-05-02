@@ -45,7 +45,7 @@ class interf_barre_perso extends interf_bal_cont
     $this->creer_jauge($this->infos_vie, 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), true, 'danger', 'hp');
     $this->creer_jauge($this->infos_vie, 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()), true, false, 'mp');
     $this->creer_jauge($this->infos_vie, 'Points d\'action', $this->perso->get_pa(), $G_PA_max, true, 'success', 'pa');
-    $this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())));
+    $this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())), $this->perso->get_level());
   }
   protected function creer_infos_perso()
   {
@@ -138,16 +138,16 @@ class interf_barre_perso extends interf_bal_cont
     if( $grand )
 			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
 	}
-  protected function creer_jauge_xp($valeur, $maximum, $progression)
+  protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
   {
     $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_xp', 'jauge_barre progress') );
-    $jauge->set_tooltip('Points d\'expérience : '.$valeur, 'bottom');
+    $jauge->set_tooltip('Niveau : '.$niv.' − Points d\'expérience : '.$valeur, 'bottom');
     /*$jauge->set_attribut('title', 'Points d\'expérience : '.$valeur);
     $jauge->set_attribut('data-toggle', 'tooltip');
     $jauge->set_attribut('data-placement', 'right');*/
     $barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
     $barre->set_attribut('style', 'width:'.$progression.'%');
-    $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum, 'xp', 'barre_valeur') );
+    $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum.' − niv. '.$niv, 'xp', 'barre_valeur') );
   }
 	protected function creer_jauge_mort($parent, $grand=false)
 	{
@@ -157,18 +157,31 @@ class interf_barre_perso extends interf_bal_cont
 	}
   protected function creer_infos_groupe()
   {
-		$groupe = new groupe($this->perso->get_groupe());
+		$nombre_joueur_groupe = 1;
 		$div = $this->add( new interf_bal_cont('div', 'perso_groupe') );
 		$liste = $div->add( new interf_bal_cont('ul') );
-		
-		// Membres du groupe
-		$nombre_joueur_groupe = 1;
-		foreach($groupe->get_membre_joueur() as $membre)
-		{
-			if($this->perso->get_id() != $membre->get_id())
+  	if( $this->perso->get_groupe() )
+  	{
+			$groupe = new groupe($this->perso->get_groupe());
+			
+			// Membres du groupe
+			foreach($groupe->get_membre_joueur() as $membre)
 			{
-				$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
-				$nombre_joueur_groupe++;
+				if($this->perso->get_id() != $membre->get_id())
+				{
+					$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
+					$nombre_joueur_groupe++;
+				}
+			}
+		}
+		else
+		{
+			$invitation = invitation::create('receveur', $_SESSION['ID']);
+			//Si il y a une invitation pour le joueur
+			for($i=0; $i < count($invitation) && $i < 4; $i++)
+			{
+					$this->creer_infos_invit($liste, $invitation[$i], $nombre_joueur_groupe);
+					$nombre_joueur_groupe++;
 			}
 		}
 		for(;$nombre_joueur_groupe<=4;$nombre_joueur_groupe++)
@@ -200,6 +213,24 @@ class interf_barre_perso extends interf_bal_cont
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $debuffs->add( new interf_liste_buff($membre, true) );
 		}
+	}
+  protected function creer_infos_invit($liste, &$invitation, $index)
+  {
+		$perso = new perso($invitation->get_inviteur());
+		$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index, 'membre_groupe') );
+		$li->add( new interf_bal_smpl('div', 'Vous avez reçu une invitation pour grouper avec '.$perso->get_nom(), false, 'invitation') );
+		$div = $li->add( new interf_bal_cont('div') );
+		$oui = $div->add( new interf_bal_cont('a', false, 'choix_invitation') );
+		$oui->add( new interf_bal_smpl('span', '', false, 'icone icone-ok4') );
+		$oui->add( new interf_bal_smpl('span', 'Accepter', false, 'texte') );
+		$oui->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=oui&groupe='.$invitation->get_groupe());
+		$oui->set_attribut('onclick', 'charger(this.href);');
+		$non = $div->add( new interf_bal_cont('a', false, 'choix_invitation') );
+		$non->add( new interf_bal_smpl('span', '', false, 'icone icone-croix4') );
+		$non->add( new interf_bal_smpl('span', 'Refuser', false, 'texte') );
+		$non->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=non&groupe='.$invitation->get_groupe());
+		$oui->set_attribut('onclick', 'charger(this.href);');
+		$oui->set_attribut('onclick', 'charger(this.href);');
 	}
 	static function creer_activite(&$perso, $parent)
 	{

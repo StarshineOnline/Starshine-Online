@@ -4,6 +4,7 @@
  * Interface principale du jeu
  */
 include_once(root.'interface/interf_sso.class.php');
+include_once(root.'fonction/forum.inc.php');
 
 /**
  * Classe pour l'interface de jeu
@@ -18,9 +19,11 @@ class interf_jeu extends interf_sso_int
   {
     interf_sso_int::__construct();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return envoiInfo(this.href, \'information\');') );
-    $msg->get_lien()->add( new interf_bal_smpl('span', 12, 'nbr_msg', 'badge') );
+    $nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
+    $msg->get_lien()->add( new interf_bal_smpl('span', $nbr_msg ? $nbr_msg : '', 'nbr_msg', 'badge') );
     $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', 'liste_echange.php', 'return envoiInfo(this.href, \'information\');') );
-    $ech->get_lien()->add( new interf_bal_smpl('span', 1, 'nbr_echg', 'badge') );
+    $nbr_echg = count(recup_tout_echange_perso($_SESSION['ID']));
+    $ech->get_lien()->add( new interf_bal_smpl('span', $nbr_echg ? $nbr_echg : '', 'nbr_echg', 'badge') );
     $this->menu->add_elt( new interf_elt_menu('Groupe', 'infogroupe.php', 'return envoiInfo(this.href, \'information\');') );
     $perso = joueur::get_perso();
     /// TODO: à améliorer
@@ -88,7 +91,8 @@ class interf_jeu extends interf_sso_int
   {
     $this->menu->add_elt(new interf_elt_menu('Wiki', 'http://wiki.starshine-online.com/'), false);
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
-    $forum->get_lien()->add( new interf_bal_smpl('span', 42, 'nbr_posts', 'badge') );
+    $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
+    $forum->get_lien()->add( new interf_bal_smpl('span', $nbr_posts ? $nbr_posts : '', 'nbr_posts', 'badge') );
   }
   function affiche($tab = 0)
 	{
@@ -123,6 +127,15 @@ class interf_jeu_ajax extends interf_princ_ob
 	{
     $cont = $this->add( new interf_bal_cont('section', 'perso') );
     $cont->add( new interf_barre_perso() );
+    if($complet)
+    {
+			$nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
+    	$this->add( new interf_bal_smpl('section', $nbr_msg, 'nbr_msg') );
+    	$nbr_echg = count(recup_tout_echange_perso($_SESSION['ID']));
+    	$this->add( new interf_bal_smpl('section', $nbr_echg ? $nbr_echg : '', 'nbr_echg') );
+			$nbr_posts = get_nbr_posts_forum(joueur::get_perso());
+			$this->add( new interf_bal_smpl('section', $nbr_posts, 'nbr_posts') );
+		}
 	}
   function maj_ville($dans_ville=false)
 	{

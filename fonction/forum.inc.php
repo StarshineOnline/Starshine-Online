@@ -119,4 +119,23 @@ function nom_mois_prec($mois=0)
     $mois = 12;
   return nom_mois($mois);
 }
+
+/// Renvoie le nombre de posts non lus dans le forum annonce et les forums raciaux
+function get_nbr_posts_forum(&$perso)
+{
+	if( $db_forum )
+	{
+		$topcis = array(5, $Trace[$perso->get_race()]['forum_id'], $Trace[$perso->get_race()]['forum_guerre_id']);
+		if( $perso->get_grade()->get_rang() >= 3 )
+			$topcis[] = $Trace[$perso->get_race()]['forum_off_id'];
+		$requete = 'SELECT last_visit FROM punbbusers WHERE username LIKE "'.mysql_escape_string($perso->get_nom()).'"';
+		$req = $db_forum->query($requete);
+		$row = $db_forum->read_array($req);
+		$requete = 'SELECT COUNT(*) FROM punbbtopics WHERE forum_id IN '.array_implode(',', $topcis).' AND posted > '.$row[0];
+		$req = $db_forum->query($requete);
+		$row = $db_forum->read_array($req);
+		return $row[0];
+	}
+	return 0;
+}
 ?> 

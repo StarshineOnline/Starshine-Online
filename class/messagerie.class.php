@@ -52,6 +52,14 @@ class messagerie
 		return $return;		
 	}
 	
+	// Renvoie le nombre totalt de message non lu à partir de l'id du personnage
+	static function get_non_lu_total($id)
+	{
+		$messagerie = new messagerie($id);
+		$nb_mess = $messagerie->get_non_lu();
+		return $nb_mess['total'];
+	}
+	
 	//Récupération de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
