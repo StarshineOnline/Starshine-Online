@@ -25,7 +25,7 @@ elseif( $joueur->get_id() == $royaume->get_ministre_militaire() )
 }
 else
 {
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdite</p>';
 	exit;
 }
 
@@ -493,6 +493,10 @@ switch( $_GET['direction'] )
   	    </fieldset>
   	    </div>';
   	}
+  	Else
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'reactif':
@@ -515,6 +519,10 @@ switch( $_GET['direction'] )
   	        echo 'Vous n\'avez pas assez de stars pour réactiver cette construction !';
   	    }
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'modification':
@@ -632,6 +640,10 @@ switch( $_GET['direction'] )
   	         break;
   	    }
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'reparation':
@@ -663,6 +675,10 @@ switch( $_GET['direction'] )
             echo 'Le royaume ne possède pas assez de stars';
         }
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
     break;
   	
   case 'carte':
@@ -672,6 +688,10 @@ switch( $_GET['direction'] )
   		include_once('carte_roy.php');
   		echo '<img src="carte_roy2.php" style="width:600px;margin-left:170px;" />';
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'stats':
@@ -1030,6 +1050,10 @@ switch( $_GET['direction'] )
   		</ul>
   		</div>";
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'bourse_enchere':
@@ -1067,6 +1091,10 @@ switch( $_GET['direction'] )
         echo '<h5>Vous ne pouvez pas placer l\'enchère</h5>';
       }
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'bourse_ressource':
@@ -1137,6 +1165,10 @@ switch( $_GET['direction'] )
   			<?php
   		}
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
   	break;
   	
   case 'bourse':
@@ -1350,6 +1382,10 @@ switch( $_GET['direction'] )
   		</fieldset>
   		<?php
   	}
+  	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
+	}
 	break;
 	case "echange":
 		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
@@ -1386,6 +1422,10 @@ switch( $_GET['direction'] )
 			</fieldset>
 		</div>
 		<?php
+	}
+	Else 
+  	{
+		echo '<p>Cette page vous est interdite</p>';
 	}
 	break;
   }// Fin du switch
