@@ -24,7 +24,7 @@ class interf_jeu extends interf_sso_int
     $this->menu->add_elt( new interf_elt_menu('Groupe', 'infogroupe.php', 'return envoiInfo(this.href, \'information\');') );
     $perso = joueur::get_perso();
     /// TODO: à améliorer
-		if( $perso->get_grade() == 1 || $perso->get_grade() == 6 )
+		if( $perso->get_grade()->get_rang() >= 7 )
 		{
 			$royaume = $this->menu->add_elt( new interf_nav_deroul('Royaume') );
 			$royaume->add( new interf_elt_menu('Gestion du royaume', 'roi/index.php') );

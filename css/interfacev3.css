@@ -121,7 +121,7 @@ a:hover, a:focus
   height:112px;
   background-color:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;
-  background-position : 8px 4px;
+  background-position : 0px 4px;
   background-repeat: no-repeat;
   margin-left:16px;
   top: 3px;
@@ -175,10 +175,14 @@ a:hover, a:focus
 {
   display: block;
   position:relative;
-  text-align:left;
-  width:210px;
+  text-align: center;
+	width: 195px;
   margin-top:5px;
-  left:10px;
+  left:5px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  height: 16px;
 }
 #nom_perso:hover
 {
@@ -198,7 +202,7 @@ a:hover, a:focus
   background:transparent url(./../image/honneur.png) left no-repeat;
   font-size: 10px;
   height: 24px;
-  left: 56px;
+  left: 50px;
   padding: 0 0 0 24px;
   position: absolute;
   top: 18px;
@@ -251,7 +255,7 @@ a:hover, a:focus
 	padding:0 0 0 16px;
 	position:absolute;
 	top:42px;
-	left:60px;
+	left:55px;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -262,10 +266,10 @@ a:hover, a:focus
 	position: absolute;
 	background: transparent left no-repeat;
 	background-size: 16px 16px;
-	left: 130px;
+	left: 120px;
 	padding-left: 16px;
   font-size: 10px;
-  width: 87px;
+  width: 100px;
   white-space:nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -341,8 +345,13 @@ a:hover, a:focus
 #race_classe
 {
   position:absolute;
-  top: 2px;
-  left:60px;
+  left: 35px;
+  width: 185px;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+  height: 16px;
 }
 
 #liste_buffs
@@ -359,7 +368,7 @@ a:hover, a:focus
   margin-top: 20px;
 }
 
-barre_buff
+.barre_buff
 {
   height:3px;
   margin-top:1px;

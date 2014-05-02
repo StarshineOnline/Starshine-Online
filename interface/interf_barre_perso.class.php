@@ -86,7 +86,7 @@ class interf_barre_perso extends interf_bal_cont
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
-    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'], 'perso_defense', 'perso_script') );
+    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : '&nbsp;', 'perso_defense', 'perso_script') );
     $bouclier = $this->perso->get_bouclier();
     if( $bouclier )
     {
@@ -157,76 +157,93 @@ class interf_barre_perso extends interf_bal_cont
 	}
   protected function creer_infos_groupe()
   {
-  	if( $this->perso->get_groupe() != 0 )
+		$groupe = new groupe($this->perso->get_groupe());
+		$div = $this->add( new interf_bal_cont('div', 'perso_groupe') );
+		$liste = $div->add( new interf_bal_cont('ul') );
+		
+		// Membres du groupe
+		$nombre_joueur_groupe = 1;
+		foreach($groupe->get_membre_joueur() as $membre)
 		{
-			$groupe = new groupe($this->perso->get_groupe());
-			$div = $this->add( new interf_bal_cont('div', 'perso_groupe') );
-			$liste = $div->add( new interf_bal_cont('ul') );
-			
-			// Membres du groupe
-			$nombre_joueur_groupe = 1;
-			foreach($groupe->get_membre_joueur() as $membre)
+			if($this->perso->get_id() != $membre->get_id())
 			{
-				if($this->perso->get_id() != $membre->get_id())
-				{
-					$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
-					$nombre_joueur_groupe++;
-				}
+				$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
+				$nombre_joueur_groupe++;
 			}
+		}
+		for(;$nombre_joueur_groupe<=4;$nombre_joueur_groupe++)
+		{
+			$this->creer_infos_membre($liste, null, null, $nombre_joueur_groupe);
 		}
   }
   protected function creer_infos_membre($liste, $membre, $groupe, $index)
   {
   	$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index, 'membre_groupe') );
   	
-		switch( $membre->get_statut() )
+  	if( $membre )
+  	{
+			$classe = 'perso_groupe_nom';
+	  	if( $membre->get_id() == $groupe->get_id_leader() )
+	  		$classe .= ' perso_groupe_chef';
+	  	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
+	  	if( $membre->get_hp() > 0 )
+				$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
+			else
+				$this->creer_jauge_mort($li);
+	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, false, 'mp');
+	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
+	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
+	    $pos->add( new interf_txt(' - ') );
+	    $pos->add( new interf_bal_smpl('span', 'dist. : '.calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y())), null, 'membre_pos') );
+	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+	    $buffs->add( new interf_liste_buff($membre, false) );/**/
+	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+	    $debuffs->add( new interf_liste_buff($membre, true) );
+		}
+	}
+	static function creer_activite(&$perso, $parent)
+	{
+		switch( $perso->get_statut() )
 		{
 		case 'hibern':
-			$this->creer_activite('hibern', 'Le personnage hiberne', $li);
+			$type = 'hibern';
+			$message = 'Le personnage hiberne';
 			break;
 		case 'inactif':
-			$this->creer_activite('inactif', 'Le personnage est inactif', $li);
+			$type = 'inactif';
+			$message = 'Le personnage est inactif';
 			break;
 		case 'ban':
-			$this->creer_activite('ban', 'Le personnage est banni jusqu\'au '.date('d/m/Y', $membre->get_fin_ban()), $li);
+			$type = 'ban';
+			$message = 'Le personnage est banni jusqu\'au '.date('d/m/Y', $membre->get_fin_ban());
 			break;
 		case 'suppr':
-			$this->creer_activite('suppr', 'Le personnage a été supprimé', $li);
+			$type = 'suppr';
+			$message = 'Le personnage a été supprimé';
 			break;
 		case 'actif':
 			$duree = time() - $membre->get_dernieraction();
 		  if( $duree > royaume::duree_actif )
-				$this->creer_activite('actif', 'Le personnage est moyennement actif', $li);
+		  {
+				$type = 'actif';
+				$message = 'Le personnage est moyennement actif';
+			}
 			elseif( $duree > 60 )
-				$this->creer_activite('tres_actif', 'Le personnage est actif', $li);
+		  {
+				$type = 'tres_actif';
+				$message = 'Le personnage est actif';
+			}
 			else
-				$this->creer_activite('connecte', 'Le personnage vient de se connecter', $li);
+		  {
+				$type = 'connecte';
+				$message = 'Le personnage vient de se connecter';
+			}
 			break;
 		default:
 			log_admin::log('bug', 'statut du personnage "'.$membre->get_nom().'" inconnu : '.$membre->get_statut());
 			break;
 		}
-		$classe = 'perso_groupe_nom';
-  	if( $membre->get_id() == $groupe->get_id_leader() )
-  		$classe .= ' perso_groupe_chef';
-  	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
-  	if( $membre->get_hp() > 0 )
-			$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
-		else
-			$this->creer_jauge_mort($li);
-    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, false, 'mp');
-    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
-    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
-    $pos->add( new interf_txt(' - ') );
-    $pos->add( new interf_bal_smpl('span', 'dist. : '.calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y())), null, 'membre_pos') );
-    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
-    $buffs->add( new interf_liste_buff($membre, false) );/**/
-    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
-    $debuffs->add( new interf_liste_buff($membre, true) );
-	}
-	protected function creer_activite($type, $message, $li)
-	{
-		$span = $li->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type) );
+		$span = $parent->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type) );
 		$span->set_attribut('title', $message);
 	}
 }
