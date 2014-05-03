@@ -152,11 +152,11 @@ a:hover, a:focus
 
 .jauge_bulle
 {
-  height: 54px;
+  height: 57px;
   font-size:10px !important;
   color:white;
   background:transparent;
-  width:54px;
+  width:57px;
   text-align:center;
   position:absolute;
   border-radius: 50%;
@@ -189,10 +189,10 @@ a:hover, a:focus
   text-decoration:none;
 }
 
-#perso_hp {  top:28px;left:10px;}
-#perso_mp { top:28px; left:75px;  }
+#perso_hp {  top:25px;left:10px;}
+#perso_mp { top:25px; left:75px;  }
 
-#perso_pa {  top:28px; left:140px; }
+#perso_pa {  top:25px; left:140px; }
 
 #perso_xp {   left: 10px; top: 90px; width:180px; }
 
@@ -335,7 +335,7 @@ a:hover, a:focus
 {
   position:absolute;
   width:100%;
-  top: 19px;
+  top: 20px;
   left: 0px;
 }
 

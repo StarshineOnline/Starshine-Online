@@ -51,6 +51,8 @@ class interf_jeu extends interf_sso_int
     $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
+    
+    $this->code_js('maj_tooltips();');
   }
   function set_gauche($fils=null)
   {

@@ -58,13 +58,13 @@ class interf_barre_perso extends interf_bal_cont
     $race_classe->add( new interf_bal_smpl('span', ucwords($this->perso->get_classe()), 'classe') );
     // Honneur & réputation
     $ph = $this->infos_perso->add( new interf_bal_cont('div', 'perso_ph') );
-    $ph->set_attribut('title', 'Votre honneur : '.$this->perso->get_honneur().' / Votre réputation : '.$this->perso->get_reputation());
+    $ph->set_tooltip('Votre honneur : '.$this->perso->get_honneur().' / Votre réputation : '.$this->perso->get_reputation(), 'bottom');
     $ph->add( new interf_bal_smpl('span', $this->perso->get_honneur(), 'honneur') );
     $ph->add( new interf_bal_smpl('br') );
     $ph->add( new interf_bal_smpl('span', $this->perso->get_reputation(), 'reputation') );
     // stars
     $stars = $this->infos_perso->add( new interf_bal_smpl('div', $this->perso->get_star(), 'perso_stars') );
-    $stars->set_attribut('title', 'Votre argent : '.$this->perso->get_star().' stars');
+    $stars->set_tooltip('Votre argent : '.$this->perso->get_star().' stars', 'bottom');
     // attaque
     /// TODO: passer à l'objet
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
@@ -80,7 +80,7 @@ class interf_barre_perso extends interf_bal_cont
 		}
 		else
 			$nom_arme = 'aucune';
-    $att->set_attribut('title', 'Votre arme : '.$nom_arme.($row['nom'] ? ' − Votre script d\'attaque : '.$row['nom'] : ' − Vous n\'avez pas de script d\'attaque'));
+    $att->set_tooltip('Votre arme : '.$nom_arme.($row['nom'] ? ' − Votre script d\'attaque : '.$row['nom'] : ' − Vous n\'avez pas de script d\'attaque'), 'bottom');
     // défense
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
     $req = $db->query($requete);
@@ -94,8 +94,8 @@ class interf_barre_perso extends interf_bal_cont
 			$def->set_attribut('style', 'background-image:url(\''.$bouclier->get_image().'\');');
 		}
 		else
-			$nom_arme = 'aucun';
-    $def->set_attribut('title', 'Votre bouclier : '.$nom_bouclier.($row['nom'] ? ' − Votre script de défense : '.$row['nom'] : ' − Vous n\'avez pas de script de défense'));
+			$nom_bouclier = 'aucun';
+    $def->set_tooltip('Votre bouclier : '.$nom_bouclier.($row['nom'] ? ' − Votre script de défense : '.$row['nom'] : ' − Vous n\'avez pas de script de défense'), 'bottom');
     // créature dressée
     $creature = $this->perso->get_pet();
     if( $creature )
@@ -104,7 +104,7 @@ class interf_barre_perso extends interf_bal_cont
     	$monstre = new monstre( $creature->get_id_monstre() );
     	/// TODO: utiliser une méthode pour obtenir l'image
 			$creat->set_attribut('style', 'background-image:url(\'./image/monstre/'.$monstre->get_lib().'.png\');');
-    	$creat->set_attribut('title', 'Votre créature principale : '.$creature->get_nom().' ('.$monstre->get_nom().')');
+    	$att->set_tooltip('Votre créature principale : '.$creature->get_nom().' ('.$monstre->get_nom().')', 'bottom');
 		}
     // Buffs & debuffs
     $liste = $this->infos_perso->add( new interf_bal_cont('div', 'perso_buffs') );
@@ -117,8 +117,6 @@ class interf_barre_perso extends interf_bal_cont
   {
     $heure = $this->add( new interf_bal_cont('a', 'perso_heure') );
     $heure->set_attribut('style', 'background-image:url(image/interface/'.moment_jour().'.png);');
-    /*$img = $heure->add( new interf_bal_smpl('img') );
-    $img->set_attribut('src', 'image/interface/'.moment_jour().'.png');*/
     $heure->set_tooltip(moment_jour(), 'bottom');
     $span = $heure->add( new interf_bal_smpl('span', substr(date_sso(time()),0,-3), 'heure') );
     $pos = $this->add( new interf_bal_cont('a', 'perso_position') );
@@ -128,10 +126,7 @@ class interf_barre_perso extends interf_bal_cont
 	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, $style=false, $type=null)
 	{
     $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_'.$type:'', ($grand?'jauge_bulle':'jauge_groupe membre_'.$type).' progress') );
-    $jauge->set_tooltip($nom.' : '.$valeur.' / '.$maximum, 'right');
-    /*$jauge->set_attribut('title', $nom.' : '.$valeur.' / '.$maximum);
-    $jauge->set_attribut('data-toggle', 'tooltip');
-    $jauge->set_attribut('data-placement', 'right');*/
+    $jauge->set_tooltip($nom.' : '.$valeur.' / '.$maximum, 'bottom');
     $barre = $jauge->add( new interf_bal_cont('div', null, 'bulle progress-bar'.($style?' progress-bar-'.$style:'')) );
     $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
     if( $grand )
@@ -141,9 +136,6 @@ class interf_barre_perso extends interf_bal_cont
   {
     $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_xp', 'jauge_barre progress') );
     $jauge->set_tooltip('Niveau : '.$niv.' − Points d\'expérience : '.$valeur, 'bottom');
-    /*$jauge->set_attribut('title', 'Points d\'expérience : '.$valeur);
-    $jauge->set_attribut('data-toggle', 'tooltip');
-    $jauge->set_attribut('data-placement', 'right');*/
     $barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
     $barre->set_attribut('style', 'width:'.$progression.'%');
     $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum.' − niv. '.$niv, 'xp', 'barre_valeur') );
@@ -275,7 +267,7 @@ class interf_barre_perso extends interf_bal_cont
 			break;
 		}
 		$span = $parent->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type) );
-		$span->set_attribut('title', $message);
+		$span->set_tooltip($message, 'bottom');
 	}
 }
 ?>

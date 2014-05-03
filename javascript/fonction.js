@@ -37,6 +37,11 @@ function charger(page)
 	return false;
 }
 
+function maj_tooltips()
+{
+	$("[data-toggle='tooltip']").tooltip();
+}
+
 function aff_ico_charger()
 {
 	document.getElementById("icone-sso").className = "navbar-brand icone icone-charger2";
