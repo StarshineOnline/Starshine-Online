@@ -22,11 +22,13 @@ function charger(page)
 			    modal.tabIndex = "-1";
 			    modal.setAttribute("aria-labelledby", "modalLabel");
 			    cont.appendChild(modal);
-      		modal.innerHTML =  this.innerHTML;
 			  }
+      	modal.innerHTML =  this.innerHTML;
   			$("#modal").modal('show');
-  			//alert(this.innerHTML);
     		break;
+    	case 'recharger':
+    		document.location=this.innerHTML.trim();
+    		document.location.reload();
     	default:
       	$('#'+this.id).html( this.innerHTML );
 			}

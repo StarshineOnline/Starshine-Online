@@ -28,7 +28,7 @@
 			$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_GET['id'];
 			$db->query($requete);
 			$dlg->add( new interf_txt('Rechargement de la page en cours…') );
-			$dlg->code_js('document.location="interface.php";');
+			$interf_princ->recharger_interface();
 	    exit;
 		}
   }

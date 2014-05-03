@@ -65,13 +65,12 @@ class interf_barre_perso extends interf_bal_cont
     // stars
     $stars = $this->infos_perso->add( new interf_bal_smpl('div', $this->perso->get_star(), 'perso_stars') );
     $stars->set_attribut('title', 'Votre argent : '.$this->perso->get_star().' stars');
-    //$stars->add( new interf_bal_smpl('span', $this->perso->get_star()) );
     // attaque
     /// TODO: passer à l'objet
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
-    $att = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'], 'perso_attaque', 'perso_script') );
+    $att = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : 'pas de script', 'perso_attaque', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
     $arme = $this->perso->get_arme();
     if( $arme )
     {
@@ -81,12 +80,12 @@ class interf_barre_perso extends interf_bal_cont
 		}
 		else
 			$nom_arme = 'aucune';
-    $att->set_attribut('title', 'Votre arme : '.$nom_arme.' − Votre script d\'attaque : '.$row['nom']);
+    $att->set_attribut('title', 'Votre arme : '.$nom_arme.($row['nom'] ? ' − Votre script d\'attaque : '.$row['nom'] : ' − Vous n\'avez pas de script d\'attaque'));
     // défense
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
-    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : '&nbsp;', 'perso_defense', 'perso_script') );
+    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : 'pas de script', 'perso_defense', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
     $bouclier = $this->perso->get_bouclier();
     if( $bouclier )
     {
@@ -96,7 +95,7 @@ class interf_barre_perso extends interf_bal_cont
 		}
 		else
 			$nom_arme = 'aucun';
-    $def->set_attribut('title', 'Votre bouclier : '.$nom_bouclier.' − Votre script de défense : '.$row['nom']);
+    $def->set_attribut('title', 'Votre bouclier : '.$nom_bouclier.($row['nom'] ? ' − Votre script de défense : '.$row['nom'] : ' − Vous n\'avez pas de script de défense'));
     // créature dressée
     $creature = $this->perso->get_pet();
     if( $creature )
@@ -195,6 +194,7 @@ class interf_barre_perso extends interf_bal_cont
   	
   	if( $membre )
   	{
+  		$this->creer_activite($membre, $li);
 			$classe = 'perso_groupe_nom';
 	  	if( $membre->get_id() == $groupe->get_id_leader() )
 	  		$classe .= ' perso_groupe_chef';
@@ -232,7 +232,7 @@ class interf_barre_perso extends interf_bal_cont
 		$oui->set_attribut('onclick', 'charger(this.href);');
 		$oui->set_attribut('onclick', 'charger(this.href);');
 	}
-	static function creer_activite(&$perso, $parent)
+	static function creer_activite(&$perso, &$parent)
 	{
 		switch( $perso->get_statut() )
 		{
@@ -253,7 +253,7 @@ class interf_barre_perso extends interf_bal_cont
 			$message = 'Le personnage a été supprimé';
 			break;
 		case 'actif':
-			$duree = time() - $membre->get_dernieraction();
+			$duree = time() - $perso->get_dernieraction();
 		  if( $duree > royaume::duree_actif )
 		  {
 				$type = 'actif';

@@ -103,6 +103,10 @@ class interf_jeu extends interf_sso_int
 			$this->set_droite();
 		parent::affiche($tab);
 	}
+	function recharger_interface()
+	{
+		$this->code_js('document.location="interface.php";');
+	}
 }
 
 class interf_jeu_ajax extends interf_princ_ob
@@ -182,5 +186,9 @@ class interf_jeu_ajax extends interf_princ_ob
   {
     $this->ferme('main');
   }
+	function recharger_interface($url='interface.php')
+	{
+    $cont = $this->add( new interf_bal_smpl('section', $url, 'recharger') );
+	}
 }
 ?>
