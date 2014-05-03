@@ -446,6 +446,8 @@ a:hover, a:focus
 
 .buff { position:relative; float:left; height:19px; padding:0; margin:0 2px; cursor:pointer; }
 
+.buff img { vertical-align: top; }
+
 .buff_dispo, .buff_nondispo
 {
 	position:relative;
@@ -768,6 +770,28 @@ a#depl_bas_droite
 	border: 1px solid #777;
 	border-radius: 10px;
 	padding: 10px 4px 10px 4px;
+}
+
+
+/*-- Message d'accueil ---------------------------------------------------*/
+p.accueil a
+{
+	text-decoration-line: underline !important;
+	text-decoration-style: dotted !important; 
+	-moz-text-decoration-line: underline !important;
+	-moz-text-decoration-style: dotted !important;
+}
+
+.message_monde
+{
+	border-top: solid 1px rgba(0, 0, 0, 0.3);
+	padding-top: 10px;
+}
+
+.message_monde:first-child
+{
+	border-top: none;
+	padding-top: 0;
 }
 
 /*-- Overlib ----------------------------------------------------------*/

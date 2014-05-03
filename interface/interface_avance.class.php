@@ -278,7 +278,7 @@ class interf_navbar extends interf_bal_cont
 }
 
 /**
- * Menus déroulant dan une barre de navigation
+ * Menus déroulant dans une barre de navigation
  */
 class interf_nav_deroul extends interf_elt_menu
 {
@@ -293,6 +293,74 @@ class interf_nav_deroul extends interf_elt_menu
   function &add($elt)
   {
     $this->liste->add($elt);
+  }
+}
+ 
+/**
+* Panneau Bootstrap
+*/
+class	interf_panneau extends interf_bal_cont
+{
+	protected $body=false;
+	function __construct($titre, $id, $elt_titre='h3', $collaps=false, $montre=false, $style='default')
+	{
+		parent::__construct('div', $id, 'panel panel-'.$style);
+		if( $titre )
+		{
+			if( $elt_titre )
+				$entete = $this->add( new interf_bal_cont('div', false, 'panel-heading') );
+			else
+				$entete = &$this;
+			if( !is_object($titre) )
+				$titre = new interf_txt($titre);
+			$entete->add( $titre );
+		}
+		if( $collaps )
+			$parent = $this->add( new interf_bal_cont('div', $collaps, 'panel-collapse collapse'.($montre?' in':'')) );
+		else
+			$parent = &$this;
+		$this->body = $parent->add( new interf_bal_cont('div', null, 'panel-body')  );
+	}
+  /// Ajoute un élément fils
+  function &add(&$fils)
+  {
+  	if( $this->body )
+    	return $this->body->add($fils);
+    else
+    	return parent::add($fils);
+  }
+  // Ajoute un pied
+  function set_footer($footer, $id=null)
+  {
+  	if( is_object($footer) )
+			parent::add( interf_bal_cont('div', $id, 'panel-footer') )->add($footer);
+		else
+  		parent::add( new interf_bal_smpl('div', $footer, $id, 'panel-footer') );
+	}
+}
+
+/**
+ * Accordéon bootstrap
+ */
+class interf_accordeon extends interf_bal_cont
+{
+	protected $id;
+	function __construct($id)
+	{
+		parent::__construct('div', $id, 'panel-group');
+		$this->id = $id;
+	}
+	// Ajoute un panneau
+  function &nouv_panneau($titre, $id, $montre=false, $style='default')
+  {
+  	if( is_object($titre) )
+  		$titre = new interf_bal_cont('a');
+  	else
+  		$titre = new interf_bal_smpl('a', $titre);
+  	$titre->set_attribut('href', '#'.$id);
+  	$titre->set_attribut('data-toggle', 'collapse');
+  	$titre->set_attribut('data-parent', '#'.$this->id);
+    return $this->add( new interf_panneau($titre, null, 'h4', $id, $montre, $style) );
   }
 }
 ?>

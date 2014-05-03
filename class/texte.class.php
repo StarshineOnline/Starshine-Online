@@ -21,13 +21,14 @@ class texte
   const quetes = 0x8;   ///< balises gérant les intéraction avec les quêtes.
   const navig = 0x10;   ///< balises gérant la navigation (par ex. [retour]).
   const progr_pnj = 0x20;   ///< balises permettant de mettre d'éxécuter les fonctions spéciales pour les PNJ.
-  const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
+  const html = 0x40;   ///< indique qu'il faut supprimer les balises html.
   const perso = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction du personnage.
-  const actions = 0x100;   ///< balises effetctuant certaines actions.
+  const actions = 0x100;   ///< balises effectuant certaines actions.
   const tuto = 0x200;   ///< balises liées au tutoriel.
 
   const messagerie = 0x42;   ///< textes de la messagerie
-  const msg_roi = 0x4a;   ///< message du roi
+  const msg_monde = 0x86;   ///< message du monde
+  const msg_roi = 0x46;   ///< message du roi
   const pnj = 0x3bf;   ///< textes des PNJ
   const cases = 0x3bf;   ///< textes des cases
   const tutoriel = 0x3b8;   ///< textes des tutoriels
@@ -41,6 +42,7 @@ class texte
   {
     $this->texte = $texte;
     $this->options = $options;
+    $this->perso = joueur::get_perso();
   }
   
   /**

@@ -104,7 +104,7 @@ class interf_barre_perso extends interf_bal_cont
     	$monstre = new monstre( $creature->get_id_monstre() );
     	/// TODO: utiliser une méthode pour obtenir l'image
 			$creat->set_attribut('style', 'background-image:url(\'./image/monstre/'.$monstre->get_lib().'.png\');');
-    	$att->set_tooltip('Votre créature principale : '.$creature->get_nom().' ('.$monstre->get_nom().')', 'bottom');
+    	$creat->set_tooltip('Votre créature principale : '.$creature->get_nom().' ('.$monstre->get_nom().')', 'bottom');
 		}
     // Buffs & debuffs
     $liste = $this->infos_perso->add( new interf_bal_cont('div', 'perso_buffs') );
@@ -143,7 +143,7 @@ class interf_barre_perso extends interf_bal_cont
 	protected function creer_jauge_mort($parent, $grand=false)
 	{
     $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_hp':'', ($grand?'jauge_bulle':'jauge_groupe membre_hp').' progress') );
-    $jauge->set_tooltip('Ce personnage est mort.');
+    $jauge->set_tooltip('Ce personnage est mort.', 'bottom');
     $jauge->add( new interf_bal_cont('span', null, 'icone icone-mort') );
 	}
   protected function creer_infos_groupe()

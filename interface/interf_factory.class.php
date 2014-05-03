@@ -60,8 +60,8 @@ class interf_factory
   /// Message d'accueil
   function creer_accueil()
   {
-  	// provisoire
-  	return $this->creer_inventaire(joueur::get_perso(), 'perso', 'utile', true);
+    include_once(root.'interface/interf_accueil.class.php');
+    return new interf_accueil();
 	}
   /**
    * @name Inventaire
