@@ -57,7 +57,7 @@ class interf_onglets extends interf_bal_cont
       $classe .= ' active';
     }
     $lien->set_attribut('data-toggle', 'tab');
-    $li->set_attribut('data-url', $adresse);
+    $lien->set_attribut('data-url', $adresse);
     /*if( !$selection )
       $this->divs[] = $id;*/
     $div =  $this->contenu->add( new interf_bal_cont('div', $id, $classe) );

@@ -10,7 +10,7 @@ include_once('interface.class.php');
 /**
  * Classe gérant l'élément d'interface principal pour le panneau droit.
  */
-class interf_princ_droit extends interf_princ_ob
+class interf_droite extends interf_cont
 {
   protected $titre;  ///< Titre du panneau.
   

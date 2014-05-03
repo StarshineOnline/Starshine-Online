@@ -239,7 +239,7 @@ abstract class interf_princ extends interf_cont
  * de l'objet et sa destruction est affiché dans une balise div à la fin du contenu.
  * Ne fonctionne que si l'affichage est déclenché automatiquement à la destruction de l'objet.
  */
-abstract class interf_princ_ob extends interf_princ
+class interf_princ_ob extends interf_princ
 {
   const div_ob = null;  ///< id de la balise div contenant le texte mis en tampon.
   const classe_ob = null;  ///< classe de la balise div contenant le texte mis en tampon.
@@ -257,17 +257,6 @@ abstract class interf_princ_ob extends interf_princ
   }
 }
 
-/**
- * Classe de base pour les éléments principaux contenant d'autres éléments
- */
-/*class interf_princ_cont extends interf_princ
-{
-  /// Destructeur
-  function __destruct()
-  {
-    $this->affiche();
-  }
-}*/
 
 /**
  * Classe gérant l'affichage de texte.

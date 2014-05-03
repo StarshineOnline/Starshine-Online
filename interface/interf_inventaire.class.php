@@ -97,7 +97,6 @@ class interf_invent_equip extends interf_tableau
     	if( ($compteur % 3) == 0 && $compteur )
   		{
         $tr = $this->nouv_ligne();
-        $tr->set_attribut('style', 'height : 55px;');
   		}
   		$td = $this->nouv_cell();
       if( $loc != ' ' )
@@ -264,7 +263,8 @@ class interf_infos_objet extends interf_princ
     $vals = $obj->get_valeurs_infos();
     for($i=0; $i<count($noms); $i++)
     {
-      $tbl->nouv_ligne();
+    	if( $i > 0 )
+      	$tbl->nouv_ligne();
       $tbl->nouv_cell($noms[$i], null, null, true);
       $tbl->nouv_cell($vals[$i]);
     }

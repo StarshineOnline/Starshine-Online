@@ -36,9 +36,9 @@ class interf_factory
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit
    * @param $titre  titre du panneau.
    */
-  function creer_princ_droit($titre)
+  function creer_droite($titre)
   {
-    return new interf_princ_droit($titre);
+    return new interf_droite($titre);
   }
   /*
    */

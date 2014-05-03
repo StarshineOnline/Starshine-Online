@@ -11,6 +11,7 @@ include_once(root.'inc/fp.php');
 include_once(root.'fonction/competence.inc.php');
 
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+
 // Infos sur un objet
 if( $action == 'infos' )
 {
@@ -38,26 +39,27 @@ else
 switch( $action )
 {
 case 'princ':
-  $princ = new interf_princ_cont();
-  $princ->add( $G_interf->creer_invent_equip($perso, $_GET['page'], !$visu) );
+  $cadre = new interf_princ_ob();
+  $cadre->add( $G_interf->creer_invent_equip($perso, $_GET['page'], !$visu) );
   exit;
 case 'sac':
-  $princ = new interf_princ_cont();
-  $princ->add( $G_interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
+  $cadre = new interf_princ_ob();
+  $cadre->add( $G_interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
   exit;
 case 'hotel_vente':
-  $princ = $G_interf->creer_vente_hotel($perso, $_GET['objet']);
+  $G_interf->creer_vente_hotel($perso, $_GET['objet']);
   exit;
 case 'gemme':
-  $princ = $G_interf->creer_enchasser($perso, $_GET['objet']);
+  $G_interf->creer_enchasser($perso, $_GET['objet']);
   exit;
 }
+$interf_princ = $G_interf->creer_jeu();
 
 //Filtres
 $page = array_key_exists('page', $_GET) ? $_GET['page'] : 'perso';
 $slot = array_key_exists('slot', $_GET) ? $_GET['slot'] : 'utile';
 
-$princ = $G_interf->creer_princ_droit('Inventaire du Personnage');
+$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Inventaire du Personnage') );
 //Switch des actions
 if( !$visu && $action )
 {
@@ -88,25 +90,25 @@ if( !$visu && $action )
 				$perso->sauver();
 			}
 			else
-				$princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
+				$cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
       break;
 	  case 'desequip':
 			if(!$perso->desequip($_GET['zone'], $page=='pet'))
-        $princ->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
+        $cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
       break;
 	  case 'utiliser':
       $objet = objet_invent::factory( $obj );
-      $objet->utiliser($perso, $princ);
+      $objet->utiliser($perso, $cadre);
       break;
 	  case 'depot':
       $objet = objet_invent::factory( $obj );
-      $objet->deposer($perso, $princ);
+      $objet->deposer($perso, $cadre);
       break;
 	  case 'slot_1':
 	  case 'slot_2':
 	  case 'slot_3':
       $objet = objet_invent::factory( $obj );
-      if( $objet->mettre_slot($perso, $princ, $action[5]) )
+      if( $objet->mettre_slot($perso, $cadre, $action[5]) )
       {
         $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
@@ -115,7 +117,7 @@ if( !$visu && $action )
       break;
 		case 'vente_hotel':
       $objet = objet_invent::factory( $obj );
-      $objet->vendre_hdv($perso, $princ, $_GET['prix']);
+      $objet->vendre_hdv($perso, $cadre, $_GET['prix']);
 		  break;
 		case 'vente':
       $objets = explode('-', $_GET['objets']);
@@ -125,18 +127,18 @@ if( !$visu && $action )
         $obj = explode('x', $objet);
         $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj[0]) );
         if( $objet->get_nombre() >= $obj[1] )
-          $stars += $objet->vendre_marchand($perso, $princ, $obj[1]);
+          $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
         else
-          $princ->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
+          $cadre->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
         
       }
       if( $stars )
-        $princ->add( new interf_alerte('success') )->add_message('Objet(s) vendu(s) pour '.$stars.' stars.');
+        $cadre->add( new interf_alerte('success') )->add_message('Objet(s) vendu(s) pour '.$stars.' stars.');
 		  break;
 		case 'enchasse':
       $objet = objet_invent::factory( $obj );
       $gemme = objet_invent::factory( $perso->get_inventaire_slot_partie($_GET['gemme']) );
-      if( $objet->enchasser($perso, $princ, $gemme) )
+      if( $objet->enchasser($perso, $cadre, $gemme) )
       {
         $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
@@ -146,17 +148,18 @@ if( !$visu && $action )
 		  break;
 		case 'recup_gemme':
       $objet = objet_invent::factory( $obj );
-      $objet->recup_gemme($perso, $princ);
+      $objet->recup_gemme($perso, $cadre);
 		  break;
 		case 'identifier':
       $objet = objet_invent::factory( $obj );
-      $objet->identifier($perso, $princ, $_GET['objet']);
+      $objet->identifier($perso, $cadre, $_GET['objet']);
 		  break;
 	}
-	refresh_perso();
+	//refresh_perso();
+	$interf_princ->maj_perso();
 }
 
-$princ->add( $G_interf->creer_inventaire($perso, $page, $slot, !$visu) );
+$cadre->add( $G_interf->creer_inventaire($perso, $page, $slot, !$visu) );
 
 // Augmentation du compteur de l'achievement
 $achiev = $perso->get_compteur('nbr_arme_siege');

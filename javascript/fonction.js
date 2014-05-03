@@ -37,6 +37,16 @@ function charger(page)
 	return false;
 }
 
+function charge_tab(elt, id)
+{
+  var e = $("#"+id);
+  if( !e.html().trim().length )
+  {
+    e.html( getWait() );
+    e.load(elt.getAttribute("data-url"));
+  }
+}
+
 function maj_tooltips()
 {
 	$("[data-toggle='tooltip']").tooltip();
@@ -399,9 +409,9 @@ $(function () {
 						aff_ico_bug();
 				if (jqxhr.status == 403) {
 						// Sans doute un security_block, pop erreur
-						$('#popup').show();
+						/*$('#popup').show();
 						$('#popup_content').html(jqxhr.responseText);
-						$('#popup_content h1').css('color', 'red');
+						$('#popup_content h1').css('color', 'red');*/
 				} else {
 						// On loggue dans un cadre caché
 						/*$('#debug_log').append('<p>status : '+jqxhr.status+' - '+jqxhr.statusText+'<br/>url: ' + settings.url + '</p>');
@@ -520,15 +530,5 @@ function stopAmbiance() {
 }
 function showSoundPanel() {
 	var p = $('#ambiance_sound').dialog('open');
-}
-
-function charge_tab(elt, id)
-{
-  var e = $("#"+id);
-  if( !e.html().trim().length )
-  {
-    e.html( getWait() );
-    e.load(elt.getAttribute("data-url"));
-  }
 }
 

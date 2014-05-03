@@ -37,14 +37,16 @@ function drop_func( event, ui )
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
     break;
   case 'desequip':
-    $("#information").load( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
+    //$("#information").load( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
+    charger( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
     break;
   case 'vendre_marchand':
     vente(drag[0].id);
     $(drag[0]).hide();
     break;
   default:
-    $("#information").load( get_url_invent("action="+drop+"&objet="+objet) );
+    //$("#information").load( get_url_invent("action="+drop+"&objet="+objet) );
+    charger( get_url_invent("action="+drop+"&objet="+objet) );
   }
 }
 
