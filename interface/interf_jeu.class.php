@@ -38,7 +38,7 @@ class interf_jeu extends interf_sso_int
 
     $this->menu->add_elt( new interf_elt_menu('Diplomatie', 'diplomatie.php', 'return affichePopUp(this.href);') );
     $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
-    $autres->add( new interf_elt_menu('Message d\'Accueil', 'message_accueil.php?affiche=all', 'return affichePopUp(this.href);') );
+    $autres->add( new interf_elt_menu('Message d\'Accueil', 'message_accueil.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Cartes', 'royaume.php', 'return affichePopUp(this.href);') );
     $autres->add( new interf_elt_menu('Bestiaire', 'liste_monstre.php', 'return affichePopUp(this.href);') );
     $autres->add( new interf_elt_menu('Background', 'background.php', 'return affichePopUp(this.href);') );

@@ -25,6 +25,7 @@ $action = array_key_exists('action', $_GET) ?  $_GET['action'] : null;
 //Déplacement du personnage
 $mouvement = true;
 $diagonale = false;
+$complet = false;
 switch( $action )
 {
 case 'haut';
@@ -60,6 +61,7 @@ case 'bas-droite';
 	$diagonale = true;
 	break;
 case 'raffraichir':
+	$complet = true;
 default:
 	$mouvement = false;
 }
@@ -170,7 +172,7 @@ check_son_ambiance();*/
 if( $action )
 {
 	$carte = $interf_princ->set_carte( new interf_carte($x, $y) );
-	$interf_princ->maj_perso();
+	$interf_princ->maj_perso($complet);
 	$interf_princ->maj_ville();
 }
 else
