@@ -548,9 +548,20 @@ a:hover, a:focus
 	position: absolute;
 	border-radius: 50%;
 	border: 1px solid #080808;
+	z-index: 2;
+	/*overflow:hidden;*/
+}
+
+#depl_disque, .depl_cache
+{
 	background: #888;
-	z-index: 1;
-	overflow:hidden;
+}
+
+#depl_barre_haut, #depl_barre_gauche
+{
+	background: rgba(0, 0, 0, 0.5);
+	border-top-left-radius: 10px;
+	color: #ddd;
 }
 
 #depl_barre_haut
@@ -558,8 +569,6 @@ a:hover, a:focus
 	position: absolute;
 	height: 50px;
 	width: 494px;
-	background: rgba(0, 0, 0, 0.5);
-	border-top-left-radius: 10px;
 	border-top-right-radius: 10px;
 	padding-left: 80px;
 	font-size: 40px;
@@ -571,8 +580,6 @@ a:hover, a:focus
 {
 	width: 50px;
 	height: 494px;
-	background: rgba(0, 0, 0, 0.5);
-	border-top-left-radius: 10px;
 	border-bottom-left-radius: 10px;
 	padding-top: 87px;
 }
@@ -588,6 +595,7 @@ a:hover, a:focus
 	border-top: 1px solid #777;
 	border-bottom-right-radius: 10px;
 	background: rgba(255, 255, 255, 0.2);
+	z-index: 1;
 }
 
 #menu_panneaux
@@ -659,6 +667,11 @@ a:hover, a:focus
 	border-left: 1px solid #777;
 }
 
+#depl_centre p
+{
+	margin: 10px 10px 10px 30px;
+}
+
 /*-- Rose des vents ---------------------------------------------------*/
 
 #depl_disque a
@@ -681,11 +694,11 @@ a#depl_disque_centre
 	display: block;
 	border-radius: 50%;
 	border: 1px solid #080808;
-	color: #ddd;
+	/*color: #ddd;*/
 	font-size: 25px;
 	padding-top: 6px;
 	text-align: center;
-	z-index: 2;
+	z-index: 5;
 	background: #888;
 }
 
@@ -763,6 +776,72 @@ a#depl_bas_droite
 	font-size: 17px;
 }
 
+/* jauges */
+
+#jauge_droite
+{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	clip: rect(0px, 90px, 90px, 45px);
+}
+
+#jauge_gauche
+{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	clip: rect(0px, 45px, 90px, 0px);
+}
+
+.jauge_ext, #jauge_ext_stop, .jauge_int, #jauge_int_stop
+{
+	position: absolute;
+	border-radius: 50%;
+}
+
+.jauge_ext
+{
+	top: 2px;
+	left: 2px;
+	width: 87px;
+	height: 87px;
+	clip: rect(0px, 90px, 90px, 43px);
+}
+
+#jauge_ext_stop
+{
+	top: 12px;
+	left: 12px;
+	width: 67px;
+	height: 67px;
+}
+
+
+.jauge_int
+{
+	top: 14px;
+	left: 14px;
+	width: 63px;
+	height: 63px;
+	z-index: 1;
+	clip: rect(0px, 90px, 90px, 31px);
+}
+
+#jauge_int_stop
+{
+	top: 24px;
+	left: 24px;
+	width: 44px;
+	height: 44px;
+	z-index: 3;
+}
+
+.jauge-hp { background-color: #d14146; } /*background-image: linear-gradient(to bottom, #D9534F 0px, #C9302C 100%); background-repeat: repeat-x;*/
+.jauge-mp { background-color: #397eb9; } /*background-image: linear-gradient(to bottom, #428BCA 0px, #3071A9 100%); background-repeat: repeat-x;*/
+.jauge-pa { background-color: #50aa50; } /*background-image: linear-gradient(to bottom, #5CB85C 0px, #449D44 100%); background-repeat: repeat-x;*/
+.jauge-avance { background-color: #eea236; } /*background-image: linear-gradient(to bottom, #F0AD4E 0px, #EC971F 100%); background-repeat: repeat-x;*/
+.jauge-temps { background-color: #46b8d9; } /*background-image: linear-gradient(to bottom, #5BC0DE 0px, #31B0D5 100%); background-repeat: repeat-x;*/
 
 /*-- Partie droite de l'interface ---------------------------------------------------*/
 
@@ -802,6 +881,51 @@ p.accueil a
 {
 	border-top: none;
 	padding-top: 0;
+}
+
+/*-- Rez ---------------------------------------------------*/
+
+#rez
+{
+	margin: 10px;
+}
+
+#rez li
+{
+	display: block;
+	border: solid 1px rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
+	height: 40px;
+	width: 410px;
+	margin: 5px;
+	overflow: hidden;
+}
+
+#rez a
+{
+	display: block;
+	height: 100%;
+	width: 373px;
+	padding: 2px;
+}
+
+#rez a.icone
+{
+	display: block;
+	width: 36px;
+	padding: 2px;
+	float: right;
+	border-left: solid 1px rgba(0, 0, 0, 0.3);
+	font-size: 25px;
+	color: rgba(0, 0, 0, 0.5);
+	text-align: center;
+	line-height: 33px;
+}
+
+#rez a:hover
+{
+	background: rgba(255, 255, 255, 0.5);
+	color: black;
 }
 
 /*-- Overlib ----------------------------------------------------------*/

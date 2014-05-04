@@ -63,6 +63,12 @@ class interf_factory
     include_once(root.'interface/interf_accueil.class.php');
     return new interf_accueil();
 	}
+	/// Interface de mort
+	function creer_mort()
+	{
+    include_once(root.'interface/interf_mort.class.php');
+    return new interf_mort();
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

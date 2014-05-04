@@ -44,18 +44,18 @@ $joueur = new perso($_SESSION['ID']);
 	
 	//Vérifie s'il y a une amende qui empêche le spawn en ville
 	$amende = recup_amende($joueur->get_id());
-	$echo = 'Revenir dans votre ville natale';
+	//$echo = 'Revenir dans votre ville natale';
 	$spawn_ville = 'ok';
 	if($amende)
 	{
 		if($amende['respawn_ville'] == 'n')
 		{
-			$echo = 'Revenir dans le refuge des criminels';
+			//$echo = 'Revenir dans le refuge des criminels';
 			$spawn_ville = 'wrong';
 		}
 	}
 
-		
+$interf_princ = $G_interf->creer_jeu();
 		
 if(isset($_GET['choix']))
 {
@@ -159,44 +159,13 @@ $rez = false;
 		// Second mal de res
 		lance_buff('convalescence', $joueur->get_id(), 2, 2, 86400, 'Convalescence', 'Diminue votre efficacité pour le RvR.', 'perso', 1, 0, 0, 0);
 	}
-	echo '<img src="image/pixel.gif" onload="window.location = \'interface.php\';" />';
+	$interf_princ->recharger_interface();
 }
 else
 {
-?>
-	<div id='mort'>
-	<fieldset>
-		Que voulez vous faire ?
-		<ul>
-		<?php
-		//Supprime les Rez plus valides
-		$requete = "DELETE FROM rez WHERE TIMESTAMPDIFF(MINUTE , time, NOW()) > 1440";
-		//$db->query($requete);
-		// Liste des rez
-		$requete = "SELECT * FROM rez WHERE id_perso = ".$joueur->get_id();
-		$req = $db->query($requete);
-		if($db->num_rows > 0)
-		{
-			while($row = $db->read_assoc($req))
-			{
-				echo '<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=2&amp;rez='.$row['id'].'">Vous faire ressusciter par '.$row['nom_rez'].' ('.($row['pourcent'] + $bonus).'% HP / '.($row['pourcent'] + $bonus).' MP)</li>';
-			}
-		}
-		// Fort le plus proche (si on le personnage n'est pas dans un donjon)
-		if($bat > 0 AND !is_donjon($joueur->get_x(), $joueur->get_y()))
-			echo '<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=3&amp;rez='.$row_d['id'].'">Revenir dans le fort le plus proche (x : '.$row_b['x'].' / y : '.$row_b['y'].') ('.($row_b['rez'] + $bonus).'% HP / '.($row_b['rez'] + $bonus).'% MP)</li>';
-		if($arene)// sortie de l'arène
-			echo '<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">Sortir de l\'arène</a></li>';
-		else // Capitale ou refuge des criminels
-			echo '<li style="padding-top:5px;padding-bottom:5px;"><a href="mort.php?choix=1">'.$echo.' ('.($capitale_rez_p + $bonus).'% HP / '.($capitale_rez_p + $bonus).'% MP)</a></li>';
-		?>
-			<li style="padding-top:5px;padding-bottom:5px;"><a href="index.php?deco=ok">Vous déconnecter</a></li>
-			<li style="padding-top:5px;padding-bottom:5px;">Vous pouvez attendre qu'un autre joueur vous ressucite</li>
-		</ul>
-		<a href="index.php">Index du jeu</a> - <a href="http://forum.starshine-online.com">Accéder au forum</a>  - <a href="http://forum.starshine-online.com/jappix/">Accéder au Tchat</a>
-	</fieldset>
-	</div>
-<?php
+	$interf_princ->verif_mort($joueur, false);
+	if( array_key_exists('raffraichir', $_GET) && $_GET['raffraichir']=='tout' )
+		$interf_princ->maj_perso(true);
 }
  
 ?>

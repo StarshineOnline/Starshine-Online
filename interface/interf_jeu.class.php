@@ -84,10 +84,17 @@ class interf_jeu extends interf_sso_int
   	$dlg->code_js('$("#modal").modal("show");');
   	return $dlg->add( $fils );
   }
-  function verif_mort($perso) 
+  function verif_mort(&$perso, $exit=true) 
   {
+  	global $G_interf;
   	if( $perso->est_mort() )
-  		exit();
+  	{
+  		$this->set_gauche( $G_interf->creer_mort() );
+  		if($exit)
+  			exit();
+  		return false;
+		}
+		return true;
 	}
   protected function menu_droite()
   {
@@ -99,7 +106,7 @@ class interf_jeu extends interf_sso_int
   function affiche($tab = 0)
 	{
 		// On remplie les parties gauche et droites si elles sont vides
-	if( !$this->gauche->get_fils() )
+		if( !$this->gauche->get_fils() )
 			$this->set_gauche();
 		if( !$this->droite->get_fils() )
 			$this->set_droite();
@@ -175,8 +182,12 @@ class interf_jeu_ajax extends interf_princ_ob
   }
   function verif_mort($perso) 
   {
+  	global $G_interf;
   	if( $perso->est_mort() )
+  	{
+  		$this->set_gauche( $G_interf->creer_mort() );
   		exit();
+		}
 	}
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()

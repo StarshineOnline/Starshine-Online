@@ -1,5 +1,5 @@
 <?php
-require_once('connect_forum.php');
+require_once(root.'connect_forum.php');
 
 class interf_accueil extends interf_cont
 {

@@ -430,18 +430,25 @@ class interf_bal_cont extends interf_cont
       return $this->attributs;
     return $this->attributs[$nom];
   }
+  /// Change le type de la balise
+  function set_balise($balise)
+  {
+  	 $this->balise = $balise;
+	}
   /**
    * Ajoute une infobulle compatible avec la librairie Bootstrap
    *
    * @param  $texte   Texte du tooltip.
    * @param  $pos     Position du tooltip
    */
-  function set_tooltip($texte, $pos=null)
+  function set_tooltip($texte, $pos=null, $parent=null)
   {
     $this->set_attribut('title', $texte);
     $this->set_attribut('data-toggle', 'tooltip');
     if( $pos )
       $this->set_attribut('data-placement', $pos);
+  	if( $parent )
+      $this->set_attribut('data-container', $parent);
   }
 }
 

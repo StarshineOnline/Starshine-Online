@@ -17,7 +17,6 @@ else
 	exit();
 }
 
-
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
 {
@@ -66,15 +65,12 @@ if(array_key_exists('donjon_id', $_GET))
 }
 
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+//verif_mort($joueur, 1);
 
 $joueur->check_perso();
 
 $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y()); // utile ?
 
-
 $princ = $G_interf->creer_jeu();
-//$princ->verif_mort($joueur);
-$princ->set_gauche();
-$princ->set_droite();
+$princ->verif_mort($joueur, false);
 ?>

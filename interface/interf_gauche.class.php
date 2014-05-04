@@ -11,7 +11,9 @@ class interf_gauche extends interf_bal_cont
 	protected $barre_haut;
 	protected $barre_gauche;
 	protected $centre;
-	function __construct($bouton_ville=false)
+	protected $jauge_droite = false;
+	protected $jauge_gauche = false;
+	function __construct($prem_bouton='carte')
 	{
 		parent::__construct('div', 'cadre_gauche');
 		//$princ = $this->add( new interf_bal_cont('div', 'cadre_gauche') );
@@ -22,17 +24,23 @@ class interf_gauche extends interf_bal_cont
 		
 		// menu
 		$menu = $this->barre_gauche->add( new interf_menu(false, 'menu_panneaux', false) );
-		if( $bouton_ville )
+		switch($prem_bouton)
 		{
+		case 'carte':
+			$carte = $menu->add( new interf_elt_menu('', 'deplacement.php', 'return charger(this.href);', 'menu_ville_carte') );
+			$carte->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-carte') );
+			$carte->get_lien()->add( new interf_txt('Carte') );
+			break;
+		case 'ville':
 			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return envoiInfo(this.href, \'depl_centre\');', 'menu_ville_carte') );
 			$ville->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-ville') );
 			$ville->get_lien()->add( new interf_txt('Ville') );
-		}
-		else
-		{
-			$carte = $menu->add( new interf_elt_menu('', 'deplacement.php', 'return envoiInfo(this.href, \'deplacement\');', 'menu_ville_carte') );
-			$carte->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-carte') );
-			$carte->get_lien()->add( new interf_txt('Carte') );
+			break;
+		case 'mort':
+			$mort = $menu->add( new interf_elt_menu('', 'mort.php', 'return charger(this.href);', 'menu_ville_carte') );
+			$mort->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-mort') );
+			$mort->get_lien()->add( new interf_txt('Mort') );
+			break;
 		}
 		$livres = $menu->add( new interf_elt_menu('', 'livre.php', 'return envoiInfo(this.href, \'information\');') );
 		$livres->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-livres') );
@@ -53,6 +61,45 @@ class interf_gauche extends interf_bal_cont
 		$dressage->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-lapin') );
 		$dressage->get_lien()->add( new interf_txt('Dressage') );
 	}
+	protected function set_icone_centre($icone, $url=false)
+	{
+		$centre = $this->disque->add( new interf_bal_smpl($url?'a':'span', '', 'depl_disque_centre', 'icone icone-'.$icone) );
+		if( $url )
+		{
+			$centre->set_attribut('href', $url);
+			$centre->set_attribut('onClick', 'return  charger(this.href);');
+		}
+		return $centre;
+	}
+	protected function set_jauge_ext($valeur, $max, $style, $nom=false)
+	{
+		$this->set_jauge('ext', $valeur, $max, $style, $nom);
+	}
+	protected function set_jauge_int($valeur, $max, $style, $nom=false)
+	{
+		$this->set_jauge('int', $valeur, $max, $style, $nom);
+	}
+	private function set_jauge($type, $valeur, $max, $style, $nom)
+	{
+		$angle = round($valeur / $max * 360) - 180; 
+		if( !$this->jauge_droite )
+			$this->jauge_droite = $this->disque->add( new interf_bal_cont('div', 'jauge_droite') );
+		$jauge_droite = $this->jauge_droite->add( new interf_bal_cont('div', '', 'jauge_'.$type.' jauge-'.$style) );
+		if( $nom )
+			$jauge_droite->set_tooltip($nom.$valeur.' / '.$max, 'right', '#cadre_gauche');
+		if( $angle < 0 )
+			$jauge_droite->set_attribut('style', 'transform: rotate('.$angle.'deg);{-webkit-transform: rotate('.$angle.'deg);');
+		else if( $angle > 0)
+		{
+			if( !$this->jauge_gauche )
+				$this->jauge_gauche = $this->disque->add( new interf_bal_cont('div', 'jauge_gauche') );
+			$jauge_gauche = $this->jauge_gauche->add( new interf_bal_cont('div', '', 'jauge_'.$type.' jauge-'.$style) );
+			if( $nom )
+				$jauge_gauche->set_tooltip($nom.$valeur.' / '.$max, 'right', '#cadre_gauche');
+			$jauge_gauche->set_attribut('style', 'transform: rotate('.$angle.'deg);{-webkit-transform: rotate('.$angle.'deg);');
+		}
+		$this->disque->add( new interf_bal_cont('div', 'jauge_'.$type.'_stop', 'depl_cache') );
+	}
 }
 
 /// Classe pour la partie gauche de l'interface quand il faut montrer la carte
@@ -61,7 +108,7 @@ class interf_cadre_carte extends interf_gauche
 	function __construct($carte=null)
 	{
 		$perso = joueur::get_perso();
-		parent::__construct( is_ville($perso->get_x(), $perso->get_y()) == 1 );
+		parent::__construct( is_ville($perso->get_x(), $perso->get_y()) ? 'ville' : 'carte' );
 		// Menu carte
 		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
 		$royaumes = $menu->add( new interf_elt_menu('', 'option_map.php?action=affiche_royaumes&val=0', 'return envoiInfo(this.href, \'depl_centre\');') );
@@ -93,9 +140,10 @@ class interf_cadre_carte extends interf_gauche
 		$gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_gauche', 'icone icone-gauche') );
 		$gauche->set_attribut('href', 'deplacement.php?action=gauche');
 		$gauche->set_attribut('onClick', 'return  charger(this.href);');
-		$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_disque_centre', 'icone icone-rafraichir') );
+		/*$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_disque_centre', 'icone icone-rafraichir') );
 		$recharger->set_attribut('href', 'deplacement.php?action=rafraichir');
-		$recharger->set_attribut('onClick', 'return  charger(this.href);');
+		$recharger->set_attribut('onClick', 'return  charger(this.href);');*/
+		$this->set_icone_centre('rafraichir', 'deplacement.php?action=rafraichir');
 		$droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_droite', 'icone icone-droite') );
 		$droite->set_attribut('href', 'deplacement.php?action=droite');
 		$droite->set_attribut('onClick', 'return  charger(this.href);');
