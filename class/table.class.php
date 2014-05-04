@@ -125,11 +125,11 @@ abstract class table
 				$types .= $type;
 				$vals[] = '?';
 			}
-			$champs = $liste[0];
-			$champs = implode(', ', array_keys($champs));
+			//$champs = $liste[0];
+			$champs = implode(', ', array_keys($liste));
 			$vals = implode(', ', $vals);
 			$requete = 'INSERT INTO '.$this->get_table().' ('.$champs.') VALUES('.$vals.')';
-			$db->query($requete, $params, $types);
+			$db->param_query($requete, $params, $types);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
@@ -148,8 +148,9 @@ abstract class table
 		$liste = explode(',', $this->get_liste_champs());
 		foreach($liste as $champ)
 		{
-			$champs[$champ] = 's';
+			$champs[trim($champ)] = 's';
 		}
+		return $champs;
 	}
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs() {}

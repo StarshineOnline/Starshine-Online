@@ -35,7 +35,7 @@ Pour l'instant au stade de la bêta (c'est à dire en phase d'équilibrage et d'
 <br />
 Il vous permettra d'incarner un grand héros de l'univers Starshine, peuplé de nombreuses créatures et d'autres héros ennemis prêts à tout pour détruire votre peuple.<br />
 <br /><br />
-Il est recommandé d'utiliser <strong>un navigateur dernière génération (éviter les Internet Explorer)</strong> pour jouer à Starshine, nous vous conseillons <a href='http://www.mozilla-europe.org/'>Firefox</a> ou bien <a href='http://www.google.fr/chrome'>Google Chrome</a>.
+Il est recommandé d'utiliser <strong>un navigateur dernière génération (évitez Internet Explorer)</strong> pour jouer à Starshine, nous vous conseillons <a href='http://www.mozilla-europe.org/'>Firefox</a> ou bien <a href='http://www.google.fr/chrome'>Google Chrome</a>.
 N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions sur le forum.</p>
 
 		</div>
@@ -174,7 +174,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 		<div id='creation_box' style='display:none;'>
   		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
   		<?php
-  		if( ($estUnUtilisateur && !$possedeUnPerso) or $_SESSION['droits'] & joueur::droit_staf )
+  		if( ($estUnUtilisateur &&  !$possedeUnPerso && $G_nbr_max_persos) || $_SESSION['droits'] & joueur::droit_staf )
   		{
   		?>
   		<div style='width:165px;float:left;'>

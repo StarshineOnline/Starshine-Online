@@ -13,6 +13,9 @@ define('BASE', 'http://www.starshine-online.com/');
 
   $G_mailto = 'masterob1@free.fr';
 
+	/// Nombre maximal de perosnnage par joueur
+	$G_nbr_max_persos = 1;
+
 	$G_ligne = 1000;
 	$G_colonne = 1000;
 	$G_ligne_donjon = 1000;
