@@ -92,6 +92,23 @@ class interf_carte extends interf_tableau
     $this->afficher_batiments();
     if( $options & self::aff_monstres  )
       $this->afficher_monstres();
+      
+    // Navigation
+    for($i=$this->y_min; $i<=$this->y_max; $i++)
+    {
+    	for($j=$this->x_min; $j<=$this->x_max; $j++)
+    	{
+    		$cont = $this->cases[$i][$j]->get_fils(0);
+        if( !$cont || $cont->get_attribut('class') != 'carte_contenu' )
+          $cont = $this->cases[$i][$j]->insert( new interf_bal_cont('a', null, 'carte_contenu') );
+        else
+        	$cont->set_balise('a');
+        $pos = 'rel_'.($j-$x).'_'.($i-$y);
+        $cont->set_attribut('id', 'pos_'.$pos);
+        $cont->set_attribut('href', 'informationcase.php?case='.$pos);
+        $cont->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+			}
+		}
 
     // Affichage des royaumes si nécessaire
     if( $options & self::aff_royaumes )
@@ -132,8 +149,8 @@ class interf_carte extends interf_tableau
           else
             $border = '';
           $cont = $this->cases[$i][$j]->get_fils(0);
-          if( !$cont or $cont->get_attribut('class') != 'carte_contenu' )
-            $cont = $this->cases[$i][$j]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+          /*if( !$cont or $cont->get_attribut('class') != 'carte_contenu' )
+            $cont = $this->cases[$i][$j]->insert( new interf_bal_cont('div', null, 'carte_contenu') );*/
           $cont->set_attribut('style', $cont->get_attribut('style').$border);
         }
       }

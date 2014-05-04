@@ -549,7 +549,7 @@ a:hover, a:focus
 	border-radius: 50%;
 	border: 1px solid #080808;
 	z-index: 2;
-	/*overflow:hidden;*/
+	overflow:hidden;
 }
 
 #depl_disque, .depl_cache
@@ -1007,6 +1007,7 @@ p.accueil a
   height:/*56*/58px;
   margin:/*2*/1px;
   background:transparent url(image/pixel.gif) center no-repeat;
+  display: block;
 }
 
 .pos_over
