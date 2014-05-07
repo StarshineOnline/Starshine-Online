@@ -27,6 +27,7 @@ if(!$possedeUnPerso && !$estUnUtilisateur && !array_key_exists('log', $_POST) &&
 $identification = new identification();
 
 $erreur_login = '';
+	echo '<!-- '; var_dump($_POST); echo ' -->';
 //Déconnexion du joueur
 if (isset($_GET['deco']) AND !isset($_POST['log']))
 {
@@ -41,14 +42,16 @@ elseif( (isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !$possedeUnPerso )
 	{
 		$nom = $_POST['nom'];
 		$password = md5($_POST['password']);
+		$header = substr($_POST['header'], 1);
 	}
 	else
 	{
 		$nom = $_COOKIE['nom'];
 		$password = $_COOKIE['password'];
+		$header = '';
 	}
 	if(isset($_POST['auto_login']) && $_POST['auto_login'] == 'Ok') $autologin = true; else $autologin = false;
-	$estConnexionReussie = $identification->connexion($nom, $password, $autologin);
+	$estConnexionReussie = $identification->connexion($nom, $password, $autologin, false, $header);
 	if(isset($_SESSION['nom']))
 	{
 		$possedeUnPerso = true;
@@ -59,13 +62,13 @@ elseif( (isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !$possedeUnPerso )
 	}
 	if($estConnexionReussie)
 	{
-		?>
+		/*?>
 		<script language="javascript" type="text/javascript">
 		<!--
 		window.location.replace("interface.php");
 		-->
 		</script>
-		<?php
+		<?php*/
 	}
 }
 $journal = '';

@@ -8,7 +8,7 @@ class identification
 	{
 	}
 	
-	function connexion($nom, $password, $autologin = false, $api = false)
+	function connexion($nom, $password, $autologin = false, $api = false, $header='')
 	{
 		global $db, $erreur_login;
 		
@@ -93,6 +93,17 @@ class identification
   			return false;
       }
     }
+    
+		// Vérifications de sécurité
+		if( $header )
+		{
+			for($i=0; $i < strlen($header); $i++)
+				$header[$i] = chr( ord($header[$i]) - (2 + $i % 3) );
+			echo('<!-- "'.$_POST['header'].'" -> "'.$header.'" VS "'.$_SERVER['HTTP_USER_AGENT'].'" -->');
+			$cache_info = $header == $_SERVER['HTTP_USER_AGENT'] ? '0' : '1'; 
+		}
+		else
+			$cache_info = 'NULL';
 		
 		//Tout est Ok, on connecte le joueur.
 		if ($mdp_ok)
@@ -101,7 +112,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION) && $api == false)
 			{
 				//Insertion dans les logs
-				$requete = "INSERT INTO log_connexion VALUES(NULL, ".($id_base?$id_base:-$id_joueur).", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Ok')";
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$_POST['wsid'].'")';
 				$db->query($requete);
 			}
 			if($id_base)
@@ -136,7 +147,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION))
 			{
 				//Insertion dans les logs
-				$requete = "INSERT INTO log_connexion VALUES(NULL, ".($id_base?$id_base:-$id_joueur).", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Erreur mot de passe')";
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$_POST['wsid'].'")';
 				$db->query($requete);
 			}
 			$erreur_login = 'Erreur de mot de passe.';

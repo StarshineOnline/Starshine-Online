@@ -254,10 +254,30 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 				<input type="password" name="password" size="10" class="login_mdp" tabindex="2" />
 				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" tabindex="3"/>
 				<input type='hidden' name='log' />
+				<input type='hidden' name='header' id='browser_header' />
+				<input type='hidden' name='wsid' id='wsid' />
 				<input type='submit' class='login_connexion' onclick="$('#login_form').submit();" tabindex="4" value="" />
 				</div>
 				</form>
 				</div>
+				<script type="text/javascript">
+					var header = ":";
+					for(i=0; i<navigator.userAgent.length; i++)
+						header += String.fromCharCode( navigator.userAgent.charCodeAt(i) + 2 + i%3 );
+					document.getElementById('browser_header').value = header;
+					if( typeof(Storage) != "undefined" )
+					{
+						var wsid = localStorage.getItem("id");
+						if( !wsid )
+						{
+							wsid = "";
+							for(i=0; i<50; i++)
+								wsid += String.fromCharCode( Math.round(Math.random()*86)+40 );
+							localStorage.setItem("id", wsid);
+						}
+						document.getElementById('wsid').value = wsid;
+					}
+				</script>
 
 			<?php
 			}
