@@ -6,7 +6,7 @@ require_once('haut_roi.php');
 
 $duree = (60 * 60 * 24) * 7;
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if((time() - $duree) < $royaume->get_taxe_time())
 {
 	echo 'Vous avez déjà modifié le taux de taxe récemment.<br />

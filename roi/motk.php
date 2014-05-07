@@ -5,9 +5,10 @@ if (file_exists('../root.php'))
 require_once('haut_roi.php');
 include_once(root.'fonction/messagerie.inc.php');
 
+
 if($joueur->get_rang_royaume() != 6)
 	echo '<p>Cette page vous est interdite</p>';
-elseif(array_key_exists('message', $_GET))
+	elseif(array_key_exists('message', $_GET))
 {
 	if ($_GET['message'] != '')
 	{
@@ -19,6 +20,10 @@ elseif(array_key_exists('message', $_GET))
 		echo '<h5>Vous n\'avez pas saisi de message</h5>';
 	}
 }
+if($joueur->get_rang_royaume() != 6)
+	echo '<p>Cette page vous est interdite</p>';
+	else
+	{
 	echo "<div id='propagande'>";
 	//Message actuel
 	$royaume->get_motk();
@@ -47,3 +52,4 @@ elseif(array_key_exists('message', $_GET))
 	
 	</fieldset>
 	</div>
+<? } ?>

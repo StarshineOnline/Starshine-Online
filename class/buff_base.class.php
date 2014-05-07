@@ -44,7 +44,6 @@ class buff_base extends comp_sort_buff
 		$this->fin = $fin;
 		$this->champs_modif[] = 'fin';
 	}
-
 	/// Renvoie la description du buff
 	function get_description()
 	{

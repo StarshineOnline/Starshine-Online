@@ -18,7 +18,7 @@ function ressource($nom)
 	return $ressource[$nom];
 }
 if($joueur->get_rang_royaume() != 6 AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cheater</p>';
+	echo '<p>Cette page vous est interdite</p>';
 else if(array_key_exists('ress', $_GET))
 {
 	include_once(root."pChart/pData.class");
