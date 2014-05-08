@@ -30,7 +30,7 @@ while($row = $db->read_assoc($req))
 		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_joueur` int(10) unsigned NOT NULL default '0', `time` int(10) unsigned NOT NULL default '0', `ip` varchar(50) NOT NULL default '', `message` text NOT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
     echo 'Création de la table : '.$table."\n";
 	}
-	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_joueur'].", ".$row['time'].", '".$row['ip']."', '".$row['message']."');";
+	$requete = 'INSERT INTO `'.$table.'` VALUES('.$row['id'].', '.($row['id_joueur']?$row['id_joueur']:'NULL').', '.($row['id_perso']?$row['id_perso']:'NULL').', '.$row['time'].', "'.$row['ip'].'", "'.$row['message'].'", '.($row['cahce_info']?$row['cahce_info']:'NULL').', "'.($row['wsid']?$row['wsid']:'NULL').'");';
 	$db_log->query($requete);
 	$db->query("DELETE FROM log_connexion WHERE id = ".$row['id']);
 	//echo $requete;
