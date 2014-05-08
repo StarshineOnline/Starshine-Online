@@ -71,7 +71,7 @@ class identification
 		    if ($api) $password_base = sha1($row['password']);
 		    $mdp_ok = $password === $password_base;
   			$id_base = $row['ID'];
-  			$id_joueur = null;
+  			$id_joueur = 'NULL';
   			//Vérification si joueur banni
   			if($row['statut'] != 'ban' OR ($row['statut'] == 'ban' AND $row['fin_ban'] <= time()))
   			{
