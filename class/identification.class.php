@@ -99,7 +99,6 @@ class identification
 		{
 			for($i=0; $i < strlen($header); $i++)
 				$header[$i] = chr( ord($header[$i]) - (2 + $i % 3) );
-			echo('<!-- "'.$_POST['header'].'" -> "'.$header.'" VS "'.$_SERVER['HTTP_USER_AGENT'].'" -->');
 			$cache_info = $header == $_SERVER['HTTP_USER_AGENT'] ? '0' : '1'; 
 		}
 		else

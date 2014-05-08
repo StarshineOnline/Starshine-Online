@@ -27,7 +27,6 @@ if(!$possedeUnPerso && !$estUnUtilisateur && !array_key_exists('log', $_POST) &&
 $identification = new identification();
 
 $erreur_login = '';
-	echo '<!-- '; var_dump($_POST); echo ' -->';
 //Déconnexion du joueur
 if (isset($_GET['deco']) AND !isset($_POST['log']))
 {
