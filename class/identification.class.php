@@ -56,7 +56,7 @@ class identification
 				}
       }
       else
-        $id_base = null;
+        $id_base = 'NULL';
     }
 		else
 		{
