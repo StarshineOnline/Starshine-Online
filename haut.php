@@ -61,13 +61,13 @@ elseif( (isset($_POST['log']) OR isset($_COOKIE['nom'])) AND !$possedeUnPerso )
 	}
 	if($estConnexionReussie)
 	{
-		/*?>
+		?>
 		<script language="javascript" type="text/javascript">
 		<!--
 		window.location.replace("interface.php");
 		-->
 		</script>
-		<?php*/
+		<?php
 	}
 }
 $journal = '';
