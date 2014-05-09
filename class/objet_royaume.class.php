@@ -507,7 +507,7 @@ class objet_royaume extends objet_invent
 				{
 					for ($y = 1; $y<=3 ; $y+=1)
 					{
-						$murs_cardinalite[$x-1][$y-1]=$position_murs[$x-1][$y]+$position_murs[$x+1][$y]+$position_murs[$x][$y-1]+$position_murs[$x][$y+1]+ $position_murs[$x][$y];
+						$murs_cardinalite[$x-1][$y-1]= $position_murs[$x][$y] ? $position_murs[$x-1][$y]+$position_murs[$x+1][$y]+$position_murs[$x][$y-1]+$position_murs[$x][$y+1]+1 : 0;
 						$max_nb_murs=max($max_nb_murs,$murs_cardinalite[$x-1][$y-1]);
 					}
 				}
