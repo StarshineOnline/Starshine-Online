@@ -34,7 +34,7 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 	?>
 	<ul class="ville">
 	<?php
-		 include_once(root.'ville_bas.php');
+	include_once(root.'ville_bas.php');
 	if($batiment->has_bonus('taverne'))
 	{
 	?>
@@ -64,9 +64,13 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 			<a href="bureau_quete.php" onclick="return envoiInfo(this.href, 'carte')">Bureau des quêtes</a>
 		</li>
   <?php
+	$check_revolution = true;
   $is_election = elections::is_mois_election($R->get_id());
 	if($is_election)
   {
+  	/// TODO : à améliorer
+  	$univ = $elections[0]->get_type() == 'universel';
+  	$check_revolution = !$univ;
     if( date("d") >= 5 AND date("d") < 15 )
   	{
     ?>
@@ -78,7 +82,7 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
   	elseif( date("d") >= 15 )
   	{
       $elections = elections::get_prochain_election($R->get_id(), true);
-      if( $elections[0]->get_type() == 'universel' )
+      if( $univ )
   		{
       ?>
     		<li>
@@ -98,25 +102,28 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
   }
 
   //Si il y a une révolution en cours
-  $is_revolution = revolution::is_mois_revolution($R->get_id());
-  if( $is_revolution )
+  if( $check_revolution )
   {
-    // Il y a une révolution : on propose de voter
-	?>
-		<li>
-			<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
-		</li>
-	<?php
-  }
-  elseif( date("d") <= 20 )
-  {
-    // Il n'y a pas de révolution : on propose d'en déclencher une 
-	?>
-		<li>
-			<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
-		</li>
-	<?php
-  }
+	  $is_revolution = revolution::is_mois_revolution($R->get_id());
+	  if( $is_revolution )
+	  {
+	    // Il y a une révolution : on propose de voter
+		?>
+			<li>
+				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Voter pour ou contre la révolution</a>
+			</li>
+		<?php
+	  }
+	  elseif( date("d") <= 20 )
+	  {
+	    // Il n'y a pas de révolution : on propose d'en déclencher une 
+		?>
+			<li>
+				<a href="revolution.php" onclick="return envoiInfo(this.href, 'carte')">Déclencher une révolution</a>
+			</li>
+		<?php
+	  }
+	}
 	if($batiment->has_bonus('royaume')
 		 AND ($joueur->get_rang_royaume() == 6 ||
 					$R->get_ministre_economie() == $joueur->get_id() ||
