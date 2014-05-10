@@ -103,6 +103,11 @@ class identification
 		}
 		else
 			$cache_info = 'NULL';
+		$wsid = mysql_escape_string($_POST['wsid']);
+		$osemp = array_key_exists('osemp', $_POST) ? $_POST['osemp'] : 'NULL';
+		$navemp = array_key_exists('navemp', $_POST) ? $_POST['navemp'] : 'NULL';
+		$femp = array_key_exists('femp', $_POST) ? $_POST['femp'] : 'NULL';
+		$slemp = array_key_exists('slemp', $_POST) ? $_POST['slemp'] : 'NULL';
 		
 		//Tout est Ok, on connecte le joueur.
 		if ($mdp_ok)
@@ -111,7 +116,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION) && $api == false)
 			{
 				//Insertion dans les logs
-				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$_POST['wsid'].'")';
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			if($id_base)
@@ -146,7 +151,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION))
 			{
 				//Insertion dans les logs
-				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$_POST['wsid'].'")';
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			$erreur_login = 'Erreur de mot de passe.';

@@ -69,6 +69,7 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
 	if($is_election)
   {
   	/// TODO : à améliorer
+  	$elections = elections::get_prochain_election($R->get_id(), true);
   	$univ = $elections[0]->get_type() == 'universel';
   	$check_revolution = !$univ;
     if( date("d") >= 5 AND date("d") < 15 )
@@ -81,7 +82,6 @@ if($bourg->get_x() == $joueur->get_x() AND $bourg->get_y() == $joueur->get_y() A
   	}
   	elseif( date("d") >= 15 )
   	{
-      $elections = elections::get_prochain_election($R->get_id(), true);
       if( $univ )
   		{
       ?>
