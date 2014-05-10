@@ -41,6 +41,7 @@ class texte
   {
     $this->texte = $texte;
     $this->options = $options;
+    $this->perso = &joueur::get_perso();
   }
   
   /**
@@ -206,7 +207,7 @@ class texte
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
-        foreach ($this->perso->get_membre_joueur() as $pj)
+        foreach($this->perso->get_membre_joueur() as $pj)
           verif_action($this->id, $pj, 'g');
       }
       else
