@@ -37,7 +37,7 @@ class entitenj extends entite
 		$this->hp_max = $def->get_hp();
 		$this->rm_restant = $def->get_reserve();
 		$this->pa = 0;
-		$this->nom = $incarn->get_nom();
+		$this->nom = $incarn->get_nom() ? $incarn->get_nom() : $def->get_nom();
 		$this->race = $incarn->get_race($perso);
 		$this->pp = $def->get_pp() + $incarn->get_bonus_pp();
 		$this->pm = $def->get_pm() + $incarn->get_bonus_pm();

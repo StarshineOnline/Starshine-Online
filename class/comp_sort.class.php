@@ -323,7 +323,7 @@ class comp_sort extends comp_sort_buff
           $entites = array();
           foreach($monstres as $m)
           {
-            $entites[] = new entitenj($m);
+            $entites[] = entite::factory('monstre', $m);
           }
           return $entites;
         }
