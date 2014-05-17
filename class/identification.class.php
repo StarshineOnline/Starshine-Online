@@ -55,8 +55,6 @@ class identification
 						$mdp_ok = $row['password'] === $password;
 				}
       }
-      else
-        $id_base = 'NULL';
     }
 		else
 		{
@@ -71,7 +69,7 @@ class identification
 		    if ($api) $password_base = sha1($row['password']);
 		    $mdp_ok = $password === $password_base;
   			$id_base = $row['ID'];
-  			$id_joueur = 'NULL';
+  			$id_joueur = null;
   			//Vérification si joueur banni
   			if($row['statut'] != 'ban' OR ($row['statut'] == 'ban' AND $row['fin_ban'] <= time()))
   			{
@@ -116,7 +114,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION) && $api == false)
 			{
 				//Insertion dans les logs
-				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.($id_joueur?$id_joueur:'NULL').', '.($id_base?$id_base:'NULL').', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			if($id_base)
@@ -129,7 +127,7 @@ class identification
   			$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_SESSION['ID'];
   			$db->query($requete);
       }
-      if($id_joueur)
+      if($id_joueur )
       {
   			$_SESSION['pseudo'] = $pseudo;
   			$_SESSION['nbr_perso'] = $nbr_perso;
@@ -151,7 +149,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION))
 			{
 				//Insertion dans les logs
-				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.$id_joueur.', '.$id_base.', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.($id_joueur?$id_joueur:'NULL').', '.($id_base?$id_base:'NULL').', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			$erreur_login = 'Erreur de mot de passe.';
