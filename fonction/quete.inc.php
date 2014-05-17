@@ -523,7 +523,7 @@ function verif_inventaire($id_quete, $joueur)
 			}
 			while (count($items)) {
 				$i = array_pop($items);
-				echo "remove item $i <br/>";
+				//echo "remove item $i <br/>";
 				$joueur->supprime_objet($i, 1);
 			}
 			$joueur->sauver();

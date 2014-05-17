@@ -113,7 +113,7 @@ class texte
   {
     global $db;
     $trouve = false;
-    // on regarde les que^tes du personnage
+    // on regarde les quêtes du personnage
     $quetes_actives = array();
     if($this->perso->get_quete() != '')
     {
@@ -278,7 +278,7 @@ class texte
     return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return envoiInfo(this.href, \'information\')">Retour aux informations de la case</a>'.$fin, $texte);
   }
 
-  /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
+  /// Fonction formattant les balises permettant de naviguer entre les différentes parties d'un texte.
   protected function parse_plrs_txt($texte)
   {
     if( $this->liste )
