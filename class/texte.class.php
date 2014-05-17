@@ -207,7 +207,7 @@ class texte
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
-        foreach($this->perso->get_membre_joueur() as $pj)
+        foreach($groupe->get_membre_joueur() as $pj)
           verif_action($this->id, $pj, 'g');
       }
       else
@@ -292,7 +292,7 @@ class texte
       $fin = '';
     }
     $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
-    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
