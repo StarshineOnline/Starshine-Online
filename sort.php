@@ -31,8 +31,7 @@ switch($type_cible)
     $monstre->set_hp($map_monstre->get_hp());
     $monstre->x = $map_monstre->get_x();
     $monstre->y = $map_monstre->get_y();
-    $cible = new entite('monstre', $monstre);
-    $cible->set_id($map_monstre->get_id());
+    $cible = entite::factory('monstre', $map_monstre);
     break;
 }
 

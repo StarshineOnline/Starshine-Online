@@ -744,7 +744,7 @@ class sort_combat_debuff extends sort_combat
     else
       $this->debuff = $debuff;
   }
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function touche(&$attaque)
   {
     $passif = &$attaque->get_passif();
@@ -957,16 +957,16 @@ class sort_combat_cri_abom extends sort_combat
   }
 }
 
-/// Classe gérant lla osalgie de Karn
+/// Classe gérant la nostalgie de Karn
 class sort_combat_nostalgie extends sort_combat_debuff
 {
   function __construct($tbl)
   {
-    $debuff = $this->debuff = new buff(0, 0, 'maladie_degenerescence', $this->get_effet2(), 0,
-        $this->get_duree(), time()+$this->get_duree(), $this->get_nom(), 1, 0);
+    $debuff = $this->debuff = new buff(0, 0, 'maladie_degenerescence', $tbl['effet2'], 0,
+        $tbl['duree'], time()+$tbl['duree'], $tbl['nom'], 1, 0);
     parent::__construct($tbl, $debuff);
   }
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function touche(&$attaque)
   {
     $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';

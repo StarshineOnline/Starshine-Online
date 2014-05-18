@@ -42,7 +42,7 @@ class texte
   {
     $this->texte = $texte;
     $this->options = $options;
-    $this->perso = joueur::get_perso();
+    $this->perso = &joueur::get_perso();
   }
   
   /**
@@ -114,7 +114,7 @@ class texte
   {
     global $db;
     $trouve = false;
-    // on regarde les que^tes du personnage
+    // on regarde les quêtes du personnage
     $quetes_actives = array();
     if($this->perso->get_quete() != '')
     {
@@ -208,7 +208,7 @@ class texte
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
-        foreach ($this->perso->get_membre_joueur() as $pj)
+        foreach($groupe->get_membre_joueur() as $pj)
           verif_action($this->id, $pj, 'g');
       }
       else
@@ -279,7 +279,7 @@ class texte
     return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return envoiInfo(this.href, \'information\')">Retour aux informations de la case</a>'.$fin, $texte);
   }
 
-  /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
+  /// Fonction formattant les balises permettant de naviguer entre les différentes parties d'un texte.
   protected function parse_plrs_txt($texte)
   {
     if( $this->liste )
@@ -293,7 +293,7 @@ class texte
       $fin = '';
     }
     $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
-    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.

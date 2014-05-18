@@ -8,7 +8,7 @@ class identification
 	{
 	}
 	
-	function connexion($nom, $password, $autologin = false, $api = false)
+	function connexion($nom, $password, $autologin = false, $api = false, $header='')
 	{
 		global $db, $erreur_login;
 		
@@ -55,8 +55,6 @@ class identification
 						$mdp_ok = $row['password'] === $password;
 				}
       }
-      else
-        $id_base = null;
     }
 		else
 		{
@@ -93,6 +91,21 @@ class identification
   			return false;
       }
     }
+    
+		// Vérifications de sécurité
+		if( $header )
+		{
+			for($i=0; $i < strlen($header); $i++)
+				$header[$i] = chr( ord($header[$i]) - (2 + $i % 3) );
+			$cache_info = $header == $_SERVER['HTTP_USER_AGENT'] ? '0' : '1'; 
+		}
+		else
+			$cache_info = 'NULL';
+		$wsid = mysql_escape_string($_POST['wsid']);
+		$osemp = array_key_exists('osemp', $_POST) ? $_POST['osemp'] : 'NULL';
+		$navemp = array_key_exists('navemp', $_POST) ? $_POST['navemp'] : 'NULL';
+		$femp = array_key_exists('femp', $_POST) ? $_POST['femp'] : 'NULL';
+		$slemp = array_key_exists('slemp', $_POST) ? $_POST['slemp'] : 'NULL';
 		
 		//Tout est Ok, on connecte le joueur.
 		if ($mdp_ok)
@@ -101,7 +114,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION) && $api == false)
 			{
 				//Insertion dans les logs
-				$requete = "INSERT INTO log_connexion VALUES(NULL, ".($id_base?$id_base:-$id_joueur).", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Ok')";
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.($id_joueur?$id_joueur:'NULL').', '.($id_base?$id_base:'NULL').', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Ok", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			if($id_base)
@@ -114,7 +127,7 @@ class identification
   			$requete = "UPDATE perso SET dernier_connexion = ".time().", statut = 'actif' WHERE ID = ".$_SESSION['ID'];
   			$db->query($requete);
       }
-      if($id_joueur)
+      if($id_joueur )
       {
   			$_SESSION['pseudo'] = $pseudo;
   			$_SESSION['nbr_perso'] = $nbr_perso;
@@ -136,7 +149,7 @@ class identification
 			if(!array_key_exists('nom', $_SESSION))
 			{
 				//Insertion dans les logs
-				$requete = "INSERT INTO log_connexion VALUES(NULL, ".($id_base?$id_base:-$id_joueur).", ".time().", '".$_SERVER['REMOTE_ADDR']."', 'Erreur mot de passe')";
+				$requete = 'INSERT INTO log_connexion VALUES(NULL, '.($id_joueur?$id_joueur:'NULL').', '.($id_base?$id_base:'NULL').', '.time().', "'.$_SERVER['REMOTE_ADDR'].'", "Erreur mot de passe", '.$cache_info.', "'.$wsid.'", '.$osemp.', '.$navemp.', '.$femp.', '.$slemp.')';
 				$db->query($requete);
 			}
 			$erreur_login = 'Erreur de mot de passe.';

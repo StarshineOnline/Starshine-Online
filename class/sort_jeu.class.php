@@ -666,7 +666,7 @@ class sort_guerison extends sort_jeu
           }
         }
       }
-      $min = $cible->get_vie() + $perso->get_puissance();
+      $min = ($cible->get_vie() + $perso->get_puissance())*60;
       $max = $this->get_effet()*3600;
       
       if(count($debuff_tab) > 0)
@@ -683,6 +683,7 @@ class sort_guerison extends sort_jeu
 		else
 			$requete2 = "UPDATE buff SET fin =".$fin." WHERE id=".$id_debuff.";";
 		$db->query($requete2);
+		echo "Le sort ".$this->get_nom()." réduit la durée d'un débuff de ". ceil($reduction/60)." minutes et". ($reduction % 60) ." secondes. <br/>";
         $action = true;
       }
       else

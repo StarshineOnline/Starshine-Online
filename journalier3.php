@@ -27,10 +27,10 @@ while($row = $db->read_assoc($req))
 	$table = 'log_connexion-'.$moisannee;
 	if(!$db_log->table_exists($table))
 	{
-		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_joueur` int(10) unsigned NOT NULL default '0', `time` int(10) unsigned NOT NULL default '0', `ip` varchar(50) NOT NULL default '', `message` text NOT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
+		$db_log->query("CREATE TABLE `".$table."` (`id` int(10) unsigned NOT NULL, `id_joueur` int(10) unsigned NULL default NULL, `id_perso` int(10) unsigned NULL default NULL, `time` int(10) unsigned NOT NULL default '0', `ip` varchar(50) NOT NULL default '', `message` text NOT NULL, `osemp` INT NULL DEFAULT NULL, `cache_info` BOOLEAN NULL DEFAULT NULL, `wsid` VARCHAR(50) NULL DEFAULT NULL, ADD `navemp` INT NULL DEFAULT NULL , ADD `femp` INT NULL DEFAULT NULL , ADD `slemp` INT NULL DEFAULT NULL, PRIMARY KEY  (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=utf8;");
     echo 'Création de la table : '.$table."\n";
 	}
-	$requete = "INSERT INTO `".$table."` VALUES(".$row['id'].", ".$row['id_joueur'].", ".$row['time'].", '".$row['ip']."', '".$row['message']."');";
+	$requete = 'INSERT INTO `'.$table.'` VALUES('.$row['id'].', '.($row['id_joueur']?$row['id_joueur']:'NULL').', '.($row['id_perso']?$row['id_perso']:'NULL').', '.$row['time'].', "'.$row['ip'].'", "'.$row['message'].'", '.($row['cahce_info']?$row['cahce_info']:'NULL').', "'.($row['wsid']?$row['wsid']:'NULL').'", '.($row['osemp']?$row['osemp']:'NULL').', '.($row['navemp']?$row['navemp']:'NULL').', '.($row['femp']?$row['femp']:'NULL').', '.($row['slemp']?$row['slemp']:'NULL').');';
 	$db_log->query($requete);
 	$db->query("DELETE FROM log_connexion WHERE id = ".$row['id']);
 	//echo $requete;

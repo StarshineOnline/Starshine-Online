@@ -102,7 +102,7 @@ function fin_script()
     {
   		log_admin::log('bug', $msg);
     }
-    echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistré et pourra être consulté par les dévelopeurs.</h5>';
+    echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistrée et pourra être consultée par les développeurs.</h5>';
   }
 }
 

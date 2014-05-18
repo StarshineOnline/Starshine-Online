@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 
 
 //Vérification si une quête est finie ou non
-function verif_quete($id_quete, $id_quete_joueur, $joueur)
+function verif_quete($id_quete, $id_quete_joueur, &$joueur)
 {
 	global $db;	
 	$requete = "SELECT * FROM quete WHERE id = ".$id_quete;
@@ -26,7 +26,7 @@ function verif_quete($id_quete, $id_quete_joueur, $joueur)
 }
 
 //Verifie si l'action fait avancer une quête
-function verif_action($type_cible, $joueur, $mode)
+function verif_action($type_cible, &$joueur, $mode)
 {
 	global $db;
 	$i = 0;
@@ -114,13 +114,14 @@ function verif_action($type_cible, $joueur, $mode)
 	}
 }
 
-function fin_quete($joueur, $id_quete_joueur, $id_quete, &$liste_quete)
+function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 {
 	global $db;
 	$requete = "SELECT id, nom, objectif, honneur, star, exp, reward, mode FROM quete WHERE id = ".$id_quete;
 	$req = $db->query($requete);
 	$row = $db->read_array($req);
-	//$liste_quete = $joueur->get_liste_quete();
+	if( $liste_quete === null )
+		$liste_quete = $joueur->get_liste_quete();
 	//Validation de la quête et mis à jour des quêtes du perso
 	array_splice($liste_quete, $id_quete_joueur, 1);
 	$joueur->set_quete(serialize($liste_quete));
@@ -218,7 +219,7 @@ function fin_quete($joueur, $id_quete_joueur, $id_quete, &$liste_quete)
 	$db->query($requete);
 }
 
-function affiche_quetes($fournisseur, $joueur)
+function affiche_quetes($fournisseur, &$joueur)
 {
 	global $db, $R;
 	$return = array();
@@ -309,7 +310,7 @@ function affiche_quetes($fournisseur, $joueur)
 	return $return;
 }
 
-function prend_quete($id_quete, $joueur)
+function prend_quete($id_quete, &$joueur)
 {
 	global $db, $G_erreur;
 	$requete = "SELECT * FROM quete WHERE id = ".$id_quete;
@@ -523,7 +524,7 @@ function verif_inventaire($id_quete, $joueur)
 			}
 			while (count($items)) {
 				$i = array_pop($items);
-				echo "remove item $i <br/>";
+				//echo "remove item $i <br/>";
 				$joueur->supprime_objet($i, 1);
 			}
 			$joueur->sauver();
