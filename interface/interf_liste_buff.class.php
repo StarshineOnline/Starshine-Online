@@ -18,7 +18,15 @@ class interf_liste_buff extends interf_bal_cont
           $li = $this->add( new interf_bal_cont('li', null, 'buff') );
           $img = $li->add( new interf_bal_smpl('img') );
           $img->set_attribut('src', 'image/buff/'.$buff->get_type().'_p.png');
-          $img->set_attribut('alt', $buff->get_type());
+          $img->set_attribut('alt', $buff->get_nom());
+          $li->set_attribut('data-duree', $buff->get_duree());
+          $li->set_attribut('data-fin', $buff->get_fin());
+          $li->set_attribut('data-description', $buff->get_description());
+          if( !$buff->get_debuff() )
+					{
+          	$li->set_attribut('data-suppr', $buff->get_id());
+          	$li->set_attribut('ondblclick', 'suppr_buff(this);');
+					}       
           $this->creer_buff_duree($li, $buff);
 				}
 			}
@@ -50,6 +58,7 @@ class interf_liste_buff extends interf_bal_cont
         }
   		}
     }
+    //$this->code_js("init_buffs_infos();");
   }
   protected function creer_buff_duree(&$elt, &$buff)
   {
@@ -57,6 +66,27 @@ class interf_liste_buff extends interf_bal_cont
     $pere = $elt->add( new interf_bal_cont('div', null, 'progress barre_buff jauge_buff') );
     $fils = $pere->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-info') );
     $fils->set_attribut('style', 'width:'.$ratio);
+  }
+}
+
+
+
+/**
+ * Interface pour afficher les information sur un buff
+ */
+class interf_infos_buff extends interf_infos_popover
+{
+  /**
+   * Constructeur
+   * @param $buff    $buff dont veut afficher les informations
+   */
+  function __construct($buff)
+  {
+    parent::__construct();
+    $this->nouv_info('Description', $buff->get_description());
+    $this->nouv_info('Durée totale',transform_sec_temp($buff->get_duree()));
+    $this->nouv_info('Durée restante',transform_sec_temp($buff->get_fin()-time()));
+    $this->nouv_info('Fin', formate_date($buff->get_fin()));
   }
 }
 ?>

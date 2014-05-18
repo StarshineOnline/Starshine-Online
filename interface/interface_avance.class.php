@@ -363,4 +363,41 @@ class interf_accordeon extends interf_bal_cont
     return $this->add( new interf_panneau($titre, null, 'h4', $id, $montre, $style) );
   }
 }
+
+/// Popver bootstrap pour montrer des informations
+class interf_infos_popover extends interf_princ
+{
+	protected $tbl;
+  /**
+   * Constructeur
+   * @param $noms    	noms des informations à afficher
+   * @param $valeurs	valeurs des informations à afficher
+   */
+  function __construct($noms=null, $valeurs=null)
+  {
+    $this->tbl = $this->add( new interf_tableau() );
+    if( $noms )
+    {
+	    for($i=0; $i<count($noms); $i++)
+	    {
+	    	if( $i > 0 )
+	      	$this->tbl->nouv_ligne();
+	      $this->tbl->nouv_cell($noms[$i], null, null, true);
+	      $this->tbl->nouv_cell($valeurs[$i]);
+	    }
+		}
+  }
+  
+  /**
+   * Ajoute une informatipon
+   * @param $nom    	nom de l'information à afficher
+   * @param $valeur		valeur de l'information à afficher
+   */
+  function nouv_info($nom, $valeur)
+  {
+	  $this->tbl->nouv_ligne();
+	  $this->tbl->nouv_cell($nom, null, null, true);
+	  $this->tbl->nouv_cell($valeur);
+	}
+}
 ?>

@@ -47,9 +47,40 @@ function charge_tab(elt, id)
   }
 }
 
+function temps_serveur()
+{
+	var date = new Date();
+	return Math.ceil(date.getTime()/1000);
+}
+
 function maj_tooltips()
 {
+	// on active les tooltip déjà définis
 	$("[data-toggle='tooltip']").tooltip();
+	// On crée ceux des buffs ainsi que les popvers
+	$(".buff").each( function()
+	{
+		var li = $(this);
+		var img = li.children();
+		var nom = img[0].alt;
+		li.tooltip({title:function()
+		{
+			return nom + " − Durée : " + formate_duree(li.attr('data-fin') - temps_serveur(), true);
+		},placement:"left"});
+		$(img[0]).popover({html:true,placement:"bottom",title:nom,container:"#perso",content:function()
+		{
+			//var date = new Date();
+			var txt = "<table><tbody>";
+			txt += "<tr><th>Decription</th><td>"+li.attr("data-description")+"</td></tr>";
+			txt += "<tr><th>Durée totale</th><td>"+formate_duree(li.attr("data-duree"), false)+"</td></tr>";
+			txt += "<tr><th>Durée restante</th><td>"+formate_duree(li.attr('data-fin') - temps_serveur(), true)+"</td></tr>";
+			txt += "<tr><th>Fin</th><td>"+formate_date(li.attr('data-fin'))+"</td></tr>";
+			txt += "</tbody></table>";
+			if( li.attr("data-suppr") )
+				txt += "<a class='suppr_buff' href='suppbuff.php?id="+li.attr("data-suppr")+"' onclick='return charger(this.href);'>Supprimer le buff</a>";
+			return txt;
+		}});
+	});
 }
 
 function aff_ico_charger()
@@ -65,6 +96,50 @@ function aff_ico_sso()
 function aff_ico_bug()
 {
 	document.getElementById("icone-sso").className = "navbar-brand icone icone-debug";
+}
+
+function formate_duree(duree, detail)
+{
+	var txt = "";
+	var jours = Math.ceil(duree / (3600*24));
+	var heures = Math.ceil(duree/3600) % 24;
+	var mins = Math.ceil(duree/60) % 60;
+	var sec = duree % 60;
+	if( jours )
+		txt = jours+"j ";
+	if( heures || (txt.length && detail) )
+		txt += heures+"h ";
+	if( mins || (txt.length && detail) )
+		txt += mins+"min ";
+	if(sec || detail)
+		txt += sec+"s";
+	return txt;
+}
+
+function formate_date(date)
+{
+	var d = new Date(date*1000);
+	var jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+	var mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+	var txt = jours[d.getDay()] + " " + d.getDate();
+	if( d.getDate() == 1 )
+		txt += "<sup>er</sup>";
+	txt += " " + mois[d.getMonth()] + " " + d.getFullYear() + " ";
+	txt += d.getHours()+"h ";
+	txt += d.getMinutes()+"min ";
+	return txt + d.getSeconds()+"s";
+}
+
+
+function suppr_buff(elt)
+{
+	var li = $(elt);
+	var img = li.children();
+	var nom = img[0].alt;
+	if(confirm('Voulez vous supprimer '+ nom +' ?'))
+	{
+		charger('suppbuff.php?id=' + li.attr('data-suppr'));
+	}
 }
 
 function envoiInfoPost(page,position)

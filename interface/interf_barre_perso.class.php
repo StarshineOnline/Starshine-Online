@@ -42,9 +42,9 @@ class interf_barre_perso extends interf_bal_cont
     $nom->add( new interf_bal_smpl('span', ucwords($this->perso->get_nom()), 'nom') );
     $nom->add( new interf_bal_smpl('span', $titre[1]) );
     // jauges
-    $this->creer_jauge($this->infos_vie, 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), true, 'danger', 'hp');
-    $this->creer_jauge($this->infos_vie, 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()), true, false, 'mp');
-    $this->creer_jauge($this->infos_vie, 'Points d\'action', $this->perso->get_pa(), $G_PA_max, true, 'success', 'pa');
+    $this->creer_jauge($this->infos_vie, 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), true, /*'danger',*/ 'hp');
+    $this->creer_jauge($this->infos_vie, 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()), true, /*false,*/ 'mp');
+    $this->creer_jauge($this->infos_vie, 'Points d\'action', $this->perso->get_pa(), $G_PA_max, true, /*'success',*/ 'pa');
     $this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())), $this->perso->get_level());
   }
   protected function creer_infos_perso()
@@ -123,11 +123,12 @@ class interf_barre_perso extends interf_bal_cont
     $img = $pos->add( new interf_bal_smpl('img') );
     $img->set_attribut('src', 'carte_perso.php?vue=12');
   }
-	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, $style=false, $type=null)
+	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, /*$style=false,*/ $type=null)
 	{
     $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_'.$type:'', ($grand?'jauge_bulle':'jauge_groupe membre_'.$type).' progress') );
     $jauge->set_tooltip($nom.'&nbsp;: '.$valeur.' / '.$maximum, 'bottom');
-    $barre = $jauge->add( new interf_bal_cont('div', null, 'bulle progress-bar'.($style?' progress-bar-'.$style:'')) );
+    //$barre = $jauge->add( new interf_bal_cont('div', null, 'bulle progress-bar'.($style?' progress-bar-'.$style:'')) );
+    $barre = $jauge->add( new interf_bal_cont('div', null, 'bulle jauge-'.$type) );
     $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
     if( $grand )
 			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
@@ -136,6 +137,7 @@ class interf_barre_perso extends interf_bal_cont
   {
     $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_xp', 'jauge_barre progress') );
     $jauge->set_tooltip('Niveau&nbsp;: '.$niv.' − Points d\'expérience&nbsp;: '.$valeur, 'bottom');
+    //$barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
     $barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
     $barre->set_attribut('style', 'width:'.$progression.'%');
     $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum.' − niv. '.$niv, 'xp', 'barre_valeur') );
@@ -192,14 +194,15 @@ class interf_barre_perso extends interf_bal_cont
 	  		$classe .= ' perso_groupe_chef';
 	  	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
 	  	if( $membre->get_hp() > 0 )
-				$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'danger', 'hp');
+				$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, /*'danger',*/ 'hp');
 			else
 				$this->creer_jauge_mort($li);
-	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, false, 'mp');
+	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
-	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
-	    $pos->add( new interf_txt(' - ') );
-	    $pos->add( new interf_bal_smpl('span', 'dist. : '.calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y())), null, 'membre_pos') );
+	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+	    $txt = 'Pos. : '.$membre->get_x().' / '.$membre->get_y();
+	    $txt .= ' - '.'dist. : '.$dist;
+	    $pos->add( new interf_bal_smpl('span', $txt, null, 'membre_pos'.($dist>7?' trop_loin':'')) );
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );

@@ -249,7 +249,7 @@ class interf_objet_invent extends interf_bal_cont
 /**
  * Interface pour afficher les information sur un objet
  */
-class interf_infos_objet extends interf_princ
+class interf_infos_objet extends interf_infos_popover
 {
   /**
    * Constructeur
@@ -258,7 +258,8 @@ class interf_infos_objet extends interf_princ
   function __construct($objet)
   {
     $obj = objet_invent::factory($objet);
-    $tbl = $this->add( new interf_tableau() );
+    parent::__construct($obj->get_noms_infos(), $obj->get_valeurs_infos());
+    /*$tbl = $this->add( new interf_tableau() );
     $noms = $obj->get_noms_infos();
     $vals = $obj->get_valeurs_infos();
     for($i=0; $i<count($noms); $i++)
@@ -267,7 +268,7 @@ class interf_infos_objet extends interf_princ
       	$tbl->nouv_ligne();
       $tbl->nouv_cell($noms[$i], null, null, true);
       $tbl->nouv_cell($vals[$i]);
-    }
+    }*/
   }
 }
 

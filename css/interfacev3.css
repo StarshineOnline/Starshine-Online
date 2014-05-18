@@ -518,6 +518,20 @@ a:hover, a:focus
 	line-height: 19px;
 }
 
+.suppr_buff
+{
+	text-align: center;
+	font-style: italic;
+	display:block;
+	width: 100%;
+	padding-top: 10px;
+}
+
+.trop_loin
+{
+	font-style: italic;
+}
+
 /*-- Partie gauche de l'interface ---------------------------------------------------*/
 
 #deplacement
