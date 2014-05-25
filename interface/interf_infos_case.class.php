@@ -349,6 +349,7 @@ class interf_infos_case extends interf_cont
 				break;
 			case 0:
 				$texte = 'Ce monstre a le même niveau que vous';
+				break;
 			case 1:
 				$texte = 'Ce monstre a 1 niveau de moins que vous';
 				break;
