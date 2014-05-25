@@ -18,12 +18,6 @@ class placement extends entitenj_constr
 	protected $debut_placement; ///< Date du début de la construction
 	protected $fin_placement; ///< Date de la fin de la construction
 
-	/// Renvoie l'image du bâtiment
-	function get_image()
-	{
-		$this->get_batiment()->get_image();
-	}
-
 	/// Renvoie la date du début de la construction
 	function get_debut_placement()
 	{
@@ -67,6 +61,13 @@ class placement extends entitenj_constr
 	function get_temps_ecoule()
 	{
 		return time() - $this->debut_placement;
+	}
+	
+	/// Renvoie l'image du bâtiment
+  function get_image()
+  {
+    $avanc = (time() - $this->debut_placement) / ($this->fin_placement - $this->debut_placement);
+  	return $this->make_url_image($this->get_batiment()->get_image(), $this->type, $avanc);
 	}
 	// @}
 
@@ -161,6 +162,12 @@ class placement extends entitenj_constr
 			return 0.5 + 0.5 * $this->get_temps_ecoule() / $this->get_temps_total();
 		else
 			return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
+	}
+	
+	/// Récupère les buffs du bâtiment
+	protected function constr_buff()
+	{
+		$this->buff = buff_batiment::create('id_placement', $this->id, 'id ASC', 'type', false, true);
 	}
 
   /**

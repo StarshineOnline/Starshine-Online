@@ -186,16 +186,17 @@ abstract class entitenj_constr extends entnj_incarn
    * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
    */
   // @{
-	private $buff = null;  ///< Liste des buffs actifs sur le monstre
+	protected $buff = null;  ///< Liste des buffs actifs sur le monstre
+	/// Récupère les buffs du bâtiment
+	abstract protected function constr_buff();
 	/**
 	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
 	 * @return     Tableau des buffs.
 	 */
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
-		if ($this->buff == null) {
-			$this->buff = self::get_construction_buff($this->id);
-		}
+		if( $this->buff == null )
+			$this->constr_buff();
 		return $this->buff;
 	}
 	/**

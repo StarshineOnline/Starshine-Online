@@ -79,6 +79,7 @@ class buff extends buff_base
 	 */
   // @{
 	protected $id_perso;  ///< id du perso ayant le buff
+	protected $supprimable;   ///< 1 si on peut supprimer le (de)buff, 0 sinon
 	
 	/// Renvoie l'id du perso ayant le buff
 	function get_id_perso()
@@ -90,6 +91,18 @@ class buff extends buff_base
 	{
 		$this->id_perso = $id_perso;
 		$this->champs_modif[] = 'id_perso';
+	}
+	
+	/// Indique si le buff est supprimable
+	function is_supprimable()
+	{
+		return $this->supprimable != 0;
+	}
+	/// Modifie si le buff est supprimable ou non
+	function set_supprimable($supprimable)
+	{
+		$this->supprimable = $supprimable;
+		$this->champs_modif[] = 'supprimable';
 	}
 	// @}
 
@@ -123,6 +136,7 @@ class buff extends buff_base
 		{
       buff_base::__construct($id, $type, $effet, $duree);
 			$this->id_perso = $id_perso;
+			$this->supprimable = $supprimable;
 		}
 	}
 
@@ -134,22 +148,23 @@ class buff extends buff_base
   {
     buff_base::init_tab($vals);
 		$this->id_perso = $vals['id_perso'];
+		$this->supprimable = $vals['supprimable'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return buff_base::get_liste_champs().', id_perso';
+    return buff_base::get_liste_champs().', id_perso, supprimable';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return buff_base::get_valeurs_insert().', '.$this->id_perso;
+		return buff_base::get_valeurs_insert().', '.$this->id_perso.', '.$this->supprimable;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return buff_base::get_liste_update().', id_perso = '.$this->id_perso;
+		return buff_base::get_liste_update().', id_perso = '.$this->id_perso.', supprimable = '.$this->supprimable;
 	}
 	// @}
 	

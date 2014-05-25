@@ -513,7 +513,7 @@ class pet extends map_monstre
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
 	{
-		global $db;
+		/*global $db;
 		$distance = 0;
 		$joueur = new perso($this->get_id_joueur());
 		$arme = $joueur->inventaire_pet()->arme_pet;
@@ -530,7 +530,9 @@ class pet extends map_monstre
 			$row = $db->read_row($req);
 			$distance += $row[0];
 		}
-		return $distance;
+		return $distance;*/
+		$perso = new perso($this->get_id_joueur());
+		return $perso->get_distance_pet();
 	}
 	
   /**

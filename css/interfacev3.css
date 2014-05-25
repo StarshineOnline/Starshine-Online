@@ -863,7 +863,7 @@ a#depl_bas_droite
 #information
 {
 	position: absolute;
-	min-height: 500px;
+	min-height: 496px;
 	width:480px;
 	z-index:1;
 	margin-left:6px;
@@ -873,6 +873,18 @@ a#depl_bas_droite
 	border: 1px solid #777;
 	border-radius: 10px;
 	padding: 10px 4px 10px 4px;
+}
+
+#information h2
+{
+	padding-left:25px;
+	line-height:25px;
+	font-size:1.4em;
+	font-variant:small-caps;
+	text-align:center;
+	padding:0;
+	color:#000000;
+	margin-top: 0px;
 }
 
 
@@ -960,9 +972,6 @@ p.accueil a
 
 /*-- Carte --------------------------------------------------------------*/
 
-
-
-
 #carte
 {
 	/*width:445px;
@@ -1035,6 +1044,222 @@ p.accueil a
   height:58px!important;
   width:58px!important;
 }
+
+/* Information de la case */
+
+/*#info_case
+{
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid #777777;
+  border-radius: 4px 4px 4px 4px;
+}*/
+.info_case
+{
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px 4px 4px 4px;
+	overflow: hidden;
+	margin-bottom: 5px;
+  /*padding: 2px;*/
+}
+
+#descr_case, .info_case.placement, .info_case.construction
+{
+  padding: 0px;
+}
+
+#descr_case>div, .placement>div, .construction>div
+{
+  padding: 2px;
+}
+
+.info_case p
+{
+	margin: 0px;
+}
+
+.info_case #royaume, .info_case #terrain
+{
+	font-weight: bold;
+}
+
+.infranch
+{
+	font-style: italic;
+}
+
+.info_case #deplacer
+{
+	display: block;
+	float: right;
+	height: 57px;
+	width: 57px;
+	border-left: solid 1px rgba(0, 0, 0, 0.3);
+	text-align: center; 
+  padding: 1px;
+}
+
+.info_case #deplacer p
+{
+  padding: 2px;
+}
+
+.info_case a:hover
+{
+	background: rgba(255, 255, 255, 0.5);
+	color: black!important;
+}
+
+.info_case #deplacer .icone
+{
+	font-size: 35px;
+}
+
+.info_case a.info_elt
+{
+	display: block;
+	height: 45px;
+	overflow: hidden;	
+  padding: 2px;
+}
+
+.info_case a.icone
+{
+	display: block;
+	float: right;
+	height: 45px;
+	width: 45px;
+	border-left: solid 1px rgba(0, 0, 0, 0.3);
+	text-align: center; 
+  padding-top: 7px;
+	font-size: 35px;
+}
+
+.info_case a.icone.icone-chien
+{
+	font-size: 28px;
+}
+
+.info_case>*>img
+{
+	float: left;
+	max-height: 40px;
+	margin-right: 5px;
+}
+
+div.jauge_case
+{
+	position: relative;
+	float: right;
+	width:35px;
+	height:35px;
+	border-radius: 50%;
+	border: 1px solid #888888;
+	background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+	padding: 0;
+	margin: 3px 3px 0 0;
+}
+
+.liste_case
+{
+	display: table-cell;
+	width: 230px;
+}
+
+.liste_case>span.xsmall
+{
+	display: block;
+	text-align: center;
+}
+
+#liste_gauche
+{
+	border-right: 1px solid #808080;
+	padding-right: 5px;
+}
+
+#liste_droite
+{
+	padding-left: 5px;
+}
+
+li.info_case
+{
+	height: 30px;
+	line-height: 24px;
+	font-size: 15px;
+}
+
+li.info_case>div
+{
+	padding: 2px;
+}
+
+li.info_case img
+{
+	float: left;
+	max-height: 24px;
+	margin-right: 5px;
+}
+
+li.info_case div.jauge_case
+{
+	height: 24px;
+	width: 24px;
+	margin: 0;
+}
+
+.diplo0 { color:#3c763d; }/*#449D44*/
+.diplo1 { color:#3c763d; }
+.diplo2 { color:#3c763d; }
+.diplo3 { color:#3c763d; }
+.diplo4 { color:#8a6d3b;; }/*rgb(192, 123, 25)*/
+.diplo5 { color:#8a6d3b; }
+.diplo6 { color:#8a6d3b; }
+.diplo7 { color:#A94442; }/*#C9302C*/
+.diplo8 { color:#A94442; }
+.diplo9 { color:#A94442; }
+.diplo10 { color:#A94442; }
+.diplo127 { color:#31708f; }
+
+.niv-5{ color:#0000ff; }
+.niv-4{ color:#0072ff; }
+.niv-3{ color:#0072ff; }
+.niv-2{ color:#00b70c; }
+.niv-1{ color:#00b70c; }
+/*.niv0{ color:#000; }*/
+.niv1{ color:#ffa500; font-weight: bold; }
+.niv2{ color:#ffa500; font-weight: bold; }
+.niv3{ color:#ff5900; font-weight: bold; }
+.niv4{ color:#ff5900; font-weight: bold; }
+.niv5{ color:#ff0000; font-weight: bold; }
+
+
+#info_case ul li { height:20px; }
+#info_case ul li:hover { background:transparent url(./../image/v2/box_accueil2.png); }
+#info_case h4 { padding:0; margin:3px;clear:both; }
+#info_case h3 { text-align:center; }
+.info_mob li { 
+    padding:5px;
+    float: left;
+    height: 30px;
+    width: 224px;
+    position: relative;
+    line-height: 30px;}
+
+.icone_mob {width:30px;height:30px;line-height: 30px;float:left;text-align: center;}
+
+.couleur_attaque 	{background-color:red;}
+.couleur_sort	 	{background-color:blue;}
+.couleur_dressage	{background-color:yellow;}
+
+.image_mob {width:30px;height:30px;line-height: 30px;float:left;}
+
+.text_mob	{height:30px;line-height: 30px;float:left;width:132px;}
+
+
+
+/* ... */
 
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
 #carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
@@ -1130,33 +1355,8 @@ p.accueil a
 .pagination {background-color: #eee;-moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
 #conteneur_test { height:100%; width:100%; z-index:99999; cursor:wait; position:absolute; }
 .infoperso { vertical-align:top; float:left; padding:2px; margin:2px; height:75px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; border:1px solid #555555; vertical-align:top; }
-#info_case ul li { height:20px; }
-#info_case ul li:hover { background:transparent url(./../image/v2/box_accueil2.png); }
-#info_case h4 { padding:0; margin:3px;clear:both; }
-#info_case h3 { text-align:center; }
-.info_case  {background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
-    border: 1px solid #777777;
-    border-radius: 4px 4px 4px 4px;  }
-.info_mob li { 
-    padding:5px;
-    float: left;
-    height: 30px;
-    width: 224px;
-    position: relative;
-    line-height: 30px;}
 
-.icone_mob {width:30px;height:30px;line-height: 30px;float:left;text-align: center;}
 
-.couleur_attaque 	{background-color:red;}
-.couleur_sort	 	{background-color:blue;}
-.couleur_dressage	{background-color:yellow;}
-
-.image_mob {width:30px;height:30px;line-height: 30px;float:left;}
-
-.text_mob	{height:30px;line-height: 30px;float:left;width:132px;}
-#info_case  {background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
-    border: 1px solid #777777;
-    border-radius: 4px 4px 4px 4px;  }
 #diplo { background-color:#CCC; }
 #diplo ul li { clear:both; }
 #diplo ul li span { float:left; display:block; width:50px; height:50px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
@@ -1207,7 +1407,6 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
 
 
-#information h2 { padding-left:25px; line-height:25px; font-size:1.4em;; font-variant:small-caps; text-align:center; padding:0; color:#000000; }
 .windows_right {}
 h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
 
@@ -1310,6 +1509,12 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   background-image:url(../image/interface/1.png);
   border-radius: 9px; -moz-border-radius:9px; -webkit-border-radius:9px;
   color:#222;
+}
+
+.inventaire2>img
+{
+	float: left;
+	max-height: 45px;
 }
 
 .invent

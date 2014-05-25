@@ -121,7 +121,7 @@ abstract class table
 			$types .= '';
 			foreach($liste as $champ=>$type)
 			{
-				$params[] = $this->get_champ($champ);
+				$params[] = $this->get_champ($champ) !== null ? $this->get_champ($champ) : 'NULL';
 				$types .= $type;
 				$vals[] = '?';
 			}

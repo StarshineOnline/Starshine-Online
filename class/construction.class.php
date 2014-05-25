@@ -59,11 +59,11 @@ class construction extends entitenj_constr
 	{
 		return $this->date_construction;
 	}
-
+	
 	/// Renvoie l'image du bâtiment
-	function get_image()
-	{
-		return $this->get_batiment()->get_image();
+  function get_image()
+  {
+  	return $this->make_url_image($this->get_batiment()->get_image());
 	}
 	// @}
 
@@ -180,6 +180,12 @@ class construction extends entitenj_constr
 		}
 		$this->set_rechargement( time() + $recharg - $reduc );
 		$this->sauver();
+	}
+	
+	/// Récupère les buffs du bâtiment
+	protected function constr_buff()
+	{
+		$this->buff = buff_batiment::create('id_construction', $this->id, 'id ASC', 'type', false, true);
 	}
 
   /**

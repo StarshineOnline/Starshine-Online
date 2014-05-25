@@ -106,7 +106,7 @@ class interf_carte extends interf_tableau
         $pos = 'rel_'.($j-$x).'_'.($i-$y);
         $cont->set_attribut('id', 'pos_'.$pos);
         $cont->set_attribut('href', 'informationcase.php?case='.$pos);
-        $cont->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+        $cont->set_attribut('onclick', 'return charger(this.href);');
 			}
 		}
 
@@ -193,6 +193,7 @@ class interf_carte extends interf_tableau
       $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
       if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
         continue;
+    	/// TODO: à améliorer
       // Cache sa classe ?
       $div = $this->cases[$p->get_y()][$p->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       if( $p->get_cache_classe() == 2 )
@@ -229,7 +230,7 @@ class interf_carte extends interf_tableau
     global $db;
     $perso = joueur::get_perso();
     /// TODO: à améliorer
-      $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {

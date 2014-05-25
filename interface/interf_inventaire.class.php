@@ -225,7 +225,7 @@ class interf_objet_invent extends interf_bal_cont
     {
       $img = $this->add(new  interf_bal_smpl('img') );
       $img->set_attribut('src', $image);
-      $img->set_attribut('style', 'float : left;');
+      //$img->set_attribut('style', 'float : left;');
     }
     $this->add( new interf_bal_smpl('strong', $nom, null, 'nom_obj') );
     if( $nbr > 1 )

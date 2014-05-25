@@ -69,6 +69,12 @@ class interf_factory
     include_once(root.'interface/interf_mort.class.php');
     return new interf_mort();
 	}
+	/// Information sur les cases
+	function creer_interf_infos_case(&$case, $distance, $id_case, $reponse)
+	{
+    include_once(root.'interface/interf_infos_case.class.php');
+    return new interf_infos_case($case, $distance, $id_case, $reponse);
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

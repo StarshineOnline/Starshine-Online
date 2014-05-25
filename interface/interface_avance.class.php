@@ -400,4 +400,64 @@ class interf_infos_popover extends interf_princ
 	  $this->tbl->nouv_cell($valeur);
 	}
 }
+
+/// lien ajax simple
+class interf_lien extends interf_bal_smpl
+{
+	function __construct($texte, $cible, $id=false, $classe=false)
+	{
+		parent::__construct('a', $texte, $id, $classe);
+		$this->set_attribut('href', $cible);
+		$this->set_attribut('onclick', 'return charger(this.href);');
+	}
+}
+
+/// lien ajax avec contenu
+class interf_lien_cont extends interf_bal_cont
+{
+	function __construct($cible, $id=false, $classe=false)
+	{
+		parent::__construct('a', $id, $classe);
+		$this->set_attribut('href', $cible);
+		$this->set_attribut('onclick', 'return charger(this.href);');
+	}
+}
+
+/// image
+class interf_img extends interf_bal_smpl
+{
+	function __construct($img, $alt=false, $id=false, $classe=false)
+	{
+		parent::__construct('img', $id, $classe);
+		$this->set_attribut('src', $img);
+		if( $alt )
+			$this->set_attribut('alt', $alt);
+	}
+}
+
+/*class interf_jauge extends interf_bal_cont
+{
+	function __construct($nom, $valeur, $maximum, $type=null, $id=false)
+	{
+		parent::__construct('div', $id, 'jauge_barre progress');
+    $this->set_tooltip($nom.'&nbsp;: '.$valeur, 'bottom');
+    $barre = $this->add( new interf_bal_cont('div', null, 'progress-bar'.($type?' progress-bar-'.$type:'')) );
+    $barre->set_attribut('style', 'width:'.round($valeur/$maximum*100,0).'%');
+    $this->add( new interf_bal_smpl('div', $valeur.' / '.$maximum) );
+	}
+}*/
+
+class interf_jauge_bulle extends interf_bal_cont
+{
+	function __construct($nom, $valeur, $maximum, $grand, $type=null, $id=false, $classe=false)
+	{
+		parent::__construct('div', $id, $classe.' progress');
+		if( $nom )
+    	$this->set_tooltip($nom.'&nbsp;: '.$valeur.' / '.$maximum, 'bottom', '#contenu');
+    $barre = $this->add( new interf_bal_cont('div', null, 'bulle jauge-'.$type) );
+    $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
+    if( $grand )
+			$this->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
+	}
+}
 ?>

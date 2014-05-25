@@ -125,13 +125,14 @@ class interf_barre_perso extends interf_bal_cont
   }
 	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, /*$style=false,*/ $type=null)
 	{
-    $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_'.$type:'', ($grand?'jauge_bulle':'jauge_groupe membre_'.$type).' progress') );
+    /*$jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_'.$type:'', ($grand?'jauge_bulle':'jauge_groupe membre_'.$type).' progress') );
     $jauge->set_tooltip($nom.'&nbsp;: '.$valeur.' / '.$maximum, 'bottom');
     //$barre = $jauge->add( new interf_bal_cont('div', null, 'bulle progress-bar'.($style?' progress-bar-'.$style:'')) );
     $barre = $jauge->add( new interf_bal_cont('div', null, 'bulle jauge-'.$type) );
     $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
     if( $grand )
-			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
+			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );*/
+		$parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, $grand?'perso_'.$type:false, $grand?'jauge_bulle':'jauge_groupe membre_'.$type) );
 	}
   protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
   {

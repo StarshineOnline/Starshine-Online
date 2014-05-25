@@ -2,10 +2,12 @@
 
 function charger(page)
 {
+	//alert('charger:'+page);
 	aff_ico_charger();
-  $.get(page, "ajax=1", function(data)
+  $.get(page, "ajax=1", function(data, status, jqXHR)
 	{
   	aff_ico_sso();
+  	//alert(status+' : '+data);
     $(data).find('section').each( function()
     {
     	switch(this.id)
@@ -66,8 +68,8 @@ function maj_tooltips()
 		li.tooltip({title:function()
 		{
 			return nom + " − Durée : " + formate_duree(li.attr('data-fin') - temps_serveur(), true);
-		},placement:"left"});
-		$(img[0]).popover({html:true,placement:"bottom",title:nom,container:"#perso",content:function()
+		},placement:"left",container:"#contenu"});
+		$(img[0]).popover({html:true,placement:"bottom",title:nom,container:"#contenu",content:function()
 		{
 			//var date = new Date();
 			var txt = "<table><tbody>";
@@ -95,7 +97,7 @@ function aff_ico_sso()
 
 function aff_ico_bug()
 {
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-debug";
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-bug";
 }
 
 function formate_duree(duree, detail)
@@ -479,7 +481,7 @@ $(function () {
 
 		$("#debug_log_button").hide();
 
-		$("#popup").ajaxError(function(e, jqxhr, settings, exception) {
+		$(document).ajaxError(function(e, jqxhr, settings, exception) {
 			alert(jqxhr.status);
 						aff_ico_bug();
 				if (jqxhr.status == 403) {

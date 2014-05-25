@@ -2949,7 +2949,7 @@ class perso extends entite
 	{
 		return count($this->get_ecurie_self());
 	}
-	/// Revnoie les créatures du personnage sous forme de tableau.
+	/// Renvoie les créatures du personnage sous forme de tableau.
 	function get_pets($force = false)
 	{
 		if(!isset($this->pets) OR $force) $this->pets = pet::create(array('id_joueur', 'ecurie'), array($this->id, 0), 'principale DESC');
@@ -3104,6 +3104,25 @@ class perso extends entite
 		$facteur = ($this->get_vie() + 10) / 22;
 		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
 		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
+	}
+	/// Renvoie la distance d'attaque avec le pet
+	function get_distance_pet()
+	{
+		global $db;
+		$distance = 0;
+		/*$arme = $this->inventaire_pet()->arme_pet;
+		if($arme)
+			$distance += $this->arme_pet->distance_tir;*/
+		/// TODO: à revoir
+		$laisse = decompose_objet($perso->get_inventaire_partie("cou", true));
+		if($laisse['id_objet'] != '')
+		{
+			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			$distance += $row[0];
+		}
+		return $distance;
 	}
   // @} 
 	

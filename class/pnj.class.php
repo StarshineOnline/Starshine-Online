@@ -37,12 +37,9 @@ class pnj extends placable
 	{
 		global $db;
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
-		if( (func_num_args() == 1) && is_numeric($nom) )
+		if( func_num_args() == 1 )
 		{
-			$this->id = $nom;
-			$requete = 'SELECT nom, x, y, image, texte FROM pnj WHERE id = '.$this->getId();
-			$requeteSQL = $db->query($requete);
-			list($this->nom, $this->x, $this->y, $this->image, $this->texte) = $db->read_row($requeteSQL);
+			$this->charger($id);
 		}
 		else
 		{
@@ -51,6 +48,17 @@ class pnj extends placable
 			$this->texte = $texte;
 		}
 	}
+
+	/**
+	 * Initialise les données membres à l'aide d'un tableau
+	 * @param array $vals    Tableau contenant les valeurs des données.
+	 */
+  protected function init_tab($vals)
+  {
+    entnj_incarn::init_tab($vals);
+		$this->image = $vals['image'];
+		$this->texte = $vals['texte'];
+  }
 	
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
@@ -69,31 +77,32 @@ class pnj extends placable
 	}
 	
 	//! Accesseur $image
-	function getImage()
+	function get_image()
 	{
 		return $this->image;
 	}
 	
 	//! Modifieur $image
-	function setImage($image)
+	function set_image($image)
 	{
 		$this->image = $image;
 	}
 	
 	//! Afficher l'image du pnj
+	/// @deprecated
 	function AfficheImage()
 	{
 		return '<img src="'.$this->image().'" alt="'.$this->nom.'" />';
 	}
 	
 	//! Accesseur $texte
-	function getTexte()
+	function get_texte()
 	{
 		return $this->texte;
 	}
 	
 	//! Modifieur $texte
-	function setTexte($texte)
+	function set_texte($texte)
 	{
 		$this->texte = $texte;
 	}

@@ -276,6 +276,7 @@ class objet_royaume extends objet_invent
 
   function utiliser(&$perso, &$princ)
   {
+  	global $db, $Trace;
     // Trêve ?
 		if( $perso->is_buff('debuff_rvr' ))
 		{
@@ -284,7 +285,7 @@ class objet_royaume extends objet_invent
 		}
     // On peut poser sur cette case ?
     $case = new map_case( $perso->get_pos() );
-    if( $case->get_type() == 1 or $case->get_type() == 4 or is_donjon($joueur->get_x(), $joueur->get_y()) )
+    if( $case->get_type() == 1 or $case->get_type() == 4 or is_donjon($perso->get_x(), $perso->get_y()) )
 		{
       $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez rien poser sur ce type de terrain !');
 			return false;
@@ -319,9 +320,9 @@ class objet_royaume extends objet_invent
     {
       if( $R->get_nom() != 'Neutre' )
       {
-        if( $R->get_diplo($joueur->get_race()) <= 6 or $R->get_diplo($joueur->get_race()) == 127  )
+        if( $R->get_diplo($perso->get_race()) <= 6 or $R->get_diplo($perso->get_race()) == 127  )
         {
-          $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez poser un drapeau uniquement sur les royaumes avec lesquels vous êtes en guerre.');
+          $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez poser un drapeau que sur les royaumes avec lesquels vous êtes en guerre.');
     			return false;
         }
         if( $case->get_nom() == 'Petit Drapeau' )
@@ -332,7 +333,7 @@ class objet_royaume extends objet_invent
       }
 
 			// Augmentation du compteur de l'achievement
-			$achiev = $joueur->get_compteur('pose_drapeaux');
+			$achiev = $perso->get_compteur('pose_drapeaux');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 
@@ -340,56 +341,56 @@ class objet_royaume extends objet_invent
 			if ($case->get_info() == 1)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_plaine');
+				$achiev = $perso->get_compteur('pose_drapeaux_plaine');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 2)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_foret');
+				$achiev = $perso->get_compteur('pose_drapeaux_foret');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 3)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_sable');
+				$achiev = $perso->get_compteur('pose_drapeaux_sable');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 4)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_glace');
+				$achiev = $perso->get_compteur('pose_drapeaux_glace');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 6)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_montagne');
+				$achiev = $perso->get_compteur('pose_drapeaux_montagne');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 7)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_marais');
+				$achiev = $perso->get_compteur('pose_drapeaux_marais');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 8)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_route');
+				$achiev = $perso->get_compteur('pose_drapeaux_route');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
 			if ($case->get_info() == 9)
 			{
 				// Augmentation du compteur de l'achievement
-				$achiev = $joueur->get_compteur('pose_drapeaux_terremaudite');
+				$achiev = $perso->get_compteur('pose_drapeaux_terremaudite');
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
@@ -447,7 +448,7 @@ class objet_royaume extends objet_invent
               {
                 $r_bourg = new royaume($b['royaume']);
                 $d_max = min($r_bourg->get_dist_bourgs(true), $dist_r);
-                $dist = detection_distance(convert_in_pos($b['x'], $b['y']), convert_in_pos($joueur->get_x(), $joueur->get_y()));
+                $dist = detection_distance(convert_in_pos($b['x'], $b['y']), convert_in_pos($perso->get_x(), $perso->get_y()));
                 if( $dist <= $d_max )
                 {
                   $princ->add( new interf_alerte('danger', true) )->add_message('l y a un bourg à '.$dist.' cases !');
@@ -474,7 +475,7 @@ class objet_royaume extends objet_invent
           }
   			}
   		}
-      else if( $_GET['type'] == 'mur' )
+      else if($this->get_type() == 'mur' )
       {
 				// On commence par extraire la position des murs ou des constructions de murs a 2 cases de distance de la case a traiter
 				$position_murs=array();
@@ -485,14 +486,14 @@ class objet_royaume extends objet_invent
 				$position_murs[4]=array(0,0,0,0,0);
 
 				// Il y a donc 25 positions à recupérer
-				$requete  = 'SELECT x,y FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
-				$requete  = 'SELECT id,x,y FROM construction WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur" UNION SELECT id,x,y FROM placement WHERE ABS(CAST(x AS SIGNED) - '.$joueur->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$joueur->get_y().') <= 2 AND type LIKE "mur"';
+				$requete  = 'SELECT x,y FROM construction WHERE ABS(CAST(x AS SIGNED) -'.$perso->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$perso->get_y().') <= 2 AND type LIKE "mur"';
+				$requete  = 'SELECT id,x,y FROM construction WHERE ABS(CAST(x AS SIGNED) - '.$perso->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$perso->get_y().') <= 2 AND type LIKE "mur" UNION SELECT id,x,y FROM placement WHERE ABS(CAST(x AS SIGNED) - '.$perso->get_x().') <= 2 AND ABS(CAST(y AS SIGNED) - '.$perso->get_y().') <= 2 AND type LIKE "mur"';
 				$req = $db->query($requete);
 
 				// Stockage des positions dans la matrice
 				while($row = $db->read_assoc($req))
 				{
-					$position_murs[$row[x]-$joueur->get_x()+2][$row[y]-$joueur->get_y()+2]=1;
+					$position_murs[$row[x] - $perso->get_x()+2][$row[y] - $perso->get_y()+2]=1;
 				}
 				// Rajout de la position du nouveau mur dans la matrice pour les tests (il est au milieu de la matrice).
 				$position_murs[2][2]=1;
