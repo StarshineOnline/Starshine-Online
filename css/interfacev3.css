@@ -379,7 +379,7 @@ a:hover, a:focus
   position:relative;
   text-align:center;
   width:210px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 .barre_buff
@@ -1209,6 +1209,26 @@ li.info_case div.jauge_case
 	margin: 0;
 }
 
+.mort
+{
+	/*background:transparent url(./../image/interface/mort.png) no-repeat scroll left center;
+	padding-left:20px;*/
+	text-decoration:line-through;
+}
+
+.jauge_case .icone-mort
+{
+	padding-left: 2px;
+	line-height: 23px;
+	font-size: 18px;
+	color: #888;
+}
+
+.dresse
+{
+	font-style: italic;
+}
+
 .diplo0 { color:#3c763d; }/*#449D44*/
 .diplo1 { color:#3c763d; }
 .diplo2 { color:#3c763d; }
@@ -1233,30 +1253,6 @@ li.info_case div.jauge_case
 .niv3{ color:#ff5900; font-weight: bold; }
 .niv4{ color:#ff5900; font-weight: bold; }
 .niv5{ color:#ff0000; font-weight: bold; }
-
-
-#info_case ul li { height:20px; }
-#info_case ul li:hover { background:transparent url(./../image/v2/box_accueil2.png); }
-#info_case h4 { padding:0; margin:3px;clear:both; }
-#info_case h3 { text-align:center; }
-.info_mob li { 
-    padding:5px;
-    float: left;
-    height: 30px;
-    width: 224px;
-    position: relative;
-    line-height: 30px;}
-
-.icone_mob {width:30px;height:30px;line-height: 30px;float:left;text-align: center;}
-
-.couleur_attaque 	{background-color:red;}
-.couleur_sort	 	{background-color:blue;}
-.couleur_dressage	{background-color:yellow;}
-
-.image_mob {width:30px;height:30px;line-height: 30px;float:left;}
-
-.text_mob	{height:30px;line-height: 30px;float:left;width:132px;}
-
 
 
 /* ... */
@@ -1379,7 +1375,6 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #inventaire_slot { font-size:11px; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
 #inventaire_slot ul li { height:20px; clear:both; padding:2px; }
 #inventaire_slot .inventaire_span { float:left; display:block; }
-.mort { background:transparent url(./../image/interface/mort.png) no-repeat scroll left center; text-decoration:line-through; padding-left:20px; }
 #bestiaire { clear:both; }
 #bestiaire ul li { height:41px; line-height:35px; text-align:center; background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; margin:1px; }
 #bestiaire ul li:hover { background:transparent url(../image/interface/1.png) center; }

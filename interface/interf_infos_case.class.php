@@ -294,6 +294,13 @@ class interf_infos_case extends interf_cont
 					}
 				}
 				$facteur_honneur = max($diplo * 0.2 - 0.8, 0);
+				if( $pj->est_mort() )
+				{
+					$diplo .= ' mort';
+					$div_mort = $lien->add( new interf_bal_cont('div', false, 'jauge_case') );
+					$div_mort->add( new interf_bal_cont('span', false, 'icone icone-mort') );
+					$div_mort->set_tooltip('Ce personnage est mort', 'bottom');
+				}
 				$nom = $lien->add( new interf_bal_smpl('span', $pj->get_nom(), false, $diplo) );
 				$nom->set_tooltip($Gtrad[$pj->get_race()].($pj->get_level()?'':' (PNJ)').' : '.$diplo_txt.' − honneur/réputation : '.($facteur_honneur * 100).'%', 'bottom');
 			}
@@ -308,6 +315,9 @@ class interf_infos_case extends interf_cont
 		$div->add( new interf_bal_smpl('span', 'Monstres', false, 'xsmall') );
 		$lst = $div->add( new interf_bal_cont('ul') );
 		
+		
+		$dresse = $this->perso->is_buff('dressage') ? $this->perso->get_buff('dressage', 'effet2') : false;
+			
 		/*$monstres = map_monstre::create(array('x', 'y'), array($this->case->get_x(), $this->case->get_y()));
 		foreach($monstres as $m)*/
     /// TODO: à améliorer
@@ -330,8 +340,31 @@ class interf_infos_case extends interf_cont
 			$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
 			$jauge = $lien->add( new interf_jauge_bulle(false, $nbr_barre, $nbr_barre_total, false, 'hp', false, 'jauge_case') );
 			$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
-			$diff_niv = $row->affiche=='h' ? 0 : min(max($niveau - $this->perso->get_level(),-5),5);
-			$lien->add( new interf_bal_smpl('span', $row->nom, false, 'niv'.$diff_niv) );
+			$diff_niv = $row->affiche=='h' ? 0 : $niveau - $this->perso->get_level();
+			$classe = 'niv'.min(max($diff_niv,-5),5);
+			switch($diff_niv)
+			{
+			case -1:
+				$texte = 'Ce monstre a 1 niveau de moins que vous';
+				break;
+			case 0:
+				$texte = 'Ce monstre a le même niveau que vous';
+			case 1:
+				$texte = 'Ce monstre a 1 niveau de moins que vous';
+				break;
+			default:
+				if( $diff_niv < -1 )
+					$texte = 'Ce monstre a '.(-$diff_niv).' niveaux de moins que vous';
+				else
+					$texte = 'Ce monstre a '.$diff_niv.' niveaux de plus que vous';
+			}
+			if( $dresse == $row->id )
+			{
+				$texte .= ' − vous dressez ce monstre';
+				$classe .= ' dresse';
+			}
+			$nom = $lien->add( new interf_bal_smpl('span', $row->nom, false, $classe) );
+			$nom->set_tooltip($texte, 'bottom');
 		}
 	}
 }
