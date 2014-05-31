@@ -210,7 +210,7 @@ class construction extends entitenj_constr
     return $res;
   }
 
-  protected static function make_url_image($image, $grd_img=true)
+  static function make_url_image($image, $grd_img=true)
   {
     return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_04.png';
   }

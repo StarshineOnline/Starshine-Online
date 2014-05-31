@@ -70,10 +70,15 @@ class interf_factory
     return new interf_mort();
 	}
 	/// Information sur les cases
-	function creer_interf_infos_case(&$case, $distance, $id_case, $reponse)
+	function creer_infos_case(&$case, $distance, $id_case, $reponse)
 	{
     include_once(root.'interface/interf_infos_case.class.php');
     return new interf_infos_case($case, $distance, $id_case, $reponse);
+	}
+	/// Tour de guet
+	function creer_tour($tour)
+	{
+    return new interf_tour($tour);
 	}
   /**
    * @name Inventaire

@@ -186,12 +186,19 @@ class placement extends entitenj_constr
     $res = array();
     while( $row = $db->read_object($req) )
     {
-      $avanc = (time() - $row->debut_placement) / ($row->fin_placement - $row->debut_placement);
-      $row->image = self::make_url_image($row->image, $row->type, $avanc, $grd_img);
+      /*$avanc = (time() - $row->debut_placement) / ($row->fin_placement - $row->debut_placement);
+      $row->image = self::make_url_image($row->image, $row->type, $avanc, $grd_img);*/
+      $row->image = self::calc_image($row->image, $row->type, $row->debut_placement, $row->fin_placement, $grd_img);
       $res[] = $row;
     }
     return $res;
   }
+  
+  static function calc_image($image, $type, $debut, $fin, $grd_img=true)
+  {
+    $avancement = (time() - $debut) / ($fin - $debut);
+  	return self::make_url_image($image, $type, $avancement, $grd_img);
+	}
 
   protected static function make_url_image($image, $type, $avancement, $grd_img=true)
   {

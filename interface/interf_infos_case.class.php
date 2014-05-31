@@ -243,10 +243,7 @@ class interf_infos_case extends interf_cont
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
     /// TODO: à améliorer
-    if( $perso )
-      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif" ORDER BY d.'.$this->perso->get_race().' DESC, level DESC';
-    else
-      $requete = 'SELECT * FROM perso WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif" ORDER BY level DESC';
+    $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif" ORDER BY d.'.$this->perso->get_race().' DESC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
 		{
@@ -304,7 +301,7 @@ class interf_infos_case extends interf_cont
 				$nom = $lien->add( new interf_bal_smpl('span', $pj->get_nom(), false, $diplo) );
 				$nom->set_tooltip($Gtrad[$pj->get_race()].($pj->get_level()?'':' (PNJ)').' : '.$diplo_txt.' − honneur/réputation : '.($facteur_honneur * 100).'%', 'bottom');
 			}
-		}
+		} 
 	}
 	
 	/// Affiche les monstres

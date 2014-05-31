@@ -71,6 +71,17 @@ class interf_gauche extends interf_bal_cont
 		}
 		return $centre;
 	}
+	protected function set_img_centre($img, $url=false, $alt=false)
+	{
+		$centre = $this->disque->add( new interf_bal_cont($url?'a':'span', 'depl_disque_centre') );
+		if( $url )
+		{
+			$centre->set_attribut('href', $url);
+			$centre->set_attribut('onClick', 'return  charger(this.href);');
+		}
+		$centre->add( new interf_img($img, $alt) );
+		return $centre;
+	}
 	protected function set_jauge_ext($valeur, $max, $style, $nom=false)
 	{
 		$this->set_jauge('ext', $valeur, $max, $style, $nom);
