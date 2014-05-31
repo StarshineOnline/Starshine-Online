@@ -31,6 +31,8 @@ function charger(page)
     	case 'recharger':
     		document.location=this.innerHTML.trim();
     		document.location.reload();
+    	case 'maj_tooltips':
+    		maj_tooltips();
     	default:
       	$('#'+this.id).html( this.innerHTML );
 			}

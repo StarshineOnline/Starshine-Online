@@ -116,6 +116,9 @@ class interf_jeu extends interf_sso_int
 	{
 		$this->code_js('document.location="interface.php";');
 	}
+	function maj_tooltips()
+	{
+	}
 }
 
 class interf_jeu_ajax extends interf_princ_ob
@@ -201,7 +204,11 @@ class interf_jeu_ajax extends interf_princ_ob
   }
 	function recharger_interface($url='interface.php')
 	{
-    $cont = $this->add( new interf_bal_smpl('section', $url, 'recharger') );
+    $this->add( new interf_bal_smpl('section', $url, 'recharger') );
+	}
+	function maj_tooltips()
+	{
+    $this->add( new interf_bal_smpl('section', false, 'maj_tooltips') );
 	}
 }
 ?>
