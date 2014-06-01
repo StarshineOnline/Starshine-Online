@@ -117,6 +117,12 @@ a:hover, a:focus
 table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 {
 	padding: 1px;
+  border: none;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th
+{
+    background-color: rgba(255, 255, 255, .3);
 }
 
 /*-- Basics elements --------------------------------------------------*/
@@ -1318,6 +1324,28 @@ li.info_case div.jauge_case
 {
 	padding: 5px;
 	text-align: justify;
+}
+
+.jauge_case .bulle_valeur
+{
+	top: 9px;
+	font-size: 12px;
+	color: white;
+	text-align: center;
+}
+
+/* Informations PJ */
+
+#pos_pj
+{
+	margin : 2px;
+}
+
+#etat_pj .icone-mort
+{
+  font-size: 27px;
+  padding: 4px;
+  line-height: 32px;
 }
 
 /* ... */

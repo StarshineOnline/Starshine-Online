@@ -80,6 +80,11 @@ class interf_factory
 	{
     return new interf_monstre($entite, $actions);
 	}
+	/// Information sur les personnages
+	function creer_info_perso($entite, $actions)
+	{
+    return new interf_info_perso($entite, $actions);
+	}
 	/// Tour de guet
 	function creer_tour($tour)
 	{

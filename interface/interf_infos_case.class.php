@@ -152,8 +152,10 @@ class interf_infos_case extends interf_cont
 			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, $diplo) );
 			$nom->set_tooltip($bat->get_nom().' − '.$Gtrad[$diplo], 'bottom');
 			$avanc = $div2->add( new interf_jauge_bulle(false, time() - $plac->get_debut_placement(), $plac->get_fin_placement() - $plac->get_debut_placement(), false, 'avance', false, 'jauge_case') );
+			$avanc->add( new interf_bal_smpl('div', round((time() - $plac->get_debut_placement()) / ($plac->get_fin_placement() - $plac->get_debut_placement()) * 100).'%', false, 'bulle_valeur') );
 			$avanc->set_tooltip(transform_sec_temp($plac->get_fin_placement() - time()).' avant fin de construction', 'bottom', '#contenu');
 			$div2->add( new interf_jauge_bulle('HP', $plac->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
+			$hp->add( new interf_bal_smpl('div', round($plac->get_hp() / $bat->get_hp() * 100).'%', false, 'bulle_valeur') );
 		}
 		
 		// Bâtiments construits
@@ -208,7 +210,8 @@ class interf_infos_case extends interf_cont
 			else
 				$div2 = $div->add( new interf_bal_cont('div') );
 			$div2->add( new interf_img($constr->get_image()) );
-			$div2->add( new interf_jauge_bulle('HP', $constr->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
+			$hp = $div2->add( new interf_jauge_bulle('HP', $constr->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
+			$hp->add( new interf_bal_smpl('div', round($constr->get_hp() / $bat->get_hp() * 100).'%', false, 'bulle_valeur') );
 			$nom = $div2->add( new interf_bal_cont('span') );
 			$nom->add( new interf_bal_smpl('span', $constr->get_nom()) );
 			$nom->add( new interf_txt(' − ') );
@@ -270,7 +273,8 @@ class interf_infos_case extends interf_cont
 			}
 			else
 			{
-				$diplo = 'diplo'.$royaume->get_diplo( $pj->get_race() );
+				$diplo = $royaume->get_diplo( $pj->get_race() );
+				$diplo_classe= 'diplo'.$diplo;
 				$diplo_txt = $Gtrad[$diplo];
 				if($diplo == 127)
 				{
@@ -282,10 +286,12 @@ class interf_infos_case extends interf_cont
 						case 'bandit' :
 							$diplo = 5;
 							$diplo_txt = 'Bandit';
+							$diplo_classe = 'diplo5';
 							break;
 						case 'criminel' :
 							$diplo = 10;
 							$diplo_txt = 'Criminel';
+							$diplo_classe = 'diplo10';
 							break;
 						}
 					}
@@ -298,7 +304,7 @@ class interf_infos_case extends interf_cont
 					$div_mort->add( new interf_bal_cont('span', false, 'icone icone-mort') );
 					$div_mort->set_tooltip('Ce personnage est mort', 'bottom');
 				}
-				$nom = $lien->add( new interf_bal_smpl('span', $pj->get_nom(), false, $diplo) );
+				$nom = $lien->add( new interf_bal_smpl('span', $pj->get_nom(), false, $diplo_classe) );
 				$nom->set_tooltip($Gtrad[$pj->get_race()].($pj->get_level()?'':' (PNJ)').' : '.$diplo_txt.' − honneur/réputation : '.($facteur_honneur * 100).'%', 'bottom');
 			}
 		} 

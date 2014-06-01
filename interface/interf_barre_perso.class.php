@@ -201,6 +201,7 @@ class interf_barre_perso extends interf_bal_cont
 	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+			/// TODO: gérer les coordonnées cachées
 	    $txt = 'Pos. : '.$membre->get_x().' / '.$membre->get_y();
 	    $txt .= ' - '.'dist. : '.$dist;
 	    $pos->add( new interf_bal_smpl('span', $txt, null, 'membre_pos'.($dist>7?' trop_loin':'')) );
@@ -225,8 +226,7 @@ class interf_barre_perso extends interf_bal_cont
 		$non->add( new interf_bal_smpl('span', '', false, 'icone icone-croix4') );
 		$non->add( new interf_bal_smpl('span', 'Refuser', false, 'texte') );
 		$non->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=non&groupe='.$invitation->get_groupe());
-		$oui->set_attribut('onclick', 'charger(this.href);');
-		$oui->set_attribut('onclick', 'charger(this.href);');
+		$non->set_attribut('onclick', 'charger(this.href);');
 	}
 	static function creer_activite(&$perso, &$parent)
 	{
