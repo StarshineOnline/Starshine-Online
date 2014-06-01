@@ -114,6 +114,11 @@ a:hover, a:focus
 	padding-right: 20px;
 }
 
+table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
+{
+	padding: 1px;
+}
+
 /*-- Basics elements --------------------------------------------------*/
 #global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
 .spacer { clear:both!important; float:none!important; border:none!important; height:1px!important; line-height:1px!important; font-size:1px!important; padding:0!important; margin:0 0 -1px!important; visibility:hidden!important; }
@@ -1299,6 +1304,20 @@ li.info_case div.jauge_case
 #depl_centre li.info_case div.jauge_case
 {
 	margin: 4px 1px;
+}
+
+
+/* Informations monstres */
+#infos_monstre span
+{
+	margin: 2px;
+	line-height: 20px;
+}
+
+#descr_monstre
+{
+	padding: 5px;
+	text-align: justify;
 }
 
 /* ... */

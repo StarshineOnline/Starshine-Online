@@ -460,4 +460,20 @@ class interf_jauge_bulle extends interf_bal_cont
 			$this->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
 	}
 }
+
+/// description en utiliant les tableaux
+class interf_descr_tbl extends interf_tableau
+{
+	function __construct($id)
+	{
+		parent::__construct($id, 'table table-striped', false, false, null);
+	}
+	
+	function nouv_elt($terme, $def=false)
+	{
+		$this->nouv_ligne();
+		$this->nouv_cell($terme, false, false, true);
+		return $this->nouv_cell($def);
+	}
+}
 ?>

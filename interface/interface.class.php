@@ -824,10 +824,11 @@ class interf_tableau extends interf_bal_cont
 {
   protected $lgn_act = null;  ///< Ligne actuelle du tableau.
   protected $entete;   ///< Indique si la ligne actuelle est l'en-tête.
-  function __construct($id=false, $classe=false, $id_lgn1=null, $classe_lgn1=null, $entete=true)
+  function __construct($id=false, $classe=false, $id_lgn1=false, $classe_lgn1=false, $entete=true)
   {
   	parent::__construct('table', $id, $classe);
-    $this->nouv_ligne($id_lgn1, $classe_lgn1);
+  	if( $entete !== null )
+    	$this->nouv_ligne($id_lgn1, $classe_lgn1);
     $this->entete = $entete;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
@@ -848,7 +849,7 @@ class interf_tableau extends interf_bal_cont
    * @param  $class     classe de la ligne.
    * @return    objet gérant la ligne (de type interf_bal_cont).
    */
-  function &nouv_ligne($id=null, $classe=null)
+  function &nouv_ligne($id=false, $classe=false)
   {
     $lgn = new interf_bal_cont('tr', $id, $classe);
     $this->add($lgn);
@@ -885,4 +886,38 @@ class interf_tableau extends interf_bal_cont
     $this->entete = $entete;
   }
 }
+
+/**
+ * Liste de description
+ */
+class interf_descr extends interf_bal_cont
+{
+	function __construct($id=false, $classe='dl-horizontal')
+	{
+		parent::__construct('dl', $id, $classe);
+	}
+	function nouv_elt($terme, $def=false)
+	{
+		if( is_object($terme) )
+		{
+			$dt = $this->add( new interf_bal_cont('dt') );
+			$dt->add( $terme );
+		}
+		else
+			$this->add( new interf_bal_smpl('dt', $terme) );
+		if( $def )
+		{
+			if( is_object($def) )
+			{
+				$dd = $this->add( new interf_bal_cont('dd') );
+				$dd->add( $def );
+			}
+			else
+				$dd = $this->add( new interf_bal_smpl('dd', $def) );
+		}
+		else
+			$dd = $this->add( new interf_bal_cont('dd') );
+		return $dd;
+	}
+} 
 ?>

@@ -75,6 +75,11 @@ class interf_factory
     include_once(root.'interface/interf_infos_case.class.php');
     return new interf_infos_case($case, $distance, $id_case, $reponse);
 	}
+	/// Information sur les monstres
+	function creer_monstre($entite, $actions)
+	{
+    return new interf_monstre($entite, $actions);
+	}
 	/// Tour de guet
 	function creer_tour($tour)
 	{

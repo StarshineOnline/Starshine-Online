@@ -318,10 +318,25 @@ class interf_infos_case extends interf_cont
 		/*$monstres = map_monstre::create(array('x', 'y'), array($this->case->get_x(), $this->case->get_y()));
 		foreach($monstres as $m)*/
     /// TODO: à améliorer
-    $requete = 'SELECT mm.id, x, y, lib, nom, level, mm.hp as hp, m.hp as hp_max, affiche FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' ORDER BY ABS(CAST(level AS SIGNED) - '.$this->perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT mm.id, x, y, lib, nom, level, mm.hp as hp, m.hp as hp_max, affiche, quete FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' ORDER BY ABS(CAST(level AS SIGNED) - '.$this->perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
 		{
+			// Monstre spécifiques à une quête
+			if( $row->quete )
+			{
+				if( !isset($quetes) )
+        {
+          $quetes = array();
+          $lq = $this->perso->get_liste_quete();
+          foreach($lq as $q)
+          {
+            $quetes[] = $q['id_quete'];
+          }
+        }
+        if( !in_array($row->quete, $quete) )
+          continue;
+			}
 			//$monstre = $m->get_def();
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case monstre') );
 			$lien = $li->add( new interf_lien_cont('info_monstre.php?id='.$row->id, false, 'info_elt') );
@@ -339,22 +354,30 @@ class interf_infos_case extends interf_cont
 			$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
 			$diff_niv = $row->affiche=='h' ? 0 : $niveau - $this->perso->get_level();
 			$classe = 'niv'.min(max($diff_niv,-5),5);
-			switch($diff_niv)
+			if( $row->affiche=='h' )
 			{
-			case -1:
-				$texte = 'Ce monstre a 1 niveau de moins que vous';
-				break;
-			case 0:
-				$texte = 'Ce monstre a le même niveau que vous';
-				break;
-			case 1:
-				$texte = 'Ce monstre a 1 niveau de moins que vous';
-				break;
-			default:
-				if( $diff_niv < -1 )
-					$texte = 'Ce monstre a '.(-$diff_niv).' niveaux de moins que vous';
-				else
-					$texte = 'Ce monstre a '.$diff_niv.' niveaux de plus que vous';
+				$texte = 'Ce monstre a un niveau inconnu';
+				$classe = '';
+			}
+			else
+			{
+				switch($diff_niv)
+				{
+				case -1:
+					$texte = 'Ce monstre a 1 niveau de moins que vous';
+					break;
+				case 0:
+					$texte = 'Ce monstre a le même niveau que vous';
+					break;
+				case 1:
+					$texte = 'Ce monstre a 1 niveau de moins que vous';
+					break;
+				default:
+					if( $diff_niv < -1 )
+						$texte = 'Ce monstre a '.(-$diff_niv).' niveaux de moins que vous';
+					else
+						$texte = 'Ce monstre a '.$diff_niv.' niveaux de plus que vous';
+				}
 			}
 			if( $dresse == $row->id )
 			{

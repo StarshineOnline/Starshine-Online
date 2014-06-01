@@ -1,7 +1,7 @@
 <?php
 /**
  * @file interf_infos_case.class.php
- * Permet l'affichage des informations d'une case en fonction du joueur.
+ * Permet l'affichage des informations d'une tour.
  */
  
 include_once(root.'interf_gauche.class.php');
