@@ -404,11 +404,14 @@ class interf_infos_popover extends interf_princ
 /// lien ajax simple
 class interf_lien extends interf_bal_smpl
 {
-	function __construct($texte, $cible, $id=false, $classe=false)
+	function __construct($texte, $cible, $id=false, $classe=false, $verif=false)
 	{
 		parent::__construct('a', $texte, $id, $classe);
 		$this->set_attribut('href', $cible);
-		$this->set_attribut('onclick', 'return charger(this.href);');
+		if( $verif )
+			$this->set_attribut('onclick', 'return verif_charger(this.href, \''.$verif.'\');');
+		else
+			$this->set_attribut('onclick', 'return charger(this.href);');
 	}
 }
 

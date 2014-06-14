@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?-6epk3v');
-	src:url('fonts/sso-icones.eot?#iefix-6epk3v') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?-6epk3v') format('woff'),
-		url('fonts/sso-icones.ttf?-6epk3v') format('truetype'),
-		url('fonts/sso-icones.svg?-6epk3v#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?-fui9dh');
+	src:url('fonts/sso-icones.eot?#iefix-fui9dh') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?-fui9dh') format('woff'),
+		url('fonts/sso-icones.ttf?-fui9dh') format('truetype'),
+		url('fonts/sso-icones.svg?-fui9dh#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -923,6 +923,39 @@
 .icone-info8:before {
 	content: "\e8de";
 }
+.icone-perso2:before {
+	content: "\f007";
+}
+.icone-perso:before {
+	content: "\e7d0";
+}
+.icone-perso4:before {
+	content: "\e72a";
+}
+.icone-perso3:before {
+	content: "\e80f";
+}
+.icone-groupe2:before {
+	content: "\e627";
+}
+.icone-groupe3:before {
+	content: "\e72b";
+}
+.icone-groupe:before {
+	content: "\f0c0";
+}
+.icone-inviter2:before {
+	content: "\e72c";
+}
+.icone-inviter:before {
+	content: "\e928";
+}
+.icone-exclure:before {
+	content: "\e927";
+}
+.icone-perso5:before {
+	content: "\e974";
+}
 .icone-lune:before {
 	content: "\e7da";
 }
@@ -1003,6 +1036,15 @@
 }
 .icone-soin2:before {
 	content: "\e663";
+}
+.icone-retour:before {
+	content: "\e915";
+}
+.icone-retour2:before {
+	content: "\f112";
+}
+.icone-retour3:before {
+	content: "\e728";
 }
 .icone-aller-a:before {
 	content: "\e914";

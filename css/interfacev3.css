@@ -1348,6 +1348,53 @@ li.info_case div.jauge_case
   line-height: 32px;
 }
 
+#rp_pj
+{
+}
+
+#rp_gauche
+{
+	float: left;
+	border-right: 1px solid rgba(0, 0, 0, 0.3);
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	width: 52px;
+	border-bottom-right-radius: 4px;
+	overflow: hidden;
+}
+
+#rp_haut
+{
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	background: none repeat scroll 0px 0px rgba(0, 0, 0, 0.2);
+}
+
+#rp_gauche a
+{
+	width: 49px;
+	border-left: none;
+	float: none;
+}
+
+#rp_gauche>div:nth-of-type(n+2)
+{
+	margin: 1px;
+	border-top: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#rp_texte
+{
+	padding: 3px;
+}
+
+#rp_texte>div:nth-of-type(n+2)
+{
+	margin: 3px;
+	border-top: 1px solid rgba(0, 0, 0, 0.3);
+	overflow: hidden;
+	/*padding: 3px;*/
+}
+
 /* ... */
 
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
@@ -1533,9 +1580,9 @@ div.spacer { clear:both; }
 h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
 h3.messagerie span.titre { position:absolute; left:114px; color:#828387; font-weight:normal; }
 .messagerie span.date { font-style:italic; font-size:.7em; }
-h4 { margin:0; padding:0; }
+/*h4 { margin:0; padding:0; }
 h5 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#DF3F00; margin:0; padding-left:10px; }
-h6 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#6EB027; margin:0; padding-left:10px; }
+h6 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#6EB027; margin:0; padding-left:10px; }*/
 img { border:0 none; padding:0; margin:0; }
 dl,dt,dd,ul,li { margin:0; padding:0; list-style-type:none; }
 ol.tuto,ol.tuto li { list-style-type:decimal; }

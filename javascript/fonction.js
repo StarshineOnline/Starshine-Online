@@ -41,6 +41,13 @@ function charger(page)
 	return false;
 }
 
+function verif_charger(url, texte)
+{
+	if( confirm(texte) )
+		charger(url);
+	return false;
+}
+
 function charge_tab(elt, id)
 {
   var e = $("#"+id);
