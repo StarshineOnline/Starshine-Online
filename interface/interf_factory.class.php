@@ -90,6 +90,11 @@ class interf_factory
 	{
     return new interf_tour($tour);
 	}
+	/// livres de sorts/compétences
+	function creer_livre_sortcomp($type, &$cible, $categorie, $actions)
+	{
+    return new interf_livre_sortcomp($type, $cible, $categorie, $actions);
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

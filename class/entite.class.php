@@ -1299,6 +1299,7 @@ class entite extends placable
 		  $objet->objet_ref = &$src->get_def();
 		  break;
     case 'joueur' :
+    case 'perso' :
       $objet = new perso($src->get_id());
       $objet->check_specials();
 			$objet->action = $src->action_do;

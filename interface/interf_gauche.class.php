@@ -42,7 +42,7 @@ class interf_gauche extends interf_bal_cont
 			$mort->get_lien()->add( new interf_txt('Mort') );
 			break;
 		}
-		$livres = $menu->add( new interf_elt_menu('', 'livre.php', 'return envoiInfo(this.href, \'information\');') );
+		$livres = $menu->add( new interf_elt_menu('', 'livre.php', 'return charger(this.href);') );
 		$livres->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-livres') );
 		$livres->get_lien()->add( new interf_txt('Livres') );
 		$quetes = $menu->add( new interf_elt_menu('', 'quete.php', 'return envoiInfo(this.href, \'information\');') );

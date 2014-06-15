@@ -3824,7 +3824,7 @@ class perso extends entite
 			$this->id_joueur = $id['id_joueur'];
 			$this->tuto = $id['tuto'];
 			$this->date_creation = $id['date_creation'];
-			}
+		}
 		else
 		{
 			$this->mort = $mort;
@@ -3906,6 +3906,7 @@ class perso extends entite
 			$this->joueur = $joueur;
 			$this->date_creation = $date_creation;
 		}
+		$this->type = 'perso';
 
 		$this->applique_bonus();
 	}

@@ -43,7 +43,7 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function add_onglet($nom, $adresse, $id, $classe, $selection=false)
+  function add_onglet($nom, $adresse, $id, $classe='', $selection=false)
   {
     $classe .= ' tab-pane';
     if( $selection )

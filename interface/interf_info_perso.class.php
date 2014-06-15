@@ -191,7 +191,7 @@ class interf_info_perso extends interf_cont
 		{
 			if( !$this->pj->est_mort() )
 			{
-				$hp = $div2->add( new interf_jauge_bulle('HP', $this->pj->get_hp(), $this->perso->get_hp_max(), false, 'hp', false, 'jauge_case') );
+				$hp = $div2->add( new interf_jauge_bulle('HP', $this->pj->get_hp(), $this->pj->get_hp_max(), false, 'hp', false, 'jauge_case') );
 				$hp->add( new interf_bal_smpl('div', round($this->pj->get_hp() / $this->pj->get_hp_max() * 100).'%', false, 'bulle_valeur') );
 			}
 			$mp = $div2->add( new interf_jauge_bulle('MP', $this->pj->get_mp(), $this->pj->get_mp_max(), false, 'mp', false, 'jauge_case') );

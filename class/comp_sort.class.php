@@ -33,6 +33,7 @@ class comp_sort extends comp_sort_buff
 	const cible_autre = 4;  ///< Valeur de l'attribut cible si celle-ci est un autre personnage
 	const cible_autregrp = 5;  ///< Valeur de l'attribut cible si celle-ci est un autre groupe
 	const cible_case = 6;  ///< Valeur de l'attribut cible pour les débuffs sur une case
+	const cible_batiment = 7;  ///< Valeur de l'attribut cible pour les batiments sur une case
 	const cible_9cases = 8;  ///< Valeur de l'attribut cible pour les débuffs sur un carré de 3x3 cases
 
   /// Renvoie la compétence associée
@@ -174,6 +175,11 @@ class comp_sort extends comp_sort_buff
 		$this->mp = $mp;
 		$this->champs_modif[] = 'mp';
 	}
+  /// envoie le coût en MP en prennant en compte l'affinité
+  function get_mp_final($joueur)
+  {
+  	return $this->mp;
+  }
 
   /// Renvoie le prix de la compétence ou le sort
 	function get_prix()

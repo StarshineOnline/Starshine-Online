@@ -98,7 +98,7 @@ class comp_combat extends comp
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return comp::get_liste_champs().', effet3, ';
+    return comp::get_liste_champs().', effet3';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()

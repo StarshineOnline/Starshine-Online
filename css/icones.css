@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?-fui9dh');
-	src:url('fonts/sso-icones.eot?#iefix-fui9dh') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?-fui9dh') format('woff'),
-		url('fonts/sso-icones.ttf?-fui9dh') format('truetype'),
-		url('fonts/sso-icones.svg?-fui9dh#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?-mopfd0');
+	src:url('fonts/sso-icones.eot?#iefix-mopfd0') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?-mopfd0') format('woff'),
+		url('fonts/sso-icones.ttf?-mopfd0') format('truetype'),
+		url('fonts/sso-icones.svg?-mopfd0#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -628,6 +628,33 @@
 }
 .icone-favoris6:before {
 	content: "\e730";
+}
+.icone-suppr-favori:before {
+	content: "\e660";
+}
+.icone-suppr-favori2:before {
+	content: "\e716";
+}
+.icone-suppr-favori3:before {
+	content: "\e731";
+}
+.icone-pour:before {
+	content: "\e834";
+}
+.icone-pour3:before {
+	content: "\e732";
+}
+.icone-pour2:before {
+	content: "\e665";
+}
+.icone-contre:before {
+	content: "\e835";
+}
+.icone-contre2:before {
+	content: "\e666";
+}
+.icone-contre3:before {
+	content: "\e733";
 }
 .icone-bug2:before {
 	content: "\e7fb";

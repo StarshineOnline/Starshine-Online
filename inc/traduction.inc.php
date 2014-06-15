@@ -8,7 +8,7 @@ if (file_exists('../root.php'))
  */
 
 /**
- * @name Sorts et compétences
+ * @name Aptitudes, sorts et compétences
  * Traduction des types de magie, sorts et compétences.
  * @{  
  */
@@ -110,6 +110,7 @@ $Gtrad['hache'] = 'hache';
 $Gtrad['dague'] = 'dague';
 $Gtrad['arc'] = 'arc';
 $Gtrad['baton'] = 'bâton';
+$Gtrad['bouclier'] = 'bouclier';
 //@}
 
 
@@ -196,6 +197,29 @@ $Gtrad['affinite5'] = 'Bonne';
 $Gtrad['affinite6'] = 'Très bonne';
 $Gtrad['affinite7'] = 'Superbe';
 //@}
+
+
+/**
+ * @name Cibles
+ * Traduction des cibles.
+ * @{  
+ */
+$Gtrad['cible1'] = 'personnel';
+$Gtrad['cible2'] = 'un personnage';
+$Gtrad['cible3'] = 'votre groupe';
+$Gtrad['cible4'] = 'un autre personnage';
+$Gtrad['cible5'] = 'un autre groupe';
+$Gtrad['cible6'] = 'les personnages sur votre case';
+$Gtrad['cible7'] = 'les bâtiments sur votre case';
+$Gtrad['cible8'] = 'les personnages autour de vous';
+$Gtrad['cible_ex1'] = 'vous';
+$Gtrad['cible_ex2'] = '';
+$Gtrad['cible_ex3'] = 'votre groupe';
+$Gtrad['cible_ex4'] = '';
+$Gtrad['cible_ex5'] = 'le groupe de ';
+$Gtrad['cible_ex6'] = 'les personnages de votre cases';
+$Gtrad['cible_ex7'] = 'les bâtiments sur votre case';
+$Gtrad['cible_ex8'] = 'les personnages autour de vous';
 
 
 /**

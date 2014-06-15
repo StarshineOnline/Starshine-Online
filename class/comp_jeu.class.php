@@ -28,6 +28,10 @@ class comp_jeu extends comp
 		$this->pa = $pa;
 		$this->champs_modif[] = 'pa';
 	}
+	function get_image()
+	{
+		return 'image/buff/'.$this->type.'.png';
+	}
 	// @}
 
 	/**

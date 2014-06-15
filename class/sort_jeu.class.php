@@ -54,6 +54,24 @@ class sort_jeu extends sort
 		$this->special = $special;
 		$this->champs_modif[] = 'special';
 	}
+	function get_image()
+	{
+		switch($this->type)
+		{
+		case 'vie' :
+		case 'vie_pourcent' :
+			return 'image/sort/sort_soins1.png';
+		break;
+		case 'teleport' :
+			return 'image/buff/teleport.jpg';
+		break;
+		case 'rez' :
+			return 'image/buff/rez.jpg';
+		break;
+		default:
+			return 'image/buff/'.$this->type.'.png';
+		}
+	}
 	// @}
 
 	/**
