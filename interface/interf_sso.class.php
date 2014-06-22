@@ -69,7 +69,7 @@ abstract class interf_sso_int extends interf_sso
         $menu_joueur->add( new interf_elt_menu('Administration', './admin/') );
     }
     $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
-    $menu_joueur->add( new interf_elt_menu('Deconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
+    $menu_joueur->add( new interf_elt_menu('Déconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
   }
   abstract protected function menu_droite();
 }

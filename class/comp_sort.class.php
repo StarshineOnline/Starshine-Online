@@ -8,7 +8,7 @@
  * Classe comp_sort_buff
  * Classe comp_sort servant de base aux compétences et sorts
  */
-class comp_sort extends comp_sort_buff
+abstract class comp_sort extends comp_sort_buff
 {
 	/**
 	 * @name Informations générales.
@@ -35,6 +35,8 @@ class comp_sort extends comp_sort_buff
 	const cible_case = 6;  ///< Valeur de l'attribut cible pour les débuffs sur une case
 	const cible_batiment = 7;  ///< Valeur de l'attribut cible pour les batiments sur une case
 	const cible_9cases = 8;  ///< Valeur de l'attribut cible pour les débuffs sur un carré de 3x3 cases
+	
+	const propose_relance = false;
 
   /// Renvoie la compétence associée
 	function get_comp_assoc()
@@ -176,7 +178,7 @@ class comp_sort extends comp_sort_buff
 		$this->champs_modif[] = 'mp';
 	}
   /// envoie le coût en MP en prennant en compte l'affinité
-  function get_mp_final($joueur)
+  function get_mp_final($perso)
   {
   	return $this->mp;
   }
@@ -211,6 +213,28 @@ class comp_sort extends comp_sort_buff
 	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
   // @{
+  /**
+   * Méthode créant un objet dérivé en fonction du type entré en paramlètre
+   * @param  type		type de l'objet à créer
+   * @param  id			id du sort ou de la compétence
+   * @return		sort ou compétence	 	  
+   */
+  static function factory_gen($type, $id)
+  {
+  	switch($type)
+  	{
+  	case 'sort_jeu':
+  		return sort_jeu::factory($id);
+  	case 'sort_combat':
+  		return sort_combat::factory($id);
+  	case 'comp_jeu':
+  		return comp_jeu::factory($id);
+  	case 'comp_combat':
+  		return comp_combat::factory($id);
+  	default:
+  		log_admin::log('bug', 'Type de sort ou compétence inconnu : '.$type, true);
+		}
+	}
 	/**
 	 * Constructeur
 	 * @param id             Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
@@ -305,6 +329,50 @@ class comp_sort extends comp_sort_buff
   {
     return $this->get_mp();
   }
+  /**
+   * Vérifie si un personnage connait le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  abstract function est_connu(&$perso, $txt_action=false);
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  abstract function verif_prerequis(&$perso, $txt_action=false);
+  /// vérifie les prérequis pour les sorts ou compétences déjà appris
+  protected function verif_requis($liste, $txt_type, $txt_action=false)
+  {
+  	global $Gtrad;
+  	
+    $res = true;
+		foreach ($prerequis as $requis)
+		{
+    	$regs = array();
+      if( mb_ereg('^classe:(.*)$', $requis, $regs) )
+			{
+        if( $regs[1] != mb_strtolower($perso->get_classe()) )
+				{
+					interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous devez être '.$Gtrad[$regs[1]].' pour '.$txt_action.' '.$txt_type);
+          $res = false;
+        }
+      }
+			else if( mb_ereg('^([0-9]+)$', $this->requis, $regs) )
+			{
+			  if (!in_array($regs[1], explode(';', $liste)))
+				{
+			    if( $txt_action )
+			    {
+						$classe = get_class($this);
+						$requis = new $classe($regs[1]);
+			    	$texte = 'Il vous manque '.$requis->get_nom().' pour '.$txt_action.' '.$txt_type; 
+			    	interf_alerte::enregistre(interf_alerte::msg_erreur, $texte);
+					}
+			    $res = false;
+			  }
+			}
+		}
+    return $res;
+	}
 	/**
 	 * Renvoie la liste des cibles
 	 * @param cible  Cible principale telle que donnée à la méthode lancer

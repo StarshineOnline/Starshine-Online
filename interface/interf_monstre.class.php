@@ -43,7 +43,7 @@ class interf_monstre extends interf_cont
 			}
 			if( $this->perso->get_sort_jeu() )
 			{
-				$sort = $div->add( new interf_lien('', 'sort.php?type=monstre&amp;id_monstre='.$this->entite->get_id(), false, 'icone icone-sorts') );
+				$sort = $div->add( new interf_lien('', 'livre.php?type_cible=monstre&amp;cible='.$this->entite->get_id(), false, 'icone icone-sorts') );
 				$sort->set_tooltip('Lancer un sort', 'bottom', '#information');
 			}
 			if( $this->perso->peut_attaquer() )

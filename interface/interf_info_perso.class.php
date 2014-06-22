@@ -64,7 +64,7 @@ class interf_info_perso extends interf_cont
 			// sorts
 			if( $this->perso->get_sort_jeu() )
 			{
-				$sort = $div->add( new interf_lien('', 'sort.php?type=perso&amp;id_perso='.$this->pj->get_id(), false, 'icone icone-sorts') );
+				$sort = $div->add( new interf_lien('', 'livre.php?type_cible=perso&amp;cible='.$this->pj->get_id(), false, 'icone icone-sorts') );
 				$sort->set_tooltip('Lancer un sort', 'bottom', '#information');
 			}
 			if( $this->perso->get_id() != $pj->get_id() )

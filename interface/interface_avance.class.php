@@ -81,7 +81,13 @@ class interf_onglets extends interf_bal_cont
  */
 class interf_alerte extends interf_bal_cont
 {
-  function __construct($type=null, $ferme=true, $id=null)
+	const msg_info = 'info';
+	const msg_succes = 'success';
+	const msg_erreur = 'danger';
+	const msg_avertis = 'warning';
+  protected static $alertes = array();
+	
+  function __construct($type=null, $ferme=true, $id=false, $texte=null)
   {
     $classe = 'alert'.($type ? ' alert-'.$type : '');
     if( $ferme )
@@ -101,6 +107,35 @@ class interf_alerte extends interf_bal_cont
   {
     return $this->add( new interf_txt($msg) );
   }
+  
+  /**
+   * Crée et enregistre un message qui sera affiché grâce à la methode affiche_enregistres
+   * @param  $type		type du message (cf. constantes msg_*)
+   * @param  $texte		textre du message
+   * @return 		l'objet interf_alerte créé.
+   */  
+  static function &enregistre($type, $texte=null, $id=null, $ferme=true)
+  {
+  	$alerte = new interf_alerte($type, $ferme, $id);
+  	if($texte)
+			$alerte->add_message( $texte );
+  	self::$alertes[] = &$alerte;
+  	return $alerte;
+	}
+	
+	/**
+	 * Affiche les message précédement enregistrés
+	 * @param  $parent  	Objet parent des alerte
+	 */	
+	static function aff_enregistres($parent)
+	{
+		foreach(self::$alertes as $a)
+		{
+			$parent->add($a);
+			unset($a);
+		}
+		self::$alertes = array();
+	}
 }
 
 /**

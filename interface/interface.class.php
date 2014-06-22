@@ -27,8 +27,12 @@ abstract class interf_base
   /// Ajoute du code javascript à afficher au début.
   static function code_js($code)
   {
-  
     self::$code_js .= $code."\n";
+  }
+  /// renvoie l'élément conteneur courrant.
+  static function &get_courrent()
+  {
+    return self::$courrant;
   }
   /// Définit l'élément conteneur courrant.
   static function set_courrent(&$obj)
@@ -450,6 +454,7 @@ class interf_bal_cont extends interf_cont
   	if( $parent )
       $this->set_attribut('data-container', $parent);
   }
+  /// Ajoute les messages (alerte bootstrap) 
 }
 
 /**

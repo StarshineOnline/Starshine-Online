@@ -8,7 +8,7 @@
  * Classe sort
  * Classe sort servant de base aux sorts de combat et hors combat
  */
-class sort extends comp_sort
+abstract class sort extends comp_sort
 {
 	/**
 	 * @name Informations générales.
@@ -18,13 +18,25 @@ class sort extends comp_sort
 	protected $incantation;  ///< Requis en incantation
 	protected $difficulte;  ///< Difficulté de lancé
 
+	 /// Renvoie si c'est un sort spécial
+	function get_special()
+	{
+		return false;
+	}
   /// envoie le coût en MP en prennant en compte l'affinité
-  function get_mp_final($joueur)
+  function get_mp_final(&$perso)
   {
     global $Trace;
-    $affinite = $Trace[$joueur->get_race()]['affinite_'.$sort->comp_assoc];
-    $facteur = (1 - (($affinite - 5) / 10));
-    return round($this->mp * $facteur);
+    $mp = $this->mp * $perso->get_facteur_magie();
+    if( !$this->get_special() )
+    {
+	    $affinite = $Trace[$perso->get_race()]['affinite_'.$this->comp_assoc];
+	    $facteur = (1 - (($affinite - 5) / 10));
+	    $mp = round($this->mp * $facteur);
+		}
+		if($perso->is_buff('buff_concentration', true))
+			$sortmp = ceil($mp * (1 - ($perso->get_buff('buff_concentration','effet') / 100)));
+    return $mp;
   }
 
   /// Renvoie le requis en incantation
@@ -51,6 +63,28 @@ class sort extends comp_sort
 		$this->champs_modif[] = 'difficulte';
 	}
 	// @}
+	
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function verif_prerequis(&$perso, $txt_action=false)
+  {
+  	global $Gtrad;
+  	$incant = $perso->get_incantation() >= $this->get_incantation();
+  	if( !$incant && $txt_action )
+  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation pour '.$txt_action.' cette compétence.');
+  	$aptitude = $this->get_comp_assoc();
+  	$methode = 'get_'.$aptitude;
+  	$prerequis = $this->get_comp_requis();
+  	if( !$this->get_special() )
+  		$prerequis *= $perso->get_facteur_magie();
+  	if( $perso->$methode() >= $prerequis )
+  		return $incant;
+  	if( $txt_action )
+  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' cette compétence.');
+  	return false;
+	}
 
 	/**
 	 * @name Accès à la base de données

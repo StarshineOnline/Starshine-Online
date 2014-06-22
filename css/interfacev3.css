@@ -908,6 +908,11 @@ a#depl_bas_droite
 	margin-top: 0px;
 }
 
+#information .btn-group
+{
+	margin-top: 5px;
+}
+
 
 /*-- Message d'accueil ---------------------------------------------------*/
 p.accueil a
@@ -1896,8 +1901,8 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 
 #tab_livres a
 {
-	padding-left: 7px;
-	padding-right: 7px;
+	padding-left: 13px;
+	padding-right: 13px;
 	min-height: 88px;
 }
  
@@ -1930,8 +1935,13 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 
 .livre_categorie
 {
-	width: 40px;
 	position: relative;
+}
+
+.livre_categorie a
+{
+	display: block;
+	width: 40px;
 	border-radius: 50%;
 	height: 40px;
 }

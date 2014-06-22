@@ -91,28 +91,19 @@ class interf_livre_sortcomp extends interf_bal_cont
 				$liste = $corps->add( new interf_bal_cont('ul') );
 			$li = $liste->add( new interf_bal_cont('li') );
 			$e = $li->add( new interf_bal_cont('div', false, 'livre_elt') );
-			$affinite = 1 - ($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10;
 			if( $lance )
 			{
-		    if( $type == 'sort_jeu' && $elt->get_special() )
-		    {
-		      $sortpa = $elt->get_pa();
-		      $sortmp = $elt->get_mp();
-		    }
-		    else
-		    {
-		      $sortpa = round($elt->get_pa() * $this->perso->get_facteur_magie());
-		      $sortmp = round($elt->get_mp() * $affinite);
-		    }
+		    $cout_pa = $elt->get_pa();
+		    $cout_mp = $elt->get_mp_final($this->perso);
 				if( $categorie == 'favoris' || in_array($elt->get_id(), $favoris) )
 				{
-	        $lien = 'sort.php?type='.$type.'&categorie='.$categorie.'&action=suppr_favori&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
+	        $lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=suppr_favori&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 					$fav = $e->add( new interf_lien('', $lien, false, 'icone icone-suppr-favori') );
 					$fav->set_tooltip('Supprimer des favoris', 'left', '#livres');
 				}
 				else
 				{
-	        $lien = 'sort.php?type='.$type.'&categorie='.$categorie.'&action=favori&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
+	        $lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=favori&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 					$fav = $e->add( new interf_lien('', $lien, false, 'icone icone-favoris') );
 					$fav->set_tooltip('Mettre dans les favoris', 'left', '#livres');
 				}
@@ -134,12 +125,10 @@ class interf_livre_sortcomp extends interf_bal_cont
 		        	$cond = ($elt->get_cible() == comp_sort::cible_unique || $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp || $elt->get_cible() == comp_sort::cible_9cases);
 					}
 					else
-					{
-						$cond = ($elt->get_cible() == comp_sort::cible_unique || $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp ) && $elt->get_type() != 'rez';
-					}
+						$cond = (/*$elt->get_cible() == comp_sort::cible_unique ||*/ $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp ) && $elt->get_type() != 'rez';
 	        if( $sort_groupe )
 	        {
-	        	$lien = 'sort.php?type='.$type.'&categorie='.$categorie.'&action=lancer_groupe&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
+	        	$lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=lancer_groupe&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 	        	$grp = $e->add( new interf_lien_cont($lien, false, 'icone') );
 	        	$grp->add( new interf_bal_smpl('div', '', false, 'icone-groupe'));
 	        	$grp->set_tooltip('Lancer sur '.$Gtrad['cible_ex'.comp_sort::cible_groupe]);
@@ -148,7 +137,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 				}
 				if( $cond )
 				{
-					$lien = 'sort.php?type='.$type.'&categorie='.$categorie.'&action=lancer&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
+					$lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=lancer&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 					$e = $e->add( new interf_lien_cont($lien) );
 					switch( $elt->get_cible() )
 					{
@@ -175,7 +164,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 			$e->add( new interf_bal_smpl('span', $elt->get_nom(), false, 'livre_nom') );
 			if( $lance )
 			{
-				$e->add( new interf_bal_smpl('span', $sortpa.' PA − '.$sortmp.' MP', false, 'xsmall') );
+				$e->add( new interf_bal_smpl('span', $cout_pa.' PA − '.$cout_mp.' MP', false, 'xsmall') );
 			}
 			else
 			{
@@ -271,7 +260,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 		$menu = $gauche->add( new interf_menu(false, false, false) );
 		foreach($categories as $cat)
 		{
-			$url = 'livre?type='.$this->type.'&categorie='.$cat;
+			$url = 'livre.php?action=afficher&type='.$this->type.'&categorie='.$cat.'&cible='.$this->cible->get_id().'&type_cible='.$this->cible->get_type();
 			$elt = $menu->add( new interf_elt_menu('&nbsp;', $url, 'return charger(this.href);', 'livre_'.$cat, 'livre_categorie') );
 			$elt->set_tooltip($Gtrad[$cat], 'right', '#livre');
 		}

@@ -209,6 +209,27 @@ class sort_jeu extends sort
   {
     return round( $this->get_mp() * $actif->get_affinite( $this->get_comp_assoc() ) );
   }
+  /**
+   * Vérifie si un personnage connait le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function est_connu(&$perso, $erreur=false)
+  {
+  	if( in_array($this->get_id(),  explode(';', $perso->get_sort_jeu())) )
+  		return true;
+  	if( $erreur )
+  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne connaissez pas ce sort !');
+  	return false;
+	}
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function verif_prerequis(&$perso, $txt_action=false)
+  {
+  	$res = parent::verif_prerequis($perso, $txt_action);
+  	return $res && $this->verif_requis($perso->get_sort_jeu(), 'ce sort', $txt_action);
+	}
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort
@@ -216,7 +237,7 @@ class sort_jeu extends sort
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db;
+    global $db, $G_erreur;
     $action = false;
     $cibles = $this->get_liste_cibles($cible, $groupe);
     foreach($cibles as $cible)
@@ -225,7 +246,7 @@ class sort_jeu extends sort
 			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				$action = true;
-				echo $cible->get_nom().' a bien reçu le buff<br />';
+				interf_base::add_courr( new interf_txt($cible->get_nom().' a bien reçu le buff<br />') );
 				//Insertion du buff dans le journal du receveur
 				if( $cible->get_id() != $perso->get_id() && $cible->get_race() != 'neutre' )
 				{
@@ -235,8 +256,10 @@ class sort_jeu extends sort
 			}
 			else
 			{
-				if($G_erreur == 'puissant') echo $cible.' bénéficie d\'un buff plus puissant<br />';
-				else echo $cible->get_nom().' a trop de buffs.<br />';
+				if($G_erreur == 'puissant')
+					interf_base::add_courr( new interf_txt($cible->get_nom().' bénéficie d\'un buff plus puissant<br />') );
+				else
+					interf_base::add_courr( new interf_txt($cible->get_nom().' a trop de buffs.<br />') );
 			}
 		}
     if($action)
@@ -281,7 +304,8 @@ class sort_debuff extends sort_jeu
         $puissance = $perso->get_volonte() * $perso->get_comp($this->get_comp_assoc());
         $attaque = rand(0, $puissance);
         $defense = rand(0, $protection);
-        print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
+        $interf = interf_base::get_courrent();
+        $interf->add( new interf_debug('Lance sort: '.$attaque.' ('.$puissance.') vs '.$defense.' ('.$protection.')') );
         if ($attaque > $defense)
         {
           $duree = $this->get_duree();
@@ -290,7 +314,7 @@ class sort_debuff extends sort_jeu
           //Mis en place du debuff pour tous
           if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
           {
-            echo 'Le sort '.$this->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />';
+            $interf->add( new interf_txt('Le sort '.$this->get_nom().' a été lancé avec succès sur '.$cible->get_nom().'<br />') );
             //Insertion du debuff dans les journaux des 2 joueurs
             if ($cible->get_race() != 'neutre')
             {
@@ -317,7 +341,7 @@ class sort_debuff extends sort_jeu
           }
           else
           {
-            echo 'Il bénéficie d\'un debuff plus puissant.<br />';
+            $interf->add( new interf_txt('La cible bénéficie déjà d\'un debuff plus puissant.<br />') );
           }
           //Suppression de MP pour orage magnétique
           if($this->get_type() == 'orage_magnetique')
@@ -337,7 +361,7 @@ class sort_debuff extends sort_jeu
         }
         else
         {
-          echo $cible->get_nom().' résiste à votre sort !<br />';
+          $interf->add( new interf_txt($cible->get_nom().' résiste à votre sort !<br />') );
         }
       }
     }
@@ -347,6 +371,7 @@ class sort_debuff extends sort_jeu
 
 class sort_vie_pourcent extends sort_jeu
 {
+	const propose_relance = true;
 
 	/**
 	 * Méthode gérant l'utilisation du sort
@@ -367,7 +392,7 @@ class sort_vie_pourcent extends sort_jeu
       $soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
       if ($soin == 0) continue;
       $action = true;
-      echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
+      interf_base::add_courr( new interf_txt('Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />') );
       $soin_total += $soin;
       $cible->set_hp($cible->get_hp() + $soin);
       $cible->sauver();
@@ -419,6 +444,7 @@ class sort_vie_pourcent extends sort_jeu
 
 class sort_vie extends sort_jeu
 {
+	const propose_relance = true;
 
 	/**
 	 * Méthode gérant l'utilisation du sort
@@ -466,7 +492,7 @@ class sort_vie extends sort_jeu
             $i++;
           }
           if($soin > (floor($cible->get_hp_maximum()) - $cible->get_hp())) $soin = floor($cible->get_hp_maximum()) - $cible->get_hp();
-          echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
+          interf_base::add_courr( new interf_txt('Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />') );
           $soin_total += $soin;
 
           $cible->set_hp($cible->get_hp() + $soin);
@@ -497,12 +523,12 @@ class sort_vie extends sort_jeu
         }
         else
         {
-          echo 'La cible a toute sa vie<br />';
+          interf_base::add_courr( new interf_txt('La cible a toute sa vie<br />') );
         }
       }
       else
       {
-        echo $cible->get_nom().' est mort.<br />';
+        interf_base::add_courr( new interf_txt($cible->get_nom().' est mort.<br />') );
       }
     }
     if($action)
@@ -547,19 +573,18 @@ class sort_balance extends sort_jeu
       }
     }
     $pourcent = $total_pourcent / $nbr_membre;
-    print_debug("équilibrage: $pourcent");
+    interf_base::add_courr( new interf_debug('équilibrage: '.$pourcent) );
     foreach($cibles as $cible)
     {
       if($cible->get_hp() > 0)
       {
         $cible->set_hp(floor($cible->get_hp_max() * $pourcent));
-        echo $cible->get_nom().' est équilibré à '.$cible->get_hp().
-					' HP.<br />';
+        interf_base::add_courr( new interf_txt($cible->get_nom().' est équilibré à '.$cible->get_hp().' HP.<br />') );
         $cible->sauver();
       }
       else
       {
-        echo $cible->get_nom().' est mort.<br />';
+        interf_base::add_courr( new interf_txt($cible->get_nom().' est mort.<br />') );
       }
     }
     return true;
@@ -584,7 +609,7 @@ class sort_body_to_mind extends sort_jeu
       if( $perso->get_mp() + $sortmp > floor($perso->get_mp_maximum()) )
         $sortmp = floor($perso->get_mp_maximum()) - $perso->get_mp();
       $perso->set_mp($perso->get_mp() + $sortmp);
-      echo 'Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />';
+      interf_base::add_courr( new interf_txt('Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />') );
       $perso->set_hp($perso->get_hp() - $sorthp);
       $perso->sauver();
       echo '<a href="sort.php?ID='.$_GET['ID'].$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
@@ -592,7 +617,7 @@ class sort_body_to_mind extends sort_jeu
     }
     else
     {
-      echo 'Vous n\'avez pas assez de points de vie.';
+      interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous n\'avez pas assez de points de vie.') );
       return false;
     }
   }
@@ -617,14 +642,14 @@ class sort_teleport extends sort_jeu
         $cible->set_x($Trace[$perso->get_race()]['spawn_x']);
         $cible->set_y($Trace[$perso->get_race()]['spawn_y']);
         $cible->sauver();
-        echo $cible->get_nom().' a été téléporté dans votre capitale.<br />';
+        interf_base::add_courr( new interf_txt($cible->get_nom().' a été téléporté dans votre capitale.<br />') );
       }
       echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
       return true;
     }
     else
     {
-      echo 'Vous êtes mort.';
+      interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes mort.') );
       return false;
     }
   }
@@ -652,7 +677,7 @@ class sort_repos_sage extends sort_jeu
     }
     else
     {
-      echo 'Vous êtes déjà reposé';
+      interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes déjà reposé') );
     }
   }
 }
@@ -693,21 +718,21 @@ class sort_guerison extends sort_jeu
         $id_debuff = $debuff_tab[rand(0, count($debuff_tab)-1)];
         $requete = "SELECT `fin` FROM buff WHERE id=".$id_debuff.";";
         $req = $db->query($requete);
-		$row = $db->read_assoc($req);
+				$row = $db->read_assoc($req);
         $fin = $row['fin'];
         $fin -= $reduction;
         if ($fin <= 0)
-			$requete2 = "Delete FROM buff WHERE id=".$id_debuff.";";
-		else
-			$requete2 = "UPDATE buff SET fin =".$fin." WHERE id=".$id_debuff.";";
-		$db->query($requete2);
-		echo "Le sort ".$this->get_nom()." réduit la durée d'un débuff de ". ceil($reduction/60)." minutes et". ($reduction % 60) ." secondes. <br/>";
+					$requete2 = "Delete FROM buff WHERE id=".$id_debuff.";";
+				else
+					$requete2 = "UPDATE buff SET fin =".$fin." WHERE id=".$id_debuff.";";
+				$db->query($requete2);
+				interf_base::add_courr( new interf_txt("Le sort ".$this->get_nom()." réduit la durée d'un débuff de ". ceil($reduction/60)." minutes et". ($reduction % 60) ." secondes. <br/>") );
         $action = true;
       }
       else
       {
-        echo "Impossible de lancer de lancer le sort. ".addslashes($cible->get_nom())." n&apos;a aucun debuff.<br/>";
-      };
+        interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de lancer de lancer le sort, '.$cible->get_nom().' n&apos;a aucun debuff.<br/>') );
+      }
     }
     return $action;
   }
@@ -743,11 +768,11 @@ class sort_esprit_sacrifie extends sort_jeu
       }
       if(count($debuff_tab) == 0)
       {
-        echo "Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>";
+        interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de lancer le sort. Vous n&apos;avez aucun debuff.<br/>') );
       }
       elseif (count($buff_tab) == 0)
       {
-        echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>";
+        interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>') );
       }
       else
       {
@@ -756,10 +781,11 @@ class sort_esprit_sacrifie extends sort_jeu
         $db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
       }
     }
-    else { echo "Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>"; };
+    else
+			interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>') );
     $type_cible = $cible->get_race()=='neutre'?'monstre':'perso';
     $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET["ID"]."', 'information')\">Utiliser de nouveau cette compétence.</a>";
+    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET['ID']."', 'information')\">Utiliser de nouveau cette compétence.</a>";
     return $action;
   }
 }
@@ -785,7 +811,7 @@ class sort_transfert_energie extends sort_jeu
       $manque = $cible_perso->get_mp_maximum() - $cible_perso->get_mp();
       if ($manque < 1)
       {
-        echo $cible->get_nom().' a toute sa mana.<br />';
+        interf_base::add_courr( new interf_txt($cible->get_nom().' a toute sa mana.<br />') );
         continue;
       }
       $gain = $this->get_effet();
@@ -794,7 +820,7 @@ class sort_transfert_energie extends sort_jeu
       $gain_total += $gain;
       $cible_perso->add_mp($gain);
       $cible_perso->sauver();
-      echo $cible->get_nom().' regagne '.$gain.' MP.<br />';
+      interf_base::add_courr( new interf_txt($cible->get_nom().' regagne '.$gain.' MP.<br />') );
 
       if($groupe)
       {
@@ -813,8 +839,7 @@ class sort_transfert_energie extends sort_jeu
     {
       if($groupe) $groupe_href = '&amp;groupe=yes';
       else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.
-    '" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
+      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
 
       if($groupe)
       {
@@ -860,8 +885,7 @@ class sort_liberation extends sort_jeu
       }
       if (count($buff_tab) == 0)
       {
-        echo 'Impossible de supprimer un buff de '.$cible->get_nom().
-        ': pas de buff';
+        interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de supprimer un buff de '.$cible->get_nom().': pas de buff') );
       }
       else
       {
@@ -882,7 +906,7 @@ class sort_liberation extends sort_jeu
         $gain_total += $gain;
         $cible_perso->add_hp($gain);
         $cible_perso->sauver();
-        echo 'Vous soignez '.$cible->get_nom().' de '.$gain.' HP.<br />';
+        interf_base::add_courr( new interf_txt('Vous soignez '.$cible->get_nom().' de '.$gain.' HP.<br />') );
 
         if($groupe)
         {
@@ -900,8 +924,10 @@ class sort_liberation extends sort_jeu
     }
     if ($action)
     {
-      if($groupe) $groupe_href = '&amp;groupe=yes';
-      else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+      if($groupe)
+				$groupe_href = '&amp;groupe=yes';
+      else
+				$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
       echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.
     '" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
       if($groupe)
@@ -934,7 +960,7 @@ class sort_rez extends sort_jeu
     //Sale
     if($cible->get_race() == 'neutre')
     {
-      echo 'Ce sort ne peut être utilisé que sur un joueur mort.';
+      interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Ce sort ne peut être utilisé que sur un joueur mort.') );
       return false;
     }
 
@@ -944,7 +970,7 @@ class sort_rez extends sort_jeu
       // On vérifie qu'il y a pas d'anti-rez
       if ($cible->is_buff('debuff_antirez'))
       {
-        echo 'Ce joueur est affligé par l\'hérésie divine, il ne peut pas être rappelé à la vie';
+        interf_base::add_courr( new interf_txt('Ce joueur est affligé par l\'hérésie divine, il ne peut pas être rappelé à la vie') );
         return false;
       }
 
@@ -968,17 +994,13 @@ class sort_rez extends sort_jeu
         $achiev->set_compteur($achiev->get_compteur() + 1);
         $achiev->sauver();
 
-        echo 'Résurrection bien lancée.';
+        interf_base::add_courr( new interf_txt('Résurrection bien lancée.') );
       }
       else
-      {
-        echo 'Le joueur bénéficie d\'une résurrection plus puissante.';
-      }
+        interf_base::add_courr( new interf_txt('Le joueur bénéficie d\'une résurrection plus puissante.') );
     }
     else
-    {
-      echo 'Le joueur n\'est pas mort';
-    }
+      interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Le joueur n\'est pas mort') );
     return $action;
   }
 }

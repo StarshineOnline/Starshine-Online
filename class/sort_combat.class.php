@@ -29,6 +29,28 @@ class sort_combat extends sort
 		$this->champs_modif[] = 'etat_lie';
 	}
 	// @}
+	
+  /**
+   * Vérifie si un personnage connait le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function est_connu(&$perso, $erreur=false)
+  {
+  	if( in_array($this->get_id(),  explode(';', $perso->get_sort_combat())) )
+  		return true;
+  	if( $erreur )
+  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne connaissez pas ce sort !');
+  	return false;
+	}
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function verif_prerequis(&$perso, $txt_action=false)
+  {
+  	$res = parent::verif_prerequis($perso, $txt_action);
+  	return $res && $this->verif_requis($perso->get_sort_combat(), 'ce sort', $txt_action);
+	}
 
 	/**
 	 * @name Accès à la base de données
