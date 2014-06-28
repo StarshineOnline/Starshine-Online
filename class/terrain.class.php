@@ -83,7 +83,8 @@ class terrain
 		return $this->id;
 	}
 
-	function recoverByIdJoueur($id_joueur)
+	///TODO: à renommer
+	static function recoverByIdJoueur($id_joueur)
 	{
 		global $db;
 		$requete = "SELECT id, id_joueur, nb_case FROM terrain WHERE id_joueur = ".$id_joueur;

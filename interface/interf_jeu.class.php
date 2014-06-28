@@ -160,7 +160,7 @@ class interf_jeu_ajax extends interf_princ_ob
     $lien = $cont->add( new interf_bal_cont('a') );
     $lien->set_attribut('onClick', 'return charger(this.href);');
     $perso = joueur::get_perso();
-    if( !$dans_ville && is_ville($perso->get_x(), $perso->get_y()) == 1 )
+    if( !$dans_ville && is_ville($perso->get_x(), $perso->get_y(), true) == 1 )
     {
     	$lien->set_attribut('href', 'ville.php');
     	$lien->add( new interf_bal_smpl('div', '', null, 'icone icone-ville') );

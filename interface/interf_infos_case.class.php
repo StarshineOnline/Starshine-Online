@@ -275,7 +275,7 @@ class interf_infos_case extends interf_cont
 			{
 				$diplo = $royaume->get_diplo( $pj->get_race() );
 				$diplo_classe= 'diplo'.$diplo;
-				$diplo_txt = $Gtrad[$diplo];
+				$diplo_txt = $Gtrad[$diplo_classe];
 				if($diplo == 127)
 				{
 					$amende = recup_amende( $pj->get_id() );

@@ -157,7 +157,7 @@ function vente(id)
       objets_vente[index].nombre = ui.value;
       calcul_total();
     } });
-    input.style = "width: 30px; height:12px;";
+    input.style = "width: 30px; height:14px;";
     input.setAttribute("onkeyup", "javascript:calcul_prix("+index+");");
   }
   else

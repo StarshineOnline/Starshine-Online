@@ -694,7 +694,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 
 #depl_centre p
 {
-	margin: 10px 10px 10px 30px;
+	margin: 5px 10px 5px 30px;
 	text-align: center;
 }
 
@@ -1400,6 +1400,18 @@ li.info_case div.jauge_case
 	/*padding: 3px;*/
 }
 
+/*-- Ville ------------------------------------------------------------*/
+/*.ville_message { width:100%; text-align:center; }
+.message_rouge { font-weight:bold; color:red; }
+.message_vert { font-weight:bold; color:green; }
+.quartier	{float:left;width:200px;margin:2px;padding:2px;}*/
+#ville
+{
+	height: 417px;
+	background-size: 100% 100% !important;
+}
+
+
 /* ... */
 
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
@@ -1453,11 +1465,6 @@ li.info_case div.jauge_case
 /*-- Weather ----------------------------------------------------------*/
 #moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }
 
-/*-- Ville ------------------------------------------------------------*/
-.ville_message { width:100%; text-align:center; }
-.message_rouge { font-weight:bold; color:red; }
-.message_vert { font-weight:bold; color:green; }
-.quartier	{float:left;width:200px;margin:2px;padding:2px;}
 
 /*-- Hotel des ventes -------------------------------------------------*/
 #hotel_liste_type ul { width:100%; }
@@ -1712,6 +1719,62 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 /***************************************************
   Ville
  ***************************************************/
+ 
+#ville div.panel
+{
+	width: 135px;
+	position: absolute;
+}
+
+#ville div.panel-heading
+{
+	padding: 5px 5px;
+	font-variant: small-caps;
+	text-align: center;
+}
+
+#ville a.list-group-item
+{
+	padding: 5px 10px;
+}
+ 
+#quartier_marchand
+{
+	top: 35px;
+	left: 16px;
+}
+ 
+#quartier_royal
+{
+	top: 35px;
+	right: 16px;
+}
+ 
+#haut_quartier
+{
+	bottom: -10px;
+	left: 16px;
+}
+
+#bas_quartier
+{
+	bottom: -10px;
+	right: 16px;
+}
+
+div#amende.panel
+{
+	width: 250px;
+	top: 150px;
+	left: 100px;
+}
+
+#amende a
+{
+	margin: 20px 50px 0;
+}
+ 
+ 
 ul.ville li { margin-bottom:3px; }
 ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
 .ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }

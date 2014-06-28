@@ -337,7 +337,7 @@ class interf_nav_deroul extends interf_elt_menu
 class	interf_panneau extends interf_bal_cont
 {
 	protected $body=false;
-	function __construct($titre, $id, $elt_titre='h3', $collaps=false, $montre=false, $style='default')
+	function __construct($titre, $id, $elt_titre='h3', $collaps=false, $montre=false, $style='default', $body=true)
 	{
 		parent::__construct('div', $id, 'panel panel-'.$style);
 		if( $titre )
@@ -354,7 +354,8 @@ class	interf_panneau extends interf_bal_cont
 			$parent = $this->add( new interf_bal_cont('div', $collaps, 'panel-collapse collapse'.($montre?' in':'')) );
 		else
 			$parent = &$this;
-		$this->body = $parent->add( new interf_bal_cont('div', null, 'panel-body')  );
+		if( $body )
+			$this->body = $parent->add( new interf_bal_cont('div', null, 'panel-body')  );
 	}
   /// Ajoute un élément fils
   function &add(&$fils)

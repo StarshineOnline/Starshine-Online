@@ -95,6 +95,17 @@ class interf_factory
 	{
     return new interf_livre_sortcomp($type, $cible, $categorie, $actions);
 	}
+	// Entrée dans la ville
+	function creer_interf_ville_entree(&$royaume)
+	{
+    return new interf_ville_entree($royaume);
+	}
+	// Entrée dans la ville
+	function creer_interf_ville_amende(&$royaume, &$amende, $erreur=false)
+	{
+    include_once(root.'interface/interf_ville_entree.class.php');
+    return new interf_ville_amende($royaume, $amende, $erreur);
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

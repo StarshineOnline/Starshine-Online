@@ -480,7 +480,7 @@ function ressource_terrain($terrain)
  * 
  * @return numéro du type de terrain si la case appartient à un royaume false sinon.
  */
-function is_ville($x, $y = false)
+function is_ville($x, $y = false, $acces=false)
 {
 	if($y == false)
 	{
@@ -492,8 +492,20 @@ function is_ville($x, $y = false)
 	$requete = "SELECT type, royaume FROM map WHERE x = $x and y = $y";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
-	if($row[1] != 0) return $row[0];
-	else return false;
+	if($row[1] != 0)
+	{
+		if( $acces )
+		{
+			// On vérifie que la diplomatie permet l'accès
+			$R = new royaume($row[1]);
+			$perso = joueur::get_perso();
+			if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+				return false;
+		}
+		return $row[0];
+	}
+	else
+		return false;
 }
 
 /**

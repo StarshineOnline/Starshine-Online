@@ -85,14 +85,22 @@ class interf_accueil extends interf_cont
 		// Annonce forum
 		if( $db_forum )
 		{
-			$requete = 'SELECT * FROM punbbtopics WHERE forum_id = 5 AND posted > '.$joueur->get_dernier_connexion();
+			$requete = 'SELECT * FROM punbbtopics WHERE forum_id = 5 AND posted > '.$perso->get_dernier_connexion();
 			$req = $db_forum->query($requete);
+			$nouveau = $db->num_rows > 0;
+			if( !$nouveau )
+			{
+				$requete = 'SELECT * FROM punbbtopics WHERE forum_id = 5 ORDER BY posted DESC LIMIT 0, 1';
+				$req = $db_forum->query($requete);
+			}
 			if( $db->num_rows > 0 )
 			{
-				$annonce = $accordeon->nouv_panneau('Annonce <span class="label label-default">nouveau</span>', 'annonce', true);
+				$annonce = array('id'=>'annonce', 'titre'=>'Annonce', 'contenu'=>array());
+				//$annonce = $accordeon->nouv_panneau('Annonce <span class="label label-primary">nouveau</span>', 'annonce', true, 'info');
 				while( $row = $db_forum->read_array($req) )
 				{
-					$div = $annonce->add( new interf_bal_cont('div') );
+					//$div = $annonce->add( new interf_bal_cont('div') );
+					$div = new interf_bal_cont('div', null, 'message_monde');
 					$titre = $div->add( new interf_bal_cont('h4') );
 					$lien = $titre->add( new interf_bal_smpl('a', $row['subject']) );
 					$lien->add_attribut('href', 'http://forum.starshine-online.com/viewtopic.php?id='.$row['id']);
@@ -101,12 +109,17 @@ class interf_accueil extends interf_cont
 					$div->add( new interf_bal_smpl('p', $txt->parse()) );
 				}
 			}
+			if( $nouveau )
+				$nouveaux[] = &$annonce;
+			else
+				$anciens[] = &$annonce;
+			
 		}
 		
 		// Messages nouveaux
 		foreach( $nouveaux as $msg )
 		{
-			$panneau = $accordeon->nouv_panneau($msg['titre'].' <span class="label label-default">nouveau</span>', $msg['id'], true);
+			$panneau = $accordeon->nouv_panneau($msg['titre'].' <span class="label label-primary">nouveau</span>', $msg['id'], true, 'info');
 			if( is_array($msg['contenu']) )
 			{
 				foreach($msg['contenu'] as $cont)

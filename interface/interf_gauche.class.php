@@ -32,7 +32,7 @@ class interf_gauche extends interf_bal_cont
 			$carte->get_lien()->add( new interf_txt('Carte') );
 			break;
 		case 'ville':
-			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return envoiInfo(this.href, \'depl_centre\');', 'menu_ville_carte') );
+			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return charger(this.href);', 'menu_ville_carte') );
 			$ville->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-ville') );
 			$ville->get_lien()->add( new interf_txt('Ville') );
 			break;
@@ -119,7 +119,7 @@ class interf_cadre_carte extends interf_gauche
 	function __construct($carte=null)
 	{
 		$perso = joueur::get_perso();
-		parent::__construct( is_ville($perso->get_x(), $perso->get_y()) ? 'ville' : 'carte' );
+		parent::__construct( is_ville($perso->get_x(), $perso->get_y(), true) ? 'ville' : 'carte' );
 		// Menu carte
 		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
 		$royaumes = $menu->add( new interf_elt_menu('', 'option_map.php?action=affiche_royaumes&val=0', 'return envoiInfo(this.href, \'depl_centre\');') );
