@@ -211,4 +211,24 @@ class interf_jeu_ajax extends interf_princ_ob
     $this->add( new interf_bal_smpl('section', false, 'maj_tooltips') );
 	}
 }
+
+class interf_jeu_tab extends interf_princ_ob
+{
+  function verif_mort($perso) 
+  {
+  	if( $perso->est_mort() )
+  	{
+  		recharger_interface();
+  		exit();
+		}
+	}
+	function recharger_interface()
+	{
+		interf_base::code_js('document.location="interface.php";');
+	}
+	function maj_tooltips()
+	{
+		interf_base::code_js('maj_tooltips();');
+	}
+}
 ?>

@@ -3,7 +3,15 @@
 
 /*-- Global site --------------------------------------------------*/
 html { width:100%; height:100%; }
-body { margin:0; padding:0; background:url(../img/mocha-grunge.png); width:100%; height:100%; font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
+body
+{
+	margin:0;
+	padding:0;
+	background:url(../img/mocha-grunge.png);
+	width:100%;
+	height:100%;
+	font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+}
 
 a
 {
@@ -595,7 +603,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	height: 50px;
 	width: 494px;
 	border-top-right-radius: 10px;
-	padding-left: 80px;
+	padding-left: /*80*/90px;
 	font-size: 40px;
 	vertical-align: middle;
 	text-align: center;
@@ -657,7 +665,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border-top: 1px solid #777;
 }
 
-#menu_panneaux a:hover, #menu_carte a:hover
+#menu_panneaux a:hover, #menu_carte a:hover, #menu_ville a:hover
 {
 	background: rgba(255, 255, 255, 0.2);
 	color: #fff;
@@ -668,16 +676,16 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	margin-top: -4px;
 }
 
-#menu_carte li
+#menu_carte li, #menu_ville li
 {
 	display: inline-block;
 	margin-left: -12px;
 }
 
-#menu_carte a
+#menu_carte a, #menu_ville a
 {
 	margin: 2px 0px 2px 0px;
-	height: 47px;
+	height: /*47*/48px;
 	min-width: 50px;
 	display: block;
 	padding: 5px;
@@ -687,7 +695,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	text-align: center;
 }
 
-#menu_carte li:first-child a
+#menu_carte li:first-child a, #menu_ville li:first-child a
 {
 	border-left: 1px solid #777;
 }
@@ -726,6 +734,11 @@ a#depl_disque_centre, span#depl_disque_centre
 	text-align: center;
 	z-index: 5;
 	background: #888;
+}
+
+span#depl_disque_centre
+{
+	cursor: default;
 }
 
 #depl_disque a:hover, #depl_disque a:active
@@ -1664,16 +1677,20 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 	max-height: 45px;
 }
 
-.invent
+.invent, .ecole_mag
 {
   border-left: solid white 1px;
   border-right: solid white 1px;
   border-bottom: solid white 1px;
-  width: 470px;
   border-bottom-left-radius: 9px;
   border-bottom-right-radius: 9px;
   padding-top: 2px;
   padding-bottom: 2px;
+}
+
+.invent
+{
+  width: 470px;
 }
 
 .invent tr
@@ -1773,6 +1790,148 @@ div#amende.panel
 {
 	margin: 20px 50px 0;
 }
+
+#menu_ville ul
+{
+	margin-top: -1px;
+}
+
+#menu_ville .icone
+{
+	font-size: 28px;
+}
+
+#tab_ecole_mag
+{
+	margin: 2px 3px 0px 2px;
+}
+
+#tab_ecole_mag > li > a
+{
+	padding: 5px;
+}
+
+.ecole_mag
+{
+	margin-left: 2px;
+  width: 439px;
+  height: 408px;
+}
+
+#tab_ecole_mag .filtre
+{
+	float: right;
+	border-top: #ddd 1px solid;
+	border-right: #ddd 1px solid;
+}
+
+#tab_ecole_mag .filtre a
+{
+	padding: 0;
+	margin: 0;
+}
+
+#tab_ecole_mag .filtre a:hover
+{
+	border-radius: 0;
+}
+
+#tab_ecole_mag .filtre:last-child
+{
+	border-left: #ddd 1px solid;
+	border-top-left-radius: 5px;
+}
+
+#tab_ecole_mag .filtre:nth-child(3)
+{
+	border-top-right-radius: 5px;
+}
+
+#tab_ecole_mag .filtre img
+{
+	height: 27px;
+}
+
+#tab_ecole_mag li:first-child
+{
+	margin-left: 30px;
+}
+
+.tab-content .alert
+{
+	margin: 0;
+	padding: 5px;
+	padding-right: 25px;
+}
+
+#depl_centre table.table
+{
+	margin: 0 !important;
+	padding: 0 !important;
+	font-size: 12px;
+}
+
+#depl_centre table.dataTable tr
+{
+	background: none;
+}
+
+#depl_centre table.dataTable > thead > tr > th
+{
+	padding: 0;
+	background: none;
+}
+
+#depl_centre table.dataTable > thead > tr > th:first-child
+{
+	padding-left: 3px;
+}
+
+#depl_centre .dataTables_wrapper.no-footer .dataTables_scrollBody
+{
+	border-bottom: none;
+}
+
+#depl_centre table.dataTable td:first-child
+{
+	padding: 3px;
+}
+
+#depl_centre table.dataTable td:last-child
+{
+	padding-right: 3px;
+}
+
+#depl_centre table.dataTable td img
+{
+	height: auto;
+	width: auto;
+}
+
+#depl_centre table.dataTable td:nth-child(n+2)
+{
+	text-align: right;
+}
+
+.non-achetable
+{
+	color: #555;
+}
+
+#depl_centre table a
+{
+	font-weight: bold;
+}
+.connu
+{
+	color: #888;
+	font-style: italic;
+}
+
+/*#depl_centre table.table th
+{
+	font-size: 13px;
+}*/
  
  
 ul.ville li { margin-bottom:3px; }

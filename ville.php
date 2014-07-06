@@ -27,6 +27,7 @@ if($W_row['type'] != 1)
 	exit;
 
 // On vérifie la diplomatie
+/// TODO: logguer triche ?
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
@@ -37,7 +38,7 @@ if($_GET['action'] == 'paye_amende')
 {
 	if($amende['montant'] > $perso->get_star())
 	{
-		$interf_princ->set_gauche( $G_interf->creer_interf_ville_amende($R, $amende, true) );
+		$interf_princ->set_gauche( $G_interf->creer_ville_amende($R, $amende, true) );
 		exit;
 	}
 	else
@@ -92,8 +93,8 @@ if($_GET['action'] == 'paye_amende')
 }
 	
 if($amende)
-	$interf_princ->set_gauche( $G_interf->creer_interf_ville_amende($R, $amende) );
+	$interf_princ->set_gauche( $G_interf->creer_ville_amende($R, $amende) );
 else
-	$interf_princ->set_gauche( $G_interf->creer_interf_ville_entree($R) );
+	$interf_princ->set_gauche( $G_interf->creer_ville_entree($R) );
 
 ?>

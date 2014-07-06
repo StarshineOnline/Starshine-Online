@@ -27,10 +27,16 @@ class interf_factory
   function creer_jeu()
   {
     include_once(root.'interface/interf_jeu.class.php');
-  	if( array_key_exists('ajax', $_GET) &&  $_GET['ajax'] == 1 )
+    $ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
+    switch($ajax)
+    {
+    case 1:
   		return new interf_jeu_ajax();
-  	else
+    case 2:
+  		return new interf_jeu_tab();
+    default:
     	return new interf_jeu();
+		}
   }
   /**
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit
@@ -95,16 +101,52 @@ class interf_factory
 	{
     return new interf_livre_sortcomp($type, $cible, $categorie, $actions);
 	}
-	// Entrée dans la ville
-	function creer_interf_ville_entree(&$royaume)
+	/// Entrée dans la ville
+	function creer_ville_entree(&$royaume)
 	{
     return new interf_ville_entree($royaume);
 	}
-	// Entrée dans la ville
-	function creer_interf_ville_amende(&$royaume, &$amende, $erreur=false)
+	/// Entrée dans la ville en cas d'amende
+	function creer_ville_amende(&$royaume, &$amende, $erreur=false)
 	{
     include_once(root.'interface/interf_ville_entree.class.php');
     return new interf_ville_amende($royaume, $amende, $erreur);
+	}
+	/// École de magie
+	function creer_ecole_magie(&$royaume, $type)
+	{
+    include_once(root.'interface/interf_ecole_mag.class.php');
+    return new interf_ecole_magie($royaume, $type);
+	}
+	/// École de combat
+	function creer_ecole_combat(&$royaume, $type)
+	{
+    include_once(root.'interface/interf_ecole_mag.class.php');
+    return new interf_ecole_combat($royaume, $type);
+	}
+	/// Liste d'achat des sort hors combat
+	function creer_achat_sort_jeu(&$royaume, $niveau=null)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_sort_jeu($royaume, $niveau);
+	}
+	/// Liste d'achat des sort de combat
+	function creer_achat_sort_combat(&$royaume, $niveau=null)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_sort_combat($royaume, $niveau);
+	}
+	/// Liste d'achat des compétences hors combat
+	function creer_achat_comp_jeu(&$royaume, $niveau=null)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_comp_jeu($royaume, $niveau);
+	}
+	/// Liste d'achat des compétences de combat
+	function creer_achat_comp_combat(&$royaume, $niveau=null)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_comp_combat($royaume, $niveau);
 	}
   /**
    * @name Inventaire

@@ -95,7 +95,7 @@ function temps_serveur()
 function maj_tooltips()
 {
 	// on active les tooltip déjà définis
-	$("[data-toggle='tooltip']").tooltip();
+	$("[data-toggle='tooltip']").tooltip({container: 'body'});
 	// On crée ceux des buffs ainsi que les popvers
 	$(".buff").each( function()
 	{
@@ -132,6 +132,7 @@ function aff_ico_sso()
 	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso";
 }
 
+// à supprimer ?
 function aff_ico_bug()
 {
 	document.getElementById("icone-sso").className = "navbar-brand icone icone-bug";
@@ -180,6 +181,51 @@ function suppr_buff(elt)
 		charger('suppbuff.php?id=' + li.attr('data-suppr'));
 	}
 }
+
+var filtre_ecole_mag = false;
+$.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
+{
+	alert(dataIndex + " : " + data);
+	return false;
+});
+$.fn.dataTable.ext.type.detect.unshift( function ( d )
+{
+  return d.indexOf("<img") >= 0 ? 'aptitude' : null;
+} );
+$.fn.dataTable.ext.type.order['aptitude-pre'] = function ( d )
+{
+	var deb = d.indexOf('src=') + 17;
+	var fin = d.indexOf('"', deb) - 4;
+	var aptitude = d.substring(deb, fin);
+	deb = d.indexOf('>', d.indexOf('<span')) + 1;
+	fin = d.indexOf('</span>', deb);
+	var valeur = parseInt(d.substring(deb, fin));
+	switch(aptitude)
+	{
+	case 'sort_elem':
+	case 'melee':
+		return 1000+valeur;
+	case 'sort_mort':
+	case 'esquive':
+		return 2000+valeur;
+	case 'sort_vie':
+	case 'distance':
+		return 3000+valeur;
+	case 'blocage':
+	case 'dressage':
+		return 4000+valeur;
+	}
+  return 0;
+};
+function filtre_table(filtre)
+{
+	filtre_ecole_mag = filtre;
+	alert('Ne fonctionne pas');
+	//tbl_sort_jeu.draw();
+}
+
+
+// anciennes fonctions (tri à faire)
 
 function envoiInfoPost(page,position)
 {

@@ -4,7 +4,7 @@
  * Entrée dans la ville 
  */
 
-// Classe de base pour l'interface de l'entrée dans la ville
+/// Classe de base pour l'interface de l'entrée dans la ville
 class interf_ville_entree_base extends interf_gauche
 {
 	protected $royaume;
@@ -68,8 +68,8 @@ class interf_ville_entree extends interf_ville_entree_base
 		// Haut quartier (vérifier royaume neutre ?)
 		$haut_quartier = array
 		(
-			'École de magie' => 'ecolemagie.php',
-			'École de combat' => 'ecolecombat.php',
+			'École de magie' => 'ecole.php?type=sort',
+			'École de combat' => 'ecole.php?type=comp',
 			'Université' => 'universite.php',
 			'Tribunal' => 'tribunal.php'
 		);

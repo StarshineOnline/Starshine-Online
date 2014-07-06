@@ -832,25 +832,30 @@ class interf_select_form extends interf_bal_cont
 class interf_tableau extends interf_bal_cont
 {
   protected $lgn_act = null;  ///< Ligne actuelle du tableau.
-  protected $entete;   ///< Indique si la ligne actuelle est l'en-tête.
+  protected $est_entete;   ///< Indique si la ligne actuelle est l'en-tête.
+  protected $entete = null;   ///< En-tête du tableau.
+  protected $corps = null;   ///< Corps du tableau.
+  protected $pied = null;   ///< Pied du tableau.
+  protected $cour = null;   ///< Parti courante.
+  
+  const entete = 1;
+  const corps = 2;
+  const pied = 3;
+  
   function __construct($id=false, $classe=false, $id_lgn1=false, $classe_lgn1=false, $entete=true)
   {
   	parent::__construct('table', $id, $classe);
   	if( $entete !== null )
-    	$this->nouv_ligne($id_lgn1, $classe_lgn1);
-    $this->entete = $entete;
+    	$this->nouv_ligne($id_lgn1, $classe_lgn1, $entete ? self::entete : self::corps);
+    $this->est_entete = $entete;
   }
-  /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
-  function debut()
+  /// Ajoute un élément fils
+  function &add(&$fils)
   {
-    interf_bal_cont::debut();
-    $this->Ouvre('tbody');
-  }
-  /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
-  function fin()
-  {
-    $this->ferme('tbody');
-    interf_bal_cont::fin();
+  	if( $this->cour )
+    	return $this->cour->add($fils);
+    else
+    	return parent::add($fils);
   }
   /**
    * Ajoute une nouvelle ligne.
@@ -858,13 +863,31 @@ class interf_tableau extends interf_bal_cont
    * @param  $class     classe de la ligne.
    * @return    objet gérant la ligne (de type interf_bal_cont).
    */
-  function &nouv_ligne($id=false, $classe=false)
+  function &nouv_ligne($id=false, $classe=false, $type=self::corps)
   {
-    $lgn = new interf_bal_cont('tr', $id, $classe);
-    $this->add($lgn);
-    $this->lgn_act = &$lgn;
-    $this->entete = false;
-    return $lgn;
+  	switch($type)
+  	{
+  	case self::entete:
+  		if( !$this->entete )
+  			$this->entete = $this->add( new interf_bal_cont('thead') );
+  		$this->cour = $this->entete;
+  		$this->est_entete = true;
+  		break;
+  	case self::corps:
+  		if( !$this->corps )
+  			$this->corps = $this->add( new interf_bal_cont('tbody') );
+  		$this->cour = $this->corps;
+    	$this->est_entete = false;
+  		break;
+  	case self::pied:
+  		if( !$this->pied )
+  			$this->pied = $this->add( new interf_bal_cont('tfoot') );
+  		$this->cour = $this->pied;
+    	$this->est_entete = false;
+  		break;
+		}
+    $this->lgn_act = $this->add( new interf_bal_cont('tr', $id, $classe) );
+    return $this->lgn_act;
   }
   /**
    * Ajoute une nouvelle cellule à la ligne en cours.
@@ -875,7 +898,7 @@ class interf_tableau extends interf_bal_cont
    */
   function &nouv_cell($cont=null, $id=null, $classe=null, $entete=false)
   {
-    $bal = ($this->entete || $entete) ? 'th' : 'td';
+    $bal = ($this->est_entete || $entete) ? 'th' : 'td';
     if( $cont === null || is_object($cont) )
     {
       $cell = new interf_bal_cont($bal, $id, $classe);
@@ -892,7 +915,7 @@ class interf_tableau extends interf_bal_cont
   /// Définit si la ligne actuelle est l'en-tête ou non.
   function set_entete($entete)
   {
-    $this->entete = $entete;
+    $this->est_entete = $entete;
   }
 }
 

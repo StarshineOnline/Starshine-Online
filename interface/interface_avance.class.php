@@ -74,6 +74,12 @@ class interf_onglets extends interf_bal_cont
   {
     return $this->divs[$id];
   }
+  
+  // Renvoie la partie haute (liste des onglets)
+  function &get_haut()
+  {
+  	return $this->haut;
+	}
 }
 
 /**
@@ -129,12 +135,15 @@ class interf_alerte extends interf_bal_cont
 	 */	
 	static function aff_enregistres($parent)
 	{
+		$n = 0;
 		foreach(self::$alertes as $a)
 		{
 			$parent->add($a);
 			unset($a);
+			$n++;
 		}
 		self::$alertes = array();
+		return $n;
 	}
 }
 
@@ -514,5 +523,39 @@ class interf_descr_tbl extends interf_tableau
 		$this->nouv_cell($terme, false, false, true);
 		return $this->nouv_cell($def);
 	}
+}
+
+/// tableaux triable en utilisant l'extension jQuery dataTable
+class interf_data_tbl extends interf_tableau
+{
+  function __construct($id=false, $classe='', $pages=true, $search=true, $scroll=false, $ordre=null)
+  {
+  	parent::__construct($id, 'table table-striped '.$classe);
+    // Javascript
+    /*$script = $this->add( new interf_bal_smpl('script', '') );
+    $script->set_attribut('type', 'text/javascript');
+    $script->set_attribut('src', './javascript/jquery/jquery.dataTables.min.js');*/
+    
+    $options = array(/*'"autoWidth": false'*/);
+    if( !$pages )
+    	$options[] = '"paging":false, "info":false';
+    if( $scroll )
+    	$options[] = '"scrollY":"'.$scroll.'px", "scrollCollapse": true';
+    if( !$search )
+    	$options[] = '"searching":false';
+    if( $ordre !== null )
+    {
+    	if( $ordre == '-' )
+    		$options[] = '"order":[[0, "desc"]]';
+    	if( $ordre >= 0 )
+    		$options[] = '"order":[['.$ordre.', "asc"]]';
+			else
+    		$options[] = '"order":[['.(-$ordre).', "desc"]]';
+		}
+    
+    $options = $options ?  '{'.implode(',', $options).'}' : '';
+
+    interf_base::code_js('var '.$id.' = $("#'.$id.'").DataTable('.$options.');');
+  }
 }
 ?>

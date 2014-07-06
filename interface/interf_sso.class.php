@@ -21,11 +21,14 @@ class interf_sso extends interf_html
     $this->css('css/bootstrap.css');
     $this->css('css/bootstrap-theme.min.css');
     $this->css('css/icones.css');
+    $this->css('css/jquery.dataTables.css');
+    $this->css('css/dataTables.bootstrap.css');
     // javascript
     $this->javascript('javascript/jquery/jquery-2.0.2.min.js');
     $this->javascript('javascript/jquery/jquery-ui-1.10.3.custom.min.js');
-    $this->javascript('javascript/jquery/dataTables.min.js');
+    $this->javascript('javascript/jquery/jquery.dataTables.js');
     $this->javascript('javascript/bootstrap.min.js');
+    $this->javascript('javascript/jquery/dataTables.bootstrap.js');
     $this->javascript('javascript/fonction.js');
   }
 }
