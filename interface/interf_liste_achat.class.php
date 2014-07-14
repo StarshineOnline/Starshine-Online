@@ -23,8 +23,11 @@ abstract class interf_liste_achat extends interf_cont
 		foreach($elts as $e)
 		{
 			$achat = $this->peut_acheter($e);
-			$this->tbl->nouv_ligne(false, $achat ? '' : 'non-achetable');
-			$this->tbl->nouv_cell( $e->get_nom() );
+			$this->tbl->nouv_ligne('elt'.$e->get_id(), $achat ? '' : 'non-achetable');
+			$lien = new interf_bal_smpl('a', $e->get_nom());
+			$this->tbl->nouv_cell( $lien );
+			$url = $this::url.'?type='.$this::type.'&action=infos&id='.$e->get_id();
+			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
 			$this->aff_cont_col($e);
 			$classe =  $e->get_prix() > $this->perso->get_star() ? 'text-danger' : '';
 			$this->tbl->nouv_cell( new interf_bal_smpl('span', $e->get_prix(), false, $classe) );

@@ -73,6 +73,32 @@ class sort_jeu extends sort
 		}
 	}
 	// @}
+	
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+  	global $Gtrad;
+    if($complet)
+    {/// TODO: à utiliser
+      return array('Description', 'PA', 'MP', 'Effet', 'Incantation', $Gtrad[$this->comp_requis], 'Cible', 'Portée' , 'Durée', 'Prix HT (en magasin)');
+    }
+    else ///TODO: à faire (et à utiliser pour la liste d'achat)
+      return array('Stars');
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->get_description(true), $this->pa, $this->mp, $this->effet, $this->incantation, $this->comp_requis, 
+		$this->cible, $this->cases, $this->duree ? transform_min_temp($this->duree) : 'instantané', $this->prix);
+    return $vals;
+  }
 
 	/**
 	 * @name Accès à la base de données

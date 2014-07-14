@@ -34,6 +34,32 @@ class comp_jeu extends comp
 	}
 	// @}
 	
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+  	global $Gtrad;
+    if($complet)
+    {/// TODO: à utiliser
+      return array('Description', 'PA', 'MP', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée', 'Prix HT (en magasin)');
+    }
+    else ///TODO: à faire (et à utiliser pour la liste d'achat)
+      return array('Stars');
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+    $vals = array($this->get_description(true), $this->pa, $this->mp, $this->effet, $this->comp_requis, $this->cible, 
+		$this->duree ? transform_min_temp($this->duree) : 'instantané', $this->prix);
+    return $vals;
+  }
+	
   /**
    * Vérifie si un personnage connait le sort ou la compétence 
    * @param $perso   personnage concerné

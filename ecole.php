@@ -11,6 +11,9 @@ include_once(root.'inc/fp.php');
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
 if( $action == 'infos' )
 {
+	$comp_sort = comp_sort::factory_gen($_GET['type'], $_GET['id']);
+  $G_interf->creer_infos_objet( new interf_infos_popover() );
+  exit;
 }
 
 $interf_princ = $G_interf->creer_jeu();
