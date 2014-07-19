@@ -107,8 +107,13 @@ abstract class comp extends comp_sort
   	$prerequis = $this->get_comp_requis();
   	if( $perso->$methode() >= $prerequis )
   		return true;
-  	if( $txt_action )
-  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' cette compétence.');
+  	if( $txt_action !== false )
+  	{
+  		if( $txt_action && $txt_action !== true )
+  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' cette compétence.');
+  		else
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude]);
+		}
   	return false;
 	}
 }

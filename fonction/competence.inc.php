@@ -75,7 +75,7 @@ if (file_exists('../root.php'))
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire, &$interface)
+function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire, &$interface=null)
 {
 	global $db, $Gtrad;
 	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_competence'";
@@ -120,29 +120,23 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire, &$i
 							$requete = "UPDATE argent_royaume SET ecole_combat = ecole_combat + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
-            $interface->add( new interf_alert('succes') )->add_message('Compétence apprise !');
+            interf_alerte::enregistre(interf_alerte::msg_succes, 'Compétence apprise !');
 						return true;
 					}
-	  else {
-      $interface->add( new interf_alerte('danger') )->add_message('Vous devez connaitre une autre compétence avant d\'apprendre celle ci');
-	  }
-	}
-	else {
-      $interface->add( new interf_alerte('danger') )->add_message('Vous connaissez déjà cet compétence');
-	}
+				  else
+			      interf_alerte::enregistre(interf_alerte::msg_erreur,'Vous devez connaitre une autre compétence avant d\'apprendre celle ci');
+				}
+				else
+			  	interf_alerte::enregistre(interf_alerte::msg_erreur,'Vous connaissez déjà cet compétence');
       }
-      else {
-        $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']]);
-      }
+      else
+        interf_alerte::enregistre(interf_alerte::msg_erreur,'Vous n\'avez pas assez en '.$Gtrad[$row['comp_assoc']]);
     }
-    else {
-      $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez en '.$row['carac_assoc']);
-    }
+    else
+      interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez en '.$row['carac_assoc']);
   }
-  else{
-    $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez de Stars');
-    echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-  }
+  else
+    interf_alerte::enregistre(interf_alerte::msg_erreur,'Vous n\'avez pas assez de Stars');
   return false;
 }
 
@@ -156,7 +150,7 @@ function apprend_competence($ecole, $id_competence, &$joueur, $R, $grimoire, &$i
 * @param grimoire true si on apprend depuis un grimoire(gratis), false sinon
 * @return true si on a pu apprendre la compétence, false sinon
 */
-function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire, &$interface)
+function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire, &$interface=null)
 {
 	global $db, $Trace;
 	$requete = "SELECT * FROM ".$ecole." WHERE id = '$id_sort'";
@@ -200,31 +194,23 @@ function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire, &$interface)
 							$requete = "UPDATE argent_royaume SET ecole_magie = ecole_magie + ".$taxe." WHERE race = '".$R->get_race()."'";
 							$db->query($requete);
 						}
-						$interface->add( new interf_alerte('danger') )->add( new interf_alerte('succes') )->add_message('Sort appris !');
+						interf_alerte::enregistre(interf_alerte::msg_succes, 'Sort appris !');
 						return true;
 					}
 					else
-					{
-            $interface->add( new interf_alerte('danger') )->add_message('Vous devez connaitre un autre sort pour apprendre celui-ci');
-					}
+            interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous devez connaitre un autre sort pour apprendre celui-ci');
 				}
 				else
-				{
-          $interface->add( new interf_alerte('danger') )->add_message('Vous possédez déjà ce sort');
-				}
+          interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous possédez déjà ce sort');
 			}
 			else
-			{
-        $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez en '.traduit($row['comp_assoc']), false);
-			}
+        interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez en '.traduit($row['comp_assoc']), false);
 		}
-		else {
+		else
       $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez en incantation');
-		}
 	}
-	else {
+	else
     $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez de Stars');
-	}
 	return false;
 }
 ?>

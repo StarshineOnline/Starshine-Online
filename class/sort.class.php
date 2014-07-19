@@ -70,19 +70,29 @@ abstract class sort extends comp_sort
    */
   function verif_prerequis(&$perso, $txt_action=false)
   {
-  	global $Gtrad;
+  	global $Gtrad, $Trace;
   	$incant = $perso->get_incantation() >= $this->get_incantation();
-  	if( !$incant && $txt_action )
-  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation pour '.$txt_action.' cette compétence.');
+  	if( !$incant && $txt_action !== false )
+  	{
+  		if( $txt_action && $txt_action !== true )
+  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation pour '.$txt_action.' ce sort.');
+  		else
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation.');
+		}
   	$aptitude = $this->get_comp_assoc();
   	$methode = 'get_'.$aptitude;
   	$prerequis = $this->get_comp_requis();
   	if( !$this->get_special() )
-  		$prerequis *= $perso->get_facteur_magie();
+  		$prerequis = round($prerequis *$perso->get_facteur_magie() * (1 - (($Trace[$perso->get_race()]['affinite_'.$this->get_comp_assoc()] - 5) / 10)) );
   	if( $perso->$methode() >= $prerequis )
   		return $incant;
-  	if( $txt_action )
-  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' cette compétence.');
+  	if( $txt_action !== false )
+  	{
+  		if( $txt_action && $txt_action !== true )
+  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' ce sort.');
+  		else
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].'.');
+		}
   	return false;
 	}
 

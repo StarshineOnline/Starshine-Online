@@ -83,10 +83,10 @@ class sort_jeu extends sort
   	global $Gtrad;
     if($complet)
     {/// TODO: à utiliser
-      return array('Description', 'PA', 'MP', 'Effet', 'Incantation', $Gtrad[$this->comp_requis], 'Cible', 'Portée' , 'Durée', 'Prix HT (en magasin)');
+      return array('Description', 'PA', 'MP', 'Effet', 'Incantation', $Gtrad[$this->comp_assoc], 'Cible', 'Portée' , 'Durée'/*, 'Prix HT (en magasin)'*/);
     }
     else ///TODO: à faire (et à utiliser pour la liste d'achat)
-      return array('Stars');
+      return array(/*'Stars'*/);
   }
 
 	/**
@@ -95,8 +95,9 @@ class sort_jeu extends sort
 	 */
 	public function get_valeurs_infos($complet=true)
   {
+  	global $Gtrad;
     $vals = array($this->get_description(true), $this->pa, $this->mp, $this->effet, $this->incantation, $this->comp_requis, 
-		$this->cible, $this->cases, $this->duree ? transform_min_temp($this->duree) : 'instantané', $this->prix);
+		$Gtrad['cible'.$this->cible], $this->portee.' case(s)', $this->duree ? transform_min_temp($this->duree) : 'instantané'/*, $this->prix*/);
     return $vals;
   }
 

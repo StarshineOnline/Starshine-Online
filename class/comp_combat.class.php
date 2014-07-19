@@ -53,7 +53,7 @@ class comp_combat extends comp
   	global $Gtrad;
     if($complet)
     {/// TODO: à utiliser
-      return array('Description', 'RM', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée', 'Prix HT (en magasin)');
+      return array('Description', 'RM', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée'/*, 'Prix HT (en magasin)'*/);
     }
     else ///TODO: à faire (et à utiliser pour la liste d'achat)
       return array('Stars');
@@ -65,8 +65,9 @@ class comp_combat extends comp
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->get_description(true), $this->mp, $this->effet, $this->comp_requis, $this->cible, 
-		$this->duree ? $this->duree.' rounds' : 'instantané', $this->prix);
+  	global $Gtrad;
+    $vals = array($this->get_description(true), $this->mp, $this->effet, $this->comp_requis, $Gtrad['cible'.$this->cible], 
+		$this->duree ? $this->duree.' rounds' : 'instantané'/*, $this->prix*/);
     return $vals;
   }
 

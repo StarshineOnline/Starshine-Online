@@ -420,7 +420,7 @@ class interf_infos_popover extends interf_princ
    */
   function __construct($noms=null, $valeurs=null)
   {
-    $this->tbl = $this->add( new interf_tableau() );
+    $this->tbl = $this->add( new interf_tableau(false, false, false, false, false) );
     if( $noms )
     {
 	    for($i=0; $i<count($noms); $i++)

@@ -99,6 +99,7 @@ if( !$visu && $action )
 	  case 'utiliser':
       $objet = objet_invent::factory( $obj );
       $objet->utiliser($perso, $cadre);
+      interf_alerte::aff_enregistres($cadre);
       break;
 	  case 'depot':
       $objet = objet_invent::factory( $obj );

@@ -23,8 +23,8 @@ abstract class interf_liste_achat extends interf_cont
 		foreach($elts as $e)
 		{
 			$achat = $this->peut_acheter($e);
-			$this->tbl->nouv_ligne('elt'.$e->get_id(), $achat ? '' : 'non-achetable');
-			$lien = new interf_bal_smpl('a', $e->get_nom());
+			$this->tbl->nouv_ligne(false, $achat ? '' : 'non-achetable');
+			$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt'.$e->get_id());
 			$this->tbl->nouv_cell( $lien );
 			$url = $this::url.'?type='.$this::type.'&action=infos&id='.$e->get_id();
 			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
@@ -82,12 +82,15 @@ class interf_achat_sort extends interf_achat_compsort
 	
 	function aff_cont_col(&$elt)
 	{
+		global $Trace;
 		$this->tbl->nouv_cell( $elt->get_mp() );
-		$classe =  $elt->get_incantation() > $this->perso->get_incantation() ? 'text-danger' : '';
-		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_incantation(), false, $classe) );
+		$requis = $elt->get_incantation() * $this->perso->get_facteur_magie();
+		$classe =  $requis > $this->perso->get_incantation() ? 'text-danger' : '';
+		$this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$methode = 'get_'.$elt->get_comp_assoc();
-		$classe =  $elt->get_comp_requis() > $this->perso->$methode() ? 'text-danger' : '';
-		$cell = $this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_comp_requis(), false, $classe) );
+		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() * (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10)) );
+		$classe =  $requis > $this->perso->$methode() ? 'text-danger' : '';
+		$cell = $this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$cell->add( new interf_img('image/icone/'.$elt->get_comp_assoc().'.png') );
 	}
 }
@@ -101,7 +104,7 @@ class interf_achat_sort_jeu extends interf_achat_sort
 		global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
-		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau);
+		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
 		parent::__construct('tbl_sort_jeu', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
@@ -127,7 +130,7 @@ class interf_achat_sort_combat extends interf_achat_sort
 		global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
-		$sorts = sort_combat::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau);
+		$sorts = sort_combat::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
 		parent::__construct('tbl_sort_combat', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
@@ -188,7 +191,7 @@ class interf_achat_comp_jeu extends interf_achat_comp
 		global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_combat');
-		$sorts = comp_jeu::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau);
+		$sorts = comp_jeu::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
 		parent::__construct('tbl_comp_jeu', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
@@ -214,7 +217,7 @@ class interf_achat_comp_combat extends interf_achat_comp
 		global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_combat');
-		$sorts = comp_combat::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau);
+		$sorts = comp_combat::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
 		parent::__construct('tbl_comp_combat', $sorts, $nbr_alertes=0);
 	}
 	function aff_titres_col()

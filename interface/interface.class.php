@@ -16,6 +16,7 @@ abstract class interf_base
   protected $tab = 0;  ///< Nombre de tabulation au début des lignes.
   protected $affiche = false;  ///< Indique si le contenu a été affiché ou non.
   protected static $code_js = '';  ///< Code Javascript qui sera affiché au début.
+  protected $affiche_js = false;
   protected static $courrant = null;  ///< Élément conteneur courrant.
   const cont = false;  ///< Indique si cet élément peut contenir d'autres éléments.
 
@@ -216,6 +217,12 @@ abstract class interf_cont extends interf_base
   protected function fin() {}
   /// Renvoie le nombre de tabulations suppléméntaires
   protected function get_tab() { return 0; }
+  /// Ajoute une balise avec le code javascript s'il y en a
+  function add_js()
+  {
+  	if( self::$code_js )
+  		$this->add( new interf_js() );
+	}
 }
 
 /**
@@ -952,4 +959,13 @@ class interf_descr extends interf_bal_cont
 		return $dd;
 	}
 } 
+
+class interf_js extends interf_smpl
+{
+  /// affiche le contenu de l'élément.
+  function contenu()
+  {
+  	$this->affiche_js();
+	}
+}
 ?>

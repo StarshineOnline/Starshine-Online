@@ -400,7 +400,7 @@ function envoiFichier(formulaire, position)
 function chargerPopover(elt, id, pos, url, titre)
 {
   var e = $('#' + elt);
-  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>"});
+  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>", container:'body'});
   $.get(url, function(d)
     {
         e.data('bs.popover').options.content = d;

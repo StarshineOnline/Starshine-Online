@@ -128,6 +128,7 @@ class interf_jeu_ajax extends interf_princ_ob
   	global $G_interf;
     if( !$fils )
       $fils = $G_interf->creer_cadre_carte();
+		$fils->add_js();
     $cont = $this->add( new interf_bal_cont('section', 'deplacement') );
     return $cont->add($fils);
   }
@@ -137,6 +138,7 @@ class interf_jeu_ajax extends interf_princ_ob
     if( !$fils )
       $fils = $G_interf->creer_accueil();
     $cont = $this->add( new interf_bal_cont('section', 'information') );
+		$fils->add_js();
     return $cont->add($fils);
   }
   function maj_perso($complet=false)
