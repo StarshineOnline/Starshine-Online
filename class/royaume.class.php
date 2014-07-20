@@ -1299,6 +1299,39 @@ class royaume
 		$requete = "UPDATE argent_royaume SET armurerie = armurerie + ".$valeur." WHERE race = '".$this->race."'";
 		$db->query($requete);
 	}
+	
+	function add_star_taxe($taxe, $source=null)
+	{
+		global $db;
+		$this->set_star( $this->star + $taxe );
+		switch($source)
+		{
+		case 'arme':
+			$champ = 'forgeron';
+			break;
+		case 'armure':
+			$champ = 'armurerie';
+			break;
+		case 'accessoire':
+			$champ = 'enchanteur';
+			break;
+		case 'sort_jeu':
+		case 'sort_combat':
+			$champ = 'ecole_magie';
+			break;
+		case 'comp_jeu':
+		case 'comp_combat':
+			$champ = 'ecole_combat';
+			break;
+		default:
+			$champ = false;		
+		}
+		if( $champ )
+		{
+			$requete = 'UPDATE argent_royaume SET '.$champ.' = '.$champ.' + '.$taxe.' WHERE race = "'.$this->race.'"';
+			$db->query($requete);
+		}
+	}
 
 	function total_ressources()
 	{
@@ -1425,5 +1458,43 @@ class royaume
   {
     return (100 + $roy_def->get_point_victoire_total()) / (100 + $this->get_point_victoire_total());
   }
+  
+	function get_niveau_batiment($type)
+	{
+		global $db;
+		switch($type)
+		{
+		case 'comp':
+		case 'comp_combat':
+		case 'comp_jeu':
+			$batiment = 'ecole_combat';
+			break;
+		case 'sort':
+		case 'sort_combat':
+		case 'sort_jeu':
+			$batiment = 'ecole_magie';
+			break;
+		case 'arme':
+			$batiment = 'forgerone';
+			break;
+		case 'armure':
+			$batiment = 'armurerie';
+			break;
+		case 'accessoire':
+			$batiment = 'enchanteur';
+			return 1;
+			break;
+		case 'dressage':
+			$batiment = 'dresseur';
+			return 1;
+			break;
+		}
+		///TODO: à améliorer
+		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		// Si le batiment est inactif, on le met au niveau 1
+		return $row['statut'] == 'inactif' ? 1 : $row['level'];
+	}
 }
 ?>

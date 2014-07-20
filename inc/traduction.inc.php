@@ -69,8 +69,9 @@ $Gtrad['coyotte'] = 'Coyote';
  * Traduction des emplacements des armes, armures e accessoires.
  * @{  
  */
-$Gtrad['main_droite'] = 'Arme droite';
-$Gtrad['main_gauche'] = 'Arme gauche';
+$Gtrad['main_droite'] = 'Main droite';
+$Gtrad['main_gauche'] = 'Main gauche';
+$Gtrad['main_droite;main_gauche'] = 'Deux mains';
 $Gtrad['tete'] = 'Tête';
 $Gtrad['torse'] = 'Torse';
 $Gtrad['main'] = 'Main';

@@ -1913,6 +1913,12 @@ div#amende.panel
 	text-align: right;
 }
 
+#depl_centre table.dataTable th:nth-child(n+2)
+{
+	text-align: right;
+	padding-right: 3px;
+}
+
 .non-achetable
 {
 	color: #555;
@@ -1922,6 +1928,13 @@ div#amende.panel
 {
 	font-weight: bold;
 }
+
+#depl_disque_centre.icone-casque
+{
+	font-size: 22px;
+	padding-top: 9px;
+}
+
 .connu
 {
 	color: #888;

@@ -51,10 +51,12 @@ if( $action == 'achat' )
 {
 	$comp_sort = comp_sort::factory_gen($type, $_GET['id']);
 	///TODO: loguer triche
+	$taxe = ceil($objet->get_prix() * $R->get_taxe_diplo($perso->get_race()) / 100);
+	$prix = $comp_sort->get_prix() + $taxe;
 	if( $comp_sort->est_connu($perso) )
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous connaissez déjà '.$comp_sort->get_nom());
-	else if( $perso->get_star() < $comp_sort->get_prix() )
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$comp_sort->get_prix().' stars.');
+	else if( $perso->get_star() < $prix )
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prix.' stars.');
 	else if( $comp_sort->verif_prerequis($perso, true) )
 	{
 		include_once(root.'fonction/competence.inc.php');
@@ -71,9 +73,13 @@ if( $action == 'achat' )
     }
     if( $appris )
     {
-    	my_dump($perso);
-    	$perso->add_star( -$comp_sort->get_prix() );
-    	my_dump($perso);
+    	$perso->add_star( -$prix );
+			//Récupération de la taxe
+			if($taxe > 0)
+			{
+				$R->add_star_taxe($taxe, $type);
+				$R->sauver();
+			}
     	$perso->sauver();
     	$interf_princ->maj_perso();
 		}

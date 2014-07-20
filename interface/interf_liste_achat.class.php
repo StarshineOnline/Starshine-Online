@@ -9,16 +9,18 @@ abstract class interf_liste_achat extends interf_cont
 {
 	protected $tbl;
 	protected $perso;
-	const ordre = 3;
-	function __construct($id_tbl, $elts, $nbr_alertes=0)
+	protected $ordre = 3;
+	protected $categorie = false;
+	function __construct(&$royaume, $id_tbl, $elts, $nbr_alertes=0)
 	{
 		$this->perso = &joueur::get_perso();
-		$this->tbl = $this->add( new interf_data_tbl($id_tbl, '', false, false, 383 - $nbr_alertes * 30, $this::ordre) );
+		$this->tbl = $this->add( new interf_data_tbl($id_tbl, '', false, false, 383 - $nbr_alertes * 30, $this->ordre) );
 		$this->tbl->nouv_cell('Nom');
 		$this->aff_titres_col();
 		$this->tbl->nouv_cell('Stars');
 		$this->tbl->nouv_cell('Achat');
 		
+		$url_base = $this::url.'?type='.$this::type.($categorie ? 'categorie='.$categorie : '');
 		// Contenu
 		foreach($elts as $e)
 		{
@@ -26,15 +28,16 @@ abstract class interf_liste_achat extends interf_cont
 			$this->tbl->nouv_ligne(false, $achat ? '' : 'non-achetable');
 			$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt'.$e->get_id());
 			$this->tbl->nouv_cell( $lien );
-			$url = $this::url.'?type='.$this::type.'&action=infos&id='.$e->get_id();
+			$url = $url_base.'&action=infos&id='.$e->get_id();
 			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
 			$this->aff_cont_col($e);
-			$classe =  $e->get_prix() > $this->perso->get_star() ? 'text-danger' : '';
-			$this->tbl->nouv_cell( new interf_bal_smpl('span', $e->get_prix(), false, $classe) );
+			$prix = $e->get_prix() + ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100);
+			$classe =  $prix > $this->perso->get_star() ? 'text-danger' : '';
+			$this->tbl->nouv_cell( new interf_bal_smpl('span', $prix, false, $classe) );
 			if( $achat === null )
 				$this->tbl->nouv_cell( new interf_bal_smpl('span', 'Connu', false, 'connu') );
 			else if( $achat )
-				$this->tbl->nouv_cell( new interf_lien('Achat', $this::url.'?type='.$this::type.'&action=achat&id='.$e->get_id()) );
+				$this->tbl->nouv_cell( new interf_lien('Achat', $url_base.'&action=achat&id='.$e->get_id()) );
 			else
 				$this->tbl->nouv_cell('&nbsp;');
 		}
@@ -55,7 +58,10 @@ abstract class interf_liste_achat extends interf_cont
 	protected function aff_filtres() {}
 	abstract protected function aff_titres_col();
 	abstract protected function aff_cont_col(&$elt);
-	abstract protected function peut_acheter(&$elt);
+	protected function peut_acheter(&$elt)
+	{	
+		return $this->perso->get_star() >= $elt->get_prix();
+	}
 }
 
 /// Classe de base pour les listes d'achats de sorts
@@ -67,7 +73,7 @@ abstract class interf_achat_compsort extends interf_liste_achat
 		if( $elt->est_connu($this->perso) )
 			return null;
 		else
-			return $elt->verif_prerequis($this->perso);
+			return $elt->verif_prerequis($this->perso) && parent::peut_acheter($elt);
 	}
 }
 
@@ -105,7 +111,7 @@ class interf_achat_sort_jeu extends interf_achat_sort
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
 		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
-		parent::__construct('tbl_sort_jeu', $sorts, $nbr_alertes);
+		parent::__construct($royaume, 'tbl_sort_jeu', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
 	{
@@ -131,7 +137,7 @@ class interf_achat_sort_combat extends interf_achat_sort
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
 		$sorts = sort_combat::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
-		parent::__construct('tbl_sort_combat', $sorts, $nbr_alertes);
+		parent::__construct($royaume, 'tbl_sort_combat', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
 	{
@@ -192,7 +198,7 @@ class interf_achat_comp_jeu extends interf_achat_comp
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_combat');
 		$sorts = comp_jeu::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
-		parent::__construct('tbl_comp_jeu', $sorts, $nbr_alertes);
+		parent::__construct($royaume, 'tbl_comp_jeu', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
 	{
@@ -218,7 +224,7 @@ class interf_achat_comp_combat extends interf_achat_comp
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_combat');
 		$sorts = comp_combat::create(null, null, 'comp_requis ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
-		parent::__construct('tbl_comp_combat', $sorts, $nbr_alertes=0);
+		parent::__construct($royaume, 'tbl_comp_combat', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()
 	{
@@ -231,6 +237,155 @@ class interf_achat_comp_combat extends interf_achat_comp
 	{
 		$this->tbl->nouv_cell( $elt->get_effet() );
 		parent::aff_cont_col($elt);
+	}
+}
+
+/// Classe de base pour les listes d'objets
+abstract class interf_achat_objet extends interf_liste_achat
+{
+	const url = 'boutique.php';
+	function __construct(&$royaume, $categorie, $objets, $nbr_alertes=0)
+	{
+		$this->categorie = $categorie;
+		parent::__construct($royaume, 'tbl_'.$categorie, $objets, $nbr_alertes);
+	}
+	function peut_acheter(&$elt)
+	{
+		return $elt->peut_utiliser($this->perso, false) && parent::peut_acheter($elt);
+	}
+}
+
+/// Classe de base pour les listes d'armes
+class interf_achat_arme extends interf_achat_objet
+{
+	const type = 'arme';
+	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
+	{
+		global $db;
+		if( !$niveau )
+			$niveau =  $this->recherche_batiment($royaume, 'forgeron');
+		$objets = arme::create(null, null, 'coefficient ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
+		if( $categorie == 'baton' )
+			$this->ordre = 4;
+		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);
+	}
+	function aff_titres_col()
+	{
+		$this->tbl->nouv_cell('Mains');
+		$this->tbl->nouv_cell( $this->categorie == 'bouclier' ? 'Absorpt.' : 'Dégâts' );
+    if( $this->categorie == 'baton' )
+			$this->tbl->nouv_cell('Bonus');
+		$this->tbl->nouv_cell('Coeff.');
+		//parent::aff_titres_col();
+	}
+	function aff_cont_col(&$elt)
+	{
+		global $Gtrad;
+		$this->tbl->nouv_cell( $Gtrad[$elt->get_mains()] );
+		$this->tbl->nouv_cell( $elt->get_degat() );
+    if( $this->categorie == 'baton' )
+			$this->tbl->nouv_cell( $elt->get_var1().'%' );
+		///TODO: à améliorer
+		switch($this->categorie)
+		{
+		case 'epee':
+		case 'hache':
+		case 'dague':
+			$coeff = $this->perso->get_coef_melee();
+			break;
+		case 'arc':
+			$coeff = $this->perso->get_coef_distance();
+			break;
+		case 'bouclier':
+			$coeff = $this->perso->get_coef_blocage();
+			break;
+		case 'baton':
+			$coeff = $this->perso->get_coef_incantation();
+			break;
+		}
+		$classe =  $elt->get_coefficient() > $coeff ? 'text-danger' : '';
+		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_coefficient(), false, $classe) );
+		//parent::aff_cont_col($elt);
+	}
+}
+
+/// Classe de base pour les listes d'armures
+class interf_achat_armure extends interf_achat_objet
+{
+	const type = 'armure';
+	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
+	{
+		global $db;
+		if( !$niveau )
+			$niveau =  $this->recherche_batiment($royaume, 'armurerie');
+		$objets = armure::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
+		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);
+	}
+	function aff_titres_col()
+	{
+		$this->tbl->nouv_cell('PP');
+		$this->tbl->nouv_cell('PM');
+		$this->tbl->nouv_cell('Force');
+		//parent::aff_titres_col();
+	}
+	
+	function aff_cont_col(&$elt)
+	{
+		$this->tbl->nouv_cell( $elt->get_pp() );
+		$this->tbl->nouv_cell( $elt->get_pm() );
+		$classe =  $elt->get_force() > $this->perso->get_force() ? 'text-danger' : '';
+		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_force(), false, $classe) );
+		//parent::aff_cont_col($elt);
+	}
+}
+
+/// Classe de base pour les listes d'accessoires
+class interf_achat_accessoire extends interf_achat_objet
+{
+	const type = 'accessoire';
+	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
+	{
+		/*global $db;
+		if( !$niveau )
+			$niveau =  $this->recherche_batiment($royaume, 'accessoire');
+		$objets = accessoire::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
+		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);*/
+	}
+	function aff_titres_col()
+	{
+		/*$this->tbl->nouv_cell('');
+		parent::aff_titres_col();*/
+	}
+	
+	function aff_cont_col(&$elt)
+	{
+		/*$this->tbl->nouv_cell( $elt->get_() );
+		parent::aff_cont_col($elt);*/
+	}
+}
+
+/// Classe de base pour les listes d'objet de dressage
+class interf_achat_dressage extends interf_achat_objet
+{
+	const type = 'dressage';
+	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
+	{
+		/*global $db;
+		if( !$niveau )
+			$niveau =  $this->recherche_batiment($royaume, 'dressage');
+		$objets = objet_pet::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
+		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);*/
+	}
+	function aff_titres_col()
+	{
+		/*$this->tbl->nouv_cell('');
+		parent::aff_titres_col();*/
+	}
+	
+	function aff_cont_col(&$elt)
+	{
+		/*$this->tbl->nouv_cell( $elt->get_() );
+		parent::aff_cont_col($elt);*/
 	}
 }
 

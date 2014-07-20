@@ -258,4 +258,34 @@ class arme extends objet_equip
     $main = explode(';', $this->mains);
     return $main[0];
   }
+  
+  function peut_utiliser(&$perso, $msg=true)
+  {
+		switch($this->type)
+		{
+		case 'epee':
+		case 'hache':
+		case 'dague':
+			$coeff = $perso->get_coef_melee();
+			$nom = 'coeff. de mêlée';
+			break;
+		case 'arc':
+			$coeff = $perso->get_coef_distance();
+			$nom = 'coeff. de tir';
+			break;
+		case 'bouclier':
+			$coeff = $perso->get_coef_blocage();
+			$nom = 'coeff. de blocage';
+			break;
+		case 'baton':
+			$coeff = $perso->get_coef_incantation();
+			$nom = 'coeff. d\'incatation';
+			break;
+		}
+    if( $coeff >= $this->coefficient )
+    	return true;
+    if( $msg )
+    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$coeff.' en '.$nom.'.');
+    return false;
+	}
 }

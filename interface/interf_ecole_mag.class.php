@@ -128,4 +128,105 @@ class interf_ecole_combat extends interf_ecole_mag
 	}
 }
 
+/// Classe gérant l'interface du forgeron
+class interf_forgeron extends interf_ecole_mag
+{
+	function __construct(&$royaume, $categorie)
+	{
+		parent::__construct($royaume);
+		
+		// Icone
+		$this->icone = $this->set_icone_centre('forge');
+		$niveau = $this->recherche_batiment('forgeron');
+		
+		// Onglets
+		$this->onglets->add_onglet('Épées', 'boutique.php?type=arme&ajax=2&categorie=epee', 'tab_epee', 'ecole_mag', $categorie=='epee');
+		$this->onglets->add_onglet('Haches', 'boutique.php?type=arme&ajax=2&categorie=hache', 'tab_hache', 'ecole_mag', $categorie=='hache');
+		$this->onglets->add_onglet('Dagues', 'boutique.php?type=arme&ajax=2&categorie=dague', 'tab_dague', 'ecole_mag', $categorie=='dague');
+		$this->onglets->add_onglet('Arcs', 'boutique.php?type=arme&ajax=2&categorie=arc', 'tab_arc', 'ecole_mag', $categorie=='arc');
+		$this->onglets->add_onglet('Boucliers', 'boutique.php?type=arme&ajax=2&categorie=bouclier', 'tab_bouclier', 'ecole_mag', $categorie=='bouclier');
+		$this->onglets->add_onglet('Bâtons', 'boutique.php?type=arme&ajax=2&categorie=baton', 'tab_baton', 'ecole_mag', $categorie=='baton');
+		
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_arme($royaume, $categorie, $niveau, $n) );
+	}
+}
+
+/// Classe gérant l'interface de l'armurerie
+class interf_armurerie extends interf_ecole_mag
+{
+	function __construct(&$royaume, $categorie)
+	{
+		parent::__construct($royaume);
+		
+		// Icone
+		$this->icone = $this->set_icone_centre('casque');
+		$niveau = $this->recherche_batiment('armurerie');
+		
+		// Onglets
+		$this->onglets->add_onglet('Torse', 'boutique.php?type=armure&ajax=2&categorie=torse', 'tab_torse', 'ecole_mag', $categorie=='torse');
+		$this->onglets->add_onglet('Tête', 'boutique.php?type=armure&ajax=2&categorie=tete', 'tab_tete', 'ecole_mag', $categorie=='tete');
+		$this->onglets->add_onglet('Jambe', 'boutique.php?type=armure&ajax=2&categorie=jambe', 'tab_jambe', 'ecole_mag', $categorie=='jambe');
+		$this->onglets->add_onglet('Taille', 'boutique.php?type=armure&ajax=2&categorie=ceinture', 'tab_ceinture', 'ecole_mag', $categorie=='ceinture');
+		$this->onglets->add_onglet('Main', 'boutique.php?type=armure&ajax=2&categorie=main', 'tab_main', 'ecole_mag', $categorie=='main');
+		$this->onglets->add_onglet('Pieds', 'boutique.php?type=armure&ajax=2&categorie=chaussure', 'tab_chaussure', 'ecole_mag', $categorie=='chaussure');
+		$this->onglets->add_onglet('Dos', 'boutique.php?type=armure&ajax=2&categorie=dos', 'tab_dos', 'ecole_mag', $categorie=='dos');
+		$this->onglets->add_onglet('Cou', 'boutique.php?type=armure&ajax=2&categorie=cou', 'tab_cou', 'ecole_mag', $categorie=='cou');
+		$this->onglets->add_onglet('Doigt', 'boutique.php?type=armure&ajax=2&categorie=doigt', 'tab_doigt', 'ecole_mag', $categorie=='doigt');
+		
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_armure($royaume, $categorie, $niveau, $n) );
+	}
+}
+
+/// Classe gérant l'interface de l'enchanteur
+class interf_enchanteur extends interf_ecole_mag
+{
+	function __construct(&$royaume, $categorie)
+	{
+		parent::__construct($royaume);
+		
+		// Icone
+		$this->icone = $this->set_icone_centre('diament');
+		//$niveau = $this->recherche_batiment('enchanteur');
+		
+		// Onglets
+		$this->onglets->add_onglet('Grands accessoires', 'boutique.php?type=accessoire&ajax=2&categorie=grand', 'tab_grand', 'ecole_mag', $categorie=='grand');
+		$this->onglets->add_onglet('Moyens accessoires', 'boutique.php?type=accessoire&ajax=2&categorie=moyen', 'tab_moyen', 'ecole_mag', $categorie=='moyen');
+		$this->onglets->add_onglet('Petits accessoires', 'boutique.php?type=accessoire&ajax=2&categorie=petit', 'tab_petit', 'ecole_mag', $categorie=='petit');
+		
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_accessoire($royaume, $categorie, $niveau, $n) );
+	}
+}
+
+/// Classe gérant l'interface du dresseur
+class interf_dresseur extends interf_ecole_mag
+{
+	function __construct(&$royaume, $categorie)
+	{
+		parent::__construct($royaume);
+		
+		// Icone
+		$this->icone = $this->set_icone_centre('faucon');
+		//$niveau = $this->recherche_batiment('dresseur');
+		
+		// Onglets
+		$this->onglets->add_onglet('Cou', 'boutique.php?type=dressage&ajax=2&categorie=cou', 'tab_cou', 'ecole_mag', $categorie=='cou');
+		$this->onglets->add_onglet('Selle', 'boutique.php?type=dressage&ajax=2&categorie=selle', 'tab_selle', 'ecole_mag', $categorie=='selle');
+		$this->onglets->add_onglet('Dos', 'boutique.php?type=dressage&ajax=2&categorie=dos', 'tab_dos', 'ecole_mag', $categorie=='dos');
+		$this->onglets->add_onglet('Arme', 'boutique.php?type=dressage&ajax=2&categorie=arme', 'tab_arme', 'ecole_mag', $categorie=='arme');
+		$this->onglets->add_onglet('Torse', 'boutique.php?type=dressage&ajax=2&categorie=torse', 'tab_torse', 'ecole_mag', $categorie=='torse');
+		$this->onglets->add_onglet('Pattes', 'boutique.php?type=dressage&ajax=2&categorie=pattes', 'tab_pattes', 'ecole_mag', $categorie=='pattes');
+		
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_dressage($royaume, $categorie, $niveau, $n) );
+	}
+}
+
+
 ?>

@@ -50,28 +50,26 @@ class interf_ville_entree extends interf_ville_entree_base
 			(
 				'Forgeron' => 'boutique.php?type=arme',
 				'Armurerie' => 'boutique.php?type=armure',
-				'Enchanteur' => 'enchanteur.php',
-				'Alchimiste' => 'alchimiste.php',
+				'Enchanteur' => 'boutique.php?type=accessoire'/*'enchanteur.php'*/,
+				'Dresseur' => 'boutique.php?type=dressage',
 				'Hôtel des ventes' => 'hotel.php'
 			);
 			$this->aff_quartier('Quartier marchand', 'quartier_marchand', $quartier_marchand);
 		}
 		// Quartier royal
 		$quartier_royal = array( 'Bureau des quêtes' => 'bureau_quete.php' );
-		if( $royaume->get_diplo($perso->get_race()) == 127 )
-		{ // Si on est dans notre royaume
+		if( $royaume->get_diplo($perso->get_race()) == 127 ) // Si on est dans notre royaume
 			$quartier_royal['Quartier général'] = 'qg.php';
-			$quartier_royal['Pierre de Téléportation'] = 'teleport.php';
-			$quartier_royal['Vente de terrain'] = 'vente_terrain.php';
-		}
+		$quartier_royal['Pierre de Téléportation'] = 'teleport.php';
+		$quartier_royal['Tribunal'] = 'tribunal.php';
 		$this->aff_quartier('Quartier royal', 'quartier_royal', $quartier_royal);
 		// Haut quartier (vérifier royaume neutre ?)
 		$haut_quartier = array
 		(
+			'Université' => 'universite.php',
 			'École de magie' => 'ecole.php?type=sort',
 			'École de combat' => 'ecole.php?type=comp',
-			'Université' => 'universite.php',
-			'Tribunal' => 'tribunal.php'
+			'Alchimiste' => 'alchimiste.php',
 		);
 		$this->aff_quartier('Haut quartier', 'haut_quartier', $haut_quartier);
 		// Bas quartier
@@ -80,11 +78,13 @@ class interf_ville_entree extends interf_ville_entree_base
 			'Taverne' => 'taverne.php',
 			'Écuries' => 'ecurie.php'
 		);
-		if( $royaume->get_diplo($perso->get_race()) == 127 )
+		if( $royaume->get_diplo($perso->get_race()) == 127 ) // Si on est dans notre royaume
 		{
-			$bas_quartier['Bâtiments en chantier'] = 'qg.php';
 			if( terrain::recoverByIdJoueur($perso->get_id()) )
 				$bas_quartier['Votre terrain'] = 'terrain.php';
+			else
+				$bas_quartier['Vente de terrain'] = 'vente_terrain.php';
+			$bas_quartier['Bâtiments en chantier'] = 'terrain_chantier.php';
 		}
 		$this->aff_quartier('Bas quartier', 'bas_quartier', $bas_quartier);
 	}

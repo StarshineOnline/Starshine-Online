@@ -146,68 +146,100 @@ abstract class objet_invent extends table
    *
    * @param  $objet   Forme textuelle de l'objet
    */
-  function factory($objet)
+  function factory($objet, $cat=null)
   {
-    // nombre d'objet "stackés"
-		$decomp = explode('x', $objet);
-		$obj = $decomp[0];
-		$stack = $decomp[1];
-    // enchantement par une gemme
-		$decomp = explode('e', $obj);
-		$obj = $decomp[0];
-		$enchantement = count($decomp)>1 ? $decomp[1] : null;
-    // slot disponible
-		$decomp = explode('s', $obj);
-		$obj = $decomp[0];
-		$slot = count($decomp)>1 ? $decomp[1] : null;
-    // catégorie & id
-    if( $obj[0] == 'h' )
-    {
-      $ident = false;
-      $cat = $obj[1];
-      $id = substr($obj, 2);
-    }
-    else
-    {
-      $ident = true;
-      $cat = $obj[0];
-      $id = substr($obj, 1);
-    }
+  	if( !$cat )
+  	{
+	    // nombre d'objet "stackés"
+			$decomp = explode('x', $objet);
+			$obj = $decomp[0];
+			$stack = $decomp[1];
+	    // enchantement par une gemme
+			$decomp = explode('e', $obj);
+			$obj = $decomp[0];
+			$enchantement = count($decomp)>1 ? $decomp[1] : null;
+	    // slot disponible
+			$decomp = explode('s', $obj);
+			$obj = $decomp[0];
+			$slot = count($decomp)>1 ? $decomp[1] : null;
+	    // catégorie & id
+	    if( $obj[0] == 'h' )
+	    {
+	      $ident = false;
+	      $cat = $obj[1];
+	      $id = substr($obj, 2);
+	    }
+	    else
+	    {
+	      $ident = true;
+	      $cat = $obj[0];
+	      $id = substr($obj, 1);
+	    }
+		}
+		else
+		{
+			$id = $objet;
+			$decomp = false;
+		}
     switch($cat)
     {
     case 'p':
+    case 'armure':
       $obj = new armure($id);
+      $txt = 'p';
       break;
     case 'a':
+    case 'arme':
       $obj = new arme($id);
+      $txt = 'a';
       break;
     case 'l':
+    case 'grimoire':
       $obj = new grimoire($id);
+      $txt = 'l';
       break;
     case 'o':
+    case 'objet':
       $obj = new objet($id);
+      $txt = 'o';
       break;
     case 'd':
+    case 'objet_pet':
+    case 'dressage':
       $obj = new objet_pet($id);
+      $txt = 'd';
       break;
     case 'g':
+    case 'gemme':
       $obj = new gemme($id);
+      $txt = 'g';
       break;
     case 'm':
+    case 'accessoire':
       $obj = new accessoire($id);
+      $txt = 'm';
       break;
     case 'r':
+    case 'objet_royaume':
       $obj = new objet_royaume($id);
+      $txt = 'r';
       break;
     default:
       debug_print_backtrace();
       die("catégorie d'objet inconnue : '$cat'");
     }
-    $obj->set_texte($objet);
-    $obj->set_nombre($stack);
-    $obj->set_enchantement($enchantement);
-    $obj->set_slot($slot);
-    $obj->set_identifie($ident);
+  	if( $decomp )
+  	{
+	    $obj->set_texte($objet);
+	    $obj->set_nombre($stack);
+	    $obj->set_enchantement($enchantement);
+	    $obj->set_slot($slot);
+	    $obj->set_identifie($ident);
+		}
+		else
+		{
+	    $obj->set_texte($txt.$id);
+		}
     return $obj;
   }
 	

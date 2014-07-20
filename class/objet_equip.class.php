@@ -269,5 +269,10 @@ abstract class objet_equip extends objet_invent
   {
     return true;
   }
+  
+  function peut_utiliser(&$perso)
+  {
+    return true;
+	}
 }
 ?>

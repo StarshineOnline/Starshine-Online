@@ -208,7 +208,7 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.static::get_champ_id().', '.static::get_liste_champs().' FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT * FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{

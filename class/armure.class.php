@@ -169,5 +169,20 @@ class armure extends objet_invent
   {
     return $this->type;
   }
+  
+  function peut_utiliser(&$perso, $msg=true)
+  {
+    if( $perso->get_puissance() < $this->puissance )
+    {
+			if( $msg )
+	    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de puissance.');
+    	return false;
+		}
+    if( $perso->get_force() >= $this->forcex )
+    	return true;
+    if( $msg )
+    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de force.');
+    return false;
+	}
 }
 ?>

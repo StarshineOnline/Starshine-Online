@@ -142,5 +142,14 @@ class accessoire extends objet_equip
   {
     return 'accessoire';
   }
+  
+  function peut_utiliser(&$perso, $msg=true)
+  {
+    if( $perso->get_puissance() >= $this->puissance )
+    	return true;
+    if( $msg )
+    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de puissance.');
+    return false;
+	}
 }
 ?>
