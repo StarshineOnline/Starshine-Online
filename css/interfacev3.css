@@ -700,7 +700,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border-left: 1px solid #777;
 }
 
-#depl_centre p
+#depl_centre>p
 {
 	margin: 5px 10px 5px 30px;
 	text-align: center;
@@ -1939,6 +1939,11 @@ div#amende.panel
 {
 	color: #888;
 	font-style: italic;
+}
+
+#tab_recherche
+{
+	padding: 10px;
 }
 
 /*#depl_centre table.table th

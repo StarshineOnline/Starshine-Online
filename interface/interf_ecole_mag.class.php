@@ -18,13 +18,16 @@ class interf_ecole_mag extends interf_ville
 		$this->onglets = $this->centre->add( new interf_onglets('tab_ecole_mag') );
 	}
 	
-	function recherche_batiment($batiment)
+	function recherche_batiment($batiment, $niv=true)
 	{
 		global $db;
-		$requete = 'SELECT MAX(level) as niv_max FROM batiment_ville WHERE type = "'.$batiment.'"';
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		$niv_max = $row['niv_max'];
+		if( $niv )
+		{
+			$requete = 'SELECT MAX(level) as niv_max FROM batiment_ville WHERE type = "'.$batiment.'"';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$niv_max = $row['niv_max'];
+		}
 		///TODO: à améliorer
 		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->royaume->get_id();
 		$req = $db->query($requete);
@@ -40,7 +43,8 @@ class interf_ecole_mag extends interf_ville
 			$niv = $row['nom'].' − niveau : ';
 		// Jauges
 		$this->set_jauge_ext($row['hp'], $row['hp_max'], 'hp', 'HP : ');
-		$this->set_jauge_int($niveau, $niv_max, 'avance', $niv);
+		if( $niv )
+			$this->set_jauge_int($niveau, $niv_max, 'avance', $niv);
 		// Si le batiment est inactif, on le met au niveau 1
 		return $row['statut'] == 'inactif' ? 1 : $niveau;
 	}
@@ -226,6 +230,76 @@ class interf_dresseur extends interf_ecole_mag
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_dressage($royaume, $categorie, $niveau, $n) );
 	}
+}
+
+/// Classe gérant l'interface de l'alchimiste
+class interf_alchimiste extends interf_ecole_mag
+{
+	function __construct(&$royaume, $tab)
+	{
+		global $db;
+		parent::__construct($royaume);
+		
+		// Icone
+		$this->icone = $this->set_icone_centre('alchimie');
+		//$this->recherche_batiment('alchimiste');
+		
+		// Nombre de recettes débloquées
+		$requete = 'SELECT COUNT(*) AS nbr FROM craft_recette WHERE royaume_alchimie < 99999999 AND royaume_alchimie > '.$royaume->get_alchimie();
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$nbr_rec = $row['nbr'];
+		// Nombre de recettes débloquables
+		$requete = 'SELECT COUNT(*) AS nbr FROM craft_recette WHERE royaume_alchimie < 99999999';
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$nbr_rec_tot = $row['nbr'];
+		$this->set_jauge_int($nbr_rec, $nbr_rec_tot, 'avance', 'Recettes débloquées : ');
+		
+		// Onglets
+		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $tab=='recherche');
+		$this->onglets->add_onglet('Consommables', 'alchimiste.php?onglet=objet&ajax=2', 'tab_objet', 'ecole_mag', $tab=='objet');
+		$this->onglets->add_onglet('Recettes', 'alchimiste.php?onglet=recette&ajax=2', 'tab_recette', 'ecole_mag', $tab=='recette');
+		
+		$this->aff_recherche($royaume);
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		switch($tab)
+		{
+		case 'objet':
+			$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_alchimie($royaume, $n) );
+			break;
+		case 'recette':
+			$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_recette($royaume, $n) );
+			break;
+		}
+	}
+	
+	function aff_recherche(&$royaume)
+	{
+		global $db;
+		$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < ".$royaume->get_alchimie()." ORDER BY royaume_alchimie DESC LIMIT 0, 1";
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$min = $row['royaume_alchimie'];
+		$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < 99999999 AND royaume_alchimie > ".$royaume->get_alchimie()." ORDER BY royaume_alchimie ASC LIMIT 0, 1";
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$max = $row['royaume_alchimie'];
+		$onglet = $this->onglets->get_onglet('tab_recherche');
+		if( $max )
+		{
+			$total = $max - $min;
+			$actuel = $royaume->get_alchimie() - $min;
+			$pourcent = round($actuel / $total * 100, 2);
+			$onglet->add( new interf_bal_smpl('p', $pourcent.'% du déblocage de la prochaine recette !') );
+		}
+		else
+		{
+			$onglet->add( new interf_bal_smpl('p', 'Il n\'y a plus de recette à débloquer. Mais vous pouvez tout de même continuer à effectuer des recherches pour vous entrainer.') );
+		}
+		$onglet->add( new interf_lien('Faire des recherches en alchimie (10 PA).', 'alchimiste.php?action=recherche', false, 'btn btn-default') );
+	} 
 }
 
 

@@ -11,6 +11,7 @@ abstract class interf_liste_achat extends interf_cont
 	protected $perso;
 	protected $ordre = 3;
 	protected $categorie = false;
+	const type = false;
 	function __construct(&$royaume, $id_tbl, $elts, $nbr_alertes=0)
 	{
 		$this->perso = &joueur::get_perso();
@@ -20,7 +21,11 @@ abstract class interf_liste_achat extends interf_cont
 		$this->tbl->nouv_cell('Stars');
 		$this->tbl->nouv_cell('Achat');
 		
-		$url_base = $this::url.'?type='.$this::type.($categorie ? 'categorie='.$categorie : '');
+		$url_base = $this::url.'?';
+		if( $this::type )
+			$url_base .= 'type='.$this::type.'&';
+		if( $this->categorie )
+			$url_base .= '&categorie='.$this->categorie.'&';
 		// Contenu
 		foreach($elts as $e)
 		{
@@ -28,7 +33,7 @@ abstract class interf_liste_achat extends interf_cont
 			$this->tbl->nouv_ligne(false, $achat ? '' : 'non-achetable');
 			$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt'.$e->get_id());
 			$this->tbl->nouv_cell( $lien );
-			$url = $url_base.'&action=infos&id='.$e->get_id();
+			$url = $url_base.'action=infos&id='.$e->get_id();
 			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
 			$this->aff_cont_col($e);
 			$prix = $e->get_prix() + ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100);
@@ -37,7 +42,7 @@ abstract class interf_liste_achat extends interf_cont
 			if( $achat === null )
 				$this->tbl->nouv_cell( new interf_bal_smpl('span', 'Connu', false, 'connu') );
 			else if( $achat )
-				$this->tbl->nouv_cell( new interf_lien('Achat', $url_base.'&action=achat&id='.$e->get_id()) );
+				$this->tbl->nouv_cell( new interf_lien('Achat', $url_base.'action=achat&id='.$e->get_id()) );
 			else
 				$this->tbl->nouv_cell('&nbsp;');
 		}
@@ -373,7 +378,7 @@ class interf_achat_dressage extends interf_achat_objet
 		/*global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'dressage');
-		$objets = objet_pet::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
+		$objets = objet_pet::create(null, null, 'dressage ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
 		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);*/
 	}
 	function aff_titres_col()
@@ -386,6 +391,25 @@ class interf_achat_dressage extends interf_achat_objet
 	{
 		/*$this->tbl->nouv_cell( $elt->get_() );
 		parent::aff_cont_col($elt);*/
+	}
+}
+
+/// Classe de base pour les listes d'objet de dressage
+class interf_achat_alchimie extends interf_liste_achat
+{
+	const url='alchimiste.php';
+	function __construct(&$royaume, $nbr_alertes=0)
+	{
+		global $db;
+		$objets = objet::create(null, null, 'prix ASC', false, 'achetable = "y"');
+		parent::__construct($royaume, 'tbl_objet', $objets, $nbr_alertes);
+	}
+	function aff_titres_col()
+	{
+	}
+	
+	function aff_cont_col(&$elt)
+	{
 	}
 }
 

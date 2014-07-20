@@ -148,6 +148,12 @@ class interf_factory
     include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_dresseur($royaume, $categorie);
 	}
+	/// Alchimiste
+	function creer_alchimiste(&$royaume, $tab='recherche')
+	{
+    include_once(root.'interface/interf_ecole_mag.class.php');
+    return new interf_alchimiste($royaume, $tab);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -195,6 +201,18 @@ class interf_factory
 	{
     include_once(root.'interface/interf_liste_achat.class.php');
     return new interf_achat_dressage($royaume, $caterorie, $niveau);
+	}
+	/// Liste d'achat des objets d'alchimie
+	function creer_achat_alchimie(&$royaume)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_alchimie($royaume);
+	}
+	/// Liste d'achat des recettes d'alchimie
+	function creer_achat_recette(&$royaume)
+	{
+    include_once(root.'interface/interf_liste_achat.class.php');
+    return new interf_achat_recette($royaume);
 	}
   /**
    * @name Inventaire

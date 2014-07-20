@@ -1,4 +1,74 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/**
+* @file boutiques.php
+* Boutiques en ville : forgeron, armurerie, dresseur, enchanteur.
+*/
+if (file_exists('root.php'))
+  include_once('root.php');
+
+include_once(root.'inc/fp.php');
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+if( $action == 'infos' )
+{
+	$objet = objet_invent::factory('o'.$_GET['id']);
+	///TODO: passer par $G_interf
+  new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
+  exit;
+}
+
+$interf_princ = $G_interf->creer_jeu();
+//Vérifie si le perso est mort
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
+
+// Royaume & case
+/// TODO: logguer triche
+$case = new map_case($perso->get_pos());
+$R = new royaume($case->get_royaume());
+if( !$case->is_ville(true, 'alchimiste') )
+	exit();
+$ville = $case->is_ville(true);
+
+
+// On vérifie la diplomatie
+/// TODO: logguer triche
+if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+	exit;
+
+// Ville rasée
+/// TODO: logguer triche
+if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
+	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+	
+$type = $_GET['type'];
+$tab = array_key_exists('onglet', $_GET);
+$onglet = $tab ? $_GET['onglet'] : 'recherche';
+
+if( $action == 'achat' )
+{
+}
+
+if($tab)
+{
+	switch($onglet)
+	{
+	case 'recherche':
+		break;
+	case 'objet':
+		$interf_princ->add( $G_interf->creer_achat_alchimie($R, $onglet) );
+		break;
+	case 'recette':
+		$interf_princ->add( $G_interf->creer_achat_recette($R, $onglet) );
+		break;
+	}
+}
+else
+	$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $onglet) );
+
+exit;
+
 if (file_exists('root.php'))
   include_once('root.php');
 
