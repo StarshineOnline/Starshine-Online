@@ -115,85 +115,78 @@ class interf_factory
 	/// École de magie
 	function creer_ecole_magie(&$royaume, $type)
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_ecole_magie($royaume, $type);
 	}
 	/// École de combat
 	function creer_ecole_combat(&$royaume, $type)
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_ecole_combat($royaume, $type);
 	}
 	/// Forgeron
 	function creer_forgeron(&$royaume, $categorie='epee')
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_forgeron($royaume, $categorie);
 	}
 	/// Armurerie
 	function creer_armurerie(&$royaume, $categorie='torse')
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_armurerie($royaume, $categorie);
 	}
 	/// Enchanteur
 	function creer_enchanteur(&$royaume, $categorie='grand')
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_enchanteur($royaume, $categorie);
 	}
 	/// Dresseur
 	function creer_dresseur(&$royaume, $categorie='cou')
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_dresseur($royaume, $categorie);
 	}
 	/// Alchimiste
 	function creer_alchimiste(&$royaume, $tab='recherche')
 	{
-    include_once(root.'interface/interf_ecole_mag.class.php');
     return new interf_alchimiste($royaume, $tab);
 	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_ecole_magie.class.php');
     return new interf_achat_sort_jeu($royaume, $niveau);
 	}
 	/// Liste d'achat des sort de combat
 	function creer_achat_sort_combat(&$royaume, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_ecole_magie.class.php');
     return new interf_achat_sort_combat($royaume, $niveau);
 	}
 	/// Liste d'achat des compétences hors combat
 	function creer_achat_comp_jeu(&$royaume, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_ecole_combat.class.php');
     return new interf_achat_comp_jeu($royaume, $niveau);
 	}
 	/// Liste d'achat des compétences de combat
 	function creer_achat_comp_combat(&$royaume, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_ecole_combat.class.php');
     return new interf_achat_comp_combat($royaume, $niveau);
 	}
 	/// Liste d'achat des armes
 	function creer_achat_arme(&$royaume, $caterorie, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_forgeron.class.php');
     return new interf_achat_arme($royaume, $caterorie, $niveau);
 	}
 	/// Liste d'achat des armures
 	function creer_achat_armure(&$royaume, $caterorie, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_armurerie.class.php');
     return new interf_achat_armure($royaume, $caterorie, $niveau);
 	}
 	/// Liste d'achat des accessoires
 	function creer_achat_accessoire(&$royaume, $caterorie, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_enchanteur.class.php');
     return new interf_achat_accessoire($royaume, $caterorie, $niveau);
 	}
 	/// Liste d'achat des objets de dressages
@@ -205,13 +198,13 @@ class interf_factory
 	/// Liste d'achat des objets d'alchimie
 	function creer_achat_alchimie(&$royaume)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_alchimiste.class.php');
     return new interf_achat_alchimie($royaume);
 	}
 	/// Liste d'achat des recettes d'alchimie
 	function creer_achat_recette(&$royaume)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_alchimiste.class.php');
     return new interf_achat_recette($royaume);
 	}
   /**

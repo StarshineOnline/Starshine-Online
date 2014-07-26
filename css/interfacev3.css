@@ -1801,12 +1801,12 @@ div#amende.panel
 	font-size: 28px;
 }
 
-#tab_ecole_mag
+#tab_ville
 {
 	margin: 2px 3px 0px 2px;
 }
 
-#tab_ecole_mag > li > a
+#tab_ville > li > a
 {
 	padding: 5px;
 }
@@ -1818,41 +1818,41 @@ div#amende.panel
   height: 408px;
 }
 
-#tab_ecole_mag .filtre
+#tab_ville .filtre
 {
 	float: right;
 	border-top: #ddd 1px solid;
 	border-right: #ddd 1px solid;
 }
 
-#tab_ecole_mag .filtre a
+#tab_ville .filtre a
 {
 	padding: 0;
 	margin: 0;
 }
 
-#tab_ecole_mag .filtre a:hover
+#tab_ville .filtre a:hover
 {
 	border-radius: 0;
 }
 
-#tab_ecole_mag .filtre:last-child
+#tab_ville .filtre:last-child
 {
 	border-left: #ddd 1px solid;
 	border-top-left-radius: 5px;
 }
 
-#tab_ecole_mag .filtre:nth-child(3)
+#tab_ville .filtre:nth-child(3)
 {
 	border-top-right-radius: 5px;
 }
 
-#tab_ecole_mag .filtre img
+#tab_ville .filtre img
 {
 	height: 27px;
 }
 
-#tab_ecole_mag li:first-child
+#tab_ville li:first-child
 {
 	margin-left: 30px;
 }

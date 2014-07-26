@@ -8,10 +8,13 @@
 class interf_ville extends interf_gauche
 {
 	protected $royaume;
+	protected $icone = null;
+	protected $perso;
 	
 	function __construct(&$royaume)
 	{
 		$this->royaume = &$royaume;
+		$this->perso = joueur::get_perso();
 		parent::__construct('carte');
 
 		// Menu ville
@@ -40,6 +43,48 @@ class interf_ville extends interf_gauche
 		$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );
 		$tavene->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-biere') );
 		$tavene->get_lien()->add( new interf_txt('Taverne') );
+	}
+	
+	function recherche_batiment($batiment, $niv=true)
+	{
+		global $db;
+		if( $niv )
+		{
+			$requete = 'SELECT MAX(level) as niv_max FROM batiment_ville WHERE type = "'.$batiment.'"';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			$niv_max = $row['niv_max'];
+		}
+		///TODO: à améliorer
+		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->royaume->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$niveau =  $row['level'];
+		// Tooltip de l'icone
+		if( $this->icone )
+		{
+			$this->icone->set_tooltip($row['nom']);
+			$niv = 'Niveau : ';
+		}
+		else
+			$niv = $row['nom'].' − niveau : ';
+		// Jauges
+		$this->set_jauge_ext($row['hp'], $row['hp_max'], 'hp', 'HP : ');
+		if( $niv )
+			$this->set_jauge_int($niveau, $niv_max, 'avance', $niv);
+		// Si le batiment est inactif, on le met au niveau 1
+		return $row['statut'] == 'inactif' ? 1 : $niveau;
+	}
+}
+
+/// Classe de base pour l'interface des bâtiments en ville ayant des onglets
+class interf_ville_onglets extends interf_ville
+{
+	protected $onglets;
+	function __construct(&$royaume)
+	{
+		parent::__construct($royaume);
+		$this->onglets = $this->centre->add( new interf_onglets('tab_ville') );
 	}
 }
 
