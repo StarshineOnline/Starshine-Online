@@ -235,7 +235,7 @@ class interf_dresseur extends interf_ecole_mag
 /// Classe gérant l'interface de l'alchimiste
 class interf_alchimiste extends interf_ecole_mag
 {
-	function __construct(&$royaume, $tab)
+	function __construct(&$royaume, $onglet)
 	{
 		global $db;
 		parent::__construct($royaume);
@@ -245,7 +245,7 @@ class interf_alchimiste extends interf_ecole_mag
 		//$this->recherche_batiment('alchimiste');
 		
 		// Nombre de recettes débloquées
-		$requete = 'SELECT COUNT(*) AS nbr FROM craft_recette WHERE royaume_alchimie < 99999999 AND royaume_alchimie > '.$royaume->get_alchimie();
+		$requete = 'SELECT COUNT(*) AS nbr FROM craft_recette WHERE royaume_alchimie < '.$royaume->get_alchimie();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		$nbr_rec = $row['nbr'];
@@ -257,20 +257,20 @@ class interf_alchimiste extends interf_ecole_mag
 		$this->set_jauge_int($nbr_rec, $nbr_rec_tot, 'avance', 'Recettes débloquées : ');
 		
 		// Onglets
-		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $tab=='recherche');
-		$this->onglets->add_onglet('Consommables', 'alchimiste.php?onglet=objet&ajax=2', 'tab_objet', 'ecole_mag', $tab=='objet');
-		$this->onglets->add_onglet('Recettes', 'alchimiste.php?onglet=recette&ajax=2', 'tab_recette', 'ecole_mag', $tab=='recette');
+		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $onglet=='recherche');
+		$this->onglets->add_onglet('Consommables', 'alchimiste.php?categorie=objet&ajax=2', 'tab_objet', 'ecole_mag', $onglet=='objet');
+		$this->onglets->add_onglet('Recettes', 'alchimiste.php?categorie=recette&ajax=2', 'tab_recette', 'ecole_mag', $onglet=='recette');
 		
 		$this->aff_recherche($royaume);
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
-		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$onglet.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		switch($tab)
 		{
 		case 'objet':
-			$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_alchimie($royaume, $n) );
+			$this->onglets->get_onglet('tab_'.$onglet)->add( new interf_achat_alchimie($royaume, $n) );
 			break;
 		case 'recette':
-			$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_recette($royaume, $n) );
+			$this->onglets->get_onglet('tab_'.$onglet)->add( new interf_achat_recette($royaume, $n) );
 			break;
 		}
 	}

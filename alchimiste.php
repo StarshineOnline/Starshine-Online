@@ -9,11 +9,23 @@ if (file_exists('root.php'))
 include_once(root.'inc/fp.php');
 
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+$onglet = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'recherche';
+
 if( $action == 'infos' )
 {
-	$objet = objet_invent::factory('o'.$_GET['id']);
-	///TODO: passer par $G_interf
-  new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
+	switch( $onglet )
+	{
+	case 'objet':
+		$objet = objet_invent::factory('o'.$_GET['id']);
+		///TODO: passer par $G_interf
+	  new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
+	  break;
+	case 'recette':
+		$recette = new alchimie_recette($_GET['id']);
+		///TODO: passer par $G_interf
+	  new interf_infos_popover($recette->get_noms_infos(), $recette->get_valeurs_infos());
+	  break;
+	}
   exit;
 }
 
@@ -42,20 +54,17 @@ if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	
-$type = $_GET['type'];
-$tab = array_key_exists('onglet', $_GET);
-$onglet = $tab ? $_GET['onglet'] : 'recherche';
 
 if( $action == 'achat' )
 {
 }
 
-if($tab)
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 {
 	switch($onglet)
 	{
-	case 'recherche':
-		break;
+	/*case 'recherche':
+		break;*/
 	case 'objet':
 		$interf_princ->add( $G_interf->creer_achat_alchimie($R, $onglet) );
 		break;
