@@ -1,7 +1,7 @@
 <?php
 /**
  * @file interf_ecole_magie.class.php
- * Classes pour l'interface des écoles et magasins
+ * Classes pour l'interface de l'école de magie
  */
 include_once(root.'interface/interf_ville.class.php');
 include_once(root.'interface/interf_liste_achat.class.php');

@@ -143,9 +143,14 @@ class interf_factory
     return new interf_dresseur($royaume, $categorie);
 	}
 	/// Alchimiste
-	function creer_alchimiste(&$royaume, $tab='recherche')
+	function creer_alchimiste(&$royaume, $onglet='recherche')
 	{
-    return new interf_alchimiste($royaume, $tab);
+    return new interf_alchimiste($royaume, $onglet);
+	}
+	/// Hotel des ventes
+	function creer_hotel_vente(&$royaume, $type='vente', $categorie='arme')
+	{
+    return new interf_hotel_vente($royaume, $type, $categorie);
 	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
