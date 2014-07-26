@@ -39,7 +39,7 @@ class pnj extends placable
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( func_num_args() == 1 )
 		{
-			$this->charger($id);
+			$this->charger($nom);
 		}
 		else
 		{

@@ -164,7 +164,7 @@ class texte
           $debut = '';
           $fin = '';
         }
-    		$texte = preg_replace('`\[QUETEFINI'.$quetef.':([0-9]*)\](.*)\[/QUETEFINI'.$quetef.':(\g1)\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte, -1, $nbr);
+    		$texte = preg_replace('`\[QUETEFINI'.$quetef.':([0-9]*)\](.*)\[/QUETEFINI'.$quetef.':(\g1)\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return charger(this.href);">\\2</a>'.$fin, $texte, -1, $nbr);
         $trouve |= $nbr > 0;
     	}
     }
@@ -252,7 +252,7 @@ class texte
     if(preg_match('`\[verifinventaire:([0-9]*)\]`i', $texte, $regs))
     {
     	if (verif_inventaire($regs[1], $this->perso) == false)
-    		$texte = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
+    		$texte = "Tu te moques de moi, mon bonhomme ?";
     	else
     		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);
     }
@@ -276,7 +276,7 @@ class texte
       $debut = '';
       $fin = '';
     }
-    return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return envoiInfo(this.href, \'information\')">Retour aux informations de la case</a>'.$fin, $texte);
+    return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return charger(this.href);">Retour aux informations de la case</a>'.$fin, $texte);
   }
 
   /// Fonction formattant les balises permettant de naviguer entre les différentes parties d'un texte.
@@ -293,7 +293,7 @@ class texte
       $fin = '';
     }
     $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
-    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return charger(this.href);">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
@@ -490,7 +490,7 @@ class texte
         $this->perso->set_y( $regs[2] );
         $this->perso->sauver();
       }
-      $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
+      $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">charger("deplacement.php?deplacement=centre");</script>', $texte);
     }
     return $texte;
   }
