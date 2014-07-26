@@ -431,6 +431,13 @@ class interf_achat_recette extends interf_liste_achat
 	function aff_cont_col(&$elt)
 	{
 	}
+	protected function peut_acheter(&$elt)
+	{
+		if( perso_recette::recov($this->perso->get_id(), $elt->get_id()) )
+			return null;
+		else
+			return parent::peut_acheter($elt);
+	}
 }
 
 ?>

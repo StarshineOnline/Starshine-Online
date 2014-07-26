@@ -58,11 +58,11 @@ if( $action == 'achat' )
 	{
 		$taxe = ceil($objet->get_prix() * $R->get_taxe_diplo($perso->get_race()) / 100);
 		$prix = $objet->get_prix() + $taxe;
-		if( $perso->get_star() >= $objet->get_prix() )
+		if( $perso->get_star() >= $prix )
 		{
 			if( ($categorie == 'dressage' && $perso->prend_objet_pet('d'.$objet->get_id()) ) || $perso->prend_objet($objet->get_texte()) )
 			{
-				$perso->add_star( -$objet->get_prix() );
+				$perso->add_star( -$prix );
 									
 				//Récupération de la taxe
 				if($taxe > 0)

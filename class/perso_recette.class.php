@@ -86,7 +86,7 @@ class perso_recette
 		return 'id = '.$this->id.', id_recette = '.$this->id_recette.', id_perso = '.$this->id_perso.', nombre = '.$this->nombre;
 	}
 
-	function recov($id_perso, $id_recette)
+	static function recov($id_perso, $id_recette)
 	{
 		global $db;
 		$requete = "SELECT id, id_recette, id_perso, nombre FROM perso_recette WHERE id_perso = ".$id_perso." AND id_recette = ".$id_recette;

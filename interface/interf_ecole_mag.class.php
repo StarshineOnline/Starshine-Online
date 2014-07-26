@@ -261,9 +261,9 @@ class interf_alchimiste extends interf_ecole_mag
 		$this->onglets->add_onglet('Consommables', 'alchimiste.php?categorie=objet&ajax=2', 'tab_objet', 'ecole_mag', $onglet=='objet');
 		$this->onglets->add_onglet('Recettes', 'alchimiste.php?categorie=recette&ajax=2', 'tab_recette', 'ecole_mag', $onglet=='recette');
 		
-		$this->aff_recherche($royaume);
-		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$onglet) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$onglet.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
+		$this->aff_recherche($royaume);
 		switch($tab)
 		{
 		case 'objet':

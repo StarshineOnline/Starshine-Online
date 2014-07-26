@@ -1946,6 +1946,11 @@ div#amende.panel
 	padding: 10px;
 }
 
+#tab_recherche .alert
+{
+	margin-bottom: 10px;
+}
+
 /*#depl_centre table.table th
 {
 	font-size: 13px;
