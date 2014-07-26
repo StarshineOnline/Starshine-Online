@@ -20,7 +20,7 @@ class interf_ecole_magie extends interf_ville_onglets
 		// Onglets
 		$this->onglets->add_onglet('Sorts hors combat', 'ecole.php?type=sort_jeu&ajax=2', 'tab_sort_jeu', 'ecole_mag', $type=='sort_jeu');
 		$this->onglets->add_onglet('Sorts de combat', 'ecole.php?type=sort_combat&ajax=2', 'tab_sort_combat', 'ecole_mag', $type=='sort_combat');
-		if( true || !$this->perso->get_sort_element() || !$this->perso->get_sort_mort() || !$this->perso->get_sort_vie() )
+		if( !$this->perso->get_sort_element() || !$this->perso->get_sort_mort() || !$this->perso->get_sort_vie() )
 			$this->onglets->add_onglet('Magies', 'ecole.php?type=sort_combat&ajax=2', 'tab_magie', 'ecole_mag', $type=='magie');
 		
 		// Filtres
