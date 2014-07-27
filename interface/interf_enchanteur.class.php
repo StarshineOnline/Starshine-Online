@@ -14,7 +14,7 @@ class interf_enchanteur extends interf_ville_onglets
 		parent::__construct($royaume);
 		
 		// Icone
-		$this->icone = $this->set_icone_centre('diament');
+		$this->icone = $this->set_icone_centre('pentacle');
 		//$niveau = $this->recherche_batiment('enchanteur');
 		
 		// Onglets

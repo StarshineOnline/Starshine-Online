@@ -64,14 +64,14 @@ class interf_ville extends interf_gauche
 		if( $this->icone )
 		{
 			$this->icone->set_tooltip($row['nom']);
-			$niv = 'Niveau : ';
+			$txt_niv = 'Niveau : ';
 		}
 		else
-			$niv = $row['nom'].' − niveau : ';
+			$txt_niv = $row['nom'].' − niveau : ';
 		// Jauges
 		$this->set_jauge_ext($row['hp'], $row['hp_max'], 'hp', 'HP : ');
 		if( $niv )
-			$this->set_jauge_int($niveau, $niv_max, 'avance', $niv);
+			$this->set_jauge_int($niveau, $niv_max, 'avance', $txt_niv);
 		// Si le batiment est inactif, on le met au niveau 1
 		return $row['statut'] == 'inactif' ? 1 : $niveau;
 	}

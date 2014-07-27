@@ -12,6 +12,8 @@ abstract class interf_liste_achat extends interf_cont
 	protected $ordre = 3;
 	protected $categorie = false;
 	const type = false;
+	protected $txt_achat = 'Achat';
+	const taxe = true;
 	function __construct(&$royaume, $id_tbl, $elts, $nbr_alertes=0)
 	{
 		$this->perso = &joueur::get_perso();
@@ -36,13 +38,13 @@ abstract class interf_liste_achat extends interf_cont
 			$url = $url_base.'action=infos&id='.$e->get_id();
 			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
 			$this->aff_cont_col($e);
-			$prix = $e->get_prix() + ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100);
+			$prix = $e->get_prix() + $this::taxe ? ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100) : 0;
 			$classe =  $prix > $this->perso->get_star() ? 'text-danger' : '';
 			$this->tbl->nouv_cell( new interf_bal_smpl('span', $prix, false, $classe) );
 			if( $achat === null )
 				$this->tbl->nouv_cell( new interf_bal_smpl('span', 'Connu', false, 'connu') );
 			else if( $achat )
-				$this->tbl->nouv_cell( new interf_lien('Achat', $url_base.'action=achat&id='.$e->get_id()) );
+				$this->tbl->nouv_cell( new interf_lien($this->txt_achat, $url_base.'action=achat&id='.$e->get_id()) );
 			else
 				$this->tbl->nouv_cell('&nbsp;');
 		}
@@ -61,8 +63,8 @@ abstract class interf_liste_achat extends interf_cont
 	}
 	
 	protected function aff_filtres() {}
-	abstract protected function aff_titres_col();
-	abstract protected function aff_cont_col(&$elt);
+	protected function aff_titres_col() {}
+	protected function aff_cont_col(&$elt) {}
 	protected function peut_acheter(&$elt)
 	{	
 		return $this->perso->get_star() >= $elt->get_prix();

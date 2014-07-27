@@ -74,7 +74,6 @@ class interf_achat_sort_jeu extends interf_achat_sort
 	const type = 'sort_jeu';
 	function __construct(&$royaume, $niveau, $nbr_alertes=0)
 	{
-		global $db;
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
 		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');

@@ -1,34 +1,142 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/**
+* @file boutiques.php
+* Boutiques en ville : forgeron, armurerie, dresseur, enchanteur.
+*/
 if (file_exists('root.php'))
   include_once('root.php');
 
-require_once("haut_ajax.php");
-	
-$joueur = new perso($_SESSION['ID']);
-$joueur->check_perso();
+include_once(root.'inc/fp.php');
 
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+if( $action == 'infos' )
+{
+	/// TODO: passer par un objet
+	$requete = 'SELECT objet FROM hotel WHERE id='.$_GET['id'];
+	$req = $db->query($requete);
+	if( $res = $db->read_array($req) )
+	{
+		$objet = objet_invent::factory($res[0]);
+		///TODO: passer par $G_interf
+		new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
+	}
+  exit;
+}
+
+$interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
+// Royaume
+///TODO: à améliorer
+$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-$R->get_diplo($joueur->get_race());
+
+// On vérifie qu'on est bien sur une ville
+/// TODO: logguer triche
+if($W_row['type'] != 1)
+	exit;
+
+// On vérifie la diplomatie
+/// TODO: logguer triche
+if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+	exit;
+
+// Ville rasée
+/// TODO: logguer triche
+if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
+	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+	
+$type = array_key_exists('type', $_GET) ? $_GET['type'] : 'achat';
+$categorie = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'arme';
+
+
+switch( $action )
+{
+case 'achat':
+	/// TODO: passer par un objet
+	$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id='.$_GET['id'];
+	$req = $db->query($requete);
+	if( $res = $db->read_assoc($req) )
+	{
+		if( $perso->get_star() >= $res['prix'] )
+		{
+			if( ($categorie == 'objet_pet' && $perso->prend_objet_pet($res['objet']) ) || $perso->prend_objet($res['objet']) )
+			{
+				$perso->add_star( -$res['prix'] );
+				$perso->sauver();
+				interf_alerte::enregistre(interf_alerte::msg_succes, $res['nom'].' acheté.');
+    		$interf_princ->maj_perso();
+			}
+			else /// TODO: à améliorer
+				interf_alerte::enregistre(interf_alerte::msg_erreur, $G_erreur);
+		}
+		else
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$res['prix'].' stars.');
+	}
+	break;
+case 'vendre':
+	/// TODO: passer par un objet
+	$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id='.$_GET['id'];
+	$req = $db->query($requete);
+	if( $res = $db->read_assoc($req) )
+	{
+		$acheteur = new perso($res['id_vendeur']);
+		/// TODO: logguer triche
+		if( $perso->recherche_objet($res['objet']) )
+			security_block(URL_MANIPULATION, 'Objet non disponible');
+		if( !array_key_exists('nombre', $_GET) && strpos($res['objet'], 'x') >= 0 )
+		{
+		  $G_interf->creer_vente_objets($res);
+		  exit;
+		}
+		else
+		{ // Un seul exemplaire on vend directement
+			/// TODO: si on ne peut pas le mettre dans l'inventaire, essayer un terrain en ville
+			if( ($categorie == 'objet_pet' && $acheteur->prend_objet_pet($res['objet']) ) || $acheteur->prend_objet($res['objet']) )
+			{
+				$perso->supprime_objet('o2', 1);
+				$perso->add_star( $res['prix'] );
+				$perso->sauver();
+				/// TODO: péciser le nombre
+				interf_alerte::enregistre(interf_alerte::msg_succes, $res['nom'].' vendu.');
+	  		$interf_princ->maj_perso();
+			}
+			else
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'acheteur ne peut pas prendre l\'objet, réessayez plus tard.');
+		}
+	}
+	break;
+case 'offre':
+	break;
+}
+
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
+{
+	if( $type == 'vente' )
+		$interf_princ->add( $G_interf->creer_vente_hdv($R, $categorie) );
+	else
+		$interf_princ->add( $G_interf->creer_achat_hdv($R, $categorie) );
+}
+else
+	$interf_princ->set_gauche( $G_interf->creer_hotel_vente($R, $type, $categorie) );
+
+
+
+
+
+
+
+
+
+exit;
+
 $mois = 60 * 60 * 24 * 31;
 
-if ($R->is_raz() && $joueur->get_x() <= 190 && $joueur->get_y() <= 190)
-{
-	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
-	exit (0);
-}
-
-if ($joueur->get_race() != $R->get_race() &&
-		$R->get_diplo($joueur->get_race()) > 6)
-{
-	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
-	exit (0);
-}
 echo "<fieldset>";
 if($W_row['type'] == 1)
 {//-- On verifie que le joueur est bien sur la ville ($W_distance)

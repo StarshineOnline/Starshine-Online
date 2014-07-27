@@ -212,6 +212,24 @@ class interf_factory
     include_once(root.'interface/interf_alchimiste.class.php');
     return new interf_achat_recette($royaume);
 	}
+	/// Liste d'achat à l'hotel des ventes
+	function creer_achat_hdv(&$royaume, $categorie)
+	{
+    include_once(root.'interface/interf_hotel_vente.class.php');
+    return new interf_achat_hdv($royaume, $categorie);
+	}
+	/// Liste de vente à l'hotel des ventes
+	function creer_vente_hdv(&$royaume, $categorie)
+	{
+    include_once(root.'interface/interf_hotel_vente.class.php');
+    return new interf_vente_hdv($royaume, $categorie);
+	}
+	/// Boite de dialogue pour la vente d'objet en plusieur exemplaires
+	function creer_vente_objets($objet)
+	{
+    include_once(root.'interface/interf_hotel_vente.class.php');
+    return new interf_vente_objets($objet);
+	}
   /**
    * @name Inventaire
    * Méthodes pour créer les interfaces de l'inventaire

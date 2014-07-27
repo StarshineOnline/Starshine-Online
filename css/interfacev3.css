@@ -1811,6 +1811,11 @@ div#amende.panel
 	padding: 5px;
 }
 
+#tab_ville > li > a > .icone
+{
+	font-size: 18px;
+}
+
 .ecole_mag
 {
 	margin-left: 2px;
@@ -1818,11 +1823,12 @@ div#amende.panel
   height: 408px;
 }
 
-#tab_ville .filtre
+#tab_ville .filtre, #tab_ville .action
 {
 	float: right;
 	border-top: #ddd 1px solid;
 	border-right: #ddd 1px solid;
+	overflow: hidden;
 }
 
 #tab_ville .filtre a
@@ -1831,18 +1837,29 @@ div#amende.panel
 	margin: 0;
 }
 
-#tab_ville .filtre a:hover
+#tab_ville .action a
+{
+	margin: 0;
+}
+
+#tab_ville .filtre a:hover, #tab_ville .filtre.active a:hover, #tab_ville .action a:hover, #tab_ville .action.actif a
 {
 	border-radius: 0;
 }
 
-#tab_ville .filtre:last-child
+#tab_ville .action.actif a
+{
+	border-color: #FFF;
+	background-color: #FFF;
+}
+
+#tab_ville .filtre:last-child, #tab_ville .action:last-child
 {
 	border-left: #ddd 1px solid;
 	border-top-left-radius: 5px;
 }
 
-#tab_ville .filtre:nth-child(3)
+#tab_ville .filtre:nth-child(3), #tab_ville .action:nth-child(9)
 {
 	border-top-right-radius: 5px;
 }
@@ -1875,6 +1892,12 @@ div#amende.panel
 {
 	background: none;
 }
+	
+
+#depl_centre .table > tbody > tr > td
+{
+	vertical-align: middle;
+}
 
 #depl_centre table.dataTable > thead > tr > th
 {
@@ -1892,12 +1915,12 @@ div#amende.panel
 	border-bottom: none;
 }
 
-#depl_centre table.dataTable td:first-child
+#depl_centre table.dataTable td:first-child a
 {
-	padding: 3px;
+	padding-left: 3px;
 }
 
-#depl_centre table.dataTable td:last-child
+#depl_centre table.dataTable td:last-child a
 {
 	padding-right: 3px;
 }
@@ -1927,6 +1950,14 @@ div#amende.panel
 #depl_centre table a
 {
 	font-weight: bold;
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
+#depl_centre table a:hover
+{
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
 #depl_disque_centre.icone-casque
@@ -1949,6 +1980,25 @@ div#amende.panel
 #tab_recherche .alert
 {
 	margin-bottom: 10px;
+}
+
+.offre_achat
+{	
+	display: block;
+	position: absolute;
+	bottom: 4px;
+	height: 25px;
+	width: 437px;
+	border-top: 1px solid #FFF;
+	padding : 4px;
+	text-align: center;
+	border-bottom-left-radius: 9px;
+	border-bottom-right-radius: 9px;
+}
+
+.offre_achat:hover
+{	
+	background-color: rgba(255, 255, 255, 0.3);
 }
 
 /*#depl_centre table.table th

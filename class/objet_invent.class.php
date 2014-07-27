@@ -384,6 +384,18 @@ abstract class objet_invent extends table
   function vendre_hdv(&$perso, &$princ, $prix)
   {
     global $db;
+    // On vérifie qu'il n'est pas déjà au maximum d'objets en vente
+    /// TODO: à améliorer
+    $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$perso->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$objet_max = 10;
+		$bonus_craft = ceil($perso->get_artisanat() / 5);
+		$objet_max += $bonus_craft;
+		if($row[0] >= $objet_max)
+		{
+		   $princ->add( new interf_alerte('danger', true) )->add_message('Vous avez déjà '.$objet_max.' objets ou plus en vente.');
+		}
     // On vérifie que le prix est positif
     if( $prix < 0 )
     {
@@ -411,12 +423,13 @@ abstract class objet_invent extends table
 		$perso->supprime_objet($this->get_texte(), 1);
 		$perso->set_star($perso->get_star() - $taxe);
 		$perso->sauver();
+		/// TODO: passer par la nouvelle méthode
 		$R->set_star($R->get_star() + $taxe);
 		$R->sauver();
 		$requete = 'UPDATE argent_royaume SET hv = hv + '.$taxe.' WHERE race = "'.$R->get_race().'"';
 		$db->query($requete);
     // On ajoute l'objet dans l'hotel de ville
-		$requete = 'INSERT INTO hotel VALUES (NULL, "'.$this->get_texte().'", '.$perso->get_id().', '.$prix.', 1, "'.$R->get_race().'", '.time().')';
+		$requete = 'INSERT INTO hotel VALUES (NULL, "'.$this->get_texte().'", '.$perso->get_id().', "vente", '.$prix.', 1, "'.$R->get_race().'", '.time().')';
 		$req = $db->query($requete);
     // On enregistre dans les logs
     log_admin::log('mis en vente HV', $perso->get_nom().' vend '.$this->nom.' ('.$this->id.') pour '.$prix.' stars. Taxes : '.$taxe.' stars');
@@ -492,6 +505,33 @@ abstract class objet_invent extends table
    * Retirer une gemme
    */
   function recup_gemme(&$perso, &$princ) { return false; }
+  
+	public static function get_abbrev($categorie)
+	{
+		switch($categorie)
+		{
+			case 'arme':
+				return 'a';
+			case 'armure':
+				return 'p';
+			case 'dressage':
+				return 'd';
+			case 'objet':
+				return 'o';
+			case 'gemme':
+				return 'g';
+			case 'accessoire':
+				return 'm';
+			case 'grimoire':
+				return 'g';
+			case 'grimoire':
+				return 'l';
+			case 'royaume':
+				return 'r';
+			default	:
+				return '';
+		}
+	}
 }
 
 class zone_invent extends objet_invent

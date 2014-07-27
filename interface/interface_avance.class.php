@@ -536,7 +536,7 @@ class interf_data_tbl extends interf_tableau
     $script->set_attribut('type', 'text/javascript');
     $script->set_attribut('src', './javascript/jquery/jquery.dataTables.min.js');*/
     
-    $options = array(/*'"autoWidth": false'*/);
+    $options = array('"language": {"emptyTable": "Pas d\'élément dans cette catégorie."}');
     if( !$pages )
     	$options[] = '"paging":false, "info":false';
     if( $scroll )
