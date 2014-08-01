@@ -15,6 +15,7 @@ class grimoire extends objet_invent
 	protected $attr_perso;  ///< Nom de l'attribut à améliorer.
 	protected $ajout_attr;  ///< Valeur à ajoutée à l'attribut.
 	protected $classe_requis;  ///< Classes donnant accès au grimoire.
+	const code = 'l';   ///< Code de l'objet.
 
 	/// Retourne l'id du sort ou de la compétence apprise
 	function get_id_apprend()

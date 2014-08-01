@@ -16,6 +16,7 @@ class arme extends objet_equip
 	protected $distance_tir;  ///< distance d'attaque de l'arme
 	protected $mains;  ///< main(s) utilisée(s) pour porter l'arme
 	protected $var1; ///< malus d'esquive ou bonus pour le lancer des sorts
+	const code = 'a';   ///< Code de l'objet.
 
 	/// Retourne les dégâts de l'arme
 	function get_degat()

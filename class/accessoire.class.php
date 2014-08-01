@@ -13,6 +13,7 @@ class accessoire extends objet_equip
 	protected $description;  ///< Description de l'objet.
 	protected $puissance;  ///< Puissance nécessaire pour porter l'objet.
 	protected $taille;  ///< Taille de l'accessoire.
+	const code = 'm';   ///< Code de l'objet.
 
 	/// Retourne la description de l'objet.
 	function get_description()

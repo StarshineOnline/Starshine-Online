@@ -54,7 +54,6 @@ if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 $type = array_key_exists('type', $_GET) ? $_GET['type'] : 'achat';
 $categorie = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'arme';
 
-
 switch( $action )
 {
 case 'achat':
@@ -67,10 +66,13 @@ case 'achat':
 		{
 			if( ($categorie == 'objet_pet' && $perso->prend_objet_pet($res['objet']) ) || $perso->prend_objet($res['objet']) )
 			{
+				$obj = objet_invent::factory($res['objet']);
 				$perso->add_star( -$res['prix'] );
 				$perso->sauver();
-				interf_alerte::enregistre(interf_alerte::msg_succes, $res['nom'].' acheté.');
+				interf_alerte::enregistre(interf_alerte::msg_succes,  $obj->get_nom().' acheté.');
     		$interf_princ->maj_perso();
+    		$requete = 'DELETE FROM hotel WHERE id='.$_GET['id'];
+    		$db->query($requete);
 			}
 			else /// TODO: à améliorer
 				interf_alerte::enregistre(interf_alerte::msg_erreur, $G_erreur);
@@ -79,32 +81,63 @@ case 'achat':
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$res['prix'].' stars.');
 	}
 	break;
-case 'vendre':
+case 'vente':
 	/// TODO: passer par un objet
-	$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id='.$_GET['id'];
+	$requete = 'SELECT * FROM hotel WHERE type = "achat" AND id='.$_GET['id'];
 	$req = $db->query($requete);
 	if( $res = $db->read_assoc($req) )
 	{
 		$acheteur = new perso($res['id_vendeur']);
 		/// TODO: logguer triche
-		if( $perso->recherche_objet($res['objet']) )
+		$obj_perso = $perso->recherche_objet($res['objet']);
+		if( !$obj_perso )
 			security_block(URL_MANIPULATION, 'Objet non disponible');
-		if( !array_key_exists('nombre', $_GET) && strpos($res['objet'], 'x') >= 0 )
+		$obj = objet_invent::factory($res['objet']);
+		$nbr_achat = $obj->get_nombre();
+		if( !array_key_exists('nombre', $_GET) && $nbr_achat > 1 )
 		{
-		  $G_interf->creer_vente_objets($res);
+		  $interf_princ->set_dialogue( $G_interf->creer_vente_objets($res, $categorie, $obj_perso) );
 		  exit;
 		}
 		else
 		{ // Un seul exemplaire on vend directement
 			/// TODO: si on ne peut pas le mettre dans l'inventaire, essayer un terrain en ville
-			if( ($categorie == 'objet_pet' && $acheteur->prend_objet_pet($res['objet']) ) || $acheteur->prend_objet($res['objet']) )
+			$nombre = array_key_exists('nombre', $_GET) ? $_GET['nombre'] : 1;
+			if( $nombre > $nbr_achat || $nombre > $obj_perso[0] )
+				security_block(URL_MANIPULATION, 'Vous essayez de vendre trop d\'objets');
+			$obj->set_nombre($nombre);
+			$obj->recompose_texte();
+			///TODO: ajouter directement la possibilité de prendre plusieurs objets
+			for($n=0; $n<$nombre; $n++)
 			{
-				$perso->supprime_objet('o2', 1);
-				$perso->add_star( $res['prix'] );
+				if( $categorie )
+				{
+					if( !$acheteur->prend_objet_pet($obj->get_texte()) )
+						break;
+				}
+				else
+				{
+					if( !$acheteur->prend_objet($obj->get_texte()) )
+						break;
+				}
+			}
+			if( $n )
+			{
+				$perso->supprime_objet($obj->get_texte(), $n);
+				$perso->add_star( $res['prix']*$n );
 				$perso->sauver();
-				/// TODO: péciser le nombre
-				interf_alerte::enregistre(interf_alerte::msg_succes, $res['nom'].' vendu.');
 	  		$interf_princ->maj_perso();
+	  		if( $nombre == $nbr_achat )
+    			$requete = 'DELETE FROM hotel WHERE id='.$_GET['id'];
+    		else
+    		{
+    			$obj->set_nombre($nbr_achat - $n);
+    			$obj->recompose_texte();
+    			$requete = 'UPDATE hotel SET objet="'.$obj->get_texte().'" WHERE id='.$_GET['id'];
+				}
+    		$db->query($requete);
+				/// TODO: péciser le nombre
+				interf_alerte::enregistre(interf_alerte::msg_succes, $obj->get_nom().' vendu.');
 			}
 			else
 				interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'acheteur ne peut pas prendre l\'objet, réessayez plus tard.');
@@ -112,6 +145,37 @@ case 'vendre':
 	}
 	break;
 case 'offre':
+	$taxe = $R->get_taxe_diplo($perso->get_race()) / 100;
+	if( array_key_exists('objet', $_GET) )
+	{
+		$taxe = round($_GET['prix'] * $taxe);
+		$cout = ($_GET['prix'] + $taxe) * $_GET['nombre'];
+		if( $perso->get_star() >= $cout )
+		{
+			/// TODO: passer par un objet
+			$obj = $_GET['objet'];
+			if( $_GET['nombre'] > 1 )
+				$obj .= 'x'.$_GET['nombre'];
+			$requete = 'INSERT INTO hotel (objet, id_vendeur, type, prix, race, time) VALUES ("'.$obj.'", '.$perso->get_id().', "achat", '.$_GET['prix'].', "'.$perso->get_race().'", '.time().')';
+			$db->query($requete);
+			$perso->add_star( -$cout );
+			$perso->sauver();
+			//Récupération de la taxe
+			if($taxe > 0)
+			{
+				$R->add_star_taxe($taxe, $type);
+				$R->sauver();
+			}
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Offre déposée.');
+		}
+		else
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$res['prix'].' stars.');
+	}
+	else
+	{
+		  $interf_princ->set_dialogue( $G_interf->creer_offre_achat($categorie, $taxe) );
+		  exit;
+	}
 	break;
 }
 

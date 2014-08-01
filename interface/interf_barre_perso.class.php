@@ -193,7 +193,7 @@ class interf_barre_perso extends interf_bal_cont
 			$classe = 'perso_groupe_nom';
 	  	if( $membre->get_id() == $groupe->get_id_leader() )
 	  		$classe .= ' perso_groupe_chef';
-	  	$nom = $li->add( new interf_bal_smpl('a', $membre->get_nom(), null, $classe) );
+	  	$nom = $li->add( new interf_lien($membre->get_nom(), 'infoperso.php?id='.$membre->get_id(), null, $classe) );
 	  	if( $membre->get_hp() > 0 )
 				$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, /*'danger',*/ 'hp');
 			else

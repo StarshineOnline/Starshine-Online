@@ -1,71 +1,80 @@
 // -*- tab-width: 2 -*-
 
+function affiche_ajax(data, status, jqXHR)
+{
+	aff_ico_sso();
+	//alert(status+' : '+data);
+  $(data).find('section').each( function()
+  {
+  	switch(this.id)
+  	{
+  	case "modal":
+		  var modal = document.getElementById("modal");
+		  if( !modal )
+		  {
+		    var cont = document.getElementById("contenu");
+		    modal = document.createElement("div");
+		    modal.id = "modal";
+		    modal.className = "modal fade";
+		    modal.setAttribute("role", "dialog");
+		    modal.tabIndex = "-1";
+		    modal.setAttribute("aria-labelledby", "modalLabel");
+		    cont.appendChild(modal);
+		  }
+    	modal.innerHTML =  this.innerHTML;
+			$("#modal").modal('show');
+  		break;
+  	case 'recharger':
+  		document.location=this.innerHTML.trim();
+  		document.location.reload();
+  	case 'maj_tooltips':
+  		maj_tooltips();
+  		break;
+  	case 'erreur':
+  		var cont = document.getElementById('contenu_jeu');
+  		var alerte = document.createElement('div');
+  		alerte.className = 'alert alert-danger alert-dismissable';
+  		cont.insertBefore(alerte, cont.firstChild);
+  		alerte.style = 'margin-top: 5px;'
+  		var btn = document.createElement('button');
+  		btn.className = 'close';
+  		btn.setAttribute('aria-hidden', 'true');
+  		btn.setAttribute('data-dismiss', 'alert');
+  		btn.type = 'button';
+  		btn.innerHTML = '&times;';
+  		alerte.appendChild(btn);
+  		var ico = document.createElement('a');
+  		ico.className = 'icone icone-bug';
+  		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
+  		ico.style = 'margin-right: 5px;'
+  		alerte.appendChild(ico);
+  		var txt = document.createElement('span');
+  		txt.innerHTML = this.innerHTML;
+  		alerte.appendChild(txt);
+  		var recept = document.createElement('div');
+  		recept.innerHTML = data;
+  		recept.id = 'erreur_recu';
+  		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
+  		alerte.appendChild(recept);
+  		break;
+  	default:
+    	$('#'+this.id).html( this.innerHTML );
+		}
+  });
+}
+
 function charger(page)
 {
 	//alert('charger:'+page);
 	aff_ico_charger();
-  $.get(page, "ajax=1", function(data, status, jqXHR)
-	{
-  	aff_ico_sso();
-  	//alert(status+' : '+data);
-    $(data).find('section').each( function()
-    {
-    	switch(this.id)
-    	{
-    	case "modal":
-			  var modal = document.getElementById("modal");
-			  if( !modal )
-			  {
-			    var cont = document.getElementById("contenu");
-			    modal = document.createElement("div");
-			    modal.id = "modal";
-			    modal.className = "modal fade";
-			    modal.setAttribute("role", "dialog");
-			    modal.tabIndex = "-1";
-			    modal.setAttribute("aria-labelledby", "modalLabel");
-			    cont.appendChild(modal);
-			  }
-      	modal.innerHTML =  this.innerHTML;
-  			$("#modal").modal('show');
-    		break;
-    	case 'recharger':
-    		document.location=this.innerHTML.trim();
-    		document.location.reload();
-    	case 'maj_tooltips':
-    		maj_tooltips();
-    		break;
-    	case 'erreur':
-    		var cont = document.getElementById('contenu_jeu');
-    		var alerte = document.createElement('div');
-    		alerte.className = 'alert alert-danger alert-dismissable';
-    		cont.insertBefore(alerte, cont.firstChild);
-    		alerte.style = 'margin-top: 5px;'
-    		var btn = document.createElement('button');
-    		btn.className = 'close';
-    		btn.setAttribute('aria-hidden', 'true');
-    		btn.setAttribute('data-dismiss', 'alert');
-    		btn.type = 'button';
-    		btn.innerHTML = '&times;';
-    		alerte.appendChild(btn);
-    		var ico = document.createElement('a');
-    		ico.className = 'icone icone-bug';
-    		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
-    		ico.style = 'margin-right: 5px;'
-    		alerte.appendChild(ico);
-    		var txt = document.createElement('span');
-    		txt.innerHTML = this.innerHTML;
-    		alerte.appendChild(txt);
-    		var recept = document.createElement('div');
-    		recept.innerHTML = data;
-    		recept.id = 'erreur_recu';
-    		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
-    		alerte.appendChild(recept);
-    		break;
-    	default:
-      	$('#'+this.id).html( this.innerHTML );
-			}
-    });
-	});
+  $.get(page, "ajax=1", affiche_ajax);
+	return false;
+}
+
+function charger_formulaire(id)
+{
+  var formul = $('#' + id);
+  $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:formul.serialize(),success:affiche_ajax});
 	return false;
 }
 

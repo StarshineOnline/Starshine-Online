@@ -252,8 +252,7 @@ abstract class objet_invent extends table
   /// recompose la forme textuelle de l'objet
   function recompose_texte()
   {
-    $type = $this->texte[0] == 'h' ? $this->texte[1] : $this->texte[0];
-    $this->texte = ($this->identifie ? '' : 'h').$type.$this->id;
+    $this->texte = ($this->identifie ? '' : 'h').$this::code.$this->id;
     $nbr = $this->get_nombre();
     if( $nbr > 1 )
       $this->texte .= 'x'.$nbr;

@@ -14,6 +14,7 @@ class armure extends objet_invent
 	protected $PM;  ///< PM de l'armure
 	protected $forcex;  ///< force nécessaire pour utiliser l'armure
 	protected $puissance;  ///< Puissance nécessaire pour porter l'objet.
+	const code = 'p';   ///< Code de l'objet.
 
 	/// Retourne la force nécessaire pour utiliser l'arme
 	function get_pp()

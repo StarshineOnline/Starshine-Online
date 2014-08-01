@@ -225,10 +225,16 @@ class interf_factory
     return new interf_vente_hdv($royaume, $categorie);
 	}
 	/// Boite de dialogue pour la vente d'objet en plusieur exemplaires
-	function creer_vente_objets($objet)
+	function creer_vente_objets($objet, $categorie, $obj_perso)
 	{
     include_once(root.'interface/interf_hotel_vente.class.php');
-    return new interf_vente_objets($objet);
+    return new interf_vente_objets($objet, $categorie, $obj_perso);
+	}
+	/// Boite de dialogue pour le dépôt d'une offre d'achat à l'hotel des ventes
+	function creer_offre_achat($categorie, $taxe)
+	{
+    include_once(root.'interface/interf_hotel_vente.class.php');
+    return new interf_offre_achat($categorie, $taxe);
 	}
   /**
    * @name Inventaire

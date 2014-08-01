@@ -16,6 +16,7 @@ class objet extends objet_equip
 	protected $pa;  ///< pa nécessaires pour utiliser l'objet.
 	protected $mp;  ///< mp nécessaires pour utiliser l'objet.
   private $nombre;  ///< nombre d'exmplaires disponibles.
+	const code = 'o';   ///< Code de l'objet.
 
   /// Renvoie le nombre d'exmplaires qu'on peut mettre dans un emplacement de l'inventaire.
 	function get_stack()

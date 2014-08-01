@@ -299,7 +299,7 @@ class interf_vente_hotel extends interf_dialogBS
       return;
     }
     $this->ajout_btn('Annuler', 'fermer');
-    $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'vente_hdv\', \'information\');', 'primary');
+    $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');charger_formulaire(\'vente_hdv\');', 'primary');
 
     $objet =  objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
     $prix = $objet->get_prix_vente() * 2;
@@ -360,7 +360,7 @@ class interf_enchasser extends interf_dialogBS
       $alert->add_message( 'l\'objet sera détruit !' );
       $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
       $this->ajout_btn('Annuler', 'fermer');
-      $this->ajout_btn('Enlever', '$(\'#modal\').modal(\'hide\');envoiInfo(\'inventaire.php?action=recup_gemme&objet'.$index.'\', \'information\');', 'primary');
+      $this->ajout_btn('Enlever', '$(\'#modal\').modal(\'hide\');charger(\'inventaire.php?action=recup_gemme&objet'.$index.'\');', 'primary');
     }
     else if( $niveau )
     {

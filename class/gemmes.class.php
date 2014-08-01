@@ -18,6 +18,7 @@ class gemme extends objet_invent
   protected $enchantement_type;  ///< Type de l'enchentement
   protected $enchantement_effet;  ///< Valeur du premier effet de l'enchentement
   protected $enchantement_effet2;  ///< Valeur du second effet de l'enchentement
+	const code = 'g';   ///< Code de l'objet.
 
 	/// Retourne le niveau de la gemme
 	function get_niveau()

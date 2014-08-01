@@ -20,6 +20,7 @@ class objet_royaume extends objet_invent
   protected $sable;  ///< coût en sable.
   protected $charbon;  ///< coût en charbon.
   protected $essence;  ///< coût en essence.
+	const code = 'r';   ///< Code de l'objet.
 
   /// Renvoie le grade nécessaire pour pouvoir prendre (et poser) l'objet.
 	function get_grade()

@@ -700,7 +700,7 @@ class interf_form extends interf_bal_cont
     $chp = $div->add( new interf_bal_smpl('input', null, null, 'form-control') );
     $chp->set_attribut('type', $type);
     $chp->set_attribut('name', $name);
-    if( $value )
+    if( $value !== null && $value !== false )
       $chp->set_attribut('value', $value);
     if( $placeholder )
       $chp->set_attribut('placeholder', $placeholder);
@@ -784,9 +784,9 @@ class interf_select_form extends interf_bal_cont
    * @param  $name    nom du champ.
    * @param  $label   texte à afficher avant le champ.
    */
-  function __construct($name, $label=false)
+  function __construct($name, $label=false, $id=null, $classe=null)
   {
-    $this->balise = 'select';
+    interf_bal_cont::__construct('select', $id, $classe);
     $this->set_attribut('name', $name);
     $this->label = $label;
   }
