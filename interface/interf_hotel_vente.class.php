@@ -213,7 +213,7 @@ class interf_vente_hdv extends interf_cont
 			$this->tbl->nouv_cell( transform_min_temp($res['time'] + $duree - time()) );
 			$this->tbl->nouv_cell( $res['prix'] );
 			if( $categorie == 'perso' )
-				$this->tbl->nouv_cell( new interf_lien('Retirer', 'hotel.php?type=vente&categorie='.$categorie.'&action=retirer&id='.$res['id']) );
+				$this->tbl->nouv_cell( new interf_lien('Retirer', 'hotel.php?type=vente&categorie='.$categorie.'&action=suppr&id='.$res['id']) );
 			else if( $vente )
 			{
 				if( $categorie == 'objet' && $e->get_nombre() > 1 )
