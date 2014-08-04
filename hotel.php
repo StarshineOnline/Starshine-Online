@@ -1,7 +1,7 @@
 <?php // -*- mode: php; tab-width:2 -*-
 /**
-* @file boutiques.php
-* Boutiques en ville : forgeron, armurerie, dresseur, enchanteur.
+* @file hotel.php
+* Hotel des ventes
 */
 if (file_exists('root.php'))
   include_once('root.php');

@@ -700,7 +700,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border-left: 1px solid #777;
 }
 
-#depl_centre>p
+#depl_centre>p, #depl_centre>h3
 {
 	margin: 5px 10px 5px 30px;
 	text-align: center;
@@ -1561,7 +1561,7 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 #combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
 .infoperso td { font-size:10px; margin:0; padding:0; }
 .roseeticone { float:left; padding:4px; margin:5px; }
-#carte h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
+#carte0 h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
 #carte .titre_info { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 10px; -moz-border-radius-topright:10px; -webkit-border-top-right-radius:10px; border-top-right-radius: 10px; clear:both; }
 
 #carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
@@ -1618,7 +1618,7 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 .rose_div { height:25px; }
 .brillant { padding-top:8px; text-align:center; background-image:url(../image/forum_h2.gif); height:23px; }
 .information_case { padding:8px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:9px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
-.information_case h4 { width:30%; background-color:#D8AB41; border-top:1px solid; border-bottom:1px solid; border-color:#888; text-align:center; margin:0 auto; margin-bottom:10px; }
+.information_case0 h4 { width:30%; background-color:#D8AB41; border-top:1px solid; border-bottom:1px solid; border-color:#888; text-align:center; margin:0 auto; margin-bottom:10px; }
 .avatar { float:right; }
 .jsinformation_case { display:none; z-index:100; position:absolute; top:250px; right:150px; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:250px; padding:5px; }
 .combat { padding:2px; border-left:2px solid #999; margin:2px 2px 2px 10px; font-size:12px; }
@@ -1633,7 +1633,7 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 #carte h2 { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
 #carte h2 a { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
 .carte_bas { background:#000; height:5px; }
-#deplacement h4 { text-align:center; background-color:#D4DAE2; border:1px solid; border-color:#888; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; margin-bottom:5px; font-family:"Trebuchet MS",Times,serif; }
+#deplacement0 h4 { text-align:center; background-color:#D4DAE2; border:1px solid; border-color:#888; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; margin-bottom:5px; font-family:"Trebuchet MS",Times,serif; }
 
 /***************************************************
   Header Menu
@@ -1996,10 +1996,88 @@ div#amende.panel
 	border-bottom-right-radius: 9px;
 }
 
-.offre_achat:hover
+.offre_achat:hover, a#ville_bas:hover
 {	
 	background-color: rgba(255, 255, 255, 0.3);
 }
+
+table#classes.table
+{
+	margin: 15px 2px 0 !important;
+	width: 439px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+#classes th
+{
+	text-align: center;
+}
+
+table#classes.table > tbody > tr > td
+{
+	padding: 0px;
+	height: 100%;
+}
+
+#classes tr td:nth-last-child(n+2), #classes tr th:nth-last-child(n+2)
+{
+	border-right: 1px solid #DDD;
+}
+
+#classes a
+{
+	padding: 6px;
+	vertical-align: middle;
+}
+
+#classes.reduit a
+{
+	padding: 5px;
+}
+
+#classes a:hover
+{
+	font-style: italic;
+}
+
+#ville_princ
+{
+	margin: 5px; 
+	height: 400px;
+	overflow-y: auto;
+}
+
+
+#ville_princ > div:nth-last-child(n+2)
+{
+	margin-bottom: 20px; 
+}
+
+
+#ville_princ li .label
+{
+	padding: 0.2em 0.6em 0.2em;
+}
+
+#ville_princ.reduit
+{
+	height: 375px;
+}
+
+#ville_bas
+{
+	display: block;
+	position: absolute;
+	height: 25px;
+	width: 443px;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+	padding: 4px;
+	text-align: center;
+	border-bottom-right-radius: 9px;
+	bottom: 0px;
+}
+
 
 /*#depl_centre table.table th
 {

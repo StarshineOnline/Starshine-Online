@@ -152,6 +152,11 @@ class interf_factory
 	{
     return new interf_hotel_vente($royaume, $type, $categorie);
 	}
+	/// Universite
+	function creer_universite(&$royaume)
+	{
+    return new interf_universite($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -235,6 +240,18 @@ class interf_factory
 	{
     include_once(root.'interface/interf_hotel_vente.class.php');
     return new interf_offre_achat($categorie, $taxe);
+	}
+	/// Description des classes à l'université
+	function creer_descr_classe(&$royaume, $id)
+	{
+    include_once(root.'interface/interf_universite.class.php');
+    return new interf_descr_classe($royaume, $id);
+	}
+	/// Quêtede donjon à l'université
+	function creer_bibliotheque(&$royaume, $id)
+	{
+    include_once(root.'interface/interf_universite.class.php');
+    return new interf_bibliotheque($royaume, $id);
 	}
   /**
    * @name Inventaire
