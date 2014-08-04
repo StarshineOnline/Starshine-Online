@@ -1996,7 +1996,7 @@ div#amende.panel
 	border-bottom-right-radius: 9px;
 }
 
-.offre_achat:hover, a#ville_bas:hover
+.offre_achat:hover, a#ville_bas:hover, input#ville_bas:hover
 {	
 	background-color: rgba(255, 255, 255, 0.3);
 }
@@ -2065,6 +2065,11 @@ table#classes.table > tbody > tr > td
 	height: 375px;
 }
 
+#ville_princ .input-group
+{
+	margin-bottom: 3px;
+}
+
 #ville_bas
 {
 	display: block;
@@ -2078,11 +2083,13 @@ table#classes.table > tbody > tr > td
 	bottom: 0px;
 }
 
-
-/*#depl_centre table.table th
+input#ville_bas
 {
-	font-size: 13px;
-}*/
+	background: none;
+	cursor: pointer;
+	border: none;
+	border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
  
  
 ul.ville li { margin-bottom:3px; }

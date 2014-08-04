@@ -759,7 +759,7 @@ class interf_chp_form extends interf_bal_smpl
     //$this->balise = 'input';
     $this->set_attribut('type', $type);
     $this->set_attribut('name', $name);
-    if( $value )
+    if( $value !== false )
       $this->set_attribut('value', $value);
     $this->label = $label;
   }

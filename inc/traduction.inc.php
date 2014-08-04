@@ -221,6 +221,21 @@ $Gtrad['cible_ex5'] = 'le groupe de ';
 $Gtrad['cible_ex6'] = 'les personnages de votre cases';
 $Gtrad['cible_ex7'] = 'les bâtiments sur votre case';
 $Gtrad['cible_ex8'] = 'les personnages autour de vous';
+//@}
+
+
+/**
+ * @name Objets royaume
+ * Traduction des objets liés au royaume.
+ * @{
+ */
+$Gtrad['arme_de_siege'] = 'Armes de siège';
+$Gtrad['bourg'] = 'Bourgades';
+$Gtrad['drapeau'] = 'Drapeaux';
+$Gtrad['fort'] = 'Forts';
+$Gtrad['mur'] = 'Murs';
+$Gtrad['tour'] = 'Tours';
+//@}
 
 
 /**

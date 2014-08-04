@@ -157,6 +157,11 @@ class interf_factory
 	{
     return new interf_universite($royaume);
 	}
+	/// Quartier général
+	function creer_qg(&$royaume)
+	{
+    return new interf_qg($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
