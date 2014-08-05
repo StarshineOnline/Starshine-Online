@@ -950,12 +950,12 @@ p.accueil a
 
 /*-- Rez ---------------------------------------------------*/
 
-#rez
+#rez, #lieu
 {
 	margin: 10px;
 }
 
-#rez li
+#rez li, #lieu li
 {
 	display: block;
 	border: solid 1px rgba(0, 0, 0, 0.3);
@@ -966,7 +966,7 @@ p.accueil a
 	overflow: hidden;
 }
 
-#rez a
+#rez a, #lieu a
 {
 	display: block;
 	height: 100%;
@@ -975,7 +975,7 @@ p.accueil a
 	background: none repeat scroll 0px 0px rgba(255, 255, 255, 0.2);
 }
 
-#rez a.icone
+#rez a.icone, #lieu  a.icone
 {
 	display: block;
 	width: 36px;
@@ -988,7 +988,7 @@ p.accueil a
 	line-height: 33px;
 }
 
-#rez a:hover
+#rez a:hover, #lieu  a:hover
 {
 	background: rgba(255, 255, 255, 0.5);
 	color: black;
@@ -2089,6 +2089,22 @@ input#ville_bas
 	cursor: pointer;
 	border: none;
 	border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+#ville_princ #lieu li
+{
+	width: 390px;
+}
+
+#rez a, #lieu a
+{
+	width: 353px;
+}
+
+#lieu a span
+{
+	padding: 1px;
+	display: block;
 }
  
  

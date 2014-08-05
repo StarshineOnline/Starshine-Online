@@ -162,6 +162,11 @@ class interf_factory
 	{
     return new interf_qg($royaume);
 	}
+	/// Pierre de téléportaion
+	function creer_tp(&$royaume)
+	{
+    return new interf_tp($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{

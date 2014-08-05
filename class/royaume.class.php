@@ -1323,6 +1323,9 @@ class royaume
 		case 'comp_combat':
 			$champ = 'ecole_combat';
 			break;
+		case 'teleport':
+			$champ = 'teleport';
+			break;
 		default:
 			$champ = false;		
 		}
