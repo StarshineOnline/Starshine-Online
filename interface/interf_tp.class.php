@@ -30,6 +30,7 @@ class interf_tp extends interf_ville
 		// Centre
 		$this->centre->add( new interf_bal_smpl('p', 'Téléportation à partir d\'une diplomatie en paix.') );
 		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ') );
+		interf_alerte::aff_enregistres($div);
 		// Capitales
 		$div->add( new interf_bal_smpl('h4', 'Liste des villes possibles pour téléportation :') );
 		$liste = $div->add( new interf_menu(false, 'lieu', null) );

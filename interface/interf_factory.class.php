@@ -167,6 +167,11 @@ class interf_factory
 	{
     return new interf_tp($royaume);
 	}
+	/// Pierre de téléportaion
+	function creer_tribunal(&$royaume)
+	{
+    return new interf_tribunal($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -257,11 +262,17 @@ class interf_factory
     include_once(root.'interface/interf_universite.class.php');
     return new interf_descr_classe($royaume, $id);
 	}
-	/// Quêtede donjon à l'université
+	/// Quête de donjon à l'université
 	function creer_bibliotheque(&$royaume, $id)
 	{
     include_once(root.'interface/interf_universite.class.php');
     return new interf_bibliotheque($royaume, $id);
+	}
+	/// Boite de dialogue pour les primes
+	function creer_prime($id, &$cible)
+	{
+    include_once(root.'interface/interf_tribunal.class.php');
+    return new interf_prime($id, $cible);
 	}
   /**
    * @name Inventaire

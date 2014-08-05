@@ -2106,6 +2106,11 @@ input#ville_bas
 	padding: 1px;
 	display: block;
 }
+
+#depl_centre>.dataTables_wrapper
+{
+	padding-right: 1px;
+}
  
  
 ul.ville li { margin-bottom:3px; }
