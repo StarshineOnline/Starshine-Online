@@ -3,3 +3,5 @@ ALTER TABLE `hotel` ADD `type` ENUM('vente', 'achat') NOT NULL DEFAULT 'vente' A
 
 UPDATE `starshine_preprod`.`classe` SET `nom` = 'Dresseur de l''ombre' WHERE `classe`.`id` = 27;
 UPDATE `starshine_preprod`.`classe` SET `nom` = 'Archer d''élite' WHERE `classe`.`id` = 11;
+
+ALTER TABLE `taverne` CHANGE `ID` `id` MEDIUMINT(8) UNSIGNED NOT NULL AUTO_INCREMENT;

@@ -167,10 +167,15 @@ class interf_factory
 	{
     return new interf_tp($royaume);
 	}
-	/// Pierre de téléportaion
+	/// Tribunal
 	function creer_tribunal(&$royaume)
 	{
     return new interf_tribunal($royaume);
+	}
+	/// Taverne
+	function creer_taverne(&$royaume, $type='repos')
+	{
+    return new interf_taverne($royaume, $type);
 	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)

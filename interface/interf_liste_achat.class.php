@@ -14,6 +14,7 @@ abstract class interf_liste_achat extends interf_cont
 	const type = false;
 	protected $txt_achat = 'Achat';
 	const taxe = true;
+	const descr = true;
 	function __construct(&$royaume, $id_tbl, $elts, $nbr_alertes=0)
 	{
 		$this->perso = &joueur::get_perso();
@@ -33,10 +34,15 @@ abstract class interf_liste_achat extends interf_cont
 		{
 			$achat = $this->peut_acheter($e);
 			$this->tbl->nouv_ligne(false, $achat ? '' : 'non-achetable');
-			$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt'.$e->get_id());
-			$this->tbl->nouv_cell( $lien );
-			$url = $url_base.'action=infos&id='.$e->get_id();
-			$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
+			if( $this::descr )
+			{
+				$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt'.$e->get_id());
+				$this->tbl->nouv_cell( $lien );
+				$url = $url_base.'action=infos&id='.$e->get_id();
+				$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$e->get_id().'\', \'info_elt'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
+			}
+			else
+				$this->tbl->nouv_cell( $e->get_nom() );
 			$this->aff_cont_col($e);
 			$prix = $e->get_prix() + $this::taxe ? ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100) : 0;
 			$classe =  $prix > $this->perso->get_star() ? 'text-danger' : '';

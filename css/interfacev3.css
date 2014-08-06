@@ -1897,6 +1897,7 @@ div#amende.panel
 #depl_centre .table > tbody > tr > td
 {
 	vertical-align: middle;
+	height: auto;
 }
 
 #depl_centre table.dataTable > thead > tr > th

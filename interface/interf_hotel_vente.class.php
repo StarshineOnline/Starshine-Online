@@ -77,7 +77,6 @@ class interf_hotel_vente extends interf_ville_onglets
 class interf_achat_hdv extends interf_liste_achat
 {	
 	const url = 'hotel.php';
-	const taxe = true;
 	protected $categorie;
 	function __construct(&$royaume, $categorie, $nbr_alertes=0)
 	{
