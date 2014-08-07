@@ -218,11 +218,7 @@ class royaume
     global $db, $conso_food_tot, $cases_tot;
     if( !isset($conso_food_tot) )
     {
-      // nombre de cases totales
-      $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
-      $res = $db->query($requete);
-      $row = $db->read_array($res);
-      $cases_tot = $row['tot'];
+      $cases_tot = $this->get_nbr_cases();
       // Consommation totale
       $requete = 'SELECT SUM(food) AS food FROM royaume WHERE id > 0';
       $res = $db->query($requete);
@@ -258,6 +254,16 @@ class royaume
     $this->set_conso_food( $this->get_conso_food() + $diff);
     echo ' - nouvelle conso='.$this->get_conso_food()."\n";
   }
+  /// Renvoie le nombre de case contrôlées
+  function get_nbr_cases()
+  {
+    global $db;
+    // nombre de cases totales
+    $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
+    $res = $db->query($requete);
+    $row = $db->read_array($res);
+    return $row['tot'];
+	}
 
   /**
    * Renvoie la distance minimale entre deux bourgs

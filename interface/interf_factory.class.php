@@ -182,6 +182,11 @@ class interf_factory
 	{
     return new interf_ecurie($royaume);
 	}
+	/// Vente de terrain
+	function creer_vente_terrain(&$royaume)
+	{
+    return new interf_vente_terrain($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
