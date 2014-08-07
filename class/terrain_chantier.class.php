@@ -2,7 +2,7 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
-class terrain_chantier
+class terrain_chantier extends table
 {
 	public $id;
 	public $id_terrain;

@@ -187,6 +187,11 @@ class interf_factory
 	{
     return new interf_vente_terrain($royaume);
 	}
+	/// Chantiers des terrains
+	function creer_terrain_chantier(&$royaume)
+	{
+    return new interf_terrain_chantier($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{

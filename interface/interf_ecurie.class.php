@@ -30,7 +30,7 @@ class interf_ecurie extends interf_ville
 		$this->places_ville = $this->perso->nb_pet_ecurie() < $max_ecurie;
 		$this->places_terrain = $row && $this->perso->nb_pet_ecurie_self() < $row['effet'];
 		$this->places_perso = $this->perso->nb_pet() < $this->perso->get_comp('max_pet');
-		// Icone jauges
+		// Icone & jauges
 		$icone = $this->set_icone_centre('cheval');
 		$icone->set_tooltip('Ecuries');
 		//$this->recherche_batiment('', false);
