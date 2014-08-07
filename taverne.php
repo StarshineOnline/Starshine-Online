@@ -89,10 +89,8 @@ case 'achat':
 				//Récupération de la taxe
 				if($taxe > 0)
 				{
-					$R->set_star($R->get_star() + $taxe);
+					$R->add_star_taxe($taxe, 'taverne');
 					$R->sauver();
-					$requete = "UPDATE argent_royaume SET taverne = taverne + ".$taxe." WHERE race = '".$R->get_race()."'";
-					$db->query($requete);
 				}
 				/// TODO: séparer le texte & vérifier les dépassement en hauteur
 				interf_alerte::enregistre(interf_alerte::msg_succes, 'La taverne vous remercie de votre achat !<br />'.$texte);

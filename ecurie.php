@@ -1,187 +1,124 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/**
+* @file ecurie.php
+* Ecuries
+*/
 if (file_exists('root.php'))
   include_once('root.php');
 
-//Inclusion du haut du document html
-include_once(root.'haut_ajax.php');
+include_once(root.'inc/fp.php');
 
-$joueur = new perso($_SESSION['ID']);
-$joueur->check_perso();
-
+$interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
 
-
-$case = new map_case(sSQL($joueur->get_pos()));
-$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
+// Royaume
+///TODO: à améliorer
+$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-$R->get_diplo($joueur->get_race());
 
-if ($R->is_raz() && $W_row['type'] == 1 && $joueur->get_x() <= 190 && $joueur->get_y() <= 190)
+// On vérifie qu'on est bien sur une ville
+/// TODO: logguer triche
+if($W_row['type'] != 1)
+	exit;
+
+// On vérifie la diplomatie
+/// TODO: logguer triche
+if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+	exit;
+
+// Ville rasée
+/// TODO: logguer triche
+if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
+	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+/// TODO: ajouter des vérifications et des messages
+switch($action)
 {
-	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
-	exit (0);
-}
-
-if ($joueur->get_race() != $R->get_race() &&
-		$R->get_diplo($joueur->get_race()) > 6)
-{
-	echo "<h5>Impossible de commercer avec un tel niveau de diplomatie</h5>";
-	exit (0);
-}
-
-$max_ecurie = 10;
-
-?>
-<fieldset>
-   	<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="ecurie.php" onclick="return envoiInfo(this.href,\'carte\')"> Ecurie</a>';?></legend>
-		<?php include_once(root.'ville_bas.php');?>
-<?php
-if($case->is_ville(true) && ($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race()) == 127))
-{
-	$pet = new pet($_GET['d']);
-	//Le joueur dépose une créature dans l'écurie
-	if(array_key_exists('d', $_GET))
+case 'rez':
+	$pet = new pet($_GET['id']);
+	if($pet->get_id_joueur() == $perso->get_id())
 	{
-		$taxe = ceil($pet->get_cout_depot() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		if($joueur->pet_to_ecurie($_GET['d'], 1, 10, $taxe))
+		$taxe = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($perso->get_race()) / 100);
+		$cout = $pet->get_cout_rez() + $taxe;
+		if($perso->get_star() >= $cout)
 		{
-			$R->set_star($R->get_star() + $taxe);
+			$pet->get_monstre();
+			$pet->set_hp($pet->monstre->get_hp());
+			$pet->set_mp($pet->get_mp_max());
+			$pet->sauver();
+			$perso->add_star( -$cout );
+			$perso->sauver();
+			$R->add_star_taxe($taxe, 'ecurie');
 			$R->sauver();
-		}
-	}
-	//Le joueur reprend une créature de l'écurie
-	if(array_key_exists('r', $_GET))
-	{
-		$joueur->pet_from_ecurie($_GET['r']);
-	}
-	//Soin de la créature
-	if(array_key_exists('s', $_GET))
-	{
-		$pet = new pet($_GET['s']);
-		if($pet->get_id_joueur() == $joueur->get_id())
-		{
-			if($pet->get_hp() > 0)
-			{
-				$taxe = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-				$cout = $pet->get_cout_soin() + $taxe;
-				if($joueur->get_star() >= $cout)
-				{
-					$pet->get_monstre();
-					$pet->set_hp(ceil($pet->get_hp() + 0.1 * $pet->monstre->get_hp()));
-					if($pet->get_hp() > $pet->monstre->get_hp()) $pet->set_hp($pet->monstre->get_hp());
-					$pet->set_mp(ceil($pet->get_mp() + 0.1 * $pet->get_mp_max()));
-					if($pet->get_mp() > $pet->get_mp_max()) $pet->set_mp($pet->get_mp_max());
-					$pet->sauver();
-					$joueur->set_star($joueur->get_star() - $cout);
-					$joueur->sauver();
-					$R->set_star($R->get_star() + $taxe);
-					$R->sauver();
-				}
-				else
-				{
-					echo '<h5>Vous n\'avez pas assez de stars !</h5>';
-				}
-			}
-			else
-			{
-				echo '<h5>Cette créature peut uniquement être réssucitée.</h5>';
-			}
+			$interf_princ->maj_perso();
 		}
 		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-		}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars !');
 	}
-	//Rez de la créature
-	if(array_key_exists('v', $_GET))
+	else
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
+	break;
+case 'soin':
+	$pet = new pet($_GET['id']);
+	if($pet->get_id_joueur() == $perso->get_id())
 	{
-		$pet = new pet($_GET['v']);
-		if($pet->get_id_joueur() == $joueur->get_id())
+		if($pet->get_hp() > 0)
 		{
-			$taxe = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-			$cout = $pet->get_cout_rez() + $taxe;
-			if($joueur->get_star() >= $cout)
+			$taxe = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($perso->get_race()) / 100);
+			$cout = $pet->get_cout_soin() + $taxe;
+			if($perso->get_star() >= $cout)
 			{
 				$pet->get_monstre();
-				$pet->set_hp($pet->monstre->get_hp());
-				$pet->set_mp($pet->get_mp_max());
+				$pet->set_hp(ceil($pet->get_hp() + 0.1 * $pet->monstre->get_hp()));
+				if($pet->get_hp() > $pet->monstre->get_hp()) $pet->set_hp($pet->monstre->get_hp());
+				$pet->set_mp(ceil($pet->get_mp() + 0.1 * $pet->get_mp_max()));
+				if($pet->get_mp() > $pet->get_mp_max()) $pet->set_mp($pet->get_mp_max());
 				$pet->sauver();
-				$joueur->set_star($joueur->get_star() - $cout);
-				$joueur->sauver();
-				$R->set_star($R->get_star() + $taxe);
+				$perso->add_star( -$cout );
+				$perso->sauver();
+				$R->add_star_taxe($taxe, 'ecurie');
 				$R->sauver();
+				$interf_princ->maj_perso();
 			}
 			else
-			{
-				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
-			}
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars !');
 		}
 		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-		}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature peut uniquement être réssucitée.');
 	}
-	$joueur->get_pets(true);
-	$joueur->get_ecurie(true);
-	?>
-	<h3>Créatures en ville (<?php echo $joueur->nb_pet_ecurie(); ?> / <?php echo $max_ecurie; ?>)</h3>
-	<ul>
-	<?php
-	foreach($joueur->ecurie as $pet)
+	else
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
+	break;
+case 'reprendre':
+	$perso->pet_from_ecurie($_GET['id']);
+	break;
+case 'deposer_ville':
+	$pet = new pet($_GET['id']);
+	$taxe = ceil($pet->get_cout_depot() * $R->get_taxe_diplo($perso->get_race()) / 100);
+	if($perso->pet_to_ecurie($_GET['id'], 1, 10, $taxe))
 	{
-		$pet->get_monstre();
-		$taxe_soin = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		$taxe_rez = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		if($pet->get_hp() <= 0)
-		{
-			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressusciter" title="Ressusciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
-		}
-		else
-		{
-			$link = 's';
-			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_soin() + $taxe_soin).' stars)</span>';
-		}
-		?>
-		<li>
-			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> - <a href="ecurie.php?r=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/reprendre.png" alt="Reprendre" title="Reprendre" style="width : 16px; height : 16px; vertical-align : top;" /></a>
-		</li>
-		<?php
+		$R->add_star_taxe($taxe, 'ecurie');
+		$R->sauver();
 	}
-	?>
-	</ul>
-	<h3>Créatures sur vous (<?php echo $joueur->nb_pet(); ?> / <?php echo $joueur->get_comp('max_pet'); ?>)</h3>
-	<ul>
-	<?php
-	foreach($joueur->pets as $pet)
-	{
-		$pet->get_monstre();
-		$taxe_depot = ceil($pet->get_cout_depot() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		$taxe_soin = ceil($pet->get_cout_soin() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		$taxe_rez = ceil($pet->get_cout_rez() * $R->get_taxe_diplo($joueur->get_race()) / 100);
-		if($pet->get_hp() <= 0)
-		{
-			$link = 'v';
-			$texte = '<img src="image/buff/rez.jpg" alt="Ressusciter" title="Ressusciter" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_rez() + $taxe_rez).' stars)</span>';
-		}
-		else
-		{
-			$link = 's';
-			$texte = '<img src="image/sort/sort_soins1.png" alt="Soigner" title="Soigner" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">('.($pet->get_cout_soin() + $taxe_soin).' stars)</span>';
-		}
-		?>
-		<li>
-			<img src="image/monstre/<?php echo $pet->monstre->get_lib(); ?>.png" style="width : 16px; height : 16px; vertical-align : top;" /> <?php echo $pet->get_nom(); ?> - <span class="xsmall">HP : <?php echo $pet->get_hp(); ?> / <?php echo $pet->monstre->get_hp(); ?> -- MP : <?php echo $pet->get_mp(); ?> / <?php echo $pet->get_mp_max(); ?></span> <a href="ecurie.php?<?php echo $link; ?>=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><?php echo $texte; ?></a> <a href="ecurie.php?d=<?php echo $pet->get_id(); ?>" onclick="return envoiInfo(this.href, 'carte');"><img src="image/icone/deposer.png" alt="Déposer" title="Déposer" style="width : 16px; height : 16px; vertical-align : top;" /> <span class="small">(<?php echo ($pet->get_cout_depot() + $taxe_depot); ?> stars)</span></a>
-		</li>
-		<?php
-	}
-	?>
-	</ul>
-	<?php
-	refresh_perso();
+	$interf_princ->maj_perso();
+	break;
+case 'deposer_terrain':
+	/// TODO: passer par des objets & loguer triche
+	$requete = 'SELECT b.effet FROM terrain AS t INNER JOIN terrain_construction AS c ON c.id_terrain = t.id INNER JOIN terrain_batiment AS b ON c.id_batiment = b.id WHERE b.type = "ecurie" AND t.id_joueur = '.$this->perso->get_id();
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	if( $row )
+		$perso->pet_to_ecurie($_GET['id'], 2, $row['effet']);
+	break;
 }
+$interf_princ->set_gauche( $G_interf->creer_ecurie($R) );
+$interf_princ->maj_tooltips();
+
+
 ?>
-</fieldset>

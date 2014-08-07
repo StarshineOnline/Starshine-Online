@@ -594,10 +594,10 @@ class pet extends map_monstre
 	{
 		if ($this->level == 0)
 		{ // pets invoqués : level perso
-			global $joueur;
-			if ($this->id_joueur == $joueur->get_id())
+			$perso = joueur::get_perso();
+			if ($this->id_joueur == $perso->get_id())
 			{
-				$this->level = $joueur->get_level();
+				$this->level = $perso->get_level();
 			}
 			else
 			{

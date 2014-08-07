@@ -177,6 +177,11 @@ class interf_factory
 	{
     return new interf_taverne($royaume, $type);
 	}
+	/// Ecurie
+	function creer_ecurie(&$royaume)
+	{
+    return new interf_ecurie($royaume);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{

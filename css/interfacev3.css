@@ -2112,6 +2112,55 @@ input#ville_bas
 {
 	padding-right: 1px;
 }
+
+#ville_princ .info_case a
+{
+	display: block;
+	float: right;
+	height: 45px;
+	width: 45px;
+	border-left: solid 1px rgba(0, 0, 0, 0.3);
+	text-align: center;
+}
+
+#ville_princ .info_case a.icone
+{
+  padding-top: 4px;
+	font-size: 25px;
+}
+
+#ville_princ .info_case a span
+{
+	display: block;
+}
+
+#ville_princ .info_case a span.icone
+{
+  padding-top: 2px;
+	font-size: 18px;
+}
+
+#ville_princ .info_case a span.xsmall
+{
+  padding-bottom: 2px;
+	font-size: 11px;
+}
+
+#ville_princ .info_case img
+{
+  padding: 2px;
+}
+
+#ville_princ .info_case > span
+{
+  padding: 1px;
+	display: block;
+}
+
+/*.info_case a.icone
+{
+  padding-top: 7px;
+}*/
  
  
 ul.ville li { margin-bottom:3px; }

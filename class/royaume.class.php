@@ -1326,6 +1326,14 @@ class royaume
 		case 'teleport':
 			$champ = 'teleport';
 			break;
+		case 'taverne':
+			$champ = 'taverne';
+			break;
+		case 'dressage':
+		case 'alchimiste':
+			$champ = 'magasin';
+			break;
+		case 'ecurie':
 		default:
 			$champ = false;		
 		}
