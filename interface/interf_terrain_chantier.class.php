@@ -10,14 +10,25 @@ class interf_terrain_chantier extends interf_ville
 {
 	protected $perso;
 	protected $liste;
+	protected $points = 0;
+	protected $max_points = 0;
 	function __construct(&$royaume)
 	{
 		global $db;
 		parent::__construct($royaume);
 		$this->perso = joueur::get_perso();
-		// Icone & jauges
+		// Icone & jauge extérieure
 		$icone = $this->set_icone_centre('architecture');
 		$icone->set_tooltip('Bâtiments en chantier');
+		/// TODO: passer à l'objet
+		$requete = 'SELECT count(*) FROM terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = "'.$royaume->get_race().'"';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$tot = $row[0];
+		$requete = 'SELECT count(*) FROM terrain_chantier LEFT JOIN terrain ON terrain.id = terrain_chantier.id_terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = "'.$royaume->get_race().'"';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$this->set_jauge_ext($row[0], $tot, 'pa', 'Terrains en construction : ');
 		
 		//
 		$this->centre->add( new interf_bal_smpl('p', 'Liste des chantiers disponibles') );
@@ -31,12 +42,16 @@ class interf_terrain_chantier extends interf_ville
 		{
 			$this->aff_chantier( new terrain_chantier($row) );
 		}
+		// Jauge intérieure
+		$this->set_jauge_int($this->points, $this->max_points, 'avance', 'Avancement des travaux : ');
 	}
 	function aff_chantier(&$chantier)
 	{
 		$batiment = $chantier->get_batiment();
 		$taxe = floor(($chantier->star_point * 100) * $this->royaume->get_taxe_diplo($this->perso->get_race()) / 100);
 		$prix = ($chantier->star_point * 100) - $taxe;
+		$this->points += $chantier->point;
+		$this->max_points += $batiment->point_structure;
 		// affichage
 		$li = $this->liste->add( new interf_bal_cont('li', false, 'info_case') );
 		if( $this->perso->get_pa() >= 10 )
