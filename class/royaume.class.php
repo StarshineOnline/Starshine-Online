@@ -1340,6 +1340,7 @@ class royaume
 			$champ = 'magasin';
 			break;
 		case 'ecurie':
+		case 'terrain':
 		default:
 			$champ = false;		
 		}

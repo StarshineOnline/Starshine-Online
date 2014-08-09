@@ -110,6 +110,7 @@ case 'construire':
 	break;
 }
 $interf_princ->set_gauche( $G_interf->creer_terrain_chantier($R) );
+$interf_princ->maj_tooltips();
 
 
 ?>

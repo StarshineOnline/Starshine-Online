@@ -192,6 +192,11 @@ class interf_factory
 	{
     return new interf_terrain_chantier($royaume);
 	}
+	/// Chantiers des terrains
+	function creer_terrain(&$royaume, $id=0)
+	{
+    return new interf_terrain($royaume, $id);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -293,6 +298,24 @@ class interf_factory
 	{
     include_once(root.'interface/interf_tribunal.class.php');
     return new interf_prime($id, $cible);
+	}
+	/// Coffre (dans le terrain de joueur)
+	function creer_coffre(&$royaume, $construction)
+	{
+    include_once(root.'interface/interf_terrain.class.php');
+    return new interf_coffre($royaume, $construction);
+	}
+	/// Laboratoire (dans le terrain de joueur)
+	function creer_laboratoire(&$royaume, $construction)
+	{
+    include_once(root.'interface/interf_terrain.class.php');
+    return new interf_laboratoire($royaume, $construction);
+	}
+	/// Grenier (dans le terrain de joueur)
+	function creer_grenier(&$royaume, $construction)
+	{
+    include_once(root.'interface/interf_terrain.class.php');
+    return new interf_grenier($royaume, $construction);
 	}
   /**
    * @name Inventaire

@@ -2113,7 +2113,7 @@ input#ville_bas
 	padding-right: 1px;
 }
 
-#ville_princ .info_case a
+#ville_princ .info_case a, #tab_laboratoire .info_case a
 {
 	display: block;
 	float: right;
@@ -2129,18 +2129,18 @@ input#ville_bas
 	font-size: 25px;
 }
 
-#ville_princ .info_case a span
+#ville_princ .info_case a span, #tab_laboratoire .info_case a span
 {
 	display: block;
 }
 
-#ville_princ .info_case a span.icone
+#ville_princ .info_case a span.icone, #tab_laboratoire .info_case a span.icone
 {
   padding-top: 2px;
 	font-size: 18px;
 }
 
-#ville_princ .info_case a span.xsmall
+#ville_princ .info_case a span.xsmall, #tab_laboratoire .info_case a span.xsmall
 {
   padding-bottom: 2px;
 	font-size: 11px;
@@ -2151,19 +2151,109 @@ input#ville_bas
   padding: 2px;
 }
 
-#ville_princ .info_case > span
+#ville_princ .info_case > span, #tab_chantiers .info_case span, #tab_laboratoire .info_case > span
 {
   padding: 1px;
 	display: block;
 }
 
-/*.info_case a.icone
+#tab_chantiers
 {
-  padding-top: 7px;
-}*/
+	padding: 3px;
+}
+
+#tab_chantiers .input-group
+{
+	margin-bottom: 5px;
+}
+
+#tab_chantiers li.info_case
+{
+	display: inline-block;
+	margin: 1px;
+	width: 211px;
+}
+
+#tab_coffre
+{
+	overflow-y: auto;
+	text-align: center;
+}
+
+#tab_coffre > div > div, #tab_laboratoire > div > div
+{
+	padding: 1px;
+	width: 207px;
+	height: 100%;
+	float: left;
+}
+
+#coffre
+{
+	border-right: 1px solid #808080;
+}
+
+#tab_coffre li
+{
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 4px 4px 4px 4px;
+	overflow: hidden;
+	margin: 1px;
+	width: 202px;
+	height: 20px;
+}
+
+#tab_coffre li a
+{
+	display: inline-block;
+	width: 180px;
+	padding: 2px;
+}
+
+#tab_coffre li a:first-child
+{
+	display: block;
+	height: 20px;
+	width: 20px;
+}
+
+#coffre li a:first-child
+{
+	float: right;
+	border-left: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#coffre_invent li a:first-child
+{
+	float: left;
+	border-right: 1px solid rgba(0, 0, 0, 0.3);
+}
+
+#coffre_invent li a:hover
+{
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.5);
+	color: black;
+}
+
+#tab_laboratoire
+{
+	padding: 2px;
+}
+
+#tab_laboratoire #achat
+{
+	border-left: 1px solid #808080;
+	padding-left: 5px;
+}
+
+#tab_laboratoire h6
+{
+	text-align: center;
+}
  
  
-ul.ville li { margin-bottom:3px; }
+/*ul.ville li { margin-bottom:3px; }
 ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
 .ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }
 .ville_test { vertical-align:top; color:#000; padding:5px; }
@@ -2230,7 +2320,7 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 .quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
 .quartier_bas li:hover {background: #FFF;}
 
-.trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }
+.trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }*/
 
 #perso_envoi {width : 200px; padding : 0; margin : 0;}
 #suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
@@ -2243,41 +2333,41 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 #suggestion_eco ul li {cursor : pointer;}
 #suggestion_eco ul li:hover {background-color:#B4CFEF;}
 
-#hdv { background: center transparent url(../image/ville/auction_hammer_gavel.png) no-repeat }
-#marchand { background: center transparent url(../image/ville/money.png) no-repeat }
+/*#hdv { background: center transparent url(../image/ville/auction_hammer_gavel.png) no-repeat }
+#marchand { background: center transparent url(../image/ville/money.png) no-repeat }*/
 
 /***************************************************
   Gestion Royaume
  ***************************************************/
-#gestion-royaume { vertical-align:top; padding:5px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; font-weight:bold; }
+/*#gestion-royaume { vertical-align:top; padding:5px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; font-weight:bold; }
 #gestion-royaume h4 { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:3px; margin-bottom:2px; padding-left:15px; background-color:#d8ab41; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; font-size:1em; color:black; }
 ul.gestion-royaume { margin-left:25px; }
 ul.gestion-royaume li { list-style-type:disc; margin-bottom:3px; color:#444444; }
 ul.gestion-royaume li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
-ul.gestion-royaume li a { color:#444444; }
+ul.gestion-royaume li a { color:#444444; }*/
 
 /***************************************************
   Hotel des ventes
  **************************************************/
-ul.onglet-hotel { }
-ul.onglet-hotel li { display:inline; }
+/*ul.onglet-hotel { }
+ul.onglet-hotel li { display:inline; }*/
 
 /***************************************************
   Element de droite
  ***************************************************/
-#editcarte { width:100%; }
+/*#editcarte { width:100%; }
 .selecteur { float:left; }
-.mapedit { float:left; }
+.mapedit { float:left; }*/
 
 /***************************************************
   Tableau
  ***************************************************/
-.trcolor3 { font-weight:bold; color:#999; font-style:italic; }
+/*.trcolor3 { font-weight:bold; color:#999; font-style:italic; }
 .trcolor5 { font-weight:bold; color:#999; font-style:italic; background-color:#FFF; }
 .trstat { vertical-align:top; border:2px solid; border-color:#555; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; padding:4px; }
 .achat_over { color:red; }
 .boite_royaume { float:left; height:60px; width:60px; }
-.marque_royaume { width:55px; height:55px; }
+.marque_royaume { width:55px; height:55px; }*/
 
 /***************************************************
   Journal des Actions
@@ -2305,7 +2395,7 @@ ul.onglet-hotel li { display:inline; }
 /***************************************************
   Rose des vents
  ***************************************************/
-.admin { width:600px; }
+/*.admin { width:600px; }
 .info_joueur { color:#6633ff; font-weight:bold; }
 .info_monstre { color:#cc3300; font-weight:bold; }
 .admin tr td { vertical-align:top; }
@@ -2313,7 +2403,7 @@ ul.onglet-hotel li { display:inline; }
 .adminListing { margin-top:10px; margin-bottom:10px; border-top:0; border-right:0; }
 .adminListing tr td { border-top:1px solid #8d8db3; border-right:1px solid #8d8db3; text-align:center; padding-right:5px; }
 .adminListing tr td a { text-decoration:none; }
-tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
+tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }*/
 
 /**********************************
  Messagerie 
