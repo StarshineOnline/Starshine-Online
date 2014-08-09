@@ -143,11 +143,20 @@ class interf_barre_perso extends interf_bal_cont
     $barre->set_attribut('style', 'width:'.$progression.'%');
     $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum.' − niv. '.$niv, 'xp', 'barre_valeur') );
   }
-	protected function creer_jauge_mort($parent, $grand=false)
+	protected function creer_jauge_mort($parent, $grand=false, $id_membre=null)
 	{
-    $jauge = $parent->add( new interf_bal_cont('div', $grand?'perso_hp':'', ($grand?'jauge_bulle':'jauge_groupe membre_hp').' progress') );
+		global $db;
+		$id = $grand?'perso_hp':'membre_hp_'.$id_membre;
+		/// TODO: passer à l'objet
+		$requete = 'SELECT count(*) FROM rez WHERE id_perso = '.$id_membre;
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$rez = $row[0] > 0;
+    $jauge = $parent->add( new interf_bal_cont('div', $id, ($grand?'jauge_bulle':'jauge_groupe membre_hp').' progress  '.($rez?'rez':'')) );
     $jauge->set_tooltip('Ce personnage est mort.', 'bottom');
     $jauge->add( new interf_bal_cont('span', null, 'icone icone-mort') );
+    if($rez)
+    	$jauge->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'bottom\', \'infoperso.php?action=infos_rez&id='.$id_membre.'\', \'Résurections\')');
 	}
   protected function creer_infos_groupe()
   {
@@ -197,7 +206,7 @@ class interf_barre_perso extends interf_bal_cont
 	  	if( $membre->get_hp() > 0 )
 				$this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, /*'danger',*/ 'hp');
 			else
-				$this->creer_jauge_mort($li);
+				$this->creer_jauge_mort($li, false, $membre->get_id());
 	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));

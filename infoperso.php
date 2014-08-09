@@ -3,6 +3,25 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'inc/fp.php');
+  
+
+if( array_key_exists('action', $_GET) && $_GET['action'] == 'infos_rez' )
+{
+	$princ = new interf_princ_ob();
+	$liste = $princ->add( new interf_bal_cont('ul', false, 'list-group') );
+	/// TODO: passer à l'objet
+	$requete = 'SELECT * FROM rez WHERE id_perso = '.$_GET['id'];
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$li = $liste->add( new interf_bal_cont('li', false, 'list-group-item') );
+		$li->add( new interf_jauge_bulle(false, $row['pourcent'], 100, false, 'mp', false, 'jauge_groupe') )->set_tooltip('MP : '.$row['pourcent'].'%');
+		$li->add( new interf_jauge_bulle(false, $row['pourcent'], 100, false, 'hp', false, 'jauge_groupe') )->set_tooltip('HP : '.$row['pourcent'].'%');
+		$li->add( new interf_bal_smpl('span', $row['nom_rez']) );
+		interf_base::code_js('maj_tooltips();');
+	}
+	exit;
+}
 
 $interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort

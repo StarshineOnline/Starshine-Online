@@ -355,6 +355,17 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	margin-left: 3px;
 }
 
+.membre_hp.rez
+{
+	cursor: pointer;
+	text-shadow: 0px 0px 3px rgba(240, 227, 78, 1);
+}
+
+.membre_hp.rez:hover
+{
+	text-shadow: 0px 0px 5px rgba(255, 255, 0, 1);
+}
+
 .membre_mp
 {
 	right:2px;
@@ -549,6 +560,25 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 .trop_loin
 {
 	font-style: italic;
+}
+
+.popover-content .list-group li
+{
+	width: 250px;
+	padding: 0;
+}
+
+.popover-content .list-group li .jauge_groupe
+{
+	position: relative;
+	float: right;
+	margin: 4px;
+}
+
+.popover-content .list-group li > span
+{
+	margin: 10px 15px;
+	display: block;
 }
 
 /*-- Partie gauche de l'interface ---------------------------------------------------*/

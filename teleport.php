@@ -48,7 +48,7 @@ case 'tp':
 		$requete = 'SELECT * FROM teleport WHERE ID = '.sSQL($_GET['id']);
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
-		$P_distance = calcul_distance(convert_in_pos($row['posx'], $row['posy']), $perso->get_pos());
+		$P_distance = $perso->calcule_distance($row['posx'], $row['posy']);
 		if($row['cout'] > 0)
 		{
 			$cout = $row['cout'];
@@ -60,6 +60,8 @@ case 'tp':
 			$taxe = ceil($cout * $R->get_taxe_diplo($perso->get_race()) / 100);
 			$cout = $cout + $taxe;
 		}
+		$x = $row['posx'];
+		$y = $row['posy'];
 		break;
 	case 'bourg':
 		/// TODO: à revoir
@@ -67,20 +69,22 @@ case 'tp':
 		if($W_distance != 0)
 		{
 			/// TODO: passer par un objet
-			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id_bourg']);
+			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id']);
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
-			$P_distance = $perso->calcul_distance($row['x'], $row['y']);
+			$P_distance = $perso->calcule_distance($row['x'], $row['y']);
 			$cout = ($P_distance * 7);
 			$taxe = ceil($cout * $R->get_taxe_diplo($perso->get_race()) / 100);
 			$cout = $cout + $taxe;
+			$x = $row['x'];
+			$y = $row['y'];
 		}
 		break;
 	}
 	if( $cout && $perso->get_star() >= $cout && $perso->get_pa() >= 5 )
 	{
-		$perso->set_x($row['posx']);
-		$perso->set_y($row['posy']);
+		$perso->set_x($x);
+		$perso->set_y($y);
 		$perso->add_star( -$cout );
 		$perso->add_pa( -5 );
 		$perso->sauver();
