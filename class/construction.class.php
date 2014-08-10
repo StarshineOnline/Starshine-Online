@@ -133,7 +133,7 @@ class construction extends entitenj_constr
 	}
 	
 	/// Renvoie le nom de la table (par défaut le nom de la classe)
-	protected function get_table()
+	public function get_table()
 	{
 		return 'construction';
 	}

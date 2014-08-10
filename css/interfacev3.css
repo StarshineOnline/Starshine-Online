@@ -1218,6 +1218,17 @@ p.accueil a
 	margin-right: 5px;
 }
 
+.info_case > a > span.icone
+{
+	font-size: 25px;
+}
+
+.info_case > a > span.xsmall
+{
+  padding-bottom: 2px;
+	font-size: 11px;
+}
+
 div.jauge_case
 {
 	position: relative;

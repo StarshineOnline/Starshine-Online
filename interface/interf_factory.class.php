@@ -92,15 +92,20 @@ class interf_factory
     return new interf_info_perso($entite, $actions);
 	}
 	/// Tour de guet
-	function creer_tour($tour)
+	function creer_tour(&$tour)
 	{
     return new interf_tour($tour);
 	}
 	/// Bourgs & forts
-	function creer_bourg_fort($tour)
+	function creer_bourg_fort(&$construction)
 	{
     include_once(root.'interface/interf_batiment.class.php');
-    return new interf_bourg_fort($tour);
+    return new interf_bourg_fort($construction);
+	}
+	/// Armes de sièges
+	function creer_arme_siege(&$construction)
+	{
+    return new interf_arme_siege($construction);
 	}
 	/// livres de sorts/compétences
 	function creer_livre_sortcomp($type, &$cible, $categorie, $actions)

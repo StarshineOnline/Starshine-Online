@@ -1,7 +1,7 @@
 <?php
 /**
  * @file interf_batiment.class.php
- * Permet l'accès aunx bâtiments externes.
+ * Permet l'accès aux bâtiments externes.
  */
 
 class interf_batiment extends interf_gauche
