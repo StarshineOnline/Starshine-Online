@@ -141,4 +141,4 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	}
 }
 else
-	$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $onglet) );
+	$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $case, $onglet) );

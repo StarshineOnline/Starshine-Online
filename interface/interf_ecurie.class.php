@@ -12,12 +12,12 @@ class interf_ecurie extends interf_ville
 	protected $places_ville;
 	protected $places_terrain;
 	protected $places_perso;
-	function __construct(&$royaume)
+	function __construct(&$royaume, &$case)
 	{
 		global $db, $Gtrad;
 		/// TODO: centraliser
 		$max_ecurie = 10;
-		parent::__construct($royaume);
+		parent::__construct($royaume, $case);
 		$this->perso = joueur::get_perso();
 		$this->perso->get_pets(true);
 		$this->perso->get_ecurie(true);

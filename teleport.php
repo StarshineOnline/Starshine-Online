@@ -23,8 +23,9 @@ $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
 /// TODO: logguer triche
-if($W_row['type'] != 1)
-	exit;
+$case = new map_case(array('x' => $perso->get_x(), 'y' => $perso->get_y()));
+if( !$case->is_ville(true, 'taverne') )
+	exit();
 
 // On vérifie la diplomatie
 /// TODO: logguer triche
@@ -105,7 +106,7 @@ case 'tp':
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars ou de PA !');
 	break;
 }
-$interf_princ->set_gauche( $G_interf->creer_tp($R) );
+$interf_princ->set_gauche( $G_interf->creer_tp($R, $case) );
 
 	
 ?>

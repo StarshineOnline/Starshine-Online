@@ -195,9 +195,12 @@ class interf_infos_case extends interf_cont
 				{
 				case 'fort':
 				case 'bourg':
+					if( $this->distance == 0 )
+						$lien = 'bourg_fort.php?id_construction='.$constr->get_id();
+					break;
 				case 'tour':
 					if( $this->distance == 0 )
-						$lien = $bat->get_type().'.php?id_construction='.$constr->get_id();
+						$lien = 'tour.php?id_construction='.$constr->get_id();
 					break;
 				case 'arme_de_siege':
 					$lien = 'arme_de_siege.php?id_construction='.$constr->get_id();

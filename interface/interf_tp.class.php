@@ -7,10 +7,10 @@
 /// Classe pour le quartier général
 class interf_tp extends interf_ville
 {
-	function __construct(&$royaume)
+	function __construct(&$royaume, &$case)
 	{
 		global $db, $Gtrad;
-		parent::__construct($royaume);
+		parent::__construct($royaume, $case);
 		$perso = joueur::get_perso();
 		// Icone jauges
 		$icone = $this->set_icone_centre('tp');

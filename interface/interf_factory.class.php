@@ -96,6 +96,12 @@ class interf_factory
 	{
     return new interf_tour($tour);
 	}
+	/// Bourgs & forts
+	function creer_bourg_fort($tour)
+	{
+    include_once(root.'interface/interf_batiment.class.php');
+    return new interf_bourg_fort($tour);
+	}
 	/// livres de sorts/compétences
 	function creer_livre_sortcomp($type, &$cible, $categorie, $actions)
 	{
@@ -143,9 +149,9 @@ class interf_factory
     return new interf_dresseur($royaume, $categorie);
 	}
 	/// Alchimiste
-	function creer_alchimiste(&$royaume, $onglet='recherche')
+	function creer_alchimiste(&$royaume, &$case, $onglet='recherche')
 	{
-    return new interf_alchimiste($royaume, $onglet);
+    return new interf_alchimiste($royaume, $case, $onglet);
 	}
 	/// Hotel des ventes
 	function creer_hotel_vente(&$royaume, $type='vente', $categorie='arme')
@@ -163,9 +169,9 @@ class interf_factory
     return new interf_qg($royaume);
 	}
 	/// Pierre de téléportaion
-	function creer_tp(&$royaume)
+	function creer_tp(&$royaume, &$case)
 	{
-    return new interf_tp($royaume);
+    return new interf_tp($royaume, $case);
 	}
 	/// Tribunal
 	function creer_tribunal(&$royaume)
@@ -173,14 +179,14 @@ class interf_factory
     return new interf_tribunal($royaume);
 	}
 	/// Taverne
-	function creer_taverne(&$royaume, $type='repos')
+	function creer_taverne(&$royaume, &$case, $type='repos')
 	{
-    return new interf_taverne($royaume, $type);
+    return new interf_taverne($royaume, $case, $type);
 	}
 	/// Ecurie
-	function creer_ecurie(&$royaume)
+	function creer_ecurie(&$royaume, &$case)
 	{
-    return new interf_ecurie($royaume);
+    return new interf_ecurie($royaume, $case);
 	}
 	/// Vente de terrain
 	function creer_vente_terrain(&$royaume)

@@ -10,10 +10,10 @@ include_once(root.'interface/interf_liste_achat.class.php');
 /// Classe gérant l'interface de l'alchimiste
 class interf_alchimiste extends interf_ville_onglets
 {
-	function __construct(&$royaume, $onglet)
+	function __construct(&$royaume, &$case, $onglet)
 	{
 		global $db;
-		parent::__construct($royaume);
+		parent::__construct($royaume, $case);
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('alchimie');

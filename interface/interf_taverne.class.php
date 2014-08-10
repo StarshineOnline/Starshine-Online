@@ -9,10 +9,10 @@ include_once(root.'interface/interf_liste_achat.class.php');
 /// Classe gérant l'interface de la taverne
 class interf_taverne extends interf_ville_onglets
 {
-	function __construct(&$royaume, $type)
+	function __construct(&$royaume, &$case, $type)
 	{
 		global $db;
-		parent::__construct($royaume);
+		parent::__construct($royaume, $case);
 		
 		// Icone & jauges
 		$this->icone = $this->set_icone_centre('biere');

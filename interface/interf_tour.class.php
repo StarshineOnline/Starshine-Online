@@ -4,10 +4,9 @@
  * Permet l'affichage des informations d'une tour.
  */
  
-include_once(root.'interf_gauche.class.php');
          
 
-class interf_tour extends interf_gauche
+class interf_tour extends interf_batiment
 {
 	protected $distance;
 	protected $perso;
@@ -15,18 +14,18 @@ class interf_tour extends interf_gauche
 	
 	function __construct(&$tour)
 	{
-		parent::__construct('carte');
+		parent::__construct($tour, 'tour.php');
 		$this->tour = &$tour;
 		$this->perso = &joueur::get_perso();
-		$batiment = $tour->get_def();
+		//$batiment = $tour->get_def();
 		$this->distance = $batiment->get_bonus('batiment_vue');
 		
 		// Icone et titre
-		$this->set_img_centre($tour->get_image(), 'tour.php?id_construction='.$tour->get_id(), $batiment->get_nom());
-		$this->barre_haut->add( new interf_txt($tour->get_nom()) );
+		//$this->set_img_centre($tour->get_image(), 'tour.php?id_construction='.$tour->get_id(), $batiment->get_nom());
+		//$this->barre_haut->add( new interf_txt($tour->get_nom()) );
 
 		// Jauges
-		$this->set_jauge_ext($tour->get_hp(), $batiment->get_hp(), 'hp', 'HP : ');
+		//$this->set_jauge_ext($tour->get_hp(), $batiment->get_hp(), 'hp', 'HP : ');
 		$this->set_jauge_int($this->distance, 12, 'avance', 'Distance de vue : ');
 		
 		$this->centre->add( new interf_bal_smpl('p', 'Position - X : '.$tour->get_x().' - Y : '.$tour->get_y()) );

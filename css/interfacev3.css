@@ -659,6 +659,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border-bottom-right-radius: 10px;
 	background: rgba(255, 255, 255, 0.2);
 	z-index: 1;
+	overflow: hidden;
 }
 
 #menu_panneaux
@@ -1454,6 +1455,39 @@ li.info_case div.jauge_case
 	background-size: 100% 100% !important;
 }
 
+#bourg
+{
+    height: 443px;
+    width: 443px;
+    background-size: 100% 100% !important;
+    background: url('../image/interface/fond_bourg.png');
+}
+
+#fort 
+{
+    height: 443px;
+    width: 443px;
+    background-size: 100% 100% !important;
+    background: url('../image/interface/fond_fort.png');
+}
+
+#bourg div.panel
+{
+	top: 10px;
+	left: 70px;
+}
+
+#fort div.panel
+{
+	bottom: -5px;
+	left: 80px;
+}
+
+#bourg div.panel, #fort div.panel
+{
+	width: 170px;
+	position: absolute;
+}
 
 /* ... */
 
