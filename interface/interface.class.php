@@ -688,7 +688,7 @@ class interf_form extends interf_bal_cont
    *
    * @return    Élément "input"
    */
-  function add_champ_bs($type, $name, $placeholder=null, $value=null, $avant=null, $apres=null)
+  function add_champ_bs($type, $name, $placeholder=null, $value=null, $avant=null, $apres=null, $id=false)
   {
     $div = $this->add( new interf_bal_cont('div', null, 'input-group') );
     if( $avant )
@@ -697,7 +697,7 @@ class interf_form extends interf_bal_cont
         $avant = new interf_bal_smpl('span', $avant, null, 'input-group-addon');
       $div->add( $avant );
     }
-    $chp = $div->add( new interf_bal_smpl('input', null, null, 'form-control') );
+    $chp = $div->add( new interf_bal_smpl('input', null, $id, 'form-control') );
     $chp->set_attribut('type', $type);
     $chp->set_attribut('name', $name);
     if( $value !== null && $value !== false )

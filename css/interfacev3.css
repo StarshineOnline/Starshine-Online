@@ -2328,6 +2328,50 @@ input#ville_bas
 }
  
  
+/********** Vie du royaume  ************************/
+.boutons
+{
+	margin: 10px;
+	text-align: center;
+}
+
+#candidature
+{
+	margin: 30px 5px 0;
+}
+
+#candidature > div
+{
+	margin-top: 5px;
+}
+
+#candidature label
+{
+	display: block;
+}
+
+#candidature textarea
+{
+	width: 100%;
+	height: 190px;
+}
+
+#candidature .btn-group
+{
+	text-align: right;	
+}
+
+#candidature .boutons
+{
+	margin: 5px 0 0;
+	text-align: right;
+}
+
+#infos_candidature
+{
+	overflow-y: auto;
+}
+ 
 /*ul.ville li { margin-bottom:3px; }
 ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
 .ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }

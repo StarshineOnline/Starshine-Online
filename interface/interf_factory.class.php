@@ -390,5 +390,19 @@ class interf_factory
     return new interf_liste_persos($persos, $page);
   }
   /// @}
+  function creer_vie_royaume()
+  {
+    return new interf_vie_royaume();
+  }
+  function creer_candidature()
+  {
+    include_once(root.'interface/interf_vie_royaume.class.php');
+    return new interf_candidature();
+  }
+  function creer_vote()
+  {
+    include_once(root.'interface/interf_vie_royaume.class.php');
+    return new interf_vote();
+  }
 }
 ?>

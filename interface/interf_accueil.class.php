@@ -38,10 +38,10 @@ class interf_accueil extends interf_cont
 		}
 		
 		// Révolution
-		if( revolution::is_mois_revolution($R[0]->get_id()) )
+		if( revolution::is_mois_revolution($R[0]->get_id(), $perso->get_id()) )
 		{
-			$revolution = revolution::get_prochain_revolution($id_royaume);
-			$requete = 'SELECT id FROM vote_revolution WHERE id_perso = '.$perso->get_id().' AND id_election = '.$revolution[0]->get_id();
+			$revolution = revolution::get_prochain_revolution($R[0]->get_id());
+			$requete = 'SELECT id FROM vote_revolution WHERE id_perso = '.$perso->get_id().' AND id_revolution = '.$revolution[0]->get_id();
 			$db->query($requete);
 			if(!$db->num_rows)
 				$this->add( new interf_bal_smpl('p', 'Une révolution a été déclenchée, vous pouvez aller voter pour ou contre.', null, 'accueil') );
