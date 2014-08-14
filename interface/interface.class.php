@@ -746,6 +746,8 @@ class interf_ens_chps extends interf_bal_cont
 class interf_chp_form extends interf_bal_smpl
 {
   protected $label;  ///< Texte à afficher avant le champ.
+  protected $label_avant;  ///< True si le texte doit être avant, false s'il doit être après.
+  protected $classe_label;  ///< Classe du texte à afficher avant le champ.
   /**
    * Constructeur
    * @param  $type    type de champ.
@@ -753,11 +755,13 @@ class interf_chp_form extends interf_bal_smpl
    * @param  $label   texte à afficher avant le champ.
    * @param  $value   valeur par défaut.
    */
-  function __construct($type, $name, $label=false, $value=false, $id=null, $classe=null)
+  function __construct($type, $name, $label=false, $value=false, $id=null, $classe=null, $classe_label=false)
   {
     interf_bal_smpl::__construct('input', '', $id, $classe);
     //$this->balise = 'input';
     $this->set_attribut('type', $type);
+    $this->label_avant = $type != 'checkbox' && $type != 'radio';
+    $this->classe_label = $classe_label;
     if($name)
     	$this->set_attribut('name', $name);
     if( $value !== false )
@@ -767,9 +771,13 @@ class interf_chp_form extends interf_bal_smpl
   /// Affiche le contenu de l'élément.
   function contenu()
   {
-    if( $this->label )
-      $this->balise('label', $this->label);
+  	$attr=null;
+  	if( $this->classe_label )
+    if( $this->label && $this->label_avant )
+      $this->balise('label', $this->label, $attr);
     interf_bal_smpl::contenu();
+    if( $this->label && !$this->label_avant )
+      $this->balise('label', $this->label, $attr);
   }
 }
 
@@ -780,16 +788,18 @@ class interf_select_form extends interf_bal_cont
 {
   protected $groupe = null;  ///< Groupe actuel
   protected $label;  ///< Texte à afficher avant le champ.
+  protected $classe_label;  ///< Classe du texte à afficher avant le champ.
   /**
    * Constructeur
    * @param  $name    nom du champ.
    * @param  $label   texte à afficher avant le champ.
    */
-  function __construct($name, $label=false, $id=null, $classe=null)
+  function __construct($name, $label=false, $id=null, $classe=null, $classe_label=false)
   {
     interf_bal_cont::__construct('select', $id, $classe);
     $this->set_attribut('name', $name);
     $this->label = $label;
+    $this->classe_label = $classe_label;
   }
   /**
    * Ajoute un groupe
@@ -824,8 +834,11 @@ class interf_select_form extends interf_bal_cont
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
   {
+  	$attr=null;
+  	if( $this->classe_label )
+  		$attr = array('class'=>$this->classe_label);
     if( $this->label )
-      $this->balise('label', $this->label);
+      $this->balise('label', $this->label, $attr);
     interf_bal_cont::debut();
   }
 }
@@ -967,6 +980,43 @@ class interf_js extends interf_smpl
   function contenu()
   {
   	$this->affiche_js();
+	}
+}
+
+class url
+{
+	private $base;
+	private $vars=array();
+	function __construct($base='')
+	{
+		$this->base = $base;
+	}
+	function add($nom, $valeur)
+	{
+		$this->vars[$nom] = $valeur;
+	}
+	function get($nom=null, $valeur=null)
+	{
+		if( $nom === null )
+			$vars = array();
+		else
+		{
+			if( is_array($nom) )
+			{
+				$vars = array();
+				foreach($nom as $nm=>$val)
+				{
+					$vars[] = $nm.'='.$val;
+				}
+			}
+			else
+				$vars = array($nom.'='.$valeur);
+		}
+		foreach($this->vars as $nm=>$val)
+		{
+			$vars[] = $nm.'='.$val;
+		}
+		return $this->base.'?'.implode('&', $vars);
 	}
 }
 ?>

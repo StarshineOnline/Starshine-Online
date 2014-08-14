@@ -558,4 +558,55 @@ class interf_data_tbl extends interf_tableau
     interf_base::code_js('var '.$id.' = $("#'.$id.'").DataTable('.$options.');');
   }
 }
+
+class interf_pagination extends interf_bal_cont
+{
+	function __construct($page_act, $nbr_pages, &$url, $id=false)
+	{
+		parent::__construct('ul', $id, 'pagination');
+		$onclick = 'return charger(this.href);';
+		if( $page_act == 1 )
+			$this->add( new interf_bal_smpl('li', '<span>&laquo;</span>', false, 'disabled') );
+		else
+			$this->add( new interf_elt_menu('&laquo;', $url->get('page', $page_act-1), $onclick) );
+		if( $nbr_pages < 9 )
+		{
+			for($i=1; $i<=$nbr_pages; $i++)
+			{
+				if( $page_act == $i )
+					$this->add( new interf_bal_smpl('li', '<span>'.$i.'</span>', false, 'active') );
+				else
+					$this->add( new interf_elt_menu($i, $url->get('page', $i), $onclick) );
+			}
+		}
+		else
+		{
+			if( $page_act > 2 )
+			{
+				$this->add( new interf_elt_menu(1, $url->get('page', 1), $onclick) );
+				$this->add( new interf_bal_smpl('li', '…') );
+				$min = $page_act - 2;
+			}
+			else
+				$min = 1;
+			$max = $page_act < $nbr_pages - 2 ? $page_act + 2 : $nbr_pages;
+			for($i=$min; $i<=$max; $i++)
+			{
+				if( $page_act == $i )
+					$this->add( new interf_bal_smpl('li', '<span>'.$i.'</span>', false, 'active') );
+				else
+					$this->add( new interf_elt_menu($i, $url->get('page', $i), $onclick) );
+			}
+			if( $max != $nbr_pages )
+			{
+				$this->add( new interf_bal_smpl('li', '…') );
+				$this->add( new interf_elt_menu($nbr_pages, $url->get('page', $nbr_pages), $onclick) );
+			}
+		}
+		if( $page_act == $nbr_pages )
+			$this->add( new interf_bal_smpl('li', '<span>&raquo;</span>', false, 'disabled') );
+		else
+			$this->add( new interf_elt_menu('&raquo;', $url->get('page', $page_act+1), $onclick) );
+	}
+}
 ?>

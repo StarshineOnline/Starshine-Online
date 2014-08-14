@@ -89,6 +89,7 @@ function __autoload($class_name)
 // Fabrique de l'interface
 include_once(root.'interface/interf_factory.class.php');
 $G_interf = interf_factory::factory();
+$G_url = new url($_SERVER['SCRIPT_NAME']);
 
 
 function fin_script()

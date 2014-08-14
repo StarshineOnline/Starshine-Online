@@ -133,6 +133,11 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
     background-color: rgba(255, 255, 255, .3);
 }
 
+.btn.icone
+{
+	line-height: 1.42857;
+}
+
 /*-- Basics elements --------------------------------------------------*/
 #global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
 .spacer { clear:both!important; float:none!important; border:none!important; height:1px!important; line-height:1px!important; font-size:1px!important; padding:0!important; margin:0 0 -1px!important; visibility:hidden!important; }
@@ -2491,6 +2496,69 @@ ul.onglet-hotel li { display:inline; }*/
 /***************************************************
   Journal des Actions
  ***************************************************/
+#pagination
+{
+text-align: right;
+}
+ 
+#journal #page li
+{
+	display: block;
+	padding-left: 3px;
+	padding-right: 3px;
+}
+ 
+#journal #page li:hover
+{
+	background-color: rgba(255, 255, 255, 0.3);
+}
+ 
+#journal #page li a, #journal #page li span
+{
+	display: inline-block;
+	padding-top: 3px;
+	padding-bottom: 3px;
+}
+ 
+#journal #page li a
+{
+	color: inherit;
+	height: 100%;
+}
+ 
+#journal #page li a:hover
+{
+	color: inherit;
+	text-decoration: underline;
+}
+
+#pagination ul.pagination
+{
+	margin: 14px 0px;
+}
+
+#forms_journal
+{
+	border: 1px solid #CCC;
+	border-radius: 4px;
+}
+
+#forms_journal form
+{
+	margin: 0;
+}
+
+#forms_journal #options
+{
+	padding: 5px;
+}
+
+#nbr_lignes
+{
+	width: 150px;
+	display: inline-block;
+}
+ 
 .coupcritique { font-weight:bold; }
 .degat { color:#f00; }
 .manque { color:#00f; }
@@ -2510,6 +2578,7 @@ ul.onglet-hotel li { display:inline; }*/
 .jloot { color:#CC33CC; }
 .small { font-style:italic; font-size:.9em; }
 .xsmall { font-style:italic; font-size:.8em; }
+
 
 /***************************************************
   Rose des vents

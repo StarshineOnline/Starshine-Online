@@ -233,6 +233,13 @@ function filtre_table(filtre)
 	//tbl_sort_jeu.draw();
 }
 
+function toggle(id)
+{
+	$('#'+id).slideToggle(); 
+	//alert($('#'+id));
+	return false;
+}
+
 
 // anciennes fonctions (tri à faire)
 

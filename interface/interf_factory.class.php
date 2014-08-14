@@ -404,5 +404,13 @@ class interf_factory
     include_once(root.'interface/interf_vie_royaume.class.php');
     return new interf_vote();
   }
+  function creer_journal(&$perso, $options, $mois='actuel', $page=1)
+  {
+    return new interf_journal($perso, $options, $mois, $page);
+  }
+  function creer_journal_page(&$perso, $options, $mois='actuel', $page=1)
+  {
+    return new interf_journal_page($perso, $options, $mois, $page);
+  }
 }
 ?>
