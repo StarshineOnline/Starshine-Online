@@ -4,6 +4,8 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 
+security_block
+
 if(!array_key_exists('ID', $_SESSION) || empty($_SESSION['ID']))
 {
 	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';

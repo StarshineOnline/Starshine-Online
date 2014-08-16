@@ -49,7 +49,7 @@ class interf_fiche_perso_carac extends interf_cont
 		$infos = $this->add( new interf_bal_cont('div', false, 'info_case') );
 		if($perso->get_teleport_roi() != 'true' && $actions)
 		{
-			$lien = $infos->add( new interf_bal_smpl('a', '', false, 'icone icone-magie') );
+			$lien = $infos->add( new interf_bal_smpl('a', '', false, 'icone icone-teleportation') );
 			$lien->set_attribut('href', 'personnage.php?action=teleport');
 			$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez-vous vraiment vous téléportez sur votre capitale (la possibilité sera perdue) ?\');');
 			$lien->set_tooltip('Se téléporter dans votre capitale');

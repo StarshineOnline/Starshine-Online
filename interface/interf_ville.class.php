@@ -46,7 +46,7 @@ class interf_ville extends interf_gauche
 			if($batiment->has_bonus('teleport'))
 			{
 				$tavene = $menu->add( new interf_elt_menu('', 'teleport.php', 'return charger(this.href);') );
-				$tavene->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-magie') );
+				$tavene->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-teleportation') );
 				$tavene->get_lien()->add( new interf_txt('Teleportation') );
 			}
 			if($batiment->has_bonus('alchimiste'))

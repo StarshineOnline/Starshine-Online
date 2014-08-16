@@ -263,7 +263,10 @@ class interf_vote extends interf_vie_royaume_base
 		global $db;
 		parent::__construct('Vote');
 		$elections = elections::get_prochain_election($this->royaume->get_id(), true);
-		$this->aff_jauge_votants($elections[0]);
+		if( $elections[0]->get_type() == 'universel' )
+			$this->aff_jauge_votants($elections[0]);
+		else
+			$this->aff_jauge_candidats($elections[0]);
 		$candidats = candidat::create('id_election',$elections[0]->get_id());
 		/// TODO: passer à l'objet
 		$requete = 'SELECT * FROM vote WHERE id_election = '.$elections[0]->get_id().' AND id_perso = '.$this->perso->get_id();
@@ -282,7 +285,7 @@ class interf_vote extends interf_vie_royaume_base
 		
 		$this->centre->add( new interf_bal_smpl('p', 'Nombre de candidats : ') );
 		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ') );
-		$form = $this->centre->add( new interf_form('vie_royaume.php?action=vote2', 'vote') );
+		$form = $div->add( new interf_form('vie_royaume.php?action=vote2', 'vote') );
 		$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
 		$div_sel->add( new interf_bal_smpl('span', 'Candidat', false, 'input-group-addon') );
 		$sel = $div_sel->add( new interf_select_form('candidat', false, false, 'form-control') );

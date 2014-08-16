@@ -13,7 +13,7 @@ class interf_tp extends interf_ville
 		parent::__construct($royaume, $case);
 		$perso = joueur::get_perso();
 		// Icone jauges
-		$icone = $this->set_icone_centre('tp');
+		$icone = $this->set_icone_centre('teleportation');
 		$icone->set_tooltip('Pierre de téléportation');
 		//$this->recherche_batiment('', false);
 		/// TODO: passer par les objets

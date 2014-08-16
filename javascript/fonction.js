@@ -31,7 +31,7 @@ function affiche_ajax(data, status, jqXHR)
   		maj_tooltips();
   		break;
   	case 'erreur':
-  		var cont = document.getElementById('contenu_jeu');
+  		/*var cont = document.getElementById('contenu_jeu');
   		var alerte = document.createElement('div');
   		alerte.className = 'alert alert-danger alert-dismissable';
   		cont.insertBefore(alerte, cont.firstChild);
@@ -55,12 +55,42 @@ function affiche_ajax(data, status, jqXHR)
   		recept.innerHTML = data;
   		recept.id = 'erreur_recu';
   		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
-  		alerte.appendChild(recept);
+  		alerte.appendChild(recept);*/
+  		aff_erreur(this.innerHTML, data);
   		break;
   	default:
     	$('#'+this.id).html( this.innerHTML );
 		}
   });
+}
+
+function aff_erreur(contenu, donnees, icone='bug')
+{
+		var cont = document.getElementById('contenu_jeu');
+		var alerte = document.createElement('div');
+		alerte.className = 'alert alert-danger alert-dismissable';
+		cont.insertBefore(alerte, cont.firstChild);
+		alerte.style = 'margin-top: 5px;'
+		var btn = document.createElement('button');
+		btn.className = 'close';
+		btn.setAttribute('aria-hidden', 'true');
+		btn.setAttribute('data-dismiss', 'alert');
+		btn.type = 'button';
+		btn.innerHTML = '&times;';
+		alerte.appendChild(btn);
+		var ico = document.createElement('a');
+		ico.className = 'icone icone-'+icone;
+		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
+		ico.style = 'margin-right: 5px;'
+		alerte.appendChild(ico);
+		var txt = document.createElement('span');
+		txt.innerHTML = contenu;
+		alerte.appendChild(txt);
+		var recept = document.createElement('div');
+		recept.innerHTML = donnees;
+		recept.id = 'erreur_recu';
+		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
+		alerte.appendChild(recept);
 }
 
 function charger(page)
@@ -139,12 +169,6 @@ function aff_ico_charger()
 function aff_ico_sso()
 {
 	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso";
-}
-
-// à supprimer ?
-function aff_ico_bug()
-{
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-bug";
 }
 
 function formate_duree(duree, detail)
@@ -580,22 +604,14 @@ $(function () {
 
 		$("#debug_log_button").hide();
 
-		$(document).ajaxError(function(e, jqxhr, settings, exception) {
+		$(document).ajaxError(function(e, jqxhr, settings, exception)
+		{
 			alert(jqxhr.status);
-						aff_ico_bug();
-				if (jqxhr.status == 403) {
-						// Sans doute un security_block, pop erreur
-						/*$('#popup').show();
-						$('#popup_content').html(jqxhr.responseText);
-						$('#popup_content h1').css('color', 'red');*/
-				} else {
-						// On loggue dans un cadre caché
-						/*$('#debug_log').append('<p>status : '+jqxhr.status+' - '+jqxhr.statusText+'<br/>url: ' + settings.url + '</p>');
-						$('#debug_log').append(jqxhr.responseText);
-						$('#debug_log').append('<hr/>');
-						// On fait apparaître le bouton de debug
-						$('#debug_log_button').show();*/
-				}
+			aff_ico_sso();
+			if (jqxhr.status == 403) // Sans doute un security_block
+				aff_erreur('Accès interdit !', jqxhr.responseText, 'stop');
+			else
+				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : )'+jqxhr.status+')', jqxhr.responseText);
 		});
 });
 
