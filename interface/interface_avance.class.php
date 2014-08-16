@@ -18,7 +18,7 @@ class interf_onglets extends interf_bal_cont
 
   /**
    * Constructeur
-   * @param  $id_cont        id de la balise ul permettant la navigation.
+   * @param  $id_tabs        id de la balise ul permettant la navigation.
    * @param  $id_cont        id de la balise div contenant tous les onglets.
    * @param  $class_cont     classe de la balise contenant tous les onglets.
    */

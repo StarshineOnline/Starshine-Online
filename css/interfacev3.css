@@ -1506,7 +1506,7 @@ li.info_case div.jauge_case
 }
 
 /* ... */
-
+/*
 #carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
 #carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
 #carte a,.visu a { color:#444; text-decoration:none; }
@@ -1553,14 +1553,14 @@ li.info_case div.jauge_case
 .map_bord_gauche { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; cursor:default!important; }
 .map_bord_gauche2 { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; }
 .map_contenu { width:56px; height:56px; margin:2px; background:transparent url(image/pixel.gif) center no-repeat; }
-.low_resolution { width:20px!important; height:20px!important; font-size:.8em; line-height:20px!important; }
+.low_resolution { width:20px!important; height:20px!important; font-size:.8em; line-height:20px!important; }*/
 
 /*-- Weather ----------------------------------------------------------*/
-#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }
+/*#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }*/
 
 
 /*-- Hotel des ventes -------------------------------------------------*/
-#hotel_liste_type ul { width:100%; }
+/*#hotel_liste_type ul { width:100%; }
 #hotel_liste_type li { display:inline; cursor:pointer; font-size:.9em; }
 #hotel_liste { width:100%; text-align:left; font-variant:normal; }
 #hotel_liste .li1 { cursor:default; float:left; font-weight:normal; text-align:center!important; line-height:14pt; }
@@ -1574,7 +1574,7 @@ li.info_case div.jauge_case
 #hotel_liste .achat:active { color:#A062EC; }
 .slot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/vert.png) center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
 .noslot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/noir.png) center left no-repeat; }
-.enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }
+.enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }*/
 
 /***************************************************
   Vrac
@@ -1718,7 +1718,7 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 /***************************************************
   Header Menu
  ***************************************************/
-.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
+/*.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
 .decor { width:60px; height:60px; margin:0; padding:0; text-align:center; }
 .decor-edit { width:20px; height:20px; margin:0; padding:0; text-align:center; }
 .infobox { display:none; z-index:2; position:absolute; top:100px; left:0; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:300px; padding:5px; }
@@ -1729,7 +1729,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .baseRow1 { background-color:#fff4cc; padding-left:2px; }
 .baseRow2 { background-color:#ffeeaa; padding-left:2px; }
 .heure { text-align:center; background-color:#D4DAE2; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; padding:5px; border:1px solid #FFF; }
-.inventaireville { width:33%; font-size:.8em; text-align:center; vertical-align:top; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+.inventaireville { width:33%; font-size:.8em; text-align:center; vertical-align:top; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }*/
 
 
 /***************************************************
@@ -1773,7 +1773,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   width: 470px;
 }
 
-.invent tr
+#invent tr
 {
 	height : 55px;
 }
@@ -2578,6 +2578,37 @@ text-align: right;
 .jloot { color:#CC33CC; }
 .small { font-style:italic; font-size:.9em; }
 .xsmall { font-style:italic; font-size:.8em; }
+
+/***************************************************
+  Fiche de personnage
+ ***************************************************/
+#fiche_perso td
+{
+	padding-left: 5px;
+}
+
+#fiche_perso .info_case
+{
+	margin: 5px 10px 0;
+}
+
+#fiche_perso .info_case img
+{
+	padding: 2px;
+}
+
+#fiche_perso div.jauge_case
+{
+	height: 20px;
+	width: 20px;
+	margin: 2px 3px 0;
+}
+
+#onglet_achiev
+{
+	height: 398px;
+	overflow-y: auto;
+}
 
 
 /***************************************************

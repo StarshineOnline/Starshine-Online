@@ -32,7 +32,7 @@ class interf_barre_perso extends interf_bal_cont
     $titre = $titre_perso->get_titre_perso($bonus);
     $nom = $this->infos_vie->add( new interf_bal_cont('a', 'nom_perso') );
     $nom->set_attribut('href', 'personnage.php');
-    $nom->set_attribut('onclick', 'return envoiInfo(this.href, \'information\');');
+    $nom->set_attribut('onclick', 'return charger(this.href);');
     $nom->set_attribut('title', 'Accès à la fiche de votre personnage');
     $nom->set_attribut('data-toggle', 'tooltip');
     $nom->set_attribut('data-placement', 'bottom');

@@ -638,6 +638,10 @@ class perso extends entite
 		else
 			return $this->vie + $this->get_bonus_permanents('vie');
 	}
+	function get_constitution($base = false)
+	{
+		return $this->get_vie($base);
+	}
 	/// Modifie la constitution
 	function set_vie($vie)
 	{
@@ -4089,9 +4093,8 @@ class perso extends entite
 			$achievement->set_id_perso($this->get_id());
 			$achievement->set_id_achiev($achievement_type[0]->get_id());
 			$achievement->sauver();
-			if ($hide_message == false) {
-				echo $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !<br />';
-			}
+			if ($hide_message == false)
+				interf_alerte::enregistre(interf_alerte::msg_info, $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !');
 		}
 	}
 

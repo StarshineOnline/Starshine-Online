@@ -116,6 +116,20 @@ $Gtrad['bouclier'] = 'bouclier';
 
 
 /**
+ * @name Caractéristiques
+ * Traduction des coaractéristiques.
+ * @{  
+ */
+$Gtrad['constitution'] = 'Constitution';
+$Gtrad['force'] = 'Force';
+$Gtrad['dexterite'] = 'Dexterité';
+$Gtrad['puissance'] = 'Puissance';
+$Gtrad['volonte'] = 'Volonté';
+$Gtrad['energie'] = 'Énergie';
+//@}
+
+
+/**
  * @name Compétences
  * Traduction des compétences.
  * @{  

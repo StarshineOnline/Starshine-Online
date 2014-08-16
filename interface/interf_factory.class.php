@@ -412,5 +412,29 @@ class interf_factory
   {
     return new interf_journal_page($perso, $options, $mois, $page);
   }
+  function creer_fiche_perso(&$perso, $actions=false, $onglet='carac')
+  {
+    return new interf_fiche_perso($perso, $actions, $onglet);
+  }
+  function creer_fiche_perso_carac(&$perso, $actions=false)
+  {
+    include_once(root.'interface/interf_fiche_perso.class.php');
+    return new interf_fiche_perso_carac($perso, $actions);
+  }
+  function creer_fiche_perso_apt(&$perso)
+  {
+    include_once(root.'interface/interf_fiche_perso.class.php');
+    return new interf_fiche_perso_apt($perso);
+  }
+  function creer_fiche_perso_stat(&$perso)
+  {
+    include_once(root.'interface/interf_fiche_perso.class.php');
+    return new interf_fiche_perso_stat($perso);
+  }
+  function creer_fiche_perso_achiev(&$perso)
+  {
+    include_once(root.'interface/interf_fiche_perso.class.php');
+    return new interf_fiche_perso_achiev($perso);
+  }
 }
 ?>

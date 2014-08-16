@@ -125,17 +125,22 @@ class entite extends placable
 	protected $volonte;    ///< Caractéristique "volonté".
 	protected $energie;    ///< Caractéristique "énergie".
 	/// Renvoie la constitution
-	function get_vie()
+	function get_vie($base = false)
+	{
+		return $this->vie;
+	}
+	/// Renvoie la constitution
+	function get_constitution($base = false)
 	{
 		return $this->vie;
 	}
 	/// Renvoie la force
-	function get_force()
+	function get_force($base = false)
 	{
 		return $this->force;
 	}
 	/// Renvoie la dextérité
-	function get_dexterite()
+	function get_dexterite($base = false)
 	{
 		return $this->dexterite;
 	}
@@ -145,12 +150,12 @@ class entite extends placable
 		$this->dexterite = max(0, $dexterite);
 	}
 	/// Renvoie la puissance
-	function get_puissance()
+	function get_puissance($base = false)
 	{
 		return $this->puissance;
 	}
 	/// Renvoie la volonté
-	function get_volonte()
+	function get_volonte($base = false)
 	{
 		return $this->volonte;
 	}
@@ -160,7 +165,7 @@ class entite extends placable
 		$this->volonte = max(0, $volonte);
 	}
 	/// Renvoie l'énergie
-	function get_energie()
+	function get_energie($base = false)
 	{
 		return $this->energie;
 	}
