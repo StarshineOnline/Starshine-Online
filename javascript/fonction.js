@@ -610,7 +610,7 @@ $(function () {
 			if (jqxhr.status == 403) // Sans doute un security_block
 				aff_erreur('Accès interdit !', jqxhr.responseText, 'stop');
 			else
-				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : )'+jqxhr.status+')', jqxhr.responseText);
+				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});
 });
 

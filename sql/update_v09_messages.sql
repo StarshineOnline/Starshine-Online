@@ -1,2 +1,0 @@
-
-ALTER TABLE `motd` ADD `date` INT NOT NULL DEFAULT '0';

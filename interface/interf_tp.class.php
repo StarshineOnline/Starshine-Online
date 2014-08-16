@@ -40,7 +40,7 @@ class interf_tp extends interf_ville
 		while($row = $db->read_array($req))
 		{
 			// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
-			if ($row['cout'] === '0') continue;
+			if ($row['cout'] == '0') continue;
 			//Récupération du royaume du téléport
 			$requete_roy = 'SELECT * FROM map WHERE x = '.$row['posx'].' and y = '.$row['posy'];
 			$req_roy = $db->query($requete_roy);
