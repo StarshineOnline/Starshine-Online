@@ -150,7 +150,7 @@ class interf_journal_page extends interf_cont
 		$pagination = $this->add( new interf_bal_cont('div', 'pagination') );
 		$G_url->add('action', 'page');
 		$G_url->add('mois', $mois);
-		$pagination->add( new interf_pagination($page, 3, $G_url) );
+		$pagination->add( new interf_pagination($page, $page_max, $G_url) );
 	}
 	function aff_entree($row)
 	{
@@ -171,7 +171,7 @@ class interf_journal_page extends interf_cont
 		case 'defense' :
 			$classe = 'jrdegat';
 			$lien = $G_url->get( array('action'=>'combat', 'id'=>$row['id']) );
-			if ($row['actif'] != $perso->get_nom()) // Equivaut à : le defenseur est le pet
+			if ($row['actif'] != $this->perso->get_nom()) // Equivaut à : le defenseur est le pet
 				$texte = $row['passif'].' a attaqué '.$row['actif'].' et fait '.$row['valeur'].' dégâts et '.$row['actif'].' fait '.$row['valeur2'];
 			else
 				$texte = $row['passif'].' vous a attaqué et fait '.$row['valeur'].' dégâts et vous lui faites '.$row['valeur2'];

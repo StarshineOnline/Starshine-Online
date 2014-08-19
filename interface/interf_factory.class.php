@@ -436,5 +436,14 @@ class interf_factory
     include_once(root.'interface/interf_fiche_perso.class.php');
     return new interf_fiche_perso_achiev($perso);
   }
+  function creer_messagerie(&$perso, $type=null, $id_sujet=false, $page=null)
+  {
+    return new interf_messagerie($perso, $type, $id_sujet, $page);
+  }
+  function creer_liste_messages(&$perso, $type, $id_sujet=false, $page=null)
+  {
+    include_once(root.'interface/interf_messagerie.class.php');
+    return new interf_liste_messages($perso, $type, $id_sujet, $page);
+  }
 }
 ?>

@@ -27,8 +27,11 @@ class interf_sso extends interf_html
     $this->javascript('javascript/jquery/jquery-2.0.2.min.js');
     $this->javascript('javascript/jquery/jquery-ui-1.10.3.custom.min.js');
     $this->javascript('javascript/jquery/jquery.dataTables.js');
+    $this->javascript('javascript/jquery/jquery.hotkeys.js');
     $this->javascript('javascript/bootstrap.min.js');
     $this->javascript('javascript/jquery/dataTables.bootstrap.js');
+    $this->javascript('javascript/bootstrap-wysiwyg.js');
+    $this->javascript('javascript/bbcodeParser.js');
     $this->javascript('javascript/fonction.js');
   }
 }

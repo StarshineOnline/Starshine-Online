@@ -609,4 +609,87 @@ class interf_pagination extends interf_bal_cont
 			$this->add( new interf_elt_menu('&raquo;', $url->get('page', $page_act+1), $onclick) );
 	}
 }
+
+class interf_editeur extends interf_bal_cont
+{
+	protected $btn_grp;
+	const ind_exp = 0x1;
+	const liste = 0x2;
+	const indent = 0x4;
+	const police = 0x8;
+	const align = 0x10;
+	/*const sel = 0x10;
+	const copier = 0x10;
+	const annuler = 0x10;
+	const lien = 0x10;
+	const image = 0x10;
+	const smiley = 0x10;*/
+	function __construct($id_editeur, $url=false, $id=false, $classe=false, $options=0)
+	{
+		parent::__construct('div', $id, $classe);
+		// Barre d'outils
+		$barre = $this->add( new interf_bal_cont('div', false, 'btn-toolbar editeur-outils') );
+		$barre->set_attribut('data-role', 'editor-toolbar');
+		$barre->set_attribut('data-target', '#'.$id_editeur);
+		$this->btn_grp = $barre->add( new interf_bal_cont('div', false, 'btn-group') );
+		if( $options & self::police )
+		{
+			//$this->add_boutton('police', 'superscript', 'Exposant');
+		}
+		$this->add_boutton('gras', 'bold', 'Gras (ctrl+B)');
+		$this->add_boutton('italique', 'italic', 'Italique (ctrl+I)');
+		$this->add_boutton('souligner', 'underline', 'Souligner (ctrl+U)');
+		$this->add_boutton('barrer', 'strikethrough', 'Barrer (ctrl+S)');
+		if( $options & self::ind_exp )
+		{
+			$this->add_boutton('exposant', 'superscript', 'Exposant');
+			$this->add_boutton('indice', 'subscript', 'Indice');
+		}
+		if( $options & self::liste )
+		{
+			$this->add_boutton('liste', 'insertunorderedlist', 'Liste');
+			$this->add_boutton('liste-num', 'insertorderedlist', 'Indice');
+		}
+		if( $options & self::indent )
+		{
+			$this->add_boutton('desindenter', 'outdent', 'Désindenter (maj+tab)');
+			$this->add_boutton('indenter', 'indent', 'Indenter (tab)');
+		}
+		if( $options & self::align )
+		{
+			$this->add_boutton('indice', 'justifyleft', 'Aligner à gauche (ctrl+L)');
+			$this->add_boutton('indice', 'justifycentert', 'Aligner au centre (ctrl+E)');
+			$this->add_boutton('indice', 'justifyrigh', 'Aligner à droite (ctrl+R)');
+			$this->add_boutton('indice', 'justifyfull', 'Justifier (ctrl+J)');
+		}
+		/*if( $options & self::sel )
+			$this->add_boutton('indice', 'selectAll', 'Sélectionner tout (ctrl+A)');
+		if( $options & self::copier )
+		{
+			$this->add_boutton('couper', 'cut', 'Couper (ctrl+X)');
+			$this->add_boutton('copier', 'copy', 'Copier (ctrl+C)');
+			$this->add_boutton('coller', 'paste', 'Coller (ctrl+V)');
+		}
+		if( $options & self::annuler )
+		{
+			$this->add_boutton('annuler', 'undo', 'Annuler (ctrl+Z)');
+			$this->add_boutton('refaire', 'repeat', 'Refaie (ctrl+Y)');
+		}*/
+		// envoi
+		$btn_grp = $barre->add( new interf_bal_cont('div', false, 'btn-group editeur-droite') );
+		$btn = $btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-message') );
+		$btn->set_attribut('onclick', 'envoie_texte(\''.$url.'\', \''.$id_editeur.'\');');
+		$btn->set_tooltip('Envoyer');
+		// Zone de texte
+		$this->add( new interf_bal_cont('div', $id_editeur, 'editeur-texte') );
+		self::code_js('$("#'.$id_editeur.'").wysiwyg();');
+	}
+	function add_boutton($icone, $action, $info)
+	{
+		$btn = $this->btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-'.$icone) );
+		$btn->set_attribut('data-edit', $action);
+		$btn->set_tooltip($info);
+	}
+}
+
 ?>

@@ -1,5 +1,6 @@
 // -*- tab-width: 2 -*-
 
+
 function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();
@@ -113,6 +114,11 @@ function verif_charger(url, texte)
 	if( confirm(texte) )
 		charger(url);
 	return false;
+}
+
+function envoie_texte(dest, id)
+{
+	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+bbcodeParser.htmlToBBCode($("#"+id).html()),success:affiche_ajax});
 }
 
 function charge_tab(elt, id)
@@ -259,9 +265,16 @@ function filtre_table(filtre)
 
 function toggle(id)
 {
-	$('#'+id).slideToggle(); 
-	//alert($('#'+id));
+	$('#'+id).slideToggle();
 	return false;
+}
+
+function init_bbcode()
+{
+	bbcodeParser.addBBCode('[b]{TEXT}[/b]', '<b>{TEXT}</b>');
+	bbcodeParser.addBBCode('[i]{TEXT}[/i]', '<i>{TEXT}</i>');
+	bbcodeParser.addBBCode('[u]{TEXT}[/u]', '<u>{TEXT}</u>');
+	bbcodeParser.addBBCode('[s]{TEXT}[/s]', '<strike>{TEXT}</strike>');
 }
 
 
@@ -612,6 +625,8 @@ $(function () {
 			else
 				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});
+		
+		init_bbcode();
 });
 
 function show_debug_log()

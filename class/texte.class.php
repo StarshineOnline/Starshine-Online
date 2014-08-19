@@ -77,7 +77,7 @@ class texte
   {
     if( $this->options & self::plrs_txt )
     {
-      $texte = explode('*****', nl2br($this->texte));
+      $texte = explode('*****', $this->texte);
       $texte = $texte[$index];
     }
     else
@@ -85,6 +85,7 @@ class texte
     $texte = preg_replace("/(\r\n|\r|\n)/", '', $texte);
     if( $this->options & self::html )
       $texte = htmlspecialchars( stripslashes($texte) );
+    $texte = nl2br($this->texte);
     if( $this->options & self::bbcode )
       $texte = $this->parse_bbcode($texte);
     if( $this->options & self::plrs_txt )

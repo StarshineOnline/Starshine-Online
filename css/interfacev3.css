@@ -1670,6 +1670,230 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 /***************************************************
   Messagerie
  ***************************************************/
+
+/*#messagerie tr:hover
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	color: black;
+	cursor: pointer;
+}*/
+
+#messagerie tr>:last-child
+{
+	max-width: 29px;
+}
+
+#messagerie tr a
+{
+	display: inline-block;
+	height: 25px;
+	padding: 2px;
+}
+
+#messagerie th
+{
+	font-size: 15px;
+}
+
+
+#messagerie td
+{
+	font-size: 13px;
+	line-height: 1.6;
+}
+
+
+#messagerie tr>:first-child a
+{
+	width: 100%;
+}
+
+#messagerie tr a:hover
+{
+	background-color: rgba(255, 255, 255, 0.5);
+	color: black;
+}
+
+#messagerie tr
+{
+	height: 25px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+#messagerie tr>:first-child
+{
+	min-width: 50px;
+}
+
+#messagerie .invent
+{
+	padding-top: 0px;
+}
+
+#messagerie table.dataTable
+{
+	margin-top: 0 !important;
+	margin-bottom: 20px !important;
+}
+
+#messagerie #titre
+{
+	background-color: rgba(0, 0, 0, 0.3);
+	color: #DDD;
+	margin-bottom: 5px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+	height: 30px;
+}
+
+#messagerie #titre h4
+{
+	margin: 0;
+	padding: 5px;
+}
+
+#messagerie .message
+{
+	border: 1px solid #FFF;
+	border-radius: 5px;
+	margin: 2px;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+}
+
+#messagerie .entete
+{
+	background-color: rgba(255, 255, 255, 0.6);
+	border-bottom: 1px solid rgba(255, 255, 255, 0.8);
+	height: 16px;
+}
+
+#messagerie .auteur
+{
+	font-weight: bold;
+	padding: 1px;
+}
+
+#messagerie #titre a.icone, #messagerie #messages a.icone
+{
+	float: right;
+	display: block;
+	height: 100%;
+}
+
+#messagerie #titre a.icone:hover
+{
+	background-color: rgba(255, 255, 255, 0.3);
+	color: black;
+}
+
+#messagerie #titre a.icone
+{
+	width: 30px;
+	font-size: 30px;
+	color: #DDD;
+	border-left: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+#messagerie .entete a.icone
+{
+	width: 16px;
+	font-size: 13px;
+	border-left: 1px solid rgba(255, 255, 255, 0.8);
+	padding: 1px;
+}
+
+#messagerie .entete a.icone:hover
+{
+	background-color: white;
+	color: black;
+}
+
+#messagerie .texte
+{
+	padding: 1px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+#messagerie .texte a
+{
+	text-decoration-line: underline !important;
+	text-decoration-style: dotted !important; 
+	-moz-text-decoration-line: underline !important;
+	-moz-text-decoration-style: dotted !important;
+}
+
+#messagerie .texte a:hover
+{
+	color: black;
+	text-decoration: underline !important;
+}
+
+#messagerie .invent
+{
+	position: relative;
+}
+
+#messagerie .nouv_sujet
+{
+	display: block;
+	position: absolute;
+	bottom: 0;
+	height: 25px;
+	width: 468px;
+	border-top: 1px solid #FFF;
+	padding : 4px;
+	text-align: center;
+	border-bottom-left-radius: 9px;
+	border-bottom-right-radius: 9px;
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
+#messagerie .nouv_sujet:hover
+{	
+	background-color: rgba(255, 255, 255, 0.5);
+	color: black;
+}
+
+.editeur-texte
+{
+	overflow-y: auto;
+}
+
+.btn-toolbar .btn-group.editeur-droite
+{
+	float: right;
+}
+
+#messagerie .editeur
+{
+	margin: 2px;
+	width: 464px;
+	border: 1px solid #777;;
+	border-radius: 5px;
+	overflow: hidden;
+}
+
+#messagerie .editeur .editeur-outils
+{
+	margin: 0;
+	background-color: rgba(255, 255, 255, 0.5);
+	border-bottom: 1px solid #777;;
+}
+
+#messagerie .editeur .btn-group
+{
+	margin: 0;
+}
+
+#messagerie .editeur-texte
+{
+	width: 100%;
+	height: 150px;
+	background-color: white;
+}
+
+
 div.message_complet { clear:both; width:100%; }
 div.message_action { float:right; font-size:.8em; }
 div.spacer { clear:both; }
@@ -1968,7 +2192,7 @@ div#amende.panel
 	font-size: 12px;
 }
 
-#depl_centre table.dataTable tr
+/*#depl_centre */table.dataTable tbody tr
 {
 	background: none;
 }
@@ -1980,28 +2204,28 @@ div#amende.panel
 	height: auto;
 }
 
-#depl_centre table.dataTable > thead > tr > th
+/*#depl_centre*/ table.dataTable > thead > tr > th
 {
 	padding: 0;
 	background: none;
 }
 
-#depl_centre table.dataTable > thead > tr > th:first-child
+/*#depl_centre*/ table.dataTable > thead > tr > th:first-child
 {
 	padding-left: 3px;
 }
 
-#depl_centre .dataTables_wrapper.no-footer .dataTables_scrollBody
+/*#depl_centre*/ .dataTables_wrapper.no-footer .dataTables_scrollBody
 {
 	border-bottom: none;
 }
 
-#depl_centre table.dataTable td:first-child a
+/*#depl_centre*/ table.dataTable td:first-child a
 {
 	padding-left: 3px;
 }
 
-#depl_centre table.dataTable td:last-child a
+/*#depl_centre*/ table.dataTable td:last-child a
 {
 	padding-right: 3px;
 }

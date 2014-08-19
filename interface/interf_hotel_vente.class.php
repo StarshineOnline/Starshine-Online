@@ -25,7 +25,7 @@ class interf_hotel_vente extends interf_ville_onglets
 		$objet_max = 10;
 		$bonus_craft = ceil($this->perso->get_artisanat() / 5);
 		$objet_max += $bonus_craft;
-		$this->set_jauge_int($row[0], $objet_max, 'avance', 'Vos objets en vente : ');
+		$this->set_jauge_int($row[0], $objet_max, 'pa', 'Vos objets en vente : ');
 		
 		// Onglets
 		$armes = new interf_bal_smpl('span', '', false, 'icone icone-forge');
@@ -55,9 +55,9 @@ class interf_hotel_vente extends interf_ville_onglets
 				
 		// Vente / achat
 		$haut = $this->onglets->get_haut();
-		$vente = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent4'), 'hotel.php?type=vente&categorie='.$categorie, 'charger(\'hotel.php?type=vente&categorie=\'+hdv_type);', false, 'action'.($type=='vente'?' actif':'')) );
+		$vente = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent4'), 'hotel.php?type=vente&categorie='.$categorie, 'return charger(\'hotel.php?type=vente&categorie=\'+hdv_type);', false, 'action'.($type=='vente'?' actif':'')) );
 		$vente->set_tooltip('Vente');
-		$achat = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent'), 'hotel.php?type=achat&categorie='.$categorie, 'charger(\'hotel.php?type=achat&categorie=\'+hdv_type);', false, 'action'.($type=='achat'?' actif':'')) );
+		$achat = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent'), 'hotel.php?type=achat&categorie='.$categorie, 'return charger(\'hotel.php?type=achat&categorie=\'+hdv_type);', false, 'action'.($type=='achat'?' actif':'')) );
 		$achat->set_tooltip('Achat');
 		//interf_base::code_js('$("#tab_ville").on("shown.bs.tab", function (e) { var ind=e.target.indexOf("#tab_"); var cat = e.target.substr(ind+5); alert(ind+" : "+cat); });');
 		interf_base::code_js('var hdv_type = "'.$type.'";$("#tab_ville").on("shown.bs.tab", function (e) { var url=e.target.toString(); var ind=url.indexOf("#tab_"); var cat = url.substr(ind+5); hdv_type = cat; });');
