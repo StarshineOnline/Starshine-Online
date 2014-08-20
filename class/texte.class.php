@@ -407,6 +407,12 @@ class texte
   	$texte = preg_replace('`\[/i\]`i', '[/£i]', $texte);
   	$texte = preg_replace('#\[i\]([^£]*)\[/£i\]#i', '<i>\\1</i>', $texte, -1, $nbr);
   	$trouve |= $nbr > 0;
+  	$texte = preg_replace('`\[/u\]`i', '[/£u]', $texte);
+  	$texte = preg_replace('#\[u\]([^£]*)\[/£u\]#i', '<u>\\1</u>', $texte, -1, $nbr);
+  	$trouve |= $nbr > 0;
+  	$texte = preg_replace('`\[/s\]`i', '[/£s]', $texte);
+  	$texte = preg_replace('#\[s\]([^£]*)\[/£s\]#i', '<strike>\\1</strike>', $texte, -1, $nbr);
+  	$trouve |= $nbr > 0;
   	$texte = preg_replace('`\[/url\]`i', '[/£url]', $texte);
   	$texte = preg_replace('#\[url\]([^£]*)\[/£url\]#i', '<a href="\\1">\\1</a>', $texte);
   	$texte = preg_replace('#\[url=([^[\]]*)\]([^£]*)\[/£url\]#i', '<a href="\\1">\\2</a>', $texte, -1, $nbr);

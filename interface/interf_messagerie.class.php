@@ -151,6 +151,7 @@ class interf_messages extends interf_cont
 		}
 		// pagination
 		$pagination = $this->add( new interf_bal_cont('div', 'pagination') );
+		$G_url->add('action', 'lire');
 		$pagination->add( new interf_pagination($page, $page_max, $G_url) );	
 		// réponse
 		$this->add( new interf_editeur('nouv_'.$type, $G_url->get('action', 'ecrire'), false, 'editeur') );
@@ -162,8 +163,8 @@ class interf_messages extends interf_cont
 		$url->add('msg', $message->id_message);
 		$date =	date("d-m-y H:i", strtotime($message->date));
 		$div = $this->div_msg->add( new interf_bal_cont('div', 'msg_'.$message->id_message, 'message') );
-		$classe = 'entete'.($this->perso->get_id() == $message->id_auteur ? ' ' : '');
 		// entete
+		$classe = 'entete'.($this->perso->get_id() == $message->id_auteur ? ' soi' : '');
 		$entete = $div->add( new interf_bal_cont('div', false, $classe) );
 		if($this->perso->get_id() == $message->id_auteur)
 		{
@@ -177,6 +178,30 @@ class interf_messages extends interf_cont
 		// corps du message
 		$texte =  new texte($message->message, texte::messagerie);
 		$corps = $div->add( new interf_bal_smpl('div', $texte->parse(), false, 'texte') );
+	}
+}
+
+class interf_nouveau_message extends interf_form
+{
+	function __construct($type)
+	{
+		global $G_url;
+		$G_url->add('type', $type);
+		parent::__construct($G_url->get('action', 'nouveau_sujet'), 'messagerie', 'post');
+		$div_titre = $this->add( new interf_bal_cont('div', false, 'form-group') );
+		$div_titre->add( new interf_chp_form('text', 'titre', 'Titre', false, false, 'form-control') );
+		if( $type == 'perso' )
+		{
+			$div_dest = $this->add( new interf_bal_cont('div', false, 'form-group') );
+			$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', false, false, 'form-control') );
+			$dest->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion\', this.id);');
+			$div_dest->add( new interf_bal_cont('div', 'suggestion') );
+		}
+		$div_texte = $this->add( new interf_bal_cont('div', false, 'form-group') );
+		$div_texte->add( new interf_bal_smpl('label', 'Message') );
+		$div_texte->add( new interf_editeur('texte_msg', false, false, 'editeur') );
+		$btn = $this->add( new interf_chp_form('submit', false, false, 'Envoyer', false, 'btn btn-default') );
+		$btn->set_attribut('onclick', 'return charger_formulaire_texte(\'messagerie\', \'texte_msg\');');
 	}
 }
 ?>

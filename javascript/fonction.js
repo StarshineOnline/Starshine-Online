@@ -118,7 +118,30 @@ function verif_charger(url, texte)
 
 function envoie_texte(dest, id)
 {
-	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+bbcodeParser.htmlToBBCode($("#"+id).html()),success:affiche_ajax});
+	var texte = $("#"+id).html().trim();
+	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+decode_texte(texte),success:affiche_ajax});
+	return false;
+}
+
+function charger_formulaire_texte(id, id_texte)
+{
+  var formul = $('#' + id);
+	var texte = $("#"+id_texte).html().trim();
+  var donnees = formul.serialize() + "&texte=" + decode_texte(texte);
+  $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:donnees,success:affiche_ajax});
+	return false;
+}
+
+function decode_texte(texte)
+{
+	texte = bbcodeParser.htmlToBBCode(texte);
+	if( texte.substring(texte.length-4) ==  '<br>' )
+		texte = texte.substr(0, texte.length-4);
+	while( texte.indexOf('<br>') >= 0 )
+	{
+		texte = texte.replace('<br>', '[br]');
+	}
+	return texte;
 }
 
 function charge_tab(elt, id)

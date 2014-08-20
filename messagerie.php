@@ -23,18 +23,67 @@ $page = null;
 
 switch($action)
 {
-case 'suppr_msg':
-	break;
 case 'ecrire':
+	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$msg = htmlspecialchars(addslashes($_POST['texte']));
+	$sujet = $_GET['sujet'];
+	$sujet = new messagerie_thread($sujet);
+	$id_dest = $sujet->id_dest == $perso->get_id() ? $sujet->id_auteur : $sujet->id_dest;
+	$messagerie->envoi_message($sujet, $id_dest, '', $msg, $sujet->id_groupe);
+	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
+	break;
+case 'suppr_msg':
+	$message = new messagerie_message($_GET['msg']);
+	$message->supprimer();
 case 'lire':
 	$sujet = $_GET['sujet'];
 	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
 	break;
 case 'nouveau':
+	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
+	$cadre->add( $G_interf->creer_nouveau_message($type) );
+	exit;
+case 'nouveau_sujet':
+	if( !array_key_exists('titre', $_POST) || !$_POST['titre'] )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de titre.');
+		break;
+	}
+	if( !array_key_exists('texte', $_POST) || !$_POST['texte'] )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message.');
+		break;
+	}
+	if( array_key_exists('destinataire', $_POST) )
+	{
+		/// TODO: passer à l'objet
+		$requete = 'SELECT id FROM perso WHERE nom = "'.$_POST['destinataire'].'"';
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		if( !$row )
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message.');
+			break;
+		}
+		$id_dest = $row[0];
+		$id_groupe = 0;
+	}
+	else
+	{
+		$id_dest = 0;
+		$id_groupe = $perso->get_groupe();
+	}
+	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$sujet = $messagerie->envoi_message(0, $id_dest, $_POST['titre'], $_POST['texte'], $id_groupe);
+	$page = 1;
 	break;
 case 'suppr_sujet':
+	$thread = new messagerie_thread($_GET['sujet']);
+	$thread->supprimer(true);
 	break;
 case 'masquer_sujet':
+	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie->set_thread_masque($_GET['sujet']);
 	break;
 }
 
@@ -45,106 +94,7 @@ if( $ajax == 2 )
 else
 {
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
+	interf_alerte::aff_enregistres($cadre);
 	$cadre->add( $G_interf->creer_messagerie($perso, $type, $sujet, $page) );
 }
 $interf_princ->maj_tooltips();
-
-
-
-exit;
-
-
-
-
-$joueur = new perso($_SESSION['ID']);
-$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-$non_lu = $messagerie->get_non_lu();
-/*if (!isset($_GET['id_thread']) AND !array_key_exists('action', $_GET))
-
- {
-$titre_messagerie = ' de groupe';
-}
-elseif(array_key_exists('action', $_GET))
-{
-switch($_GET['action'])
-
-{
-case 'groupe' :
-$titre_messagerie = ' de groupe';
-break;
-case 'perso' :
-$titre_messagerie = ' personelle';
-break;
-case 'echange' :
-$titre_messagerie = ' des échanges';
-break;
-
-}
-}*/
-?>
-<script>
-	$(function() {
-		
-		$( "#tabs" ).tabs({
-											ajaxOptions: {
-												error: function( xhr, status, index, anchor ) {
-													$( anchor.hash ).html("Chargement impossible");
-												}
-											},
-											fx: { opacity: 'toggle', duration: 300 }
-						});
-		$('#tabs').bind('tabsload', function(event, ui) { 
-			$("#tabs .ui-tabs-nav > li").removeClass("ui-tabs-selected");
-			//alert('ok'); 
-		});
-		$('#tabs').bind('tabsselect', function(event, ui) { 
-			$("#tabs .ui-tabs-nav > li").removeClass("ui-tabs-selected");
-			//alert('ok'); 
-		});
-		$('#tabs').bind('tabsshow', function(event, ui) { 
-			$("#tabs .ui-tabs-nav > li").removeClass("ui-tabs-selected");
-			//alert('ok'); 
-		});
-	});
-</script>
-<fieldset>
-
-	<legend>
-		Messagerie
-	</legend>
-	<div id="tabs">
-		<?php
-/*		if(array_key_exists('javascript', $_GET))
-		{
-			include_once(root.'inc/fp.php');
-			$joueur = new perso($_SESSION['ID']);
-			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$non_lu = $messagerie->get_non_lu();
-		}*/
-		//echo "id;".$_SESSION['ID'];
-		echo "<ul>";
-		if ($joueur->get_groupe()!='0')
-		{
-			//if ($non_lu['groupe']>0){echo "<strong>";}
-			echo "<li><a href='messagerie_ajax.php?action=groupe'>Groupe (".$non_lu['groupe'].")</a></li> ";
-			//if ($non_lu['groupe']>0){echo "</strong>";}
-
-		}
-		//if ($non_lu['perso']>0){echo "<strong>";}
-		echo "<li><a href='messagerie_ajax.php?action=perso'>Perso (".$non_lu['perso'].")</a></li>";
-		//echo "<li><a href='messagerie.php?action=perso' onclick='envoiInfo(this.href, \"information\"); return false;'>Perso (".$non_lu['perso'].")</a></li>";
-		//if ($non_lu['perso']>0){echo "</strong>";}
-
-		//if ($non_lu['echange']>0){echo "<strong>";}
-		echo "<li><a href='messagerie_ajax.php?action=echange'>Echanges (".$non_lu['echange'].")</a></li>";
-		//if ($non_lu['echange']>0){echo "</strong>";}
-		echo "</ul>";
-		?>
-	</div>
-	<?php /*<div id="liste_message">
-		<?php
-		include_once(root.'messagerie_ajax.php');
-		check_undead_players();
-		?>
-	</div> */ ?>
-</fieldset>

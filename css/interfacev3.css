@@ -1759,6 +1759,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	border-radius: 5px;
 	margin: 2px;
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+	overflow: hidden;
 }
 
 #messagerie .entete
@@ -1766,6 +1767,22 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	background-color: rgba(255, 255, 255, 0.6);
 	border-bottom: 1px solid rgba(255, 255, 255, 0.8);
 	height: 16px;
+}
+
+#messagerie .entete.soi
+{
+	background-color: #428BCA;
+	color: #FFF;
+}
+
+#messagerie .entete.groupe
+{
+	background-color: #D9EDF7;
+}
+
+#messagerie .entete.soi a.icone
+{
+	color: #FFF;
 }
 
 #messagerie .auteur
@@ -2671,7 +2688,7 @@ table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
 .trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }*/
 
 #perso_envoi {width : 200px; padding : 0; margin : 0;}
-#suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
+#suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black, z-index: 100;}
 #suggestion ul li {cursor : pointer;}
 #suggestion ul li:hover {background-color:#B4CFEF;}
 #suggestion_mil {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}

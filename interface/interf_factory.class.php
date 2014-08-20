@@ -445,5 +445,10 @@ class interf_factory
     include_once(root.'interface/interf_messagerie.class.php');
     return new interf_liste_messages($perso, $type, $id_sujet, $page);
   }
+  function creer_nouveau_message($type)
+  {
+    include_once(root.'interface/interf_messagerie.class.php');
+    return new interf_nouveau_message($type);
+  }
 }
 ?>

@@ -259,6 +259,7 @@ class messagerie
 			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe, $type_echange);
 			$etat_objet->sauver();
 		}
+		return $id_thread;
 	}
 }
 ?>

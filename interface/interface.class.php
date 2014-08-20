@@ -773,6 +773,7 @@ class interf_chp_form extends interf_bal_smpl
   {
   	$attr=null;
   	if( $this->classe_label )
+  		$attr = array('class', $this->classe_label);
     if( $this->label && $this->label_avant )
       $this->balise('label', $this->label, $attr);
     interf_bal_smpl::contenu();

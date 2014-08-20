@@ -676,10 +676,13 @@ class interf_editeur extends interf_bal_cont
 			$this->add_boutton('refaire', 'repeat', 'Refaie (ctrl+Y)');
 		}*/
 		// envoi
-		$btn_grp = $barre->add( new interf_bal_cont('div', false, 'btn-group editeur-droite') );
-		$btn = $btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-message') );
-		$btn->set_attribut('onclick', 'envoie_texte(\''.$url.'\', \''.$id_editeur.'\');');
-		$btn->set_tooltip('Envoyer');
+		if( $url )
+		{
+			$btn_grp = $barre->add( new interf_bal_cont('div', false, 'btn-group editeur-droite') );
+			$btn = $btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-message') );
+			$btn->set_attribut('onclick', 'envoie_texte(\''.$url.'\', \''.$id_editeur.'\');');
+			$btn->set_tooltip('Envoyer');
+		}
 		// Zone de texte
 		$this->add( new interf_bal_cont('div', $id_editeur, 'editeur-texte') );
 		self::code_js('$("#'.$id_editeur.'").wysiwyg();');
