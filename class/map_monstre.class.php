@@ -688,7 +688,7 @@ class map_monstre extends entnj_incarn
 
 		if($gains_drop)
 		{
-			$this->check_boss_loot($perso, $groupe);
+			$this->check_boss_loot($perso, $perso->get_groupe() ? $groupe : null);
 
 			//Drop d'un objet ?
 			$drops = explode(';', $drop);
