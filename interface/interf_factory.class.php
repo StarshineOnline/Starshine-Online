@@ -450,5 +450,14 @@ class interf_factory
     include_once(root.'interface/interf_messagerie.class.php');
     return new interf_nouveau_message($type);
   }
+  function creer_echanges(&$perso, $actions=false)
+  {
+    return new interf_echanges($perso, $actions);
+  }
+  function creer_echange($id, $perso_action=false)
+  {
+    include_once(root.'interface/interf_echanges.class.php');
+    return new interf_echange($id, $perso_action);
+  }
 }
 ?>

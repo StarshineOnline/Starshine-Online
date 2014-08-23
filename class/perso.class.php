@@ -1511,6 +1511,7 @@ class perso extends entite
 			$i--;
 		}
 		$this->set_inventaire_slot(serialize($inventaire));
+		unset($this->inventaire_perso);// Nécessaire pour que la suppression des objets lors des échanges marche 
 		$this->sauver();
 	}
   /**

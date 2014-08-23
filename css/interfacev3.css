@@ -1149,6 +1149,11 @@ p.accueil a
   padding: 2px;
 }
 
+.info_case h4
+{
+	margin: 0;
+}
+
 .info_case p
 {
 	margin: 0px;
@@ -2269,7 +2274,7 @@ div#amende.panel
 	color: #555;
 }
 
-#depl_centre table a
+#depl_centre table a, table#echanges a
 {
 	font-weight: bold;
 	display: block;
@@ -2277,9 +2282,10 @@ div#amende.panel
 	width: 100%;
 }
 
-#depl_centre table a:hover
+#depl_centre table a:hover, table#echanges a:hover
 {
 	background-color: rgba(255, 255, 255, 0.3);
+	color: black;
 }
 
 #depl_disque_centre.icone-casque
@@ -2483,7 +2489,7 @@ input#ville_bas
 	padding: 3px;
 }
 
-#tab_chantiers .input-group
+#tab_chantiers .input-group, #echange .input-group
 {
 	margin-bottom: 5px;
 }

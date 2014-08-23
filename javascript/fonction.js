@@ -300,6 +300,46 @@ function init_bbcode()
 	bbcodeParser.addBBCode('[s]{TEXT}[/s]', '<strike>{TEXT}</strike>');
 }
 
+function creer_element(tag, id, classe, pere, contenu, before)
+{
+  var elt = document.createElement(tag);
+  if(id)
+    elt.id = id;
+  if(classe)
+    elt.className = classe;
+  if( contenu )
+    elt.innerHTML = contenu;
+  if( before )
+    pere.insertBefore(elt, before)
+  else
+    pere.appendChild(elt);
+  return elt;
+}
+
+function creer_bouton(texte, pere, code, style)
+{
+  var btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "btn";
+  btn.innerHTML = texte;
+  btn.setAttribute("onclick", code);
+  if( style )
+    btn.className += " btn-"+style;
+  pere.appendChild(btn);
+  return btn;
+}
+
+function creer_chp_form(type_chp, nom, valeur, pere)
+{
+	var chp = creer_element("input", null, "form-control", pere);
+	chp.type = type_chp;
+	if( nom )
+		chp.name = nom;
+	if( valeur )
+		chp.value = valeur;
+	return chp;
+}
+
 
 // anciennes fonctions (tri à faire)
 
@@ -644,7 +684,7 @@ $(function () {
 		{
 			aff_ico_sso();
 			if (jqxhr.status == 403) // Sans doute un security_block
-				aff_erreur('Accès interdit !', jqxhr.responseText, 'stop');
+				aff_erreur('Accès interdit !', jqxhr.responseText/*, 'stop'*/);
 			else
 				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});

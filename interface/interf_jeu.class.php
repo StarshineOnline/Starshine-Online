@@ -17,15 +17,19 @@ class interf_jeu extends interf_sso_int
 
   function __construct()
   {
+  	global $db;
     interf_sso_int::__construct();
+    $perso = joueur::get_perso();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
     $nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
     $msg->get_lien()->add( new interf_bal_smpl('span', $nbr_msg ? $nbr_msg : '', 'nbr_msg', 'badge') );
-    $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', 'liste_echange.php', 'return charger(this.href);') );
-    $nbr_echg = count(recup_tout_echange_perso($_SESSION['ID']));
+    $ech = $this->menu->add_elt( new interf_elt_menu('Échanges', 'echange.php', 'return charger(this.href);') );
+    /// TODO: passe à l'objet
+    $requete = 'SELECT COUNT(*) FROM echange WHERE nouveau = TRUE AND ( (id_j2 = '.$perso->get_id().' AND statut = "proposition") OR (id_j1 = '.$perso->get_id().' AND statut = "finalisation") )';
+    $req = $db->query($requete);
+    $nbr_echg = $db->read_row($req)[0];
     $ech->get_lien()->add( new interf_bal_smpl('span', $nbr_echg ? $nbr_echg : '', 'nbr_echg', 'badge') );
     $this->menu->add_elt( new interf_elt_menu('Groupe', 'infogroupe.php', 'return charger(this.href);') );
-    $perso = joueur::get_perso();
     /// TODO: à améliorer
 		if( $perso->get_grade()->get_rang() >= 7 )
 		{
@@ -143,16 +147,21 @@ class interf_jeu_ajax extends interf_princ_ob
   }
   function maj_perso($complet=false)
 	{
+		global $db;
     $cont = $this->add( new interf_bal_cont('section', 'perso') );
     $cont->add( new interf_barre_perso() );
     if($complet)
     {
 			$nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
-    	$this->add( new interf_bal_smpl('section', $nbr_msg, 'nbr_msg') );
-    	$nbr_echg = count(recup_tout_echange_perso($_SESSION['ID']));
+    	$this->add( new interf_bal_smpl('section', $nbr_msg ? $nbr_msg : '', 'nbr_msg') );
+	    /// TODO: passe à l'objet
+	    $perso = joueur::get_perso();
+	    $requete = 'SELECT COUNT(*) FROM echange WHERE nouveau = TRUE AND ( (id_j2 = '.$perso->get_id().' AND statut = "proposition") OR (id_j1 = '.$perso->get_id().' AND statut = "finalisation") )';
+	    $req = $db->query($requete);
+	    $nbr_echg = $db->read_row($req)[0];
     	$this->add( new interf_bal_smpl('section', $nbr_echg ? $nbr_echg : '', 'nbr_echg') );
 			$nbr_posts = get_nbr_posts_forum(joueur::get_perso());
-			$this->add( new interf_bal_smpl('section', $nbr_posts, 'nbr_posts') );
+			$this->add( new interf_bal_smpl('section', $nbr_posts ? $nbr_posts : '', 'nbr_posts') );
 		}
 	}
   function maj_ville($dans_ville=false)

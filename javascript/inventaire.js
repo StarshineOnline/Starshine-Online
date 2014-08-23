@@ -69,35 +69,6 @@ function show_modal(url)
   $("#modal").load(url);
 }
 
-function creer_element(tag, id, classe, pere, contenu, before)
-{
-  var elt = document.createElement(tag);
-  if(id)
-    elt.id = id;
-  if(classe)
-    elt.className = classe;
-  if( contenu )
-    elt.innerHTML = contenu;
-  if( before )
-    pere.insertBefore(elt, before)
-  else
-    pere.appendChild(elt);
-  return elt;
-}
-
-function creer_bouton(texte, pere, code, style)
-{
-  var btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "btn";
-  btn.innerHTML = texte;
-  btn.setAttribute("onclick", code);
-  if( style )
-    btn.className += " btn-"+style;
-  pere.appendChild(btn);
-  return btn;
-}
-
 objets_vente = new Array();
 
 function vente(id)

@@ -96,5 +96,6 @@ else
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
 	interf_alerte::aff_enregistres($cadre);
 	$cadre->add( $G_interf->creer_messagerie($perso, $type, $sujet, $page) );
+	$interf_princ->maj_perso(true);
 }
 $interf_princ->maj_tooltips();

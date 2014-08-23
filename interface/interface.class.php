@@ -795,10 +795,11 @@ class interf_select_form extends interf_bal_cont
    * @param  $name    nom du champ.
    * @param  $label   texte à afficher avant le champ.
    */
-  function __construct($name, $label=false, $id=null, $classe=null, $classe_label=false)
+  function __construct($name=false, $label=false, $id=null, $classe=null, $classe_label=false)
   {
     interf_bal_cont::__construct('select', $id, $classe);
-    $this->set_attribut('name', $name);
+    if( $name )
+    	$this->set_attribut('name', $name);
     $this->label = $label;
     $this->classe_label = $classe_label;
   }
@@ -823,7 +824,7 @@ class interf_select_form extends interf_bal_cont
   function add_option($texte, $val=null, $select=false)
   {
     $opt = new interf_bal_smpl('option', $texte);
-    if( $val )
+    if( $val !== null )
       $opt->set_attribut('value', $val);
     if( $select )
       $opt->set_attribut('selected', 'selected');
@@ -831,6 +832,7 @@ class interf_select_form extends interf_bal_cont
       $this->groupe->add($opt);
     else
       $this->add($opt);
+    return $opt;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
