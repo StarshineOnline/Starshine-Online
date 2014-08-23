@@ -15,7 +15,7 @@ if(  array_key_exists('type', $_GET) )
 else if( $perso->get_facteur_magie() == 1 )
 	$type = 'sort_jeu';
 else
-	$type = 'comp_jeu';
+	$type = $perso->get_comp_jeu() ? 'comp_jeu' : 'comp_combat';
 
 if(  array_key_exists('categorie', $_GET) )
 	$categorie = $_GET['categorie'];
@@ -294,6 +294,7 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 		$img = new interf_img('image/interface/livres/iconeforge.png', 'Forge');
 		$tabs->add_onglet($img, 'livre.php?type=forge&action=onglet', 'tab_forge', 'invent', $type == 'forge');
 	}
+	my_dump($tabs);
 	$onglet = $tabs->get_onglet('tab_'.$type);
 	interf_alerte::aff_enregistres($onglet);
 	$onglet->add( $G_interf->creer_livre_sortcomp($type, $cible, $categorie, !$perso->est_mort()) );
