@@ -36,8 +36,11 @@ case 'suppr_msg':
 	$message = new messagerie_message($_GET['msg']);
 	$message->supprimer();
 case 'lire':
+	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
 	$sujet = $_GET['sujet'];
 	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
+	$messagerie->set_thread_lu($sujet);
+	$interf_princ->maj_perso(true);
 	break;
 case 'nouveau':
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
@@ -96,6 +99,5 @@ else
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
 	interf_alerte::aff_enregistres($cadre);
 	$cadre->add( $G_interf->creer_messagerie($perso, $type, $sujet, $page) );
-	$interf_princ->maj_perso(true);
 }
 $interf_princ->maj_tooltips();
