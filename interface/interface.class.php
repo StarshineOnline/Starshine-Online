@@ -38,7 +38,7 @@ abstract class interf_base
   /// Définit l'élément conteneur courrant.
   static function set_courrent(&$obj)
   {
-    self::$courrant = $obj;
+    self::$courrant = &$obj;
   }
   /// Ajoute un élément fils à l'élément conteneur courrant.
   static function add_courr(&$fils)

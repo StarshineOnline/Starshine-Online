@@ -43,7 +43,7 @@ class interf_debug extends interf_bal_cont
    */  
   static function &enregistre($texte=null)
   {
-  	$debug = new interf_alerte($texte);
+  	$debug = new interf_debug($texte);
   	self::$debugs[] = &$debug;
   	return $debug;
 	}

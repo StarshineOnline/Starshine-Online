@@ -57,7 +57,7 @@ class interf_gauche extends interf_bal_cont
 		$inventaire = $menu->add( new interf_elt_menu('', 'inventaire.php', 'return charger(this.href);') );
 		$inventaire->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-inventaire2') );
 		$inventaire->get_lien()->add( new interf_txt('Inventaire') );
-		$dressage = $menu->add( new interf_elt_menu('', 'gestion_monstre.php', 'return envoiInfo(this.href, \'information\');') );
+		$dressage = $menu->add( new interf_elt_menu('', 'gestion_monstre.php', 'return charger(this.href);') );
 		$dressage->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-lapin') );
 		$dressage->get_lien()->add( new interf_txt('Dressage') );
 	}

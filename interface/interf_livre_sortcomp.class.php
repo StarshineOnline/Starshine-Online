@@ -110,7 +110,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 				
 				$inf = $e->add( new interf_bal_smpl('a', '', false, 'icone icone-info') );
 				$inf->set_tooltip('Afficher/masquer les informations');
-				$inf->set_attribut('onclick', '$(\'#info_'.$elt->get_id().'\').toggle();');
+				$inf->set_attribut('onclick', '$(\'#info_'.$elt->get_id().'\').slideToggle();');
         if( $type == 'sort_jeu' )
         {
         	$sort_groupe = false;

@@ -3119,7 +3119,7 @@ class perso extends entite
 		if($arme)
 			$distance += $this->arme_pet->distance_tir;*/
 		/// TODO: à revoir
-		$laisse = decompose_objet($perso->get_inventaire_partie("cou", true));
+		$laisse = decompose_objet($this->get_inventaire_partie("cou", true));
 		if($laisse['id_objet'] != '')
 		{
 			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];

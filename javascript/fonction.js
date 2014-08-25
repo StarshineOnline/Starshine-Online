@@ -340,6 +340,30 @@ function creer_chp_form(type_chp, nom, valeur, pere)
 	return chp;
 }
 
+function modif_nom_creature(id)
+{
+	var div = $('#creat_'+id);
+	var lien = div.find('.icone-modifier');
+	var nom = div.find('.nom_creature');
+	nom[0].contentEditable = true;
+	nom.addClass("modifie");
+	nom.keypress( function(evt)
+	{
+		if( evt.which == 13 )
+			valide_nom_creature(id);
+	});
+	lien.removeClass('icone-modifier');
+	lien.addClass('icone-ok');
+	lien.attr("onclick", "return valide_nom_creature("+id+");");
+}
+
+function valide_nom_creature(id)
+{
+	var div = $('#creat_'+id);
+	var nom = div.find('.nom_creature');
+	charger("gestion_monstre.php?action=modifier&id="+id+"&nom="+nom.html());
+}
+
 
 // anciennes fonctions (tri à faire)
 

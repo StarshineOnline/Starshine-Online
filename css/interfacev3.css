@@ -1964,12 +1964,12 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 /***************************************************
   Header Menu
  ***************************************************/
+.debug { display:none; }
 /*.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
 .decor { width:60px; height:60px; margin:0; padding:0; text-align:center; }
 .decor-edit { width:20px; height:20px; margin:0; padding:0; text-align:center; }
 .infobox { display:none; z-index:2; position:absolute; top:100px; left:0; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:300px; padding:5px; }
 .tabnoir { background:url(../image/bord_map.png); color:#FFF; }
-.debug { display:none; }
 .baseJumpbox { width:250px; height:500px; }
 select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff; margin-bottom:3pt; border:2px solid #735225; padding:2px; margin:5px; }
 .baseRow1 { background-color:#fff4cc; padding-left:2px; }
@@ -3098,6 +3098,111 @@ a .livre_nom
 {
 	margin: 0;
 }
+
+/*********************************
+ Dressage
+**********************************/
+
+.nom_creature
+{
+	display: block;
+	font-weight: bold;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	height: 21px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space:nowrap;
+}
+
+.nom_creature.modifie
+{
+	margin-left: 30px;
+	width: 130px;
+}
+
+.modifie
+{
+	background: white;
+}
+
+.modifie:focus
+{
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.creat_buffs
+{
+	border-top: 1px solid rgba(0, 0, 0, 0.3);
+	clear: both;
+}
+
+.creat_buffs .info_case
+{
+	margin: 3px;
+}
+
+
+.creat_buffs .info_case a
+{
+	display: block;
+	overflow: hidden;
+	height: 40px;
+}
+
+.creat_buffs .info_case a.icone
+{
+	padding-top: 3px;
+}
+
+.creat_buffs .info_case img
+{
+	margin: 4px;
+}
+
+.creat_buffs .creat_buffs
+{
+	padding: 3px;
+}
+
+#creat_dresse .info_case
+{
+	display: inline-block;
+	width: 233px;
+	height: 30px;
+}
+
+#creat_dresse .info_case a
+{
+	display: block;
+	overflow: hidden;
+	height: 30px;
+}
+
+#creat_dresse .info_case a.icone
+{
+	font-size: 25px;
+	width: 30px;
+	padding-top: 2px;
+}
+
+#creat_dresse .info_case img
+{
+	margin: 1px;
+}
+
+#creat_dresse .info_case .jauge_case
+{
+	margin: 2px;
+}
+
+#creat_dresse .info_case a span
+{
+	margin-left: 5px;
+}
+
+
 
 /*********************************
  JQuery

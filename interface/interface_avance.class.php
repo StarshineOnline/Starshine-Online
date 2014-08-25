@@ -503,9 +503,13 @@ class interf_jauge_bulle extends interf_bal_cont
 		if( $nom )
     	$this->set_tooltip($nom.'&nbsp;: '.$valeur.' / '.$maximum, 'bottom', '#contenu');
     $barre = $this->add( new interf_bal_cont('div', null, 'bulle jauge-'.$type) );
-    $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
+    $pourcent = round($valeur / $maximum * 100, 0).'%';
+    $barre->set_attribut('style', 'height:'.$pourcent);
     if( $grand )
-			$this->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );
+    {
+    	$texte = $grand === '%' ? $pourcent : $valeur.'/'.$maximum;
+			$this->add( new interf_bal_smpl('div', $texte, $type, 'bulle_valeur') );
+		}
 	}
 }
 

@@ -459,5 +459,9 @@ class interf_factory
     include_once(root.'interface/interf_echanges.class.php');
     return new interf_echange($id, $perso_action);
   }
+  function creer_dressage(&$perso, $actions=true)
+  {
+    return new interf_dressage($perso, $actions);
+  }
 }
 ?>

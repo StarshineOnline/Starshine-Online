@@ -13,8 +13,9 @@ class interf_monstre extends interf_cont
 	protected $def;
 	function __construct(&$entite, $actions)
 	{
+		global $G_url;
 		$this->perso = &joueur::get_perso();
-		$this->entite = &entite::factory('monstre', $entite);
+		$this->entite = &entite::factory('monstre', $entite, $this->perso);
 		$monstre = &$entite->get_def();
 		/// TODO: à améliorer
 		$this->incarn = &$entite;
@@ -22,28 +23,28 @@ class interf_monstre extends interf_cont
 		$distance = $this->perso->calcule_distance($entite);
 		
 		$infos_monstre = $this->add( new interf_bal_cont('div', 'infos_monstre', 'info_case') );
-		$div = $infos_monstre->add( new interf_bal_cont('div') );
 		
 		// Actions
 		switch( get_class($entite) )
 		{
 		case 'map_monstre';
-			$retour = $div->add( new interf_lien_cont('', false, 'icone icone-retour') );
+			$case = convert_in_pos($entite->get_x(), $entite->get_y());
+			$retour = $infos_monstre->add( new interf_lien_cont('informationcase.php?case='.$case, false, 'icone icone-retour') );
 			$retour->set_tooltip('Retour aux informations de la case', 'bottom', '#information');
-			$vue = $div->add( new interf_lien_cont('', false, 'icone icone-oeil') );
+			$vue = $infos_monstre->add( new interf_lien_cont('', false, 'icone icone-oeil') );
 			$vue->set_tooltip('Afficher uniquement les monstres de ce type sur la carte', 'bottom', '#information');
 			if( $distance == 0 && $this->perso->can_dresse($monstre) && $this->perso->nb_pet() < $this->perso->get_comp('max_pet') )
 			{
 				$dresse = $this->perso->is_buff('dressage');
 				if( !$dresse || $this->perso->get_buff('dressage', 'effet2') == $this->entite->get_id() )
 				{//http://www.starshine-online.com/dressage.php?id=687498
-					$dressage = $div->add( new interf_lien('', 'dressage.php?id='.$this->entite->get_id(), false, 'icone icone-lapin') );
+					$dressage = $infos_monstre->add( new interf_lien('', 'dressage.php?id='.$this->entite->get_id(), false, 'icone icone-lapin') );
 					$dressage->set_tooltip(($dresse?'Continuer à d':'D').'resser (10 PA)', 'bottom', '#information');
 				}
 			}
 			if( $this->perso->get_sort_jeu() )
 			{
-				$sort = $div->add( new interf_lien('', 'livre.php?type_cible=monstre&amp;cible='.$this->entite->get_id(), false, 'icone icone-sorts') );
+				$sort = $infos_monstre->add( new interf_lien('', 'livre.php?type_cible=monstre&amp;cible='.$this->entite->get_id(), false, 'icone icone-sorts') );
 				$sort->set_tooltip('Lancer un sort', 'bottom', '#information');
 			}
 			if( $this->perso->peut_attaquer() )
@@ -51,29 +52,48 @@ class interf_monstre extends interf_cont
 				$pa_attaque = $this->perso->get_cout_attaque($this->perso, $this->entite);
 				if( $this->perso->nb_pet() > 0 && $this->perso->get_pet() && $distance <= $this->perso->get_distance_tir() )
 				{
-					$att_pet = $div->add( new interf_lien('', 'attaque.php?type=monstre&amp;id_monstre='.$this->entite->get_id().'&amp;pet', false, 'icone icone-chien') );
+					$att_pet = $infos_monstre->add( new interf_lien('', 'attaque.php?type=monstre&amp;id_monstre='.$this->entite->get_id().'&amp;pet', false, 'icone icone-chien') );
 					$att_pet->set_tooltip('Attaquer avec votre créature ('.$pa_attaque.' PA)', 'bottom', '#information');
 				}
 				if( $distance <= $this->perso->get_distance_tir() )
 				{
-					$att = $div->add( new interf_lien('', 'attaque.php?type=monstre&amp;id_monstre='.$this->entite->get_id(), false, 'icone icone-attaque') );
+					$att = $infos_monstre->add( new interf_lien('', 'attaque.php?type=monstre&amp;id_monstre='.$this->entite->get_id(), false, 'icone icone-attaque') );
 					$att->set_tooltip('Attaquer ('.$pa_attaque.' PA)', 'bottom', '#information');
 				}
 			}
+			$div = $infos_monstre->add( new interf_bal_cont('div') );
+			// HP
+			/// TODO: à améliorer
+			$niveau = $this->entite->get_level() > 0 ? $this->entite->get_level() : 1;
+			$nbr_barre_total = min(max(ceil($this->perso->get_survie() / $niveau), 0), 100);
+			$nbr_barre = round($this->entite->get_hp() / $this->entite->get_hp_max() * $nbr_barre_total);
+			$longueur = max(round(100 * ($nbr_barre / $nbr_barre_total), 2), 0);
+			$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
+			$jauge = $div->add( new interf_jauge_bulle(false, $nbr_barre, $nbr_barre_total, false, 'hp', false, 'jauge_case') );
+			$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
+			$jauge->add( new interf_bal_smpl('div', round($longueur).'%', false, 'bulle_valeur') );
 			break;
+		case 'pet':
+			$G_url->add('id', $entite->get_id());
+			$retour = $infos_monstre->add( new interf_lien_cont($G_url->get(), false, 'icone icone-retour') );
+			$retour->set_tooltip('Retour à la gestion de vos créatures', 'bottom', '#information');
+			$vue = $infos_monstre->add( new interf_lien_cont('', false, 'icone icone-oeil') );
+			$vue->set_tooltip('Afficher uniquement les monstres de ce type sur la carte', 'bottom', '#information');
+			if( $entite->get_hp() < $monstre->get_hp() || $entite->get_mp() < $entite->get_mp_max() )
+			{
+				$soin = $infos_monstre->add( new interf_lien_cont($G_url->get('action', 'soin'), false, 'icone') );
+				$soin->add( new interf_bal_smpl('span', '', false, 'icone icone-soin') );
+				$cout_hp = round($this->perso->get_hp_max() / 10);
+				$soin->add( new interf_bal_smpl('span', '-'.$cout_hp.' HP', false, 'xsmall') );
+				$soin->set_tooltip('Soigner, puissance : '.$this->perso->soin_pet().', vous coûte '.$cout_hp.' HP et 1 PA.');
+			}
+			$div = $infos_monstre->add( new interf_bal_cont('div') );
+			$div->add( new interf_jauge_bulle('MP', $entite->get_mp(), $entite->get_mp_max(), '%', 'mp', false, 'jauge_case') );
+			$div->add( new interf_jauge_bulle('HP', $entite->get_hp(), $monstre->get_hp(), '%', 'hp', false, 'jauge_case') );
+			$niveau = $this->entite->get_level();
 		}
 		
 		$div->add( new interf_img('image/monstre/'.$monstre->get_lib().'.png', $monstre->get_nom()) );
-		// HP
-		/// TODO: à améliorer
-		$niveau = $this->entite->get_level() > 0 ? $this->entite->get_level() : 1;
-		$nbr_barre_total = min(max(ceil($this->perso->get_survie() / $niveau), 0), 100);
-		$nbr_barre = round($this->entite->get_hp() / $this->entite->get_hp_max() * $nbr_barre_total);
-		$longueur = max(round(100 * ($nbr_barre / $nbr_barre_total), 2), 0);
-		$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
-		$jauge = $div->add( new interf_jauge_bulle(false, $nbr_barre, $nbr_barre_total, false, 'hp', false, 'jauge_case') );
-		$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
-		$jauge->add( new interf_bal_smpl('div', round($longueur).'%', false, 'bulle_valeur') );
 		// niveau
 		$diff_niv = $niveau - $this->perso->get_level();
 		if( $monstre->get_affiche() == 'h' )

@@ -1,10 +1,10 @@
 <?php
 /**
  * @file interf_messagerie.class.php
- * Classes pour le quartier général
+ * Classes pour la messagerie
  */
 
-/// Classe pour le quartier général
+/// Classe pour la messagerie
 class interf_messagerie extends interf_onglets
 {
 	function __construct(&$perso, $type=null, $id_sujet=false, $page=null)
