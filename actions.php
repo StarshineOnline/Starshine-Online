@@ -1,7 +1,62 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
+//Inclusion des fichiers indispensables
+include_once(root.'inc/fp.php');
+
+//Récupération des informations du personnage
+$perso = joueur::get_perso();
+$perso->check_perso();
+
+$interf_princ = $G_interf->creer_jeu();
+
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+$script = array_key_exists('script', $_GET) ? $_GET['script'] : null;
+$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
+switch($action)
+{
+}
+
+$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Scripts de combat') );
+if( $script )
+{
+	
+}
+else
+{
+	//$cadre->add( new interf_bal_smpl('p', 'Voici l\'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.') );
+	$onglets = $cadre->add( new interf_onglets('ongl_scripts', 'scripts') );
+	$onglets->add_onglet('Perso', $G_url->get(), 'ongl_perso', 'invent', !$id);
+	$pets = $perso->get_pets(true);
+	foreach($pets as $pet)
+	{
+		$onglets->add_onglet($pet->get_nom(), $G_url->get('id', $pet->get_id()), 'ongl_'.$pet->get_id(), 'invent', $id==$pet->get_id());
+	}
+	if( $id )
+	{
+		$pet = new pet($id);
+		$onglets->get_onglet('ongl_'.$id)->add( $G_interf->creer_liste_scripts($pet) );
+	}
+	else
+		$onglets->get_onglet('ongl_perso')->add( $G_interf->creer_liste_scripts($perso) );
+	/*$aide = $cadre->add( new interf_bal_cont('div') );
+	$aide->add( new interf_bal_smpl('h4', 'Aide') );
+	$aide->add( new interf_bal_smpl('p', 'Une attaque sur un monstre ou un joueur se fait généralement en 10 rounds (11 si l\'un des deux est un Orc, 9 si l\'attaquant a le buff Sacrifice sur lui). Vous pouvez paramétrer les 10 actions que vous allez faire dans le script de combat, afin de les réaliser à chaque attaque. Il est donc conseillé de créer un script d\'attaque, et de créer vos 10 actions en ajoutant les compétences que vous voulez utiliser. Vous pouvez aussi créer un script de défense qui s\'exécutera automatiquement si vous êtes attaqué par d\'autres joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)') );
+	$aide->add( new interf_lien('Pour avoir plus d\'informations sur le script de combat', 'http://wiki.starshine-online.com/doku.php?id=combat:scripts') );*/
+}
+
+
+
+
+exit;
+
+
+
+
+
+
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
@@ -9,13 +64,6 @@ include_once(root.'haut_ajax.php');
 
 $joueur = new perso($_SESSION['ID']);
 ?>
-	<fieldset>
-		<legend>Script de combat - Personnage</legend>
-<ul id="messagerie_onglet">
-	<li><a href="actions.php" onclick="return envoiInfo(this.href, 'information');">Personnage</a></li>
-	<li><a href="actions_pet.php" onclick="return envoiInfo(this.href, 'information');">Créature</a></li>
-</ul>
-<br /><br />
 		<?php
 		//Suppression du script
 		if(array_key_exists('action', $_GET) && $_GET['action'] == 'suppr_action')
@@ -87,9 +135,6 @@ $joueur = new perso($_SESSION['ID']);
 				echo '<h6>Script dupliqué.</h6>';
 			}
 		}
-		$joueur->check_perso();
-		$script_attaque = recupaction_all($joueur->get_action_a());
-		$script_defense = recupaction_all($joueur->get_action_d());
 		?>
 			Voici l'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.<br />
 			<fieldset>
@@ -120,15 +165,3 @@ $joueur = new perso($_SESSION['ID']);
 				</ul>
 				<br />
 				<a href="action.php?mode=s" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat simple</a> - <a href="action.php?mode=a" onclick="return envoiInfo(this.href, 'information');">Créer un script de combat avancé</a>
-		</fieldset>
-		<fieldset>
-			<legend>Aide</legend>
-		<p><strong>Généralités :</strong> Une attaque sur un monstre ou un joueur se fait généralement en 10 rounds (11 si l'un des deux est un Orc, 9 si l'attaquant
-		a le buff Sacrifice sur lui). Vous pouvez paramétrer les 10 actions que vous allez faire dans le script de combat, afin de les réaliser à chaque attaque. Il
-		est donc conseillé de créer un script d'attaque, et de créer vos 10 actions en ajoutant les compétences que vous voulez utiliser. Vous pouvez aussi créer un script
-		de défense qui s'exécutera automatiquement si vous êtes attaqué par d'autres joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)</p>
-		<p><a href="http://wiki.starshine-online.com/index.php?n=PmWiki.ScriptsDeCombat">Pour avoir plus d'informations sur le script de combat</a></p>
-		</fieldset>
-		</div>
-
-	</fieldset>

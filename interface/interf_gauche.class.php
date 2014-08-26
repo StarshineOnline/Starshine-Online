@@ -51,7 +51,7 @@ class interf_gauche extends interf_bal_cont
 		$journal = $menu->add( new interf_elt_menu('', 'journal.php', 'return charger(this.href);') );
 		$journal->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-journal') );
 		$journal->get_lien()->add( new interf_txt('Journal') );
-		$scripts = $menu->add( new interf_elt_menu('', 'actions.php', 'return envoiInfo(this.href, \'information\');') );
+		$scripts = $menu->add( new interf_elt_menu('', 'actions.php', 'return charger(this.href);') );
 		$scripts->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-scripts') );
 		$scripts->get_lien()->add( new interf_txt('Scripts') );
 		$inventaire = $menu->add( new interf_elt_menu('', 'inventaire.php', 'return charger(this.href);') );

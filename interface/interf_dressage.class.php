@@ -1,10 +1,10 @@
 <?php
 /**
  * @file interf_dressage.class.php
- * Classes pour le quartier général
+ * Classes pour le dressage
  */
 
-/// Classe pour le quartier général
+/// Classe pour la gestion du dressage
 class interf_dressage extends interf_cont
 {
 	protected $perso;

@@ -463,5 +463,10 @@ class interf_factory
   {
     return new interf_dressage($perso, $actions);
   }
+  function creer_liste_scripts($entite)
+  {
+    include_once(root.'interface/interf_script.class.php');
+    return new interf_liste_scripts($entite);
+  }
 }
 ?>

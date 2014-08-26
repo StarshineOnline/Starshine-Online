@@ -415,24 +415,24 @@ class comp_combat extends comp
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
-			if(array_key_exists('tir_vise', $actif->etat)) $buff_vise_degat = $actif->etat['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
-			$arme_degat = $actif->get_arme_degat() * $buff_vise_degat;
+		if(array_key_exists('tir_vise', $actif->etat)) $buff_vise_degat = $actif->etat['tir_vise']['effet'] + 1; else $buff_vise_degat = 1;
+		$arme_degat = $actif->get_arme_degat() * $buff_vise_degat;
 
-			// Application des effets de boost des armes
-      $attaque->applique_effet('calcul_arme', $arme_degat);
-			$de_degat = $this->calcule_des($actif->get_force(), $arme_degat);
-			$degat = 0;
-			$i = 0;
-			$dbg_msg = '';
-			while($i < count($de_degat))
-			{
-				$de = rand(1, $de_degat[$i]);
-				$degat += $de;
-				$dbg_msg .= 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
-				$i++;
-			}
-			print_debug($dbg_msg);
-			return $degat;
+		// Application des effets de boost des armes
+    $attaque->applique_effet('calcul_arme', $arme_degat);
+		$de_degat = $this->calcule_des($actif->get_force(), $arme_degat);
+		$degat = 0;
+		$i = 0;
+		$dbg_msg = '';
+		while($i < count($de_degat))
+		{
+			$de = rand(1, $de_degat[$i]);
+			$degat += $de;
+			$dbg_msg .= 'Max : '.$de_degat[$i].' - Dé : '.$de.'<br />';
+			$i++;
+		}
+		print_debug($dbg_msg);
+		return $degat;
   }
 
   /**
