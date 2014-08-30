@@ -132,4 +132,9 @@ class entite_cap extends entite
   {
     return 'capitale';
   }
+	/// Date de pose ou construction de l'entité
+	function get_date_debut()
+	{
+    return 0;
+  }
 }
