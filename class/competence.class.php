@@ -713,7 +713,8 @@ class vol_a_la_tire extends comp_comb {
   function fin_round(&$attaque) {
     $vol = rand(1, $this->effet2);
     $this->notice($attaque->get_actif()->get_nom().' vole '.$vol.' stars !');
-    $obj = $attaque->get_passif()->get_objet();
+    /// TODO: à lier au défenseur (quand ça sera possible sans bug)
+    $obj = $attaque->get_joueur();
     $obj->add_star($vol * -1);
     $obj->sauver();
     return $degats;
