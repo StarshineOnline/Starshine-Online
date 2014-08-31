@@ -22,7 +22,7 @@ switch($action)
 $cadre = $interf_princ->set_droite( $G_interf->creer_droite('Scripts de combat') );
 if( $script )
 {
-	
+	$cadre->add( $G_interf->creer_script($id ? new action_pet($script) : new action_perso($script)) );
 }
 else
 {

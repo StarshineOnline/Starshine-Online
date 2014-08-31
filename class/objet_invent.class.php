@@ -23,9 +23,10 @@ abstract class objet_invent extends table
 	}
 	
 	/// Modifie le nom de l'objet
-	function set_nom($newNom)
+	function set_nom($nom)
 	{
-		$this->nom = $newNom;
+		$this->nom = $om;
+		$this->champs_modif[] = 'nom';
 	}
 	
 	// Renvoie le type de l'objet
@@ -35,9 +36,10 @@ abstract class objet_invent extends table
 	}
 	
 	/// Modifie le type de l'objet
-	function set_type($newType)
+	function set_type($type)
 	{
-		$this->type = $newType;
+		$this->type = $type;
+		$this->champs_modif[] = 'type';
 	}
 	
 	// Renvoie le prix de l'objet em magasin
@@ -47,9 +49,10 @@ abstract class objet_invent extends table
 	}
 	
 	/// Modifie le prix de l'objet em magasin
-	function set_prix($newPrix)
+	function set_prix($prix)
 	{
-		$this->prix = $newPrix;
+		$this->prix = $prix;
+		$this->champs_modif[] = 'prix';
 	}
 
   /// Renvoie le nombre d'exmplaires disponibles.

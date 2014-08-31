@@ -39,15 +39,38 @@ class interf_liste_scripts extends interf_bal_cont
 			$att = $li->add( new interf_lien('', $G_url->get('action', 'attaque'), false, 'icone icone-attaque') );
 			$att->set_tooltip('Définir comme script d\'attaque.');
 			
-			$classe = 'icone'.($row['nom']==$script_attaque['nom'] ? ' icone-attaque' : '');
-			$a = $li->add( new interf_bal_smpl('span', '', false, $classe) );
-			if( $classe )
+			$classe = $row['nom']==$script_attaque['nom'] ? ' icone-attaque' : '';
+			$modif = $li->add( new interf_lien_cont($G_url->get('action', 'voir')) );
+			$a = $modif->add( new interf_bal_smpl('span', '', false, 'icone'.$classe) );
+			if( $classe  )
 				$a->set_tooltip('Script d\'attaque');
-			$classe = 'icone'.($row['nom']==$script_defense['nom'] ? ' icone-defense' : '');
-			$d = $li->add( new interf_bal_smpl('span', '', false, $classe) );
+			$classe = $row['nom']==$script_defense['nom'] ? ' icone-defense' : '';
+			$d = $modif->add( new interf_bal_smpl('span', '', false, 'icone'.$classe) );
 			if( $classe )
 				$d->set_tooltip('Script de défense');
+			$nom = $modif->add( new interf_bal_smpl('span', $row['nom']) );
+			$nom->set_tooltip('Modifier le script');
 		}
+	}
+}
+
+/// Classe pour la liste des scripts
+class interf_script extends interf_cont
+{
+	function __construct($script)
+	{
+		global $G_url;
+		$nom = $script->get_nom();
+		if( $nom !== null )
+		{
+			$form_nom = $this->add( new interf_form($G_url->get('action', 'modifier_nom'), 'nom_script', 'get', 'input-group') );
+			$form_nom->add( new interf_bal_smpl('span', 'Nom', false, 'input-group-addon') );
+			$form_nom->add( new interf_chp_form('text', 'nom', false, $nom, false, 'form-control') );
+			$btns_nom = $form_nom->add( new interf_bal_cont('span', false, 'input-group-btn') );
+			$val_nom = $btns_nom->add( new interf_chp_form('submit', false, false, 'Changer', false, 'btn btn-default') );
+			$val_nom->set_attribut('onclick', 'return charger_formulaire(\'nom_script\');');
+		}
+		$ul = $this->add( new interf_bal_cont('ul', 'actions') );
 	}
 }
 
