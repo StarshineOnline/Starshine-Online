@@ -4,7 +4,7 @@
    * Définitions des constantes.
    */  
 
-define('BASE', 'http://www.starshine-online.com/');
+define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 
   /// Version actuelle
 	$G_version = '0.7 beta';
@@ -19,16 +19,16 @@ define('BASE', 'http://www.starshine-online.com/');
 	$G_colonne_donjon = 1000;
   
   /// Temps entre chaque régénération de PA (en secondes)
-	$G_temps_PA = 10 * 60;
+	$G_temps_PA = 10 * 60 / 7;
 	/// Nombre maximal de PA
 	$G_PA_max = 180;
 	//$G_bonus_maj_pa = 1;
   /// Temps entre chaque augmentation des HP (en secondes)
-	$G_temps_maj_hp = 7 * 24 * 60 * 60;
+	$G_temps_maj_hp = 7 * 24 * 60 * 60 / 7;
   /// Temps entre chaque augmentation des MP (en secondes)
-	$G_temps_maj_mp = 7 * 24 * 60 * 60;
+	$G_temps_maj_mp = 7 * 24 * 60 * 60 / 7;
   /// Temps entre chaque régénération de HP et MP (en secondes)
-	$G_temps_regen_hp = 8 * 60 * 60;
+	$G_temps_regen_hp = 8 * 60 * 60 / 7;
 	/// Pourcentage de HP récupérés à chaque régénération
 	$G_pourcent_regen_hp = 0.1;
 	/// Pourcentage de MP récupérés à chaque régénération
@@ -166,7 +166,35 @@ define('BASE', 'http://www.starshine-online.com/');
 	$G_crime[2] = 4;
 	$G_crime[3] = 2;
 	$G_crime[4] = 1;
-
+	
+	//definition des points de crime selon l'action
+	$G_crime_sort[127] = 1.6;
+	$G_crime_sort[0] = 1;
+	$G_crime_sort[1] = 0.8;
+	$G_crime_sort[2] = 0.6;
+	$G_crime_sort[3] = 0.4;
+	$G_crime_sort[4] = 0.2;	
+	
+	//points de crime pour un kill ; pour une attaque, divisé par 4 pour le pvp, par 2 contre un batiment.
+	$G_crime_kill[127] = 20;
+	$G_crime_kill[0] = 12;
+	$G_crime_kill[1] = 8;
+	$G_crime_kill[2] = 6;
+	$G_crime_kill[3] = 4;
+	$G_crime_kill[4] = 2;	
+	
+	$G_crime_soin[10] = 1;
+	$G_crime_soin[9] = 0.8;
+	$G_crime_soin[8] = 0.6;
+	$G_crime_soin[7] = 0.4;
+	$G_crime_soin[6] = 0.2;
+	
+	$G_crime_rez[10] = 20;
+	$G_crime_rez[9] = 16;
+	$G_crime_rez[8] = 12;
+	$G_crime_rez[7] = 6;
+	$G_crime_rez[6] = 2;	
+	
 	$G_undead_checked = false;
 
     $G_autorisations = array('officiers' => array(1,2,3,6,9,10),
@@ -199,5 +227,7 @@ define('BASE', 'http://www.starshine-online.com/');
 
   /// utiliser les calques
   $G_use_atmosphere = true;
+  
+  error_reporting( E_ALL ^ (E_NOTICE | E_DEPRECATED) );
 
 ?>
