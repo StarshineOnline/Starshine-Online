@@ -74,6 +74,7 @@ class interf_script extends interf_cont
 		$this->script = $script;
 		$this->entite = $entite;
 		$G_url->add('script', $script->get_id());
+		$this->add( new interf_bal_smpl('p', 'Vous avez <strong>'.$entite->get_reserve_bonus().'</strong> réserves de mana au total par combat.') );
 		if( $script->get_mode() == 's' )
 			$this->aff_simple();
 		else
@@ -93,7 +94,8 @@ class interf_script extends interf_cont
 			$div->add( new interf_bal_smpl('span', 'Round '.$i, false, 'input-group-addon') );
 			$btn_act = $div->add( new interf_dropdown_select(true) );
 			$G_url->add('action', 'modif_action');
-			$this->remplir_menu_actions($btn_act, $action->get_nom(), $G_url);
+			$btn_act->set_tooltip( $action->get_info() );
+			$btn_act = $this->remplir_menu_actions($btn_act, $action->get_nom(), $G_url);
 		}
 		$div = $this->add( new interf_bal_cont('div', false, 'nouveau_script') );
 		$btns = $div->add( new interf_bal_cont('div', false, 'btn-group') );
@@ -161,6 +163,7 @@ class interf_script extends interf_cont
 			$div = $li->add( new interf_bal_cont('div', 'act_'.$i, 'btn-group') );
 			$div_act = $div->add( new interf_bal_cont('div', false, 'btn-group') );
 			$btn_act = $div_act->add( new interf_dropdown_select() );
+			$btn_act->set_tooltip( $action->get_info() );
 			$this->remplir_menu_actions($btn_act, $action->get_nom(), $G_url->copie('action', 'modif_action'));
 			$ajout = $div->add( new interf_lien('', $G_url->get('action', 'ajout_cond'), false, 'btn btn-default icone icone-plus') );
 			$ajout->set_tooltip('Ajouter une condition');

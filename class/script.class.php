@@ -265,6 +265,7 @@ abstract class action
 class action_attaque extends action
 {
 	function get_nom() { return 'Attaquer'; }
+	function get_info() { return 'Coûte 0 RM.'; }
 	
 	function encode()
 	{
@@ -272,32 +273,41 @@ class action_attaque extends action
 	}
 }
 
-class action_sort extends action
+abstract class action_comp_sort extends action
 {
 	protected $id;
+	protected $comp_sort=null;
 	function __construct($id, $conds)
 	{
 		parent::__construct(is_string($conds) ? $conds : '');
 		if( $conds === true )
 		{
-			/// TODO: passer à l'objet
-			global $db;
-			$requete = 'SELECT etat_lie FROM sort_combat WHERE id = '.$id;
-			$req = $db->query($requete);
-			$row = $db->read_array($req);
-			if( $row[0] )
-				$this->conds[] = condition::creer_etat($row[0]);
+			$comp_sort = $this->get_comp_sort();
+			$etat = $comp_sort->get_etat_lie();
+			if( $etat )
+				$this->conds[] = condition::creer_etat($etat);
 		}
 		$this->id = $id;
 	}
 	function get_nom()
 	{
-		/// TODO: passer à l'objet
-		global $db;
-		$requete = 'SELECT nom FROM sort_combat WHERE id = '.$this->id;
-		$req = $db->query($requete);
-		$row = $db->read_array($req);
-		return $row[0];
+		return $this->get_comp_sort()->get_nom();
+	}
+	function get_info()
+	{
+		$texte = $this->get_comp_sort()->get_description(true);
+		$texte .= 'Coûte '.$this->get_comp_sort()->get_mp().' RM.';
+		return $texte;
+	}
+}
+
+class action_sort extends action_comp_sort
+{
+	function &get_comp_sort()
+	{
+		if( !$this->comp_sort )
+			$this->comp_sort = new sort_combat($this->id);
+		return $this->comp_sort;
 	}
 	
 	function encode()
@@ -306,32 +316,13 @@ class action_sort extends action
 	}
 }
 
-class action_comp extends action
+class action_comp extends action_comp_sort
 {
-	protected $id;
-	function __construct($id, $conds)
+	function &get_comp_sort()
 	{
-		parent::__construct(is_string($conds) ? $conds : '');
-		if( $conds === true )
-		{
-			/// TODO: passer à l'objet
-			global $db;
-			$requete = 'SELECT etat_lie FROM comp_combat WHERE id = '.$id;
-			$req = $db->query($requete);
-			$row = $db->read_array($req);
-			if( $row[0] )
-				$this->conds[] = condition::creer_etat($row[0]);
-		}
-		$this->id = $id;
-	}
-	function get_nom()
-	{
-		/// TODO: passer à l'objet
-		global $db;
-		$requete = 'SELECT nom FROM comp_combat WHERE id = '.$this->id;
-		$req = $db->query($requete);
-		$row = $db->read_array($req);
-		return $row[0];
+		if( !$this->comp_sort )
+			$this->comp_sort = new comp_combat($this->id);
+		return $this->comp_sort;
 	}
 	
 	function encode()
