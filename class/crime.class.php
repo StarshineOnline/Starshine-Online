@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 class crime
 {
 	//definition des points de crime selon l'action
-	function crime_sort(&$perso, &$cible)
+	function crime_soin(&$perso, &$cible)
 	{
 		global $Gtrad, $db;
 		
@@ -23,6 +23,27 @@ class crime
 			$points = $G_crime_soin[$row[0]];
 			$perso->set_crime($perso->get_crime() + $points);
 			echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+		}
+	}
+	
+	function crime_sort(&$perso, &$cible)
+	{
+		global $Gtrad, $db;
+		
+		$G_crime_sort[10] = 1;
+		$G_crime_sort[9] = 0.8;
+		$G_crime_sort[8] = 0.6;
+		$G_crime_sort[7] = 0.4;
+		$G_crime_sort[6] = 0.2;
+	
+		$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		if ($row[0] > 5 AND $row[0] < 127)
+		{
+			$points = $G_crime_sort[$row[0]];
+			$perso->set_crime($perso->get_crime() + $points);
+			echo '<h5>Vous buffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
 		}
 	}
 	
@@ -70,7 +91,7 @@ class crime
         }
 	}
 	
-	function crime_fin_combat(&$perso, &$cible, $type)
+	function crime_fin_combat(&$perso, &$cible, $type, $table)
 	{
 	    global $Gtrad, $db;	 
 	    
@@ -138,7 +159,8 @@ class crime
 			
 			
 			//on recherche l'id de race de la construction
-			$requete = "SELECT royaume FROM construction WHERE id = ".$cible->get_id();
+			if($_GET['table'] == 'construction') $requete = "SELECT royaume FROM construction WHERE id = ".$cible->get_id();
+			else $requete = "SELECT royaume FROM placement WHERE id = ".$cible->get_id();
 			$req = $db->query($requete);
 			$id = $db->read_row($req);
 			

@@ -604,7 +604,7 @@ else
 			
 			//Gestion des points de crime
 			$crime=new crime();
-			$crime->crime_fin_combat($joueur, $defenseur, $type);
+			$crime->crime_fin_combat($joueur, $defenseur, $type, $_GET['table']);
 			
 			echo '<div id="combat_cartouche">
 				<ul style="float:left;">
