@@ -130,7 +130,7 @@ class crime
 				}
 			}
 		}
-		else if ( $type == 'batiment' OR 'siege')
+		else if ( $type == 'batiment' OR $type == 'siege')
 		{
 			//on attaque un batiment à la main.
 			if ($type == 'batiment') $facteur = 3;
