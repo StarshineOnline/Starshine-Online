@@ -288,6 +288,11 @@ class interf_txt extends interf_smpl
   {
     echo $this->texte;
   }
+  /// Modifie le texte
+  function set_texte($texte)
+  {
+    $this->texte = $texte;
+	}
 }
 
 /**
@@ -585,27 +590,36 @@ class interf_elt_menu extends interf_bal_cont
 }
 
 /**
- * Classe gérant un sous-menu, i.e. un men u imbriqué dans un autre
+ * Classe gérant un sous-menu, i.e. un menu imbriqué dans un autre
  */
 class interf_sous_menu extends interf_bal_cont
 {
-  private $nom;  ///< Nom du sous-menu.
+  protected $nom;  ///< Nom du sous-menu.
+  protected $lien;  ///< Utilise un lien ?
+  protected $classe_ul;  ///< Classe de la balise ul
   /**
    * Constructeur
    * @param  $nom
    */
-  function __construct($nom=false)
+  function __construct($nom=false, $lien=false, $id=false, $classe=false, $classe_ul=false)
   {
-    $this->balise = 'li';
+    parent::__construct('li', $id, $classe);
     $this->nom = $nom;
+    $this->lien = $lien;
+    $this->classe_ul = $classe_ul;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
   {
     $this->ouvre($this->creer_balise());
     if( $this->nom )
-      $this->ligne('<span>'.$this->nom.'</span>');
-    $this->ouvre('ul');
+    {
+    	if( $this->lien )
+      	$this->ligne('<a tabindex="-1" href="#">'.$this->nom.'</a>');
+    	else
+      	$this->ligne('<span>'.$this->nom.'</span>');
+		}
+    $this->ouvre('ul'.($this->classe_ul?' class="'.$this->classe_ul.'"':''));
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
   function fin()
@@ -1020,6 +1034,18 @@ class url
 			$vars[] = $nm.'='.$val;
 		}
 		return $this->base.'?'.implode('&', $vars);
+	}
+	function copie($nom=null, $valeur=null)
+	{
+		$copie = clone $this;
+		if( is_array($nom) )
+		{
+			foreach($nom as $cle=>$val)
+				$copie->add($cle, $val);
+		}
+		else if( $nom )
+			$copie->add($nom, $valeur);
+		return $copie;
 	}
 }
 ?>

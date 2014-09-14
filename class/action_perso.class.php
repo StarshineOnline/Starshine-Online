@@ -42,7 +42,7 @@ class action_perso extends script
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_champs()
 	{
-    $tbl = objet_invent::get_champs();
+    $tbl = parent::get_champs();
     $tbl['id_joueur']='i';
 		return $tbl;
 	}

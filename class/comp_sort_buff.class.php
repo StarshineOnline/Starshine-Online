@@ -22,9 +22,15 @@ class comp_sort_buff extends table
 
 
 	/// Renvoie le type générique
-	function get_type()
+	function get_type($complet=false)
 	{
-		return $this->type;
+		if( $complet )
+			return $this->type;
+		else
+		{
+  		$ind = strstr($this->type, '-');
+  		return $ind == -1 ? $this->type : substr($this->type, 0, $ind);
+		}
 	}
 	/// Modifie le type générique
 	function set_type($type)

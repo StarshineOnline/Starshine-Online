@@ -699,4 +699,64 @@ class interf_editeur extends interf_bal_cont
 	}
 }
 
+class interf_dropdown_select extends interf_bal_cont
+{
+  protected $groupe = null;  ///< Groupe actuel
+	protected $texte;
+	protected $liste;
+	protected $pile_groupes = array();
+  /**
+   * Constructeur
+   */
+  function __construct($input=false, $id=false, $classe='default')
+  {
+  	parent::__construct('div', $id, ($input?'input-group-btn':'btn-group'));
+  	$btn = $this->add( new interf_bal_cont('button', false, 'btn btn-'.$classe.' dropdown-toggle') );
+  	$btn->set_attribut('type', 'button');
+  	$btn->set_attribut('data-toggle', 'dropdown');
+  	$this->texte = $btn->add( new interf_txt('Choix') );
+  	$btn->add( new interf_bal_smpl('span', false, false, 'caret') );
+  	$this->liste = $this->add( new interf_bal_cont('ul', false, 'dropdown-menu') );
+  	$this->liste->set_attribut('role', 'menu');
+	}
+  /**
+   * Ajoute une option
+   * @param  $texte    texte de l'option.
+   * @param  $val      valeur de l'option.
+   * @param  $select   indique si cette option est sélectionnée ou non.
+   */
+  function add_option($texte, $url=null, $select=false, $id=false, $classe=false)
+  {
+  	$elt = new interf_elt_menu($texte, $url, $url?'return charger(this.href);':false, $id, $classe);
+  	if( $this->groupe )
+  		$this->groupe->add( $elt );
+  	else
+  		$this->liste->add( $elt );
+  	if( $select )
+  		$this->texte->set_texte($texte);
+	}
+  function &nouv_groupe($label, $sous_groupe=false)
+	{
+		$grp = new interf_sous_menu($label, true, false, 'dropdown-submenu', 'dropdown-menu');
+		if( $sous_groupe && $this->groupe )
+		{
+			array_push($this->pile_groupes, $this->groupe);
+    	$this->groupe = $this->groupe->add( $grp );
+		}
+    else
+    {
+    	$this->groupe = $this->liste->add( $grp );
+    	$this->pile_groupes = array();
+		}
+    return $grp;
+	}
+	function pop_groupe()
+	{
+		$this->groupe = array_pop($this->pile_groupes);
+	}
+	function set_texte($texte)
+	{
+  	$this->texte->set_texte($texte);
+	}
+}
 ?>

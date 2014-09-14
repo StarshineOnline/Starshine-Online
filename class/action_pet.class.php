@@ -55,7 +55,7 @@ class action_pet extends script
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_champs()
 	{
-    $tbl = objet_invent::get_champs();
+    $tbl = parent::get_champs();
     $tbl['id_joueur']='i';
     $tbl['type_monstre']='i';
 		return $tbl;

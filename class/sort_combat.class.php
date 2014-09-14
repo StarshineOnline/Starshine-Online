@@ -159,7 +159,9 @@ class sort_combat extends sort
   	$row=$db->read_assoc($req);
   	if( $row )
   	{
-      switch( $row['type'] )
+  		$ind = strstr($row['type'], '-');
+  		$type = $ind == -1 ? $row['type'] : substr($row['type'], 0, $ind);
+      switch( $type )
       {
       case 'debuff_enracinement':
         return new sort_combat_enracinement($row);

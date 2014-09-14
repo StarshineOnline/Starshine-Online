@@ -468,9 +468,9 @@ class interf_factory
     include_once(root.'interface/interf_script.class.php');
     return new interf_liste_scripts($entite);
   }
-  function creer_script($script)
+  function creer_script($script, $entite)
   {
-    return new interf_script($script);
+    return new interf_script($script, $entite);
   }
 }
 ?>
