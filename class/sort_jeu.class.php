@@ -198,7 +198,7 @@ class sort_jeu extends sort
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $Gtrad, $G_crime_soin;;
+    global $db;
     $action = false;
     $cibles = $this->get_liste_cibles($cible, $groupe);
     foreach($cibles as $cible)
@@ -251,7 +251,7 @@ class sort_debuff extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $G_crime_sort, $Gtrad;
+    global $db;
     $action = false;
     $cibles = $this->get_liste_cibles( $cible );
     foreach($cibles as $cible)
@@ -259,8 +259,6 @@ class sort_debuff extends sort_jeu
       //Si c'est pas le joueur
       if($cible->get_id() != $perso->get_id())
       {
-		$crime = new crime();
-		$crime->crime_debuff($perso, $cible);
         //Test d'esquive du sort
         $protection = $cible->get_volonte() * $cible->get_pm() / 3;
         if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
@@ -271,6 +269,8 @@ class sort_debuff extends sort_jeu
         print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
         if ($attaque > $defense)
         {
+		  $crime = new crime();
+		  $crime->crime_debuff($perso, $cible);
           $duree = $this->get_duree();
           if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
             $duree *= $soufr_ext->get_effet();
@@ -342,7 +342,7 @@ class sort_vie_pourcent extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $Gtrad, $G_crime_soin;
+    global $db;
     $action = false;
     $soin_total = 0;
     $cibles = $this->get_liste_cibles($cible, $groupe);
@@ -419,7 +419,7 @@ class sort_vie extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $Gtrad, $G_crime_soin;
+    global $db;
     $action = false;
     $soin_total = 0;
     $cibles = $this->get_liste_cibles($cible, $groupe);
@@ -664,7 +664,7 @@ class sort_guerison extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $Gtrad, $G_crime_soin;
+    global $db;
     $cibles = $this->get_liste_cibles($cible, $groupe);
     $action = false;
     //-- Suppression d'un debuff au hasard
@@ -930,7 +930,7 @@ class sort_rez extends sort_jeu
 	 */
   function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $db, $Gtrad, $G_crime_rez;
+    global $db;
     $action = false;
     //Sale
     if($cible->get_race() == 'neutre')

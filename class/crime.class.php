@@ -159,7 +159,7 @@ class crime
 			
 			
 			//on recherche l'id de race de la construction
-			if($_GET['table'] == 'construction') $requete = "SELECT royaume FROM construction WHERE id = ".$cible->get_id();
+			if($table == 'construction') $requete = "SELECT royaume FROM construction WHERE id = ".$cible->get_id();
 			else $requete = "SELECT royaume FROM placement WHERE id = ".$cible->get_id();
 			$req = $db->query($requete);
 			$id = $db->read_row($req);
