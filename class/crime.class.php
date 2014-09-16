@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
 class crime
 {
 	//definition des points de crime selon l'action
-	function crime_soin(&$perso, &$cible)
+	function crime_soin(&$perso, &$cible, $type_cible)
 	{
 		global $Gtrad, $db;
 		
@@ -14,19 +14,22 @@ class crime
 		$G_crime_soin[8] = 0.6;
 		$G_crime_soin[7] = 0.4;
 		$G_crime_soin[6] = 0.2;
-	
-		$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
-		$req = $db->query($requete);
-		$row = $db->read_row($req);
-		if ($row[0] > 5 AND $row[0] < 127)
-		{
-			$points = $G_crime_soin[$row[0]];
-			$perso->set_crime($perso->get_crime() + $points);
-			echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+		
+		if ($type_cible == 'joueur')
+	    {
+			$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			if ($row[0] > 5 AND $row[0] < 127)
+			{
+				$points = $G_crime_soin[$row[0]];
+				$perso->set_crime($perso->get_crime() + $points);
+				echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+			}
 		}
 	}
 	
-	function crime_sort(&$perso, &$cible)
+	function crime_sort(&$perso, &$cible, $type_cible)
 	{
 		global $Gtrad, $db;
 		
@@ -35,19 +38,23 @@ class crime
 		$G_crime_sort[8] = 0.6;
 		$G_crime_sort[7] = 0.4;
 		$G_crime_sort[6] = 0.2;
-	
-		$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
-		$req = $db->query($requete);
-		$row = $db->read_row($req);
-		if ($row[0] > 5 AND $row[0] < 127)
-		{
-			$points = $G_crime_sort[$row[0]];
-			$perso->set_crime($perso->get_crime() + $points);
-			echo '<h5>Vous buffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+		
+		if ($type_cible == 'joueur')
+	    {
+			$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			if ($row[0] > 5 AND $row[0] < 127)
+			{
+				$points = $G_crime_sort[$row[0]];
+				$perso->set_crime($perso->get_crime() + $points);
+				echo '<h5>Vous buffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+			}
 		}
-	}
+	}	
 	
-	function crime_rez(&$perso, &$cible)
+	
+	function crime_rez(&$perso, &$cible, $type_cible)
 	{
 		global $Gtrad, $db;
 		
@@ -57,18 +64,21 @@ class crime
 		$G_crime_rez[7] = 8;
 		$G_crime_rez[6] = 4;
 	
-		$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
-		$req = $db->query($requete);
-		$row = $db->read_row($req);
-		if ($row[0] > 5 AND $row[0] < 127)
-		{
-			$points = $G_crime_rez[$row[0]];
-			$perso->set_crime($perso->get_crime() + $points);
-			echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+		if ($type_cible == 'joueur')
+	    {
+			$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			if ($row[0] > 5 AND $row[0] < 127)
+			{
+				$points = $G_crime_rez[$row[0]];
+				$perso->set_crime($perso->get_crime() + $points);
+				echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+			}
 		}
 	}
 	
-	function crime_debuff(&$perso, &$cible)
+	function crime_debuff(&$perso, &$cible, $type_cible)
 	{
 	    global $Gtrad, $db;	 
 		
@@ -78,17 +88,19 @@ class crime
 		$G_crime_sort[2] = 0.6;
 		$G_crime_sort[3] = 0.4;
 		$G_crime_sort[4] = 0.2;		       
-	    
-	    //Gestion du crime
-        $requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
-		$req = $db->query($requete);
-		$row = $db->read_row($req);
-		if (($row[0] < 5 ) OR ( $row[0] == 127))
-		{
-			$points = $G_crime_sort[$row[0]];
-			$perso->set_crime($perso->get_crime() + $points);
-			echo '<h5>Vous debuffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
-        }
+	    if ($type_cible == 'joueur')
+	    {
+			//Gestion du crime
+			$requete = "SELECT ".$cible->get_race()." FROM diplomatie WHERE race = '".$perso->get_race()."'";
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			if (($row[0] < 5 ) OR ( $row[0] == 127))
+			{
+				$points = $G_crime_sort[$row[0]];
+				$perso->set_crime($perso->get_crime() + $points);
+				echo '<h5>Vous debuffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+			}
+		}
 	}
 	
 	function crime_fin_combat(&$perso, &$cible, $type, $table)

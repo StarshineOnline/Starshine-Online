@@ -207,8 +207,11 @@ class sort_jeu extends sort
 			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				//Gestion du crime
-				$crime = new crime();
-				$crime->crime_sort($perso, $cible);				
+				if ($type_cible == 'joueur')
+				{
+					$crime = new crime();
+					$crime->crime_sort($perso, $cible, $type_cible);				
+				}
 				$action = true;
 				echo $cible->get_nom().' a bien reçu le buff<br />';
 				//Insertion du buff dans le journal du receveur
@@ -269,8 +272,8 @@ class sort_debuff extends sort_jeu
         print_debug("Lance sort: $attaque ($puissance) vs $defense ($protection)");
         if ($attaque > $defense)
         {
-		  $crime = new crime();
-		  $crime->crime_debuff($perso, $cible);
+			$crime = new crime();
+			$crime->crime_debuff($perso, $cible, $type_cible);
           $duree = $this->get_duree();
           if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
             $duree *= $soufr_ext->get_effet();
@@ -355,8 +358,11 @@ class sort_vie_pourcent extends sort_jeu
       if ($soin == 0) continue;
       
       //gestion des points de crime
-      $crime = new crime();
-	  $crime->crime_soin($perso, $cible);
+      if ($type_cible == 'joueur')
+	  {
+		  $crime = new crime();
+		  $crime->crime_soin($perso, $cible, $type_cible);
+	  }
 	  
       $action = true;
       echo 'Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />';
@@ -430,10 +436,12 @@ class sort_vie extends sort_jeu
         if($cible->get_hp() < floor($cible->get_hp_maximum()))
         {
               
-          //gestion des points de crime
+        if ($type_cible == 'joueur')
+		{
+		  //gestion des points de crime
 		  $crime = new crime();
-	      $crime->crime_soin($perso, $cible);
-		  
+	      $crime->crime_soin($perso, $cible, $type_cible);
+		}
 		  $action = true;
           $effet = $this->get_effet();
           if ($perso->get_inventaire_partie('main_droite') === 'a85') 
@@ -683,11 +691,12 @@ class sort_guerison extends sort_jeu
       }
       $min = ($cible->get_vie() + $perso->get_puissance())*60;
       $max = $this->get_effet()*3600;
-      
-      //gestion des points de crime
-      $crime = new crime();
-	  $crime->crime_sort($perso, $cible);
-      
+      if ($type_cible == 'joueur')
+	  {
+		//gestion des points de crime
+		$crime = new crime();
+		$crime->crime_sort($perso, $cible, $type_cible);;
+      }
       if(count($debuff_tab) > 0)
       {
         $reduction = rand($min,$max);
@@ -962,7 +971,7 @@ class sort_rez extends sort_jeu
         
         //gestion des points de crime
 		$crime = new crime();
-		$crime->crime_rez($perso, $cible);
+		$crime->crime_rez($perso, $cible, $type_cible);
 		
 		$action = true;
         //Mis en place de la résurection
@@ -989,5 +998,6 @@ class sort_rez extends sort_jeu
   }
 }
 ?>
+
 
 
