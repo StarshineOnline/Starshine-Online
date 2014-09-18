@@ -68,7 +68,7 @@ function message_affiche($message, $joueur_id, $thread_title = '')
 		}
 		*/	
 		$bulle_haut = 'haut_bulle_gauche';
-		if($joueur_id == $message->id_auteur) {$del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'message'.$message->id_message.'\'); else return false;" title="Supprimer"><span class="del"></span></a>';$style_me='style="float:right !important;"';}
+		if($joueur_id == $message->id_auteur) {$del =  '<a href="message_change_etat.php?id_message='.$message->id_message.'&amp;etat=del" onclick="if(confirm(\'Voulez vous supprimer votre message ?\')) return envoiInfo(this.href, \'information\'); else return false;" title="Supprimer"><span class="del"></span></a>';$style_me='style="float:right !important;"';}
 		if($joueur_id == $message->id_auteur) {$bulle_haut = 'haut_bulle_droite';$class_message = 'bulle_message';}elseif($message->etat=='non_lu'){$class_message = 'bulle_message_new';} else{$class_message = 'bulle_message';}
 
 		$message_affiche = '
