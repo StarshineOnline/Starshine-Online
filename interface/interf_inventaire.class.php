@@ -37,7 +37,8 @@ class interf_inventaire extends interf_cont
     $onglets = $this->add( new interf_onglets('onglets_princ', 'invent'/*, 'invent'*/) );
     $onglets->add_onglet('Personnage', self::url.'?action=princ&page=perso', 'tab_perso', 'invent', $invent=='perso');
     $onglets->add_onglet('Créature', self::url.'?action=princ&page=pet', 'tab_pet', 'invent', $invent=='pet');
-    $onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'tab_actions', 'invent', $invent=='actions');
+    if($modif)
+    	$onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'tab_actions', 'invent', $invent=='actions');
     $onglets->get_onglet('tab_'.$invent)->add( new interf_invent_equip($perso, $invent, $modif) );
     // un peu d'espace
     $this->add( new interf_bal_smpl('br') );
@@ -117,7 +118,8 @@ class interf_invent_equip extends interf_tableau
           interf_base::code_js( '$( "#drop_'.$loc.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
       $compteur++;
-      interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 15).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+      if($modif)
+				interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 15).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
     }
     interf_base::code_js('page = "'.$type.'"');
   }
@@ -184,7 +186,8 @@ class interf_invent_sac extends interf_cont
           else
               $drags = 'drag_identifier';
             $div = $this->cols[$col]->add( new interf_objet_invent($objet, $drags, 'invent_slot'.$i) );
-          interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid", start:start_drag, stop:stop_drag });' );
+          if($modif)
+						interf_base::code_js( '$( "#invent_slot'.$i.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid", start:start_drag, stop:stop_drag });' );
         }
         $i++;
       }

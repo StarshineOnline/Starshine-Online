@@ -62,7 +62,12 @@ class interf_jeu extends interf_sso_int
   {
   	global $G_interf;
     if( !$fils )
-      $fils = $G_interf->creer_cadre_carte();
+    {
+    	if( joueur::get_perso()->est_mort() )
+				$fils = $G_interf->creer_mort();
+      else
+				$fils = $G_interf->creer_cadre_carte();
+		}
     return $this->gauche->add( $fils );
   }
   function set_droite($fils=null)
