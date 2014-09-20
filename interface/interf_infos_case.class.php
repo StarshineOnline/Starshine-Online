@@ -299,7 +299,7 @@ class interf_infos_case extends interf_cont
 						}
 					}
 				}
-				$facteur_honneur = max($diplo * 0.2 - 0.8, 0);
+				$facteur_honneur = $diplo == 127 ? 0 : max($diplo * 0.2 - 0.8, 0);
 				if( $pj->est_mort() )
 				{
 					$diplo .= ' mort';
