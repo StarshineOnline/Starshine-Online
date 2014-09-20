@@ -39,3 +39,8 @@ UPDATE objet SET stack = '20' WHERE id = 2;
 -- Accessoires
 ALTER TABLE `accessoire` ADD `taille` VARCHAR( 5 ) NOT NULL DEFAULT 'grand' AFTER `nom`;
 UPDATE accessoire SET taille = 'moyen' WHERE id <= 9 OR id = 20;
+UPDATE accessoire SET type = 'alchimie', description = "Augmente les chances de réussir la réalisation d'une recette alchimique %effet%%." WHERE type = 'fabrication';
+UPDATE accessoire SET type = 'reserve' WHERE type = 'rm';
+UPDATE accessoire SET type = 'regen_hp_add' WHERE type = 'regen_hp';
+UPDATE accessoire SET type = 'regen_mp_add' WHERE type = 'regen_mp';
+UPDATE accessoire SET lvl_batiment = 9 WHERE lvl_batiment != 1;

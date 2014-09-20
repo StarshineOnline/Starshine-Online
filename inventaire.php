@@ -83,7 +83,7 @@ if( !$visu && $action )
     case 'petit_accessoire_1':
     case 'chaussure':
     case 'petit_accessoire_2':
-			if($perso->equip_objet($obj))
+			if( $perso->equip_objet($obj, false, $action) )
 			{
 				//On supprime l'objet de l'inventaire
 				$perso->supprime_objet($obj, 1);

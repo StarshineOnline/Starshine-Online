@@ -6,6 +6,7 @@ function affiche_ajax(data, status, jqXHR)
 	aff_ico_sso();
 	//alert(status+' : '+data);
   $("[data-toggle='tooltip']").tooltip('hide');
+  $("[data-toggle='popover']").tooltip('hide');
   $(data).find('section').each( function()
   {
   	switch(this.id)

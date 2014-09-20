@@ -15,7 +15,7 @@ class interf_enchanteur extends interf_ville_onglets
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('pentacle');
-		//$niveau = $this->recherche_batiment('enchanteur');
+		$niveau = 1;//$this->recherche_batiment('enchanteur');
 		
 		// Onglets
 		$this->onglets->add_onglet('Grands accessoires', 'boutique.php?type=accessoire&ajax=2&categorie=grand', 'tab_grand', 'ecole_mag', $categorie=='grand');
@@ -34,22 +34,22 @@ class interf_achat_accessoire extends interf_achat_objet
 	const type = 'accessoire';
 	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
 	{
-		/*global $db;
+		global $db;
 		if( !$niveau )
-			$niveau =  $this->recherche_batiment($royaume, 'accessoire');
-		$objets = accessoire::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
-		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);*/
+			$niveau =  1;//$this->recherche_batiment($royaume, 'accessoire');
+		$objets = accessoire::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND taille = "'.$categorie.'"');
+		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);
 	}
 	function aff_titres_col()
 	{
-		/*$this->tbl->nouv_cell('');
-		parent::aff_titres_col();*/
+		/*$this->tbl->nouv_cell('');*/
+		parent::aff_titres_col();
 	}
 	
 	function aff_cont_col(&$elt)
 	{
-		/*$this->tbl->nouv_cell( $elt->get_() );
-		parent::aff_cont_col($elt);*/
+		/*$this->tbl->nouv_cell( $elt->get_() );*/
+		parent::aff_cont_col($elt);
 	}
 }
 

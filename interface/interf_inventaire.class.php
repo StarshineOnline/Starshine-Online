@@ -103,6 +103,8 @@ class interf_invent_equip extends interf_tableau
       if( $loc != ' ' )
       {
         $objet = $invent ? $invent->$loc : '';
+        if( $loc == 'grand_accessoire' && !$objet )
+        	$objet = $invent->accessoire;
         if( $objet != '' && $objet != 'lock' )
         {
           $desequip = $modif;
@@ -119,7 +121,9 @@ class interf_invent_equip extends interf_tableau
       }
       $compteur++;
       if($modif)
-				interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 15).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+      {
+				interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 16).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+			}
     }
     interf_base::code_js('page = "'.$type.'"');
   }
@@ -168,7 +172,16 @@ class interf_invent_sac extends interf_cont
           {
             $drags = '';
             if( $type == 'equipement' )
+            {
               $drags .= 'drag_'.$objet->get_emplacement();
+              switch($objet->get_emplacement())
+              {
+              case 'petit_accessoire':
+              	$drags .= ' drag_moyen_accessoire';
+              case 'moyen_accessoire':
+              	$drags .= ' drag_grand_accessoire';
+							}
+						}
             if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
             {
               if( $type == 'royaume' )

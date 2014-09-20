@@ -58,10 +58,11 @@ class accessoire extends objet_equip
 	 * @param  $prix	         prix de l'objet em magasin
 	 * @param  $effet	         valeur de l'effet de l'objet
 	 * @param  $lvl_batiment   niveau du bâtiment à partir duquel l'objet est disponible
+	 * @param  $taille		     taille de l'objet
 	 * @param  $effet	         description de l'objet.
 	 * @param  $puissance	     puissance nécessaire pour porter l'objet.
 	 */
-	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $description='', $puissance=0)
+	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $taille='grand', $description='', $puissance=0)
 	{
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( func_num_args() == 1 )
@@ -89,6 +90,7 @@ class accessoire extends objet_equip
 		objet_equip::init_tab($vals);
 		$this->description = $vals['description'];
 		$this->puissance = $vals['puissance'];
+		$this->taille = $vals['taille'];
 	}
 
 	/// Renvoie la liste des champs pour une insertion dans la base
@@ -141,7 +143,7 @@ class accessoire extends objet_equip
 
   function get_emplacement()
   {
-    return 'accessoire';
+    return $this->taille.'_accessoire';
   }
   
   function peut_utiliser(&$perso, $msg=true)
@@ -151,6 +153,25 @@ class accessoire extends objet_equip
     if( $msg )
     	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de puissance.');
     return false;
+	}
+	
+	function agit(&$perso)
+	{
+		switch( $this->type )
+		{
+		case 'donjon':
+			//+300 PM + 300 PP + 50 MP + 100 HP
+			$perso->add_bonus_permanents('hp_max', $this->effet/3);
+			$perso->add_bonus_permanents('mp_max', $this->effet/6);
+			$perso->set_pm($perso->get_pm() + $this->effet);
+			$perso->set_pp($perso->get_pp() + $this->effet);
+			break;
+		case 'pierre_precision':
+			$perso->add_effet_permanent('attaquant', new pierre_precision($this->effet, 'pierre_precision'));
+			break;
+		default:
+			$perso->add_bonus_permanents($this->type, $this->effet);
+		}
 	}
 }
 ?>

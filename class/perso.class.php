@@ -897,9 +897,9 @@ class perso extends entite
 		if ($base)
 			return $this->alchimie;
 		elseif ($this->get_race() == 'scavenger')
-			return $this->alchimie * 1.40 + $this->get_bonus_permanents('alchimie');
+			return round($this->alchimie * 1.40 * (1 + $this->get_bonus_permanents('alchimie') / 100));
 		else
-			return $this->alchimie + $this->get_bonus_permanents('alchimie');
+			return round($this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100));
 	}
 	/// Modifie l'alchimie
 	function set_alchimie($alchimie)
@@ -1355,50 +1355,37 @@ class perso extends entite
 		return $this->bouclier;
 	}
 	/// Renvoie l'accessoire. Enregistre les enchantements et les effets.
-	function get_accessoire()
+	function get_accessoires()
 	{
-		if(!isset($this->accessoire))
+		if(!isset($this->accessoire) || !$this->accessoire)
 		{
 			global $db;
-			$accessoire = $this->inventaire()->accessoire;
-			if($accessoire != '' AND $accessoire != 'lock')
-			{
-				$acc = decompose_objet($accessoire);
-				$q = "SELECT * FROM $acc[table_categorie] WHERE id = $acc[id_objet]";
-				$req = $db->query($q);
-				$this->accessoire = $db->read_object($req);
-				if ($acc['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($acc['enchantement']);
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-				switch ($this->accessoire->type) {
-				case 'rm':
-					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
-					break;
-				case 'donjon':
-					//+300 PM + 300 PP + 50 MP + 100 HP
-					$this->add_bonus_permanents('hp_max', $this->accessoire->effet/3);
-					$this->add_bonus_permanents('mp_max', $this->accessoire->effet/6);
-					$this->pm += $this->accessoire->effet;
-					$this->pp += $this->accessoire->effet;									
-					break;
-				case 'chance_debuff':
-				case 'buff':
-				case 'fabrication':
-					$this->add_bonus_permanents($this->accessoire->type,
-																			$this->accessoire->effet);
-					break;
-				case 'pierre_precision':
-					$this->add_effet_permanent('attaquant', new pierre_precision($this->accessoire->effet, 'pierre_precision'));
-					break;
-																			
-				}
-			}
-			else $this->accessoire = false;
+			// grand accessoire 
+			$grand_accessoire = $this->inventaire()->grand_accessoire;
+			if( !$grand_accessoire )
+				$grand_accessoire = $this->inventaire()->accessoire;
+			$this->charger_accessoire( $grand_accessoire );
+			// Moyen accessoire
+			$this->charger_accessoire( $this->inventaire()->moyen_accessoire );
+			// Petits accessoires
+			$this->charger_accessoire( $this->inventaire()->petit_accessoire_1 );
+			$this->charger_accessoire( $this->inventaire()->petit_accessoire_2 );
+			$this->accessoire = true;
 		}
-		return $this->accessoire;
+	}
+	protected function charger_accessoire($accessoire)
+	{
+		if($accessoire != '' AND $accessoire != 'lock')
+		{
+			$objet = objet_invent::factory($accessoire);
+			if( $objet->get_enchantement() )
+			{
+				$gemme = new gemme_enchassee($objet->get_enchantement());
+				$this->register_gemme_enchantement($gemme);
+				//my_dump($this->enchantement);
+			}
+			$objet->agit($this);
+		}
 	}
 	// "Charge" les objets pour faire agir leur effets
   function check_materiel()
@@ -1407,7 +1394,7 @@ class perso extends entite
     $this->get_arme_gauche();
     $this->get_bouclier();
     $this->get_armure();
-    $this->get_accessoire();
+    $this->get_accessoires();
   }
   /// Renvoie le type de l'arme utilisé 
 	function get_arme_type()
@@ -1561,6 +1548,9 @@ class perso extends entite
 		if($pet) $inventaire = $this->inventaire_pet();
 		else $inventaire = $this->inventaire();
 		
+		// temporaire : transition entre anciens et nouveaux accessoires
+		if( $type == 'grand_accessoire' && !$inventaire->grand_accessoire )
+			$type = 'accessoire';
 		if($inventaire->$type !== 0 AND $inventaire->$type != '')
 		{
 			if(!$pet)
@@ -1608,7 +1598,7 @@ class perso extends entite
    * @param  $objet   Objet à équiper
    * @return       true s'il a pu être équipé, false sinon. 
    */  
-	function equip_objet($objet, $pet = false)
+	function equip_objet($objet, $pet = false, $zone=null)
 	{
 		global $db, $G_erreur;
 		$equip = false;
@@ -1679,7 +1669,7 @@ class perso extends entite
 					$row = $db->read_array($req);
 					$conditions[0]['attribut']	= 'puissance';
 					$conditions[0]['valeur']	= $row['puissance'];
-					$type = 'accessoire';
+					$type = $zone ? $zone : $row['taille'].'_accessoire';
 				break;
 			}
 
@@ -2521,7 +2511,7 @@ class perso extends entite
 				// Accessoires
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
-				$accessoire = $this->get_accessoire();
+				/*$accessoire = $this->get_accessoire();
 				if($accessoire != false)
 				{
 					switch($accessoire->type)
@@ -2535,8 +2525,9 @@ class perso extends entite
 						default:
 							break;
 					}
-				}
+				}*/
 				$bonus_arme = $this->get_bonus_permanents('regen_hp');
+				$bonus_add_mp = $this->get_bonus_permanents('regen_hp_add');
 				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
 				$bonus_add_mp = $this->get_bonus_permanents('regen_mp_add');
 				// Effets magiques des objets
@@ -2553,8 +2544,8 @@ class perso extends entite
 					}
 				}*/
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp + $bonus_add_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) /*+ $bonus_accessoire*/ + $bonus_arme + $bonus_add_hp);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) /*+ $bonus_accessoire_mp*/ + $bonus_arme_mp + $bonus_add_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{
