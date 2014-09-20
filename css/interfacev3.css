@@ -608,7 +608,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 {
 	border: 1px solid #080808;
 	min-height: 495px;
-	width: 495px;
+	width: 497px;
 	margin-left: 10px;
 	margin-top: 10px;
 	border-radius: 10px;
@@ -644,7 +644,7 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 {
 	position: absolute;
 	height: 50px;
-	width: 494px;
+	width: 496px;
 	border-top-right-radius: 10px;
 	padding-left: /*80*/90px;
 	font-size: 40px;
@@ -663,10 +663,10 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 #depl_centre
 {
 	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	min-height: 445px;
-	width: 445px;
+	bottom: 1px;
+	right: -1px;
+	min-height: 444px;
+	width: 446px;
 	border-left: 1px solid #777;
 	border-top: 1px solid #777;
 	border-bottom-right-radius: 10px;
@@ -1482,6 +1482,7 @@ li.info_case div.jauge_case
 {
 	height: 417px;
 	background-size: 100% 100% !important;
+	background-position: 1px -1px !important;
 }
 
 #bourg
@@ -2235,7 +2236,7 @@ div#amende.panel
 
 #tab_ville
 {
-	margin: 2px 3px 0px 2px;
+	margin: 2px 2px 0px 2px;
 }
 
 #tab_ville > li > a
@@ -2251,11 +2252,11 @@ div#amende.panel
 .ecole_mag
 {
 	margin-left: 2px;
-  width: 439px;
+  width: 441px;
   height: 408px;
 }
 
-#tab_ville .filtre, #tab_ville .action
+#tab_ville .filtre, #tab_ville .action_hdv
 {
 	float: right;
 	border-top: #ddd 1px solid;
@@ -2269,29 +2270,29 @@ div#amende.panel
 	margin: 0;
 }
 
-#tab_ville .action a
+#tab_ville .action_hdv a
 {
 	margin: 0;
 }
 
-#tab_ville .filtre a:hover, #tab_ville .filtre.active a:hover, #tab_ville .action a:hover, #tab_ville .action.actif a
+#tab_ville .filtre a:hover, #tab_ville .filtre.active a:hover, #tab_ville .action_hdv a:hover, #tab_ville .action_hdv.actif a
 {
 	border-radius: 0;
 }
 
-#tab_ville .action.actif a
+#tab_ville .action_hdv.actif a
 {
 	border-color: #FFF;
 	background-color: #FFF;
 }
 
-#tab_ville .filtre:last-child, #tab_ville .action:last-child
+#tab_ville .filtre:last-child, #tab_ville .action_hdv:last-child
 {
 	border-left: #ddd 1px solid;
 	border-top-left-radius: 5px;
 }
 
-#tab_ville .filtre:nth-child(3), #tab_ville .action:nth-child(9)
+#tab_ville .filtre:nth-child(3), #tab_ville .action_hdv:nth-child(9)
 {
 	border-top-right-radius: 5px;
 }
@@ -2422,7 +2423,7 @@ div#amende.panel
 	position: absolute;
 	bottom: 4px;
 	height: 25px;
-	width: 437px;
+	width: 440px;
 	border-top: 1px solid #FFF;
 	padding : 4px;
 	text-align: center;
@@ -2438,7 +2439,7 @@ div#amende.panel
 table#classes.table
 {
 	margin: 15px 2px 0 !important;
-	width: 439px;
+	width: 441px;
 	text-align: center;
 	vertical-align: middle;
 }
@@ -2509,7 +2510,7 @@ table#classes.table > tbody > tr > td
 	display: block;
 	position: absolute;
 	height: 25px;
-	width: 443px;
+	width: 445px;
 	border-top: 1px solid rgba(255, 255, 255, 0.3);
 	padding: 4px;
 	text-align: center;
@@ -2530,7 +2531,7 @@ input#ville_bas
 	width: 390px;
 }
 
-#rez a, #lieu a
+#lieu a
 {
 	width: 353px;
 }

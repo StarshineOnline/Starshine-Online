@@ -5,6 +5,7 @@ function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();
 	//alert(status+' : '+data);
+  $("[data-toggle='tooltip']").tooltip('hide');
   $(data).find('section').each( function()
   {
   	switch(this.id)
@@ -32,31 +33,6 @@ function affiche_ajax(data, status, jqXHR)
   		maj_tooltips();
   		break;
   	case 'erreur':
-  		/*var cont = document.getElementById('contenu_jeu');
-  		var alerte = document.createElement('div');
-  		alerte.className = 'alert alert-danger alert-dismissable';
-  		cont.insertBefore(alerte, cont.firstChild);
-  		alerte.style = 'margin-top: 5px;'
-  		var btn = document.createElement('button');
-  		btn.className = 'close';
-  		btn.setAttribute('aria-hidden', 'true');
-  		btn.setAttribute('data-dismiss', 'alert');
-  		btn.type = 'button';
-  		btn.innerHTML = '&times;';
-  		alerte.appendChild(btn);
-  		var ico = document.createElement('a');
-  		ico.className = 'icone icone-bug';
-  		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
-  		ico.style = 'margin-right: 5px;'
-  		alerte.appendChild(ico);
-  		var txt = document.createElement('span');
-  		txt.innerHTML = this.innerHTML;
-  		alerte.appendChild(txt);
-  		var recept = document.createElement('div');
-  		recept.innerHTML = data;
-  		recept.id = 'erreur_recu';
-  		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
-  		alerte.appendChild(recept);*/
   		aff_erreur(this.innerHTML, data);
   		break;
   	default:

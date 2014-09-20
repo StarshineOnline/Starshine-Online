@@ -64,7 +64,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 			{
 				$favoris[] = $row[0];
 			}
-			if($categorie == 'favoris')
+			if($categorie == 'favoris' && $favoris)
   			$cond = 'id IN ('.implode(',', $favoris).')';
   		else
 				$cond = 'comp_assoc = "'.$categorie.'" AND id IN ('.strtr($this->perso->get_comp_jeu(), ';', ',').')';

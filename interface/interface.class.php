@@ -1014,12 +1014,14 @@ class url
 	}
 	function get($nom=null, $valeur=null)
 	{
+		$excl = array();
 		if( $nom === null )
 			$vars = array();
 		else
 		{
 			if( is_array($nom) )
 			{
+				$excl = $nom;
 				$vars = array();
 				foreach($nom as $nm=>$val)
 				{
@@ -1027,10 +1029,14 @@ class url
 				}
 			}
 			else
+			{
 				$vars = array($nom.'='.$valeur);
+				$excl = array($nom);
+			}
 		}
 		foreach($this->vars as $nm=>$val)
 		{
+			if( !in_array($nm, $excl) )
 			$vars[] = $nm.'='.$val;
 		}
 		return $this->base.'?'.implode('&', $vars);

@@ -161,7 +161,7 @@ class messagerie
 					($this->thread->id_groupe == 0 ||
 					 $this->thread->id_groupe != $this->id_groupe_perso) &&
 					$this->id_perso != 0 /* magic id */)
-				security_block(URL_MANIPULATION);
+				my_dump($this->thread);//security_block(URL_MANIPULATION);
 			if($numero_page == 'last')
 			{
 			    $numero_message = $this->thread->get_numero_dernier_message($this->id_perso);

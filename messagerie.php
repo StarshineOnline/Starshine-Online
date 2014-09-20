@@ -27,9 +27,9 @@ case 'ecrire':
 	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
 	$msg = htmlspecialchars(addslashes($_POST['texte']));
 	$sujet = $_GET['sujet'];
-	$sujet = new messagerie_thread($sujet);
-	$id_dest = $sujet->id_dest == $perso->get_id() ? $sujet->id_auteur : $sujet->id_dest;
-	$messagerie->envoi_message($sujet, $id_dest, '', $msg, $sujet->id_groupe);
+	$sujet_obj = new messagerie_thread($sujet);
+	$id_dest = $sujet->id_dest == $perso->get_id() ? $sujet_obj->id_auteur : $sujet_obj->id_dest;
+	$messagerie->envoi_message($sujet, $id_dest, '', $msg, $sujet_obj->id_groupe);
 	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
 	break;
 case 'suppr_msg':

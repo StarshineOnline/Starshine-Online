@@ -81,12 +81,34 @@ if( array_key_exists('action', $_GET) )
 		exit;
 	/// TODO: à améliorer
 	case 'favori':
-    $requete = "INSERT INTO sort_favoris(id_sort, id_perso) VALUES(".sSQL($_GET['id']).", ".$perso->get_id().")";
-    $db->query($requete);
+		switch( $type )
+		{
+		case 'sort_jeu':
+	    $requete = "INSERT INTO sort_favoris (id_sort, id_perso) VALUES(".sSQL($_GET['id']).", ".$perso->get_id().")";
+	    $db->query($requete);
+	    break;
+		case 'comp_jeu':
+	    $requete = "INSERT INTO comp_favoris (id_comp, id_perso) VALUES(".sSQL($_GET['id']).", ".$perso->get_id().")";
+	    $db->query($requete);
+	    break;
+	  default:
+	  	/// TODO: loguer triche
+		}
     break;
 	case 'suppr_favori':
-    $requete = "DELETE FROM sort_favoris WHERE id_sort =  ".sSQL($_GET['id'])." AND id_perso = ".$perso->get_id();
-    $db->query($requete);
+		switch( $type )
+		{
+		case 'sort_jeu':
+	    $requete = "DELETE FROM sort_favoris WHERE id_sort =  ".sSQL($_GET['id'])." AND id_perso = ".$perso->get_id();
+	    $db->query($requete);
+	    break;
+		case 'comp_jeu':
+	    $requete = "DELETE FROM comp_favoris WHERE id_comp =  ".sSQL($_GET['id'])." AND id_perso = ".$perso->get_id();
+	    $db->query($requete);
+	    break;
+	  default:
+	  	/// TODO: loguer triche
+		}
     break;
 	case 'lancer_groupe':
 		$groupe = true;
@@ -294,7 +316,6 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 		$img = new interf_img('image/interface/livres/iconeforge.png', 'Forge');
 		$tabs->add_onglet($img, 'livre.php?type=forge&action=onglet', 'tab_forge', 'invent', $type == 'forge');
 	}
-	my_dump($tabs);
 	$onglet = $tabs->get_onglet('tab_'.$type);
 	interf_alerte::aff_enregistres($onglet);
 	$onglet->add( $G_interf->creer_livre_sortcomp($type, $cible, $categorie, !$perso->est_mort()) );

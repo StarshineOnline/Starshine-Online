@@ -27,10 +27,7 @@ class comp_sort_buff extends table
 		if( $complet )
 			return $this->type;
 		else
-		{
-  		$ind = strstr($this->type, '-');
-  		return $ind == -1 ? $this->type : substr($this->type, 0, $ind);
-		}
+  		return explode('-', $this->type)[0];
 	}
 	/// Modifie le type générique
 	function set_type($type)
