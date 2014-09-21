@@ -1,6 +1,6 @@
 <?php
 /**
- * @file objet.class.php
+ * @file arme.class.php
  * Gestion des armes
  */
 

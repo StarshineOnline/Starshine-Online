@@ -44,3 +44,9 @@ UPDATE accessoire SET type = 'reserve' WHERE type = 'rm';
 UPDATE accessoire SET type = 'regen_hp_add' WHERE type = 'regen_hp';
 UPDATE accessoire SET type = 'regen_mp_add' WHERE type = 'regen_mp';
 UPDATE accessoire SET lvl_batiment = 9 WHERE lvl_batiment != 1;
+
+-- Objets des créatures
+ALTER TABLE `objet_pet` ADD `bonus` VARCHAR(15) NOT NULL AFTER `dressage`, ADD `valeur` INT NOT NULL AFTER `bonus`;
+UPDATE `objet_pet` SET bonus='pp', valeur=PP WHERE PP > 0;
+UPDATE `objet_pet` SET bonus='pm', valeur=PM WHERE PM > 0;
+UPDATE `objet_pet` SET bonus='distance_tir', valeur=distance_tir WHERE distance_tir > 0;

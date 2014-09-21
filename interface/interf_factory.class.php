@@ -253,7 +253,7 @@ class interf_factory
 	/// Liste d'achat des objets de dressages
 	function creer_achat_dressage(&$royaume, $caterorie, $niveau=null)
 	{
-    include_once(root.'interface/interf_liste_achat.class.php');
+    include_once(root.'interface/interf_dresseur.class.php');
     return new interf_achat_dressage($royaume, $caterorie, $niveau);
 	}
 	/// Liste d'achat des objets d'alchimie

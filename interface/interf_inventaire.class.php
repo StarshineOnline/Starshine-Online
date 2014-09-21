@@ -76,7 +76,7 @@ class interf_invent_equip extends interf_tableau
       $style = 'background: url(\'image/creature.png\') center no-repeat;';
 
       $emplacements = array(  'cou_pet',   'selle',       'dos_pet',
-                              'arme_pet',  'torse_pet',   ' ');
+                              'arme_pet',  'torse_pet',   'pattes');
       $invent = $perso->inventaire_pet();
       break;
     case 'actions':

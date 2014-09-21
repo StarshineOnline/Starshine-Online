@@ -89,6 +89,7 @@ $Gtrad['arme_pet'] = 'Arme';
 $Gtrad['cou_pet'] = 'Cou';
 $Gtrad['dos_pet'] = 'Dos';
 $Gtrad['torse_pet'] = 'Torse';
+$Gtrad['pattes'] = 'Pattes';
 $Gtrad['slot_1'] = 'Slot niveau 1';
 $Gtrad['slot_2'] = 'Slot niveau 2';
 $Gtrad['slot_3'] = 'Slot niveau 3';
@@ -112,6 +113,26 @@ $Gtrad['dague'] = 'dague';
 $Gtrad['arc'] = 'arc';
 $Gtrad['baton'] = 'bâton';
 $Gtrad['bouclier'] = 'bouclier';
+//@}
+
+
+/**
+ * @name Bonus des objets des créatures
+ * Traduction des types d'arme.
+ * @{
+ */
+$Gtrad['pp'] = 'PP';
+$Gtrad['pm'] = 'PM';
+$Gtrad['distance_tir'] = 'Distance d\'attaque';
+$Gtrad['degats_epee'] = 'dégâts';
+$Gtrad['degats_dague'] = 'dégâts';
+$Gtrad['degats_hache'] = 'dégâts';
+$Gtrad['degats_arc'] = 'dégâts';
+$Gtrad['lancer'] = 'Lancement de sort';
+$Gtrad['rm'] = 'RM';
+$Gtrad['antipation'] = 'Chances d\'anticipation';
+$Gtrad['hp'] = 'HP';
+$Gtrad['mp'] = 'MP';
 //@}
 
 
