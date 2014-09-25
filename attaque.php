@@ -504,6 +504,9 @@ else
 					
 					if ($siege_true) break;
 			}
+			//Gestion des points de crime
+			$crime=new crime();
+			$crime->crime_fin_combat($joueur, $defenseur, $type, $_GET['table']);
 			
 			$attaque_hp_apres = $attaquant->get_hp();
 			$defense_hp_apres = $defenseur->get_hp();
@@ -602,9 +605,7 @@ else
 				}
 			}
 			
-			//Gestion des points de crime
-			$crime=new crime();
-			$crime->crime_fin_combat($joueur, $defenseur, $type, $_GET['table']);
+			
 			
 			echo '<div id="combat_cartouche">
 				<ul style="float:left;">
