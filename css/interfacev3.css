@@ -1736,6 +1736,14 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	margin: 0;
 }
 
+.action .icone-deplacer
+{
+	float: right;
+	cursor: default;
+	padding-top: 5px;
+	padding-right: 2px;
+}
+
 .nouveau_script
 {	
 	text-align: center;
