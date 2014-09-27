@@ -1,4 +1,8 @@
 <?php // -*- tab-width:2; mode: php -*-
+/**
+ * @file infoperso.php
+ * Informations sur un personnage 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -31,7 +35,7 @@ $interf_princ->verif_mort($perso);
 $perso = joueur::get_perso();
 $pj = new perso($_GET['id']);
 $pj->check_materiel();
-//Calcul de la distance qui sépare le joueur du monstre
+//Calcul de la distance qui sépare les personnages
 $distance = $perso->calcule_distance($pj);
 /// TODO: à améliorer
 if( ($perso->get_groupe() == 0 || $perso->get_groupe() != $pj->get_groupe() ) && ($distance > 3 || ($distance == 3 &&  $perso->get_y() > 190)) )

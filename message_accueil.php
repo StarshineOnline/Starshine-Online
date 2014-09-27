@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file message_acceuil.php
+ * Afichage du message d'acceuil 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 

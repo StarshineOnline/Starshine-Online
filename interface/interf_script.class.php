@@ -160,6 +160,10 @@ class interf_script extends interf_cont
 				$div_btns->add( new interf_lien('', $G_url->get(array('action'=>'suppr_cond', 'cond'=>$j)), false, 'btn btn-default icone icone-moins') );
 				$j++;
 			}
+			// Icone et infobulle pour le déplacement
+			$depl =  $li->add( new interf_bal_smpl('span', '', false, 'icone icone-deplacer') );
+			$depl->set_tooltip('Déplacez ce cadre (par glisser-déposer) pour modifier l\'ordre.');
+			// Action
 			$div = $li->add( new interf_bal_cont('div', 'act_'.$i, 'btn-group') );
 			$div_act = $div->add( new interf_bal_cont('div', false, 'btn-group') );
 			$btn_act = $div_act->add( new interf_dropdown_select() );
@@ -167,7 +171,7 @@ class interf_script extends interf_cont
 			$this->remplir_menu_actions($btn_act, $action->get_nom(), $G_url->copie('action', 'modif_action'));
 			$ajout = $div->add( new interf_lien('', $G_url->get('action', 'ajout_cond'), false, 'btn btn-default icone icone-plus') );
 			$ajout->set_tooltip('Ajouter une condition');
-			$copier = $div->add( new interf_lien('', $G_url->get('action', 'copie_action'), false, 'btn btn-default icone icone-plus42') );
+			$copier = $div->add( new interf_lien('', $G_url->get('action', 'copie_action'), false, 'btn btn-default icone icone-copier') );
 			$copier->set_tooltip('Copier cette action');
 			$suppr = $div->add( new interf_lien('', $G_url->get('action', 'suppr_action'), false, 'btn btn-default icone icone-poubelle') );
 			$suppr->set_tooltip('Supprimer cette action');

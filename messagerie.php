@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file messagerie.php
+ * Gestion de la messagerie 
+ */ 
 if (file_exists('root.php'))
 	include_once('root.php');
 

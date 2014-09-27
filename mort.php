@@ -1,4 +1,8 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/**
+ * @file mort.php
+ * Page pour les personnages morts 
+ */
 if (file_exists('root.php'))
   include_once('root.php');
 

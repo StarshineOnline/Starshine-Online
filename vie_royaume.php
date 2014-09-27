@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file vie_royaume.php
+ * Gestionn des élections & révolutions 
+ */
 if (file_exists('root.php'))
   include_once('root.php');
 

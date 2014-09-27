@@ -15,7 +15,7 @@ class interf_journal extends interf_cont
 		// Choix du mois
 		$form_mois = $div_haut->add( new interf_form($G_url->get('action', 'mois'), 'choix_mois', 'get', 'input-group') );
 		$span_opt = /*$div_haut*/$form_mois->add( new interf_bal_cont('span', false, 'input-group-btn') );
-		$btn_opt = $span_opt->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-debug4') );
+		$btn_opt = $span_opt->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-debug2') );
 		$btn_opt->set_attribut('onclick', '$(\'#options\').slideToggle(); return false;');
 		$btn_opt->set_tooltip('Affiche / masque les options d\'affichage');
 		/*$div_haut*/$form_mois->add( new interf_bal_smpl('span', 'Mois', false, 'input-group-addon') );

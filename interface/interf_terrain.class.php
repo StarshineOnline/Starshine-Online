@@ -14,7 +14,7 @@ class interf_terrain extends interf_ville_onglets
 		parent::__construct($royaume);
 		$perso = joueur::get_perso();
 		// Icone
-		$icone = $this->set_icone_centre('ville5');
+		$icone = $this->set_icone_centre('ville2');
 		$icone->set_tooltip('Votre terrain');
 		$utilisation = 0;
 		

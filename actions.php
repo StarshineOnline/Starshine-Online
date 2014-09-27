@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file actions.php
+ * Gestion des scripts
+ */  
 if (file_exists('root.php'))
   include_once('root.php');
 

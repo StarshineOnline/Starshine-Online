@@ -1,4 +1,5 @@
 <?php // -*- mode: php; tab-width: 2 -*-
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 

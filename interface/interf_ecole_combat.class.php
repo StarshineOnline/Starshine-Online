@@ -18,8 +18,8 @@ class interf_ecole_combat extends interf_ville_onglets
 		$niveau = $this->recherche_batiment('ecole_combat');
 		
 		// Onglets
-		$this->onglets->add_onglet('Comp. hors combat', 'ecole.php?type=comp_jeu&ajax=2', 'tab_comp_jeu', 'ecole_mag', $type=='comp_jeu');
-		$this->onglets->add_onglet('Comp. de combat', 'ecole.php?type=comp_combat&ajax=2', 'tab_comp_combat', 'ecole_mag', $type=='comp_combat');
+		$this->onglets->add_onglet('Comp. hors combat', 'ecole.php?type=comp_jeu&ajax=2', 'tab_ecole_comp_jeu', 'ecole_mag', $type=='comp_jeu');
+		$this->onglets->add_onglet('Comp. de combat', 'ecole.php?type=comp_combat&ajax=2', 'tab_ecole_comp_combat', 'ecole_mag', $type=='comp_combat');
 		
 		// Filtres
 		$haut = $this->onglets->get_haut();
@@ -41,10 +41,10 @@ class interf_ecole_combat extends interf_ville_onglets
 		switch( $type )
 		{
 		case 'comp_jeu':
-			$this->onglets->get_onglet('tab_comp_jeu')->add( new interf_achat_comp_jeu($royaume, $niveau, $n) );
+			$this->onglets->get_onglet('tab_ecole_comp_jeu')->add( new interf_achat_comp_jeu($royaume, $niveau, $n) );
 			break; 
 		case 'comp_combat':
-			$this->onglets->get_onglet('tab_comp_combat')->add( new interf_achat_comp_combat($royaume, $niveau, $n) );
+			$this->onglets->get_onglet('tab_ecole_comp_combat')->add( new interf_achat_comp_combat($royaume, $niveau, $n) );
 			break; 
 		}
 	}

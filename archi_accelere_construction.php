@@ -1,4 +1,5 @@
 <?php //	 -*- tab-width:	2; mode: php -*-
+// par modifié ou plus utilisé ?
 if (file_exists('root.php'))
   include_once('root.php');
 

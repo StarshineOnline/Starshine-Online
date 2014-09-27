@@ -80,6 +80,8 @@ class texte
       $texte = explode('*****', $this->texte);
       $texte = $texte[$index];
     }
+    else
+    	$texte = $this->texte;
     $texte = preg_replace("/(\r\n|\r|\n)/", '', $texte);
     if( $this->options & self::html )
       $texte = htmlspecialchars( stripslashes($texte) );

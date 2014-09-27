@@ -1,4 +1,8 @@
 <?php // -*- php -*-
+/**
+ * @file personnage.php
+ * Feuille de personnage
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 

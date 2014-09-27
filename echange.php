@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file echange.php
+ * Gestion des échanges 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 

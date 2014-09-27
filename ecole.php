@@ -51,7 +51,7 @@ if( $action == 'achat' )
 {
 	$comp_sort = comp_sort::factory_gen($type, $_GET['id']);
 	///TODO: loguer triche
-	$taxe = ceil($objet->get_prix() * $R->get_taxe_diplo($perso->get_race()) / 100);
+	$taxe = ceil($comp_sort->get_prix() * $R->get_taxe_diplo($perso->get_race()) / 100);
 	$prix = $comp_sort->get_prix() + $taxe;
 	if( $comp_sort->est_connu($perso) )
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous connaissez déjà '.$comp_sort->get_nom());

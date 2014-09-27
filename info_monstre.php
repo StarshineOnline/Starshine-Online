@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file info_monstre.php
+ * Information sur un monstre
+ */
 if (file_exists('root.php'))
   include_once('root.php');
 

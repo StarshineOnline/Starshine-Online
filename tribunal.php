@@ -1,7 +1,7 @@
 <?php
 /**
-* @file qg.php
-* Quartier général
+* @file tribunal.php
+* Tribunal
 */
 if (file_exists('root.php'))
   include_once('root.php');

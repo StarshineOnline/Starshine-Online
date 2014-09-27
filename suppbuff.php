@@ -1,7 +1,11 @@
 <?php
+/**
+ * @file suppbuff.php
+ * Suppression d'un buff 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
-?><?php
+
 include_once(root.'inc/fp.php');
 
 

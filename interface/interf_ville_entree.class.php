@@ -107,7 +107,7 @@ class interf_ville_entree extends interf_ville_entree_base
 		$races = implode(',', $races);
 					
 		//Recherche tous les objets correspondants à ces races
-		$requete = 'SELECT * FROM hotel WHERE race IN ('.$races.') ORDER BY id DESC LIMIT 1';
+		$requete = 'SELECT * FROM hotel WHERE race IN ('.$races.') AND type = "vente" ORDER BY id DESC LIMIT 1';
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		if($db->num_rows > 0)

@@ -55,7 +55,7 @@ class interf_hotel_vente extends interf_ville_onglets
 				
 		// Vente / achat
 		$haut = $this->onglets->get_haut();
-		$vente = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent4'), 'hotel.php?type=vente&categorie='.$categorie, 'return charger(\'hotel.php?type=vente&categorie=\'+hdv_type);', false, 'action_hdv'.($type=='vente'?' actif':'')) );
+		$vente = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent2'), 'hotel.php?type=vente&categorie='.$categorie, 'return charger(\'hotel.php?type=vente&categorie=\'+hdv_type);', false, 'action_hdv'.($type=='vente'?' actif':'')) );
 		$vente->set_tooltip('Vente');
 		$achat = $haut->add( new interf_elt_menu(new interf_bal_smpl('span', '', false, 'icone icone-argent'), 'hotel.php?type=achat&categorie='.$categorie, 'return charger(\'hotel.php?type=achat&categorie=\'+hdv_cat);', false, 'action_hdv'.($type=='achat'?' actif':'')) );
 		$achat->set_tooltip('Achat');
@@ -310,7 +310,7 @@ class interf_offre_achat extends interf_dialogBS
 		}
 		else
 			$form->add_champ_bs('hidden', 'nombre', null, 1);
-    $chp1 = $form->add_champ_bs('number', 'prix', null, '0', 'Prix de vente', 'stars');
+    $chp1 = $form->add_champ_bs('number', 'prix', null, '0', 'Prix d\'achat', 'stars');
     $chp1->set_attribut('min', 0);
     $chp1->set_attribut('step', 1);
     if( $nombre )

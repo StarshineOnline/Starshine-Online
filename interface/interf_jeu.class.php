@@ -17,7 +17,7 @@ class interf_jeu extends interf_sso_int
 
   function __construct()
   {
-  	global $db;
+  	global $db, $G_no_piwik;
     interf_sso_int::__construct();
     $perso = joueur::get_perso();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
@@ -55,6 +55,21 @@ class interf_jeu extends interf_sso_int
     $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
+    
+    // Piwik
+    if( !isset($G_no_piwik) || $G_no_piwik != true )
+    {
+    	self::code_js('var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.starshine-online.com/piwik/" : "http://www.starshine-online.com/piwik/");');
+    	self::code_js('document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));');
+    	self::code_js('try {');
+    	self::code_js('var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);');
+    	self::code_js('piwikTracker.trackPageView();');
+    	self::code_js('piwikTracker.enableLinkTracking();');
+    	self::code_js('} catch( err ) {}');
+    	$noscript = $this->add( new interf_bal_cont('noscript') );
+    	$img_piwik = $noscript->add( new interf_img('http://www.starshine-online.com/piwik/piwik.php?idsite=1') );
+    	$img_piwik->set_attribut('style', 'border:0');
+		}
     
     $this->code_js('maj_tooltips();');
   }

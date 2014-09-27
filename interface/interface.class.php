@@ -1021,7 +1021,7 @@ class url
 		{
 			if( is_array($nom) )
 			{
-				$excl = $nom;
+				$excl = array_keys($nom);
 				$vars = array();
 				foreach($nom as $nm=>$val)
 				{
@@ -1037,7 +1037,7 @@ class url
 		foreach($this->vars as $nm=>$val)
 		{
 			if( !in_array($nm, $excl) )
-			$vars[] = $nm.'='.$val;
+				$vars[] = $nm.'='.$val;
 		}
 		return $this->base.'?'.implode('&', $vars);
 	}

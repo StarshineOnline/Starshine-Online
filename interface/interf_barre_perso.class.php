@@ -30,12 +30,8 @@ class interf_barre_perso extends interf_bal_cont
     $titre_perso = new titre($_SESSION["ID"]);
     $bonus = recup_bonus($this->perso->get_id());
     $titre = $titre_perso->get_titre_perso($bonus);
-    $nom = $this->infos_vie->add( new interf_bal_cont('a', 'nom_perso') );
-    $nom->set_attribut('href', 'personnage.php');
-    $nom->set_attribut('onclick', 'return charger(this.href);');
-    $nom->set_attribut('title', 'Accès à la fiche de votre personnage');
-    $nom->set_attribut('data-toggle', 'tooltip');
-    $nom->set_attribut('data-placement', 'bottom');
+    $nom = $this->infos_vie->add( new interf_lien_cont('personnage.php', 'nom_perso') );
+    $nom->set_tooltip('Accès à la fiche de votre personnage', 'bottom');
     $nom->add( new interf_bal_smpl('span', $titre[0]) );
     $nom->add( new interf_bal_smpl('span', ucwords($this->perso->get_grade()->get_nom()), 'grade') );
     //$nom->add( new interf_txt(' ') );
@@ -53,7 +49,8 @@ class interf_barre_perso extends interf_bal_cont
     // Race & classe
     $this->infos_perso = $this->add( new interf_bal_cont('div', 'infos_perso') );
     $this->infos_perso->set_attribut('style', 'background-image:url(\'./image/interface/fond_info_perso_'.$this->perso->get_race_a().'.png\');');
-    $race_classe = $this->infos_perso->add( new interf_bal_cont('div', 'race_classe') );
+    $race_classe = $this->infos_perso->add( new interf_lien_cont('personnage.php', 'race_classe') );
+    $race_classe->set_tooltip('Accès à la fiche de votre personnage', 'bottom');
     $race_classe->add( new interf_bal_smpl('span', ucwords($Gtrad[$this->perso->get_race()]), 'race') );
     $race_classe->add( new interf_bal_smpl('span', ucwords($this->perso->get_classe()), 'classe') );
     // Honneur & réputation
@@ -227,12 +224,12 @@ class interf_barre_perso extends interf_bal_cont
 		$li->add( new interf_bal_smpl('div', 'Vous avez reçu une invitation pour grouper avec '.$perso->get_nom(), false, 'invitation') );
 		$div = $li->add( new interf_bal_cont('div') );
 		$oui = $div->add( new interf_bal_cont('a', false, 'choix_invitation') );
-		$oui->add( new interf_bal_smpl('span', '', false, 'icone icone-ok4') );
+		$oui->add( new interf_bal_smpl('span', '', false, 'icone icone-ok2') );
 		$oui->add( new interf_bal_smpl('span', 'Accepter', false, 'texte') );
 		$oui->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=oui&groupe='.$invitation->get_groupe());
 		$oui->set_attribut('onclick', 'charger(this.href);');
 		$non = $div->add( new interf_bal_cont('a', false, 'choix_invitation') );
-		$non->add( new interf_bal_smpl('span', '', false, 'icone icone-croix4') );
+		$non->add( new interf_bal_smpl('span', '', false, 'icone icone-croix2') );
 		$non->add( new interf_bal_smpl('span', 'Refuser', false, 'texte') );
 		$non->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=non&groupe='.$invitation->get_groupe());
 		$non->set_attribut('onclick', 'charger(this.href);');

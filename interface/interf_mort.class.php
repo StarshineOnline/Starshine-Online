@@ -52,7 +52,7 @@ class interf_mort extends interf_gauche
 			{
 				$pourcent = $row['pourcent'] + $bonus;
 				$elt = $liste->add( new interf_elt_menu('', 'carte.php', 'charger(this.ref);') );
-				$elt->get_lien()->set_attribut('class', 'icone icone-carte10');
+				$elt->get_lien()->set_attribut('class', 'icone icone-carte2');
 				$rez = $elt->add( new interf_bal_smpl('a', 'Vous faire ressusciter par '.$row['nom_rez'].' ('.$pourcent.'% HP / '.$pourcent.' MP)') );
 				$rez->set_attribut('href', 'mort.php?choix=2&amp;rez='.$row['id']);
 				$rez->set_attribut('onclick', 'charger(this.ref);');
@@ -73,7 +73,7 @@ class interf_mort extends interf_gauche
 			{
 				$pourcent = $row['rez'] + $bonus;
 				$elt = $liste->add( new interf_elt_menu('', 'carte.php', 'charger(this.ref);') );
-				$elt->get_lien()->set_attribut('class', 'icone icone-carte10');
+				$elt->get_lien()->set_attribut('class', 'icone icone-carte2');
 				$rez = $elt->add( new interf_bal_smpl('a', 'Revenir dans le fort le plus proche, en x : '.$row['x'].' / y : '.$row['y'].' ('.$pourcent.'% HP / '.$pourcent.' MP)') );
 				$rez->set_attribut('href', 'mort.php?choix=3&amp;rez='.$row['id']);
 				$rez->set_attribut('onclick', 'charger(this.ref);');
@@ -87,7 +87,7 @@ class interf_mort extends interf_gauche
 				// Refuge des criminels
 				$pourcent = 5 + $bonus;
 				$elt = $liste->add( new interf_elt_menu('', 'carte.php', 'charger(this.ref);') );
-				$elt->get_lien()->set_attribut('class', 'icone icone-carte10');
+				$elt->get_lien()->set_attribut('class', 'icone icone-carte2');
 				$rez = $elt->add( new interf_bal_smpl('a', 'Revenir dans le refuge des criminels ('.$pourcent.'% HP / '.$pourcent.' MP)') );
 				$rez->set_attribut('href', 'mort.php?choix=1');
 				$rez->set_attribut('onclick', 'charger(this.ref);');
@@ -100,7 +100,7 @@ class interf_mort extends interf_gauche
 				$R = new royaume($Trace[$perso->get_race()]['numrace']);
 				$pourcent = ($R->is_raz() ? 5 : 20) + $bonus;
 				$elt = $liste->add( new interf_elt_menu('', 'carte.php', 'charger(this.ref);') );
-				$elt->get_lien()->set_attribut('class', 'icone icone-carte10');
+				$elt->get_lien()->set_attribut('class', 'icone icone-carte2');
 				$rez = $elt->add( new interf_bal_smpl('a', 'Revenir dans votre ville natale ('.$pourcent.'% HP / '.$pourcent.' MP)') );
 				$rez->set_attribut('href', 'mort.php?choix=1');
 				$rez->set_attribut('onclick', 'charger(this.ref);');

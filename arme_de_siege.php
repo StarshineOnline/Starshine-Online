@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file arme_de_siege.php
+ * Utilisation des armes de sièges
+ */  
 if (file_exists('root.php'))
   include_once('root.php');
 

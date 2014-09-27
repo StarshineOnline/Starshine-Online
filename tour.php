@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file tour.php
+ * Utilisation des tours 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 

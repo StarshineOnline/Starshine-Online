@@ -1,4 +1,8 @@
 <?php
+/**
+ * @file journal.php
+ * Afficher le journal 
+ */ 
 if (file_exists('root.php'))
   include_once('root.php');
 

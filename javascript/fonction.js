@@ -82,7 +82,7 @@ function charger(page)
 function charger_formulaire(id)
 {
   var formul = $('#' + id);
-  $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:formul.serialize(),success:affiche_ajax});
+  $.ajax({type:formul.attr("method"),url:formul.attr("action")+"&ajax=1",data:formul.serialize(),success:affiche_ajax});
 	return false;
 }
 
@@ -661,7 +661,7 @@ var show_only = '';
 
 $(document).ready(function()
 {
-	$(".login_nom").focus();
+	/*$(".login_nom").focus();
 	$("#popup").draggable({ handle: '#popup_menu'});
 	$(".3D").draggable({handle: '#info_case'});
 	$("#loading").ajaxStart(function()
@@ -676,10 +676,10 @@ $(document).ready(function()
 
 $(function () {
         $("[rel='tooltip']").tooltip();
-    });
+    });*/
 
 
-		$("#debug_log_button").hide();
+		//$("#debug_log_button").hide();
 
 		$(document).ajaxError(function(e, jqxhr, settings, exception)
 		{

@@ -49,7 +49,7 @@ class interf_infos_case extends interf_cont
 		{
 			$lien = $infos_cases->add( new interf_lien_cont('', 'deplacer') );
 			$lien->set_tooltip('Aller sur cette case', 'bottom', '#information');
-			$lien->add( new interf_bal_smpl('p', null, false, 'icone icone-aller-a3') );
+			$lien->add( new interf_bal_smpl('p', null, false, 'icone icone-aller-a') );
 			if( $this->case->get_x() == $this->perso->get_x() || $this->case->get_y() == $this->perso->get_y() )
 				$lien->add( new interf_bal_smpl('p', 'PA : '.$coutpa, false, 'xsmall') );
 			else

@@ -18,8 +18,8 @@ class interf_ecole_magie extends interf_ville_onglets
 		$niveau = $this->recherche_batiment('ecole_magie');
 		
 		// Onglets
-		$this->onglets->add_onglet('Sorts hors combat', 'ecole.php?type=sort_jeu&ajax=2', 'tab_sort_jeu', 'ecole_mag', $type=='sort_jeu');
-		$this->onglets->add_onglet('Sorts de combat', 'ecole.php?type=sort_combat&ajax=2', 'tab_sort_combat', 'ecole_mag', $type=='sort_combat');
+		$this->onglets->add_onglet('Sorts hors combat', 'ecole.php?type=sort_jeu&ajax=2', 'tab_ecole_sort_jeu', 'ecole_mag', $type=='sort_jeu');
+		$this->onglets->add_onglet('Sorts de combat', 'ecole.php?type=sort_combat&ajax=2', 'tab_ecole_sort_combat', 'ecole_mag', $type=='sort_combat');
 		if( !$this->perso->get_sort_element() || !$this->perso->get_sort_mort() || !$this->perso->get_sort_vie() )
 			$this->onglets->add_onglet('Magies', 'ecole.php?type=sort_combat&ajax=2', 'tab_magie', 'ecole_mag', $type=='magie');
 		
@@ -35,10 +35,10 @@ class interf_ecole_magie extends interf_ville_onglets
 		switch( $type )
 		{
 		case 'sort_jeu':
-			$this->onglets->get_onglet('tab_sort_jeu')->add( new interf_achat_sort_jeu($royaume, $niveau, $n) );
+			$this->onglets->get_onglet('tab_ecole_sort_jeu')->add( new interf_achat_sort_jeu($royaume, $niveau, $n) );
 			break; 
 		case 'sort_combat':
-			$this->onglets->get_onglet('tab_sort_combat')->add( new interf_achat_sort_combat($royaume, $niveau, $n) );
+			$this->onglets->get_onglet('tab_ecole_sort_combat')->add( new interf_achat_sort_combat($royaume, $niveau, $n) );
 			break; 
 		}
 	}

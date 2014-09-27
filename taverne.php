@@ -1,7 +1,7 @@
 <?php // -*- mode: php; tab-width:2 -*-
 /**
-* @file qg.php
-* Quartier général
+* @file taverne.php
+* Taverne
 */
 if (file_exists('root.php'))
   include_once('root.php');

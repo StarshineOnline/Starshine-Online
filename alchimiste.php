@@ -73,6 +73,7 @@ case 'recherche':
 			$perso->set_alchimie($augmentation[0]);
 		}
 		$perso->sauver();
+		$interf_princ->maj_perso();
 	}
 	else
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de PA');

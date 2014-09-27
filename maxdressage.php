@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 /* 
  * Vérification du max en dressage de chaque joueur
  */

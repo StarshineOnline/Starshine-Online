@@ -588,7 +588,8 @@ class interf_pagination extends interf_bal_cont
 			if( $page_act > 2 )
 			{
 				$this->add( new interf_elt_menu(1, $url->get('page', 1), $onclick) );
-				$this->add( new interf_bal_smpl('li', '…') );
+				$li = $this->add( new interf_bal_cont('li') );
+				$li->add( new interf_bal_smpl('span', '…') );
 				$min = $page_act - 2;
 			}
 			else
@@ -603,7 +604,8 @@ class interf_pagination extends interf_bal_cont
 			}
 			if( $max != $nbr_pages )
 			{
-				$this->add( new interf_bal_smpl('li', '…') );
+				$li = $this->add( new interf_bal_cont('li', '…') );
+				$li->add( new interf_bal_smpl('span', '…') );
 				$this->add( new interf_elt_menu($nbr_pages, $url->get('page', $nbr_pages), $onclick) );
 			}
 		}

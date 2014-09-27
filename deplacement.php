@@ -1,4 +1,8 @@
 <?php // -*- mode: php; tab-width: 2 -*-
+/**
+ * @file deplacement.php
+ * Affichage de la vue et gestion des déplacements
+ */  
 if (file_exists('root.php'))
   include_once('root.php');
 

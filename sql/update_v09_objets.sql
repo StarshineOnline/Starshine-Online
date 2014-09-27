@@ -1,9 +1,3 @@
--- On change le champ achetable par un champ lvl_batiment pour uniformiser
-ALTER TABLE `accessoire` ADD `lvl_batiment` INT NOT NULL DEFAULT '9';
-UPDATE accessoire SET lvl_batiment = 1 WHERE achetable = 'y';
-ALTER TABLE `accessoire` DROP `achetable`;
-UPDATE accessoire SET lvl_batiment = 9 WHERE achetable = 'n';
-ALTER TABLE `accessoire` DROP `achetable`;
 
 -- on modifie la table arme
 ALTER TABLE `arme` ADD `coefficient` INT NOT NULL DEFAULT '9' AFTER `distance`;
@@ -37,13 +31,19 @@ UPDATE gemme SET prix = POW(8, niveau + 1) * 10;
 UPDATE objet SET stack = '20' WHERE id = 2;
 
 -- Accessoires
+-- On change le champ achetable par un champ lvl_batiment pour uniformiser
+ALTER TABLE `accessoire` ADD `lvl_batiment` INT NOT NULL DEFAULT '9';
+UPDATE accessoire SET lvl_batiment = 1 WHERE achetable = 'y';
+UPDATE accessoire SET lvl_batiment = 9 WHERE achetable = 'n';
+ALTER TABLE `accessoire` DROP `achetable`;
 ALTER TABLE `accessoire` ADD `taille` VARCHAR( 5 ) NOT NULL DEFAULT 'grand' AFTER `nom`;
+-- Ajout de la taille
 UPDATE accessoire SET taille = 'moyen' WHERE id <= 9 OR id = 20;
+-- On modifie certains type pour qu'il soit égal au "bonus permanent" correspondant (simplifie la gestion) 
 UPDATE accessoire SET type = 'alchimie', description = "Augmente les chances de réussir la réalisation d'une recette alchimique %effet%%." WHERE type = 'fabrication';
 UPDATE accessoire SET type = 'reserve' WHERE type = 'rm';
 UPDATE accessoire SET type = 'regen_hp_add' WHERE type = 'regen_hp';
 UPDATE accessoire SET type = 'regen_mp_add' WHERE type = 'regen_mp';
-UPDATE accessoire SET lvl_batiment = 9 WHERE lvl_batiment != 1;
 
 -- Objets des créatures
 ALTER TABLE `objet_pet` ADD `bonus` VARCHAR(15) NOT NULL AFTER `dressage`, ADD `valeur` INT NOT NULL AFTER `bonus`;
