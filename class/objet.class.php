@@ -340,7 +340,7 @@ class objet extends objet_equip
 		break;*/
 		case 'objet_quete' :
 			if($this->id == 27)
-			{ /// TODO: mettre en base
+			{ /// @todo mettre en base
 				?>
 Journal du mage Demtros - Unité aigle -<br /> < Le journal est en très
 mauvais état, certaines pages sont déchirées, ou rendues illisibles par

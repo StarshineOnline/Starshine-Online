@@ -290,7 +290,7 @@ class revolution
 					return true;
 				else if( $id_perso )
 				{
-					/// TODO: passer à l'objet
+					/// @todo passer à l'objet
 					$requete = 'SELECT COUNT(*) FROM vote_revolution WHERE id_revolution = '.$rev->get_id();
 					$req = $db->query($requete);
 					return $db->read_array($req)[0] > 1;

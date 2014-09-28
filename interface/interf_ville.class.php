@@ -95,7 +95,7 @@ class interf_ville extends interf_gauche
 			$row = $db->read_assoc($req);
 			$niv_max = $row['niv_max'];
 		}
-		///TODO: à améliorer
+		///@todo à améliorer
 		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->royaume->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);

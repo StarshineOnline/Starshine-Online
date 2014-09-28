@@ -16,11 +16,11 @@ class interf_tp extends interf_ville
 		$icone = $this->set_icone_centre('teleportation');
 		$icone->set_tooltip('Pierre de téléportation');
 		//$this->recherche_batiment('', false);
-		/// TODO: passer par les objets
+		/// @todo passer par les objets
 		$requete = 'SELECT count(*) as nbr FROM map WHERE royaume = '.$royaume->get_id().' AND x <= 190 AND y <= 190';
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
-		/// TODO: à vérifier
+		/// @todo à vérifier
 		$max = ceil($row['nbr']/250);
 		$requete = 'SELECT count(*) as nbr FROM construction WHERE royaume = '.$royaume->get_id().' AND x <= 190 AND y <= 190 AND type ="bourg"';
 		$req = $db->query($requete);
@@ -34,7 +34,7 @@ class interf_tp extends interf_ville
 		// Capitales
 		$div->add( new interf_bal_smpl('h4', 'Liste des villes possibles pour téléportation :') );
 		$liste = $div->add( new interf_menu(false, 'lieu', null) );
-		/// TODO: à revoir complètement (supprimer cette base)
+		/// @todo à revoir complètement (supprimer cette base)
 		$requete = 'SELECT * FROM teleport';
 		$req = $db->query($requete);
 		while($row = $db->read_array($req))
@@ -70,7 +70,7 @@ class interf_tp extends interf_ville
 		if($royaume->get_diplo($perso->get_race()) == 127)
 		{
 	    //Séléction de tous les téléport disponibles
-	    /// TODO: passer par les objets
+	    /// @todo passer par les objets
 	    $requete = "SELECT c.id, x, y, c.nom, b.nom as nom_bat FROM construction as c INNER JOIN batiment as b ON c.id_batiment = b.id WHERE b.type = 'bourg' AND royaume = ".$royaume->get_id();
 	    $req = $db->query($requete);
 			if( $db->num_rows($req) )

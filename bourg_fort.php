@@ -27,7 +27,7 @@ if($perso->get_x() == $construction->get_x() && $perso->get_y() == $construction
 }
 else
 {
-	/// TODO: faire quelque chose
+	/// @todo faire quelque chose
 }
 
 ?>

@@ -525,7 +525,7 @@ class event_partie_dte_rte extends event_partie
         $row = $db->read_assoc($req);
         $dernier[$row['heure']] = $id;
       }
-      // TODO: calcul des points
+      // @todo calcul des points
     }
     // Détermination du gagnant et éventuellement du second
     switch( $this->event->get_victoire_match() )

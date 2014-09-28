@@ -61,7 +61,7 @@ class interf_achat_arme extends interf_achat_objet
 		$this->tbl->nouv_cell( $elt->get_degat() );
     if( $this->categorie == 'baton' )
 			$this->tbl->nouv_cell( $elt->get_var1().'%' );
-		///TODO: à améliorer
+		///@todo à améliorer
 		switch($this->categorie)
 		{
 		case 'epee':

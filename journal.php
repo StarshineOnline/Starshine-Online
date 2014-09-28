@@ -19,7 +19,7 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 switch($action)
 {
 case 'options':
-	/// TODO: passer à l'objet
+	/// @todo passer à l'objet
 	foreach(interf_journal::$liste_options as $cle=>$texte)
 	{
 		$requete = false;
@@ -41,7 +41,7 @@ case 'options':
 	}
 	if( array_key_exists('nbrLignesJournal', $_POST) )
 	{
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		if( array_key_exists('nbrLignesJournal', $options) )
 			$requete = 'UPDATE options SET valeur = '.$_POST['nbrLignesJournal'].' WHERE id_perso = '.$_SESSION['ID'].' AND nom = "nbrLignesJournal"';
 		else

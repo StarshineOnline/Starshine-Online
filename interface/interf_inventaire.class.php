@@ -300,7 +300,7 @@ class interf_vente_hotel extends interf_dialogBS
     interf_dialogBS::__construct('Hotel des ventes');
 
 		//On vérifie qu'il a moins de 10 objets en vente actuellement
-    /// TODO: à améliorer
+    /// @todo à améliorer
 		$requete = "SELECT COUNT(*) FROM hotel WHERE id_vendeur = ".$perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -440,7 +440,7 @@ class interf_enchasser extends interf_dialogBS
     else
     {
       interf_dialogBS::__construct('Erreur');
-      /// TODO: loguer
+      /// @todo loguer
       $this->add( new interf_alerte('danger', false) )->add_message('Objet invalide !');
       $this->ajout_btn('Ok', 'fermer', 'danger');
     }

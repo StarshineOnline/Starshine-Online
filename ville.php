@@ -15,24 +15,24 @@ $perso = joueur::get_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume
-///TODO: à améliorer
+///@todo à améliorer
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
-/// TODO: logguer triche
+/// @todo logguer triche
 if($W_row['type'] != 1)
 	exit;
 
 // On vérifie la diplomatie
-/// TODO: logguer triche ?
+/// @todo logguer triche ?
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Gestion des amandes
-///TODO: passer à l'objet
+///@todo passer à l'objet
 $amende = recup_amende($perso->get_id());
 if($_GET['action'] == 'paye_amende')
 {

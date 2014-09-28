@@ -84,7 +84,7 @@ class interf_infos_case extends interf_cont
 		}
 	}
 	
-	/// TODO: remplacer les entrées/sorties de donjons par les messages de cases
+	/// @todo remplacer les entrées/sorties de donjons par les messages de cases
 	
 	/// Afficher le texte d'une case
 	function aff_texte($id_case, $reponse)
@@ -248,7 +248,7 @@ class interf_infos_case extends interf_cont
 		}
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif" ORDER BY d.'.$this->perso->get_race().' DESC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
@@ -256,7 +256,7 @@ class interf_infos_case extends interf_cont
       $pj = new perso($row);
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case pj') );
 			$lien = $li->add( new interf_lien_cont('infoperso.php?id='.$pj->get_id(), false, 'info_elt') );
-    	/// TODO: à améliorer
+    	/// @todo à améliorer
       // Cache sa classe ?
       if( $pj->get_cache_classe() == 2 )
         $classe = 'combattant';
@@ -326,7 +326,7 @@ class interf_infos_case extends interf_cont
 			
 		/*$monstres = map_monstre::create(array('x', 'y'), array($this->case->get_x(), $this->case->get_y()));
 		foreach($monstres as $m)*/
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT mm.id, x, y, lib, nom, level, mm.hp as hp, m.hp as hp_max, affiche, quete FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' ORDER BY ABS(CAST(level AS SIGNED) - '.$this->perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
@@ -349,11 +349,11 @@ class interf_infos_case extends interf_cont
 			//$monstre = $m->get_def();
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case monstre') );
 			$lien = $li->add( new interf_lien_cont('info_monstre.php?id='.$row->id, false, 'info_elt') );
-			/// TODO: à améliorer
+			/// @todo à améliorer
 			$image = 'image/monstre/'.$row->lib;
 			$image .= file_exists($image.'_low.png') ? '_low.png' : '.png';
 			$lien->add( new interf_img($image) );
-			/// TODO: à améliorer
+			/// @todo à améliorer
 			$niveau = $row->level > 0 ? $row->level : 1;
 			$nbr_barre_total = min(max(ceil($this->perso->get_survie() / $niveau), 0), 100);
 			$nbr_barre = round($row->hp / $row->hp_max * $nbr_barre_total);

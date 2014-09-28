@@ -25,7 +25,7 @@ class interf_vente_terrain extends interf_ville
 			$tbl->nouv_cell('Fin');
 			$tbl->nouv_cell('Prix');
 			$tbl->nouv_cell('Enchérir');
-			/// TODO: passer à l'objet
+			/// @todo passer à l'objet
 			$requete = "SELECT id, id_royaume, date_fin, id_joueur, prix FROM vente_terrain WHERE id_royaume = ".$royaume->get_id()." AND date_fin > ".time();
 			$req = $db->query($requete);
 			$tps_max = 60 * 60 * 24 * 7;

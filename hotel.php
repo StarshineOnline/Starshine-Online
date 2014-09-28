@@ -11,13 +11,13 @@ include_once(root.'inc/fp.php');
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
 if( $action == 'infos' )
 {
-	/// TODO: passer par un objet
+	/// @todo passer par un objet
 	$requete = 'SELECT objet FROM hotel WHERE id='.$_GET['id'];
 	$req = $db->query($requete);
 	if( $res = $db->read_array($req) )
 	{
 		$objet = objet_invent::factory($res[0]);
-		///TODO: passer par $G_interf
+		///@todo passer par $G_interf
 		new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
 	}
   exit;
@@ -30,24 +30,24 @@ $perso->check_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume
-///TODO: à améliorer
+///@todo à améliorer
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
-/// TODO: logguer triche
+/// @todo logguer triche
 if($W_row['type'] != 1)
 	exit;
 
 // On vérifie la diplomatie
-/// TODO: logguer triche
+/// @todo logguer triche
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Ville rasée
-/// TODO: logguer triche
+/// @todo logguer triche
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	
@@ -60,7 +60,7 @@ if( $action == 'achat' && $categorie == 'perso' )
 switch( $action )
 {
 case 'achat':
-	/// TODO: passer par un objet
+	/// @todo passer par un objet
 	$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id='.$_GET['id'];
 	$req = $db->query($requete);
 	if( $res = $db->read_assoc($req) )
@@ -78,7 +78,7 @@ case 'achat':
     		$db->query($requete);
     		// Vendeur
 				$vendeur = new perso($_GET["id_vendeur"]);
-				/// TODO: vérifier s'il n'y a pas un problème avec la taxe
+				/// @todo vérifier s'il n'y a pas un problème avec la taxe
 				$vendeur->add_star( $res['prix'] );
 				$vendeur->sauver();
     		// journal
@@ -88,7 +88,7 @@ case 'achat':
 				$achiev->set_compteur($achiev->get_compteur() + 1);
 				$achiev->sauver();
 			}
-			else /// TODO: à améliorer
+			else /// @todo à améliorer
 				interf_alerte::enregistre(interf_alerte::msg_erreur, $G_erreur);
 		}
 		else
@@ -96,13 +96,13 @@ case 'achat':
 	}
 	break;
 case 'vente':
-	/// TODO: passer par un objet
+	/// @todo passer par un objet
 	$requete = 'SELECT * FROM hotel WHERE type = "achat" AND id='.$_GET['id'];
 	$req = $db->query($requete);
 	if( $res = $db->read_assoc($req) )
 	{
 		$acheteur = new perso($res['id_vendeur']);
-		/// TODO: logguer triche
+		/// @todo logguer triche
 		$obj_perso = $perso->recherche_objet($res['objet']);
 		if( !$obj_perso )
 			security_block(URL_MANIPULATION, 'Objet non disponible');
@@ -115,13 +115,13 @@ case 'vente':
 		}
 		else
 		{ // Un seul exemplaire on vend directement
-			/// TODO: si on ne peut pas le mettre dans l'inventaire, essayer un terrain en ville
+			/// @todo si on ne peut pas le mettre dans l'inventaire, essayer un terrain en ville
 			$nombre = array_key_exists('nombre', $_GET) ? $_GET['nombre'] : 1;
 			if( $nombre > $nbr_achat || $nombre > $obj_perso[0] )
 				security_block(URL_MANIPULATION, 'Vous essayez de vendre trop d\'objets');
 			$obj->set_nombre($nombre);
 			$obj->recompose_texte();
-			///TODO: ajouter directement la possibilité de prendre plusieurs objets
+			///@todo ajouter directement la possibilité de prendre plusieurs objets
 			for($n=0; $n<$nombre; $n++)
 			{
 				if( $categorie )
@@ -154,7 +154,7 @@ case 'vente':
     			$requete = 'UPDATE hotel SET objet="'.$obj->get_texte().'" WHERE id='.$_GET['id'];
 				}
     		$db->query($requete);
-				/// TODO: péciser le nombre
+				/// @todo péciser le nombre
 				interf_alerte::enregistre(interf_alerte::msg_succes, $obj->get_nom().' vendu.');
     		$db->query('INSERT INTO journal VALUES(NULL, '.$res["id_vendeur"].', "achete", "", "", NOW(), "'.addslashes($obj->get_nom()).'", "'.$res['prix'].'", 0, 0)');
 			}
@@ -171,7 +171,7 @@ case 'offre':
 		$cout = ($_GET['prix'] + $taxe) * $_GET['nombre'];
 		if( $perso->get_star() >= $cout )
 		{
-			/// TODO: passer par un objet
+			/// @todo passer par un objet
 			$obj = $_GET['objet'];
 			if( $_GET['nombre'] > 1 )
 				$obj .= 'x'.$_GET['nombre'];
@@ -197,7 +197,7 @@ case 'offre':
 	}
 	break;
 case 'suppr':
-	/// TODO: passer par un objet
+	/// @todo passer par un objet
 	$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id='.$_GET['id'];
 	$req = $db->query($requete);
 	if( $res = $db->read_assoc($req) )
@@ -213,7 +213,7 @@ case 'suppr':
 				$db->query('INSERT INTO journal VALUES(NULL, '.$joueur->get_id().', "recup", "", "", NOW(), "'.sSQL(nom_objet($res['objet'])).'", 0, 0, 0)');
 				interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous avez bien récupéré votre objet.');
 			}
-			else /// TODO: à améliorer
+			else /// @todo à améliorer
 				interf_alerte::enregistre(interf_alerte::msg_erreur, $G_erreur);
 			break;
 		case 'achat':

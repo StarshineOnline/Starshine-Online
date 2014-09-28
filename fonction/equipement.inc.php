@@ -812,7 +812,7 @@ function verif_echange_both_royaume($id_echange, $id_r1, $id_r2)
 	else return false;
 }
 
-/// TODO: vérifier si elle est encore utilisée
+/// @todo vérifier si elle est encore utilisée
 function check_utilisation_objet($joueur, $objet)
 {
 	global $db;

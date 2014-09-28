@@ -15,24 +15,24 @@ $perso->check_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume
-///TODO: à améliorer
+///@todo à améliorer
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
-/// TODO: logguer triche
+/// @todo logguer triche
 if($W_row['type'] != 1)
 	exit;
 
 // On vérifie la diplomatie
-/// TODO: logguer triche
+/// @todo logguer triche
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Ville rasée
-/// TODO: logguer triche
+/// @todo logguer triche
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 
@@ -41,12 +41,12 @@ switch($action)
 {
 case 'prendre':
 	$fin = false;
-	/// TODO:  passer par les objets
+	/// @todo  passer par les objets
 	$requete = "SELECT * FROM classe_requis WHERE id_classe = '".sSQL($_GET['id'])."'";
 	$req = $db->query($requete);
 	while($row = $db->read_array($req))
 	{
-		/// TODO: loguer triche
+		/// @todo loguer triche
 		if($row['new'] == 'yes') $new[] = $row['competence'];
 		if($row['competence'] == 'classe')
 		{
@@ -74,7 +74,7 @@ case 'prendre':
 	if(!$fin)
 	{
 		$and = '';
-		/// TODO:  passer par les objets
+		/// @todo  passer par les objets
 		$requete = "SELECT * FROM classe_permet WHERE id_classe = '".sSQL($_GET['id'])."'";
 		$req = $db->query($requete);
 		$new = array();

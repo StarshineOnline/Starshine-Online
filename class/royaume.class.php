@@ -1283,7 +1283,7 @@ class royaume
                                     // actifs suivant le niveau moyen
     return $ref_ta;
   }
-  /// @TODo: à centraliser
+  ///@todo à centraliser
   const duree_actif = 172800;//3600 * 24 * 2
 
 	function add_point_victoire($nombre)
@@ -1507,7 +1507,7 @@ class royaume
 			return 1;
 			break;
 		}
-		///TODO: à améliorer
+		///@todo à améliorer
 		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);

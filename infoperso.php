@@ -13,7 +13,7 @@ if( array_key_exists('action', $_GET) && $_GET['action'] == 'infos_rez' )
 {
 	$princ = new interf_princ_ob();
 	$liste = $princ->add( new interf_bal_cont('ul', false, 'list-group') );
-	/// TODO: passer à l'objet
+	/// @todo passer à l'objet
 	$requete = 'SELECT * FROM rez WHERE id_perso = '.$_GET['id'];
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
@@ -37,7 +37,7 @@ $pj = new perso($_GET['id']);
 $pj->check_materiel();
 //Calcul de la distance qui sépare les personnages
 $distance = $perso->calcule_distance($pj);
-/// TODO: à améliorer
+/// @todo à améliorer
 if( ($perso->get_groupe() == 0 || $perso->get_groupe() != $pj->get_groupe() ) && ($distance > 3 || ($distance == 3 &&  $perso->get_y() > 190)) )
 	exit();
 

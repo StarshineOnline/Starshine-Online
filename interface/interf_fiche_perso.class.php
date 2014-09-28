@@ -79,7 +79,7 @@ class interf_fiche_perso_carac extends interf_cont
 			$this->temps->nouv_cell('Date / heure');
 			$this->aff_temps('Prochain PA', $perso->get_dernieraction() + $G_temps_PA);
 			// Gemme du troll
-			/// TODO: à centraliser
+			/// @todo à centraliser
 			if ($perso->is_enchantement('regeneration'))
 			{
 				$bonus_regen = $perso->get_enchantement('regeneration', 'effet') * 60;
@@ -92,7 +92,7 @@ class interf_fiche_perso_carac extends interf_cont
 			$this->aff_temps('Proch. régén. HP / MP ', $perso->get_regen_hp() + $tps_regen);
 			$this->aff_temps('Proch. augment. HP / MP ', $perso->get_maj_hp() + $G_temps_maj_hp);
 			$this->aff_temps('Plein de PAs', null, ($G_PA_max - $perso->get_pa())*$G_temps_PA);
-			/// TODO: à centraliser
+			/// @todo à centraliser
 			$regen_hp = $G_pourcent_regen_hp * $perso->get_hp_maximum();
 			$regen_mp = $G_pourcent_regen_mp * $perso->get_mp_maximum();
 			if($perso->is_buff('preparation_camp'))

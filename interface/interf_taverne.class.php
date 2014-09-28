@@ -22,7 +22,7 @@ class interf_taverne extends interf_ville_onglets
 		$this->onglets->add_onglet('Repos', 'taverne.php?type=repos', 'tab_repos', 'ecole_mag', $type=='repos');
 		$this->onglets->add_onglet('Bar', 'taverne.php?type=bar', 'tab_bar', 'ecole_mag', $type=='bar');
 		$this->onglets->add_onglet('Jeux', 'taverne.php?type=jeux', 'tab_jeux', 'ecole_mag', $type=='jeux');
-		/// TODO: quêtes
+		/// @todo quêtes
 		
 		switch(	$type )
 		{

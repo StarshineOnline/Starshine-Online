@@ -50,7 +50,7 @@ case 'soin':
 	$pet = new pet($_GET['id']);
 	$pet->get_monstre();
 	//Si on a assez de PV
-	/// TODO: centraliser cout
+	/// @todo centraliser cout
 	$cout = ceil($perso->get_hp_max() / 10);
 	if($perso->get_hp() <= $cout )
 	{
@@ -136,11 +136,11 @@ case 'lancer':
 	$pet = new pet($_GET['id']);
 	$monstre = $pet->get_def();
 	$buffs = explode(';', $monstre->get_sort_dressage());
-	///TODO: loguer ça ?
+	///@todo loguer ça ?
 	if( !in_array($buff, $buffs) )
   	break;
 	// On vérifie que l'on peut lancer un sort / une compétence
-	/// TODO: centraliser ça
+	/// @todo centraliser ça
 	if($perso->is_buff('petrifie'))
   {
     interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous êtes pétrifié, vous ne pouvez pas rien faire.');
@@ -197,7 +197,7 @@ interf_alerte::aff_enregistres($cadre);
 if($lance)
 	$cadre->add( $lance );
 interf_debug::aff_enregistres($cadre);
-/// TODO: remettre bouton debug
+/// @todo remettre bouton debug
 	
 $cadre->add( $G_interf->creer_dressage($perso, !$perso->est_mort()) );
 $interf_princ->maj_tooltips();

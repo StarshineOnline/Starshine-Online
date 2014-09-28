@@ -42,7 +42,7 @@ class interf_tour extends interf_batiment
 		$lst = $div->add( new interf_bal_cont('ul') );
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT *, GREATEST(ABS('.$this->tour->get_x().' - CAST(x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(y AS SIGNED))) as distance FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' AND statut="actif" ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
@@ -52,7 +52,7 @@ class interf_tour extends interf_batiment
 				continue;
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case pj') );
 			$lien = $li->add( new interf_lien_cont('infoperso.php?id='.$pj->get_id(), false, 'info_elt') );
-    	/// TODO: à améliorer
+    	/// @todo à améliorer
       // Cache sa classe ?
       if( $pj->get_cache_classe() == 2 )
         $classe = 'combattant';
@@ -109,7 +109,7 @@ class interf_tour extends interf_batiment
 		
 	
 		// Recherche des placements
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		$requete = 'SELECT p.nom, p.x, p.y, p.hp, p.debut_placement, p.fin_placement, b.nom as nom_bat, b.image, b.type, b.hp AS hp_max, r.race, d.'.$this->perso->get_race().' AS diplo, GREATEST(ABS('.$this->tour->get_x().' - CAST(p.x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(p.y AS SIGNED))) as distance FROM	placement p INNER JOIN batiment b ON b.id = p.id_batiment INNER JOIN royaume r ON r.id = p.royaume INNER JOIN diplomatie AS d ON r.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, b.type, b.nom';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))

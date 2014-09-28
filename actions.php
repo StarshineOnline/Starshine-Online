@@ -117,7 +117,7 @@ case 'nouveau':
 	if( $_GET['type'] == 's' )
 	{
 		$rounds = $G_round_total;
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		if( $perso->get_race() == 'orc' )
 			$rounds++;
 		$script->init_simple($rounds);

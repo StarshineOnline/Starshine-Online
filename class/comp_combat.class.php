@@ -52,10 +52,10 @@ class comp_combat extends comp
   {
   	global $Gtrad;
     if($complet)
-    {/// TODO: à utiliser
+    {/// @todo à utiliser
       return array('Description', 'RM', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée'/*, 'Prix HT (en magasin)'*/);
     }
-    else ///TODO: à faire (et à utiliser pour la liste d'achat)
+    else ///@todo à faire (et à utiliser pour la liste d'achat)
       return array('Stars');
   }
 
@@ -1016,7 +1016,7 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
 		foreach ($tmp_effets as $effect)
 			// Actif et passif sont inversés puisque c'est l'actif qui touche au bouclier
 			$degat = $effect->calcul_bloquage_reduction($passif, $actif, $degat);*/
-    // todo
+    // @todo
 
 		$att = $degat + $actif->get_force();
 		$def = $passif->get_vie() + round($passif->get_pp() / 100);

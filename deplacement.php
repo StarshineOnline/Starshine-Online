@@ -84,7 +84,7 @@ if($mouvement)
 	if ((($case->x == 244) AND ($case->y == 170 )) AND ($perso->get_tuto() == 1) AND ($perso->get_classe_id() == 1))
 	{
 		$perso->set_tuto($perso->get_tuto()+1);
-		/// TODO: à refaire
+		/// @todo à refaire
 		// <script type="text/javascript"> echo 'affichePopUp(\'texte_tuto.php\');'; </script>
 	}
 	if ($perso->get_classe_id() == 2)
@@ -92,7 +92,7 @@ if($mouvement)
 		if ((($case->x == 241) AND ($case->y == 171 )) AND ($perso->get_tuto() == 1) )
 		{
 			$perso->set_tuto($perso->get_tuto()+1);
-			/// TODO: à refaire
+			/// @todo à refaire
 			//<script type="text/javascript"> echo 'affichePopUp(\'texte_tuto.php\');'; </script>
 		}
 		if ((($case->x == 242) AND ($case->y == 168 )) AND ($perso->get_tuto() == 2) )
@@ -144,7 +144,7 @@ if($mouvement)
 			{
 				$row = $db->read_row($req);
 				$_SESSION['attaque_donjon'] = 'ok';
-				/// TODO: à refaire
+				/// @todo à refaire
 				//<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id_monstre= echo $row[0]; &type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />			
 			}
 		}
@@ -170,7 +170,7 @@ else
 }*/
 if( $donjon && $peu_bouger )
 	$perso->trigger_arene();
-// TODO: à refaire
+// @todo à refaire
 /*if(!$peu_bouger AND $cause != '') echo '<img src="image/pixel.gif" onLoad="alert(\''.$cause.'\');" />';
 check_son_ambiance();*/
 if( $action )

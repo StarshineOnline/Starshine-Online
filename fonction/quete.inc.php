@@ -194,7 +194,7 @@ function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 		}
 		$r++;
 	}
-  // Checke les achievements de quete: TODO: les mettres en recompense (cachee) de quete
+  // Checke les achievements de quete: @todo les mettres en recompense (cachee) de quete
   foreach (array('quete_kesalys' => 93,
                  'quete_pecheur' => 91,
                  'quete_ecolo' => 94)

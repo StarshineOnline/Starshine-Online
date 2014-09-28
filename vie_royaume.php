@@ -14,7 +14,7 @@ $interf_princ = $G_interf->creer_jeu();
 $perso = joueur::get_perso();
 
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
-/// TODO: vérifier les accès et loguer la triche
+/// @todo vérifier les accès et loguer la triche
 switch($action)
 {
 case 'candidature':
@@ -96,14 +96,14 @@ case 'retirer_candidature':
 		$candidats[0]->supprimer();
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Candidature retirée');
 	}
-	else /// TODO: loguer triche
+	else /// @todo loguer triche
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Candidature introuvable');
 	$interf_princ->set_gauche( $G_interf->creer_vie_royaume() );
 	break;
 case 'vote2':
 	$id_royaume = $Trace[$perso->get_race()]['numrace'];
 	$elections = elections::get_prochain_election($id_royaume, $perso->get_grade()->get_id() == 6);
-	/// TODO: passer à l'objet
+	/// @todo passer à l'objet
 	$requete = 'SELECT id FROM vote WHERE id_election = '.$elections[0]->get_id().' AND id_perso = '.$perso->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_array($req);

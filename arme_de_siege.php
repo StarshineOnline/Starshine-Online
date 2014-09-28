@@ -34,7 +34,7 @@ if($perso->get_x() == $ads->get_x() && $perso->get_y() == $ads->get_y() && $pers
 }
 else
 {
-	/// TODO: faire quelque chose
+	/// @todo faire quelque chose
 }
 
 

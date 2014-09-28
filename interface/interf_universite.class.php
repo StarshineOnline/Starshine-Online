@@ -113,11 +113,11 @@ class interf_universite extends interf_universite_base
 	function __construct(&$royaume)
 	{
 		parent::__construct($royaume);
-		/// TODO: se baser sur la bdd
+		/// @todo se baser sur la bdd
 		$quete = $royaume->get_id() == 7;
 		// Classes
 		$this->tbl = $this->centre->add( new interf_tableau('classes', 'table'.($quete?' reduit':'')) );
-		/// TODO: se baser sur la bdd
+		/// @todo se baser sur la bdd
 		// En tête
 		$rang = $this->classe->get_rang();
 		$this->tbl->nouv_cell('Rang 1', false, ($rang==1?'info':''));
@@ -393,7 +393,7 @@ class interf_bibliotheque extends interf_universite_base
 	function __construct(&$royaume, $id)
 	{
 		parent::__construct($royaume);
-		/// TODO: se baser sur la bdd
+		/// @todo se baser sur la bdd
 		if( $royaume->get_id() != 7 )
 			return;
 		$this->centre->add( new interf_bal_smpl('h3', 'Journal de Frankriss hawkeye') );

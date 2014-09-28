@@ -131,7 +131,7 @@ var mleft = <?php echo $mleft; ?>;
 
 function pose_drapeau(x, y)
 {
-  // TODO: poser une question ?
+  // @todo poser une question ?
 	//alert("pose_drapeau: " + x + "/" + y);
 	var url = 'drapeaux.php?posex=' + x + '&posey=' + y + '&mag_factor=' + mag;
 	if (mtop != 0) { url = url + '&mtop=' + mtop; }

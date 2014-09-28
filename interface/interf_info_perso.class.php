@@ -201,7 +201,7 @@ class interf_info_perso extends interf_cont
 			$mp->add( new interf_bal_smpl('div', round($this->pj->get_mp() / $this->pj->get_mp_max() * 100).'%', false, 'bulle_valeur') );
 		}
 		// position
-		/// TODO: gérer les coordonnées cachées
+		/// @todo gérer les coordonnées cachées
 	  $txt = 'Position : '.$pj->get_x().' / '.$pj->get_y().' - '.'distance : '.$distance;
 	  $div2->add( new interf_bal_smpl('span', $txt, 'pos_pj') );
 		// buffs

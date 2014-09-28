@@ -70,7 +70,7 @@ if( $check )
 		//Si pas de révolution, on cherche pour en déclencher une
 		else
 		{
-			/// TODO: vérifier qu'il n'y a pas d'élection universelle en cours
+			/// @todo vérifier qu'il n'y a pas d'élection universelle en cours
 			if(array_key_exists('action', $_GET) && $_GET['action'] == 'declenche' && date("d") <= 20 && date("d") > 1)
 			{
 				$revolution = new revolution();

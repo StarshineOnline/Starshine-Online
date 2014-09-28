@@ -30,7 +30,7 @@ class interf_vie_royaume_base extends interf_gauche
 		global $db;
 		if( $this->jauge_int )
 			return;
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT COUNT(*) FROM candidat WHERE id_election = '.$election->get_id();
 		$req = $db->query($requete);
 		$val = $db->read_array($req)[0];
@@ -42,7 +42,7 @@ class interf_vie_royaume_base extends interf_gauche
 		global $db;
 		if( $this->jauge_int )
 			return;
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT COUNT(*) FROM vote WHERE id_election = '.$election->get_id();
 		$req = $db->query($requete);
 		$val = $db->read_array($req)[0];
@@ -54,7 +54,7 @@ class interf_vie_royaume_base extends interf_gauche
 		global $db;
 		if( $this->jauge_int )
 			return;
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT COUNT(*) FROM vote_revolution WHERE id_revolution = '.$revolution->get_id();
 		$req = $db->query($requete);
 		$val = $db->read_array($req)[0];
@@ -79,7 +79,7 @@ class interf_vie_royaume extends interf_vie_royaume_base
 		interf_alerte::aff_enregistres($div);
 		// Infos
 		$infos = $div->add( new interf_bal_cont('div', 'infos_royaume') );
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$div_roi = $infos->add( new interf_bal_cont('div', 'roi') );
 		$div_roi->add( new interf_bal_smpl('strong', 'Roi actuel : ') );
 		$req = $db->query('SELECT nom FROM perso WHERE rang_royaume = 6 AND race = "'.$this->perso->get_race().'"');
@@ -180,7 +180,7 @@ class interf_vie_royaume extends interf_vie_royaume_base
 			}
 		}
 		
-		/// TODO: s'il n'y a toujours pas de jauge intérieure, afficher une avec l'évolution du mandat (temps écoulé)
+		/// @todo s'il n'y a toujours pas de jauge intérieure, afficher une avec l'évolution du mandat (temps écoulé)
 	}
 }
 
@@ -197,7 +197,7 @@ class interf_candidature extends interf_vie_royaume_base
 		{
 			$val_duree = $candidat[0]->get_duree();
 			$val_type = $candidat[0]->get_type();
-			/// TODO: passer à l'objet
+			/// @todo passer à l'objet
 			$req = $db->query('SELECT nom FROM perso WHERE id='.$candidat[0]->get_id_ministre_economie());
 			$val_min_eco = $db->read_array($req)[0];
 			$req = $db->query('SELECT nom FROM perso WHERE id='.$candidat[0]->get_id_ministre_militaire());
@@ -268,7 +268,7 @@ class interf_vote extends interf_vie_royaume_base
 		else
 			$this->aff_jauge_candidats($elections[0]);
 		$candidats = candidat::create('id_election',$elections[0]->get_id());
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT * FROM vote WHERE id_election = '.$elections[0]->get_id().' AND id_perso = '.$this->perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -316,7 +316,7 @@ class interf_infos_candidat extends interf_cont
 		$div = $this->add( new interf_bal_cont('div', 'type') );
 		$this->add( new interf_bal_smpl('strong', 'Prochaine élection : ') );
 		$this->add( new interf_bal_smpl('span', $candidat->get_type()) );
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		/// Ministre de l'économie
 		$req = $db->query('SELECT nom FROM perso WHERE id='.$candidat->get_id_ministre_economie());
 		$div = $this->add( new interf_bal_cont('div', 'ministre_economie') );

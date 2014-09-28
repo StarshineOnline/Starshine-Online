@@ -18,7 +18,7 @@ class interf_hotel_vente extends interf_ville_onglets
 		$this->icone = $this->set_icone_centre('encheres');
 		//$this->recherche_batiment('ecole_magie');
     // Nombre d'objets en vente
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -83,7 +83,7 @@ class interf_achat_hdv extends interf_liste_achat
 		global $db;
 		$this->categorie = $categorie;
 		$mois = 60 * 60 * 24 * 31;
-		/// TODO: passer par un objet
+		/// @todo passer par un objet
 		if( $categorie == 'perso' )
 		{
 			$requete = 'SELECT * FROM hotel WHERE type = "vente" AND id_vendeur='.joueur::get_perso()->get_id();
@@ -238,7 +238,7 @@ class interf_vente_objets extends interf_dialogBS
   {
   	$obj = objet_invent::factory($objet['objet']);
   	interf_dialogBS::__construct('Vente d\'objets');
-		/// TODO: passer par un objet
+		/// @todo passer par un objet
     $this->add( new interf_bal_smpl('p', 'Objet à vendre : '.$obj->get_nom()) );
     $form = $this->add( new interf_form('hotel.php?action=vente&type=vente&categorie='.$categorie.'&id='.$objet['id'], 'vente_hdv') );
 		$form->set_attribut('name', 'formulaire');
@@ -291,7 +291,7 @@ class interf_offre_achat extends interf_dialogBS
     case 'grimoire':
     	$objets = grimoire::create(null, null, 'prix ASC', false, 'type NOT LIKE "attr_perso"');
     	break;
-    /// TODO: log defaut
+    /// @todo log defaut
 		}
 		foreach($objets as $obj)
 		{

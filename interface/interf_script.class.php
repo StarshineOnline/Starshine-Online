@@ -11,7 +11,7 @@ class interf_liste_scripts extends interf_bal_cont
 	{
 		global $G_url, $db;
 		parent::__construct('ul');
-		/// TODO: passer à l'objet (et au polymorphisme)
+		/// @todo passer à l'objet (et au polymorphisme)
 		if( get_class($entite) == 'perso' )
 		{
 			$requete = "SELECT * FROM action_perso WHERE id_joueur = ".$entite->get_id()." ORDER BY nom ASC";
@@ -188,7 +188,7 @@ class interf_script extends interf_cont
 		$nom = $this->script->get_nom();
 		if( $nom !== null )
 		{
-			/// TODO: passer à l'objet (et au polymorphisme)
+			/// @todo passer à l'objet (et au polymorphisme)
 			if( get_class($entite) == 'perso' )
 			{
 				$script_attaque = recupaction_all($this->entite->get_action_a());
@@ -233,7 +233,7 @@ class interf_script extends interf_cont
 			$this->comps = array();
 			$apt = null;
 			$comp_sort=null;
-			/// TODO: passer à l'objet
+			/// @todo passer à l'objet
 			$sorts = $this->entite->get_sort_combat();
 			if( $sorts )
 			{

@@ -30,5 +30,5 @@ if($perso->get_x() == $tour->get_x() && $perso->get_y() == $tour->get_y() && $pe
 }
 else
 {
-	/// TODO: faire quelque chose
+	/// @todo faire quelque chose
 }

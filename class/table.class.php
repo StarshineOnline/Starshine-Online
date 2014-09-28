@@ -233,7 +233,7 @@ abstract class table
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @return array     Liste d'objets
 	* 
-	* @TODO: supprimer ?		
+	* @@todo supprimer ?		
 	*/
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{

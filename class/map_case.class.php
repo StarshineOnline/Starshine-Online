@@ -431,7 +431,7 @@ class map_case
 		{
 			if($bourg)
 			{
-				if(!$bourg) /// TODO: ????
+				if(!$bourg) /// @todo ????
 				{
 					$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
 					if(!$bonus && count($construction) > 0) return true;

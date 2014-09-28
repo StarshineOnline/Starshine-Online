@@ -15,14 +15,14 @@ class interf_ecurie extends interf_ville
 	function __construct(&$royaume, &$case)
 	{
 		global $db, $Gtrad;
-		/// TODO: centraliser
+		/// @todo centraliser
 		$max_ecurie = 10;
 		parent::__construct($royaume, $case);
 		$this->perso = joueur::get_perso();
 		$this->perso->get_pets(true);
 		$this->perso->get_ecurie(true);
 		// On regarde si on a une écurie personnelle
-		/// TODO: passer par les objets
+		/// @todo passer par les objets
 		$requete = 'SELECT b.effet FROM terrain AS t INNER JOIN terrain_construction AS c ON c.id_terrain = t.id INNER JOIN terrain_batiment AS b ON c.id_batiment = b.id WHERE b.type = "ecurie" AND t.id_joueur = '.$this->perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
@@ -46,7 +46,7 @@ class interf_ecurie extends interf_ville
 		// Créatures en ville
 		$div->add( new interf_bal_smpl('h4', 'Créatures en ville ('.$this->perso->nb_pet_ecurie().' / '.$max_ecurie.')') );
 		$liste = $div->add( new interf_bal_cont('ul', 'ecurie_ville') );
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		foreach($this->perso->ecurie as $pet)
 		{
 			$this->aff_creature($liste, $pet, true);
@@ -56,7 +56,7 @@ class interf_ecurie extends interf_ville
 		{
 			$div->add( new interf_bal_smpl('h4', 'Créatures dans votre écurie ('.$this->perso->nb_pet_ecurie_self().' / '.$row['effet'].')') );
 			$liste = $div->add( new interf_bal_cont('ul', 'ecurie_terrain') );
-			/// TODO: différencier les deux écuries
+			/// @todo différencier les deux écuries
 			foreach($this->perso->ecurie as $pet)
 			{
 				$this->aff_creature($liste, $pet, true);
@@ -65,7 +65,7 @@ class interf_ecurie extends interf_ville
 		// Créatures sur soi
 		$div->add( new interf_bal_smpl('h4', 'Créatures sur vous ('.$this->perso->nb_pet().' / '.$this->perso->get_comp('max_pet').')') );
 		$liste = $div->add( new interf_bal_cont('ul', 'creatures_perso') );
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		foreach($this->perso->pets as $pet)
 		{
 			$this->aff_creature($liste, $pet, false);

@@ -338,7 +338,7 @@ class objet_royaume extends objet_invent
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
 
-      /// TODO: à simplifier
+      /// @todo à simplifier
 			if ($case->get_info() == 1)
 			{
 				// Augmentation du compteur de l'achievement
@@ -399,7 +399,7 @@ class objet_royaume extends objet_invent
     else
     {
       // Bonne diplomatie ?
-      /// TODO: remplacer les conditions sur l'id par un bonus
+      /// @todo remplacer les conditions sur l'id par un bonus
       if( $R->get_diplo($perso->get_race()) != 127 && $this->get_type() != 'arme_de_siege' && $batiment->get_id() != 1 )  // id=1 : poste avancé
       {
         $princ->add( new interf_alerte('danger', true) )->add_message('Vous ne pouvez poser ce bâtimentque sur un territoire qui vous appartient');
@@ -407,7 +407,7 @@ class objet_royaume extends objet_invent
   		}
 
   		// Règles des distance entre bâtiments
-      /// TODO: on peut probablement simplifier ça
+      /// @todo on peut probablement simplifier ça
   		if($this->get_type() == 'bourg' || $this->get_type() == 'fort')
       {
   			// Distance d'une capitale
@@ -572,7 +572,7 @@ class objet_royaume extends objet_invent
     return true;
   }
 
-  /// TODO: logguer ?
+  /// @todo logguer ?
   function vendre_marchand(&$perso, &$princ) { return false; }
   function vendre_hdv(&$perso, &$princ, $prix) { return false; }
 }

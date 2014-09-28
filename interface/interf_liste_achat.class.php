@@ -60,7 +60,7 @@ abstract class interf_liste_achat extends interf_cont
 	protected function recherche_batiment(&$royaume, $batiment)
 	{
 		global $db;
-		///TODO: à améliorer
+		///@todo à améliorer
 		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$royaume->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);

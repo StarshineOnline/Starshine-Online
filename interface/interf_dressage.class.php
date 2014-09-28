@@ -58,7 +58,7 @@ class interf_dressage extends interf_cont
 		{
 			$this->add( new interf_bal_smpl('h4', 'Créatures que vous pouvez dresser sur la case ') );
 			$this->add( new interf_bal_smpl('p', 'Niveau maximal : '.$perso->max_dresse(), false, 'small') );
-			/// TODO: passer à l'objet
+			/// @todo passer à l'objet
 			$requete = 'SELECT mm.id, m.nom, mm.hp, m.level, m.lib, m.hp AS hp_max FROM map_monstre mm INNER JOIN monstre m ON mm.type = m.id WHERE mm.x = '.$perso->get_x().' AND mm.y = '.$perso->get_y().' AND m.affiche != \'h\' AND m.level <= '.$perso->max_dresse().' ORDER BY level ASC, nom ASC, id ASC';
 			$res = $db->query($requete);
 			if( $db->num_rows > 0 )
@@ -70,7 +70,7 @@ class interf_dressage extends interf_cont
 					$dresse = $li->add( new interf_lien('', 'dressage.php?id='.$row->id, false, 'icone icone-lapin') );
 					$dresse->set_tooltip('Dresser.');
 					$lien = $li->add( new interf_lien_cont('info_monstre.php?id='.$row->id) );
-					/// TODO: à améliorer
+					/// @todo à améliorer
 					$niveau = $row->level > 0 ? $row->level : 1;
 					$nbr_barre_total = min(max(ceil($this->perso->get_survie() / $niveau), 0), 100);
 					$nbr_barre = round($row->hp / $row->hp_max * $nbr_barre_total);
@@ -78,7 +78,7 @@ class interf_dressage extends interf_cont
 					$fiabilite = round((100 / $nbr_barre_total) / 2, 2);
 					$jauge = $lien->add( new interf_jauge_bulle(false, $nbr_barre, $nbr_barre_total, false, 'hp', false, 'jauge_case') );
 					$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
-					/// TODO: à améliorer
+					/// @todo à améliorer
 					$image = 'image/monstre/'.$row->lib;
 					$image .= file_exists($image.'_low.png') ? '_low.png' : '.png';
 					$lien->add( new interf_img($image) );

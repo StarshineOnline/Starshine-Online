@@ -15,24 +15,24 @@ $perso->check_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume
-///TODO: à améliorer
+///@todo à améliorer
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
-/// TODO: logguer triche
+/// @todo logguer triche
 if($W_row['type'] != 1)
 	exit;
 
 // On vérifie la diplomatie
-/// TODO: logguer triche
+/// @todo logguer triche
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Ville rasée
-/// TODO: logguer triche
+/// @todo logguer triche
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 
@@ -67,7 +67,7 @@ case 'prendre':
 	    {
 	      while($i < $nombre)
 	      {
-	      	/// TODO: passer par des objets
+	      	/// @todo passer par des objets
 	        $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet = '".sSQL($id_objet)."' AND objet_royaume.grade <= grade.rang  AND grade.id = ".$perso->get_rang_royaume();
 	        $req = $db->query($requete);
 	        $row = $db->read_array($req);
@@ -89,7 +89,7 @@ case 'prendre':
 	      $nom = $row['nom'] ;
 	      if($nombre > 1)
 				{
-					/// TODO: à améliorer 
+					/// @todo à améliorer 
 	          $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
 	          if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
 	          {

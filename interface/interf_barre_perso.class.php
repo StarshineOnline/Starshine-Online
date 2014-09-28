@@ -63,7 +63,7 @@ class interf_barre_perso extends interf_bal_cont
     $stars = $this->infos_perso->add( new interf_bal_smpl('div', $this->perso->get_star(), 'perso_stars') );
     $stars->set_tooltip('Votre argent&nbsp;: '.$this->perso->get_star().' stars', 'bottom');
     // attaque
-    /// TODO: passer à l'objet
+    /// @todo passer à l'objet
     $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
     $req = $db->query($requete);
     $row = $db->read_assoc($req);
@@ -99,7 +99,7 @@ class interf_barre_perso extends interf_bal_cont
     {
     	$creat = $this->infos_perso->add( new interf_bal_smpl('div', $creature->get_nom(), 'perso_dresse', 'perso_script') );
     	$monstre = new monstre( $creature->get_id_monstre() );
-    	/// TODO: utiliser une méthode pour obtenir l'image
+    	/// @todo utiliser une méthode pour obtenir l'image
 			$creat->set_attribut('style', 'background-image:url(\'./image/monstre/'.$monstre->get_lib().'.png\');');
     	$creat->set_tooltip('Votre créature principale&nbsp;: '.$creature->get_nom().' ('.$monstre->get_nom().')', 'bottom');
 		}
@@ -144,7 +144,7 @@ class interf_barre_perso extends interf_bal_cont
 	{
 		global $db;
 		$id = $grand?'perso_hp':'membre_hp_'.$id_membre;
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT count(*) FROM rez WHERE id_perso = '.$id_membre;
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -207,7 +207,7 @@ class interf_barre_perso extends interf_bal_cont
 	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
-			/// TODO: gérer les coordonnées cachées
+			/// @todo gérer les coordonnées cachées
 	    $txt = 'Pos. : '.$membre->get_x().' / '.$membre->get_y();
 	    $txt .= ' - '.'dist. : '.$dist;
 	    $pos->add( new interf_bal_smpl('span', $txt, null, 'membre_pos'.($dist>7?' trop_loin':'')) );

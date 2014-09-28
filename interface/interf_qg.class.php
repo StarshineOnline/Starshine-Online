@@ -25,7 +25,7 @@ class interf_qg extends interf_ville
 		
 		// Objets dans le dépôt
     $type = '';
-		// TODO: passer par les objets
+		// @todo passer par les objets
     $requete = 'SELECT o.nom, o.type, d.id_objet, d.id AS id_depot, COUNT(*) AS nbr_objet FROM depot_royaume as d, objet_royaume as o, grade as g WHERE d.id_objet = o.id AND g.id = '.$perso->get_rang_royaume().' AND o.grade <= g.rang AND id_royaume = '.$royaume->get_id().' GROUP BY d.id_objet ORDER BY o.type, o.nom ASC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))

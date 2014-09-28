@@ -88,7 +88,7 @@ class interf_arme_siege extends interf_cont
 			}
 		}
 		// Villes
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT map.x as x, map.y as y, nom, race, map.royaume FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x >= '.$x_min.' AND map.x <= '.$x_max.' AND map.y >= '.$y_min.' AND map.y <= '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0 AND royaume.race != "'.$this->perso->get_race().'"';
 		$req_v = $db->query($requete);
 		$row_v = $db->read_assoc($req_v);

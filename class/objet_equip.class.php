@@ -142,7 +142,7 @@ abstract class objet_equip extends objet_invent
       return false;
     }
     /// On vérifie que le slot n'est supérieur à la valeur max
-    /// TODO: loguer les tentatives de triche + centraliser valeur max ?
+    /// @todo loguer les tentatives de triche + centraliser valeur max ?
     if( $niveau > 3 )
     {
       $princ->add( new interf_alerte('danger', true) )->add_message('Niveau de slot invalide !');

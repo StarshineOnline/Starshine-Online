@@ -83,7 +83,7 @@ class terrain
 		return $this->id;
 	}
 
-	///TODO: à renommer
+	///@todo à renommer
 	static function recoverByIdJoueur($id_joueur)
 	{
 		global $db;

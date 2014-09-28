@@ -20,7 +20,7 @@ class interf_echanges extends interf_data_tbl
 		$this->nouv_cell('Statut');
 		$this->nouv_cell('Date');
 		
-		/// TODO: paser à l'objet
+		/// @todo paser à l'objet
 		$echanges = recup_tout_echange_perso($perso->get_id());
 		foreach($echanges as $ech)
 		{
@@ -35,7 +35,7 @@ class interf_echanges extends interf_data_tbl
 	{
 		global $G_url;
 		$id_autre = $echange['id_j1'] == $this->perso->get_id() ? $echange['id_j2'] : $echange['id_j1'];
-		/// TODO: paser à l'objet
+		/// @todo paser à l'objet
 		$autre = recupperso_essentiel($id_autre);
 		$this->nouv_ligne();
 		$lien = new interf_lien($echange['id_echange'], $G_url->get('id', $echange['id_echange']));
@@ -55,7 +55,7 @@ class interf_echange extends interf_cont
 	{
 		global $G_url;
 		$this->perso = &joueur::get_perso();
-		/// TODO: paser à l'objet
+		/// @todo paser à l'objet
 		if( $id )
 		{
 			$G_url->add('id', $id);
@@ -109,7 +109,7 @@ class interf_echange extends interf_cont
 			$texte =  'Vous proposez';
 		else
 		{
-			/// TODO: paser à l'objet
+			/// @todo paser à l'objet
 			$autre = recupperso_essentiel($this->echange['id_j1']);
 			$texte = $autre['nom'].' propose';
 		}
@@ -123,7 +123,7 @@ class interf_echange extends interf_cont
 		{
 			if($obj['type'] == 'objet' && $obj['id_j'] == $id_perso)
 			{
-				/// TODO: ajouter popover d'infos sur l'objet lors d'un click (et image ?)
+				/// @todo ajouter popover d'infos sur l'objet lors d'un click (et image ?)
 				$nom = $obj['objet'][0] == 'h' ? 'Objet non indentifié' : nom_objet($obj['objet'], true);
 				$li = $lst->add( new interf_bal_cont('li', false, 'info_case objet') );
 				$li->add( new interf_bal_smpl('span', $nom) );
@@ -212,7 +212,7 @@ class interf_echange extends interf_cont
 			$lien->set_attribut('href', $G_url->get('action', 'annuler'));
 			$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez vous annuler cet échange ?\');');
 		}
-    /// TODO: finir la possibilité d'enregistrer sans valider
+    /// @todo finir la possibilité d'enregistrer sans valider
     /*$enregistrer = $div_btns->add( new interf_chp_form('submit', 'bouton', false, 'Enregistrer', false, 'btn btn-default') );
     $enregistrer->set_attribut('type', 'button');
     $enregistrer->set_attribut('onclick', 'return charger_formulaire(\'echange\');');

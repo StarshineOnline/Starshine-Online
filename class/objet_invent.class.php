@@ -349,7 +349,7 @@ abstract class objet_invent extends table
   {
     global $G_taux_vente;
 		$modif_prix = 1;
-    /// TODO: mettre le maxmum ailleurs
+    /// @todo mettre le maxmum ailleurs
     $slot = $this->get_slot();
 		if( $slot > 0 && $slot < 3 )
 		{
@@ -387,7 +387,7 @@ abstract class objet_invent extends table
   {
     global $db;
     // On vérifie qu'il n'est pas déjà au maximum d'objets en vente
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -425,7 +425,7 @@ abstract class objet_invent extends table
 		$perso->supprime_objet($this->get_texte(), 1);
 		$perso->set_star($perso->get_star() - $taxe);
 		$perso->sauver();
-		/// TODO: passer par la nouvelle méthode
+		/// @todo passer par la nouvelle méthode
 		$R->set_star($R->get_star() + $taxe);
 		$R->sauver();
 		$requete = 'UPDATE argent_royaume SET hv = hv + '.$taxe.' WHERE race = "'.$R->get_race().'"';
@@ -447,12 +447,12 @@ abstract class objet_invent extends table
   {
     if( $this->identifie )
     {
-      /// TODO: ajouter un log de triche
+      /// @todo ajouter un log de triche
 			$princ->add( new interf_alerte('warning') )->add_message('L\'objet est déjà identifié !');
   		return false;
     }
 		$materiel = $perso->recherche_objet('o2');
-    /// TODO: centraliser le coût
+    /// @todo centraliser le coût
 		if( !$materiel )
     {
       $princ->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas de materiel d\'identification');
@@ -468,7 +468,7 @@ abstract class objet_invent extends table
     if( comp_sort::test_potentiel($perso->get_identification(), .2*pow($this->prix, .666)) )
     {
 			//On remplace l'objet par celui identifiée
-      /// TODO: à refaire
+      /// @todo à refaire
 			//$obj = mb_substr($perso->get_inventaire_slot_partie($slot), 1);
       $this->identifie = true;
       $this->recompose_texte();

@@ -20,7 +20,7 @@ class interf_terrain_chantier extends interf_ville
 		// Icone & jauge extérieure
 		$icone = $this->set_icone_centre('architecture');
 		$icone->set_tooltip('Bâtiments en chantier');
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT count(*) FROM terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = "'.$royaume->get_race().'"';
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -35,7 +35,7 @@ class interf_terrain_chantier extends interf_ville
 		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ') );
 		interf_alerte::aff_enregistres($div);
 		$this->liste = $div->add( new interf_bal_cont('ul') );
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT terrain_chantier.id as id, id_terrain, id_batiment, point, star_point FROM terrain_chantier LEFT JOIN terrain ON terrain.id = terrain_chantier.id_terrain LEFT JOIN perso ON terrain.id_joueur = perso.ID WHERE perso.race = "'.$royaume->get_race().'" ORDER BY star_point DESC';
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
@@ -61,7 +61,7 @@ class interf_terrain_chantier extends interf_ville
 			$construire->add( new interf_bal_smpl('span', '10 PA', false, 'xsmall') );		
 			$construire->set_tooltip('Constuire (10 PA)');
 		}
-		/// TODO: revoir objets
+		/// @todo revoir objets
 		$hp = $li->add( new interf_jauge_bulle('Points de construction', $chantier->point, $batiment->point_structure, false, 'avance', false, 'jauge_case') );
 		$li->add( new interf_bal_smpl('span', ucwords($batiment->type)) );
 		$li->add( new interf_bal_smpl('span', $prix.' stars par 100 point', false, 'xsmall') );

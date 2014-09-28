@@ -66,7 +66,7 @@ class interf_liste_messages extends interf_cont
 				if($sujet->id_dest != 0)
 				{
 					$id_interlocuteur =  $sujet->id_dest != $perso->get_id() ? $sujet->id_dest : $sujet->id_auteur;
-					/// TODO: passer à l'objet
+					/// @todo passer à l'objet
 					$interlocuteur = recupperso_essentiel($id_interlocuteur);
 					$nom_interlocuteur = $interlocuteur['nom'];
 				}
@@ -78,7 +78,7 @@ class interf_liste_messages extends interf_cont
 					$classe .= 'important';
 				$lgn = $tbl->nouv_ligne('sujet_'.$sujet->id_thread, $classe);
 				//$lgn->set_attribut('onclick', 'return charger($(this).find(\'a\').attr(\'href\'));');
-				/// TODO: à améliorer
+				/// @todo à améliorer
 				$titre = $sujet->titre ? $sujet->titre : $sujet->get_messages(1, 'ASC')[0]->titre;
 				$titre = htmlspecialchars(stripslashes($titre));
 				$tbl->nouv_cell( new interf_lien($titre, $url->get('action', 'lire')) );

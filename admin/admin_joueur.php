@@ -6,7 +6,7 @@ $textures = false;
 $admin = true;
 
 function is_pnj($row) {
-  // TODO
+  // @todo
   return true;
 }
 

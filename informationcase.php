@@ -29,7 +29,7 @@ if( !$case )
 	exit();
 //Calcul de la distance qui sépare le joueur de la case en question
 $distance = $perso->calcule_distance($case);//detection_distance($case, convert_in_pos($perso->get_x(), $perso->get_y()));
-/// TODO: à améliorer
+/// @todo à améliorer
 if( $distance > 3 || ($distance == 3 &&  $perso->get_y() > 190) )
 	exit();
 $coord_x = $case->get_x();

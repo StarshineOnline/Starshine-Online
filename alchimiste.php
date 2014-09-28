@@ -17,12 +17,12 @@ if( $action == 'infos' )
 	{
 	case 'objet':
 		$objet = new objet($_GET['id']);
-		///TODO: passer par $G_interf
+		///@todo passer par $G_interf
 	  new interf_infos_popover($objet->get_noms_infos(), $objet->get_valeurs_infos());
 	  break;
 	case 'recette':
 		$recette = new alchimie_recette($_GET['id']);
-		///TODO: passer par $G_interf
+		///@todo passer par $G_interf
 	  new interf_infos_popover($recette->get_noms_infos(), $recette->get_valeurs_infos());
 	  break;
 	}
@@ -36,7 +36,7 @@ $perso->check_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume & case
-/// TODO: logguer triche
+/// @todo logguer triche
 $case = new map_case($perso->get_pos());
 $R = new royaume($case->get_royaume());
 if( !$case->is_ville(true, 'alchimiste') )
@@ -45,12 +45,12 @@ $ville = $case->is_ville(true);
 
 
 // On vérifie la diplomatie
-/// TODO: logguer triche
+/// @todo logguer triche
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Ville rasée
-/// TODO: logguer triche
+/// @todo logguer triche
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	

@@ -23,7 +23,7 @@ class interf_ville_entree_base extends interf_gauche
 		
 		// Ligne pour le message
 		$this->message = $this->centre->add( new interf_bal_cont('p') ); 
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		$this->message->add( new interf_txt('&nbsp;') );
 		
 		// Cadre principal
@@ -92,7 +92,7 @@ class interf_ville_entree extends interf_ville_entree_base
 	protected function aff_vente()
 	{
 		global $db;
-		///TODO: à améliorer
+		///@todo à améliorer
 		//Récupère tout les royaumes qui peuvent avoir des items dans l'HV
 		$requete = 'SELECT * FROM diplomatie WHERE race = "'.$this->royaume->get_race().'"';
 		$req = $db->query($requete);
@@ -135,7 +135,7 @@ class interf_ville_amende extends interf_ville_entree_base
 		$perso = joueur::get_perso();
 		parent::__construct($royaume);
 		
-		///TODO: utiliser $Gtrad
+		///@todo utiliser $Gtrad
 		if( $amende['statut'] != 'normal' )
 			$this->message->add( new interf_txt('Vous êtes considéré comme '.$amende['statut'].' par votre royaume.') );
 		if( $erreur )

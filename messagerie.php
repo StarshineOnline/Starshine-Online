@@ -63,7 +63,7 @@ case 'nouveau_sujet':
 	}
 	if( array_key_exists('destinataire', $_POST) )
 	{
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT id FROM perso WHERE nom = "'.$_POST['destinataire'].'"';
 		$req = $db->query($requete);
 		$row = $db->read_row($req);

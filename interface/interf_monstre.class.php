@@ -17,7 +17,7 @@ class interf_monstre extends interf_cont
 		$this->perso = &joueur::get_perso();
 		$this->entite = &entite::factory('monstre', $entite, $this->perso);
 		$monstre = &$entite->get_def();
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		$this->incarn = &$entite;
 		$this->def = &$monstre;
 		$distance = $this->perso->calcule_distance($entite);
@@ -63,7 +63,7 @@ class interf_monstre extends interf_cont
 			}
 			$div = $infos_monstre->add( new interf_bal_cont('div') );
 			// HP
-			/// TODO: à améliorer
+			/// @todo à améliorer
 			$niveau = $this->entite->get_level() > 0 ? $this->entite->get_level() : 1;
 			$nbr_barre_total = min(max(ceil($this->perso->get_survie() / $niveau), 0), 100);
 			$nbr_barre = round($this->entite->get_hp() / $this->entite->get_hp_max() * $nbr_barre_total);
@@ -180,7 +180,7 @@ class interf_monstre extends interf_cont
 		if($coeff >= 13)
 		{
 			$pp = $lg->nouv_elt('PM', $this->entite->get_pm());
-			///TODO: à améliorer
+			///@todo à améliorer
 			$pp->set_tooltip('Réduction des dégâts magiques de '.round(calcul_pp($pm * $this->entite->get_puissance() / 12),1).' %', 'bottom');
 		}
 		if($coeff >= 14)

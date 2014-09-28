@@ -55,7 +55,7 @@ case 'modifier':
 	{
 		$receveur = new perso($_GET['perso']);
 		//On créé l'échange
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = "INSERT INTO echange(id_j1, id_j2, statut, date_debut, date_fin, message_j1, message_j2) VALUES(".$perso->get_id().", ".$receveur->get_id().", 'creation', ".time().", ".(time() + 100000).", '', '')";
 		$db->query($requete);
 		$echange = recup_echange($db->last_insert_id());
@@ -97,7 +97,7 @@ case 'modifier':
 	if( !array_key_exists('bouton', $_GET) || $_GET['bouton'] == 'Valider' )
 	{
 		//On passe l'échange en mode proposition
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		switch( $echange['statut'] )
 		{
 		case 'creation':
@@ -107,7 +107,7 @@ case 'modifier':
 			$nouv_statut = 'finalisation';
 			break;
 		default:
-			/// TODO: loguer l'erreur
+			/// @todo loguer l'erreur
 			$nouv_statut = false;
 		}
 		if( $nouv_statut )
@@ -119,7 +119,7 @@ case 'modifier':
 	}
 	break;
 case 'annuler':
-	/// TODO: passer à l'objet
+	/// @todo passer à l'objet
 	$requete = "UPDATE echange SET statut = 'annule' WHERE id_echange = ".sSQL($_GET['id']);
 	$db->query($requete);
 	interf_alerte::enregistre(interf_alerte::msg_succes, 'L\'échange a été supprimé.');
@@ -180,7 +180,7 @@ case 'valider':
 		}
 	}
 	//On échange les stars
-	/// TODO: à améliorer
+	/// @todo à améliorer
 	$diff_stars = intval($echange['star'][$perso->get_id()]['objet']) - intval($echange['star'][$receveur->get_id()]['objet']);
 	$perso->add_star( -$diff_stars );
 	$receveur->add_star( $diff_stars );

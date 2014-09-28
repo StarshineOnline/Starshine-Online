@@ -42,10 +42,10 @@ class comp_jeu extends comp
   {
   	global $Gtrad;
     if($complet)
-    {/// TODO: à utiliser
+    {/// @todo à utiliser
       return array('Description', 'PA', 'MP', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée'/*, 'Prix HT (en magasin)'*/);
     }
-    else ///TODO: à faire (et à utiliser pour la liste d'achat)
+    else ///@todo à faire (et à utiliser pour la liste d'achat)
       return array(/*'Stars'*/);
   }
 

@@ -32,7 +32,7 @@ class interf_tribunal extends interf_ville
 		
 		// titre & alertes
 		$this->centre->add( new interf_bal_smpl('p', 'Liste des bandits & criminels') );
-		/// TODO: ajuster la taille des alertes
+		/// @todo ajuster la taille des alertes
 		$nbr_alertes = interf_alerte::aff_enregistres($this->centre);
 		// criminels
 		$tbl = $this->centre->add( new interf_lst_criminels($royaume, 383 - $nbr_alertes * 30) );
@@ -52,7 +52,7 @@ class interf_lst_criminels extends interf_data_tbl
 		$this->nouv_cell('Prime');
 		$this->nouv_cell('&nbsp');
 		
-		/// TODO: passer par un objet
+		/// @todo passer par un objet
 		$requete = 'SELECT * FROM perso RIGHT JOIN amende ON amende.id_joueur = perso.id WHERE perso.amende > 0 AND amende.statut IN ("bandit", "criminel") AND race = "'.$royaume->get_race().'"';
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
@@ -76,7 +76,7 @@ class interf_prime extends interf_dialogBS
   function __construct($id, &$cible)
   {
   	interf_dialogBS::__construct('Prime');
-		/// TODO: passer par un objet
+		/// @todo passer par un objet
     $this->add( new interf_bal_smpl('p', 'Cible : '.$cible) );
     $form = $this->add( new interf_form('tribunal.php?action=prime&id='.$id, 'prime') );
 		$form->set_attribut('name', 'formulaire');

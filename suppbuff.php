@@ -11,7 +11,7 @@ include_once(root.'inc/fp.php');
 
 $buff = new buff($_GET['id']);
 
-/// TODO: loguer triche
+/// @todo loguer triche
 if( $buff->get_debuff() )
 {
 	exit();

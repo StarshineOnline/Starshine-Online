@@ -26,7 +26,7 @@ class interf_terrain extends interf_ville_onglets
 		$ids = array();
 		$ids_constr = array();
 		// Chantiers
-		/// TODO: centraliser la taille max (ou la lire dans la bdd ?)
+		/// @todo centraliser la taille max (ou la lire dans la bdd ?)
 		$aggrandissement = $terrain->nb_case < 5;
 		if( count($chantiers) )
 		{
@@ -47,7 +47,7 @@ class interf_terrain extends interf_ville_onglets
 		else
 			$liste = false;
 		// Constructions
-		/// TODO: sélectionner un onglet par défaut quand il n'y a pas d'onglet "chantiers"
+		/// @todo sélectionner un onglet par défaut quand il n'y a pas d'onglet "chantiers"
 		foreach($constructions as $construction)
 		{
 			$batiment = $construction->get_batiment();
@@ -61,13 +61,13 @@ class interf_terrain extends interf_ville_onglets
 				$utilisation += count($coffre->get_coffre_inventaire()) / $batiment->effet * $batiment->nb_case;
 				break;
 			case 'laboratoire':
-				/// TODO: à faire
+				/// @todo à faire
 				break;
 			case 'ecurie':
 				$utilisation += $this->perso->nb_pet_ecurie_self() / $batiment->effet * $batiment->nb_case;
 				break;
 			case 'grenier':
-				/// TODO: à faire
+				/// @todo à faire
 				break;
 			}
 			if( $batiment->type == 'ecurie' )
@@ -90,7 +90,7 @@ class interf_terrain extends interf_ville_onglets
 			}
 		}
 		// Améliorations possibles
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$types = implode(', ', $types);
 		$not_in_types = $implode_types ? 'AND type NOT IN ('.$types.')' : '';
 		$ids_constr = implode(', ', $ids_constr);
@@ -110,7 +110,7 @@ class interf_terrain extends interf_ville_onglets
 			$div_ch->add( new interf_bal_smpl('p', 'Place restante : '.$terrain->place_restante().' / '.$terrain->nb_case) );
 			if( $aggrandissement )
 			{
-				/// TODO: passer à l'objet
+				/// @todo passer à l'objet
 				$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = 'agrandissement' AND requis = ".$terrain->nb_case;
 				$req2 = $db->query($requete);
 				$row = $db->read_assoc($req);
@@ -125,18 +125,18 @@ class interf_terrain extends interf_ville_onglets
 			// nouveau chantier
 			if( $n_chant > 0 )
 			{
-				/// TODO: faire dépendre le max 
+				/// @todo faire dépendre le max 
 				$div_ch->add( new interf_bal_smpl('h4', 'Nouveau chantier :') );
 				$form = $div_ch->add( new interf_form('terrrain?action=chantier', 'nouv_chantier') );
 				$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
 				$div_sel->add( new interf_bal_smpl('span', 'Construire', false, 'input-group-addon') );
 				$sel = $div_sel->add( new interf_select_form('batiment', false, false, 'form-control') );
-				/// TODO: ne sélectionner que ceux qui sont constructibles avec les stars disponibles
+				/// @todo ne sélectionner que ceux qui sont constructibles avec les stars disponibles
 				while($row = $db->read_assoc($req))
 				{
 					$sel->add_option($row['nom'].' ('.$row['point_structure'].' points de structure)', $row['id']);
 				}
-				/// TODO: faire dépendre le max des stars du personnage et du nombre de points de structure
+				/// @todo faire dépendre le max des stars du personnage et du nombre de points de structure
 		    $chp1 = $form->add_champ_bs('number', 'stars', null, '0', 'Rémunéreration des travailleurs', 'stars / point');
 		    $chp1->set_attribut('min', 1);
 		    $chp1->set_attribut('step', 1);
@@ -183,7 +183,7 @@ class interf_coffre extends interf_cont
 	}
 	function aff_objet(&$liste, $index, $objet, $coffre)
 	{
-		/// TODO: possibilité de ne transférer qu'une partie d'un stack
+		/// @todo possibilité de ne transférer qu'une partie d'un stack
 		$obj = objet_invent::factory($objet);
 		$li = $liste->add( new interf_bal_cont('li') );
 		$url = 'terrain.php?id='.$this->id.'&action='.($coffre?'prendre':'deposer').'&index='.$index;
@@ -208,7 +208,7 @@ class interf_laboratoire extends interf_cont
 		$this->id = $construction->id;
 		$types = array();
 		//on cherche si il a des instruments
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = "SELECT id, id_laboratoire, id_instrument, type FROM terrain_laboratoire WHERE id_laboratoire = ".$construction->id;
 		$req = $db->query($requete);
 		interf_alerte::aff_enregistres($this);
@@ -271,7 +271,7 @@ class interf_grenier extends interf_cont
 	protected $perso;
 	function __construct(&$royaume, $construction)
 	{
-		/// TODO: à faire
+		/// @todo à faire
 		/*
 					if(array_key_exists('famine', $_GET))
 					{

@@ -17,11 +17,11 @@ $map_monstre = new map_monstre($_GET['id']);
 $perso = joueur::get_perso();
 //Calcul de la distance qui sépare le joueur du monstre
 $distance = $perso->calcule_distance($map_monstre);
-/// TODO: à améliorer
+/// @todo à améliorer
 if( $distance > 3 || ($distance == 3 &&  $perso->get_y() > 190) )
 	exit();
 	
-// TODO: monstre spécifiques à une quête
+// @todo monstre spécifiques à une quête
 		
 // Cadre de la partie droite
 $cadre = $interf_princ->set_droite( $G_interf->creer_droite($map_monstre->get_nom()) );

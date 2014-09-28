@@ -26,7 +26,7 @@ class interf_bourg_fort extends interf_batiment
 	{
 		parent::__construct($construction/*, $url*/);
 		$type = $this->batiment->get_type();
-		/// TODO: à améliorer
+		/// @todo à améliorer
 		$bats = batiment::create('type', $type, 'cout ASC');
 		$i=0;
 		foreach($bats as $b)

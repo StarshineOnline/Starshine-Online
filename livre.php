@@ -49,7 +49,7 @@ else
 }
 $id_cible = array_key_exists('cible', $_GET) ? $_GET['cible'] : $perso->get_id();
 $type_cible = array_key_exists('type_cible', $_GET) ? $_GET['type_cible'] : 'perso';
-///TODO: à améliorer
+///@todo à améliorer
 $auto_cible = false;
 if($type_cible == 'perso')
 {
@@ -79,7 +79,7 @@ if( array_key_exists('action', $_GET) )
 		$cadre->add( $G_interf->creer_livre_sortcomp($type, $perso, $categorie, !$perso->est_mort()) );
 		$cadre->code_js('maj_tooltips();');
 		exit;
-	/// TODO: à améliorer
+	/// @todo à améliorer
 	case 'favori':
 		switch( $type )
 		{
@@ -92,7 +92,7 @@ if( array_key_exists('action', $_GET) )
 	    $db->query($requete);
 	    break;
 	  default:
-	  	/// TODO: loguer triche
+	  	/// @todo loguer triche
 		}
     break;
 	case 'suppr_favori':
@@ -107,7 +107,7 @@ if( array_key_exists('action', $_GET) )
 	    $db->query($requete);
 	    break;
 	  default:
-	  	/// TODO: loguer triche
+	  	/// @todo loguer triche
 		}
     break;
 	case 'lancer_groupe':
@@ -121,7 +121,7 @@ if( array_key_exists('action', $_GET) )
     	security_block(URL_MANIPULATION, 'Lancement hors combat non autorisé');
 	  }
 		// On vérifie que c'est connu et qu'on a les prérequis (on ne sait jamais)
-		///TODO: loguer ça ?
+		///@todo loguer ça ?
 		if( !$comp_sort->est_connu($perso, 'lancer') || ! $comp_sort->verif_prerequis($perso, 'lancer') )
     	break;
 		// On vérifie que l'on peut lancer un sort / une compétence
@@ -136,7 +136,7 @@ if( array_key_exists('action', $_GET) )
 			break;
 	  }
 	  // On vérifie le type de cible
-		///TODO: loguer ça ?
+		///@todo loguer ça ?
 		$cible_ok = true;
 	  switch( $comp_sort->get_cible() )
 	  {
@@ -233,7 +233,7 @@ if( array_key_exists('action', $_GET) )
     	$interf_princ->maj_perso();
 
       // Augmentation du compteur de l'achievement
-      /// TODO: à remettre au bon endroit
+      /// @todo à remettre au bon endroit
       /*if($buff)
       {
         $achiev = $perso->get_compteur('buff');
@@ -270,7 +270,7 @@ if( array_key_exists('action', $_GET) )
 } // fin action
 
 $interf_princ = $G_interf->creer_jeu();
-/// TODO: à améliorer
+/// @todo à améliorer
 if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 {
 	// Cadre de la partie droite
@@ -302,7 +302,7 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 		$tabs->add_onglet($img, 'livre.php?type=comp_combat&action=onglet', 'tab_comp_combat', 'invent', $type == 'comp_combat');
 	}
 	// Si le perso a des recettes d'alchimie, affichage de l'onglet correspondant
-	/// TODO: à améliorer
+	/// @todo à améliorer
 	$requete = 'SELECT * FROM perso_recette WHERE id_perso = '.$perso->get_id().' LIMIT 0, 1';
 	$req = $db->query($requete);
 	if( $db->num_rows($req) )

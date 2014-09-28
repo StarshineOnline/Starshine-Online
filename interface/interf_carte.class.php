@@ -25,14 +25,14 @@ class interf_carte extends interf_tableau
 		parent::__construct($id, null, 'carte_bord_haut');
 
     $this->grd_img = true.
-    /// TODO: réduction de la vue en donjon
+    /// @todo réduction de la vue en donjon
 
 		$this->x_min = $x - $champ_vision;
 		$this->x_max = $x + $champ_vision;
 		$this->y_min = $y - $champ_vision;
 		$this->y_max = $y + $champ_vision;
 
-    /// TODO: Bordure de carte
+    /// @todo Bordure de carte
 
 		// Bord haut
 		$this->nouv_cell('&nbsp;', 'carte_bord_haut_gauche');
@@ -44,7 +44,7 @@ class interf_carte extends interf_tableau
 		// On récupère les infos sur les cases
 		$infos_cases = map::get_valeurs('decor,royaume,info,type', 'x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max, array('x','y'));
     // Calques
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $req = $db->query("select * from map_type_calque");
     while($row = $db->read_object($req))
       $calques[$row->type] = $row;
@@ -80,9 +80,9 @@ class interf_carte extends interf_tableau
     $img = 'image/personnage'.($this->grd_img?'':'_low').'/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]['type'].'.png';
     $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
 
-    /// TODO: repères
-    /// TODO: couche donjons
-    /// TODO: calque atmosphere
+    /// @todo repères
+    /// @todo couche donjons
+    /// @todo calque atmosphere
     // calques terrain
 
     // Éléments à afficher
@@ -180,7 +180,7 @@ class interf_carte extends interf_tableau
   protected function afficher_pj(&$perso=null)
   {
     global $Tclasse, $db;
-    /// TODO: à améliorer
+    /// @todo à améliorer
     if( $perso )
       $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
     else
@@ -193,7 +193,7 @@ class interf_carte extends interf_tableau
       $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
       if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
         continue;
-    	/// TODO: à améliorer
+    	/// @todo à améliorer
       // Cache sa classe ?
       $div = $this->cases[$p->get_y()][$p->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       if( $p->get_cache_classe() == 2 )
@@ -212,7 +212,7 @@ class interf_carte extends interf_tableau
 
   protected function afficher_pnj()
   {
-    /// TODO: à améliorer
+    /// @todo à améliorer
 		$pnj = pnj::get_valeurs('x, y, image', 'x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max);
     foreach($pnj as $p)
     {
@@ -229,7 +229,7 @@ class interf_carte extends interf_tableau
   {
     global $db;
     $perso = joueur::get_perso();
-    /// TODO: à améliorer
+    /// @todo à améliorer
     $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
@@ -245,7 +245,7 @@ class interf_carte extends interf_tableau
 
   protected function afficher_claques_terrain()
   {
-    /// TODO: à améliorer
+    /// @todo à améliorer
     global $db;
     $req = $db->query("select * from map_type_calque");
     while($row = $db->read_object($req))

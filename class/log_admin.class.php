@@ -348,7 +348,7 @@ class log_admin extends log_admin_db {
 		{
 			while($row = $db->read_assoc($req))
 			{
-				// TODO: fonctions diverses ...
+				// @todo fonctions diverses ...
 				if ($row['nom'] == null) $row['nom'] = '<em>'.$row['type'].'</em>';
 				if ($table)
 					$out .= "<tr id=\"id$row[id]\"><td><small>$row[date]</small></td><td>$row[nom]</td><td>$row[type]</td><td>$row[message]</td></tr>";

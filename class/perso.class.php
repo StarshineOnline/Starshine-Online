@@ -1603,7 +1603,7 @@ class perso extends entite
 		global $db, $G_erreur;
 		$equip = false;
 		$conditions = array();
-    // TODO: vérifier que l'objet est bien possédé et intégré sa supression du sac
+    // @todo vérifier que l'objet est bien possédé et intégré sa supression du sac
 		if($objet_d = decompose_objet($objet))
 		{
 			//print_r($objet_d);
@@ -2005,7 +2005,7 @@ class perso extends entite
 	function register_item_effet($id, $effet, $item = null)
 	{
 		switch ($id)
-			{ // TODO: les autres, c'est quoi donc ?
+			{ // @todo les autres, c'est quoi donc ?
 			case 1:
 				$this->add_bonus_permanents('regen_hp', $effet);
 				break;
@@ -3109,7 +3109,7 @@ class perso extends entite
 		/*$arme = $this->inventaire_pet()->arme_pet;
 		if($arme)
 			$distance += $this->arme_pet->distance_tir;*/
-		/// TODO: à revoir
+		/// @todo à revoir
 		$laisse = decompose_objet($this->get_inventaire_partie("cou", true));
 		if($laisse['id_objet'] != '')
 		{

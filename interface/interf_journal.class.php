@@ -21,7 +21,7 @@ class interf_journal extends interf_cont
 		/*$div_haut*/$form_mois->add( new interf_bal_smpl('span', 'Mois', false, 'input-group-addon') );
 		$sel_mois = /*$div_haut*/$form_mois->add( new interf_select_form('mois', false, false, 'form-control') );
 		$sel_mois->add_option('Actuel', 'actuel');
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$requete = 'SELECT table_name FROM information_schema.tables WHERE table_name like \'journal%\' AND table_schema = \''.$cfg_log['sql']['db'].'\' ORDER BY table_name DESC';
 		$req = $db_log->query($requete);
 		while($row = $db_log->read_assoc($req))
@@ -69,7 +69,7 @@ class interf_journal_page extends interf_cont
 		$this->perso = &$perso;
 		// page du journal
 		$this->page = $this->add( new interf_bal_cont('ul', 'page') );
-		/// TODO: passer à l'objet
+		/// @todo passer à l'objet
 		$and = '';
 		$nombre_action_journal = 15;
 		foreach($options as $cle=>$valeur)

@@ -15,25 +15,25 @@ $perso->check_perso();
 $interf_princ->verif_mort($perso);
 
 // Royaume
-///TODO: à améliorer
+///@todo à améliorer
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 // On vérifie qu'on est bien sur une ville
-/// TODO: logguer triche
+/// @todo logguer triche
 $case = new map_case(array('x' => $perso->get_x(), 'y' => $perso->get_y()));
 if( !$case->is_ville(true, 'taverne') )
 	exit();
 
 // On vérifie la diplomatie
-/// TODO: logguer triche
+/// @todo logguer triche
 if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
 	exit;
 
 // Ville rasée
-/// TODO: logguer triche
+/// @todo logguer triche
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 
@@ -45,7 +45,7 @@ case 'tp':
 	switch($_GET['type'])
 	{
 	case 'ville':
-		/// TODO: remplacer cette base par autre chose
+		/// @todo remplacer cette base par autre chose
 		$requete = 'SELECT * FROM teleport WHERE ID = '.sSQL($_GET['id']);
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
@@ -65,11 +65,11 @@ case 'tp':
 		$y = $row['posy'];
 		break;
 	case 'bourg':
-		/// TODO: à revoir
+		/// @todo à revoir
 		$W_distance = detection_distance($W_case, $_SESSION['position']);
 		if($W_distance != 0)
 		{
-			/// TODO: passer par un objet
+			/// @todo passer par un objet
 			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id']);
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
