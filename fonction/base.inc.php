@@ -1640,15 +1640,13 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		{
 			$max = $Tmaxcomp[$competence];
 		}
-		echo '
-		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-		<br />Valeur maximale en '.$competence.' : '.$max.'<br />';
+		$dbg = interf_debug::enregistre('Valeur maximale en '.$competence.' : '.$max, 'dbg_apt');
 		// On se base sur le joueur et non le perso, sinon on perds les montees
 		// des rounds precedents vu qu'on ne sauve qu'a la fin
 		$val_competence = $joueur->get_comp($competence, true);
 
-		echo 'Valeur actuelle en '.$competence.' : '.$val_competence.'<br />
-		Difficulté : '.$difficulte.'<br />';
+		$dbg->add_message('Valeur actuelle en '.$competence.' : '.$val_competence);
+		$dbg->add_message('Difficulté : '.$difficulte);
 		// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
 		if($val_competence < $max)
 		{
@@ -1660,11 +1658,11 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
 			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 			$R_retour[1] = false;
-			echo 'Chances : <br />';
-			echo 'Jet d\'un dé à : '.$reussite.' faces.<br />';
-			echo 'Le résultat doit être inférieur à <b>'.round($chance,0).'</b> <br />
-				   soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence.'<br />';
-			echo 'Résultat : <b>'.$numero.'</b><br />';
+			$dbg->add_message('Chances : ');
+			$dbg->add_message('Jet d\'un dé à : '.$reussite.' faces.<br />');
+			$dbg->add_message('Le résultat doit être inférieur à <b>'.round($chance,0));
+			$dbg->add_message('soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence);
+			$dbg->add_message('Résultat : <b>'.$numero);
 			//Si le numero est inférieur a chance, alors la compétence augmente d'un
 			if($numero < $chance)
 			{
@@ -1675,12 +1673,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 				$R_retour[1] = true;
 			}
 			else
-			{
-				echo 'La compétence n\'augmente pas.<br />';
-			}
+				$dbg->add_message('La compétence n\'augmente pas');
 		}
-		echo '</div>';
-		$debugs++;
 		if ($R_retour[1] == true/* && $perso->get_id() == $_SESSION['ID'] */)
 			print_montee_comp($perso->get_nom(), $R_retour[0], $competence);
 	}
@@ -2021,6 +2015,7 @@ function description($texte, $objet)
  * 
  * @param  $texte     Texte à afficher dans le lien.
  * @param  $poscase   Position du personnage.   
+ * @deprecated 
  */ 
 function return_ville($texte, $poscase)
 {
@@ -2036,6 +2031,7 @@ function return_ville($texte, $poscase)
 * @access public
 * @param string $texte, int $poscase
 * @return null
+* @deprecated
 */
 function return_gestion_royaume($texte, $poscase)
 {
@@ -2122,6 +2118,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
  * @param  $var                         Choix de rez (1 : page de rez, 2 : capitale, 3 : sort, 4 : fort )
  * @param  $duree_debuff                Durée du mal de rez
  * @param  $multiplicateur_mouvement    Multiplicateur de mouvement du mal de rez.
+ * @deprecated 
  */
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
@@ -2671,6 +2668,7 @@ function pourcent_reussite($base, $difficulte)
  * Renvoie le code HTML permettant le rafraichissement des informations sur le personnage.
  * 
  * @return    Code HTML.
+ * @deprecated 
  */   
 function refresh_perso()
 {
@@ -2684,6 +2682,7 @@ function refresh_perso()
  * @param  $joueur    Tableau associatif décrivant le joueur.
  * 
  * @return    Code HTML décrivant la ligne.  
+ * @depreacted 
  */
 function affiche_condition($action, $joueur, $check_pet)
 {
@@ -2813,6 +2812,7 @@ function affiche_condition($action, $joueur, $check_pet)
  * @param  $joueur    Tableau associatif décrivant le joueur.
  * 
  * @return    Code HTML décrivant la ligne.  
+ * @deprecated 
  */
 function affiche_condition_session($action, $joueur, $check_pet)
 {
@@ -2961,6 +2961,7 @@ function verif_batiment($x, $y, $r)
  *  de balises <pre>
  *  
  * @param  $v   Variable dont ont veut afficher les informations.  
+ * @depreacted 
  */
 function aff_var($v)
 {
@@ -3164,6 +3165,7 @@ function list_construction_visu($joueur, $distance)
 	return $ret;
 }
 
+/// @depreacted
 function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_def)
 {
 	if($mode == 'attaquant') $mode_def = 'defenseur'; else $mode_def = 'attaquant';

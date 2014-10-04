@@ -138,6 +138,11 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	line-height: 1.42857;
 }
 
+.pager
+{
+	margin-bottom: 0px;
+}
+
 .dropdown-submenu{position:relative;}
 .dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
 .dropdown-submenu:hover>.dropdown-menu{display:block;}
@@ -970,6 +975,19 @@ a#depl_bas_droite
 	margin-top: 5px;
 }
 
+a#debug_droit
+{
+  position: absolute;
+  top: 5px;
+  color: #888;
+  right: 5px;
+  font-size: 30px;
+}
+
+a#debug_droit:hover
+{
+  color: #555;
+}
 
 /*-- Message d'accueil ---------------------------------------------------*/
 p.accueil a
@@ -1788,6 +1806,132 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 
 
 /***************************************************
+  Combats
+ ***************************************************/
+
+#combat .round
+{
+	background-color: rgba(255,255,255, .3);
+	border: solid 1px white;
+	border-radius: 5px;
+	margin: 2px;
+	position: relative;
+	width: 466px;
+}
+
+#combat p
+{
+	margin: 0;
+} 
+
+#combat .round_num
+{
+	position: absolute;
+	height: 100%;
+	width: 70px;
+	border-right: solid 1px white;
+	padding: 2px;
+	font-weight: bold;
+}
+
+#combat .passe
+{
+	padding: 2px;
+	position: relative;
+	left: 70px;
+	width: 395px;
+}
+
+#combat .passe:nth-child(3)
+{
+	border-top: solid 1px white;
+}
+
+#fin_combat
+{
+	background-color: rgba(255,255,255, .5);
+	border: solid 1px white;
+	border-radius: 5px;
+	margin: 10px 2px 0;
+}
+
+#fin_combat th, #fin_combat td 
+{
+	padding: 1px 5px;
+}
+
+#fin_combat thead th
+{
+	font-weight: normal;
+	font-style: italic;
+}
+
+
+#resultat_combat
+{
+	/*padding: 2px;*/
+	position: relative;
+	height: 74px;
+}
+
+#resultat_combat div.jauge_case
+{
+	width: 25px;
+	height: 25px;
+	margin: 0 0 0 15px;
+	float: none;
+}
+
+#liens_combat
+{
+	border-left: 1px solid #FFF;
+	position: absolute;
+	right: 0px;
+	height: 100%;
+	width: 36px;
+	font-size: 36px;
+	text-align: center;
+}
+
+#liens_combat a
+{
+	display: block;
+	height: 36px;
+	width: 36px;
+}
+
+#liens_combat a:hover
+{
+	background-color: rgba(255,255,255, .5);
+	color: black;
+}
+
+#liens_combat a:first-child
+{
+	border-bottom: 1px solid #FFF;
+}
+
+#messages_fin
+{
+	border-top: 1px solid #FFF;
+	padding: 2px;
+}
+ 
+.anticipe
+{
+	font-style: italic;
+	color:#428BCA;
+}
+.coupcritique { font-weight:bold; }
+.degat { color:#A94442; }
+.manque { color:#31708F; } /*#428BCA*/
+.augcomp { color:#ff791c; font-weight:bold; } /*#8A6D3B*/
+.reward { color:#B8860B; }
+.soin { color:#3C763D; }
+/*#777*/
+
+
+/***************************************************
   Messagerie
  ***************************************************/
 
@@ -2079,7 +2223,17 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 /***************************************************
   Header Menu
  ***************************************************/
-.debug { display:none; }
+.debug
+{
+	display:none;
+	color : #777;
+}
+
+.dbg_apt
+{
+	color : #ff00c0;
+}
+
 /*.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
 .decor { width:60px; height:60px; margin:0; padding:0; text-align:center; }
 .decor-edit { width:20px; height:20px; margin:0; padding:0; text-align:center; }
@@ -2920,13 +3074,7 @@ text-align: right;
 	width: 150px;
 	display: inline-block;
 }
- 
-.coupcritique { font-weight:bold; }
-.degat { color:#f00; }
-.manque { color:#00f; }
-.augcomp { color:#ff791c; font-weight:bold; }
-.reward { color:#B8860B; }
-.soin { color:#363; }
+
 .jsoin { color:#33CC00; }
 .jgsoin { color:#009900; }
 .jbuff { color:#3333FF; }

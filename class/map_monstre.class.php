@@ -565,7 +565,7 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-		
+		$msg_xp = '';
 		
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
@@ -585,8 +585,8 @@ class map_monstre extends entnj_incarn
 			$this->kill_monstre_de_donjon($perso);
 
 			// On gere les monstres normaux
-			if (!$this->dernieres_paroles())
-				$this->message_kill_rp($perso);
+			$der_parole = $this->dernieres_paroles();
+			$msg_xp .= $der_parole ? $der_parole : $this->message_kill_rp($perso);
 
 			// Augmentation du compteur de l'achievement
 			$achiev = $perso->get_compteur('kill_monstres');
@@ -604,7 +604,7 @@ class map_monstre extends entnj_incarn
 			//Intimidation du nain dans le tuto vorsh
   		if ($this->id_monstre == 204)
   		{
-  			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+  			$msg_xp .= "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
   		}
   		$coeff = 0.5;
 			//Différence de level
@@ -613,9 +613,7 @@ class map_monstre extends entnj_incarn
 			$coeff = 1 - ($diff_level * 0.02);
 			if ($coeff != 1)
 			{
-				echo 'Vous perdez '.
-					($perso->get_honneur() - $perso->get_honneur() * $coeff).
-					' honneur en mourant.<br />';
+				$msg_xp .= 'Vous perdez '.($perso->get_honneur() - $perso->get_honneur() * $coeff).' honneur en mourant.<br />';
 				$perso->set_honneur($perso->get_honneur() * $coeff);
 			}
 			$perso->set_mort($perso->get_mort() + 1);
@@ -627,7 +625,7 @@ class map_monstre extends entnj_incarn
 				$gain_hp = floor($perso->get_hp_max() * 0.1);
 				$this->set_hp($this->get_hp() + $gain_hp);
 				$this->sauver();
-				echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+				$msg_xp .= 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
 			}
 
 			// achievement
@@ -766,10 +764,8 @@ class map_monstre extends entnj_incarn
 		$sql = "select t.quote from ($subsql) t order by t.rnd desc limit 1";
 		$rarete = floor(rand(1, 100));
 		$stmt = $db->param_query($sql, array($this->id_monstre, $rarete), 'ii');
-		if ($result = $db->stmt_read_object($stmt)) {
-			echo '<li class="dernieres_paroles">'.$result->quote.'</li>';
-			return true;
-		}
+		if ($result = $db->stmt_read_object($stmt))
+			return '<span class="dernieres_paroles">'.$result->quote.'</span>';
 		return false;
 	}
 
@@ -777,14 +773,13 @@ class map_monstre extends entnj_incarn
 		global $G_no_ambiance_kill_message;
 		if ($G_no_ambiance_kill_message)
 			return;
-		echo '<li class="ambiance_kill_message">';
 		if ($this->get_level() < $perso->get_level() - 5)
-			echo 'Les tripes arrachées, '.$this->get_nom().' meurt dignement.';
+			$texte = 'Les tripes arrachées, '.$this->get_nom().' meurt dignement.';
 		elseif ($this->get_level() > $perso->get_level() + 5)
-			echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$this->get_nom().' rendait l\'âme.';
+			$texte = 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$this->get_nom().' rendait l\'âme.';
 		elseif ($this->get_level() >= $perso->get_level() - 5 AND $this->get_level() <= $perso->get_level() + 5)
-			echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$this->get_nom().'.';
-		echo '</li>';
+			$texte = 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$this->get_nom().'.';
+		return '<li class="ambiance_kill_message">'.$texte.'</li>';
 	}
 
   /// Renvoie le coût en PA pour attaquer l'entité

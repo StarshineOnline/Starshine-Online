@@ -12,9 +12,9 @@ class interf_debug extends interf_bal_cont
 	protected static $num = 0;
 	protected static $debugs = array();
 	 
-	function __construct($texte=null)
+	function __construct($texte=null, $classe='')
 	{
-		parent::__construct('div', 'debug'.self::$num, 'debug');
+		parent::__construct('div', 'debug'.self::$num, 'debug '.$classe);
 		self::$num++;
 		if( $texte )
 			$this->add_message($texte);
@@ -41,9 +41,9 @@ class interf_debug extends interf_bal_cont
    * @param  $texte		textre du message
    * @return 		l'objet interf_alerte créé.
    */  
-  static function &enregistre($texte=null)
+  static function &enregistre($texte=null, $classe='')
   {
-  	$debug = new interf_debug($texte);
+  	$debug = new interf_debug($texte, $classe);
   	self::$debugs[] = &$debug;
   	return $debug;
 	}

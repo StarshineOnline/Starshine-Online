@@ -159,8 +159,7 @@ class sort_combat extends sort
   	$row=$db->read_assoc($req);
   	if( $row )
   	{
-  		$ind = strstr($row['type'], '-');
-  		$type = $ind == -1 ? $row['type'] : substr($row['type'], 0, $ind);
+  		$type = explode('-', $row['type'])[0];
       switch( $type )
       {
       case 'debuff_enracinement':
@@ -224,13 +223,13 @@ class sort_combat extends sort
       case 'recuperation':
         return new sort_combat_recuperation($row);
       case 'aura_feu':
-        return new sort_combat_aura($row, 'posture_feu', 'Une enveloppe de feu entoure');
+        return new sort_combat_aura($row, 'posture_feu');
       case 'aura_glace':
-        return new sort_combat_aura($row, 'posture_glace', 'Une enveloppe de glace entoure');
+        return new sort_combat_aura($row, 'posture_glace');
       case 'aura_vent':
-        return new sort_combat_aura($row, 'posture_vent', 'Des tourbillons d\'air entourent');
+        return new sort_combat_aura($row, 'posture_vent');
       case 'aura_pierre':
-        return new sort_combat_aura($row, 'posture_pierre', 'De solides pierres volent autour de');
+        return new sort_combat_aura($row, 'posture_pierre');
       default:
         return new sort_combat($row);
       }
@@ -281,15 +280,18 @@ class sort_combat extends sort
     $potentiel_magique = $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() );
   	$de_pot = 300;
   	$de_diff = 300;
-  	if($potentiel_magique > $this->get_difficulte()) $de_pot += $potentiel_magique - $this->get_difficulte();
-  	else $de_diff += $this->get_difficulte() - $potentiel_magique;
+  	if($potentiel_magique > $this->get_difficulte())
+			$de_pot += $potentiel_magique - $this->get_difficulte();
+  	else
+			$de_diff += $this->get_difficulte() - $potentiel_magique;
     if( $this->test_potentiel($de_pot, $de_diff) )
     {
+			$attaque->get_interface()->sort($this->get_type(), $actif->get_nom(), $this->get_nom());
       $this->action($attaque);
     }
     else
   	{
-  		echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' rate le lancement de '.$this->get_nom().'</span><br />';
+  		$attaque->get_interface()->rate($actif->get_nom(), $this->get_nom());
       $attaque->add_log_combat('~l');
   	}
   	
@@ -337,7 +339,7 @@ class sort_combat extends sort
       $this->touche($attaque);
     else
     {
-      echo '&nbsp;&nbsp;<span class="manque">'.$actif->get_nom().' manque la cible avec '.$this->get_nom().'</span><br />';
+    	$attaque->get_interface()->manque($actif->get_nom()/*, $this->get_nom()*/);
       $attaque->add_log_combat('~m');
     }
   }
@@ -361,8 +363,9 @@ class sort_combat extends sort
     // Application des effets de degats magiques
     $attaque->applique_effet('inflige_degats_magiques');
     $degats = $attaque->get_degats();
-	if($actif->is_buff('buff_surpuissance')) $degats += $actif->get_buff('buff_surpuissance', 'effet');
-    echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+		if($actif->is_buff('buff_surpuissance'))
+			$degats += $actif->get_buff('buff_surpuissance', 'effet');
+		$attaque->get_interface()->degats($degats, $actif->get_nom()/*, $this->get_nom()*/);
     $attaque->add_log_combat('~'.$degats);
     $passif->set_hp($passif->get_hp() - $degats);
   }
@@ -423,7 +426,7 @@ class sort_combat extends sort
     $degat_avant = $attaque->get_degats();
     $degat = round($degat_avant * $reduction);
     if($degat < $degat_avant)
-      echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts par la PM)</span><br />';
+    	$attaque->get_interface()->reduction($degat_avant - $degat, 'la PM');
 
     $attaque->set_degats($degat);
     // Application des modifications des dégâts
@@ -449,7 +452,7 @@ class sort_combat extends sort
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
-  		echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
+   	  $attaque->get_interface()->critique();
       $attaque->add_log_combat('!');
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
@@ -459,7 +462,7 @@ class sort_combat extends sort
     	 $degat *= 2;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
-    	echo '&nbsp;&nbsp;<span class="small">(Réduction de '.($degat_avant - $degat).' dégâts critique par la puissance)</span><br />';
+    	$attaque->get_interface()->reduction($degat_avant - $degat, 'la puissance');
   	}
 
     $attaque->set_degats($degat);
@@ -530,7 +533,7 @@ class sort_combat_degat_etat extends sort_combat
 /// Classe gérant les sorts à état sans dégâts
 class sort_combat_etat extends sort_combat_degat_etat
 {
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function action(&$attaque)
   {
     if( $this->get_cible() == comp_sort::cible_perso )
@@ -542,11 +545,10 @@ class sort_combat_etat extends sort_combat_degat_etat
       parent::action($attaque);
     }
   }
-  /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+  /// Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
   function touche(&$attaque)
   {
     $this->ajout_etat($attaque);
-  	echo '&nbsp;&nbsp;<strong>'.$attaque->get_actif()->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
   }
 
   /// récupére la valeur par défaut de l'état
@@ -575,8 +577,10 @@ class sort_combat_vent extends sort_combat
 		if( $this->test_de(100, $this->get_effet2()) )
 		{
 			$actif = $attaque->get_actif();
+			/// @todo ne pas passer par joueur (qu'est-ce qui se passe quand c'est le défenseur qui utilise se sort ?)
 			$joueur = $attaque->get_joueur();
-			echo '&nbsp;&nbsp;<strong>'.$joueur->get_nom().'</strong> gagne 1 PA<br />';
+			$attaque->get_interface()->effet(19, 1, $joueur->get_nom(), '');
+			$attaque->add_log_effet_passif('&ef19~1');
 			$joueur->set_pa($joueur->get_pa() + 1);
 		}
   }
@@ -637,13 +641,13 @@ class sort_combat_sang extends sort_combat
 		{
 			$actif->set_hp($actif->get_hp() - $cout_hp);
 			parent::touche($attaque);
-			echo '<span class="degat">et sacrifie '.$cout_hp.' hp.</span><br />';
+			$attaque->get_interface()->effet(10, $cout_hp, $actif->get_nom());
 			$attaque->add_log_effet_actif('&ef10~'.$cout_hp);
 		}
   }
 }
 
-/// Classe gérant les sorts drains et vortex de vie
+/// Classe gérant les sorts drain de vie et vortex de vie
 class sort_combat_drain extends sort_combat
 {
   protected $drain; ///< Portion de vie drainée
@@ -660,10 +664,12 @@ class sort_combat_drain extends sort_combat
 		if ($attaque->get_passif()->get_type() != 'batiment')
 		{
       $drain = round($attaque->get_degats() * $this->drain);
-      echo 'Et gagne <strong>'.$drain.'</strong> hp grâce au drain<br />';
+			$attaque->get_interface()->effet(20, $drain, $actif->get_nom());
+			$attaque->add_log_effet_actif('&ef20~'.$drain);
       $actif->set_hp($actif->get_hp() + $drain);
 			// On vérifie que le personnage n'a pas plus de HP que son maximum
-			if($actif->get_hp() > floor($actif->get_hp_max())) $actif->set_hp($actif->get_hp_max());
+			if($actif->get_hp() > floor($actif->get_hp_max()))
+				$actif->set_hp($actif->get_hp_max());
 			$actif->sauver(); // étrange qu'il faille faire ça !
     }
   }
@@ -680,7 +686,8 @@ class sort_combat_vortex_mana extends sort_combat
 		if ($attaque->get_passif()->get_type() != 'batiment')
 		{
       $drain = round($attaque->get_degats() * .2);
-      echo 'Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
+			$attaque->get_interface()->effet(21, $drain, $actif->get_nom());
+			$attaque->add_log_effet_actif('&ef21~'.$drain);
       $actif->set_rm_restant($actif->get_rm_restant() + $drain);
     }
   }
@@ -707,7 +714,9 @@ class sort_combat_brul_mana extends sort_combat
     $passif = &$attaque->get_passif();
 		$brule_mana = $this->get_effet();
 		$degat = $this->get_effet() * $this->get_effet2();
-		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$attaque->get_actif()->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$degat.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+		$attaque->get_interface()->degats($degat, $actif->get_nom(), $this->get_nom());
+		$attaque->get_interface()->effet(22, $brule_mana, $attaque->get_actif()->get_nom(), $passif->get_nom());
+		$attaque->add_log_effet_actif('&ef22~'.$drain);
 		$passif->set_hp($passif->get_hp() - $degat);
 		$passif->set_rm_restant($passif->get_rm_restant() - $brule_mana);
   }
@@ -727,17 +736,13 @@ class sort_combat_silence extends sort_combat
 		$pm = $passif->get_volonte() * $passif->get_pm_para();
 		
 		// Lancer des dés
-		echo '&nbsp;&nbsp;<strong>'.$actif->get_nom().'</strong> lance le sort '.$this->get_nom().'<br />';
-		if( $this->test_potentiel($sm, $pm) )
+		$test = $this->test_potentiel($sm, $pm);
+		if( $test )
 		{
-			echo ' et réussit !<br />';
 			$passif->etat['silence']['effet'] = $this->get_effet();
 			$passif->etat['silence']['duree'] = $this->get_duree();
 		}
-		else
-		{
-			echo ' et échoue...<br />';
-		}
+		$attaque->get_interface()->tentative('s', $test, $actif->get_nom(), $this->get_nom());
   }
 }
 
@@ -756,18 +761,15 @@ class sort_combat_recuperation extends sort_combat_etat
 class sort_combat_aura extends sort_combat_etat
 {
   protected $posture; ///< Type de posture
-  protected $message; ///< Message lors du lancement de la posture.
-  function __construct($tbl, $posture, $message)
+  function __construct($tbl, $posture)
   {
     parent::__construct($tbl);
     $this->posture = $posture;
-    $this->message = $message;
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function action(&$attaque)
   {
     $this->ajout_etat($attaque);
-		echo '&nbsp;&nbsp;'.$this->message.' <strong>'.$attaque->get_actif()->get_nom().'</strong> !<br />';
   }
   /// ajoute un effet2 si besoin
   protected function ajout_effet2($etat, &$cible)
@@ -801,7 +803,7 @@ class sort_combat_debuff extends sort_combat
     $passif = &$attaque->get_passif();
 		parent::touche($attaque);
 		if( $passif->lance_debuff( $this->debuff ) )
-      echo '<strong>'.$passif->get_nom().'</strong> est affecté par le debuff '.$this->debuff->get_nom().'<br/>';
+			$attaque->get_interface()->debuff($passif->get_nom(), $this->debuff->get_nom());
   }
 }
 
@@ -818,7 +820,7 @@ class sort_combat_enracinement extends sort_combat_debuff
 		if( $this->test_potentiel($this->potentiel_att, $this->potentiel_def) )
 		{
   		if( $passif->lance_buff( $this->debuff ) )
-        echo '<strong>'.$passif->get_nom().'</strong> est affecté par le debuff '.$this->debuff->get_nom().'<br/>';
+				$attaque->get_interface()->debuff($passif->get_nom(), $this->debuff->get_nom());
     }
   }
 }
@@ -857,7 +859,7 @@ class sort_combat_tsunami extends sort_combat
       $direction = array_pop($p);
     }
 
-    print_debug("projection vers: $direction");
+    interf_debug::enregistre('projection vers: '.$direction);
     $translation = 0;
     $continue_projection = true;
     do
@@ -868,27 +870,25 @@ class sort_combat_tsunami extends sort_combat
         $info = type_terrain($map->info);
         $pa = cout_pa($info[0], $passif->get_race());
       } else {
-        print_debug("BORD DE CARTE !!");
+        interf_debug::enregistre('BORD DE CARTE !!');
         $pa = 50;
       }
       if ($pa > 49) {
         // Infranchissable: mur
         $continue_projection = false;
-        echo '<span class="degat">&nbsp;&nbsp;'.$passif->get_nom().
-          ' est projeté contre un mur et perds '.$effet.
-          ' points de vie!<br/></span>';
+        $attaque->get_interface()->effet(23, $effet, $actif->get_nom(), $passif->get_nom());
         $passif->add_hp($effet * -1);
         continue;
       }
       else {
         $px = $cur['x'];
         $py = $cur['y'];
-        print_debug("déplacement en: $px/$py");
+        interf_debug::enregistre('déplacement en: '.$px.'/'.$py);
         if ($translation++ > 1) $continue_projection = false;
       }
       $def = rand(1, $passif->get_force());
       $att = rand(1, 40 / $translation);
-      print_debug("resistance à la projection: $def vs $att<br/>");
+      interf_debug::enregistre('resistance à la projection: '.$def.' vs '.$att);
       if ($def > $att) $continue_projection = false;
     } while ($continue_projection);
     if ($translation > 0) {
@@ -941,14 +941,12 @@ class sort_combat_empalement extends sort_combat
     $degat = $this->calcul_degats($attaque);
     // Application des effets de degats magiques
     $attaque->applique_effet('inflige_degats_magiques');
-		echo '&nbsp;&nbsp;<span class="degat"><strong>'.$actif->get_nom().'</strong> inflige <strong>'.$degats.'</strong> dégâts avec '.$this->get_nom().'</span><br />';
+    $attaque->get_interface()->degats($degats, $actif->get_nom(), $this->get_nom());
 		if ($passif->get_hp() > $degat)
     { // Si on survit
 			$degat = $passif->get_hp() - 4; // 1 + 3 de LS
     }
-		echo '&nbsp;&nbsp;<span class="degat">Une &eacute;pine jaillit de <strong>'.
-			$actif->get_nom().'</strong> infligeant <strong>'.$degat.
-			'</strong> dégâts, et transpercant '.$passif->get_nom().'</span><br/>';
+    $attaque->get_interface()->effet(24, $degat, $actif->get_nom(), $passif->get_nom());
 		$passif->set_hp($passif->get_hp() - $degat);
 
 		if ($passif->get_hp() > 0)
@@ -970,7 +968,7 @@ class sort_combat_cri_abom extends sort_combat
     global $db;
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
-		echo '&nbsp;&nbsp;<span class="degat">L\'abomination profère un hurlement terrifiant !</span><br/>';
+    $attaque->get_interface()->texte('L\'abomination profère un hurlement terrifiant !', 'degat');
 		$xi = $passif->get_x() - 3;
 		$xa = $passif->get_x() + 3;
 		$yi = $passif->get_y() - 3;
@@ -983,15 +981,15 @@ class sort_combat_cri_abom extends sort_combat
 			$spectateur = new perso($row_persos['id']);
 			$rand = rand(0, 20);
 			$final = $rand + $spectateur->get_volonte();
-			print_debug("Jet de terreur pour ".$spectateur->get_nom().": $rand ($final) vs $row[effet2]<br/>");
+			interf_debug::enregistre('Jet de terreur pour '.$spectateur->get_nom().': '.$rand.' ('.$final.') vs '.$row[effet2]);
 			if ($final < $row['effet2'] && $rand != 20)
 			{
-				echo '<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !<br/>';
+    		$attaque->get_interface()->texte('<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !', 'effet');
 				lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
 									 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
 			}
 		}
-		echo 'La marque de l\'abomination restera longtemps sur vous ...<br/>';
+    $attaque->get_interface()->texte('La marque de l\'abomination restera longtemps sur vous…');
 		$achiev = $passif->get_compteur('abomination_mark');
 		if ($achiev->get_compteur() == 0) {
 			// Premier combat contre l'abomination
@@ -1003,8 +1001,7 @@ class sort_combat_cri_abom extends sort_combat
 			lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
 								 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
 		lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination',
-							 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre',
-							 'perso', 1, 0, 0, 0);
+							 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre', 'perso', 1, 0, 0, 0);
   }
 }
 
@@ -1022,7 +1019,7 @@ class sort_combat_nostalgie extends sort_combat_debuff
   {
     $description = 'Vous sentez votre esprit vieillir, vous ne pensez quʼaux moments où vous étiez en pleine santé et vous avez du mal a vous concentrer';
 		parent::touche($attaque);
-		echo '<br/><em>'.$description.'</em>';
+    $attaque->get_interface()->texte('<em>'.$description.'</em>');
   }
 }
 
@@ -1038,8 +1035,8 @@ class sort_combat_absorb extends sort_combat
 		$pa = max(0, $passif->get_pa() - $perte_pa);
 		$passif->set_pa($pa);
 		parent::touche($attaque);
-		print_debug($passif->get_nom().' perd '.$perte_pa.' PA');
-		echo '<br/><em>'.$description.'</em>';
+		interf_debug::enregistre($passif->get_nom().' perd '.$perte_pa.' PA');
+    $attaque->get_interface()->texte('<em>'.$description.'</em>');
   }
 }
 ?>

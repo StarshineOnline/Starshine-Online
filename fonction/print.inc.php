@@ -269,9 +269,11 @@ function affiche_construction_visu($joueur, $W_row, $position="")
 
 function print_montee_comp($nom, $valeur, $comp) {
 	global $Gtrad;
-	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
+	//echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
+	interf_base::add_courr( new interf_bal_smpl('<strong>'.$nom.'</strong> est maintenant à $valeur en '.$Gtrad[$comp], false, 'augcomp') );
 }
 
+/// @deprecated
 function print_debug($msg) {
 	global $debugs;
   if (!isset($debugs))
@@ -293,6 +295,7 @@ function my_log($log)
 		fwrite($logfile, print_r($log, true));
 }
 
+/// @deprecated
 function print_dataTables($fields, $data, $id = null)
 {
 	if ($id == null) $id = 'datatable'.rand();
@@ -308,6 +311,7 @@ function print_dataTables($fields, $data, $id = null)
 	print_js_onload('$("#'.$id.'").dataTable({ "sPaginationType": "full_numbers" });');
 }
 
+/// @deprecated
 function print_reload_area($url, $area)
 {
 	echo '<script type="text/javascript">envoiInfo(\''.

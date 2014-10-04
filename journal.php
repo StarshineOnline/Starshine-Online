@@ -49,6 +49,14 @@ case 'options':
 		$db->query($requete);
 	}
 	break;
+case 'combat':
+	/// @todo passer à l'objet
+	$req = $db->query('SELECT * FROM combats WHERE id_journal = '.$_GET['id']);
+	$row = $db->read_assoc($req);
+	$combat = new combat($row);
+	$G_url->add('action', 'combat');
+	$cadre = $combat->afficher_combat($interf_princ);
+	exit;
 }
 $cadre = $interf_princ->set_droite( $G_interf->creer_droite('Journal') );
 $cadre->add( $G_interf->creer_journal(joueur::get_perso(), $options, $mois, $page) );

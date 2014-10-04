@@ -107,6 +107,8 @@ class interf_alerte extends interf_bal_cont
       $btn->set_attribut('data-dismiss', 'alert');
       $btn->set_attribut('aria-hidden', 'true');
     }
+    if( $texte )
+    	 $this->add( new interf_txt($texte) );
   }
 
   function add_message($msg)

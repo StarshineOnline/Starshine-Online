@@ -12,7 +12,7 @@ abstract class comp_sort extends comp_sort_buff
 {
 	/**
 	 * @name Informations générales.
-	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
+	 * Donnée et méthode sur les informations "générales" : type, niveau, …
 	 */
   // @{
 	protected $comp_assoc; ///< Compétence associée
@@ -380,7 +380,7 @@ abstract class comp_sort extends comp_sort_buff
 	 */
   function get_liste_cibles($cible, $groupe=true)
   {
-    print_debug("type de cible : ".$this->get_cible()."<br/>");
+		interf_debug::enregistre('type de cible : '.$this->get_cible());
     switch( $this->get_cible() )
     {
     case comp_sort::cible_groupe:
@@ -439,10 +439,10 @@ abstract class comp_sort extends comp_sort_buff
   {
   	$action = rand(0, $pot_action);
   	$defense = rand(0, $pot_oppos);
-  	print_debug('Potentiel attaquant : '.$pot_action.
-							'<br />Potentiel défenseur : '.$pot_oppos.
-							'<br />Résultat => Attaquant : '.$action.' | Défense '.
-							$defense.'<br />');
+		$dbg = interf_debug::enregistre();
+		$dbg->add_message( 'Potentiel attaquant : '.$pot_action );
+		$dbg->add_message( 'Potentiel défenseur : '.$pot_oppos );
+		$dbg->add_message( 'Résultat => Attaquant : '.$action.' | Défense : '.$defense );
     if( $attaque !== null )
     {
       $attaque->set_jet($action);
@@ -459,8 +459,9 @@ abstract class comp_sort extends comp_sort_buff
   static function test_de($de, $seuil)
   {
   	$val = rand(0, $de);
-		print_debug('1d'.$de.' doit être inférieur a '.$seuil.'<br />
-		Résultat => '.$val.' doit être inférieur a '.$seuil.'<br />');
+		$dbg = interf_debug::enregistre();
+		$dbg->add_message( '1d'.$de.' doit être inférieur a '.$seuil );
+		$dbg->add_message( 'Résultat => '.$val.' doit être inférieur a '.$seuil );
     return $val < $seuil;
   }
 
@@ -537,7 +538,7 @@ abstract class comp_sort extends comp_sort_buff
 			$dbg_msg .= 'Max : '.$des[$i].' - Dé : '.$de.'<br />';
 			$i++;
 		}
-		print_debug($dbg_msg);
+		interf_debug::enregistre($dbg_msg);
 		return $degat;
   }
 

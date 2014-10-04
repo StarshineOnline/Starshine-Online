@@ -48,7 +48,6 @@ class perso extends entite
 	{
 		return $this->tuto;
 	}
-
 	
 	/// Modifie le nom du personnage
 	function set_nom($nom)
@@ -2020,10 +2019,10 @@ class perso extends entite
 				break;
 			case 9:
 				$ep = new effet_vampirisme($effet, $item->nom);
-				if ($item->type == 'hache' || $item->type == 'dague' ||
+				/*if ($item->type == 'hache' || $item->type == 'dague' ||
 						($item->type == 'epee' && preg_match('/^lame/i', $item->nom))) {
 					$ep->pos = 'sa';
-				}
+				}*/
 				$this->add_effet_permanent('attaquant', $ep);
 				break;
 			case 10:
@@ -2080,8 +2079,8 @@ class perso extends entite
    */
   // @{
 	private $bonus_permanents = array();           ///< liste des effets permanents.
-	private $effet_permanents_attaquant = array(); ///< inutilisé.
-	private $effet_permanents_defenseur = array(); ///< inutilisé.
+	private $effet_permanents_attaquant = array(); ///< .
+	private $effet_permanents_defenseur = array(); ///< .
 	/// renvoie un bonus permanent particulier
 	function get_bonus_permanents($bonus)
 	{
@@ -2692,6 +2691,11 @@ class perso extends entite
 		if ($this->is_buff('debuff_forme_demon')) {
 			$this->demonize();
 		}
+		// debuffs de sorcier
+		if($this->is_buff('engloutissement'))
+			$this->add_bonus_permanents('dexterite', -$this->get_buff('engloutissement', 'effet'));
+		if($this->is_buff('deluge'))
+			$this->add_bonus_permanents('volonte', -$this->get_buff('deluge', 'effet'));
 	}
 
 	function demonize() {

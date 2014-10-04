@@ -472,5 +472,9 @@ class interf_factory
   {
     return new interf_script($script, $entite);
   }
+  function creer_combat()
+  {
+    return new interf_combat();
+  }
 }
 ?>

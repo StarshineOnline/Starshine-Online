@@ -341,6 +341,11 @@ function valide_nom_creature(id)
 	charger("gestion_monstre.php?action=modifier&id="+id+"&nom="+nom.html());
 }
 
+function debugs()
+{
+	$('.debug').toggle();
+	return false;
+}
 
 // anciennes fonctions (tri à faire)
 
