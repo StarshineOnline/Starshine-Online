@@ -104,8 +104,9 @@ function charger_formulaire_texte(id, id_texte)
 {
   var formul = $('#' + id);
 	var texte = $("#"+id_texte).html().trim();
-  var donnees = formul.serialize() + "&texte=" + decode_texte(texte);
-  $.ajax({type:formul.attr("method"),url:formul.attr("action"),data:donnees,success:affiche_ajax});
+  var donnees = formul.serializeArray();
+  donnees[donnees.length] = {name:"texte", value:decode_texte(texte)};
+  $.ajax({type:"post",url:formul.attr("action")+"&ajax=1",data:donnees,success:affiche_ajax});
 	return false;
 }
 

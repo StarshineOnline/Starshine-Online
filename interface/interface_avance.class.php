@@ -699,6 +699,7 @@ class interf_editeur extends interf_bal_cont
 	{
 		$btn = $this->btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-'.$icone) );
 		$btn->set_attribut('data-edit', $action);
+		$btn->set_attribut('type', 'button');
 		$btn->set_tooltip($info);
 	}
 }
