@@ -143,7 +143,10 @@ class construction extends entitenj_constr
 	{
 		global $G_PA_attaque_batiment;
 		if( $perso->is_buff('convalescence') )
+		{
+    	interf_alerte::enregistre(interf_alerte::msg_avertis, 'Le coût en PA passe à '.$G_PA_attaque_batiment.' à cause de votre convalescence.');
 			return $G_PA_attaque_batiment;
+		}
 		else
 			return 0;
 	}

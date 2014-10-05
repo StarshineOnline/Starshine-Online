@@ -369,6 +369,7 @@ else
 		}
 		if ($check_pet)
 			$G_url->add('pet', 1);
+		interf_alerte::aff_enregistres($cadre);
     $attaque = new attaque($perso, $attaquant, $defenseur);
     $interf = $cadre->add( $G_interf->creer_combat() );
 		$attaque->set_interface( $interf );

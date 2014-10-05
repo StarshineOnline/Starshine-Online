@@ -246,7 +246,10 @@ abstract class entitenj_constr extends entnj_incarn
   {
     global $G_PA_attaque_batiment;
     if( $perso->is_buff('convalescence') )
+    {
+    	interf_alerte::enregistre(interf_alerte::msg_avertis, 'Le coût en PA est doublé à cause de votre convalescence.');
       return $G_PA_attaque_batiment*2;
+		}
     else
       return $G_PA_attaque_batiment;
   }
