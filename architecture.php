@@ -1,8 +1,7 @@
 <?php //	 -*- tab-width:	2; mode: php -*-
 /**
-* @file .php
-* 
-* 
+* @file architecture.php
+* Réparation des bâtiments et accélération de leur construction
 */
 if (file_exists('root.php'))
   include_once('root.php');
