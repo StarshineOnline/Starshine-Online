@@ -3371,6 +3371,23 @@ a .livre_nom
 	margin: 5px;
 }
 
+#groupe .btn-group
+{
+	margin: 5px;
+}
+
+#groupe .info_case
+{
+	margin: 5px;
+}
+
+#groupe .info_case a.icone
+{
+	padding-top: 4px;
+	font-size: 22px;
+}
+
+
 
 
 /*********************************

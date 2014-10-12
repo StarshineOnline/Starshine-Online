@@ -47,7 +47,7 @@ class interf_info_perso extends interf_cont
 					$groupe = new groupe($this->perso->get_groupe());
 					if( $groupe->get_id_leader() == $this->perso->get_id() )
 					{
-						$excl = $div->add( new interf_lien('', 'virer_perso.php?id='.$pj->get_id(), false, 'icone icone-exclure', 'Voulez vous expulser ce joueur ?') );
+						$excl = $div->add( new interf_lien('', 'degrouper.php?id='.$pj->get_id(), false, 'icone icone-exclure', 'Voulez vous expulser ce joueur ?') );
 						$excl->set_tooltip('Exclure ce joueur du groupe', 'bottom', '#information');
 					}
 				}
