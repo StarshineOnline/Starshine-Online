@@ -246,12 +246,12 @@ class interf_candidature extends interf_vie_royaume_base
 			$lien->set_attribut('href', 'vie_royaume.php?action=retirer_candidature');
 			$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Votre candidature sera totalement supprimée. Êtes-vous sûr de vouloir le faire ?\');');
 	    $btn = $grp_btn->add( new interf_chp_form('submit', false, false, 'Modifier', null, 'btn btn-primary') );
-	    $btn->set_attribut('onclick', 'charger_formulaire(\'candidature\');');
+	    $btn->set_attribut('onclick', 'return charger_formulaire(\'candidature\');');
 		}
 		else
 		{
 	    $btn = $grp_btn->add( new interf_chp_form('submit', false, false, 'Se présenter', null, 'btn btn-primary') );
-	    $btn->set_attribut('onclick', 'charger_formulaire(\'vote\');');
+	    $btn->set_attribut('onclick', 'return charger_formulaire(\'vote\');');
 		}
 	}
 }
@@ -296,7 +296,7 @@ class interf_vote extends interf_vie_royaume_base
 		$infos = $form->add( new interf_bal_cont('div', 'infos_candidature') );
 		$div_btn = $form->add( new interf_bal_cont('div', false, 'boutons') );
     $btn = $div_btn->add( new interf_chp_form('submit', false, false, $texte, null, 'btn btn-primary') );
-    $btn->set_attribut('onclick', 'charger_formulaire(\'vote\');');
+    $btn->set_attribut('onclick', 'return charger_formulaire(\'vote\');');
 	}
 }
 
