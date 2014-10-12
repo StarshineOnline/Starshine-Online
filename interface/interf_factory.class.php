@@ -480,5 +480,9 @@ class interf_factory
   {
     return new interf_groupe($id, $groupe);
   }
+  function creer_calendrier($nbr=15)
+  {
+    return new interf_calendrier($nbr);
+  }
 }
 ?>

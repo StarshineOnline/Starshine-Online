@@ -112,7 +112,7 @@ class interf_barre_perso extends interf_bal_cont
   }
   protected function creer_infos_pos()
   {
-    $heure = $this->add( new interf_bal_cont('a', 'perso_heure') );
+    $heure = $this->add( new interf_lien_cont('moment_jour.php', 'perso_heure') );
     $heure->set_attribut('style', 'background-image:url(image/interface/'.moment_jour().'.png);');
     $heure->set_tooltip(moment_jour(), 'bottom');
     $span = $heure->add( new interf_bal_smpl('span', substr(date_sso(time()),0,-3), 'heure') );
