@@ -376,6 +376,7 @@ class sort_combat extends sort
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
    * @deprecated
+   * @todo à remplacer    
    */
   function bonus_degats(&$attaque)
   {
@@ -417,7 +418,7 @@ class sort_combat extends sort
     $attaque->set_degats( $this->lance_des($de_degat) );
     $this->critiques($attaque);
 	
-	// Calcul de la PM
+		// Calcul de la PM
     $pm = $passif->get_pm();
     // Application des effets de PM
     $attaque->applique_effet('calcul_pm', $pm);

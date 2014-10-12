@@ -139,7 +139,7 @@ class interf_infos_case extends interf_cont
 			}
 			else if( $plac->get_fin_placement() - $plac->get_debut_placement() > $bat->get_temps_construction_min() && $this->distance == 0 )
 			{
-				$acc = $div->add( new interf_lien('', 'archi_accelere_construction.php?id_construction'.$plac->get_id(), false, 'icone icone-architecture') );
+				$acc = $div->add( new interf_lien('', 'architecture.php?action=construit&type=placement&id='.$plac->get_id(), false, 'icone icone-architecture') );
 				$acc->set_tooltip('Accélérer (30 PA)', 'bottom', '#information');
 			}
 			$diplo = 'diplo'.$royaume->get_diplo( $this->perso->get_race() );
@@ -187,7 +187,7 @@ class interf_infos_case extends interf_cont
 			{
 				if( $constr->get_hp() < $bat->get_hp() && $this->distance == 0 )
 				{
-					$repar = $div->add( new interf_lien('', 'archi_accelere_construction.php?id_construction'.$constr->get_id(), false, 'icone icone-architecture') );
+					$repar = $div->add( new interf_lien('', 'architecture.php?action=repare&type=construction&id='.$constr->get_id(), false, 'icone icone-architecture') );
 					$repar->set_tooltip('Réparer (30 PA)', 'bottom', '#information');
 				}
 				/// TODO : à améliorer ?

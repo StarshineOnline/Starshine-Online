@@ -2426,7 +2426,7 @@ class perso extends entite
 			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
-			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
+			if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);

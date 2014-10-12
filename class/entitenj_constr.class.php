@@ -223,6 +223,19 @@ abstract class entitenj_constr extends entnj_incarn
 	}
 	// @}
 	
+	static function factory($type, $id)
+	{
+		switch($type)
+		{
+		case 'construction':
+			return new construction($id);
+		case 'placement':
+			return new placement($id);
+		default:
+			return null;
+		}
+	}
+	
 	/// Indique que l'entité est morte
 	function mort(&$perso)
 	{
