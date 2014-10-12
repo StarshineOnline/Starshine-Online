@@ -1,10 +1,38 @@
 <?php
+/**
+* @file infogroupe.php
+* Informations du groupe et accès au bataille pour le groupe
+*/
 if (file_exists('root.php'))
   include_once('root.php');
 
-
 include_once(root.'inc/fp.php');
-$joueur = new perso($_SESSION['ID']);
+
+$interf_princ = $G_interf->creer_jeu();
+//Vérifie si le perso est mort
+$perso = joueur::get_perso();
+
+
+// Cadre de la partie droite
+$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Groupe') );
+
+$onglets = $cadre->add( new interf_onglets('onglets_groupe', 'groupe') );
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : 'infos';
+
+$onglets->add_onglet('Infos groupe', 'infogroupe.php?action=infos&ajax=2', 'ongl_infos', false, $action=='infos');
+//$onglets->add_onglet('Batailles', 'infogroupe.php?action=batailles&ajax=2', 'ongl_batailles', $action=='batailles');
+
+$groupe = new groupe( $perso->get_groupe() );
+switch($action)
+{
+case 'infos':
+	$onglets->get_onglet('ongl_infos')->add( $G_interf->creer_groupe('infos_groupe', $groupe) );
+}
+
+
+exit;
+
 
 $partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
 if(array_key_exists('partage', $_GET))

@@ -476,5 +476,9 @@ class interf_factory
   {
     return new interf_combat();
   }
+  function creer_groupe($id, &$groupe)
+  {
+    return new interf_groupe($id, $groupe);
+  }
 }
 ?>
