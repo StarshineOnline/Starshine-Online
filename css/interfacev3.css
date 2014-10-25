@@ -1706,7 +1706,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 #scripts li.info_case a span.icone
 {
 	display: inline-block;
-	width: 20px;
+	width: 22px;
 	height: 30px;
 	float: left;
 	font-size: 20px;
@@ -3491,6 +3491,50 @@ a .livre_nom
 	margin-left: 5px;
 }
 
+
+/*********************************
+ Dialogue
+**********************************/
+
+.modal-dialog .invent
+{
+	border-color: #DDD;
+	width: 100%;
+}
+
+#cartes
+{
+	text-align: center;
+}
+
+
+/*********************************
+ Carte du monde
+**********************************/
+
+#cartes
+{
+	width: 570px;
+}
+
+.carte_perso
+{
+	fill: rgb(255, 0, 0);
+}
+.carte_groupe
+{
+	fill: rgb(255, 140, 0);
+}
+.carte_pos
+{
+	fill: rgb(255, 0, 255);
+}
+
+#carte_options
+{
+	float: left;
+	margin: 0 0 0 1px;
+}
 
 
 /*********************************

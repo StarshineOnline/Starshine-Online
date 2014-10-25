@@ -92,7 +92,7 @@ class interf_tp extends interf_ville
 	}
 	function aff_dest(&$liste, $nom, $stars, $x, $y, $descr, $id, $type='ville')
 	{
-		$elt = $liste->add( new interf_elt_menu('', 'carte.php?action=montrer&x='.$x.'&y='.$y, 'charger(this.ref);') );
+		$elt = $liste->add( new interf_elt_menu('', 'carte.php?x='.$x.'&y='.$y, 'charger(this.ref);') );
 		$elt->get_lien()->set_attribut('class', 'icone icone-carte2');
 		$elt->get_lien()->set_attribut('onclick', 'return charger(this.href);');
 		$tp = $elt->add( new interf_bal_cont('a') );

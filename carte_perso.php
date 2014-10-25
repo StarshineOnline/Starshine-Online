@@ -40,26 +40,30 @@ else
 	$pos_y = 0;
 }
 
-$rouge = imagecolorallocate($img2, 255, 0, 0);
-$orange = imagecolorallocate($img2, 255, 140, 0);
 
-$x_fin = $perso_x + 2;
-$y_fin = $perso_y + 2;
-imagefilledrectangle($img2, $perso_x-$pos_x, $perso_y-$pos_y, $x_fin-$pos_x, $y_fin-$pos_y, $rouge);
-//Positionnement des membres du groupe
-if($perso->get_groupe() > 0)
+if( array_key_exists('pos', $_GET) && $_GET['pos'] == 'groupe' )
 {
-	$groupe = new groupe($perso->get_groupe());
-	$groupe->get_membre_joueur();
-	foreach($groupe->membre_joueur as $membre)
+	$rouge = imagecolorallocate($img2, 255, 0, 0);
+	$orange = imagecolorallocate($img2, 255, 140, 0);
+	
+	$x_fin = $perso_x + 2;
+	$y_fin = $perso_y + 2;
+	imagefilledrectangle($img2, $perso_x-$pos_x, $perso_y-$pos_y, $x_fin-$pos_x, $y_fin-$pos_y, $rouge);
+	//Positionnement des membres du groupe
+	if($perso->get_groupe() > 0)
 	{
-		if($membre->get_id() != $_SESSION['ID'])
+		$groupe = new groupe($perso->get_groupe());
+		$groupe->get_membre_joueur();
+		foreach($groupe->membre_joueur as $membre)
 		{
-			$x = ($membre->get_x() - 1) * 3;
-			$y = ($membre->get_y() - 1) * 3;
-			$x_fin = (($membre->get_x() - 1) * 3) + 2;
-			$y_fin = (($membre->get_y() - 1) * 3) + 2;
-			imagefilledrectangle($img2, $x-$pos_x, $y-$pos_y, $x_fin-$pos_x, $y_fin-$pos_y, $orange);
+			if($membre->get_id() != $_SESSION['ID'])
+			{
+				$x = ($membre->get_x() - 1) * 3;
+				$y = ($membre->get_y() - 1) * 3;
+				$x_fin = (($membre->get_x() - 1) * 3) + 2;
+				$y_fin = (($membre->get_y() - 1) * 3) + 2;
+				imagefilledrectangle($img2, $x-$pos_x, $y-$pos_y, $x_fin-$pos_x, $y_fin-$pos_y, $orange);
+			}
 		}
 	}
 }

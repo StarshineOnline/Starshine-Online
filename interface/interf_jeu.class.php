@@ -44,7 +44,8 @@ class interf_jeu extends interf_sso_int
     $this->menu->add_elt( new interf_elt_menu('Diplomatie', 'diplomatie.php', 'return charger(this.href);') );
     $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
     $autres->add( new interf_elt_menu('Message d\'Accueil', 'message_accueil.php', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Cartes', 'royaume.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Cartes', 'carte.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Calendrier', 'moment_jour.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Bestiaire', 'liste_monstre.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Background', 'background.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Statistiques', 'stats2.php?graph=carte_royaume', 'return charger(this.href);') );
@@ -127,6 +128,11 @@ class interf_jeu extends interf_sso_int
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
     $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
     $forum->get_lien()->add( new interf_bal_smpl('span', $nbr_posts ? $nbr_posts : '', 'nbr_posts', 'badge') );
+	}
+  protected function menu_joueur($menu_joueur)
+  {
+    $menu_joueur->add( new interf_elt_menu('Feuille de personnage', 'personnage.php', 'return charger(this.href);') );
+    $menu_joueur->add( new interf_elt_menu('Points Shine <span class="badge">'.joueur::get_perso()->get_point_sso().'</span>', 'point_sso.php', 'return charger(this.href);') );
   }
   function affiche($tab = 0)
 	{

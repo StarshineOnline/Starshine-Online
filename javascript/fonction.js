@@ -141,7 +141,8 @@ function temps_serveur()
 function maj_tooltips()
 {
 	// on active les tooltip déjà définis
-	$("[data-toggle='tooltip']").tooltip({container: 'body'});
+	$("[data-toggle='tooltip']:not(#modal *)").tooltip({container: 'body'});
+	$("#modal *[data-toggle='tooltip']").tooltip({container: '#modal'});
 	// On crée ceux des buffs ainsi que les popvers
 	$(".buff").each( function()
 	{
@@ -345,6 +346,33 @@ function valide_nom_creature(id)
 function debugs()
 {
 	$('.debug').toggle();
+	return false;
+}
+
+function carte_royaume(id)
+{
+	var id_img = 'carte_'+id;
+	var svg = document.getElementById('carte_monde');
+	var img = document.getElementById(id_img);
+	if(img)
+	{
+		svg.removeChild(img);
+	}
+	else
+	{
+		var rect = svg.getElementsByTagName('rect');
+		img = document.createElementNS('http://www.w3.org/2000/svg','image');
+		img.id = id_img;
+		img.setAttribute('width', '450px');
+		img.setAttribute('height', '450px');
+		if( id == 'monstres' )
+			img.setAttributeNS('http://www.w3.org/1999/xlink','href', 'image/carte_densite_mob.png');
+		else
+			img.setAttributeNS('http://www.w3.org/1999/xlink','href', 'image/carte_royaume.png');
+		img.setAttribute('filter', 'url(#filtre_'+id+')');
+		svg.insertBefore(img, rect[0]);
+	}
+	$('#opt_'+id).toggleClass('active');
 	return false;
 }
 

@@ -112,13 +112,15 @@ class interf_barre_perso extends interf_bal_cont
   }
   protected function creer_infos_pos()
   {
+  	global $G_interf;
     $heure = $this->add( new interf_lien_cont('moment_jour.php', 'perso_heure') );
     $heure->set_attribut('style', 'background-image:url(image/interface/'.moment_jour().'.png);');
     $heure->set_tooltip(moment_jour(), 'bottom');
     $span = $heure->add( new interf_bal_smpl('span', substr(date_sso(time()),0,-3), 'heure') );
-    $pos = $this->add( new interf_bal_cont('a', 'perso_position') );
-    $img = $pos->add( new interf_bal_smpl('img') );
-    $img->set_attribut('src', 'carte_perso.php?vue=12');
+    $pos = $this->add( new interf_lien_cont('carte.php', 'perso_position') );
+    $carte = $pos->add( $G_interf->creer_carte_monde() );
+    $carte->aff_svg(12);
+		$carte->aff_groupe( $this->perso->get_groupe() );
   }
 	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, /*$style=false,*/ $type=null)
 	{

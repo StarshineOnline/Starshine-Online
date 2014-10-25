@@ -484,5 +484,9 @@ class interf_factory
   {
     return new interf_calendrier($nbr);
   }
+  function creer_carte_monde($id=false, $classe=false)
+  {
+    return new interf_carte_monde($id, $classe);
+  }
 }
 ?>

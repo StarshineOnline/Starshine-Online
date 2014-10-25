@@ -229,11 +229,13 @@ class interf_dialog extends interf_bal_cont
 class interf_dialogBS extends interf_princ
 {
   protected $titre; ///< titre de la boite de dialogue (ou null s'il n'y en a pas).
+  protected $btn_ferme; ///< Indique s'il y a un bouton (croix) pour fermer la boite dans l'en-tête, nécessite un titre.
   private $boutons = array();  /// Liste des boutons.
 
-  function __construct($titre=null)
+  function __construct($titre=null, $btn_ferme=false)
   {
     $this->titre = $titre;
+    $this->btn_ferme = $btn_ferme;
   }
   /**
    * Ajoute un bouton à la boite de dialogue
@@ -254,6 +256,13 @@ class interf_dialogBS extends interf_princ
     if($this->titre)
     {
       $this->ouvre('div class="modal-header"');
+      if( $this->btn_ferme )
+      {
+      	$this->ouvre('button type="button" class="close" data-dismiss="modal"');
+      	$this->balise('span', '&times;', array('aria-hidden'=>'true'));
+      	$this->balise('span', 'Fermer', array('class'=>'sr-only'));
+      	$this->ferme('button');
+			}
       $this->balise('h4', $this->titre, array('class'=>'modal-title'));
       $this->ferme('div');
     }

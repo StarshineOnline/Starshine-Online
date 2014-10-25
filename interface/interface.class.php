@@ -356,15 +356,18 @@ class interf_bal_smpl extends interf_smpl
   /**
    * Ajoute une infobulle compatible avec la librairie Bootstrap
    *
-   * @param  $texte   Texte du tooltip.
-   * @param  $pos     Position du tooltip
+   * @param  $texte			Texte du tooltip.
+   * @param  $pos				Position du tooltip
+   * @param  $parent		Conteneur
    */
-  function set_tooltip($texte, $pos=null)
+  function set_tooltip($texte, $pos=null, $parent=null)
   {
     $this->set_attribut('title', $texte);
     $this->set_attribut('data-toggle', 'tooltip');
     if( $pos )
       $this->set_attribut('data-placement', $pos);
+  	if( $parent )
+      $this->set_attribut('data-container', $parent);
   }
 }
 
@@ -454,8 +457,9 @@ class interf_bal_cont extends interf_cont
   /**
    * Ajoute une infobulle compatible avec la librairie Bootstrap
    *
-   * @param  $texte   Texte du tooltip.
-   * @param  $pos     Position du tooltip
+   * @param  $texte   	Texte du tooltip.
+   * @param  $pos     	Position du tooltip
+   * @param  $parent		Conteneur
    */
   function set_tooltip($texte, $pos=null, $parent=null)
   {
