@@ -488,5 +488,9 @@ class interf_factory
   {
     return new interf_carte_monde($id, $classe);
   }
+  function creer_diplomatie()
+  {
+    return new interf_diplomatie();
+  }
 }
 ?>

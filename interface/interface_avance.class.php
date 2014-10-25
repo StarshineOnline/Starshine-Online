@@ -231,11 +231,13 @@ class interf_dialogBS extends interf_princ
   protected $titre; ///< titre de la boite de dialogue (ou null s'il n'y en a pas).
   protected $btn_ferme; ///< Indique s'il y a un bouton (croix) pour fermer la boite dans l'en-tête, nécessite un titre.
   private $boutons = array();  /// Liste des boutons.
+  protected $id;
 
-  function __construct($titre=null, $btn_ferme=false)
+  function __construct($titre=null, $btn_ferme=false, $id=false)
   {
     $this->titre = $titre;
     $this->btn_ferme = $btn_ferme;
+    $this->id = $id;
   }
   /**
    * Ajoute un bouton à la boite de dialogue
@@ -251,7 +253,7 @@ class interf_dialogBS extends interf_princ
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
-    $this->ouvre('div class="modal-dialog"');
+    $this->ouvre('div class="modal-dialog"'.($this->id ? ' id="'.$this->id.'"' : ''));
     $this->ouvre('div class="modal-content"');
     if($this->titre)
     {

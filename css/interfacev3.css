@@ -3538,6 +3538,25 @@ a .livre_nom
 
 
 /*********************************
+ Carte du monde
+**********************************/
+
+#dlg_diplo
+{
+	width: 950px;
+}
+
+#diplomatie
+{
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+
+
+/*********************************
  JQuery
 **********************************/
 .ui-dialog-titlebar
