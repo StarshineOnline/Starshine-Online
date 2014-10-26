@@ -492,5 +492,14 @@ class interf_factory
   {
     return new interf_diplomatie();
   }
+  function creer_bestiaire($terrain)
+  {
+    return new interf_bestiaire($terrain);
+  }
+  function creer_liste_monstres($terrain)
+  {
+    include_once(root.'interface/interf_bestiaire.class.php');
+    return new interf_liste_monstres($terrain);
+  }
 }
 ?>

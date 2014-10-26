@@ -1649,7 +1649,7 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 /***************************************************
   Info Perso
  ***************************************************/
-#inventaire_slot { font-size:11px; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
+/*#inventaire_slot { font-size:11px; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
 #inventaire_slot ul li { height:20px; clear:both; padding:2px; }
 #inventaire_slot .inventaire_span { float:left; display:block; }
 #bestiaire { clear:both; }
@@ -1681,7 +1681,7 @@ textarea#css, textarea#description { width: 500px; height:150px; }
 
 .windows_right {}
 h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
-
+*/
 
 /***************************************************
   Script de combat
@@ -3538,7 +3538,7 @@ a .livre_nom
 
 
 /*********************************
- Carte du monde
+ Diplomatie
 **********************************/
 
 #dlg_diplo
@@ -3551,6 +3551,21 @@ a .livre_nom
 	font-size: 13px;
 	text-align: center;
 	vertical-align: middle;
+}
+
+
+/*********************************
+ bestiaire
+**********************************/
+
+#dlg_bestiaire
+{
+	width: 750px;
+}
+
+#bestiaire table.dataTable
+{
+	margin-top: 0 !important;
 }
 
 
