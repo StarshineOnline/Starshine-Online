@@ -226,7 +226,7 @@ class interf_dialog extends interf_bal_cont
  * Affiche le contenu d'une boite de dialogue modale
  * La boite de dialogue est gérée par Bootstrap.
  */
-class interf_dialogBS extends interf_princ
+class interf_dialogBS extends interf_cont//interf_princ
 {
   protected $titre; ///< titre de la boite de dialogue (ou null s'il n'y en a pas).
   protected $btn_ferme; ///< Indique s'il y a un bouton (croix) pour fermer la boite dans l'en-tête, nécessite un titre.

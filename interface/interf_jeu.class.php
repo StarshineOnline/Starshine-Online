@@ -47,7 +47,7 @@ class interf_jeu extends interf_sso_int
     $autres->add( new interf_elt_menu('Cartes', 'carte.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Calendrier', 'moment_jour.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Bestiaire', 'liste_monstre.php', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Background', 'background.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Histoire de Starshine', 'background.php', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Statistiques', 'stats2.php?graph=carte_royaume', 'return charger(this.href);') );
     $autres->add( new interf_elt_menu('Classement', 'classement.php', 'return charger(this.href);') );
 
@@ -218,6 +218,7 @@ class interf_jeu_ajax extends interf_princ_ob
   }
   function set_dialogue($fils)
   {
+		$fils->add_js();
     $cont = $this->add( new interf_bal_cont('section', 'modal') );
     return $cont->add($fils);
   }

@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 ?>		<div class="titre">
@@ -12,7 +13,7 @@ if (file_exists('root.php'))
 		</div>
 		<p>
 		<br />
-		"Une fois libre, Cemiros se retira quelques temps hors du monde séculier, le temps pour lui d'affiner ses plans, et de faire profil bas pour appaiser les soupçons de certains de ses frères et soeurs.<br />
+		«Une fois libre, Cemiros se retira quelques temps hors du monde séculier, le temps pour lui d'affiner ses plans, et de faire profil bas pour appaiser les soupçons de certains de ses frères et soeurs.<br />
 		Puis, quand il fût sur qu'il n'était plus aussi étroitement surveillé, il sortit de sa retraite et commença a parcourir le monde ... pour ce faire, il choisit d'adopter plusieurs formes, en fonction de  la race avec laquelle il entrait en contact.<br />
 		Pour Cemiros, manipuler, voir même juste influancer les esprits des races mineures, était un jeu d'enfant. Suivant la race qu'il visitait, Cemiros se choisissait un nom d'emprunt adapté, ce qui lui vaudrait plus tard d'être surnommé par tous  ?Le changeur?. Les premiers temps, Cemiros fut d'une aide plus qu'utile pour les petites races. Le plus discrétement possible pour éviter d'attirer l'attention des autres dieux, il leur donna maints enseignements, et ce sur de multiples sujets, comme la magie, la maçonnerie, la politique ect .. puis petit a petit au fil des années, il les conseilla en matière de guerre, de stratégie et de tactique, distillant petit a petit des graines de discorde qui ne serviraient ses plans que bien des décennies plus tard.<br />
 		Il navigua ainsi de races en races, n'en omettant aucune. Seuls de tous, les elfes firent un mauvais acceuil à l'avatar de Cemiros, présenté devant la Reine Alsine, qui avait le pouvoir de lire les coeurs et les auras du monde invisible, il fut en partie démasqué par celle ci qui le fit chasser des terres elfiques .. Cemiros préfera partir plutôt que risquer d'attirer l'attention.<br />
@@ -155,7 +156,7 @@ if (file_exists('root.php'))
 		<br />
 		? Qui es tu ?<br />
 		- Cemiros la regarda dans les yeux : Je suis l'Ordre et l'obéissance, je suis le néant et le chaos .. tout et rien à la fois, car le temps ne s'acheve jamais.<br />
-		- La petite fille se mit a sourire : C'est maintenant, à la fin, que tu te décide a comprendre .. "<br />
+		- La petite fille se mit a sourire : C'est maintenant, à la fin, que tu te décide a comprendre .. »<br />
 		<br />
 		<i>Notes du traducteur : Le codex se termine ici, et il appel a quelques explications. Certains passages viennent des divagations de Martine le fou, qui dans ses elucubrations, ses diverses prophéties, a raconté divers passages repris dans ce présent codex, la véracité de ce texte a été confirmé plusieurs fois soit par des êtres ayant vécu tout ou parti de ces évenements, soit par certains dieux eux même.<br />
 		Pour clore ce chapitre, je soulignerais le fait qu'on a plus jamais entendu parler de  Cemiros, s'il a vraiment existé, ( ma théorie est qu'il est aussi une allégorie de la partie sombre qui vit en chacun de nous ). Peu de ?dieux? ont survécu a la guerre noire, et ceux qui l'ont fait souhaitent rarement discuter de ce sujet avec des mortels ..<br />

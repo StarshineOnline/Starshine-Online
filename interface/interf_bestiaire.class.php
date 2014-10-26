@@ -24,6 +24,7 @@ class interf_bestiaire extends interf_onglets
 		$this->add_onglet('Route', $G_url->get('terrain', 'route'), 'ongl_route', false, $terrain=='route');
 		$this->add_onglet('Terre maudite', $G_url->get('terrain', 'terre_maudite'), 'ongl_terre_maudite', false, $terrain=='terre_maudite');
 		
+		/// @bug la datatable se s'initialise pas ici (mais ça marche ensuite)
 		$this->get_onglet('ongl_'.$terrain)->add( new interf_liste_monstres($terrain) );
 	}
 }

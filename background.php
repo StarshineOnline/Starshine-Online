@@ -1,23 +1,34 @@
 <?php
 if (file_exists('root.php'))
   include_once('root.php');
-?>		<div class="titre">
-			Histoire de Starshine
-		</div>
-		<ul class="bg">
-			<li><a href="background_preface.php" onclick="return envoiInfo(this.href, 'popup_content');">Préface</a></li>
-			<li>
-				Génèse
-				<ul class="bg">
-					<li><a href="background_tome1.php" onclick="return envoiInfo(this.href, 'popup_content');">Tome 1</a></li>
-					<li><a href="background_tome2.php" onclick="return envoiInfo(this.href, 'popup_content');">Tome 2</a></li>
-				</ul>
-			</li>
-		</ul>
-		<div class="titre">
-			Background des races
-		</div>
-		<ul class="bg">
-			<li><a href="background_barbare.php" onclick="return envoiInfo(this.href, 'popup_content');">Barbares</a></li>
-			<li><a href="background_elfes.php" onclick="return envoiInfo(this.href, 'popup_content');">Peuples elfiques</a></li>
-		</ul>
+  
+include_once(root.'inc/fp.php');
+
+$interf_princ = $G_interf->creer_jeu();
+  
+$histoire = array_key_exists('histoire', $_GET) ? $_GET['histoire'] : null;
+/// @todo passer à l'objet
+if( $histoire )
+{
+	$requete = 'SELECT titre, texte FROM texte_rp WHERE id = '.$histoire;
+	$req = $db->query($requete);
+	$rp = $db->read_array($req);
+}
+$requete = 'SELECT id, titre FROM texte_rp WHERE type = "background" ORDER BY id';
+$req = $db->query($requete);
+$titre = 'Histoire de Starshine'.($histoire ? ' : '.$rp['titre'] : '');
+$dlg = $interf_princ->set_dialogue( new interf_dialogBS($titre, true, 'dlg_rp') );
+$liste = $dlg->add( new interf_bal_cont('ul', 'liste_rp', 'nav nav-pills nav-stacked') );
+while($row = $db->read_array($req))
+{
+	if( $row['id']==$histoire )
+		$liste->add( new interf_elt_menu($row['titre'], '#', false, false, 'active') );
+	else
+		$liste->add( new interf_elt_menu($row['titre'], 'background.php?histoire='.$row['id'], 'return charger(this.href);') );
+}
+if( $histoire )
+{
+	$texte = new texte($rp['texte'], texte::msg_monde);
+	$dlg->add( new interf_bal_smpl('div', $texte->parse(), 'texte_rp') );
+}
+$dlg->add( new interf_bal_smpl('div', false, 'rp_fin') );

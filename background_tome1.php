@@ -1,4 +1,5 @@
 <?php
+/// @depreacted
 if (file_exists('root.php'))
   include_once('root.php');
 ?>		<div class="titre">
@@ -12,7 +13,7 @@ if (file_exists('root.php'))
 		</div>
 		<p>
 		<br />
-		" La genèse du monde s'est vite posée comme un problème ardu à résoudre. Nous autres nains, avons notre propre version de la création du monde, mais elle reste plutôt focalisée sur notre race et notre royaume ... parcellaire donc, nous en sommes conscients. Aussi, afin d'avoir un récit aussi exhaustif et proche de la réalité que possible, mon maître Jarod m'envoya par-delà la mer jusqu'a l'île de Domang'a où je rencontrai l'elfe sans âge Innocent. Nom étrange pour un personnage étrange, il faudra que je vous raconte toutes les épreuves farfelues que j'ai dûes passer avant que cet elfe plusieurs fois millénaire, un des seuls êtres encore vivans ayant connu l'exode, ne consente à partager ses connaissances. Sans consentir à me donner son avis sur la chose, il me laissa lire sa copie du Codex Adamantium qui est un récit d'un autre âge sur la création du monde. Ceci en est la traduction en langage commun, sujet donc aux erreurs et diverses appréciations de votre serviteur, mais je l'espère le plus fidèle possible. "<br />
+		« La genèse du monde s'est vite posée comme un problème ardu à résoudre. Nous autres nains, avons notre propre version de la création du monde, mais elle reste plutôt focalisée sur notre race et notre royaume ... parcellaire donc, nous en sommes conscients. Aussi, afin d'avoir un récit aussi exhaustif et proche de la réalité que possible, mon maître Jarod m'envoya par-delà la mer jusqu'a l'île de Domang'a où je rencontrai l'elfe sans âge Innocent. Nom étrange pour un personnage étrange, il faudra que je vous raconte toutes les épreuves farfelues que j'ai dûes passer avant que cet elfe plusieurs fois millénaire, un des seuls êtres encore vivans ayant connu l'exode, ne consente à partager ses connaissances. Sans consentir à me donner son avis sur la chose, il me laissa lire sa copie du Codex Adamantium qui est un récit d'un autre âge sur la création du monde. Ceci en est la traduction en langage commun, sujet donc aux erreurs et diverses appréciations de votre serviteur, mais je l'espère le plus fidèle possible. »<br />
 		<i>- Apporté à votre attention par Tom Despree, archiviste de la Grande Bibliothèque de Khazad Dorr.</i>
 		<br />
 		<br />

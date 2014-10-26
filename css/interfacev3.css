@@ -3569,6 +3569,30 @@ a .livre_nom
 }
 
 
+/*********************************
+ bestiaire
+**********************************/
+
+#dlg_rp
+{
+	width: 900px;
+}
+
+#liste_rp
+{
+	float: left;
+	width: 150px;
+}
+
+#texte_rp
+{
+	margin-left: 155px;
+}
+
+#rp_fin
+{
+	clear: both;
+}
 
 
 /*********************************
