@@ -16,8 +16,7 @@ if( $histoire )
 }
 $requete = 'SELECT id, titre FROM texte_rp WHERE type = "background" ORDER BY id';
 $req = $db->query($requete);
-$titre = 'Histoire de Starshine'.($histoire ? ' : '.$rp['titre'] : '');
-$dlg = $interf_princ->set_dialogue( new interf_dialogBS($titre, true, 'dlg_rp') );
+$dlg = $interf_princ->set_dialogue( new interf_dialogBS('Histoire de Starshine', true, 'dlg_rp') );
 $liste = $dlg->add( new interf_bal_cont('ul', 'liste_rp', 'nav nav-pills nav-stacked') );
 while($row = $db->read_array($req))
 {

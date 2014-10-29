@@ -35,7 +35,7 @@ class interf_diplomatie extends interf_tableau
 		while($row = $db->read_assoc($req))
 		{
 			$this->nouv_ligne();
-			//my_dump($row);
+			$total = 0;
 			foreach($fields as $field)
 			{
 				if( !is_numeric($row[$field]) )
