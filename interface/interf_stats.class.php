@@ -27,6 +27,7 @@ class interf_stats extends interf_onglets
 		$this->add_onglet('Monstres', $G_url->get('stat', 'stat_monstre'), 'ongl_', 'invent', $stat=='stat_monstre');
 		
 		$this->get_onglet('ongl_'.$stat)->add( new interf_img('image/'.$stat.'.png') );
+		/// @todo remettre l'historique
 	}
 }
 
