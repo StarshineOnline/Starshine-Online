@@ -15,6 +15,7 @@ class interf_onglets extends interf_bal_cont
   protected $contenu;
   protected $id;
   protected $divs;  ///< balises divs contenant le contenu de chaque onglets.
+  protected $menus = array();
 
   /**
    * Constructeur
@@ -30,12 +31,6 @@ class interf_onglets extends interf_bal_cont
     $this->divs = array();
     $this->id = $id_cont;
   }
-  /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
-  /*protected function debut()
-  {
-    $this->haut->affiche();
-    interf_bal_cont::debut();
-  }*/
   /**
    * Ajoute un onglet.
    * @param  $nom         nom à afficher sur l'onglet
@@ -43,13 +38,31 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function add_onglet($nom, $adresse, $id, $classe='', $selection=false)
+  function add_onglet($nom, $adresse, $id, $classe='', $selection=false, $menu=false)
   {
     $classe .= ' tab-pane';
     if( $selection )
       $classe .= ' active';
     //$li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
-    $li = $this->haut->add( new interf_elt_menu($nom, '#'.$id, 'charge_tab(this, \''.$id.'\');') );
+    $li = new interf_elt_menu($nom, '#'.$id, 'charge_tab(this, \''.$id.'\');');
+    if( $menu )
+    {
+    	if( array_key_exists($menu, $this->menus) )
+    		$parent = &$this->menus[$menu];
+    	else
+    	{
+    		$li_menu = $this->haut->add( new interf_bal_cont('li', false, 'dropdown') );
+    		$lien = $li_menu->add( new interf_bal_cont('a', '#', false, 'dropdown-toggle') );
+    		$lien->set_attribut('data-toggle', 'dropdown');
+    		$lien->add( new interf_txt($menu) );
+    		$lien->add( new interf_bal_smpl('span', '', false, 'caret') );
+    		$parent = $li_menu->add( new interf_bal_cont('ul', false, 'dropdown-menu') );
+    		$this->menus[$menu] = &$parent;
+			}
+			$parent->add( $li );
+		}
+		else
+    	$this->haut->add( $li );
     $lien = $li->get_lien();
     if($selection)
     {

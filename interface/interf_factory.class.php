@@ -501,5 +501,9 @@ class interf_factory
     include_once(root.'interface/interf_bestiaire.class.php');
     return new interf_liste_monstres($terrain);
   }
+  function creer_stats($stat='stat_lvl')
+  {
+  	return new interf_stats($stat);
+	}
 }
 ?>

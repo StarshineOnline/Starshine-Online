@@ -3570,7 +3570,7 @@ a .livre_nom
 
 
 /*********************************
- bestiaire
+ Histoire de starshine
 **********************************/
 
 #dlg_rp
@@ -3592,6 +3592,21 @@ a .livre_nom
 #rp_fin
 {
 	clear: both;
+}
+
+
+/*********************************
+ Statistiques
+**********************************/
+
+#dlg_stats
+{
+	width: 800px;
+}
+
+#statistiques
+{
+	text-align: center;
 }
 
 
