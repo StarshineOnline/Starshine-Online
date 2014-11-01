@@ -2,6 +2,7 @@
 /**
  * @file interf_stats.class.php
  * Affichage des statistiques
+ */
  
 /**
  * classe gérant l'affichage des statistiques
