@@ -144,3 +144,25 @@ var oTable = $('#classement_table').dataTable({
 	}
 });
 </script>
+
+<script type="text/javascript">
+// était dans classement.php avant
+$('#classement_table_mon_perso').click(function(event){
+	// The default action of the event will not be triggered.
+	event.preventDefault();
+	
+	var isDisabledPagingAction = $(this).data('isDisabledPagingAction');
+	if( !isDisabledPagingAction )
+	{
+		// On récupère la pagingAction à effectuer
+		var pagingAction = $(this).data('pagingAction');
+		possiblePagingActions = ["first", "previous", "next", "last"];
+		// pagingAction peut aussi être un integer, le numéro de la page à laquelle on veut se rendre
+		if( possiblePagingActions.indexOf(pagingAction) == -1 ){
+			pagingAction = parseInt( pagingAction );
+		}
+		// The jQuery DataTables table takes the pagingAction 
+		oTable.fnPageChange( pagingAction );
+	}
+});
+</script>

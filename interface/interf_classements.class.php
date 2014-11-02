@@ -208,7 +208,7 @@ class interf_classement_perso_tous extends interf_pills
 		
 		// Tableau et en-tête
 		/// @todo rétablir la recherche
-		$tbl = $this->get_contenu()->add( new interf_data_tbl(''.static::id_tbl, '', true, false) );
+		$tbl = $this->get_contenu()->add( new interf_data_tbl('tbl_'.static::id, '', true, false) );
 		$tbl->nouv_cell('#');
 		$tbl->nouv_cell('Nom');
 		$tbl->nouv_cell('Valeur');
@@ -235,7 +235,7 @@ class interf_classement_perso_tous extends interf_pills
 
 class interf_classement_perso_race extends interf_classement_perso_tous
 {
-	const id_tbl = 'tbl_perso_race';
+	const id = 'perso_race';
 	/*function __construct($type)
 	{	
 		global $G_url;

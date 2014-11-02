@@ -6,7 +6,7 @@ include_once(root.'inc/fp.php');
 
 $interf_princ = $G_interf->creer_jeu();
   
-$histoire = array_key_exists('histoire', $_GET) ? $_GET['histoire'] : null;
+$histoire = array_key_exists('histoire', $_GET) ? $_GET['histoire'] : 1;
 /// @todo passer à l'objet
 if( $histoire )
 {
