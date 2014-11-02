@@ -2,7 +2,6 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
-$api_login = true;
 $check = false;
 
 //Inclusion du haut du document html
