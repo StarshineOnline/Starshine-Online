@@ -505,5 +505,29 @@ class interf_factory
   {
   	return new interf_stats($stat);
 	}
+  function creer_classements($categorie, $type)
+  {
+  	return new interf_classements($categorie, $type);
+	}
+  function creer_classement_royaumes($categorie, $type)
+  {
+    include_once(root.'interface/interf_classements.class.php');
+  	return new interf_classement_royaumes($type);
+	}
+  function creer_classement_groupes($type)
+  {
+    include_once(root.'interface/interf_classements.class.php');
+  	return new interf_classement_groupes($type);
+	}
+  function creer_classement_perso_race($type)
+  {
+    include_once(root.'interface/interf_classements.class.php');
+  	return new interf_classement_perso_race($type);
+	}
+  function creer_classement_perso_tous($type)
+  {
+    include_once(root.'interface/interf_classements.class.php');
+  	return new interf_classement_perso_tous($type);
+	}
 }
 ?>

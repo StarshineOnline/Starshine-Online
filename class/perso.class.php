@@ -967,7 +967,7 @@ class perso extends entite
    */       
 	function get_artisanat()
 	{
-		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
+		return round(sqrt(($this->architecture + $this->forge + $this->alchimie + $this->indentification) * 10));
 	}
 	/**
 	 * Renvoie la compétence demandée

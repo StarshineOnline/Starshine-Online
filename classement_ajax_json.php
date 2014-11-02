@@ -1,4 +1,6 @@
 <?php
+/// @deprecated
+
 /*
  * Pour les informations envoyées au serveur par jQuery DataTables
  * et les informations à renvoyer à jQuery DataTables par le serveur

@@ -565,8 +565,8 @@ class interf_data_tbl extends interf_tableau
     /*$script = $this->add( new interf_bal_smpl('script', '') );
     $script->set_attribut('type', 'text/javascript');
     $script->set_attribut('src', './javascript/jquery/jquery.dataTables.min.js');*/
-    
-    $options = array('"language": {"emptyTable": "Pas d\'élément dans cette catégorie."}');
+    //
+    $options = array('"language": {"emptyTable": "Pas d\'élément dans cette catégorie.", "search": "Recherche :", "zeroRecords": "Pas de résultat", "paginate": {"first":"Début", "last":"Fin", "next":"suivant", "previous":"Précédent"}, "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées", "infoFiltered": "(filtré à partir de _MAX_ entrées)", "lengthMenu": "Afficher _MENU_ entrées par page", "infoEmpty": "Affichage de 0 entrées sur 0"}');
     if( !$pages )
     	$options[] = '"paging":false, "info":false';
     if( $scroll )
@@ -787,5 +787,64 @@ class interf_dropdown_select extends interf_bal_cont
 	{
   	$this->texte->set_texte($texte);
 	}
+}
+/**
+ * Classe permettant un affichage avec des onglets.
+ * Utilise la librairie boostrap.
+ */
+class interf_pills extends interf_bal_cont
+{
+  protected $liste;  ///< liste des onglets.
+  protected $menus = array();
+  protected $contenu;
+
+  /**
+   * Constructeur
+   */
+  function __construct($id=false, $classe=false, $id_cont=false, $class_cont=false)
+  {
+    interf_bal_cont::__construct('div', $id, $classe);
+    $this->liste = $this->add( new interf_bal_cont('ul', false, 'nav nav-pills nav-stacked') );
+    $this->contenu = $this->add( new interf_bal_cont('div', $id_cont, $class_cont) );
+    //$this->add( new interf_bal_smpl('div', false, 'rp_fin') );
+  }
+  /**
+   * Ajoute un onglet.
+   * @param  $nom         nom à afficher sur l'onglet
+   * @param  $adresse     adresse de la page web pour le contenu
+   * @param  $selection   indique si l'onglet est sélectionné
+   */
+  function add_elt($nom, $adresse, $selection=false, $menu=false)
+  {
+    if( $selection )
+      $li = new interf_elt_menu($nom, '#', false, false, 'active');
+    else
+      $li = new interf_elt_menu($nom, $adresse, 'return charger(this.href);');
+    if( $menu )
+    {
+    	if( array_key_exists($menu, $this->menus) )
+    		$parent = &$this->menus[$menu];
+    	else
+    	{
+    		$li_menu = $this->liste->add( new interf_bal_cont('li', false, 'dropdown') );
+    		$lien = $li_menu->add( new interf_bal_cont('a', '#', false, 'dropdown-toggle') );
+    		$lien->set_attribut('data-toggle', 'dropdown');
+    		$lien->add( new interf_txt($menu) );
+    		$lien->add( new interf_bal_smpl('span', '', false, 'caret') );
+    		$parent = $li_menu->add( new interf_bal_cont('ul', false, 'dropdown-menu') );
+    		$this->menus[$menu] = &$parent;
+			}
+			$parent->add( $li );
+		}
+		else
+    	$this->liste->add( $li );
+    $lien = $li->get_lien();
+    return $li;
+  }
+
+  function &get_contenu()
+  {
+    return $this->contenu;
+  }
 }
 ?>

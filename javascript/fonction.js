@@ -226,7 +226,7 @@ function suppr_buff(elt)
 var filtre_ecole_mag = false;
 $.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
 {
-	alert(dataIndex + " : " + data);
+	//alert(dataIndex + " : " + data);
 	return false;
 });
 $.fn.dataTable.ext.type.detect.unshift( function ( d )
