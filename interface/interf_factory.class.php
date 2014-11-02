@@ -529,5 +529,14 @@ class interf_factory
     include_once(root.'interface/interf_classements.class.php');
   	return new interf_classement_perso_tous($type);
 	}
+  function creer_points_shine($categorie)
+  {
+  	return new interf_points_shine($categorie);
+	}
+  function creer_bonus_shine($categorie)
+  {
+    include_once(root.'interface/interf_points_shine.class.php');
+  	return new interf_bonus_shine($categorie);
+	}
 }
 ?>

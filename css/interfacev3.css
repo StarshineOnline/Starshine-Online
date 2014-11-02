@@ -3686,6 +3686,27 @@ a .livre_nom
 
 
 /*********************************
+ Points shine
+**********************************/
+
+#points_shine td
+{
+	width: 100%;
+}
+
+#points_shine td
+{
+	text-align : center;
+	width:33%;
+}
+
+#points_shine .possede
+{
+	color: #aaaa00;
+}
+
+
+/*********************************
  JQuery
 **********************************/
 .ui-dialog-titlebar
