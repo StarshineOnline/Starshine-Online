@@ -538,5 +538,10 @@ class interf_factory
     include_once(root.'interface/interf_points_shine.class.php');
   	return new interf_bonus_shine($categorie);
 	}
+  function creer_bonus_shine_config($id)
+  {
+    include_once(root.'interface/interf_points_shine.class.php');
+  	return new interf_bonus_shine_config($id);
+	}
 }
 ?>

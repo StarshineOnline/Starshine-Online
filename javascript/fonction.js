@@ -110,6 +110,17 @@ function charger_formulaire_texte(id, id_texte)
 	return false;
 }
 
+function charger_formulaire_fichier(id_form, id_input)
+{
+  formul = $('#' + id_form);
+  // Chargement du script permettant l'envoi de fichier
+  jQuery.getScript("./javascript/jquery/fileupload.js", function()
+  { 
+		jQuery.ajaxFileUpload({url:formul.attr("action"),data:formul.serialize(), fileElementId:id_input, dataType:"html",secureuri:false,success:affiche_ajax});
+	});
+  return false;
+}
+
 function decode_texte(texte)
 {
 	texte = bbcodeParser.htmlToBBCode(texte);

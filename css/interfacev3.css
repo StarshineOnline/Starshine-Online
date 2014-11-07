@@ -3689,7 +3689,7 @@ a .livre_nom
  Points shine
 **********************************/
 
-#points_shine td
+#points_shine table, #points_shine td
 {
 	width: 100%;
 }
@@ -3703,6 +3703,27 @@ a .livre_nom
 #points_shine .possede
 {
 	color: #aaaa00;
+}
+
+#points_shine
+{
+	text-align: center;
+}
+
+#points_shine p.xsmall
+{
+	margin-top: 10px;
+}
+
+#config_bonus textarea
+{
+	width: 100%;
+	height: 200px;
+}
+
+#config_bonus .input-group
+{
+	margin-top: 10px;
 }
 
 
