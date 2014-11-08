@@ -186,9 +186,9 @@ class interf_bonus_shine_config extends interf_dialogBS
 			$div_e = $form->add( new interf_bal_cont('div', false, 'input-group') );
 			$div_e->add( new interf_bal_smpl('span', 'Afficher', false, 'input-group-addon') );
 			$etat = $div_e->add( new interf_select_form('etat', false, false, 'form-control') );
-			$etat->add_option('à tout le monde', '1', $bonus[$id]==0);
+			$etat->add_option('à tout le monde', '0', $bonus[$id]==0);
 			$etat->add_option('aux joueurs de votre race', '1', $bonus[$id]==1);
-			$etat->add_option('à personne', '1', $bonus[$id]==2);
+			$etat->add_option('à personne', '2', $bonus[$id]==2);
 		}
 		$this->ajout_btn('Annuler', 'fermer');
 		$this->ajout_btn('Ok', 'fermer');

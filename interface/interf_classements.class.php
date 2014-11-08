@@ -58,7 +58,7 @@ class interf_classement_royaumes extends interf_pills
 		
 		// Population des royaumes
 		/// @todo passer à l'objet
-	  $requete = "SELECT COUNT(*) as tot, race FROM perso WHERE statut = 'actif' AND level > 0 GROUP BY race";
+	  $requete = "SELECT COUNT(*) as tot FROM perso WHERE statut = 'actif' AND level > 0 GROUP BY race";
 	  $req = $db->query($requete);
 	  while($row = $db->read_assoc($req))
 	  {
@@ -165,7 +165,7 @@ class interf_classement_perso_tous extends interf_pills
 	const id = 'perso_tous';
 	function __construct($type)
 	{	
-		global $G_url, $db;
+		global $G_url, $db, $Tclasse;
 		parent::__construct('class_'.static::id, 'classement');
 		if(!$type)
 			$type = 'honneur';
@@ -192,16 +192,16 @@ class interf_classement_perso_tous extends interf_pills
 		switch($type)
 		{
 	  case 'exp':
-	    $requete = 'SELECT exp as val, level, nom, id FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
+	    $requete = 'SELECT exp as val, level, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
 	    break;
 	  case 'achiev':
-	    $requete = 'SELECT COUNT(*) as val, perso.nom, perso.id FROM achievement INNER JOIN perso ON perso.id = achievement.id_perso WHERE statut = "actif" and level > 0 GROUP BY achievement.id_perso ORDER BY val DESC';
+	    $requete = 'SELECT COUNT(*) as val, perso.nom, perso.id, race, classe, cache_classe, cache_stat, cache_niveau FROM achievement INNER JOIN perso ON perso.id = achievement.id_perso WHERE statut = "actif" and level > 0 GROUP BY achievement.id_perso ORDER BY val DESC';
 	    break;
 	  case 'artisanat':
-	    $requete = 'SELECT ROUND(SQRT(architecture + alchimie + forge + indentification)*10) as val, nom, id FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
+	    $requete = 'SELECT ROUND(SQRT(architecture + alchimie + forge + indentification)*10) as val, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
 	    break;
 	  default:
-	    $requete = 'SELECT '.$type.' as val, nom, id FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
+	    $requete = 'SELECT '.$type.' as val, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
 	    break;
 	  }
 		$req = $db->query($requete);
@@ -219,15 +219,43 @@ class interf_classement_perso_tous extends interf_pills
 		
 		// Corps du tableau
 		$id = joueur::get_perso()->get_id();
+		$race = joueur::get_perso()->get_race();
 		$i = 1;
 		while( $row = $db->read_array($req) )
 		{
 			$tbl->nouv_ligne(false, $row['id']==$id ? 'info' : false);
 			$tbl->nouv_cell( $i );
-			$tbl->nouv_cell( $row['nom'] );
-			$tbl->nouv_cell( number_format($row['val'], 0, ',', ' ') );
-			if( $type == 'exp' )
-				$tbl->nouv_cell( number_format($row['level'], 0, ',', ' ') );
+			switch($type)
+			{
+			case 'exp':
+				$cache = max($row['cache_stat'], $row['cache_niveau']);
+				break;
+			case 'crime':
+				$cache = 0;
+				break;
+			default:
+				$cache = $row['cache_stat'];
+			}
+			if( $cache == 2 || ($cache == 1 && $row['race']!=$race) )
+			{
+				$tbl->nouv_cell( 'XXX' );
+				$tbl->nouv_cell( 'X' );
+				if( $type == 'exp' )
+					$tbl->nouv_cell( 'X' );
+			}
+			else
+			{
+				if( $row['cache_classe']  )
+					$tbl->nouv_cell( $row['nom'] );
+				else
+				{
+					$img = 'image/personnage/'.$row['race'].'/'.$row['race'].'_'.$Tclasse[$row['classe']]['type'].'.png';
+					$tbl->nouv_cell( new interf_img($img, $row['race'].' '.$row['classe']) )->add( $row['nom'] );
+				}
+				$tbl->nouv_cell( number_format($row['val'], 0, ',', ' ') );
+				if( $type == 'exp' )
+					$tbl->nouv_cell( number_format($row['level'], 0, ',', ' ') );
+			}
 			$i++;
 		}
 	}
