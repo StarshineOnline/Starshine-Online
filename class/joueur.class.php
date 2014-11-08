@@ -85,6 +85,8 @@ class joueur extends table
     static $joueur = null;
     if( !$joueur && array_key_exists('id_joueur', $_SESSION) )
       $joueur = new joueur($_SESSION['id_joueur']);
+		if( !$joueur && array_key_exists('ID', $_SESSION) )
+			$joueur = new joueur( joueur::get_perso()->get_joueur() );
     return $joueur;
   }
 

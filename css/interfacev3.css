@@ -3728,6 +3728,20 @@ a .livre_nom
 
 
 /*********************************
+ Options
+**********************************/
+
+#options .input-group, #options .invent>div
+{
+	margin: 5px;
+}
+
+#options .invent>div:nth-child(n+2)
+{
+	margin-top: 30px;
+}
+
+/*********************************
  JQuery
 **********************************/
 .ui-dialog-titlebar

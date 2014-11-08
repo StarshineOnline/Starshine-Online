@@ -143,9 +143,9 @@ class interf_jeu extends interf_sso_int
 			$this->set_droite();
 		parent::affiche($tab);
 	}
-	function recharger_interface()
+	function recharger_interface($url='interface.php')
 	{
-		$this->code_js('document.location="interface.php";');
+		$this->code_js('document.location="'.$url.'";');
 	}
 	function maj_tooltips()
 	{

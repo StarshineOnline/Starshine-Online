@@ -14,7 +14,7 @@ class interf_classements extends interf_onglets
 		global $G_url;
 		parent::__construct('ongl_class', 'classements');
 		$url = $G_url->copie('ajax', 2);
-		$roy = $this->add_onglet('Royaumes', $url->get('categorie', 'royaumes'), 'ongl_', 'invent', $categorie=='royaumes');
+		$roy = $this->add_onglet('Royaumes', $url->get('categorie', 'royaumes'), 'ongl_royaumes', 'invent', $categorie=='royaumes');
 		$grp = $this->add_onglet('Groupes', $url->get('categorie', 'groupes'), 'ongl_groupes', 'invent', $categorie=='groupes');
 		$perso_roy = $this->add_onglet('Personnages − royaume', $url->get('categorie', 'perso_race'), 'ongl_perso_race', 'invent', $categorie=='perso_race');
 		$perso_tous = $this->add_onglet('Personnages − global', $url->get('categorie', 'perso_tous'), 'ongl_perso_tous', 'invent', $categorie=='perso_tous');

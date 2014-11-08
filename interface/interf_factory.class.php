@@ -543,5 +543,19 @@ class interf_factory
     include_once(root.'interface/interf_points_shine.class.php');
   	return new interf_bonus_shine_config($id);
 	}
+  function creer_options($categorie)
+  {
+  	return new interf_options($categorie);
+	}
+  function creer_options_perso()
+  {
+    include_once(root.'interface/interf_options.class.php');
+  	return new interf_options_perso();
+	}
+  function creer_options_joueur()
+  {
+    include_once(root.'interface/interf_options.class.php');
+  	return new interf_options_joueur();
+	}
 }
 ?>

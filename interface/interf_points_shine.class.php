@@ -172,7 +172,8 @@ class interf_bonus_shine_config extends interf_dialogBS
 				$form->add( new interf_bal_smpl('p', 'Poids maximum du fichier : 20ko', false, 'help-block') );
 				$form->add( new interf_bal_smpl('p', 'Dimensions maximums du fichier : 80px * 80px', false, 'help-block') );
 				$div = $form->add( new interf_bal_cont('div', false, 'form-group') );
-				$div->add( new interf_chp_form('file', 'fichier', false, false, 'fichier') );
+				$fich = $div->add( new interf_chp_form('file', 'fichier', false, false, 'fichier') );
+				$fich->set_attribut('accept', 'image/*');
 				$code = 'return charger_formulaire_fichier("'.$id.'", "fichier");';
 				//<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240" />
 				//<input type="submit" value="Envoyer" onclick="return envoiFichier('formAvatar', 'popup_content');">

@@ -3,177 +3,114 @@ if (file_exists('root.php'))
   include_once('root.php');
 
 include_once(root.'inc/fp.php');
+
+$interf_princ = $G_interf->creer_jeu();
+  
+$categorie = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'perso';
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+
+switch($action)
+{
+case 'titre':
+	$titre_perso = new titre($_SESSION['ID']);
+	$titre_perso->set_id_titre($_GET['titre']);
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre titre a bien été modifié. Pensez à réactualiser !');
+	break;
+case 'mdp':
+	$joueur = joueur::factory();
+	if( array_key_exists('anc_mdp', $_POST) || !$joueur->test_mdp( md5($_POST['anc_mdp']) ) )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur, l\'ancien mot de passe n\'est pas le bon.');
+		break;
+	}
+	if( array_key_exists('nouv_mdp_1', $_POST) || array_key_exists('nouv_mdp_2', $_POST) || $_POST['nouv_mdp_1'] != $_POST['nouv_mdp_2'] )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur lors de la saisie du nouveau mot de passe.');
+		break;
+	}
+	$perso = joueur::get_perso();
+	$perso->set_password(md5($_POST['nouv_mdp_1']));
+	$perso->sauver();
+	
+	if(array_key_exists('id_joueur', $_SESSION)) 
+	{
+		$joueur->set_mdp(md5($_POST['nouv_mdp_1']));
+		$joueur->set_mdp_jabber(md5($_POST['nouv_mdp_1']));
+		$joueur->set_mdp_forum(sha1($_POST['nouv_mdp_1']));
+		$joueur->sauver();
+	}
+
+	require('connect_forum.php');
+	$requete = "UPDATE punbbusers SET password = '".sha1($_POST['nouv_mdp_1'])."' WHERE username = '".sSQL($perso->get_nom())."'";
+	$db_forum->query($requete);
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre mot de passe a bien été modifié !');
+	break;
+case 'email' :
+	if(array_key_exists('email', $_POST))
+	{
+		$email = sSQL($_POST['email']);
+		$joueur = joueur::factory();
+		$joueur->set_email($new_email);
+		$joueur->sauver();
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre email a bien été modifié !');
+	}
+	break;
+case 'suppr':
+	$perso = joueur::get_perso();
+	$perso->set_statut('suppr');
+	$perso->set_fin_ban(time() + 3600 * 24 * 36500);
+	$perso->sauver();
+	$groupe = $perso->get_groupe();
+	if($groupe != 0)
+		degroup($perso->get_id(), $groupe);
+	require_once('connect_forum.php');
+	$requete = "INSERT INTO punbbbans VALUES(NULL, '".sSQL($perso->get_nom())."', NULL, NULL, NULL, NULL, 2)";
+	$db_forum->query($requete);
+	unset($_COOKIE['nom']);
+	unset($_SESSION['nom']);
+	unset($_SESSION['ID']);
+	$interf_princ->recharger_interface('index.php');
+	exit;
+case 'hibern':
+	$perso->set_statut('hibern');
+	$perso->set_fin_ban(time() + 3600 * 24 * 14);
+	$perso->sauver();
+	unset($_COOKIE['nom']);
+	unset($_SESSION['nom']);
+	unset($_SESSION['ID']);
+	$interf_princ->recharger_interface('index.php');
+	exit;
+}
+
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
+{
+	$G_url->add('categorie', $categorie);
+	switch($categorie)
+	{
+	case 'perso':
+		$interf_princ->add( $G_interf->creer_options_perso() );
+		break;
+	case 'joueur':
+		$interf_princ->add( $G_interf->creer_options_joueur() );
+		break;
+	}
+}
+else
+{
+	$dlg = $interf_princ->set_dialogue( new interf_dialogBS('Options', true, 'dlg_options') );
+	$dlg->add( $G_interf->creer_options($categorie) );
+}
+
+
+exit;
+
+
 $titre_perso = new titre($_SESSION['ID']);
 ?>
-		<div class="titre">
-			Options de votre compte
-		</div>
 		<p>
 			<?php
 			if(array_key_exists('action', $_GET))
 			{
-				switch($_GET['action'])
-				{
-					case 'titre' :
-						if(array_key_exists('final', $_POST))
-						{
-							$titre_perso->set_id_titre($_POST['final']);
-							echo '<h6>Votre titre a bien été modifié !</br> Pensez à réactualiser !</h6>';
-						}
-						else
-						{
-							$requete = "SELECT * FROM achievement WHERE id_perso = ".$_SESSION['ID'];
-							$req = $db->query($requete);
-							?>
-							<form method="post" action="option.php?action=titre" id="formtitre">
-							<select name="final" >
-							<?php
-							echo '<option value="0">Titre : Aucun titre</option>';
-							while($row = $db->read_array($req))
-							{
-								$requete2 = "SELECT * FROM achievement_type WHERE id = ".$row['id_achiev'];
-								$req2 = $db->query($requete2);
-								$row2 = $db->read_array($req2);
-								$titre = explode('-', $row2['titre']);
-								if ($titre[1] != null ) echo '<option value="'.$row['id_achiev'].'">Titre : '.$titre[1].'</option>';
-							}
-							?>
-							
-							<input type="submit" id='new_titre' name="new_titre" value="Ok" onclick="return envoiFormulaire('formtitre', 'popup_content');">	
-							</select></form>
-							<?php
-						}
-					break;
-					case 'mdp' :
-						if(array_key_exists('ancien_pass', $_POST))
-						{
-							$ancien_pass = $_POST['ancien_pass'];
-							$new_pass = $_POST['new_pass'];
-							$new_pass2 = $_POST['new_pass2'];
-							if($new_pass != $new_pass2)
-							{
-								?>
-								<h5>Erreur lors de la saisie du nouveau mot de passe.</h5>
-								<a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Retour à la modification du mot de passe jeu.</a>
-								<?php
-							}
-							else
-							{
-                $test = false;
-								$requete = "SELECT password FROM perso WHERE ID = ".$_SESSION['ID'];
-								$req = $db->query($requete);
-								$row = $db->read_row($req);
-								$test = ($row[0] == md5($ancien_pass) );
-								if( !$test and array_key_exists('id_joueur', $_SESSION) )
-								{
-									$joueur = new joueur($_SESSION['id_joueur']);
-								  $test = $joueur->test_mdp( md5($ancien_pass) );
-                }
-								if( !$test )
-								{
-									?>
-									<h5>Erreur, l'ancien mot de passe n'est pas le bon.</h5>
-									<a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Retour à la modification du mot de passe jeu.</a>
-									<?php
-								}
-								else
-								{
-									$perso = new perso($_SESSION['ID']);
-									$perso->set_password(md5($new_pass));
-									$perso->sauver();
-									
-									if(array_key_exists('id_joueur', $_SESSION)) 
-									{
-										$joueur = new joueur($_SESSION['id_joueur']);
-										$joueur->set_mdp(md5($new_pass));
-										$joueur->set_mdp_jabber(md5($new_pass));
-										$joueur->set_mdp_forum(sha1($new_pass));
-										$joueur->sauver();
-									}
-
-									require('connect_forum.php');
-									$requete = "UPDATE punbbusers SET password = '".sha1($new_pass)."' WHERE username = '".$_SESSION['nom']."'";
-									$db_forum->query($requete);
-									echo '<h6>Votre mot de passe a bien été modifié !</h6>';
-								}
-							}
-						}
-						else
-						{
-						?>
-						<form method="post" action="option.php?action=mdp" id="formMDP">
-							<strong>Veuillez indiquez votre mot de passe actuel :</strong><br />
-							<input type="password" id='ancien_pass' name="ancien_pass" /><br />
-							<strong>Veuillez indiquez votre NOUVEAU mot de passe :</strong><br />
-							<input type="password" id='new_pass' name="new_pass" /><br />
-							<strong>Veuillez retappez votre NOUVEAU mot de passe :</strong><br />
-							<input type="password" id='new_pass2' name="new_pass2" /><br />
-							<input type="submit" value="Modifier votre mot de passe" onclick="return envoiFormulaire('formMDP', 'popup_content');" />
-						</form>
-						<?php
-						}
-					break;
-					case 'email' :
-						$perso = new perso($_SESSION['ID']);
-						if(array_key_exists('new_email', $_POST))
-						{
-							$new_email = sSQL($_POST['new_email']);
-							$perso->set_email($new_email);
-							$perso->sauver();
-							
-							if(array_key_exists('id_joueur', $_SESSION)) 
-							{
-								$joueur = new joueur($_SESSION['id_joueur']);
-								$joueur->set_email($new_email);
-								$joueur->sauver();
-							}
-							echo '<h6>Votre email a bien été modifié !</h6>';
-						}
-						else
-						{
-						?>
-						<form method="post" action="option.php?action=email" id="formemail">
-							<input type="text" id='new_email' name="new_email" value="<?php echo $perso->get_email(); ?>" /><br />
-							<input type="submit" value="Modifier votre email" onclick="return envoiFormulaire('formemail', 'popup_content');" />
-						</form>
-						<?php
-						}
-					break;
-					case 'supp' :
-						$perso = new perso($_SESSION['ID']);
-						$perso->set_statut('ban');
-						$perso->set_fin_ban((time() + (3600 * 24 * 36500)));
-						$perso->sauver();
-						require_once('connect_forum.php');
-						$groupe = $perso->get_groupe();
-						if($groupe != 0)
-							degroup($perso->get_id(), $groupe);
-						$requete = "INSERT INTO punbbbans VALUES(NULL, '".$perso->get_nom()."', NULL, NULL, NULL, NULL, 2)";
-						if($db_forum->query($requete))
-						{
-						 	echo 'Votre personnage est bien supprimé';
-							$perso->sauver();
-							unset($_COOKIE['nom']);
-							unset($_SESSION['nom']);
-							unset($_SESSION['ID']);
-          		?>
-          		<script language="javascript" type="text/javascript">
-          		<!--
-          		window.location.replace("index.php");
-          		-->
-          		</script>
-          		<?php
-						}
-						else
-							echo 'ERREUR: Veuillez contacter un admin!';
-					break;
-					case 'hibern' :
-						$requete = "UPDATE perso SET statut = 'hibern', fin_ban = ".(time() + (3600 * 24 * 14))." WHERE ID = ".$_SESSION['ID'];
-						if($db->query($requete)) echo 'Votre personnage hiberne... zzz...';
-						unset($_COOKIE['nom']);
-						unset($_SESSION['nom']);
-						unset($_SESSION['ID']);
-					break;
 					case 'atm' :
 					{
 						$requete = false;
@@ -255,25 +192,6 @@ $titre_perso = new titre($_SESSION['ID']);
 
 			?>
 			<div class"news">
-				<h3>Options du jeu</h3>
-				<ul>
-				<?php
-				if(($perso->get_id_joueur() == NULL) OR ($perso->get_id_joueur() == 0))
-				{
-				?>
-					<li><a href="configure_compte_joueur.php" onclick="return envoiInfo(this.href, 'popup_content');">Gestion du compte joueur</a></li>
-				<?php
-				}
-				?>	
-					<li><a href="option.php?action=journal" onclick="return envoiInfo(this.href, 'popup_content');">Filtrer votre journal des actions</a></li>
-					<li><a href="configure_point_sso.php" onclick="return envoiInfo(this.href, 'popup_content');">Configurer vos bonus Shine</a></li>
-					<li><a href="option.php?action=email" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre email</a></li>
-					<li><a href="option.php?action=titre" onclick="return envoiInfo(this.href, 'popup_content');">Choisir un titre</a></li>
-
-				</ul>
-				
-			</div>
-			<div class"news">
 				<h3>Options graphiques et son</h3>
 				  <ul>
 <?php if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
@@ -284,19 +202,6 @@ $titre_perso = new titre($_SESSION['ID']);
 					  <li><a href="option.php?action=sound&amp;val=<?php echo $sound_val; ?>" onclick="return envoiInfo(this.href, 'popup_content');"><?php echo $sound_verb; ?> les effets sons</a></li>
 
 				  </ul>
-				<h3>Mot de passe</h3>
-				<strong>Attention cela change &eacute;galement votre mot de passe sur le forum!</strong><br />
-				<ul>
-					<li><a href="option.php?action=mdp" onclick="return envoiInfo(this.href, 'popup_content');">Modifier votre mot de passe</a></li>
-					<li>Clef API: <?php echo $clef_api ?></li>
-				</ul>
-			</div>
-			<div class"news">
-				<h3>Hibernation / Suppression</h3>
-				<ul>
-					<li><a href="option.php?action=supp" onclick="if(confirm('Êtes vous sur de vouloir effacer votre personnage ?')) return envoiInfo(this.href, 'popup_content'); else return false;">Supprimer mon personnage</a></li>
-					<li><a href="option.php?action=hibern" onclick="if(confirm('Êtes vous sur de vouloir hiberner ?')) return envoiInfo(this.href, 'popup_content'); else return false;">Mettre mon personnage en hibernation (l'hibernation durera au MINIMUM 2 semaines)</a></li>
-				</ul>
 			</div>
 			</ul>
 			<?php
