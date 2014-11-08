@@ -64,6 +64,36 @@ case 'bas-droite';
 	$y++;
 	$diagonale = true;
 	break;
+case 'royaumes':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'affiche_royaume', $val)";
+	$db->query($requete);
+	break;
+case 'jour':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'desactive_atm_all', $val)";
+	$db->query($requete);
+	break;
+case 'meteo':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'desactive_atm', $val)";
+	$db->query($requete);
+	break;
+case 'son':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'no_sound', $val)";
+	$db->query($requete);
+	break;
+case 'monstres':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'cache_monstre', $val)";
+	$db->query($requete);
+	break;
 case 'raffraichir':
 	$complet = true;
 default:

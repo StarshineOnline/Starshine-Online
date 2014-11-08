@@ -119,23 +119,33 @@ class interf_cadre_carte extends interf_gauche
 {
 	function __construct($carte=null)
 	{
+		global $db;
 		$perso = joueur::get_perso();
 		parent::__construct( is_ville($perso->get_x(), $perso->get_y(), true) ? 'ville' : 'carte' );
+		// Options
+		/// @todo passer à l'objet
+		$requete = 'select nom, valeur from options where id_perso = '.$perso->get_id().' and nom in ("affiche_royaume", "desactive_atm", "desactive_atm_all", "cache_monstre", "no_sound")';
+		$req = $db->query($requete);
+		$opt = array('affiche_royaume'=>1, 'desactive_atm'=>1, 'desactive_atm_all'=>1, 'cache_monstre'=>1, 'no_sound'=>1);
+		while( $row = $db->read_assoc($req) )
+		{
+			$opt[ $row['nom'] ] = $row['valeur'] ? '0' : '1';
+		}
 		// Menu carte
 		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
-		$royaumes = $menu->add( new interf_elt_menu('', 'option_map.php?action=affiche_royaumes&val=0', 'return envoiInfo(this.href, \'depl_centre\');') );
+		$royaumes = $menu->add( new interf_elt_menu('', 'deplacement.php?action=royaumes&valeur='.$opt['affiche_royaume'], 'return charger(this.href);') );
 		$royaumes->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-drapeau') );
 		$royaumes->get_lien()->set_attribut('title', 'Afficher / masquer les royaumes');
-		$jour = $menu->add( new interf_elt_menu('', 'option_map.php?action=affiche_royaumes&val=0', 'return envoiInfo(this.href, \'depl_centre\');') );
+		$jour = $menu->add( new interf_elt_menu('', 'deplacement.php?action=jour&valeur='.$opt['desactive_atm_all'], 'return charger(this.href);') );
 		$jour->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-lune') );
 		$jour->get_lien()->set_attribut('title', 'Afficher / masquer les effets liés à l\'heure');
-		$meteo = $menu->add( new interf_elt_menu('', 'option_map.php?action=atm&effet=time&val=1', 'return envoiInfo(this.href, \'depl_centre\');') );
+		$meteo = $menu->add( new interf_elt_menu('', 'deplacement.php?action=meteo&valeur='.$opt['desactive_atm'], 'return charger(this.href);') );
 		$meteo->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-nuage') );
-		$royaumes->get_lien()->set_attribut('title', 'Afficher / masquer les effets atmosphériques');
-		$meteo = $menu->add( new interf_elt_menu('', 'option_map.php?action=atm&effet=time&val=1', 'return envoiInfo(this.href, \'depl_centre\');') );
-		$meteo->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-son-fort') );
-		$royaumes->get_lien()->set_attribut('title', 'Activer / désactiver les effets sonores');
-		$monstres = $menu->add( new interf_elt_menu('', 'option_map.php?action=atm&effet=sky&val=1', 'return envoiInfo(this.href, \'depl_centre\');') );
+		$meteo->get_lien()->set_attribut('title', 'Afficher / masquer les effets atmosphériques');
+		$son = $menu->add( new interf_elt_menu('', 'deplacement.php?action=son&valeur='.$opt['no_sound'], 'return charger(this.href);') );
+		$son->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-son-fort') );
+		$son->get_lien()->set_attribut('title', 'Activer / désactiver les effets sonores');
+		$monstres = $menu->add( new interf_elt_menu('', 'deplacement.php?action=monstres&valeur='.$opt['cache_monstre'], 'return charger(this.href);') );
 		$monstres->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-oeil') );
 		$monstres->get_lien()->set_attribut('title', 'Afficher / masquer les monstres');
 		
