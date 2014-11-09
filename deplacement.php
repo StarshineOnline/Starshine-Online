@@ -69,30 +69,70 @@ case 'royaumes':
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'affiche_royaume', $val)";
 	$db->query($requete);
+	$action = false;
 	break;
 case 'jour':
 	$mouvement = false;
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'desactive_atm_all', $val)";
 	$db->query($requete);
+	$action = false;
 	break;
 case 'meteo':
 	$mouvement = false;
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'desactive_atm', $val)";
 	$db->query($requete);
+	$action = false;
 	break;
 case 'son':
 	$mouvement = false;
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'no_sound', $val)";
 	$db->query($requete);
+	$action = false;
 	break;
 case 'monstres':
 	$mouvement = false;
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'cache_monstre', $val)";
 	$db->query($requete);
+	$action = false;
+	break;
+case 'ads':
+	$mouvement = false;
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'affiche_roy_ads', $val)";
+	$db->query($requete);
+	$action = false;
+	break;
+case 'options':
+	$mouvement = false;
+	// niveau minimum des monstres
+	$val = sSQL($_GET['niv_min'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_min_monstres', $val)";
+	$db->query($requete);
+	// niveau maximum des monstres
+	$val = sSQL($_GET['niv_max'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_max_monstres', $val)";
+	$db->query($requete);
+	// ordre
+	$val = sSQL($_GET['ordre'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'ordre_aff', $val)";
+	$db->query($requete);
+	// diplomatie - relation
+	$val = sSQL($_GET['diplo_rel'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'diplo_aff_sup', $val)";
+	$db->query($requete);
+	// diplomatie - limite
+	$val = sSQL($_GET['diplo'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'diplo_aff', $val)";
+	$db->query($requete);
+	// PNJ
+	$val = (array_key_exists('pnj', $_GET) && $_GET['pnj']=='on') ? 0 : 1;
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'cache_pnj', $val)";
+	$db->query($requete);
+	$action = false;
 	break;
 case 'raffraichir':
 	$complet = true;
@@ -205,10 +245,12 @@ if( $donjon && $peu_bouger )
 check_son_ambiance();*/
 if( $action )
 {
-	$carte = $interf_princ->set_carte( new interf_carte($x, $y) );
+	$options  = interf_carte::calcul_options( $perso->get_id() );
+	$carte = $interf_princ->set_carte( new interf_carte($x, $y, $options) );
 	$interf_princ->maj_perso($complet);
 	$interf_princ->maj_ville();
 }
 else
 	$carte = $interf_princ->set_gauche();
+$interf_princ->maj_tooltips();
 ?>

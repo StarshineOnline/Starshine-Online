@@ -117,37 +117,81 @@ class interf_gauche extends interf_bal_cont
 /// Classe pour la partie gauche de l'interface quand il faut montrer la carte
 class interf_cadre_carte extends interf_gauche
 {
+	protected $menu;
+	protected $options;
 	function __construct($carte=null)
 	{
-		global $db;
+		global $db, $Gtrad;
 		$perso = joueur::get_perso();
 		parent::__construct( is_ville($perso->get_x(), $perso->get_y(), true) ? 'ville' : 'carte' );
 		// Options
 		/// @todo passer à l'objet
-		$requete = 'select nom, valeur from options where id_perso = '.$perso->get_id().' and nom in ("affiche_royaume", "desactive_atm", "desactive_atm_all", "cache_monstre", "no_sound")';
-		$req = $db->query($requete);
-		$opt = array('affiche_royaume'=>1, 'desactive_atm'=>1, 'desactive_atm_all'=>1, 'cache_monstre'=>1, 'no_sound'=>1);
-		while( $row = $db->read_assoc($req) )
-		{
-			$opt[ $row['nom'] ] = $row['valeur'] ? '0' : '1';
-		}
+		$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_min_monstres"');
+		$row = $db->read_array($req);
+		$niv_min = $row ? $row[0] : '0';
+		$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_max_monstres"');
+		$row = $db->read_array($req);
+		$niv_max = $row ? $row[0] : 255;
+		$this->options  = interf_carte::calcul_options( $perso->get_id() );
 		// Menu carte
-		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
-		$royaumes = $menu->add( new interf_elt_menu('', 'deplacement.php?action=royaumes&valeur='.$opt['affiche_royaume'], 'return charger(this.href);') );
-		$royaumes->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-drapeau') );
-		$royaumes->get_lien()->set_attribut('title', 'Afficher / masquer les royaumes');
-		$jour = $menu->add( new interf_elt_menu('', 'deplacement.php?action=jour&valeur='.$opt['desactive_atm_all'], 'return charger(this.href);') );
-		$jour->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-lune') );
-		$jour->get_lien()->set_attribut('title', 'Afficher / masquer les effets liés à l\'heure');
-		$meteo = $menu->add( new interf_elt_menu('', 'deplacement.php?action=meteo&valeur='.$opt['desactive_atm'], 'return charger(this.href);') );
-		$meteo->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-nuage') );
-		$meteo->get_lien()->set_attribut('title', 'Afficher / masquer les effets atmosphériques');
-		$son = $menu->add( new interf_elt_menu('', 'deplacement.php?action=son&valeur='.$opt['no_sound'], 'return charger(this.href);') );
-		$son->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-son-fort') );
-		$son->get_lien()->set_attribut('title', 'Activer / désactiver les effets sonores');
-		$monstres = $menu->add( new interf_elt_menu('', 'deplacement.php?action=monstres&valeur='.$opt['cache_monstre'], 'return charger(this.href);') );
-		$monstres->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-oeil') );
-		$monstres->get_lien()->set_attribut('title', 'Afficher / masquer les monstres');
+		$this->menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
+		// ajout_option($action, $drapeau, $icone_1, $icone_0, $texte, $inv=true, $affiche=true)
+		$this->ajout_option('royaumes', interf_carte::aff_royaumes, 'drapeau', 'drapeau', 'les royaumes');
+		$this->ajout_option('monstres', interf_carte::aff_monstres, 'oeil', 'oeil', 'les monstres', true);
+		$this->ajout_option('jour', interf_carte::aff_jour, 'lune', 'lune', 'les effets liés à l\'heure', true);
+		$this->ajout_option('meteo', interf_carte::aff_atmosphere, 'nuage', 'nuage', 'les effets atmosphériques', true);
+		$this->ajout_option('son', interf_carte::act_sons, 'son-fort', 'son-fort', 'les effets sonores', true, false);
+		$this->ajout_option('ads', interf_carte::aff_ads, 'drapeau', 'drapeau', 'l\'appartenance des armes de siège');
+		// Options supplémentaires
+		$li = $this->menu->add( new interf_bal_cont('li') );
+		$lien = $li->add( new interf_bal_cont('a', 'opt_carte') );
+		$min = $niv_min == 255 ? '25+' : $niv_min;
+		$max = $niv_max == 255 ? '25+' : $niv_max;
+		$ordre = array(interf_carte::aff_pcb=>'p, c, b', interf_carte::aff_cbp=>'c, b', p, interf_carte::aff_cpb=>'c, p, b', (interf_carte::aff_pcb|interf_carte::aff_pnj)=>'p+, c, b', (interf_carte::aff_cbp|interf_carte::aff_pnj)=>'c, b, p+', (interf_carte::aff_cpb|interf_carte::aff_pnj)=>'c, p+, b');
+		$diplos = array('AF', 'A', 'PD', 'P', 'BT', 'N', 'MT', 'G', 'GD', 'E', 'EE', 'VR');
+		$lien->add( new interf_bal_smpl('span', 'm : '.$min.' à '.$max, false, 'dropdown-toggle') );
+		$txt = $ordre[$this->options&(interf_carte::masque_ordre|interf_carte::aff_pnj)].($this->options&interf_carte::aff_diplo_sup?' > ':' < ').$diplos[($this->options&interf_carte::masque_diplo)>>8];
+		$lien->add( new interf_bal_smpl('span', $txt) );
+		$lien->set_attribut('onclick', 'return toggle(\'options_carte\');');
+		$li->set_tooltip('Réglages divers (cliquez pour plus de détails).');
+		$dropdown = $li->add( new interf_bal_cont('div', 'options_carte') );
+		$form = $dropdown->add( new interf_form('deplacement.php?action=options', 'form_opt_carte') );
+		$div_niv = $form->add( new interf_bal_cont('div', false, 'input-group') );
+		$div_niv->add( new interf_bal_smpl('span', 'Monstres de niveau ', false, 'input-group-addon') );
+		$sel_min = $div_niv->add( new interf_select_form('niv_min', false, false, 'form-control') );
+		for($i=0; $i<=25; $i++)
+			$sel_min->add_option($i?$i:'0', $i?$i:'0', $i==$niv_min);
+		$sel_min->add_option('25 et +', 255, $niv_min>25);
+		$div_niv->add( new interf_bal_smpl('span', ' à ', false, 'input-group-addon') );
+		$sel_max = $div_niv->add( new interf_select_form('niv_max', false, false, 'form-control') );
+		for($i=0; $i<=25; $i++)
+			$sel_max->add_option($i?$i:'0', $i?$i:'0', $i==$niv_max);
+		$sel_max->add_option('25 et +', 255, $niv_max>25);
+		$div_ordre = $form->add( new interf_bal_cont('div', false, 'input-group') );
+		$div_ordre->add( new interf_bal_smpl('span', 'Priorités ', false, 'input-group-addon') );
+		$ordre = $div_ordre->add( new interf_select_form('ordre', false, false, 'form-control') );
+		$ordre->add_option('Constructions > personnages > bâtiments', interf_carte::aff_cpb, ($this->options&interf_carte::masque_ordre)==interf_carte::aff_cpb);
+		$ordre->add_option('Personnages > constructions > bâtiments', interf_carte::aff_pcb, ($this->options&interf_carte::masque_ordre)==interf_carte::aff_pcb);
+		$ordre->add_option('Constructions > bâtiments > personnages', interf_carte::aff_cbp, ($this->options&interf_carte::masque_ordre)==interf_carte::aff_cbp);
+		$div_diplo = $form->add( new interf_bal_cont('div', false, 'input-group') );
+		$div_diplo->add( new interf_bal_smpl('span', 'Diplomatie ', false, 'input-group-addon') );
+		$diplo_rel = $div_diplo->add( new interf_select_form('diplo_rel', false, 'diplo_rel', 'form-control') );
+		$diplo_rel->add_option('<', '0', !($this->options & interf_carte::aff_diplo_sup));
+		$diplo_rel->add_option('>', '1', $this->options & interf_carte::aff_diplo_sup);
+		$diplo = $div_diplo->add( new interf_select_form('diplo', false, 'diplo_lim', 'form-control') );
+		$diplo->add_option($Gtrad['diplo127'], '11', ($this->options & interf_carte::masque_diplo)==interf_carte::aff_diplo_vr);
+		$lst_diplos = array(interf_carte::aff_diplo_af, interf_carte::aff_diplo_a, interf_carte::aff_diplo_p, interf_carte::aff_diplo_pd, interf_carte::aff_diplo_bt, interf_carte::aff_diplo_n, interf_carte::aff_diplo_mt, interf_carte::aff_diplo_g, interf_carte::aff_diplo_gd, interf_carte::aff_diplo_e, interf_carte::aff_diplo_ee, interf_carte::aff_diplo_vr);
+		for($i=0; $i<=10; $i++)
+			$diplo->add_option($Gtrad['diplo'.($i?$i:'0')], $i?$lst_diplos[$i]:'0', ($this->options & interf_carte::masque_diplo)==$lst_diplos[$i]);
+		$div_pnj = $form->add( new interf_bal_cont('div', false, 'input-group') );
+		$span_pnj = $div_pnj->add( new interf_bal_cont('span', 'opt_pnj', 'input-group-addon') );
+		$check = $span_pnj->add( new interf_chp_form('checkbox', 'pnj', false, false) );
+		if( $this->options & interf_carte::aff_pnj )
+			$check->set_attribut('checked', 'checked');
+		$span_pnj->add( new interf_txt('Afficher les PNJs.') );
+		$btn = $form->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
+		$btn->set_attribut('onclick', 'toggle(\'options_carte\'); return charger_formulaire(\'form_opt_carte\');');
+		
 		
 		// Rose des vents
 		$haut_gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_gauche', 'icone icone-haut-gauche') );
@@ -162,9 +206,6 @@ class interf_cadre_carte extends interf_gauche
 		$gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_gauche', 'icone icone-gauche') );
 		$gauche->set_attribut('href', 'deplacement.php?action=gauche');
 		$gauche->set_attribut('onClick', 'return  charger(this.href);');
-		/*$recharger = $this->disque->add( new interf_bal_smpl('a', '', 'depl_disque_centre', 'icone icone-rafraichir') );
-		$recharger->set_attribut('href', 'deplacement.php?action=rafraichir');
-		$recharger->set_attribut('onClick', 'return  charger(this.href);');*/
 		$this->set_icone_centre('rafraichir', 'deplacement.php?action=rafraichir');
 		$droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_droite', 'icone icone-droite') );
 		$droite->set_attribut('href', 'deplacement.php?action=droite');
@@ -182,7 +223,25 @@ class interf_cadre_carte extends interf_gauche
 		$perso = joueur::get_perso();
 		$x = $perso->get_x();
 		$y = $perso->get_y();
-		$this->centre->add( $carte ? $carte : new interf_carte($x, $y) );
+		$this->centre->add( $carte ? $carte : new interf_carte($x, $y, $this->options, 3, 'carte', $niv_min, $niv_max) );
+	}
+	protected function ajout_option($action, $drapeau, $icone_1, $icone_0, $texte, $inv=false, $affiche=true)
+	{
+		$val = $this->options & $drapeau;
+		if( $inv )
+			$valeur = $val ? '1' : '0';
+		else
+			$valeur = $val ? '0' : '1';
+		$url = 'deplacement.php?action='.$action.'&valeur='.$valeur;
+		$icone = $val ? $icone_1 : $icone_0;
+		if( $affiche )
+			$deb_txt = $val ? 'Masquer' : 'Afficher';
+		else
+			$deb_txt = $val ? 'Désactiver' : 'Activer';
+		$elt = $this->menu->add( new interf_elt_menu('', $url, 'return charger(this.href);') );
+		$elt->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-'.$icone) );
+		$elt->get_lien()->set_tooltip($deb_txt.' '.$texte);
+		return $elt;
 	}
 }
 ?>

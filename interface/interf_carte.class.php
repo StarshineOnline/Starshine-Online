@@ -11,6 +11,28 @@ class interf_carte extends interf_tableau
   const aff_atmosphere = 0x2;
   const aff_jour = 0x4;
   const aff_monstres = 0x8;
+  const aff_pcb = 0x10;
+  const aff_cbp = 0x20;
+  const aff_cpb = 0x30;
+  const aff_pnj = 0x40;
+  const aff_ads = 0x80;
+  const aff_diplo_af = 0x000;
+  const aff_diplo_a = 0x100;
+  const aff_diplo_p = 0x200;
+  const aff_diplo_pd = 0x300;
+  const aff_diplo_bt = 0x400;
+  const aff_diplo_n = 0x500;
+  const aff_diplo_mt = 0x600;
+  const aff_diplo_g = 0x700;
+  const aff_diplo_gd = 0x800;
+  const aff_diplo_e = 0x900;
+  const aff_diplo_ee = 0xa00;
+  const aff_diplo_vr = 0xb00;
+  const aff_diplo_sup = 0x1000;
+  const act_sons = 0x2000;
+  const aff_defaut = 0x2b7e;
+  const masque_ordre = 0x30;
+  const masque_diplo = 0xf00;
 
   protected $x_min;
   protected $x_max;
@@ -19,9 +41,9 @@ class interf_carte extends interf_tableau
   protected $cases;
   protected $grd_img;
 
-	function __construct($x, $y, $options=0xf, $champ_vision=3, $id='carte')
+	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255)
 	{
-    global $Tclasse, $Gcouleurs, $db;
+    global $Tclasse, $Gcouleurs, $db, $Trace;
 		parent::__construct($id, null, 'carte_bord_haut');
 
     $this->grd_img = true.
@@ -85,13 +107,60 @@ class interf_carte extends interf_tableau
     /// @todo calque atmosphere
     // calques terrain
 
+		// conditions
+		$diplo = ($options & self::masque_diplo) >> 8;
+		if( $diplo >= 11 )
+		{
+			if( $options & self::aff_diplo_sup )
+			{
+				$cond_bat =  'royaume = '.$Trace[$perso->get_race()]['numrace'];
+				$cond_pj = 'p.race = '.$perso->get_race();
+			}
+			else
+				$cond_bat = $cond_pj = '1';
+		}
+		else
+		{
+			/// @todo passer à l'objet
+			$requete = 'SELECT race FROM diplomatie WHERE '.$perso->get_race();
+			if( $options & self::aff_diplo_sup )
+				$requete .= ' <= '.$diplo.' OR '.$perso->get_race().' = 127';
+			else
+				$requete .= ' >= '.$diplo.' AND '.$perso->get_race().' != 127';
+			$req = $db->query($requete);
+			$ids = $races = array();
+			while( $row = $db->read_array() )
+			{
+				$ids[] = $Trace[$row[0]]['numrace'];
+				$races[] = '"'.$row[0].'"';
+			}
+			$cond_bat = 'royaume IN ('.implode(',', $ids).')';
+			$cond_pj = 'p.race IN ('.implode(',', $races).')';
+		}
+		
     // Éléments à afficher
-    $this->afficher_pj($perso);
-    $this->afficher_pnj();
-    $this->afficher_placements();
-    $this->afficher_batiments();
+    if( $options & self::aff_pnj )
+    	$this->afficher_pnj();
+    switch( $options & self::masque_ordre )
+    {
+    case self::aff_pcb:
+	    $this->afficher_pj($perso, $cond_pj);
+	    $this->afficher_placements($cond_bat);
+	    $this->afficher_batiments($cond_bat);
+    	break;
+    case self::aff_cbp:
+	    $this->afficher_placements($cond_bat);
+	    $this->afficher_batiments($cond_bat);
+	    $this->afficher_pj($perso, $cond_pj);
+    	break;
+    case self::aff_cpb:
+	    $this->afficher_placements($cond_bat);
+	    $this->afficher_pj($perso, $cond_pj);
+	    $this->afficher_batiments($cond_bat);
+    	break;
+		}
     if( $options & self::aff_monstres  )
-      $this->afficher_monstres();
+      $this->afficher_monstres($niv_min, $niv_max);
       
     // Navigation
     for($i=$this->y_min; $i<=$this->y_max; $i++)
@@ -157,9 +226,9 @@ class interf_carte extends interf_tableau
     }
 	}
 
-  protected function afficher_batiments()
+  protected function afficher_batiments($cond_bat)
   {
-    $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img);
+    $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat);
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
@@ -167,9 +236,9 @@ class interf_carte extends interf_tableau
     }
   }
 
-  protected function afficher_placements()
+  protected function afficher_placements($cond_bat)
   {
-    $bats = placement::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max);
+    $bats = placement::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $cond_bat);
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
@@ -177,14 +246,14 @@ class interf_carte extends interf_tableau
     }
   }
 
-  protected function afficher_pj(&$perso=null)
+  protected function afficher_pj(&$perso=null, $cond_pj)
   {
     global $Tclasse, $db;
     /// @todo à améliorer
     if( $perso )
-      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
+      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" AND '.$cond_pj.' GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
     else
-      $requete = 'SELECT * FROM perso WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND statut="actif" GROUP BY x, y ORDER BY level DESC';
+      $requete = 'SELECT * FROM perso WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND statut="actif" AND '.$cond_pj.' GROUP BY x, y ORDER BY level DESC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
     {
@@ -225,12 +294,12 @@ class interf_carte extends interf_tableau
     }
   }
 
-  protected function afficher_monstres()
+  protected function afficher_monstres($niv_min=0, $niv_max=255)
   {
     global $db;
     $perso = joueur::get_perso();
     /// @todo à améliorer
-    $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
@@ -257,5 +326,61 @@ class interf_carte extends interf_tableau
       }
     }
   }
+  
+  static function calcul_options($id_perso)
+  {
+  	///@todo passer à l'objet
+  	global $db;
+		$requete = 'select nom, valeur from options where id_perso = '.$id_perso.' and nom in ("affiche_royaume", "desactive_atm", "desactive_atm_all", "cache_monstre", "affiche_roy_ads", "ordre_aff", "diplo_aff", "diplo_aff_sup", "no_sound", "cache_pnj")';
+		$req = $db->query($requete);
+		$options = self::aff_defaut;
+		while( $row = $db->read_assoc($req) )
+		{
+			switch($row['nom'])
+			{
+			case 'affiche_royaume':
+				if( $row['valeur'] == 1 )
+					$options |=  self::aff_royaumes;
+				break;
+			case 'desactive_atm':
+				if( $row['valeur'] == 1)
+					$options ^=  self::aff_atmosphere;
+				break;
+			case 'desactive_atm_all':
+				if( $row['valeur'] == 1)
+					$options ^=  self::aff_jour;
+				break;
+			case 'cache_monstre':
+				if( $row['valeur'] == 1)
+					$options ^=  self::aff_monstres;
+				break;
+			case 'affiche_roy_ads':
+				if( $row['valeur'] == 1)
+					$options |=  self::aff_ads;
+				break;
+			case 'cache_pnj':
+				if( $row['valeur'] == 1)
+					$options ^=  self::aff_pnj;
+				break;
+			case 'diplo_aff_sup':
+				if( $row['valeur'] == 1)
+					$options |=  self::aff_diplo_sup;
+				break;
+			case 'ordre_aff':
+				$options &=  ~self::masque_ordre;
+				$options |= $row['valeur'];
+				break;
+			case 'diplo_aff':
+				$options &=  ~self::masque_diplo;
+				$options |=  $row['valeur'];
+				break;
+			case 'no_sound':
+				if( $row['valeur'] == 0)
+					$options ^=  self::act_sons;
+				break;
+			}
+		}
+		return $options;
+	}
 }
 ?>

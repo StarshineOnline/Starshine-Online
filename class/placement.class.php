@@ -178,10 +178,10 @@ class placement extends entitenj_constr
    * @param  $y_max    Valeur maximale de la coordonnée y
    * @return    tableau contenant les positions et l'image
    */
-  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true)
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true, $cond='1')
   {
     global $db;
-		$requete = 'SELECT x, y, b.image, b.type, p.debut_placement, p.fin_placement FROM '.static::get_table().' AS p INNER JOIN batiment AS b ON p.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max;
+		$requete = 'SELECT x, y, b.image, b.type, p.debut_placement, p.fin_placement FROM '.static::get_table().' AS p INNER JOIN batiment AS b ON p.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max.' AND '.$cond;
     $req = $db->query($requete);
     $res = array();
     while( $row = $db->read_object($req) )

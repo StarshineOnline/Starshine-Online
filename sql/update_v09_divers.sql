@@ -14,3 +14,6 @@ UPDATE sort_combat SET type = 'degat_nature-2' WHERE nom LIKE 'Epines Géantes%'
 
 -- On désactive la possibilité d'avoir son propre css dans la description du personnage (bonus shine)
 UPDATE `starshine_preprod`.`bonus` SET `id_categorie` = '0' WHERE `bonus`.`id_bonus` = 27;
+
+-- Options
+ALTER TABLE `options` CHANGE `valeur` `valeur` MEDIUMINT(16) UNSIGNED NOT NULL;
