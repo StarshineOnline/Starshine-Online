@@ -43,24 +43,48 @@ class interf_carte extends interf_tableau
 
 	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255)
 	{
-    global $Tclasse, $Gcouleurs, $db, $Trace;
+    global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y;
 		parent::__construct($id, null, 'carte_bord_haut');
 
-    $this->grd_img = true.
-    /// @todo réduction de la vue en donjon
+    $this->grd_img = true;
+    // Réduction de la vue en donjon
+    if( $y > 190 )
+    	$champ_vision--;
 
 		$this->x_min = $x - $champ_vision;
 		$this->x_max = $x + $champ_vision;
 		$this->y_min = $y - $champ_vision;
 		$this->y_max = $y + $champ_vision;
+		
+    // Bordure de carte
+		if( $this->x_min < 0 )
+		{
+			$this->x_min = 1;
+			$this->x_max -= $this->x_min - 1;
+		}
+		else if( $x <= $G_max_x && $this->x_max > $G_max_x )
+		{
+			$this->x_min += $this->x_max - $G_max_x;
+			$this->x_max = $G_max_x;
+		}
+		if( $this->y_min < 0 )
+		{
+			$this->y_min = 1;
+			$this->y_max -= $this->y_min - 1;
+		}
+		else if( $y <= $G_max_y && $this->y_max > $G_max_y )
+		{
+			$this->y_min += $this->y_max - $G_max_y;
+			$this->y_max = $G_max_y;
+		}		
 
-    /// @todo Bordure de carte
-
+		$cache = 75 <= $x && $x <= 100 && 288 <= $y && $y <= 305;
 		// Bord haut
 		$this->nouv_cell('&nbsp;', 'carte_bord_haut_gauche');
 		for($j=$this->x_min; $j<=$this->x_max; $j++)
 		{
-			$this->nouv_cell($j, $j==$x ? 'carte_bord_haut_x' : null);
+			$c = $cache ? $j - $x : $j;
+			$this->nouv_cell($c, $j==$x ? 'carte_bord_haut_x' : null);
 		}
 		
 		// On récupère les infos sur les cases
@@ -76,7 +100,8 @@ class interf_carte extends interf_tableau
 		{
 			$this->nouv_ligne();
 			$this->entete = true;
-			$this->nouv_cell($i, $i==$y ? 'carte_bord_haut_y' : null);
+			$c = $cache ? $i - $y : $i;
+			$this->nouv_cell($c, $i==$y ? 'carte_bord_haut_y' : null);
 			$this->entete = false;
 		  $this->cases[$i] = array();
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
