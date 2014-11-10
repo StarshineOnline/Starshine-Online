@@ -41,7 +41,7 @@ class interf_carte extends interf_tableau
   protected $cases;
   protected $grd_img;
 
-	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255)
+	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null)
 	{
     global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y;
 		parent::__construct($id, null, 'carte_bord_haut');
@@ -104,6 +104,7 @@ class interf_carte extends interf_tableau
 			$this->nouv_cell($c, $i==$y ? 'carte_bord_haut_y' : null);
 			$this->entete = false;
 		  $this->cases[$i] = array();
+    	// calques terrain
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
 			{
 				$this->cases[$i][$j] = &$this->nouv_cell(null, null, 'decor tex'.$infos_cases[$j.'|'.$i]['decor']);
@@ -130,7 +131,18 @@ class interf_carte extends interf_tableau
     /// @todo repères
     /// @todo couche donjons
     /// @todo calque atmosphere
-    // calques terrain
+    if( $parent_calques )
+    {
+	    if( $y > 190 )
+	    {
+	    	$image = 'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
+	    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+	    	$c_donj->set_attribut('style', 'background-attachment: scroll; background-image: url('.$image.');');
+			}
+			else
+			{
+			}
+		}
 
 		// conditions
 		$diplo = ($options & self::masque_diplo) >> 8;
@@ -406,6 +418,34 @@ class interf_carte extends interf_tableau
 			}
 		}
 		return $options;
+	}
+	
+	function calcule_atmosphere()
+	{
+		global $db;
+		$xmin = $this->xmin;
+		$xmax = $this->xmax;
+		$ymin = $this->ymin;
+		$ymax = $this->ymax;
+		$atmosphere_moment = strtolower(moment_jour());
+		for ($x = $this->x_min; $x <= $this->x_max; $x++)
+		{
+			for ($y = $this->y_min; $y <= $this->y_max; $y++)
+			{
+				$this->map[$x][$y]['calque'] = 'vide-'.$atmosphere_moment;
+				$this->map[$x][$y]['calque_dx'] = 0;
+				$this->map[$x][$y]['calque_dy'] = 0;
+			}
+		}
+		/// @todo passer à l'objet
+		$requete = 'SELECT x, y, type, dx, dy FROM map_zone, (SELECT x, y FROM map WHERE '.$this->x_min.' <= x AND x <= '.$this->x_max.' AND '.$this->y_min.' <= y AND y <= '.$this->y_max.') points WHERE x1 <= x AND x <= x2 AND y1 <= y AND y <= y2';
+		$req = $db->query($q);
+		while ($row = $db->read_object($req))
+		{
+			$this->map[$row->x][$row->y]['calque'] = $row->type.'-'.$atmosphere_moment;
+			$this->map[$row->x][$row->y]['calque_dx'] = $row->dx;
+			$this->map[$row->x][$row->y]['calque_dy'] = $row->dy;
+		}
 	}
 }
 ?>

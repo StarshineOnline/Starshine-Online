@@ -134,6 +134,18 @@ case 'options':
 	$db->query($requete);
 	$action = false;
 	break;
+case 'niveau':
+	$mouvement = false;
+	// niveau minimum des monstres
+	$val = sSQL($_GET['niveau'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_min_monstres', $val)";
+	$db->query($requete);
+	// niveau maximum des monstres
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_max_monstres', $val)";
+	$db->query($requete);
+	$action = false;
+	break;
+	break;
 case 'raffraichir':
 	$complet = true;
 default:
