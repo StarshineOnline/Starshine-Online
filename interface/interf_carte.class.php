@@ -40,6 +40,9 @@ class interf_carte extends interf_tableau
   protected $y_max;
   protected $cases;
   protected $grd_img;
+  protected $infos='';
+  protected $diplos=array();
+  protected $races=array();
 
 	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null)
 	{
@@ -81,10 +84,17 @@ class interf_carte extends interf_tableau
 		$cache = 75 <= $x && $x <= 100 && 288 <= $y && $y <= 305;
 		// Bord haut
 		$this->nouv_cell('&nbsp;', 'carte_bord_haut_gauche');
+		if( $y > 190 )
+			$this->nouv_cell('&nbsp;');
 		for($j=$this->x_min; $j<=$this->x_max; $j++)
 		{
 			$c = $cache ? $j - $x : $j;
 			$this->nouv_cell($c, $j==$x ? 'carte_bord_haut_x' : null);
+		}
+		if( $y > 190 )
+		{
+			$this->nouv_cell('&nbsp;');
+			$this->nouv_ligne();
 		}
 		
 		// On récupère les infos sur les cases
@@ -99,16 +109,18 @@ class interf_carte extends interf_tableau
 		for($i=$this->y_min; $i<=$this->y_max; $i++)
 		{
 			$this->nouv_ligne();
-			$this->entete = true;
 			$c = $cache ? $i - $y : $i;
-			$this->nouv_cell($c, $i==$y ? 'carte_bord_haut_y' : null);
-			$this->entete = false;
+			$this->nouv_cell($c, $i==$y ? 'carte_bord_haut_y' : null, false, true);
+			if( $y > 190 )
+				$this->nouv_cell('&nbsp;');
 		  $this->cases[$i] = array();
     	// calques terrain
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
 			{
+				$this->infos[$i][$j] = '';
 				$this->cases[$i][$j] = &$this->nouv_cell(null, null, 'decor tex'.$infos_cases[$j.'|'.$i]['decor']);
         $type = $infos_cases[$j.'|'.$i]['type'];
+        $pos = 'rel_'.($j-$x).'_'.($i-$y);
         if( array_key_exists($type, $calques) )
         {
           $calque = $this->cases[$i][$j]->add( new interf_bal_cont('div') );
@@ -118,9 +130,16 @@ class interf_carte extends interf_tableau
           $style .= ' background-attachment: scroll; background-position: '.$dx.'px '.$dy.'px;';
           $style .= ' margin: -2px; height: 62px; width: 60px; background-repeat: repeat;';
           $calque->set_attribut('style', $style);
+          $calque->add( new interf_bal_smpl('span', false, 'pos_'.$pos) );
         }
+        else
+          $this->cases[$i][$j]->add( new interf_bal_smpl('span', false, 'pos_'.$pos) );
 			}
+			if( $y > 190 )
+				$this->nouv_cell('&nbsp;');
 		}
+		if( $y > 190 )
+			$this->nouv_ligne();
 
     // Perso du joueur
     $perso = joueur::get_perso();
@@ -136,21 +155,28 @@ class interf_carte extends interf_tableau
 	    if( $y > 190 )
 	    {
 	    	$image = 'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
-	    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
-	    	$c_donj->set_attribut('style', 'background-attachment: scroll; background-image: url('.$image.');');
+	    	$c_jour = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+	    	$c_jour->set_attribut('style', 'background-image: url('.$image.');');
 			}
 			else
 			{
+				if( $options & self::aff_jour )
+				{
+		    	$image = 'image/interface/calque-atmosphere-vide-'.strtolower(moment_jour()).'.png';
+		    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+		    	$c_donj->set_attribut('style', 'background-image: url('.$image.');');
+				}
 			}
 		}
 
+		
 		// conditions
 		$diplo = ($options & self::masque_diplo) >> 8;
 		if( $diplo >= 11 )
 		{
 			if( $options & self::aff_diplo_sup )
 			{
-				$cond_bat =  'royaume = '.$Trace[$perso->get_race()]['numrace'];
+				$cond_bat = 'royaume = '.$Trace[$perso->get_race()]['numrace'];
 				$cond_pj = 'p.race = '.$perso->get_race();
 			}
 			else
@@ -174,6 +200,14 @@ class interf_carte extends interf_tableau
 			$cond_bat = 'royaume IN ('.implode(',', $ids).')';
 			$cond_pj = 'p.race IN ('.implode(',', $races).')';
 		}
+		
+		// Diplomatie et royaumes
+		/// @todo passer à l'objet
+		$requete = 'SELECT * FROM diplomatie WHERE race = "'.$perso->get_race().'"';
+		$req = $db->query($requete);
+		$this->diplos = $db->read_array();
+		foreach($Trace as $r=>$t)
+			$this->races[$t['numrace']] = $r;
 		
     // Éléments à afficher
     if( $options & self::aff_pnj )
@@ -210,9 +244,13 @@ class interf_carte extends interf_tableau
         else
         	$cont->set_balise('a');
         $pos = 'rel_'.($j-$x).'_'.($i-$y);
-        $cont->set_attribut('id', 'pos_'.$pos);
         $cont->set_attribut('href', 'informationcase.php?case='.$pos);
         $cont->set_attribut('onclick', 'return charger(this.href);');
+        if( $this->infos[$i][$j] )
+        {
+        	$cont->set_tooltip('<ul class=\'info_bulle\'>'.$this->infos[$i][$j].'</ul>');
+        	$cont->set_attribut('data-html', 'true');
+				}
 			}
 		}
 
@@ -265,54 +303,69 @@ class interf_carte extends interf_tableau
 
   protected function afficher_batiments($cond_bat)
   {
+  	global $Gtrad;
     $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat);
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$b->image.'\');');
+      $race = $this->races[$b->royaume];
+      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
   }
 
   protected function afficher_placements($cond_bat)
   {
+  	global $Gtrad;
     $bats = placement::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $cond_bat);
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$b->image.'\');');
+      $race = $this->races[$b->royaume];
+      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
   }
 
   protected function afficher_pj(&$perso=null, $cond_pj)
   {
-    global $Tclasse, $db;
+    global $Tclasse, $db, $Gtrad;
     /// @todo à améliorer
+    $pos = array();
     if( $perso )
-      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" AND '.$cond_pj.' GROUP BY x, y ORDER BY d.'.$perso->get_race().' DESC, level DESC';
+      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND statut="actif" AND '.$cond_pj.' ORDER BY d.'.$perso->get_race().' DESC, level DESC';
     else
-      $requete = 'SELECT * FROM perso WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND statut="actif" AND '.$cond_pj.' GROUP BY x, y ORDER BY level DESC';
+      $requete = 'SELECT * FROM perso WHERE x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max.' AND statut="actif" AND '.$cond_pj.' ORDER BY level DESC';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
     {
       $p = new perso($row);
-			// S'il y a déjà un contenu on passe au suivant.
-      $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
-      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
-        continue;
-    	/// @todo à améliorer
-      // Cache sa classe ?
-      $div = $this->cases[$p->get_y()][$p->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      if( $p->get_cache_classe() == 2 )
-        $classe = 'combattant';
-      else if($p->get_cache_classe() == 1 && $p->get_race() != $perso->get_race())
-        $classe = 'combattant';
-      else
-        $classe = $p->get_classe();
-      // Camouflage
-      $p->check_specials();
-      $race = $p->get_race_a();
-      $img = 'image/personnage'.($this->grd_img?'':'_low').'/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
-      $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
+      $cle = $row['x'].'_'.$row['y'];
+      $niv = $p->get_cache_niveau() ? ' - Niv. '.$p->get_level() : '';
+      $this->infos[$p->get_y()][$p->get_x()] .= '<li><span class=\'info_perso\'>'.$p->get_nom().'</span> <span class=\'diplo'.$this->diplos[$p->get_race()].'\'>'.$Gtrad[$p->get_race()].'</span>'.$niv.'</li>';
+      if( !array_key_exists($cle, $pos) )
+      {
+      	$pos[$cle] = true;
+				// S'il y a déjà un contenu on passe au suivant.
+	      $fils = $this->cases[$p->get_y()][$p->get_x()]->get_fils(0);
+	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
+	        continue;
+	    	/// @todo à améliorer
+	      // Cache sa classe ?
+	      $div = $this->cases[$p->get_y()][$p->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	      if( $p->get_cache_classe() == 2 )
+	        $classe = 'combattant';
+	      else if($p->get_cache_classe() == 1 && $p->get_race() != $perso->get_race())
+	        $classe = 'combattant';
+	      else
+	        $classe = $p->get_classe();
+	      // Camouflage
+	      $p->check_specials();
+	      $race = $p->get_race_a();
+	      $img = 'image/personnage'.($this->grd_img?'':'_low').'/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
+	      $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
+			}
+			
     }
   }
 
@@ -334,18 +387,25 @@ class interf_carte extends interf_tableau
   protected function afficher_monstres($niv_min=0, $niv_max=255)
   {
     global $db;
+    $pos = array();
     $perso = joueur::get_perso();
     /// @todo à améliorer
-    $requete = 'SELECT x, y, lib FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT x, y, lib, nom, COUNT(*) AS nbr FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y, lib ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
-      // S'il y a déjà un contenu on passe au suivant.
-      $fils = $this->cases[$row->y][$row->x]->get_fils(0);
-      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
-        continue;
-      $div = $this->cases[$row->y][$row->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\'image/monstre/'.$row->lib.'.png\');');
+    	$cle = $row->x.'_'.$row->y;
+      $this->infos[$row->y][$row->x] .= '<li><span class=\'info_monstre\'>Monstre</span> '.$row->nom.' x '.$row->nbr.'</li>';
+      if( !array_key_exists($cle, $pos) )
+      {
+      	$pos[$cle] = true;
+	      // S'il y a déjà un contenu on passe au suivant.
+	      $fils = $this->cases[$row->y][$row->x]->get_fils(0);
+	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
+	        continue;
+	      $div = $this->cases[$row->y][$row->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	      $div->set_attribut('style', 'background-image: url(\'image/monstre/'.$row->lib.'.png\');');
+      }
     }
   }
 
@@ -418,34 +478,6 @@ class interf_carte extends interf_tableau
 			}
 		}
 		return $options;
-	}
-	
-	function calcule_atmosphere()
-	{
-		global $db;
-		$xmin = $this->xmin;
-		$xmax = $this->xmax;
-		$ymin = $this->ymin;
-		$ymax = $this->ymax;
-		$atmosphere_moment = strtolower(moment_jour());
-		for ($x = $this->x_min; $x <= $this->x_max; $x++)
-		{
-			for ($y = $this->y_min; $y <= $this->y_max; $y++)
-			{
-				$this->map[$x][$y]['calque'] = 'vide-'.$atmosphere_moment;
-				$this->map[$x][$y]['calque_dx'] = 0;
-				$this->map[$x][$y]['calque_dy'] = 0;
-			}
-		}
-		/// @todo passer à l'objet
-		$requete = 'SELECT x, y, type, dx, dy FROM map_zone, (SELECT x, y FROM map WHERE '.$this->x_min.' <= x AND x <= '.$this->x_max.' AND '.$this->y_min.' <= y AND y <= '.$this->y_max.') points WHERE x1 <= x AND x <= x2 AND y1 <= y AND y <= y2';
-		$req = $db->query($q);
-		while ($row = $db->read_object($req))
-		{
-			$this->map[$row->x][$row->y]['calque'] = $row->type.'-'.$atmosphere_moment;
-			$this->map[$row->x][$row->y]['calque_dx'] = $row->dx;
-			$this->map[$row->x][$row->y]['calque_dy'] = $row->dy;
-		}
 	}
 }
 ?>

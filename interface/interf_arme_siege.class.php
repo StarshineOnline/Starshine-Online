@@ -41,7 +41,7 @@ class interf_arme_siege extends interf_cont
 		if( $this->peut_tirer )
 		{
 			$this->cout_pa = $arme->get_cout_attaque($this->perso);
-		  if( $this->perso->grade->get_rang() < $batiment->get_bonus('rang_manip') )
+		  if( $this->perso->get_grade()->get_rang() < $batiment->get_bonus('rang_manip') )
 			 $this->peut_tirer = false;
 		  if( $this->perso->get_pa() < $cout_pa )
 			 $this->peut_tirer = false;

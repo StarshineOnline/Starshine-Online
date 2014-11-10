@@ -1095,21 +1095,24 @@ p.accueil a
 	color:/*#ddd*/rgba(0, 0, 0, 0.5);
 }
 
-#carte th
+#carte tbody tr
 {
-	width: 20px;
 	height: 60px;
+}
+
+#carte tbody th
+{
+	width: 25px;
 }
 
 #carte td
 {
 	width: 60px;
-	height: 60px;
 }
 
 #carte_bord_haut
 {
-	height: 20px /*!important*/;
+	height: 23px /*!important*/;
 	/*cursor:pointer;
 	padding-bottom:0;
 	cursor:default;*/
@@ -1145,16 +1148,57 @@ p.accueil a
   display: block;
 }
 
+#carte a:hover
+{
+	background-color: initial !important;
+}
+
+#carte td span
+{
+  display:block;
+  height:56px!important;
+  width:56px!important;
+	border-radius: 5px;
+}
+
+#carte td div span
+{
+  margin: 1px;
+}
+
+#carte td span:hover
+{
+	background-color: rgba(255, 255, 255, 0.2);
+}
+
 .pos_over
 {
-  background:transparent url(../image/interface/2.png) center;
-  background-color: #baccf780;
-  display:block;
-  -moz-border-radius:5px;
-  -webkit-border-radius:5px;
-  border-radius: 5px;
-  height:58px!important;
-  width:58px!important;
+	background-color: rgba(255, 255, 255, 0.3);
+  animation-name:pos_anim;
+  animation-duration:1s;
+  animation-iteration-count:infinite;
+  -webkit-animation-name:charger_rot;
+  -webkit-animation-duration:1s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:linear;
+}
+
+@keyframes pos_anim
+{
+  0%{background-color: rgba(255, 255, 255, 0.3);}
+  25%{background-color: rgba(255, 255, 255, 0.2);}
+  50%{background-color: rgba(255, 255, 255, 0.1);}
+  75%{background-color: rgba(255, 255, 255, 0.2);}
+  100%{background-color: rgba(255, 255, 255, 0.3);}
+}
+
+@-webkit-keyframes pos_anim
+{
+  0%{background-color: rgba(255, 255, 255, 0.3);}
+  25%{background-color: rgba(255, 255, 255, 0.2);}
+  50%{background-color: rgba(255, 255, 255, 0.1);}
+  75%{background-color: rgba(255, 255, 255, 0.2);}
+  100%{background-color: rgba(255, 255, 255, 0.3);}
 }
 
 #menu_carte a#opt_carte
@@ -1211,7 +1255,15 @@ p.accueil a
 	height: 420px;
 	position: absolute;
 	z-index:10;
+	top: 23px;
+	left: 25px;
+	pointer-events:none;
 }
+
+ul.info_bulle { text-align:left; }
+.info_batiment { font-weight:bold; color:#DDFF22; }
+.info_perso { font-weight:bold; color:#66bbFF; } /*#6633FF*/
+.info_monstre { font-weight:bold; color:#FF6622; } /*#CC3300*/
 
 /* Information de la case */
 

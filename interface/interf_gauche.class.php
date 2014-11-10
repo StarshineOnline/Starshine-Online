@@ -179,7 +179,7 @@ class interf_cadre_carte extends interf_gauche
 		$diplo_rel->add_option('<', '0', !($this->options & interf_carte::aff_diplo_sup));
 		$diplo_rel->add_option('>', '1', $this->options & interf_carte::aff_diplo_sup);
 		$diplo = $div_diplo->add( new interf_select_form('diplo', false, 'diplo_lim', 'form-control') );
-		$diplo->add_option($Gtrad['diplo127'], '11', ($this->options & interf_carte::masque_diplo)==interf_carte::aff_diplo_vr);
+		$diplo->add_option($Gtrad['diplo127'], interf_carte::aff_diplo_vr, ($this->options & interf_carte::masque_diplo)==interf_carte::aff_diplo_vr);
 		$lst_diplos = array(interf_carte::aff_diplo_af, interf_carte::aff_diplo_a, interf_carte::aff_diplo_p, interf_carte::aff_diplo_pd, interf_carte::aff_diplo_bt, interf_carte::aff_diplo_n, interf_carte::aff_diplo_mt, interf_carte::aff_diplo_g, interf_carte::aff_diplo_gd, interf_carte::aff_diplo_e, interf_carte::aff_diplo_ee, interf_carte::aff_diplo_vr);
 		for($i=0; $i<=10; $i++)
 			$diplo->add_option($Gtrad['diplo'.($i?$i:'0')], $i?$lst_diplos[$i]:'0', ($this->options & interf_carte::masque_diplo)==$lst_diplos[$i]);
@@ -194,36 +194,20 @@ class interf_cadre_carte extends interf_gauche
 		
 		
 		// Rose des vents
-		$haut_gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_gauche', 'icone icone-haut-gauche') );
-		$haut_gauche->set_attribut('href', 'deplacement.php?action=haut-gauche');
-		$haut_gauche->set_attribut('onClick', 'return  charger(this.href);');
-		$haut = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut', 'icone icone-haut') );
-		$haut->set_attribut('href', 'deplacement.php?action=haut');
-		$haut->set_attribut('onClick', 'return  charger(this.href);');
-		$haut_droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_haut_droite', 'icone icone-haut-droite') );
-		$haut_droite->set_attribut('href', 'deplacement.php?action=haut-droite');
-		$haut_droite->set_attribut('onClick', 'return  charger(this.href);');
-		$gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_gauche', 'icone icone-gauche') );
-		$gauche->set_attribut('href', 'deplacement.php?action=gauche');
-		$gauche->set_attribut('onClick', 'return  charger(this.href);');
+		$this->ajout_fleche('haut-gauche', 'depl_haut_gauche', 'haut-gauche', 'rel_-1_-1');
+		$this->ajout_fleche('haut', 'depl_haut', 'haut', 'rel_0_-1');
+		$this->ajout_fleche('haut-droite', 'depl_haut_droite', 'haut-droite', 'rel_1_-1');
+		$this->ajout_fleche('gauche', 'depl_gauche', 'gauche', 'rel_-1_0');
 		$this->set_icone_centre('rafraichir', 'deplacement.php?action=rafraichir');
-		$droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_droite', 'icone icone-droite') );
-		$droite->set_attribut('href', 'deplacement.php?action=droite');
-		$droite->set_attribut('onClick', 'return  charger(this.href);');
-		$bas_gauche = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_gauche', 'icone icone-bas-gauche') );
-		$bas_gauche->set_attribut('href', 'deplacement.php?action=bas-gauche');
-		$bas_gauche->set_attribut('onClick', 'return  charger(this.href);');
-		$bas = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas', 'icone icone-bas') );
-		$bas->set_attribut('href', 'deplacement.php?action=bas');
-		$bas->set_attribut('onClick', 'return  charger(this.href);');
-		$bas_droite = $this->disque->add( new interf_bal_smpl('a', '', 'depl_bas_droite', 'icone icone-bas-droite') );
-		$bas_droite->set_attribut('href', 'deplacement.php?action=bas-droite');
-		$bas_droite->set_attribut('onClick', 'return  charger(this.href);');
+		$this->ajout_fleche('droite', 'depl_droite', 'droite', 'rel_1_0');
+		$this->ajout_fleche('bas-gauche', 'depl_bas_gauche', 'bas-gauche', 'rel_-1_1');
+		$this->ajout_fleche('bas', 'depl_bas', 'bas', 'rel_0_1');
+		$this->ajout_fleche('bas-droite', 'depl_bas_droite', 'bas-droite', 'rel_1_1');
 		
 		$perso = joueur::get_perso();
 		$x = $perso->get_x();
 		$y = $perso->get_y();
-		$this->centre->add( $carte ? $carte : new interf_carte($x, $y, $this->options, 3, 'carte', $niv_min, $niv_max) );
+		$this->centre->add( $carte ? $carte : new interf_carte($x, $y, $this->options, 3, 'carte', $niv_min, $niv_max, $this->centre) );
 	}
 	protected function ajout_option($action, $drapeau, $icone_1, $icone_0, $texte, $inv=false, $affiche=true)
 	{
@@ -242,6 +226,14 @@ class interf_cadre_carte extends interf_gauche
 		$elt->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-'.$icone) );
 		$elt->get_lien()->set_tooltip($deb_txt.' '.$texte);
 		return $elt;
+	}
+	protected function ajout_fleche($action, $id, $icone, $pos)
+	{
+		$fleche = $this->disque->add( new interf_bal_smpl('a', '', $id, 'icone icone-'.$icone) );
+		$fleche->set_attribut('href', 'deplacement.php?action='.$action);
+		$fleche->set_attribut('onClick', 'return  charger(this.href);');
+		$fleche->set_attribut('onmouseover', '$(\'#pos_'.$pos.'\').addClass(\'pos_over\');');
+		$fleche->set_attribut('onmouseout', '$(\'#pos_'.$pos.'\').removeClass(\'pos_over\');');
 	}
 }
 ?>
