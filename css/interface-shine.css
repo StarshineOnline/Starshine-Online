@@ -244,6 +244,29 @@ a#depl_bas_droite
 	color: #EC971F;
 }
 
+#jauge_droite, #jauge_gauche
+{
+	top: 4px;
+	left: 5px;
+}
+
+#jauge_ext_stop
+{
+	top: 16px;
+	left: 17px;
+}
+
+#jauge_int_stop
+{
+	top: 28px;
+	left: 29px;
+}
+span#depl_disque_centre
+{
+	top: 30px;
+	left: 31px;
+}
+
 /* ----  Partie droite -------*/
 
 #information
