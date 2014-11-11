@@ -14,13 +14,41 @@ include_once(root.'interface/interface_avance.class.php');
  */
 class interf_factory
 {
+	protected $css;
   /**
    * Fabrique de la fabrique abstraite : renvoie une instance de la bonne fabrique abstaite suivant l'interface à utiliser.
    */
   static function factory()
   {
-    return new interf_factory();
+  	global $db;
+  	/// @todo passer à l'objet
+  	if( array_key_exists('ID', $_SESSION) )
+  	{
+  		$requete = 'SELECT valeur FROM options WHERE nom = "interface" AND id_perso = '.$_SESSION['ID'];
+  		$req = $db->query($requete);
+  		$index = $db->read_array($req)[1];
+		}
+		else
+			$index = 0;
+		switch($index)
+		{
+		case 0:
+		default:
+    	return new interf_factory('star-jour');
+    case 1:
+    	return new interf_factory('star-nuit');
+    case 2:
+    	return new interf_factory_shine();
+		}
   }
+  static function get_noms()
+  {
+  	return array('Star - jour', 'Star - nuit', 'Shine');
+	}
+	protected function __construct($css)
+	{
+		$this->css = $css;
+	}
   /**
    * interface du jeu
    */
@@ -35,7 +63,7 @@ class interf_factory
     case 2:
   		return new interf_jeu_tab();
     default:
-    	return new interf_jeu();
+    	return new interf_jeu($this->css);
 		}
   }
   /**
@@ -556,6 +584,19 @@ class interf_factory
   {
     include_once(root.'interface/interf_options.class.php');
   	return new interf_options_joueur();
+	}
+  function creer_options_affichage()
+  {
+    include_once(root.'interface/interf_options.class.php');
+  	return new interf_options_affichage();
+	}
+}
+
+class interf_factory_shine
+{
+	function __construct
+	{
+		parent::__construct('star-jour');
 	}
 }
 ?>

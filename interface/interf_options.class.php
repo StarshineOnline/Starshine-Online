@@ -16,6 +16,7 @@ class interf_options extends interf_onglets
 		$url = $G_url->copie('ajax', 2);
 		$this->add_onglet('Personnage', $url->get('categorie', 'perso'), 'ongl_perso', 'invent', $categorie=='perso');
 		$this->add_onglet('Compte joueur', $url->get('categorie', 'joueur'), 'ongl_joueur', 'invent', $categorie=='joueur');
+		$this->add_onglet('Affichage', $url->get('categorie', 'affichage'), 'ongl_affichage', 'invent', $categorie=='affichage');
 		
 		$G_url->add('categorie', $categorie);
 		switch($categorie)
@@ -25,6 +26,9 @@ class interf_options extends interf_onglets
 			break;
 		case 'joueur':
 			$this->get_onglet('ongl_'.$categorie)->add( new interf_options_joueur() );
+			break;
+		case 'affichage':
+			$this->get_onglet('ongl_'.$categorie)->add( new interf_options_affichage() );
 			break;
 		}
 	}
@@ -107,6 +111,30 @@ class interf_options_joueur extends interf_cont
 		$nouv2->set_attribut('required', 'required');
 		$btn = $form->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
 		$btn->set_attribut('onclick', 'return charger_formulaire("options_mdp");');
+	}
+}
+
+class interf_options_affichage extends interf_cont
+{
+	function __construct()
+	{
+		global $db, $G_url;
+		$div_i = $this->add( new interf_bal_cont('div') );
+		$div_i->add( new interf_bal_smpl('h4', 'Interface') );
+		$form = $div_i->add( new interf_form($G_url->get('action', 'interface'), 'options_interf', 'get', 'input-group') );
+		$form->add( new interf_bal_smpl('span', 'Globale :', false, 'input-group-addon') );
+		$sel = $form->add( new interf_select_form('interface', false, false, 'form-control') );
+  	/// @todo passer à l'objet
+		$requete = 'SELECT valeur FROM options WHERE nom = "interface" AND id_perso = '.$_SESSION['ID'];
+		$req = $db->query($requete);
+		$index = $db->read_array($req)[1];
+		foreach(interf_factory::get_noms() as $c=>$nom)
+		{
+			$sel->add_option($nom, $c, $c==$index);
+		}
+		$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
+		$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
+		$btn->set_attribut('onclick', 'return charger_formulaire("options_interf");');
 	}
 }
 

@@ -93,6 +93,9 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	case 'joueur':
 		$interf_princ->add( $G_interf->creer_options_joueur() );
 		break;
+	case 'affichage':
+		$interf_princ->add( $G_interf->creer_options_affichage() );
+		break;
 	}
 }
 else

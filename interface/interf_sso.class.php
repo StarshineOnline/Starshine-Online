@@ -9,7 +9,7 @@
  */
 class interf_sso extends interf_html
 {
-  function __construct()
+  function __construct($theme)
   {
     interf_html::__construct("Starshine Online", 'utf-8', false);
     // Méta-informations
@@ -19,7 +19,7 @@ class interf_sso extends interf_html
     // feuilles de style
     $this->css('css/jquery.ui.all.css');
     $this->css('css/bootstrap.css');
-    $this->css('css/bootstrap-theme.min.css');
+    $this->css('css/bootstrap-'.$theme.'.css');
     $this->css('css/icones.css');
     $this->css('css/jquery.dataTables.css');
     $this->css('css/dataTables.bootstrap.css');
@@ -43,13 +43,14 @@ class interf_sso extends interf_html
 abstract class interf_sso_int extends interf_sso
 {
   protected $menu;
-  function __construct()
+  function __construct($theme)
   {
-    interf_sso::__construct();
+    interf_sso::__construct($theme);
     // feuilles de style
     $this->css('css/texture.css');
     $this->css('css/texture_low.css');
     $this->css('css/interfacev3.css');
+    $this->css('css/interface-'.$theme.'.css');
     // javascript
     $this->javascript('javascript/jquery/jquery.hoverIntent.minified.js');
     $this->javascript('javascript/jquery/jquery.cluetip.min.js');

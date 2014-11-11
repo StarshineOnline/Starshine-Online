@@ -15,10 +15,10 @@ class interf_jeu extends interf_sso_int
   protected $gauche;
   protected $droite;
 
-  function __construct()
+  function __construct($css)
   {
   	global $db, $G_no_piwik;
-    interf_sso_int::__construct();
+    interf_sso_int::__construct($css);
     $perso = joueur::get_perso();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
     $nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
