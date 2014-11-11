@@ -26,7 +26,8 @@ class interf_factory
   	{
   		$requete = 'SELECT valeur FROM options WHERE nom = "interface" AND id_perso = '.$_SESSION['ID'];
   		$req = $db->query($requete);
-  		$index = $db->read_array($req)[1];
+  		$row = $db->read_array($req);
+  		$index = $row[0];
 		}
 		else
 			$index = 0;
@@ -80,6 +81,11 @@ class interf_factory
   {
     include_once(root.'interface/interf_gauche.class.php');
     return new interf_cadre_carte($carte);
+  }
+  
+  function creer_barre_perso()
+  {
+    return new interf_barre_perso();
   }
   /**
    * Méthode affichant le résultat d'une action
@@ -592,11 +598,22 @@ class interf_factory
 	}
 }
 
-class interf_factory_shine
+class interf_factory_shine extends interf_factory
 {
-	function __construct
+	function __construct()
 	{
-		parent::__construct('star-jour');
+		parent::__construct('shine');
 	}
+  
+  function creer_barre_perso()
+  {
+    include_once(root.'interface/interf_barre_perso.class.php');
+    return new interf_barre_perso_shine();
+  }
+  function creer_cadre_carte($carte=null)
+  {
+    include_once(root.'interface/interf_gauche.class.php');
+    return new interf_cadre_carte_shine($carte);
+  }
 }
 ?>

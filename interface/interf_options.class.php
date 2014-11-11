@@ -65,7 +65,7 @@ class interf_options_perso extends interf_cont
 			}
 			$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
 			$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
-			$btn->set_attribut('onclick', 'return charger_formulaire("options_titre");');
+			$btn->set_attribut('onclick', 'return charger_formulaire(\'options_titre\');');
 		}
 		
 		// Hibernation et suppression
@@ -96,7 +96,7 @@ class interf_options_joueur extends interf_cont
 		$email = $form->add( new interf_chp_form('email', 'email', false, $joueur->get_email(), false, 'form-control') );
 		$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
 		$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
-		$btn->set_attribut('onclick', 'return charger_formulaire("options_titre");');
+		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_titre\');');
 		
 		// Mot de passe
 		$div_p = $this->add( new interf_bal_cont('div') );
@@ -110,7 +110,7 @@ class interf_options_joueur extends interf_cont
 		$nouv2 = $form->add_champ_bs('password', 'nouv_mdp_2', null, null, 'Configer nouveau mot de passe :');
 		$nouv2->set_attribut('required', 'required');
 		$btn = $form->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
-		$btn->set_attribut('onclick', 'return charger_formulaire("options_mdp");');
+		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_mdp\');');
 	}
 }
 
@@ -123,18 +123,18 @@ class interf_options_affichage extends interf_cont
 		$div_i->add( new interf_bal_smpl('h4', 'Interface') );
 		$form = $div_i->add( new interf_form($G_url->get('action', 'interface'), 'options_interf', 'get', 'input-group') );
 		$form->add( new interf_bal_smpl('span', 'Globale :', false, 'input-group-addon') );
-		$sel = $form->add( new interf_select_form('interface', false, false, 'form-control') );
+		$sel = $form->add( new interf_select_form('valeur', false, false, 'form-control') );
   	/// @todo passer à l'objet
 		$requete = 'SELECT valeur FROM options WHERE nom = "interface" AND id_perso = '.$_SESSION['ID'];
 		$req = $db->query($requete);
-		$index = $db->read_array($req)[1];
+		$index = $db->read_array($req)[0];
 		foreach(interf_factory::get_noms() as $c=>$nom)
 		{
 			$sel->add_option($nom, $c, $c==$index);
 		}
 		$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
 		$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
-		$btn->set_attribut('onclick', 'return charger_formulaire("options_interf");');
+		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_interf\');');
 	}
 }
 

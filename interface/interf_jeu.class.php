@@ -17,7 +17,7 @@ class interf_jeu extends interf_sso_int
 
   function __construct($css)
   {
-  	global $db, $G_no_piwik;
+  	global $db, $G_no_piwik, $G_interf;
     interf_sso_int::__construct($css);
     $perso = joueur::get_perso();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
@@ -53,7 +53,7 @@ class interf_jeu extends interf_sso_int
 
     $this->contenu = $this->add( new interf_bal_cont('div', 'contenu') );
     $perso = $this->contenu->add( new interf_bal_cont('header', 'perso') );
-    $perso->add( new interf_barre_perso() );
+    $perso->add( $G_interf->creer_barre_perso() );
     $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );

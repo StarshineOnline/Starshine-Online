@@ -4,10 +4,10 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 
-$interf_princ = $G_interf->creer_jeu();
-  
 $categorie = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'perso';
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+$interf_princ = $G_interf->creer_jeu();
+  
 
 switch($action)
 {
@@ -78,6 +78,12 @@ case 'hibern':
 	unset($_COOKIE['nom']);
 	unset($_SESSION['nom']);
 	unset($_SESSION['ID']);
+	$interf_princ->recharger_interface('index.php');
+	exit;
+case 'interface':
+	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'interface', $val)";
+	$db->query($requete);
 	$interf_princ->recharger_interface('index.php');
 	exit;
 }

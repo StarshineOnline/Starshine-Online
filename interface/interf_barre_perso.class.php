@@ -282,4 +282,27 @@ class interf_barre_perso extends interf_bal_cont
 		$span->set_tooltip($message, 'bottom');
 	}
 }
+
+class interf_barre_perso_shine extends interf_barre_perso
+{
+	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, /*$style=false,*/ $type=null)
+	{
+		if( $grand )
+		{
+			$div = $parent->add( new interf_bal_smpl('div', $nom.' : '.$valeur.' / '.$maximum, 'perso_'.$type, 'jauge_shine') );
+			$img = $type == 'hp' ? 'vie' : $type;
+			$img .= round($valeur/$maximum*10);
+			$div->set_attribut('style', 'background:url(./image/barre/'.$img.'.png) no-repeat scroll center center / 197px 20px transparent;');
+		}
+		else
+			$parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, false, 'jauge_groupe membre_'.$type) );
+	}
+  protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
+  {
+		$div = $this->infos_vie->add( new interf_bal_smpl('div', false, 'perso_xp') );
+		$img = round($valeur/$maximum*10);
+		$div->set_attribut('style', 'background:url(./image/barre/xp'.$img.'.png) no-repeat;');
+		$div->set_tooltip('Expérience : '.$progression.'% ('.$valeur.' / '.$maximum.')');
+  }
+}
 ?>

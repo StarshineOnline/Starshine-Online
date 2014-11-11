@@ -236,4 +236,26 @@ class interf_cadre_carte extends interf_gauche
 		$fleche->set_attribut('onmouseout', '$(\'#pos_'.$pos.'\').removeClass(\'pos_over\');');
 	}
 }
+
+class interf_cadre_carte_shine extends interf_cadre_carte
+{
+	protected function set_icone_centre($icone, $url=false)
+	{
+		$centre = $this->disque->add( new interf_bal_smpl($url?'a':'span', '', 'depl_disque_centre') );
+		if( $url )
+		{
+			$centre->set_attribut('href', $url);
+			$centre->set_attribut('onClick', 'return  charger(this.href);');
+		}
+		return $centre;
+	}
+	protected function ajout_fleche($action, $id, $icone, $pos)
+	{
+		$fleche = $this->disque->add( new interf_bal_smpl('a', false, $id) );
+		$fleche->set_attribut('href', 'deplacement.php?action='.$action);
+		$fleche->set_attribut('onClick', 'return  charger(this.href);');
+		$fleche->set_attribut('onmouseover', '$(\'#pos_'.$pos.'\').addClass(\'pos_over\');');
+		$fleche->set_attribut('onmouseout', '$(\'#pos_'.$pos.'\').removeClass(\'pos_over\');');
+	}
+}
 ?>
