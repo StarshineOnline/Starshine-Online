@@ -299,6 +299,15 @@ class interf_carte extends interf_tableau
         }
       }
     }
+    
+    // sons d'ambiance
+    if( $options & self::act_sons )
+    {
+    	$son = $db->query_get_object("select type from map_sound_zone where x1 <= $x and $x <= x2 and y1 <= $y and $y <= y2");
+    	self::code_js('setAmbianceAudio("'.$son->type.'");');
+		}
+		else
+			self::code_js('setAmbianceAudio();');
 	}
 
   protected function afficher_batiments($cond_bat, $royaumes=false)
