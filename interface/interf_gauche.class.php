@@ -150,7 +150,7 @@ class interf_cadre_carte extends interf_gauche
 		$ordre = array(interf_carte::aff_pcb=>'p, c, b', interf_carte::aff_cbp=>'c, b', p, interf_carte::aff_cpb=>'c, p, b', (interf_carte::aff_pcb|interf_carte::aff_pnj)=>'p+, c, b', (interf_carte::aff_cbp|interf_carte::aff_pnj)=>'c, b, p+', (interf_carte::aff_cpb|interf_carte::aff_pnj)=>'c, p+, b');
 		$diplos = array('AF', 'A', 'PD', 'P', 'BT', 'N', 'MT', 'G', 'GD', 'E', 'EE', 'VR');
 		$lien->add( new interf_bal_smpl('span', 'm : '.$min.' à '.$max, false, 'dropdown-toggle') );
-		$txt = $ordre[$this->options&(interf_carte::masque_ordre|interf_carte::aff_pnj)].($this->options&interf_carte::aff_diplo_sup?' > ':' < ').$diplos[($this->options&interf_carte::masque_diplo)>>8];
+		$txt = $ordre[$this->options&(interf_carte::masque_ordre|interf_carte::aff_pnj)].($this->options&interf_carte::aff_diplo_sup?' ≥ ':' ≤ ').$diplos[($this->options&interf_carte::masque_diplo)>>8];
 		$lien->add( new interf_bal_smpl('span', $txt) );
 		$lien->set_attribut('onclick', 'return toggle(\'options_carte\');');
 		$li->set_tooltip('Réglages divers (cliquez pour plus de détails).');
