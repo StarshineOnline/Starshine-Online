@@ -596,6 +596,10 @@ class interf_factory
     include_once(root.'interface/interf_options.class.php');
   	return new interf_options_affichage();
 	}
+  function creer_votes_dons($categorie)
+  {
+  	return new interf_votes_dons($categorie);
+	}
 }
 
 class interf_factory_shine extends interf_factory

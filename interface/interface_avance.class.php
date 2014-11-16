@@ -502,7 +502,7 @@ class interf_img extends interf_bal_smpl
 {
 	function __construct($img, $alt=false, $id=false, $classe=false)
 	{
-		parent::__construct('img', $id, $classe);
+		parent::__construct('img', false, $id, $classe);
 		$this->set_attribut('src', $img);
 		if( $alt )
 			$this->set_attribut('alt', $alt);

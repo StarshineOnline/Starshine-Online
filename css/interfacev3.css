@@ -3775,7 +3775,6 @@ a .livre_nom
 	margin-top: 10px;
 }
 
-
 /*********************************
  Options
 **********************************/
@@ -3788,6 +3787,25 @@ a .livre_nom
 #options .invent>div:nth-child(n+2)
 {
 	margin-top: 30px;
+}
+
+/*********************************
+ Votes & dons
+**********************************/
+
+#dlg_votes_dons
+{
+	width: 700px;
+}
+
+#votes_dons p
+{
+	margin: 5px;
+}
+
+#votes_dons ul
+{
+	text-align: center;
 }
 
 /*********************************
