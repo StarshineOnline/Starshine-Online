@@ -1,15 +1,15 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?-rt3dgd');
-	src:url('fonts/sso-icones.eot?#iefix-rt3dgd') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?-rt3dgd') format('woff'),
-		url('fonts/sso-icones.ttf?-rt3dgd') format('truetype'),
-		url('fonts/sso-icones.svg?-rt3dgd#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?rxmi7l');
+	src:url('fonts/sso-icones.eot?#iefixrxmi7l') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?rxmi7l') format('woff'),
+		url('fonts/sso-icones.ttf?rxmi7l') format('truetype'),
+		url('fonts/sso-icones.svg?rxmi7l#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
 
-.icone {
+[class^="icone-"], [class*=" icone-"] {
 	font-family: 'sso-icones';
 	speak: none;
 	font-style: normal;
@@ -23,6 +23,24 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
+.icone-ads-non:before {
+	content: "\e612";
+}
+.icone-drapeau-non:before {
+	content: "\e614";
+}
+.icone-oeil-bare:before {
+	content: "\e615";
+}
+.icone-jour-non:before {
+	content: "\e616";
+}
+.icone-meteo-non:before {
+	content: "\e617";
+}
+.icone-ads:before {
+	content: "\f02b";
+}
 .icone-deplacer:before {
 	content: "\e608";
 }
@@ -395,26 +413,8 @@
 .icone-lune:before {
 	content: "\e7da";
 }
-.icone-soleil:before {
-	content: "\e8e3";
-}
 .icone-nuage:before {
 	content: "\e82a";
-}
-.icone-nuage-soleil:before {
-	content: "\e7e3";
-}
-.icone-nuage-lune:before {
-	content: "\e7e4";
-}
-.icone-nuage-neige:before {
-	content: "\e8e1";
-}
-.icone-nuage-pluie:before {
-	content: "\e7e8";
-}
-.icone-nuage2:before {
-	content: "\e7ed";
 }
 .icone-drapeau:before {
 	content: "\e823";

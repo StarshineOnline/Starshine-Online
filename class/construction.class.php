@@ -199,23 +199,24 @@ class construction extends entitenj_constr
    * @param  $y_max    Valeur maximale de la coordonnée y
    * @return    tableau contenant les positions et l'image
    */
-  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true, $cond='1')
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true, $cond='1', $royaume=false)
   {
     global $db;
-		$requete = 'SELECT x, y, b.image, b.nom, royaume FROM '.static::get_table().' AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max.' AND '.$cond;
+		$requete = 'SELECT x, y, b.image, b.nom, royaume, c.type FROM '.static::get_table().' AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max.' AND '.$cond;
     $req = $db->query($requete);
     $res = array();
     while( $row = $db->read_object($req) )
     {
-      $row->image = self::make_url_image($row->image, $grd_img);
+      $row->image = self::make_url_image($row->image, $grd_img, ($royaume && $row->type == 'arme_de_siege') ? $row->royaume : false);
       $res[] = $row;
     }
     return $res;
   }
 
-  static function make_url_image($image, $grd_img=true)
+  static function make_url_image($image, $grd_img=true, $royaume=false)
   {
-    return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_04.png';
+  	global $Trace;
+    return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_'.($royaume ? $Trace['liste'][$royaume] : '04').'.png';
   }
 }
 ?>

@@ -136,12 +136,12 @@ class interf_cadre_carte extends interf_gauche
 		// Menu carte
 		$this->menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
 		// ajout_option($action, $drapeau, $icone_1, $icone_0, $texte, $inv=true, $affiche=true)
-		$this->ajout_option('royaumes', interf_carte::aff_royaumes, 'drapeau', 'drapeau', 'les royaumes');
-		$this->ajout_option('monstres', interf_carte::aff_monstres, 'oeil', 'oeil', 'les monstres', true);
-		$this->ajout_option('jour', interf_carte::aff_jour, 'lune', 'lune', 'les effets liés à l\'heure', true);
-		$this->ajout_option('meteo', interf_carte::aff_atmosphere, 'nuage', 'nuage', 'les effets atmosphériques', true);
-		$this->ajout_option('son', interf_carte::act_sons, 'son-fort', 'son-fort', 'les effets sonores', true, false);
-		$this->ajout_option('ads', interf_carte::aff_ads, 'drapeau', 'drapeau', 'l\'appartenance des armes de siège');
+		$this->ajout_option('royaumes', interf_carte::aff_royaumes, 'drapeau', 'drapeau-non', 'les royaumes');
+		$this->ajout_option('monstres', interf_carte::aff_monstres, 'oeil', 'oeil-bare', 'les monstres', true);
+		$this->ajout_option('jour', interf_carte::aff_jour, 'lune', 'jour-non', 'les effets liés à l\'heure', true);
+		$this->ajout_option('meteo', interf_carte::aff_atmosphere, 'nuage', 'meteo-non', 'les effets atmosphériques', true);
+		$this->ajout_option('son', interf_carte::act_sons, 'son-fort', 'son-coupe', 'les effets sonores', true, false);
+		$this->ajout_option('ads', interf_carte::aff_ads, 'ads', 'ads-non', 'l\'appartenance des armes de siège');
 		// Options supplémentaires
 		$li = $this->menu->add( new interf_bal_cont('li') );
 		$lien = $li->add( new interf_bal_cont('a', 'opt_carte') );

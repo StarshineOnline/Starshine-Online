@@ -79,7 +79,7 @@ class interf_ecurie extends interf_ville
 		{
 			if( $this->places_perso )
 			{
-				$reprendre = $li->add( new interf_lien('', 'ecurie.php?action=reprendre&id='.$pet->get_id(), false, 'icone icone-bas') );
+				$reprendre = $li->add( new interf_lien('', 'ecurie.php?action=reprendre&id='.$pet->get_id(), false, 'icone icone-sortir') );
 				$reprendre->set_tooltip('Reprendre');
 			}
 		}
@@ -89,7 +89,7 @@ class interf_ecurie extends interf_ville
 			{	
 				$taxe_depot = ceil($pet->get_cout_depot() * $this->royaume->get_taxe_diplo($this->perso->get_race()) / 100);
 				$reprendre = $li->add( new interf_lien_cont('ecurie.php?action=deposer_ville&id='.$pet->get_id()) );
-				$reprendre->add( new interf_bal_smpl('span', '', false, 'icone icone-haut') );
+				$reprendre->add( new interf_bal_smpl('span', '', false, 'icone icone-entrer') );
 				$reprendre->add( new interf_bal_smpl('span', $pet->get_cout_depot() + $taxe_depot, false, 'xsmall') );		
 				$reprendre->set_tooltip('Déposer ('.($pet->get_cout_depot() + $taxe_depot).' stars)');
 			}

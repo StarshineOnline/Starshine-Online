@@ -148,11 +148,11 @@ class interf_carte extends interf_tableau
     $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
 
     /// @todo repères
-    /// @todo couche donjons
+    
     /// @todo calque atmosphere
     if( $parent_calques )
     {
-	    if( $y > 190 )
+	    if( $y > 190 ) // Calque donjon
 	    {
 	    	$image = 'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
 	    	$c_jour = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
@@ -217,17 +217,17 @@ class interf_carte extends interf_tableau
     case self::aff_pcb:
 	    $this->afficher_pj($perso, $cond_pj);
 	    $this->afficher_placements($cond_bat);
-	    $this->afficher_batiments($cond_bat);
+	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
     	break;
     case self::aff_cbp:
 	    $this->afficher_placements($cond_bat);
-	    $this->afficher_batiments($cond_bat);
+	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
 	    $this->afficher_pj($perso, $cond_pj);
     	break;
     case self::aff_cpb:
 	    $this->afficher_placements($cond_bat);
 	    $this->afficher_pj($perso, $cond_pj);
-	    $this->afficher_batiments($cond_bat);
+	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
     	break;
 		}
     if( $options & self::aff_monstres  )
@@ -301,10 +301,10 @@ class interf_carte extends interf_tableau
     }
 	}
 
-  protected function afficher_batiments($cond_bat)
+  protected function afficher_batiments($cond_bat, $royaumes=false)
   {
   	global $Gtrad;
-    $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat);
+    $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat, $royaumes);
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
