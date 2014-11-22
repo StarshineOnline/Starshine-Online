@@ -182,7 +182,7 @@ function maj_tooltips()
 
 function aff_ico_charger()
 {
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-charger2";
+	document.getElementById("icone-sso").className = "navbar-brand icone icone-charger";
 }
 
 function aff_ico_sso()
