@@ -119,7 +119,7 @@ class interf_accueil extends interf_cont
 		// Messages nouveaux
 		foreach( $nouveaux as $msg )
 		{
-			$panneau = $accordeon->nouv_panneau($msg['titre'].' <span class="label label-primary">nouveau</span>', $msg['id'], true, 'info');
+			$panneau = $accordeon->nouv_panneau($msg['titre'].' <span class="label label-primary">nouveau</span>', $msg['id'], true);
 			if( is_array($msg['contenu']) )
 			{
 				foreach($msg['contenu'] as $cont)
