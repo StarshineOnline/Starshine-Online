@@ -131,7 +131,7 @@ class interf_barre_perso extends interf_bal_cont
     $barre->set_attribut('style', 'height:'.round($valeur/$maximum*100,0).'%');
     if( $grand )
 			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );*/
-		$parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, $grand?'perso_'.$type:false, $grand?'jauge_bulle':'jauge_groupe membre_'.$type) );
+		return $parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, $grand?'perso_'.$type:false, $grand?'jauge_bulle':'jauge_groupe membre_'.$type) );
 	}
   protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
   {
@@ -152,7 +152,7 @@ class interf_barre_perso extends interf_bal_cont
 		$row = $db->read_array($req);
 		$rez = $row[0] > 0;
     $jauge = $parent->add( new interf_bal_cont('div', $id, ($grand?'jauge_bulle':'jauge_groupe membre_hp').' progress  '.($rez?'rez':'')) );
-    $jauge->set_tooltip('Ce personnage est mort.', 'bottom');
+    $jauge->set_tooltip('Ce personnage est mort.'.($rez?' Au moins un sort de résurection est actif sur lui.':''), 'bottom');
     $jauge->add( new interf_bal_cont('span', null, 'icone icone-mort') );
     if($rez)
     	$jauge->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'bottom\', \'infoperso.php?action=infos_rez&id='.$id_membre.'\', \'Résurections\')');
@@ -236,7 +236,7 @@ class interf_barre_perso extends interf_bal_cont
 		$non->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=non&groupe='.$invitation->get_groupe());
 		$non->set_attribut('onclick', 'charger(this.href);');
 	}
-	static function creer_activite(&$perso, &$parent)
+	static function creer_activite(&$perso, &$parent, $classe='')
 	{
 		switch( $perso->get_statut() )
 		{
@@ -278,7 +278,7 @@ class interf_barre_perso extends interf_bal_cont
 			log_admin::log('bug', 'statut du personnage "'.$membre->get_nom().'" inconnu : '.$membre->get_statut());
 			break;
 		}
-		$span = $parent->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type) );
+		$span = $parent->add( new interf_bal_smpl('span', '', null, 'groupe_activite activite_'.$type.$classe) );
 		$span->set_tooltip($message, 'bottom');
 	}
 }
@@ -289,20 +289,70 @@ class interf_barre_perso_shine extends interf_barre_perso
 	{
 		if( $grand )
 		{
-			$div = $parent->add( new interf_bal_smpl('div', $nom.' : '.$valeur.' / '.$maximum, 'perso_'.$type, 'jauge_shine') );
-			$img = $type == 'hp' ? 'vie' : $type;
-			$img .= round($valeur/$maximum*10);
-			$div->set_attribut('style', 'background:url(./image/barre/'.$img.'.png) no-repeat scroll center center / 197px 20px transparent;');
+			$div = $parent->add( new interf_bal_smpl('div', $valeur.' / '.$maximum, 'perso_'.$type, 'jauge_shine') );
+			$img = '';
 		}
 		else
-			$parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, false, 'jauge_groupe membre_'.$type) );
+		{
+			$div = $parent->add( new interf_bal_smpl('div', false, false, 'jauge_shine_groupe membre_'.$type) );
+			$img = 'g_';
+		}
+		$img .= $type == 'hp' ? 'vie' : $type;
+		$img .= round($valeur/$maximum*10);
+		$div->set_attribut('style', 'background:url(./image/barre/'.$img.'.png) no-repeat scroll center center transparent;');
+		$div->set_tooltip($nom.' : '.$valeur.' / '.$maximum);
+		return $div;
 	}
   protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
   {
-		$div = $this->infos_vie->add( new interf_bal_smpl('div', false, 'perso_xp') );
-		$img = round($valeur/$maximum*10);
-		$div->set_attribut('style', 'background:url(./image/barre/xp'.$img.'.png) no-repeat;');
-		$div->set_tooltip('Expérience : '.$progression.'% ('.$valeur.' / '.$maximum.')');
+		$div = $this->infos_vie->add( new interf_bal_smpl('div', 'Niv. : '.$niv, 'perso_'.$type, 'jauge_shine') );
+		$img .= 'exp'.round($progression/100);
+		$div->set_attribut('style', 'background:url(./image/barre/'.$img.'.png) no-repeat scroll center center transparent;');
+		$div->set_tooltip('Expérience : '.$valeur.' / '.$maximum);
   }
+  protected function creer_infos_membre($liste, $membre, $groupe, $index)
+  {
+  	$li = $liste->add( new interf_bal_cont('li', 'membre_'.$index, 'membre_groupe') );
+  	
+  	if( $membre )
+  	{
+  		$mort =  $membre->get_hp() <= 0 ? ' mort' : '';
+  		$this->creer_activite($membre, $li, $mort);
+			$classe = 'perso_groupe_nom';
+	  	if( $membre->get_id() == $groupe->get_id_leader() )
+	  		$classe .= ' perso_groupe_chef';
+	  	$nom = $li->add( new interf_lien($membre->get_nom(), 'infoperso.php?id='.$membre->get_id(), null, $classe) );
+			$hp = $this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'hp');
+	    $mp = $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, 'mp');
+	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+	  	if( $membre->get_hp() <= 0 )
+	  	{
+				$this->creer_jauge_mort($li, false, $membre->get_id());
+				$hp->set_attribut('class', $hp->get_attribut('class').' mort' );
+				$mp->set_attribut('class', $mp->get_attribut('class').' mort' );
+			}
+			/// @todo gérer les coordonnées cachées
+	    $pos = $li->add( new interf_bal_smpl('div', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), false, 'membre_lieu'.($dist>7?' trop_loin':'')) );
+	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist'.($dist>7?' trop_loin':'')) );
+	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+	    $buffs->add( new interf_liste_buff($membre, false) );
+	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
+	    $debuffs->add( new interf_liste_buff($membre, true) );
+		}
+	}
+	protected function creer_jauge_mort($parent, $grand=false, $id_membre=null)
+	{
+		global $db;
+		$id = $grand?'perso_hp':'membre_hp_'.$id_membre;
+		/// @todo passer à l'objet
+		$requete = 'SELECT count(*) FROM rez WHERE id_perso = '.$id_membre;
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$rez = $row[0] > 0;
+		$img = $parent->add( new interf_img('image/interface/mort.png', 'Mort', false, 'membre_mort'.($rez?' rez':'')) );;
+    $img->set_tooltip('Ce personnage est mort.'.($rez?' Au moins un sort de résurection est actif sur lui.':''), 'bottom');
+    if($rez)
+    	$img->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'bottom\', \'infoperso.php?action=infos_rez&id='.$id_membre.'\', \'Résurections\')');
+	}
 }
 ?>

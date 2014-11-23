@@ -11,23 +11,31 @@ a:hover, a:focus
 
 #barre_menu
 {
-	background: rgba(15, 5, 107, 0.5);
+	/*background: rgba(15, 5, 107, 0.5);*/
+	background: url('../image/v2/bouton_fond.png') repeat-x;
+	background-size: 100% 40px;
 	border-color: #0F056B;
 }
 
 #barre_menu a
 {
-	color: white;
+	/*color: white;*/
+	color: #22427C;
 }
 
-#barre_menu a:hover, #barre_menu a:focus
+#navbar>ul>li>a:hover, #navbar>ul>li>a:focus, #navbar>ul>li>a:active
 {
-	color: #E7CF98;
+	/*color: #E7CF98;*/
+	/*#menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }*/
+	color: #2F2F4F!important;
+	background: url(../image/v2/bouton_hover.png);
+	background-size: 100% 40px;
 }
 
 #barre_menu .dropdown-menu > li > a
 {
-	color: #333;
+	/*color: #333;*/
+	color: #22427C;
 }
 
 #barre_menu .dropdown-menu > li > a
@@ -49,15 +57,73 @@ a:hover, a:focus
   border: 1px solid rgba(15, 5, 107, 0.3);
 }
 
-#perso_groupe li.membre_groupe
+#infos_vie
 {
-	background:  rgba(255, 255, 255, 0.3);
-  border: 1px solid rgba(15, 5, 107, 0.3);
+	width: 150px;
+	left: 11px;
+}
+
+#nom_perso
+{
+	margin: 2px 0;
+	left: 0;
+	height: 32px;
+	width: 150px;
+	white-space: normal;
+}
+
+#infos_perso
+{
+	left: 175px;
+	margin:0;
+	width: 260px;
+	background-position: 5px 4px;
+}
+
+#perso_ph
+{
+	left: 56px;
+	width: 70px;
+}
+
+#perso_stars
+{
+	left: 60px;
+}
+
+.perso_script
+{
+	left: 130px;
+	width: 125px;
+}
+
+#perso_buffs
+{
+	left: 37px;
+}
+
+#perso_heure
+{
+	left: 457px;
 }
 
 #perso_position
 {
   box-shadow: 0 1px 2px rgba(15, 5, 107, 0.3) inset;
+  left: 450px;
+}
+
+#perso_groupe
+{
+	left: 540px;
+	width: 448px;
+}
+
+#perso_groupe li.membre_groupe
+{
+	background:  rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(15, 5, 107, 0.3);
+  width: 220px;
 }
 
 .jauge_bulle, .jauge_groupe
@@ -87,12 +153,13 @@ a:hover, a:focus
 
 .jauge_shine
 {
-	margin: 7px 2px;
+	margin: 0;
 	background: no-repeat;
 	text-align: center;
 	color: white;
-	height: 20px;
-	padding: 1px;
+	padding: 2px;
+	font-size: 12px;
+	height: 18px;
 }
 
 #perso_xp
@@ -106,32 +173,63 @@ a:hover, a:focus
 	pointer-events:none;
 }
 
+.groupe_activite.mort
+{
+	margin-left: 18px;
+}
+
+.membre_mort
+{
+	position: absolute;
+	left: 3px;
+	top: 5px;
+}
+
+.jauge_shine_groupe
+{
+	height: 5px;
+	width: 100px;
+	position: relative;
+	left: 2px;
+	margin: 1px;
+}
+
+.jauge_shine_groupe.mort
+{
+	left: 18px;
+}
+
+.membre_lieu
+{
+	position: absolute;
+	right: 4;
+	top: 2px;
+}
+
+.membre_dist
+{
+  position: absolute;
+  right: 4px;
+  top: 15px;
+}
+
+
 /* ----  Partie gauche -------*/
 
 #cadre_gauche, #depl_disque, #depl_disque a#depl_disque_centre, #depl_disque span#depl_disque_centre
 {
 	border-color: #0F056B;
-	/*color: #0F056B;*/
 }
 
-#deplacement
+#cadre_gauche
 {
-	margin-top: 10px;
-}
-
-div#depl_disque
-{
-	background: url('./../image/fond_infoperso.png') no-repeat transparent;
-	top: -5px;
-	left: -5px;
-	width: 102px;
-	height: 102px;
+	background: url('../image/v2/map.png');
 }
 
 #depl_disque a
 {
-	width: 25px;
-	height: 25px;
+	background-size: 31px 93px;
+	background-position:center;
 }
 
 #depl_disque a:hover { background-position:top; }
@@ -139,76 +237,67 @@ div#depl_disque
 
 a#depl_haut_gauche
 {
-	background: url('./../image/rosedesvent/nordouest.png') repeat scroll center center transparent;
-	top: 13px;
-	left: 13px;
+	background-image: url('./../image/rosedesvent/nordouest.png');
 }
 a#depl_haut
 {
-	background: url('./../image/rosedesvent/nord.png') repeat scroll center center transparent;
-	left: 38px;
-	top: 13px;
+	background-image: url('./../image/rosedesvent/nord.png');
 }
 a#depl_haut_droite
 {
-	background: url('./../image/rosedesvent/nordest.png') repeat scroll center center transparent;
-	top: 13px;
-	left: 63px;
+	background-image: url('./../image/rosedesvent/nordest.png');
 }
 a#depl_gauche
 {
-	background: url('./../image/rosedesvent/ouest.png') repeat scroll center center transparent;
-	top: 38px;
-	left: 13px;
+	background-image: url('./../image/rosedesvent/ouest.png');
 }
 a#depl_disque_centre
 {
-	background: url('./../image/rosedesvent/rafraichir.png') repeat scroll center center transparent;
-	width: 25px;
-	height: 25px;
+	background-image: url('./../image/rosedesvent/rafraichir.png');
 	border-radius: 0;
 	border:none;
-	top: 38px;
-	left: 38px;
+	top: 31px;
+	left: 31px;
+	width: 29px;
+	height: 29px;
+	background-size: 29px 87px;
 }
 a#depl_droite
 {
-	background: url('./../image/rosedesvent/est.png') repeat scroll center center transparent;
-	top: 38px;
-	right: 12px;
+	background-image: url('./../image/rosedesvent/est.png');
 }
 a#depl_bas_gauche
 {
-	background: url('./../image/rosedesvent/sudouest.png') repeat scroll center center transparent;
-	bottom: 12px;
-	left: 13px;
+	background-image: url('./../image/rosedesvent/sudouest.png');
 }
 a#depl_bas
 {
-	background: url('./../image/rosedesvent/sud.png') repeat scroll center center transparent;
-	left: 38px;
-	bottom: 12px;
+	background-image: url('./../image/rosedesvent/sud.png');
 }
 a#depl_bas_droite
 {
-	background: url('./../image/rosedesvent/sudest.png') repeat scroll center center transparent;
-	bottom: 12px;
-	left: 63px;
+	background-image: url('./../image/rosedesvent/sudest.png');
 }
 
-.depl_cache
+#depl_disque, .depl_cache
 {
 	background: #E7CF98;
 }
 
-#depl_barre_haut, #depl_barre_gauche
+a#depl_disque_centre.icone
 {
-	background: rgba(231, 207, 152, 0.7);
+	background: #E7CF98;
+	top: 26px;
+	left: 26px;
+	border: 1px solid #0F056B;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;;
 }
 
 #depl_centre
 {
-	background: rgba(15, 5, 107, 0.3);
+	background: rgba(255, 255, 255, 0.2);
 	border-color: rgba(15, 5, 107, 0.5);
 }
 
@@ -226,12 +315,12 @@ a#depl_bas_droite
 
 #carte
 {
-	color: #E7CF98;
+	color: #22427C;
 }
 
 #carte_bord_haut_x, #carte_bord_haut_y
 {
-	color:#8A6D3B!important;
+	color:#2F2F4F!important;
 }
 
 #coffre
@@ -244,7 +333,7 @@ a#depl_bas_droite
 	color: #EC971F;
 }
 
-#jauge_droite, #jauge_gauche
+/*#jauge_droite, #jauge_gauche
 {
 	top: 4px;
 	left: 5px;
@@ -265,7 +354,7 @@ span#depl_disque_centre
 {
 	top: 30px;
 	left: 31px;
-}
+}*/
 
 /* ----  Partie droite -------*/
 
@@ -273,7 +362,7 @@ span#depl_disque_centre
 {
 	background: rgba(255, 255, 255, 0.3);
 	border: 1px solid rgba(15, 5, 107, 0.5);
-	margin-top: 20px;
+	/*margin-top: 20px;*/
 }
 
 #information a { color:rgba(15, 5, 107, 0.7); }
