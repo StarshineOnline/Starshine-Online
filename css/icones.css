@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?rxmi7l');
-	src:url('fonts/sso-icones.eot?#iefixrxmi7l') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?rxmi7l') format('woff'),
-		url('fonts/sso-icones.ttf?rxmi7l') format('truetype'),
-		url('fonts/sso-icones.svg?rxmi7l#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?-ttepx5');
+	src:url('fonts/sso-icones.eot?#iefix-ttepx5') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?-ttepx5') format('woff'),
+		url('fonts/sso-icones.ttf?-ttepx5') format('truetype'),
+		url('fonts/sso-icones.svg?-ttepx5#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -442,4 +442,10 @@
 }
 .icone-teleportation:before {
 	content: "\e9a5";
+}
+.icone-precedent:before {
+	content: "\f053";
+}
+.icone-suivant:before {
+	content: "\f054";
 }

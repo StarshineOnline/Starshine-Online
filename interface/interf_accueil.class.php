@@ -37,6 +37,8 @@ class interf_accueil extends interf_cont
 			}
 		}
 		
+		$accordeon = $this->add( new interf_accordeon('acceuil_messages') );
+		
 		// Révolution
 		if( revolution::is_mois_revolution($R[0]->get_id(), $perso->get_id()) )
 		{
@@ -47,7 +49,27 @@ class interf_accueil extends interf_cont
 				$this->add( new interf_bal_smpl('p', 'Une révolution a été déclenchée, vous pouvez aller voter pour ou contre.', null, 'accueil') );
 		}
 		
-		$accordeon = $this->add( new interf_accordeon('acceuil_messages') );
+		// tutoriel
+		if( $perso->get_tuto() > 0  )
+		{
+			$classe = $perso->get_classe_id();
+			/// @todo passer à l'objet
+			$requete = "SELECT * FROM texte_tutoriel WHERE etape = ".$perso->get_tuto()." AND race = '".$perso->get_race()."' AND classe ='".$classe."'" ;
+			$req = $db->query($requete);
+			if ($db->num_rows > 0)
+			{
+				$panneau = $accordeon->nouv_panneau('Tutoriel', 'tutoriel', true);
+				while ($row = $db->read_assoc($req))
+				{
+					$div = $panneau->add( new interf_bal_cont('div', null, 'message_monde') );
+					$div->add( new interf_bal_smpl('h4', $row['titre']) );
+					$texte = new texte($row['text'], texte::tutoriel);
+			    $texte->set_perso($perso);
+					$div->add( new interf_bal_smpl('p', $texte->parse()) );
+				}
+			}
+		}
+		
 		// Message du monde
 		$requete = "SELECT * FROM motd WHERE publie = 1 ORDER BY date DESC";
 		$req = $db->query($requete);

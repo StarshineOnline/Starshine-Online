@@ -17,13 +17,13 @@ class interf_gauche extends interf_bal_cont
 	{
 		parent::__construct('div', 'cadre_gauche');
 		//$princ = $this->add( new interf_bal_cont('div', 'cadre_gauche') );
-		$this->disque = $this->add( new interf_bal_cont('div', 'depl_disque') );
+		$this->disque = $this->add( new interf_bal_cont('div', 'depl_disque', 'aide') );
 		$this->barre_haut = $this->add( new interf_bal_cont('div', 'depl_barre_haut') );
 		$this->barre_gauche = $this->add( new interf_bal_cont('div', 'depl_barre_gauche') );
 		$this->centre = $this->add( new interf_bal_cont('div', 'depl_centre') );
 		
 		// menu
-		$menu = $this->barre_gauche->add( new interf_menu(false, 'menu_panneaux', false) );
+		$menu = $this->barre_gauche->add( new interf_menu(false, 'menu_panneaux', 'aide') );
 		switch($prem_bouton)
 		{
 		case 'carte':
@@ -134,7 +134,7 @@ class interf_cadre_carte extends interf_gauche
 		$niv_max = $row ? $row[0] : 255;
 		$this->options  = interf_carte::calcul_options( $perso->get_id() );
 		// Menu carte
-		$this->menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', false) );
+		$this->menu = $this->barre_haut->add( new interf_menu(false, 'menu_carte', 'aide') );
 		// ajout_option($action, $drapeau, $icone_1, $icone_0, $texte, $inv=true, $affiche=true)
 		$this->ajout_option('royaumes', interf_carte::aff_royaumes, 'drapeau', 'drapeau-non', 'les royaumes');
 		$this->ajout_option('monstres', interf_carte::aff_monstres, 'oeil', 'oeil-bare', 'les monstres', true);

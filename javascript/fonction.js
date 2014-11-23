@@ -36,6 +36,10 @@ function affiche_ajax(data, status, jqXHR)
   	case 'erreur':
   		aff_erreur(this.innerHTML, data);
   		break;
+  	case 'javascript':
+  		var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
+  		script.setAttribute('type', 'text/javascript');
+  		//alert(this.innerHTML);
   	default:
     	$('#'+this.id).html( this.innerHTML );
 		}
@@ -385,6 +389,92 @@ function carte_royaume(id)
 	}
 	$('#opt_'+id).toggleClass('active');
 	return false;
+}
+
+// Aide
+var elts_aide = null;
+var elt_aide_actif = null;
+var rect_aide_actif = null;
+var elt_aide_aff = null;
+function bascule_aide()
+{
+	var body = document.getElementsByTagName("body")[0];
+	var voile = document.getElementById("voile");
+	if(voile)
+	{
+		body.removeChild(voile);
+		$("#navbar").show();
+		$("#info_aide").remove();
+		if( elt_aide_aff )
+		{
+			elt_aide_aff.popover('hide');
+			elt_aide_aff.removeClass('aide-actif');
+			elt_aide_actif = null;
+			elt_aide_aff = null;
+		}
+	}
+	else
+	{
+		voile = creer_element("div", "voile", false, body, false);
+		voile.setAttribute("onclick", "clique_aide();");
+		voile.setAttribute("onmousemove", "mouv_aide(event);");
+		$("#navbar")[0].style = "display:none !important";
+		$("#barre_menu .container").append("<div id='info_aide'><b>Description de l'interface : </b>Les élements qui s'affiche en surbrillance quand vous passez la souris dessus proposent une aide. Cliquez dessus pour affichez celle-ci. Cliquez ailleurs pour revenir au jeu.</div>");
+		elts_aide = document.getElementsByClassName("aide");
+	}
+	$(body).toggleClass("aide-active");
+	return false;
+}
+
+function mouv_aide(evt)
+{
+	if(elt_aide_aff)
+		return;
+	if( elt_aide_actif )
+	{
+		$(elt_aide_actif).removeClass('aide-actif');
+		elt_aide_actif = null;
+	}
+	for(var i=0; i<elts_aide.length; i++)
+	{
+		var rect = elts_aide[i].getBoundingClientRect();
+		if( evt.clientX >= rect.left && evt.clientX <= rect.right && evt.clientY >= rect.top && evt.clientY <= rect.bottom )
+		{
+			$(elts_aide[i]).addClass('aide-actif');
+			elt_aide_actif = elts_aide[i];
+			break;
+		}
+	}
+}
+
+function clique_aide()
+{
+	if(elt_aide_actif)
+	{
+		charger("aide.php?id="+elt_aide_actif.id);
+		elt_aide_aff = $(elt_aide_actif);
+		elt_aide_actif = null;
+	}
+	else
+		bascule_aide();
+}
+
+function aide(id)
+{
+	var body = document.getElementsByTagName("body")[0];
+	voile = creer_element("div", "voile", false, body, false);
+	voile.setAttribute("onclick", "fin_aide();");
+	$("#"+id).addClass('aide-actif');
+	charger("aide.php?tuto=1&id="+id);
+	elt_aide_aff = $("#"+id);
+}
+
+function fin_aide()
+{
+	$("#voile").remove();
+	elt_aide_aff.removeClass('aide-actif');
+	elt_aide_aff.popover('hide');
+	elt_aide_aff = null;
 }
 
 // anciennes fonctions (tri à faire)

@@ -47,7 +47,7 @@ class interf_carte extends interf_tableau
 	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null)
 	{
     global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y;
-		parent::__construct($id, null, 'carte_bord_haut');
+		parent::__construct($id, 'aide', 'carte_bord_haut');
 
     $this->grd_img = true;
     // Réduction de la vue en donjon

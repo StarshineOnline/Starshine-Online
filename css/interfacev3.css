@@ -433,10 +433,11 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 
 #perso_groupe
 {
-	height: 110px;
+	height: 115px;
   left: 558px;
   position: absolute;
   top: 3px;
+  width: 435;
 }
 
 #perso_groupe ul { float:left; }
@@ -3807,6 +3808,89 @@ a .livre_nom
 {
 	text-align: center;
 }
+
+/*********************************
+ Aide & tutoriel
+**********************************/
+
+#voile
+{
+    opacity: 0.5;
+    background-color: #000000;
+    bottom: 0;
+    left: 0;
+    position: fixed;
+    right: 0;
+    top: 0;
+    z-index: 9000;
+    filter: alpha(opacity=50);
+}
+
+.aide-actif
+{
+	z-index: 9999 !important;
+	position: relative;
+	/*border: 1px solid white;*/
+	background-color: rgba(255,255,255,0.7);
+	pointer-events:none;
+	box-shadow: 0px 0px 6px 3px rgba(255,255,255,0.7) !important;
+}
+
+body.aide-active
+{
+	cursor: help;
+}
+
+#info_aide
+{
+	color: #FFF;
+	z-index: 9999;
+	position: relative;
+	margin: 3px;
+	pointer-events:none;
+}
+
+.pop-aide
+{
+	z-index: 9999;
+}
+
+.pop-aide .icone
+{
+	position: absolute;
+	top: 0;
+	font-size: 21px;
+	display: block;
+	height: 36px;
+	width: 32px;
+	padding: 8px 5px;
+}
+
+.pop-tuto .popover-title
+{
+	padding: 8px 44px 8px 70px;
+}
+
+.pop-aide .icone-suivant, .pop-aide .icone-croix
+{
+	right: 0;
+	border-left: 1px solid #EBEBEB;
+}
+
+.pop-aide .icone-precedent
+{
+	left: 0;
+	border-right: 1px solid #EBEBEB;
+}
+
+.pop-aide .label
+{
+	position: absolute;
+	top: 10px;
+	left: 37px;
+}
+
+
 
 /*********************************
  JQuery

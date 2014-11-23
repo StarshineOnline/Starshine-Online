@@ -76,7 +76,15 @@ if( array_key_exists('action', $_GET) )
 	{
 	case 'onglet':
 		$cadre = new interf_princ_ob();
-		$cadre->add( $G_interf->creer_livre_sortcomp($type, $perso, $categorie, !$perso->est_mort()) );
+		switch( $categorie )
+		{
+		case 'alchimie':
+		case 'forge':
+			//$cadre->add( $G_interf->creer_livre_artisanat($perso, $categorie, !$perso->est_mort()) );
+			break
+		default:
+			$cadre->add( $G_interf->creer_livre_sortcomp($type, $perso, $categorie, !$perso->est_mort()) );
+		}
 		$cadre->code_js('maj_tooltips();');
 		exit;
 	/// @todo à améliorer

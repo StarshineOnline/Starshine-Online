@@ -506,6 +506,17 @@ class texte
   protected function parse_tuto($texte)
   {
     $trouve = false;
+    if( preg_match('`\[aide:([a-z_-]*)\](.*)\[/aide:(\g1)\]`i', $texte, $regs) )
+    {
+      //interf_base::code_js('aide("'.$regs[1].'");');
+      //$texte = str_ireplace('[aide:'.$regs[1].']', '<script type="text/javascript">aide("'.$regs[1].'");</script>', $texte);
+      $texte = preg_replace('`\[aide:([a-z_-]*)\](.*)\[/aide:(\g1)\]`i', '<a onclick="aide(\''.$regs[1].'\');">'.$regs[2].'</a>', $texte);
+    }
+    else if( preg_match('`\[aide:([a-z_-]*)\]`i', $texte, $regs) )
+    {
+      //interf_base::code_js('aide("'.$regs[1].'");');
+      $texte = str_ireplace('[aide:'.$regs[1].']', '<script type="text/javascript">aide("'.$regs[1].'");</script>', $texte);
+    }
     if( preg_match('`\[tuto:([0-9+]+)\]`i', $texte, $regs) )
     {
       if( $regs[1] == '+' )

@@ -25,7 +25,7 @@ class interf_barre_perso extends interf_bal_cont
   protected function creer_infos_vie()
   {
     global $G_PA_max;
-    $this->infos_vie = $this->add( new interf_bal_cont('div', 'infos_vie') );
+    $this->infos_vie = $this->add( new interf_bal_cont('div', 'infos_vie', 'aide') );
     // nom
     $titre_perso = new titre($_SESSION["ID"]);
     $bonus = recup_bonus($this->perso->get_id());
@@ -47,7 +47,7 @@ class interf_barre_perso extends interf_bal_cont
   {
     global $Gtrad, $db;
     // Race & classe
-    $this->infos_perso = $this->add( new interf_bal_cont('div', 'infos_perso') );
+    $this->infos_perso = $this->add( new interf_bal_cont('div', 'infos_perso', 'aide') );
     $this->infos_perso->set_attribut('style', 'background-image:url(\'./image/interface/fond_info_perso_'.$this->perso->get_race_a().'.png\');');
     $race_classe = $this->infos_perso->add( new interf_lien_cont('personnage.php', 'race_classe') );
     $race_classe->set_tooltip('Accès à la fiche de votre personnage', 'bottom');
@@ -113,11 +113,11 @@ class interf_barre_perso extends interf_bal_cont
   protected function creer_infos_pos()
   {
   	global $G_interf;
-    $heure = $this->add( new interf_lien_cont('moment_jour.php', 'perso_heure') );
+    $heure = $this->add( new interf_lien_cont('moment_jour.php', 'perso_heure', 'aide') );
     $heure->set_attribut('style', 'background-image:url(image/interface/'.moment_jour().'.png);');
     $heure->set_tooltip(moment_jour(), 'bottom');
     $span = $heure->add( new interf_bal_smpl('span', substr(date_sso(time()),0,-3), 'heure') );
-    $pos = $this->add( new interf_lien_cont('carte.php', 'perso_position') );
+    $pos = $this->add( new interf_lien_cont('carte.php', 'perso_position', 'aide') );
     $carte = $pos->add( $G_interf->creer_carte_monde() );
     $carte->aff_svg(12);
 		$carte->aff_groupe( $this->perso->get_groupe() );
@@ -160,7 +160,7 @@ class interf_barre_perso extends interf_bal_cont
   protected function creer_infos_groupe()
   {
 		$nombre_joueur_groupe = 1;
-		$div = $this->add( new interf_bal_cont('div', 'perso_groupe') );
+		$div = $this->add( new interf_bal_cont('div', 'perso_groupe', 'aide') );
 		$liste = $div->add( new interf_bal_cont('ul') );
   	if( $this->perso->get_groupe() )
   	{

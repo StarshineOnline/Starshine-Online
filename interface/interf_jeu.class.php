@@ -124,6 +124,7 @@ class interf_jeu extends interf_sso_int
 	}
   protected function menu_droite()
   {
+    $this->menu->add_elt(new interf_elt_menu('?', false, 'return bascule_aide();'), false);
     $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
     $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
@@ -149,6 +150,10 @@ class interf_jeu extends interf_sso_int
 	}
 	function maj_tooltips()
 	{
+	}
+	function set_javascript($js)
+	{
+		self::code_js($js);
 	}
 }
 
@@ -248,6 +253,10 @@ class interf_jeu_ajax extends interf_princ_ob
 	function maj_tooltips()
 	{
     $this->add( new interf_bal_smpl('section', false, 'maj_tooltips') );
+	}
+	function set_javascript($js)
+	{
+    $this->add( new interf_bal_smpl('section', $js, 'javascript') );
 	}
 }
 
