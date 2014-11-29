@@ -48,7 +48,7 @@ class interf_barre_perso extends interf_bal_cont
     global $Gtrad, $db;
     // Race & classe
     $this->infos_perso = $this->add( new interf_bal_cont('div', 'infos_perso', 'aide') );
-    $this->infos_perso->set_attribut('style', 'background-image:url(\'./image/interface/fond_info_perso_'.$this->perso->get_race_a().'.png\');');
+    $this->infos_perso->set_attribut('style', 'background-image:url(\'./image/interface/info_perso/fond_info_perso_'.$this->perso->get_race_a().'.png\');');
     $race_classe = $this->infos_perso->add( new interf_lien_cont('personnage.php', 'race_classe') );
     $race_classe->set_tooltip('Accès à la fiche de votre personnage', 'bottom');
     $race_classe->add( new interf_bal_smpl('span', ucwords($Gtrad[$this->perso->get_race()]), 'race') );
