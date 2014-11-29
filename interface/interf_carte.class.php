@@ -60,20 +60,20 @@ class interf_carte extends interf_tableau
 		$this->y_max = $y + $champ_vision;
 		
     // Bordure de carte
-		if( $this->x_min < 0 )
+		if( $this->x_min <= 0 )
 		{
-			$this->x_min = 1;
 			$this->x_max -= $this->x_min - 1;
+			$this->x_min = 1;
 		}
 		else if( $x <= $G_max_x && $this->x_max > $G_max_x )
 		{
 			$this->x_min += $this->x_max - $G_max_x;
 			$this->x_max = $G_max_x;
 		}
-		if( $this->y_min < 0 )
+		if( $this->y_min <= 0 )
 		{
-			$this->y_min = 1;
 			$this->y_max -= $this->y_min - 1;
+			$this->y_min = 1;
 		}
 		else if( $y <= $G_max_y && $this->y_max > $G_max_y )
 		{

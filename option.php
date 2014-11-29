@@ -18,12 +18,12 @@ case 'titre':
 	break;
 case 'mdp':
 	$joueur = joueur::factory();
-	if( array_key_exists('anc_mdp', $_POST) || !$joueur->test_mdp( md5($_POST['anc_mdp']) ) )
+	if( !array_key_exists('anc_mdp', $_POST) || !$joueur->test_mdp( md5($_POST['anc_mdp']) ) )
 	{
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur, l\'ancien mot de passe n\'est pas le bon.');
 		break;
 	}
-	if( array_key_exists('nouv_mdp_1', $_POST) || array_key_exists('nouv_mdp_2', $_POST) || $_POST['nouv_mdp_1'] != $_POST['nouv_mdp_2'] )
+	if( !array_key_exists('nouv_mdp_1', $_POST) || !array_key_exists('nouv_mdp_2', $_POST) || $_POST['nouv_mdp_1'] != $_POST['nouv_mdp_2'] )
 	{
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur lors de la saisie du nouveau mot de passe.');
 		break;
@@ -41,8 +41,11 @@ case 'mdp':
 	}
 
 	require('connect_forum.php');
-	$requete = "UPDATE punbbusers SET password = '".sha1($_POST['nouv_mdp_1'])."' WHERE username = '".sSQL($perso->get_nom())."'";
-	$db_forum->query($requete);
+	if($db_forum)
+	{
+		$requete = "UPDATE punbbusers SET password = '".sha1($_POST['nouv_mdp_1'])."' WHERE username = '".sSQL($perso->get_nom())."'";
+		$db_forum->query($requete);
+	}
 	interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre mot de passe a bien été modifié !');
 	break;
 case 'email' :
@@ -50,28 +53,33 @@ case 'email' :
 	{
 		$email = sSQL($_POST['email']);
 		$joueur = joueur::factory();
-		$joueur->set_email($new_email);
+		$joueur->set_email($email);
 		$joueur->sauver();
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre email a bien été modifié !');
 	}
 	break;
 case 'suppr':
 	$perso = joueur::get_perso();
-	$perso->set_statut('suppr');
+	/// @todo faire un statut 'suppr'
+	$perso->set_statut('ban');
 	$perso->set_fin_ban(time() + 3600 * 24 * 36500);
 	$perso->sauver();
 	$groupe = $perso->get_groupe();
 	if($groupe != 0)
 		degroup($perso->get_id(), $groupe);
 	require_once('connect_forum.php');
-	$requete = "INSERT INTO punbbbans VALUES(NULL, '".sSQL($perso->get_nom())."', NULL, NULL, NULL, NULL, 2)";
-	$db_forum->query($requete);
+	if($db_forum)
+	{
+		$requete = "INSERT INTO punbbbans VALUES(NULL, '".sSQL($perso->get_nom())."', NULL, NULL, NULL, NULL, 2)";
+		$db_forum->query($requete);
+	}
 	unset($_COOKIE['nom']);
 	unset($_SESSION['nom']);
 	unset($_SESSION['ID']);
 	$interf_princ->recharger_interface('index.php');
 	exit;
 case 'hibern':
+	$perso = joueur::get_perso();
 	$perso->set_statut('hibern');
 	$perso->set_fin_ban(time() + 3600 * 24 * 14);
 	$perso->sauver();

@@ -75,9 +75,9 @@ class interf_options_perso extends interf_cont
 		$div_hs->add( new interf_bal_smpl('p', 'La supression est définitive, elle permet de créer un nouveau personnage (avec votre compte joueur).') );
 		$btns = $div_hs->add( new interf_bal_cont('span', false, 'btn-group') );
 		$hibern = $btns->add( new interf_lien('Hiberner', $G_url->get('action', 'hibern'), false, 'btn btn-default') );
-		$hibern->set_attribut('onclick', 'verif_charger(this.href, \'Êtes vous sur de vouloir hiberner ?\')');
-		$suppr = $btns->add( new interf_lien('Supprimer', $G_url->get('action', 'hibern'), false, 'btn btn-default') );
-		$suppr->set_attribut('onclick', 'verif_charger(this.href, \'Êtes vous sur de vouloir effacer votre personnage ?\')');
+		$hibern->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sur de vouloir hiberner ?\')');
+		$suppr = $btns->add( new interf_lien('Supprimer', $G_url->get('action', 'suppr'), false, 'btn btn-default') );
+		$suppr->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sur de vouloir effacer votre personnage ?\')');
 	}
 }
 
@@ -91,23 +91,23 @@ class interf_options_joueur extends interf_cont
 		// e-mail
 		$div_m = $this->add( new interf_bal_cont('div') );
 		$div_m->add( new interf_bal_smpl('h4', 'Adresse e-mail') );
-		$form = $div_m->add( new interf_form($G_url->get('action', 'titre'), 'options_email', 'post', 'input-group') );
+		$form = $div_m->add( new interf_form($G_url->get('action', 'email'), 'options_email', 'post', 'input-group') );
 		$form->add( new interf_bal_smpl('span', 'E-mail :', false, 'input-group-addon') );
 		$email = $form->add( new interf_chp_form('email', 'email', false, $joueur->get_email(), false, 'form-control') );
 		$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
 		$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
-		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_titre\');');
+		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_email\');');
 		
 		// Mot de passe
 		$div_p = $this->add( new interf_bal_cont('div') );
 		$div_p->add( new interf_bal_smpl('h4', 'Mot de passe') );
 		$div_p->add( new interf_bal_smpl('p', '<b>Attention :</b> le changement affectera tout le site (jeu, forum, wiki & jabber).') );
-		$form = $div_p->add( new interf_form($G_url->get('action', 'titre'), 'options_mdp', 'post') );
+		$form = $div_p->add( new interf_form($G_url->get('action', 'mdp'), 'options_mdp', 'post') );
 		$anc = $form->add_champ_bs('password', 'anc_mdp', null, null, 'Ancien mot de passe :');
 		$anc->set_attribut('required', 'required');
 		$nouv1 = $form->add_champ_bs('password', 'nouv_mdp_1', null, null, 'Nouveau mot de passe :');
 		$nouv1->set_attribut('required', 'required');
-		$nouv2 = $form->add_champ_bs('password', 'nouv_mdp_2', null, null, 'Configer nouveau mot de passe :');
+		$nouv2 = $form->add_champ_bs('password', 'nouv_mdp_2', null, null, 'Confirmer nouveau mot de passe :');
 		$nouv2->set_attribut('required', 'required');
 		$btn = $form->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-default') );
 		$btn->set_attribut('onclick', 'return charger_formulaire(\'options_mdp\');');
