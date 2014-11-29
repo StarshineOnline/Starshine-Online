@@ -3734,6 +3734,11 @@ a .livre_nom
 	right: -365px;
 }
 
+#tbl_perso_race th td:nth-child(2), #tbl_perso_race tr td:nth-child(2), #tbl_perso_tous th td:nth-child(2), #tbl_perso_tous tr td:nth-child(2)
+{
+	width: 20px;
+}
+
 
 /*********************************
  Points shine

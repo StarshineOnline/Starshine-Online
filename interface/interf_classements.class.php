@@ -117,9 +117,9 @@ class interf_classement_groupes extends interf_pills
 		if(!$type)
 			$type = 'honneur';
 		$this->add_elt('Honneur', $G_url->get('type', 'honneur'), $type=='honneur');
-		$this->add_elt('Expérience', $G_url->get('type', 'xp'), $type=='xp');
-		$this->add_elt('Stars', $G_url->get('type', 'stars'), $type=='stars');
-		$this->add_elt('PvP', $G_url->get('type', 'pvp'), $type=='pvp');
+		$this->add_elt('Expérience', $G_url->get('type', 'exp'), $type=='exp');
+		$this->add_elt('Stars', $G_url->get('type', 'star'), $type=='star');
+		$this->add_elt('PvP', $G_url->get('type', 'frag'), $type=='frag');
 		$this->add_elt('Crime', $G_url->get('type', 'crime'), $type=='crime');
 		$this->add_elt('Survie', $G_url->get('type', 'survie'), $type=='survie');
 		$this->add_elt('Artisanat', $G_url->get('type', 'artisanat'), $type=='artisanat');
@@ -129,7 +129,7 @@ class interf_classement_groupes extends interf_pills
 		switch($type)
 		{
 	  case 'artisanat':
-	    $requete = 'SELECT SUM(ROUND(SQRT(architecture + alchimie + forge + indentification)*10)) as archi, COUNT(*) AS nbr, groupe.nom, groupe.id FROM perso INNER JOIN groupe ON groupe.id = perso.groupe WHERE statut = "actif" and level > 0 ORDER BY val DESC';
+	    $requete = 'SELECT SUM(ROUND(SQRT(architecture + alchimie + forge + identification)*10)) as val, COUNT(*) AS nbr, groupe.nom, groupe.id FROM perso INNER JOIN groupe ON groupe.id = perso.groupe WHERE statut = "actif" and level > 0 GROUP BY groupe.id ORDER BY val DESC';
 	    break;
 	  default:
 	    $requete = 'SELECT SUM('.$type.') as val, COUNT(*) AS nbr, groupe.nom, groupe.id FROM perso INNER JOIN groupe ON groupe.id = perso.groupe WHERE statut = "actif" and level > 0 GROUP BY perso.groupe ORDER BY val DESC';
@@ -210,6 +210,7 @@ class interf_classement_perso_tous extends interf_pills
 		/// @todo rétablir la recherche
 		$tbl = $this->get_contenu()->add( new interf_data_tbl('tbl_'.static::id, '', true, false) );
 		$tbl->nouv_cell('#');
+		$tbl->nouv_cell('&nbsp;');
 		$tbl->nouv_cell('Nom');
 		$tbl->nouv_cell('Valeur');
 		if( $type == 'exp' )
@@ -246,11 +247,16 @@ class interf_classement_perso_tous extends interf_pills
 			else
 			{
 				if( $row['cache_classe']  )
+				{
+					$tbl->nouv_cell('&nbsp;');
 					$tbl->nouv_cell( $row['nom'] );
+				}
 				else
 				{
 					$img = 'image/personnage/'.$row['race'].'/'.$row['race'].'_'.$Tclasse[$row['classe']]['type'].'.png';
-					$tbl->nouv_cell( new interf_img($img, $row['race'].' '.$row['classe']) )->add( $row['nom'] );
+					//$tbl->nouv_cell( new interf_img($img, $row['race'].' '.$row['classe']) )->add( new interf_txt($row['nom']) );
+					$tbl->nouv_cell( new interf_img($img, $row['race'].' '.$row['classe']) );
+					$tbl->nouv_cell( $row['nom'] );
 				}
 				$tbl->nouv_cell( number_format($row['val'], 0, ',', ' ') );
 				if( $type == 'exp' )

@@ -81,6 +81,12 @@ a:hover, a:focus
 	background: #888;
 }
 
+#depl_disque a
+{
+	border-color: #080808;
+	color: #ddd;
+}
+
 #depl_barre_haut, #depl_barre_gauche
 {
 	background: rgba(0, 0, 0, 0.5);
@@ -93,7 +99,7 @@ a:hover, a:focus
 	border-color: #777;
 }
 
-#menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a, #depl_disque a
+#menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a
 {
 	border-color: #777;
 	color: #ddd;
