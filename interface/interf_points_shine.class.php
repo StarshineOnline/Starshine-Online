@@ -140,8 +140,9 @@ class interf_bonus_shine_config extends interf_dialogBS
 		$row = $db->read_assoc($req);
 		parent::__construct($row['nom'], true);
 		
-		$form = $this->add( new interf_form('point_sso.php?action=modif&id='.$id, 'config_bonus', 'post') );
-		$code = 'return charger_formulaire("'.$id.'");';
+		interf_alerte::aff_enregistres($this);
+		$form = $this->add( new interf_form('point_sso.php?action=modifier&id='.$id, 'config_bonus', 'post') );
+		$code = 'return charger_formulaire(\'config_bonus\');';
 		if($row['valeur_modifiable'])
 		{
 			$bonus_total = recup_bonus_total(joueur::get_perso()->get_id());
@@ -160,12 +161,12 @@ class interf_bonus_shine_config extends interf_dialogBS
 				if( array_key_exists(24, $bonus) )
 				{
 					$form->add( new interf_editeur('texte_descr') );
-					$code = 'return charger_formulaire_texte("'.$id.'", "texte_descr");';
+					$code = 'return charger_formulaire_texte("config_bonus", "texte_descr");';
 				}
 				else
 				{
-					$form->add( new interf_bal_smpl('textarea', $bonus_total[$id]['valeur'], false, 'form-control') );
-					$form->set_attribut('name', 'texte');
+					$txt = $form->add( new interf_bal_smpl('textarea', $bonus_total[$id]['valeur'], false, 'form-control') );
+					$txt->set_attribut('name', 'texte');
 				}
 				break;
 			case 19:  //Avatar
@@ -174,7 +175,7 @@ class interf_bonus_shine_config extends interf_dialogBS
 				$div = $form->add( new interf_bal_cont('div', false, 'form-group') );
 				$fich = $div->add( new interf_chp_form('file', 'fichier', false, false, 'fichier') );
 				$fich->set_attribut('accept', 'image/*');
-				$code = 'return charger_formulaire_fichier("'.$id.'", "fichier");';
+				$code = 'return charger_formulaire_fichier(\'config_bonus\', \'fichier\');';
 				//<input type="hidden" name="MAX_FILE_SIZE"  VALUE="20240" />
 				//<input type="submit" value="Envoyer" onclick="return envoiFichier('formAvatar', 'popup_content');">
 				break;
@@ -191,7 +192,7 @@ class interf_bonus_shine_config extends interf_dialogBS
 			$etat->add_option('à personne', '2', $bonus[$id]==2);
 		}
 		$this->ajout_btn('Annuler', 'fermer');
-		$this->ajout_btn('Ok', 'fermer');
+		$this->ajout_btn('Ok', $code);
 	}
 }
 

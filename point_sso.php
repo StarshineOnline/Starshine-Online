@@ -63,56 +63,54 @@ if(array_key_exists('action', $_GET))
 		else
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de points Shine');
 		break;
-	case 'configure':
-		$interf_princ->set_dialogue( $G_interf->creer_bonus_shine_config($_GET['id']) );
-		break;
 	case 'modifier':
 		$bonus_total = recup_bonus_total(joueur::get_perso()->get_id());
+		$id = $_GET['id']; 
 		// Changement d'état
 		if( array_key_exists('etat', $_POST) )
 		{
 			switch($id)
 			{
-				case bonus_perso::CACHE_CLASSE_ID :
-					$perso->set_cache_classe($_GET['etat']);
+			case bonus_perso::CACHE_CLASSE_ID :
+				$perso->set_cache_classe($_GET['etat']);
 				break;
-				case bonus_perso::CACHE_STATS_ID :
-					$perso->set_cache_stat($_GET['etat']);
+			case bonus_perso::CACHE_STATS_ID :
+				$perso->set_cache_stat($_GET['etat']);
 				break;
-				case bonus_perso::CACHE_NIVEAU_ID :
-					$perso->set_cache_niveau($_GET['etat']);
+			case bonus_perso::CACHE_NIVEAU_ID :
+				$perso->set_cache_niveau($_GET['etat']);
 				break;
 			}
 			// On modifie dans la table perso, si nécessaire
 			$perso->sauver();
 			
-			$bonus_total = recup_bonus_total($perso->get_id());
 			$requete = "UPDATE bonus_perso SET etat = ".sSQL($_POST['etat'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 			$db->query($requete);
 			$bonus = recup_bonus($perso->get_id());
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Affichage changée.');
 		}
 		// Changement de valeur
-		if( array_key_exists('valeur', état) )
+		if( array_key_exists('valeur', $_POST) )
 		{
-			$bonus_total = recup_bonus_total($perso->get_id());
 			$requete = "UPDATE bonus_perso SET valeur = ".sSQL($_POST['valeur'])." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
 			$db->query($requete);
 			$bonus = recup_bonus($perso->get_id());
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Valeur changée.');
 		}
 		// Changement de texte
-		else if( array_key_exists('texte', état) )
+		else if( array_key_exists('texte', $_POST) )
 		{
-			$bonus_total = recup_bonus_total($perso->get_id());
-			$requete = "UPDATE bonus_perso SET valeur = ".sSQL(htmlspecialchars($_POST['texte']))." WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
+			$requete = 'UPDATE bonus_perso SET valeur = "'.sSQL(htmlspecialchars($_POST['texte'])).'" WHERE id_bonus_perso = '.$bonus_total[$id]['id_bonus_perso'];
 			$db->query($requete);
 			$bonus = recup_bonus($perso->get_id());
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Texte changé.');
 		}
 		//Avatar
-		else if(array_key_exists('nom_du_fichier', $_FILES))
+		else if(array_key_exists('fichier', $_FILES))
 		{
-			if($_FILES['nom_du_fichier']['error'])
+			if($_FILES['fichier']['error'])
 			{
-				switch ($_FILES['nom_du_fichier']['error'])
+				switch ($_FILES['fichier']['error'])
 				{
 				case 1 :
 						interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le fichier dépasse la limite autorisée par le serveur !');
@@ -132,53 +130,56 @@ if(array_key_exists('action', $_GET))
 			{
 				$chemin_destination = 'image/avatar/';
 				//Vérification du type
-				$type_file = $_FILES['nom_du_fichier']['type'];
-				switch( strstr($type_file, 'jpg') )
+				$type_file = $_FILES['fichier']['type'];
+				switch( strstr($type_file, '/') )
 				{
-				case 'jpg':
-				case 'jpeg':
+				case '/jpg':
+				case '/jpeg':
 					$type = '.jpg';
 					break;
-				case 'bmp':
+				case '/bmp':
 					$type = '.bmp';
 					break;
-				case 'gif':
+				case '/gif':
 					$type = '.gif';
 					break;
-				case 'png':
+				case '/png':
 					$type = '.png';
 					break;
 				default:
 					$type = false;
-					interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le fichier n\'est pas une image !');
+					interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le fichier n\'est pas une image ('.$type_file.') !');
 				}
-				if( !$type )
-					false;
-				//Récupère le type
-				$nom_fichier = root.$chemin_destination.$joueur->get_id().$type;
-				if( move_uploaded_file($_FILES['nom_du_fichier']['tmp_name'], $nom_fichier) )
+				if( $type )
 				{
-					//On vérifie la taille de l'image
-					$size = getimagesize($nom_fichier);
-					//Si compris entre 80 * 80
-					if($size[0] <= 80 && $size[1] <= 80)
+					//Récupère le type
+					$nom_fichier = root.$chemin_destination.$perso->get_id().$type;
+					if( move_uploaded_file($_FILES['fichier']['tmp_name'], $nom_fichier) )
 					{
-						$bonus_total = recup_bonus_total($joueur->get_id());
-						$requete = "UPDATE bonus_perso SET valeur = '".sSQL($joueur->get_id().$type)."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
-						$db->query($requete);
-						$bonus = recup_bonus($joueur->get_id());
+						//On vérifie la taille de l'image
+						$size = getimagesize($nom_fichier);
+						//Si compris entre 80 * 80
+						if($size[0] <= 80 && $size[1] <= 80)
+						{
+							$bonus_total = recup_bonus_total($perso->get_id());
+							$requete = "UPDATE bonus_perso SET valeur = '".sSQL($perso->get_id().$type)."' WHERE id_bonus_perso = ".$bonus_total[$id]['id_bonus_perso'];
+							$db->query($requete);
+							$bonus = recup_bonus($perso->get_id());
+						}
+						//Sinon on efface l'image
+						else
+						{
+							unlink($nom_fichier);
+							interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre fichier n\'a pas les bonnes dimensions !');
+						}
 					}
-					//Sinon on efface l'image
-					else
-					{
-						unlink($nom_fichier);
-						interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre fichier n\'a pas les bonnes dimensions !');
-					}
+					interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre avatar a bien été modifié ');
 				}
 			}
-			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre avatar a bien été modifié ');
 		}
-		break;
+	case 'configure':
+		$interf_princ->set_dialogue( $G_interf->creer_bonus_shine_config($_GET['id']) );
+		exit;
 	}
 }
 
@@ -194,3 +195,4 @@ else
 	interf_alerte::aff_enregistres($cadre);
 	$cadre->add( $G_interf->creer_points_shine($categorie) );
 }
+

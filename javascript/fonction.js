@@ -120,7 +120,7 @@ function charger_formulaire_fichier(id_form, id_input)
   // Chargement du script permettant l'envoi de fichier
   jQuery.getScript("./javascript/jquery/fileupload.js", function()
   { 
-		jQuery.ajaxFileUpload({url:formul.attr("action"),data:formul.serialize(), fileElementId:id_input, dataType:"html",secureuri:false,success:affiche_ajax});
+		jQuery.ajaxFileUpload({url:formul.attr("action")+"&ajax=1",data:formul.serialize(), fileElementId:id_input, dataType:"html",secureuri:false,success:affiche_ajax});
 	});
   return false;
 }
