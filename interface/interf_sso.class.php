@@ -63,11 +63,11 @@ abstract class interf_sso_int extends interf_sso
     $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
     $this->menu_joueur($menu_joueur);
     $menu_joueur->add( new interf_elt_menu('Options', 'option.php', 'return charger(this.href);') );
-    //$menu_joueur->add( new interf_elt_menu('Son', '#', 'showSoundPanel();') );
     $menu_joueur->add( new interf_elt_menu('Signaler un bug', 'http://bug.starshine-online.com/') );
+    $menu_joueur->add( new interf_elt_menu('Votes & dons', 'vote_dons.php', 'return charger(this.href);') );
     $admin = $joueur->get_droits() & joueur::droit_interf_admin;
-    $persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) or $joueur->get_droits() & joueur::droit_pnj;
-    if( $admin or $persos )
+    $persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) || $joueur->get_droits() & joueur::droit_pnj;
+    if( $admin || $persos )
     {
       $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
       if( $persos )

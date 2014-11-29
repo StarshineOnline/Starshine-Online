@@ -100,7 +100,7 @@ case 'valide':
   break;
 
 case 'erreur':
-	log_admin::log('bug', 'erreur lors d\'un don.')
+	log_admin::log('bug', 'erreur lors d\'un don.');
 }
 
 if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )

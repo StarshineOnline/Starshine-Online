@@ -600,6 +600,16 @@ class interf_factory
   {
   	return new interf_votes_dons($categorie);
 	}
+  function creer_votes()
+  {
+    include_once(root.'interface/interf_votes_dons.class.php');
+  	return new interf_votes();
+	}
+  function creer_dons()
+  {
+    include_once(root.'interface/interf_votes_dons.class.php');
+  	return new interf_dons();
+	}
 }
 
 class interf_factory_shine extends interf_factory
