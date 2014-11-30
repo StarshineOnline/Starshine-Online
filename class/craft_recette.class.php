@@ -145,7 +145,7 @@ class craft_recette
 
 	function get_info_joueur($joueur, $R)
 	{
-		global $db, $R;
+		global $db/*, $R*/;
 		$types = array();
 		$types['mortier'] = array();
 		$types['four'] = array();

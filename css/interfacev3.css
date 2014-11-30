@@ -3422,6 +3422,46 @@ a .livre_nom
 	margin: 0;
 }
 
+#livre_alchimie .panel
+{
+	margin: 3px;
+}
+
+#livre_alchimie .panel-heading
+{
+	padding: 1px 5px;
+}
+
+#livre_alchimie .panel-body
+{
+	padding: 3px;
+}
+
+#livre_alchimie .liste
+{
+	display: table-cell;
+	width: 150px;
+	padding: 2px;
+}
+
+#livre_alchimie .panel-body>.liste:nth-of-type(n+3)
+{
+	border-left: solid 1px #777;
+}
+
+#livre_alchimie h6
+{
+	text-align: center;
+	margin: 2px;
+	padding: 0;
+	font-weight: bold;
+}
+
+#livre_alchimie form
+{
+	margin: 5px 0 0;
+}
+
 /*********************************
  Groupe
 **********************************/

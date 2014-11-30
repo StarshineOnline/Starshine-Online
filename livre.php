@@ -76,15 +76,7 @@ if( array_key_exists('action', $_GET) )
 	{
 	case 'onglet':
 		$cadre = new interf_princ_ob();
-		switch( $categorie )
-		{
-		case 'alchimie':
-		case 'forge':
-			//$cadre->add( $G_interf->creer_livre_artisanat($perso, $categorie, !$perso->est_mort()) );
-			break
-		default:
-			$cadre->add( $G_interf->creer_livre_sortcomp($type, $perso, $categorie, !$perso->est_mort()) );
-		}
+		$cadre->add( $G_interf->creer_livre($type, $perso, $categorie, !$perso->est_mort()) );
 		$cadre->code_js('maj_tooltips();');
 		exit;
 	/// @todo à améliorer
@@ -274,6 +266,80 @@ if( array_key_exists('action', $_GET) )
     	$btn->set_attribut('onclick', '$(\'.debug\').toggle();');
 		}
 		exit;
+	case 'alchimie':
+		$recette = new craft_recette($_GET['id']);
+		$recipient = new craft_recette_recipient($_GET['recipient']);
+		$case = new map_case(array('x' => $perso->get_x(), 'y' => $perso->get_y()));
+		$R = new royaume($case->get_royaume());
+		$types = $recette->get_info_joueur($perso, $R);
+		$recette->get_ingredients();
+		$recette->get_recipients();
+		$recette->get_instruments();
+		$pa_total = 0;
+		$mp_total = 0;
+		$star_total = 0;
+		foreach($recette->instruments as $instrument)
+		{
+			$pa_total += $types[$instrument->type]['pa'];
+			$mp_total += $types[$instrument->type]['mp'];
+			$star_total += $types[$instrument->type]['cout'];
+		}
+		if($pa_total > $perso->get_pa())
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de PA pour faire cette recette.');
+			break;
+		}
+		if($mp_total > $perso->get_mp())
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de MP pour faire cette recette.');
+			break;
+		}
+		if($star_total > $perso->get_star())
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars pour faire cette recette.');
+			break;
+		}
+		//On utilise le recipient
+		$perso->supprime_objet('o'.$recipient->id_objet, 1);
+		
+		$alchimie = $perso->get_alchimie();
+		$reussie = comp_sort::test_potentiel($alchimie, $recette->difficulte);
+		if( $reussie )
+		{
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !');
+			$resultats = explode(';', $recipient->resultat);
+			$i = 0;
+			foreach($resultats as $res)
+			{
+				$objets = explode('-', $res);
+				foreach($objets as $obj)
+				{
+					$perso->prend_objet($obj);
+				}
+			}
+		}
+		else
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…');
+		//On utilise tous les objets de la recette
+		foreach($recette->ingredients as $ingredient)
+		{
+			//Suppression des objets de l'inventaire
+			if($reussie || rand(1, 100) < 50)
+			{
+				$perso->supprime_objet('o'.$ingredient->id_ingredient, $ingredient->nombre);
+			}
+		}
+		$difficulte = 3 * 2.65 / sqrt($pa_total);
+		$augmentation = augmentation_competence('alchimie', $perso, $difficulte);
+		if ($augmentation[1] == 1)
+		{
+			$perso->set_alchimie($augmentation[0]);
+		}
+		$perso->add_pa(-$pa_total);
+		$perso->add_mp(-$mp_total);
+		$perso->add_star(-$star_total);
+		$perso->sauver();
+		break;
 	}
 } // fin action
 
@@ -326,19 +392,19 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 	}
 	$onglet = $tabs->get_onglet('tab_'.$type);
 	interf_alerte::aff_enregistres($onglet);
-	$onglet->add( $G_interf->creer_livre_sortcomp($type, $cible, $categorie, !$perso->est_mort()) );
+	$onglet->add( $G_interf->creer_livre($type, $cible, $categorie, !$perso->est_mort()) );
 }
 else if( $auto_cible )
 {
 	$cont = $interf_princ->add( new interf_bal_cont('section', 'tab_'.$type) );
 	interf_alerte::aff_enregistres($cont);
-	$cont->add( $G_interf->creer_livre_sortcomp($type, $cible, $categorie, !$perso->est_mort()) );
+	$cont->add( $G_interf->creer_livre($type, $cible, $categorie, !$perso->est_mort()) );
 }
 else if( $type == 'sort_jeu' )
 {
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Livre de sort') );
 	interf_alerte::aff_enregistres($cadre);
-	$cadre->add( $G_interf->creer_livre_sortcomp($type, $cible, $categorie, !$perso->est_mort()) );
+	$cadre->add( $G_interf->creer_livre($type, $cible, $categorie, !$perso->est_mort()) );
 }
 
 $interf_princ->code_js('maj_tooltips();');

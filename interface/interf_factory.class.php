@@ -141,10 +141,34 @@ class interf_factory
 	{
     return new interf_arme_siege($construction);
 	}
+	/// livres de sorts/compétences/artisanat
+	function creer_livre($type, &$cible, $categorie, $actions)
+	{
+		switch( $type )
+		{
+		case 'alchimie':
+			return $this->creer_livre_alchimie($actions);
+		case 'forge':
+			return $this->creer_livre_forge($actions);
+		default:
+			return $this->creer_livre_sortcomp($type, $cible, $categorie, $actions);
+		}
+    return new interf_livre_sortcomp($type, $cible, $categorie, $actions);
+	}
 	/// livres de sorts/compétences
 	function creer_livre_sortcomp($type, &$cible, $categorie, $actions)
 	{
     return new interf_livre_sortcomp($type, $cible, $categorie, $actions);
+	}
+	/// livres de recette d'alchimie
+	function creer_livre_alchimie(&$cible, $actions)
+	{
+    return new interf_livre_alchimie($cible, $actions);
+	}
+	/// livres de recette de forge
+	function creer_livre_forge(&$cible, $actions)
+	{
+    return new interf_livre_forge($cible, $actions);
 	}
 	/// Entrée dans la ville
 	function creer_ville_entree(&$royaume)
