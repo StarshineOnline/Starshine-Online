@@ -317,5 +317,9 @@ piwikTracker.enableLinkTracking();
 </script><noscript><p><img src="http://www.starshine-online.com/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
 <!-- End Piwik Tag -->
 <?php } /* G_no_piwik */ ?>
+<div id="partenaires">
+<span>Partenaires :</span>
+<a href="http://www.jeux-sociaux.org/navigateur/">Jeux sur navigateur en ligne</a>
+</div>
 </body>
 </html>
