@@ -826,6 +826,7 @@ class bonus_pinceau extends effect
   }
 	
 	function calcul_attaque_magique(&$attaque) {
+		$actif = $attaque->get_actif();
 		$bonus_potentiel = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -852,15 +853,17 @@ class pierre_precision extends effect
   }
   
 	function calcul_attaque_magique(&$attaque) {
+		$actif = $attaque->get_actif();
 		$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.
 									 $this->effet.'% ('.$this->nom.') !');
-    $attaque->valeur *= 1+$this->effet/100;
+		$attaque->valeur *= 1+$this->effet/100;
 	}
 	
 	function calcul_attaque_physique(&$attaque) {
+		$actif = $attaque->get_actif();
 		$this->debug($actif->get_nom().' voit son potentiel physique augmenté de '.
 									 $this->effet.'% ('.$this->nom.') !');
-    $attaque->valeur *= 1+$this->effet/100;
+		$attaque->valeur *= 1+$this->effet/100;
 	}
 	
 }
@@ -880,6 +883,7 @@ class bonus_pinceau_degats extends effect
   }
 	
 	function calcul_bonus_degats_magiques(&$attaque) {
+		$actif = $attaque->get_actif();
 		$bonus_degat = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
@@ -907,6 +911,7 @@ class boutte_flamme extends effect
   }
 		
 	function calcul_degats_magiques(&$attaque) {
+		$actif = $attaque->get_actif();
 		switch ($attaque->get_type_degats()) {
 		case 'degat_feu':
 		case 'degat_froid':

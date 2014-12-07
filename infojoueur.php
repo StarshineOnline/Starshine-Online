@@ -101,12 +101,8 @@ Distance du joueur : <?php echo calcul_distance(convert_in_pos($joueur->get_x(),
 $W_distance = detection_distance($W_case, $joueur->get_pos());
 if ($perso->get_id() != $joueur->get_id())
 {
-	$pa_attaque = $G_PA_attaque_joueur;
-	if($joueur->get_race() == $perso->get_race() && !$joueur->in_arene()) $pa_attaque += 3;
-	if($joueur->is_buff('cout_attaque')) $pa_attaque = ceil($pa_attaque / $joueur->get_buff('cout_attaque', 'effet'));
-	if($joueur->is_buff('plus_cout_attaque')) $pa_attaque = $pa_attaque * $joueur->get_buff('plus_cout_attaque', 'effet');
-	if($joueur->is_buff('buff_rapidite')) $reduction_pa = $joueur->get_buff('buff_rapidite', 'effet'); else $reduction_pa = 0;
-	if($joueur->is_buff('debuff_ralentissement')) $reduction_pa -= $joueur->get_buff('debuff_ralentissement', 'effet');
+	$pa_attaque = $perso->get_cout_attaque($joueur, $perso);
+
 	echo '<tr><td><img src="image/message.png" title="Envoyer un message" /></td><td><a href="envoimessage.php?id_type=p'.$W_ID.'" onclick="return envoiInfo(this.href, \'information\')">Envoyer un message</a></td></tr>';
 	if($perso->get_hp() > 0 AND (!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque') AND !$joueur->is_buff('dressage'))) echo '<tr><td><img src="image/interface/attaquer.png" alt="Combattre" style="vertical-align : middle;" /></td><td><a href="attaque.php?id_joueur='.$W_ID.'&amp;type=joueur" onclick="return envoiInfo(this.href, \'information\')"> Attaquer</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';
 	if($perso->get_hp() > 0 AND (!$joueur->is_buff('repos_sage') AND !$joueur->is_buff('bloque_attaque') AND !$joueur->is_buff('dressage')) && $joueur->nb_pet() > 0) echo '<tr><td><img src="image/icone/miniconeattakfamilier.png" alt="Attaque avec créature" title="Attaquer avec votre créature" style="vertical-align : middle;" /></td><td><a href="attaque.php?id_joueur='.$W_ID.'&amp;type=joueur&pet" onclick="return envoiInfo(this.href, \'information\')"> Attaquer avec créature</a><span class="xsmall"> ('.($pa_attaque - $reduction_pa).' PA)</span></td></tr>';

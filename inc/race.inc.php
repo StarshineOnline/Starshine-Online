@@ -307,8 +307,8 @@ $Trace['vampire']['spawn_tutocx'] = 213;
 $Trace['vampire']['spawn_tutocy'] = 144;
 $Trace['vampire']['spawn_tutomx'] = 213;
 $Trace['vampire']['spawn_tutomy'] = 144;
-$Trace['vampire']['spawn_c_x'] = 135;
-$Trace['vampire']['spawn_c_y'] = 133;
+$Trace['vampire']['spawn_c_x'] = 124;
+$Trace['vampire']['spawn_c_y'] = 118;
 $Trace['vampire']['couleur'] = "#cccccc";  ///< Couleur des Vampires.
 $Trace['vampire']['forum_id'] = 40;   ///< ID du forum des Vampires.
 //@}

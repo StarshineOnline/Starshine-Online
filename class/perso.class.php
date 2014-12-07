@@ -3639,7 +3639,15 @@ class perso extends entite
   {
     global $G_PA_attaque_joueur;
     if($this->get_race() == $perso->get_race() && $this->in_arene() == false)
-      return $G_PA_attaque_joueur + 3;
+    {
+		$cout = 3;
+		$amende = recup_amende($this->get_id());
+		if($amende)
+		{
+			if($amende['statut'] != 'normal') $cout = 0;
+		}
+		return $G_PA_attaque_joueur + $cout;
+	}
     else
       return $G_PA_attaque_joueur;
   }

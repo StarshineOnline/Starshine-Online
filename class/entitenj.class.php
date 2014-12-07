@@ -116,7 +116,7 @@ class entitenj extends entite
 	/// Date de pose ou construction de l'entité
 	function get_date_debut()
 	{
-    $this->incarn->get_date_debut();
+    return $this->incarn->get_date_debut();
   }
 }
 

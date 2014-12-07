@@ -616,6 +616,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	//Maladies
 	if($joueur->is_buff('cout_deplacement')) $coutpa = ceil($coutpa / $joueur->get_buff('cout_deplacement', 'effet'));
 	if($joueur->is_buff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_buff('plus_cout_deplacement', 'effet'));
+	if($joueur->is_buff('debuff_enracinement')) $coutpa = $coutpa + $joueur->get_buff('debuff_enracinement', 'effet');
 	//Bâtiment qui augmente le coût de PA
 	if($batiment = batiment_map($case->get_x(), $case->get_y()))
 	{
