@@ -1,4 +1,4 @@
-body 								{ margin:0; padding:0; color:#222; background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat 50% 0; }
+body 								{ margin:0; padding:0; color:#222; background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat 50% 0; min-height:750px; }
 img 								{ border:0; }
 a 									{ color:#E2D1AA; }
 a:hover								{color:#CCF2FF;}
