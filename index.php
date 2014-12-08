@@ -19,7 +19,7 @@ include_once(root.'haut.php');
 if( $estConnexionReussie === false )
    echo '<div id="dialog" title="Erreur">'.$erreur_login.'</div><script type="text/javascript">$("#dialog").dialog();</script>';
   if( file_exists(root.'pub.php') )
-    include_once(root.'pub.php');
+  	echo '<iframe style="position:absolute; height: 100px; width: 800px; bottom: 50px; border: none;" src="pub.php" scrolling="no"></iframe>';
 ?>
 
 	<div id='loading_sso' style='display:none;'></div>
