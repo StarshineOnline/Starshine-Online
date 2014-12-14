@@ -19,7 +19,8 @@ class interf_ville_entree_base extends interf_gauche
 		$this->set_icone_centre('ville');
 		$this->barre_haut->add( new interf_txt($royaume->get_nom()) );
 		// Jauges
-		$this->set_jauge_ext($royaume->get_capitale_hp (), 50000, 'hp', 'HP : ');
+		$this->set_jauge_ext($royaume->get_capitale_hp(), 50000, 'hp', 'HP : ');
+		$this->set_jauge_int($royaume->get_rang(), 4, 'avance', 'Rang : ');
 		
 		// Ligne pour le message
 		$this->message = $this->centre->add( new interf_bal_cont('p') ); 
