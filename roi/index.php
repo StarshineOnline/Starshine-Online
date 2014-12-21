@@ -101,26 +101,3 @@ if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id(
 	echo "	// ]]>
 		  </script>";
 ?>
-
-	<div id='menu'>
-	<input type='hidden' id='menu_encours' value='ressource' />
-	<div id='menu_details'>
-		<div id='divers_menu' style='display:none;'><span class='menu' onclick="affiche_page('quete.php');">Gestion des quêtes</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=criminel');">Criminels</span><span class='menu' onclick="affiche_page('gestion_royaume.php?direction=stats');">Statistiques</span><span class='menu' onclick="affiche_page('point_victoire.php');">Points de victoires</span></div>
-	</div><a class="fermer" href="../interface.php" target="_top" style="float: right; padding-right: 5px">&nbsp;</a>
-	</div>
-</div>
-<div id='contenu_back'>
-		<div id='message_confirm'></div>
-	<div id="contenu_jeu">
-&nbsp;
-</div>
-</div>
-<?php
-//Inclusion du bas de la page
-		include_once(root.'bas.php');
-	}
-	else echo 'INTERDIT';
-}
-else
-echo 'INTERDIT';
-?>
