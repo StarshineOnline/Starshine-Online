@@ -634,6 +634,25 @@ class interf_factory
     include_once(root.'interface/interf_votes_dons.class.php');
   	return new interf_dons();
 	}
+	
+	
+  /**
+   * interface de gestion du royaume
+   */
+  function creer_royaume()
+  {
+    include_once(root.'interface/interf_jeu.class.php');
+    $ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
+    switch($ajax)
+    {
+    case 1:
+  		return new interf_jeu_ajax();
+    case 2:
+  		return new interf_jeu_tab();
+    default:
+    	return new interf_royaume($this->css);
+		}
+  }
 }
 
 class interf_factory_shine extends interf_factory

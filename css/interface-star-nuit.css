@@ -16,13 +16,13 @@ a:hover, a:focus
 
 /* ----  en-tête -------*/
 
-#perso
+#perso, #royaume
 {
 	background-color:rgba(255, 255, 255, 0.2);
 	border-color: #777;
 }
 
-#infos_perso, #infos_vie
+#infos_perso, #infos_vie, #infos_royaume, #ressources
 {
   background-color:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;

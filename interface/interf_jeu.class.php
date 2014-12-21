@@ -258,6 +258,32 @@ class interf_jeu_ajax extends interf_princ_ob
 	{
     $this->add( new interf_bal_smpl('section', $js, 'javascript') );
 	}
+	function set_gestion($fils)
+	{
+    $cont = $this->add( new interf_bal_cont('section', 'gestion_royaume') );
+		$fils->add_js();
+    return $cont->add($fils);
+	}
+  function maj_royaume($complet=false)
+	{
+		global $db;
+    $cont = $this->add( new interf_bal_cont('section', 'royaume') );
+    include_once(root.'interface/interf_royaume.class.php');
+    $cont->add( new interf_barre_royaume() );
+    /*if($complet)
+    {
+			$nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
+    	$this->add( new interf_bal_smpl('section', $nbr_msg ? $nbr_msg : '', 'nbr_msg') );
+	    /// @todo passe à l'objet
+	    $perso = joueur::get_perso();
+	    $requete = 'SELECT COUNT(*) FROM echange WHERE nouveau = TRUE AND ( (id_j2 = '.$perso->get_id().' AND statut = "proposition") OR (id_j1 = '.$perso->get_id().' AND statut = "finalisation") )';
+	    $req = $db->query($requete);
+	    $nbr_echg = $db->read_row($req)[0];
+    	$this->add( new interf_bal_smpl('section', $nbr_echg ? $nbr_echg : '', 'nbr_echg') );
+			$nbr_posts = get_nbr_posts_forum(joueur::get_perso());
+			$this->add( new interf_bal_smpl('section', $nbr_posts ? $nbr_posts : '', 'nbr_posts') );
+		}*/
+	}
 }
 
 class interf_jeu_tab extends interf_princ_ob
