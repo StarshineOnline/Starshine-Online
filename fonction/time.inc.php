@@ -159,6 +159,13 @@ function date_prochain_mandat()
 	return date("Y-m", mktime(0, 0, 0, date("m")+1, 1,  date("Y")));
 }
 
+function date_texte_red($date)
+{
+	$jours = array('dim.', 'lun.', 'mar.', 'mer.', 'jeu.', 'ven.', 'sam.');
+	$mois = array('janv.', 'fev.', 'mars', 'avril', 'mai', 'juin', 'juil.', 'août', 'sep.', 'oct.', 'nov.', 'déc.');
+	return $jours[date('w', $date)].' '.date('j', $date).' '.$mois[date('n', $date)].' '.date('Y', $date);
+}
+
 /**
  * Renvoie l'heure (uniquement) qu'il est dans le jeu
  * 

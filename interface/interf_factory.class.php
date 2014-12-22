@@ -653,6 +653,31 @@ class interf_factory
     	return new interf_royaume($this->css);
 		}
   }
+  ///
+  function creer_bourse($onglet='achat')
+  {
+  	return new interf_bourse($onglet);
+	}
+  function creer_bourse_vente()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_vente();
+	}
+  function creer_bourse_achat()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_achat();
+	}
+  function creer_bourse_hist_vente()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_hist_vente();
+	}
+  function creer_bourse_hist_achat()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_hist_achat();
+	}
 }
 
 class interf_factory_shine extends interf_factory

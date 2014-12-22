@@ -36,42 +36,8 @@ exit;
 
 
 
-
-
-
-global $joueur;
-$joueur = new perso($_SESSION['ID']);
-$royaume = new royaume($Trace[$joueur->get_race()]['numrace']);
-
-if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id() == 6) OR $joueur->get_id() == $royaume->get_ministre_economie() OR $joueur->get_id() == $royaume->get_ministre_militaire())
-{
-	$date_hier = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 2, date("Y")));
-	$requete = "SELECT food, nombre_joueur FROM stat_jeu ORDER BY date DESC";
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	if($row['nombre_joueur'] != 0) $food_necessaire = $row['food'] / $row['nombre_joueur'];
-	else $food_necessaire = 0;
 	
-	
-	//Vérifie si le perso est mort
-	verif_mort($joueur, 1);
-	$joueur->check_perso();
-	
-	$_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y());
-	$check = false;
-	if(verif_ville($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
-	{
-		$check = true;
-	}
-	elseif($batiment = verif_batiment($joueur->get_x(), $joueur->get_y(), $royaume->get_id()))
-	{
-		if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg')
-		{
-			$bourg = new batiment($batiment['id_batiment']);
-			if($bourg->has_bonus('royaume')) $check = true;
-		}
-	}
-	
+/*	
 	if($check)
 	{
 	echo "<script type='text/javascript'>
@@ -100,4 +66,5 @@ if(($joueur->get_race() == $royaume->get_race() && $joueur->get_grade()->get_id(
 	}
 	echo "	// ]]>
 		  </script>";
+*/
 ?>

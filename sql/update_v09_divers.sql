@@ -17,3 +17,7 @@ UPDATE `starshine_preprod`.`bonus` SET `id_categorie` = '0' WHERE `bonus`.`id_bo
 
 -- Options
 ALTER TABLE `options` CHANGE `valeur` `valeur` MEDIUMINT(16) UNSIGNED NOT NULL;
+
+
+-- Bourse des royaumes
+ALTER TABLE `bourse_royaume` ADD `type` ENUM('achat','vente') NOT NULL DEFAULT 'vente';

@@ -43,19 +43,20 @@ class interf_royaume extends interf_sso_int
 				$lieu = $bourg->has_bonus('royaume');
 			}
 		}
+		$non_raz = !$royaume->is_raz();
     
     /*$msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
     $nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
     $msg->get_lien()->add( new interf_bal_smpl('span', $nbr_msg ? $nbr_msg : '', 'nbr_msg', 'badge') );*/
-    if( $eco )
+    if( $eco && $non_raz )
     {
 	    $rsrc = $this->menu->add_elt( new interf_nav_deroul('Ressources') );
-	    $rsrc->add( new interf_elt_menu('Bourse', 'bourse.php') );//gestion_royaume.php?direction=bourse
+	    $rsrc->add( new interf_elt_menu('Bourse', 'bourse.php') );
 	    $rsrc->add( new interf_elt_menu('Échanges', 'echanges.php') );//gestion_royaume.php?direction=echange
 	    $rsrc->add( new interf_elt_menu('Ressources', 'ressources.php') );
 	    $rsrc->add( new interf_elt_menu('Mines', 'mine.php') );
 	    $economie = $this->menu->add_elt( new interf_nav_deroul('Économie') );
-	    $economie->add( new interf_elt_menu('Bâtiments de la ville', 'batiments_ville.php') );//gestion_royaume.php?direction=construction
+	    $economie->add( new interf_elt_menu('Bâtiments de la ville', 'batiments_ville.php') );
 	    $economie->add( new interf_elt_menu('Entretien & taxe', 'entretien.php') );//+ taxe.php
 	    if( $roi && $capitale && $vivant )
 	    	$economie->add( new interf_elt_menu('Drapeaux', 'drapeaux.php') );
@@ -64,22 +65,26 @@ class interf_royaume extends interf_sso_int
     $militaire = $this->menu->add_elt( new interf_nav_deroul('Militaire') );
     if( $lieu && $vivant )
     	$militaire->add( new interf_elt_menu('Bâtiments hors ville', 'construction.php') );
-    $militaire->add( new interf_elt_menu('Boutique militaire', 'boutique_militaire.php') );//gestion_royaume.php?direction=boutique
-    $militaire->add( new interf_elt_menu('Buffs & debuffs bâtiments', 'buffs_batiments.php') );
-    if( $mil )
-    	$militaire->add( new interf_elt_menu('Batailles', 'gestion_bataille.php') );
+    if( $non_raz )
+    {
+	    $militaire->add( new interf_elt_menu('Boutique militaire', 'boutique_militaire.php') );
+	    $militaire->add( new interf_elt_menu('Buffs & debuffs bâtiments', 'buffs_batiments.php') );
+	    if( $mil )
+	    	$militaire->add( new interf_elt_menu('Batailles', 'gestion_bataille.php') );
+		}
     $com = $this->menu->add_elt( new interf_nav_deroul('Communication') );
-    $com->add( new interf_elt_menu('Diplomatie', 'diplomatie.php') );//gestion_royaume.php?direction=diplomatie
+    $com->add( new interf_elt_menu('Diplomatie', 'diplomatie.php') );
     if( $mil )
     	$com->add( new interf_elt_menu('Mot du roi', 'motk.php') );
     $com->add( new interf_elt_menu('Propagande', 'propagande.php') );
     $com->add( new interf_elt_menu('Groupes', 'gestion_groupe.php') );
     $divers = $this->menu->add_elt( new interf_nav_deroul('Divers') );
-    $divers->add( new interf_elt_menu('Carte', 'carte.php') ); // gestion_royaume.php?direction=carte
+    $divers->add( new interf_elt_menu('Carte', 'carte.php') );
     if( $roi )
     {
-	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php') );//gestion_royaume.php?direction=criminel
-	    $divers->add( new interf_elt_menu('Points de victoire', 'point_victoire.php') );
+	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php') );
+	    if( $non_raz )
+	    	$divers->add( new interf_elt_menu('Points de victoire', 'point_victoire.php') );
 		}
     $divers->add( new interf_elt_menu('Affaires du royaume', 'gestion_royaume.php') );
     
@@ -169,9 +174,9 @@ class interf_barre_royaume extends interf_bal_cont
   	$this->ajout_ressource('sable', 'Sable', $this->royaume->get_sable());
   	$this->ajout_ressource('charbon', 'Charbon', $this->royaume->get_charbon());
 	}
-	protected function ajout_ressource($id, $nom, $quantite)
+	protected function ajout_ressource($type, $nom, $quantite)
 	{
-  	$span = $this->ressources->add( new interf_bal_smpl('span', $quantite, $id, 'ressource') );
+  	$span = $this->ressources->add( new interf_bal_smpl('span', $quantite, false, 'ressource '.$type) );
   	$span->set_tooltip($nom);
 	}
 }
