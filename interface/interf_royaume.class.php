@@ -45,9 +45,9 @@ class interf_royaume extends interf_sso_int
 		}
 		$non_raz = !$royaume->is_raz();
     
-    /*$msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
+    $msg = $this->menu->add_elt( new interf_elt_menu('Messages', '../messagerie.php') );
     $nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);
-    $msg->get_lien()->add( new interf_bal_smpl('span', $nbr_msg ? $nbr_msg : '', 'nbr_msg', 'badge') );*/
+    $msg->get_lien()->add( new interf_bal_smpl('span', $nbr_msg ? $nbr_msg : '', 'nbr_msg', 'badge') );
     if( $eco && $non_raz )
     {
 	    $rsrc = $this->menu->add_elt( new interf_nav_deroul('Ressources') );
@@ -112,6 +112,10 @@ class interf_royaume extends interf_sso_int
   function maj_royaume($complet=false)
   {
 	}
+	function maj_tooltips()
+	{
+    $this->code_js('maj_tooltips();');
+	}
 }
 
 class interf_barre_royaume extends interf_bal_cont
@@ -138,9 +142,15 @@ class interf_barre_royaume extends interf_bal_cont
   	$actifs = $lst1->add( new interf_bal_cont('li') );
   	$actifs->add( new interf_bal_smpl('strong', 'Habitants très actifs : ') );
   	$actifs->add( new interf_bal_smpl('span', $this->royaume->get_habitants_actif(), 'actifs') );
-  	$faacteur = $lst1->add( new interf_bal_cont('li') );
-  	$faacteur->add( new interf_bal_smpl('strong', 'Facteur d\'entretien : ') );
-  	$faacteur->add( new interf_bal_smpl('span', $this->royaume->get_facteur_entretien(), 'facteur') );
+  	$facteur = $lst1->add( new interf_bal_cont('li') );
+  	$facteur->add( new interf_bal_smpl('strong', 'Facteur d\'entretien : ') );
+  	$facteur->add( new interf_bal_smpl('span', $this->royaume->get_facteur_entretien(), 'facteur') );
+  	if( $this->royaume->get_facteur_entretien_th() > $this->royaume->get_facteur_entretien() )
+  		$facteur->add( new interf_bal_smpl('span', '', false, 'icone icone-augmente') )->set_tooltip('devrait augmenter');
+  	else if( $this->royaume->get_facteur_entretien_th() < $this->royaume->get_facteur_entretien() )
+  		$facteur->add( new interf_bal_smpl('span', '', false, 'icone icone-diminue') )->set_tooltip('devrait diminuer');
+  	else
+  		$facteur->add( new interf_bal_smpl('span', '', false, 'icone icone-stable') )->set_tooltip('devrait rester stable');
   	$lst2 = $div->add( new interf_bal_cont('ul') );
   	$taxe = $lst2->add( new interf_bal_cont('li') );
   	$taxe->add( new interf_bal_smpl('strong', 'Taux de taxe : ') );
@@ -151,6 +161,12 @@ class interf_barre_royaume extends interf_bal_cont
   	$conso = $lst2->add( new interf_bal_cont('li') );
   	$conso->add( new interf_bal_smpl('strong', 'Consommation : ') );
   	$conso->add( new interf_bal_smpl('span', $this->royaume->get_conso_food(), 'nouriture_besoin') );
+  	if( $this->royaume->get_conso_food_th() > $this->royaume->get_conso_food() )
+  		$conso->add( new interf_bal_smpl('span', '', false, 'icone icone-augmente') )->set_tooltip('devrait augmenter');
+  	else if( $this->royaume->get_conso_food_th() < $this->royaume->get_conso_food() )
+  		$conso->add( new interf_bal_smpl('span', '', false, 'icone icone-diminue') )->set_tooltip('devrait diminuer');
+  	else
+  		$conso->add( new interf_bal_smpl('span', '', false, 'icone icone-stable') )->set_tooltip('devrait rester stable');
   	$lst3 = $div->add( new interf_bal_cont('ul') );
   	$rang = $lst3->add( new interf_bal_cont('li') );
   	$rang->add( new interf_bal_smpl('strong', 'Rang : ') );
@@ -177,7 +193,7 @@ class interf_barre_royaume extends interf_bal_cont
 	protected function ajout_ressource($type, $nom, $quantite)
 	{
   	$span = $this->ressources->add( new interf_bal_smpl('span', $quantite, false, 'ressource '.$type) );
-  	$span->set_tooltip($nom);
+  	$span->set_tooltip($nom, 'left');
 	}
 }
 ?>

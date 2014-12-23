@@ -10,7 +10,7 @@
 {
   position:absolute;
   left: 8px;
-  width:530px;
+  /*max-width:550px;*/
   height:62px;
   top: 3px;
 }

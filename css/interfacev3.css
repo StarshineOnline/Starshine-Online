@@ -1261,6 +1261,7 @@ ul.info_bulle { text-align:left; }
 .info_case #royaume, .info_case #terrain
 {
 	font-weight: bold;
+	border: none;
 }
 
 .infranch

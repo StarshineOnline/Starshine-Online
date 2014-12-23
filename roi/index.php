@@ -19,7 +19,8 @@ if( !$perso->get_rang() == 6 )
 	}
 }
 
-$G_interf->creer_royaume();
+$cadre = $G_interf->creer_royaume();
+$cadre->maj_tooltips();
 
 
 
