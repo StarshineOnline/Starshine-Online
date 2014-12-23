@@ -40,9 +40,10 @@ abstract class interf_bourse_liste extends interf_data_tbl
 	protected $bourse;
 	protected $royaume;
 	protected $perso;
+	protected $url;
 	function __construct($id)
 	{
-  	global $Trace, $Gtrad;
+  	global $Trace, $Gtrad, $G_url;
 		parent::__construct($id, '', false, false);
 		
 		$this->perso = joueur::get_perso();
@@ -57,6 +58,7 @@ abstract class interf_bourse_liste extends interf_data_tbl
 		$this->get_encheres();
 		foreach($this->bourse->encheres as $enchere)
 		{
+			$this->url = $G_url->copie('id', $enchere->id_bourse_royaume);
 			$this->nouv_ligne();
 			$this->nouv_cell($Gtrad[$enchere->ressource], false, 'ressource '.$enchere->ressource);
 			$this->aff_fin_enchere($enchere);
@@ -83,15 +85,14 @@ class interf_bourse_achat extends interf_bourse_liste
 	}
 	protected function aff_fin_enchere(&$enchere)
 	{
-		global $G_url;
 		$this->nouv_cell($enchere->nombre);
 		$this->nouv_cell($enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)');
 		if( $enchere->id_royaume == $this->royaume->get_id() )
-			$this->nouv_cell('Votre vente', false, 'txt-primary');
+			$this->nouv_cell('Votre vente', false, 'text-primary');
 		else if( $enchere->id_royaume_acheteur & (1 << ($this->royaume->get_id()-1)) )
-			$this->nouv_cell('Vous avez acheté', false, 'txt-success');
+			$this->nouv_cell('Vous avez acheté', false, 'text-success');
 		else if( $this->perso->get_hp() > 0 )
-			$this->nouv_cell( new interf_lien('Acheter', $G_url->get('action', 'achat')) );
+			$this->nouv_cell( new interf_lien('Acheter', $this->url->get('action', 'achat')) );
 		else
 			$this->nouv_cell( '&nbsp;' );
 	}
@@ -113,7 +114,6 @@ class interf_bourse_vente extends interf_bourse_liste
 	}
 	protected function aff_fin_enchere(&$enchere)
 	{
-		global $G_url;
 		$this->nouv_cell($enchere->nombre);
 		if( $enchere->prix )
 			$this->nouv_cell($enchere->prix.' ('.round(($enchere->prix / $enchere->nombre), 2).' / u)');
@@ -121,13 +121,17 @@ class interf_bourse_vente extends interf_bourse_liste
 			$this->nouv_cell('-');
 		if( $enchere->id_royaume == $this->royaume->get_id() )
 		{
-			$cell = $this->nouv_cell( new interf_lien('Acheter', $G_url->get('action', 'achat_offre')) );
-			$cell->add( new interf_lien('Annuler', $G_url->get('action', 'annuler')) );
+			$cell = $this->nouv_cell( new interf_lien('Annuler', $this->url->get('action', 'annuler')) );
+			if( $enchere->prix > 0 )
+			{
+				$cell->add( new interf_txt(' / ') );
+				$cell->add( new interf_lien('Acheter', $this->url->get('action', 'achat_offre')) );
+			}
 		}
 		else if( $enchere->id_royaume_acheteur == $this->royaume->get_id() )
-			$this->nouv_cell('Vous avez vendu', false, 'txt-success');
+			$this->nouv_cell('Vous avez vendu', false, 'text-success');
 		else if( $this->perso->get_hp() > 0 )
-			$this->nouv_cell( new interf_lien('Vendre', $G_url->get('action', 'offre_vente')) );
+			$this->nouv_cell( new interf_lien('Vendre', $this->url->get('action', 'offre_vente')) );
 		else
 			$this->nouv_cell( '&nbsp;' );
 	}
@@ -236,7 +240,7 @@ class interf_dlg_bourse_vente extends interf_dialogBS
     $prix->set_attribut('step', 1);
     
     $this->ajout_btn('Annuler', 'fermer');
-    $this->ajout_btn('Vendre', 'return charger_formulaire(\'vente_rsrc\');', 'primary');
+    $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\'); return charger_formulaire(\'vente_rsrc\');', 'primary');
 	}
 }
 
@@ -262,7 +266,7 @@ class interf_dlg_bourse_achat extends interf_dialogBS
     $nbr->set_attribut('step', 1);
     
     $this->ajout_btn('Annuler', 'fermer');
-    $this->ajout_btn('Déposer l\'offre', 'return charger_formulaire(\'vente_rsrc\');', 'primary');
+    $this->ajout_btn('Déposer l\'offre', '$(\'#modal\').modal(\'hide\'); return charger_formulaire(\'vente_rsrc\');', 'primary');
 	}
 }
 
@@ -306,6 +310,24 @@ class interf_dlg_bourse_cours extends interf_dialogBS
 		$this->tbl->nouv_cell(array_key_exists($rsrc, $this->vente) ? $this->ventes[$rsrc] : '-');
 		$this->tbl->nouv_cell(array_key_exists($rsrc, $this->achats) ? $this->achats[$rsrc] : '-');
 		
+	}
+}
+
+class interf_dlg_bourse_offre extends interf_dialogBS
+{
+	function __construct(&$enchere)
+	{
+		global $G_url;
+		parent::__construct('Offre de vente');
+		$form = $this->add( new interf_form($G_url->get(array('action'=>'offre_vente2','id'=>$enchere->id_bourse_royaume)), 'vente_rsrc') );
+		$prix = $form->add_champ_bs('number', 'prix', null, round(.9 * $enchere->prix), 'Prix de vente', 'stars');
+    $prix->set_attribut('min', 1);
+    $prix->set_attribut('step', 1);
+    if($enchere->prix > 0)
+    	$prix->set_attribut('max', $enchere->prix-1);
+    
+    $this->ajout_btn('Annuler', 'fermer');
+    $this->ajout_btn('Déposer l\'offre', '$(\'#modal\').modal(\'hide\'); return charger_formulaire(\'vente_rsrc\');', 'primary');
 	}
 }
 

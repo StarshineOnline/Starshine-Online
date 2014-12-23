@@ -17,6 +17,7 @@ if( ($perso->get_rang() != 6 && $royaume->get_ministre_economie() != $perso->get
 }
 $onglet = array_key_exists('onglet', $_GET) ? $_GET['onglet'] : 'achat';
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+$G_url->add('onglet', $onglet);
 
 $cadre = $G_interf->creer_royaume();
 if( $perso->get_hp() > 0 || $action == 'cours' )
@@ -26,19 +27,26 @@ if( $perso->get_hp() > 0 || $action == 'cours' )
 	case 'vente':
 		include_once(root.'interface/interf_bourse.class.php');
 		$cadre->set_dialogue( new interf_dlg_bourse_vente() );
-		exit;
+		if( array_key_exists('ajax', $_GET) )
+		 exit;
+		break;
 	case 'offre_achat':
 		include_once(root.'interface/interf_bourse.class.php');
 		$cadre->set_dialogue( new interf_dlg_bourse_achat() );
-		exit;
+		if( array_key_exists('ajax', $_GET) )
+		 exit;
+		break;
 	case 'cours':
 		include_once(root.'interface/interf_bourse.class.php');
 		$cadre->set_dialogue( new interf_dlg_bourse_cours() );
-		exit;
+		if( array_key_exists('ajax', $_GET) )
+		 exit;
+		break;
 	case 'vendre':
-		if($_GET['nombre'] <= 0 || $prix <= 0)
+		if($_GET['nombre'] <= 0 || $_GET['prix'] <= 0)
 		{
-			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les valeurs doivent être stgrictement positives !');
+			/// @todo loguer triche
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les valeurs doivent être strictement positives !');
 			break;
 		}
 		if($_GET['nombre'] > get_ressource_max($_GET['ressource']))
@@ -46,26 +54,141 @@ if( $perso->get_hp() > 0 || $action == 'cours' )
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de '.$Gtrad[$_GET['ressource']].' !');
 			break;
 		}
-		$enchere =  = new bourse_royaume();
+		$enchere = new bourse_royaume();
 		$enchere->id_royaume = $royaume->get_id();
 		$enchere->ressource = $_GET['ressource'];
-		$enchere->nombre = $nombre;
-		$enchere->prix = $prix;
+		$enchere->nombre = $_GET['nombre'];
+		$enchere->prix = $_GET['prix'];
 		$enchere->type = 'vente';
 		$enchere->sauver();
-		$requete = "UPDATE royaume SET ".$_GET['ressource']." = ".$_GET['ressource']." - ".$nombre." WHERE ID = ".$royaume->get_id();
+		/// @todo passer à l'objet
+		$requete = "UPDATE royaume SET ".$_GET['ressource']." = ".$_GET['ressource']." - ".$_GET['nombre']." WHERE ID = ".$royaume->get_id();
 		$db->query($requete);
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre ressource a bien été mise en vente.');
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre ressource a bien été mise en vente.');
+		$cadre->maj_royaume();
 		break;
 	case 'acheter':
+		if($_GET['nombre'] <= 0)
+		{
+			/// @todo loguer triche
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les valeurs doivent être strictement positives !');
+			break;
+		}
+		$enchere = new bourse_royaume();
+		$enchere->id_royaume = $royaume->get_id();
+		$enchere->ressource = $_GET['ressource'];
+		$enchere->nombre = $_GET['nombre'];
+		// proposition du jeu
+		/// @todo passer à l'objet
+		$requete = 'select '.$enchere->ressource.' from royaume where id = 0';
+    $req = $db->query($requete);
+    $row = $db->read_array($req);
+    if( $row[0] >= $enchere->nombre )
+    {
+    	$requete = 'select sum('.$enchere->ressource.') as total from royaume';
+    	$req = $db->query($requete);
+    	$row = $db->read_array($req);
+	    $total = $row['total'];
+	    $requete = 'select sum(nombre) as total from bourse_royaume where actif = 1 and ressource = "'.$enchere->ressource.'"';
+	    $req = $db->query($requete);
+	    $row = $db->read_array($req);
+	    $total += $row['total'];
+	    $enchere->prix = $enchere->nombre * (5 + 50 / sqrt(1 + $total/100000));
+		}
+		else
+			$enchere->prix = 0;
+		$enchere->type = 'achat';
+	   $enchere->id_royaume_acheteur = 0;
+		$enchere->sauver();
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre offre d\'achat a bien été enregistrée.');
 		break;
 	case 'annuler':
+		$enchere = new bourse_royaume($_GET['id']);
+		/// @todo passer à l'objet
+		if( $enchere->prix > 0 )
+		{
+			$requete = "UPDATE royaume SET ".$enchere->ressource.' = '.$enchere->ressource.' + '.$enchere->nombre.' WHERE ID = '.$enchere->id_royaume_acheteur;
+			$db->query($requete);
+		}
+		$enchere->supprimer();
 		break;
 	case 'achat':
+		$enchere = new bourse_royaume($_GET['id']);
+		if($royaume->get_id() == $enchere->id_royaume || ( (1 << ($royaume->get_id()-1)) & $enchere->id_royaume_acheteur ))
+		{
+			/// @todo loguer triche
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas placer l\'enchère.');
+			break;
+		}
+		if($royaume->get_star() < $enchere->prix)
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars pour enchérir !');
+			break;
+		}
+		//On prend les stars de notre royaume
+		/// @todo passer à l'objet
+		$requete = "UPDATE royaume SET star = star - ".$enchere->prix." WHERE ID = ".$royaume->get_id();
+		$db->query($requete);
+		//On met à jour l'enchère
+		$enchere->id_royaume_acheteur |= 1 << ($royaume->get_id()-1);
+		$enchere->sauver();
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'Enchère prise en compte !');
+		$cadre->maj_royaume();
 		break;
 	case 'achat_offre':
+		$enchere = new bourse_royaume($_GET['id']);
+		if($royaume->get_star() < $enchere->prix)
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars pour acheter !');
+			break;
+		}
+		/// @todo passer à l'objet
+		$requete = "UPDATE royaume SET star = star - ".$enchere->prix.', '.$enchere->ressource.' = '.$enchere->ressource.' + '.$enchere->nombre.' WHERE ID = '.$royaume->get_id();
+		$db->query($requete);
+		$requete = "UPDATE royaume SET star = star + ".$enchere->prix.' WHERE ID = '.$enchere->id_royaume_acheteur;
+		$db->query($requete);
+		$enchere->actif = 0;
+		$enchere->sauver();
+		$cadre->maj_royaume();
 		break;
 	case 'offre_vente':
+		include_once(root.'interface/interf_bourse.class.php');
+		$enchere = new bourse_royaume($_GET['id']);
+		$cadre->set_dialogue( new interf_dlg_bourse_offre($enchere) );
+		if( array_key_exists('ajax', $_GET) )
+		 exit;
+		break;
+	case 'offre_vente2':
+		$enchere = new bourse_royaume($_GET['id']);
+		if( $_GET['prix'] <= 0 )
+		{
+			/// @todo loguer triche
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les valeurs doivent être strictement positives !');
+			break;
+		}
+		if( $royaume->get_id() == $enchere->id_royaume || $enchere->id_royaume_acheteur == $royaume->get_id() )
+		{
+			/// @todo loguer triche
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas placer d\'offre.');
+			break;
+		}
+		if($enchere->nombre > get_ressource_max($enchere->ressource))
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de '.$Gtrad[$enchere->ressource].' !');
+			break;
+		}
+		/// @todo passer à l'objet
+		if( $enchere->prix > 0 )
+		{
+			$requete = "UPDATE royaume SET ".$enchere->ressource.' = '.$enchere->ressource.' + '.$enchere->nombre.' WHERE ID = '.$enchere->id_royaume_acheteur;
+			$db->query($requete);
+		}
+		$requete = "UPDATE royaume SET ".$enchere->ressource.' = '.$enchere->ressource.' - '.$enchere->nombre.' WHERE ID = '.$royaume->get_id();
+		$db->query($requete);
+		$enchere->prix = $_GET['prix'];
+		$enchere->id_royaume_acheteur = $royaume->get_id();
+		$enchere->sauver();
+		$cadre->maj_royaume();
 		break;
 	}
 }
@@ -125,49 +248,4 @@ function get_ressource_max($ressource)
 	 return null;
 	}
 }
-
-
-
-exit;
-
-
-//case 'bourse_enchere':
-		if ($RAZ_ROYAUME) { echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>'; break; }
-  	if( $economie )
-  	{
-  		require_once(root.'class/bourse_royaume.class.php');
-  		require_once(root.'class/bourse.class.php');
-  		$enchere = new bourse_royaume($_GET['id_enchere']);
-  		//On vérifie que c'est un royaume possible
-  		if($royaume->get_id() != $enchere->id_royaume AND !( (1 << ($royaume->get_id()-1)) & $enchere->id_royaume_acheteur ))
-  		{
-  			//On vérifie que le royaume a assez de stars
-  			if($royaume->get_star() >= $enchere->prix)
-  			{
-  				//On prend les stars de notre royaume
-  				$requete = "UPDATE royaume SET star = star - ".$enchere->prix." WHERE ID = ".$royaume->get_id();
-  				$db->query($requete);
-  				//On met à jour l'enchère
-  				$enchere->id_royaume_acheteur |= 1 << ($royaume->get_id()-1);
-  				$enchere->sauver();
-  				?>
-  				<h6>Enchère prise en compte !</h6>
-  				<?php
-  			}
-  			else
-  			{
-  				?>
-  				<h5>Vous n'avez pas assez de stars pour enchérir !</h5>
-  				<?php
-  			}
-  		}
-      else
-      {
-        echo '<h5>Vous ne pouvez pas placer l\'enchère</h5>';
-      }
-  	}
-  	Else 
-  	{
-		echo '<p>Cette page vous est interdite</p>';
-	}
 ?>

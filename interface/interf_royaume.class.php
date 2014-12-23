@@ -96,7 +96,7 @@ class interf_royaume extends interf_sso_int
   }
   protected function menu_droite()
   {
-    $this->menu->add_elt(new interf_elt_menu('Jeu', false, 'http:://www.starshine-online.com/interface.php'), false);
+    $this->menu->add_elt(new interf_elt_menu('Jeu', '../interface.php'), false);
     $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
     $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
@@ -116,6 +116,15 @@ class interf_royaume extends interf_sso_int
 	{
     $this->code_js('maj_tooltips();');
 	}
+  function set_dialogue($fils)
+  {
+  	$dlg = $this->contenu->add( new interf_bal_cont('div', 'modal', 'modal fade') );
+  	$dlg->set_attribut('role', 'dialog');
+  	$dlg->set_attribut('tabindex', '-1');
+  	$dlg->set_attribut('aria-labelledby', 'modalLabel');
+  	$dlg->code_js('$("#modal").modal("show");');
+  	return $dlg->add( $fils );
+  }
 }
 
 class interf_barre_royaume extends interf_bal_cont

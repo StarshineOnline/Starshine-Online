@@ -72,12 +72,12 @@ abstract class interf_sso_int extends interf_sso
     {
       $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
       if( $persos )
-        $menu_joueur->add( new interf_elt_menu('Changer de perso', 'changer_perso.php', 'return charger(this.href);') );
+        $menu_joueur->add( new interf_elt_menu('Changer de perso', static::prefixe_fichiers.'changer_perso.php', 'return charger(this.href);') );
       if( $admin )
-        $menu_joueur->add( new interf_elt_menu('Administration', './admin/') );
+        $menu_joueur->add( new interf_elt_menu('Administration', static::prefixe_fichiers.'./admin/') );
     }
     $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
-    $menu_joueur->add( new interf_elt_menu('Déconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\'index.php?deco=ok\'; };') );
+    $menu_joueur->add( new interf_elt_menu('Déconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\''.static::prefixe_fichiers.'index.php?deco=ok\'; };') );
   }
   abstract protected function menu_droite();
   abstract protected function menu_joueur($menu_joueur);
