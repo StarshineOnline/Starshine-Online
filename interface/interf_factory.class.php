@@ -678,6 +678,11 @@ class interf_factory
     include_once(root.'interface/interf_bourse.class.php');
   	return new interf_bourse_hist_achat();
 	}
+  ///
+  function creer_echange_roy($action=false)
+  {
+  	return new interf_echange_roy($action);
+	}
 }
 
 class interf_factory_shine extends interf_factory

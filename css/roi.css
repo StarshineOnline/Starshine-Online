@@ -75,3 +75,8 @@
 {
 	margin: 5px;
 }
+
+#echanges_royaumes tr>td:first-child, #echanges_royaumes tr>th:first-child
+{
+	width: 16px;
+}

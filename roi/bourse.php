@@ -222,6 +222,7 @@ else
 		$cont->add( new interf_lien('Déposer une offre d\'achat', 'bourse.php?action=offre_achat', false, 'btn btn-default') );
 	}
 	$cont->add( new interf_lien('Voir le cours des ressources', 'bourse.php?action=cours', false, 'btn btn-default') );
+	$cadre->maj_tooltips();
 }
 
 
