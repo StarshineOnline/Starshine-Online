@@ -683,6 +683,11 @@ class interf_factory
   {
   	return new interf_echange_roy($action);
 	}
+  ///
+  function creer_ressources($royaume)
+  {
+  	return new interf_ressources($royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory
