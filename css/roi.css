@@ -85,3 +85,41 @@
 {
 	width: 940px;
 }
+
+#batiments_ville .info_case
+{
+	height: 60px;
+}
+
+#batiments_ville .info_case span
+{
+	display:block;
+	padding:2px;
+}
+
+#batiments_ville .nom
+{
+	font-weight: bold;
+}
+
+#batiments_ville .info_case>a
+{
+	display:block;
+	float: right;
+	height: 100%;
+	width: 60px;
+	border-left: solid 1px;
+	text-align: center;
+}
+
+#batiments_ville .info_case>a>.icone
+{
+	font-size: 30px;
+}
+
+#batiments_ville li.info_case div.jauge_case
+{
+	height: 50px;
+	width: 50px;
+	margin: 4px;
+}

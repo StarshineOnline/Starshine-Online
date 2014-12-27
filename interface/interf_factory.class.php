@@ -688,6 +688,11 @@ class interf_factory
   {
   	return new interf_ressources($royaume);
 	}
+  ///
+  function creer_batiments_ville($royaume, $action=false)
+  {
+  	return new interf_batiments_ville($royaume, $action);
+	}
 }
 
 class interf_factory_shine extends interf_factory

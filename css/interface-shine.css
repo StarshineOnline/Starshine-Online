@@ -380,12 +380,12 @@ a#debug_droit
   border: 1px solid rgba(15, 5, 107, 0.3);
 }
 
-#liste_gauche
+#batiments_ville .info_case>a
 {
-	border-color: rgba(15, 5, 107, 0.5);
+  border-color: rgba(15, 5, 107, 0.3) !important;
 }
 
-#rp_pj, #rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2)
+#liste_gauche, #rp_pj, #rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2)
 {
 	border-color: rgba(15, 5, 107, 0.5);
 }

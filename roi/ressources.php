@@ -41,4 +41,5 @@ else
 {
 	$cadre->set_gestion( $G_interf->creer_ressources($royaume) );
 }
+$cadre->maj_tooltips();
 ?>

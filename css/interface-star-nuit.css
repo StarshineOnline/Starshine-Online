@@ -161,12 +161,17 @@ a#debug_droit
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
+#batiments_ville .info_case>a
+{
+  border-color: rgba(15, 5, 107, 0.3) !important;
+}
+
 #liste_gauche
 {
 	border-color: #808080;
 }
 
-#rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2)
+#rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2), #batiments_ville .info_case>a
 {
 	border-color: rgba(0, 0, 0, 0.3);
 }
