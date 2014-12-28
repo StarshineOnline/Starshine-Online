@@ -693,6 +693,13 @@ class interf_factory
   {
   	return new interf_batiments_ville($royaume, $action);
 	}
+	
+  ///
+  function creer_listequete_royaume()
+  {
+	include_once(root.'interface/interf_quete.class.php');
+  	return new interf_quete_royaume();
+	}
 }
 
 class interf_factory_shine extends interf_factory

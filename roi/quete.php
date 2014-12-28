@@ -1,174 +1,32 @@
-<?php // -*- tab-width:2; mode: php -*- 
+	<?php
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require_once('haut_roi.php');
+//Connexion obligatoire
+$connexion = true;
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
+include_once(root.'inc/ressource.inc.php');
+include_once(root.'interface/interf_quete.class.php');
 
-$R = new royaume($Trace[$joueur->get_race()]['numrace']);
-if ($R->is_raz())
+
+$perso = joueur::get_perso();
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+if( $perso->get_rang() != 6 && $royaume->get_ministre_economie() != $perso->get_id() )
 {
-	echo '<h5>Gestion impossible quand la capitale est mise à sac</h5>';
-	exit(0);
+	/// @todo logguer triche
+	exit;
 }
 
-if($joueur->get_rang_royaume() != 6  AND $joueur->get_id() != $royaume->get_ministre_economie())
-	echo '<p>Cette page vous est interdite</p>';
-else if($_GET['action'] == 'achat')
-{
-	//Récupère les informations sur la quête
-	$requete = "SELECT * FROM quete WHERE id = '".sSQL($_GET['id'])."'";
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	//Vérifie que le royaume a assez de stars pour l'acheter
-	if($royaume->get_star() >= $row['star_royaume'])
-	{
-		//Ajout de la quête dans la liste des quêtes du royaume
-		$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$row['id'].")";
-		$req = $db->query($requete);
-		//Mis a jour des stars du royaume
-		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$royaume->get_id();
-		$req = $db->query($requete);
-		echo '<h6>Votre royaume a bien acheté la quête "'.$row['nom'].'</h6>';
-	}
-	else
-	{
-		echo '<h5>Votre royaume n\'a pas assez de stars pour acheter cette quête.</h5>';
-	}
+$cadre = $G_interf->creer_royaume();
 
-}
-elseif($_GET['action'] == 'voir')
+if(array_key_exists('q', $_GET))
 {
-	//Récupère les informations sur la quête
-	$requete = "SELECT * FROM quete WHERE id = ".sSQL($_GET['id']);
-	$req = $db->query($requete);
-	$row = $db->read_assoc($req);
-	?>
-	<h3 style="margin-bottom : 3px;""><?php echo $row['nom']; ?></h3>
-	<span style="font-style : italic;">Niveau conseillé <?php echo $row['lvl_joueur']; ?><br />
-	Répétable : <?php if($row['repete'] == 'y') echo 'Oui'; else echo 'Non'; ?><br />
-	<?php if($row['mode'] == 'g') echo 'Groupe'; else echo 'Solo'; ?></span><br />
-	<br />
-	<?php echo nl2br($row['description']); ?>
-	<h3>Requis</h3>
-	<ul>
-		<li>Niveau requis : <?php echo $row['niveau_requis']; ?></li>
-		<li>Honneur requis : <?php echo $row['honneur_requis']; ?></li>
-		<?php
-		if($row['quete_requis'] != '')
-		{
-			$qrequis = explode(';', $row['quete_requis']);
-			foreach($qrequis as $qid)
-			{
-        $val = mb_substr($qid, 1);
-        switch($qid[0])
-        {
-        case 'q':
-  				$requete = "SELECT nom FROM quete WHERE id = ".$val;
-  				$qreq = $db->query($requete);
-  				$qrow = $db->read_assoc($qreq);
-  				?>
-  			<li>Avoir fini la quête : <?php echo $qrow['nom']; ?></li>
-  				<?php
-  				break;
-        }
-			}
-		}
-		?>
-	</ul>
-	<h3>Récompense</h3>
-	<ul>
-		<li>Stars : <?php echo $row['star']; ?></li>
-		<li>Expérience : <?php echo $row['exp']; ?></li>
-		<li>Honneur : <?php echo $row['honneur']; ?></li>
-		<li><strong>Objets</strong> :</li>
-		<?php
-		$rewards = explode(';', $row['reward']);
-		$r = 0;
-		while($r < count($rewards))
-		{
-			$reward_exp = explode('-', $rewards[$r]);
-			$reward_id = $reward_exp[0];
-			$reward_id_objet = mb_substr($reward_id, 1);
-			$reward_nb = $reward_exp[1];
-			switch($reward_id[0])
-			{
-				case 'r' :
-					$requete = "SELECT * FROM recette WHERE id = ".$reward_id_objet;
-					$req_r = $db->query($requete);
-					$row_r = $db->read_assoc($req_r);
-					echo '<li>Recette de '.$row_r['nom'].' X '.$reward_nb.'</li>';
-				break;
-				case 'x' :
-					echo '<li>Objet aléatoire</li>';
-				break;
-			}
-			$r++;
-		}
-		?>
-	</ul>
-	<h3>Cout pour le royaume : <?php echo $row['star_royaume']; ?> stars</h3>
-	<br />
-	<?php
-	if($royaume->get_star() >= $row['star_royaume'])
-	{
-	?>
-		<a onclick="envoiInfo('quete.php?direction=quete&amp;action=achat&amp;id=<?php echo $row['id']; ?>','message_confirm');envoiInfo('quete.php','contenu_jeu');refresh('perso_contenu.php','perso_contenu');$('#popup').hide();">Acheter cette quête</a><br />
-		<br />
-	<?php
-	}
+	include_once(root.'interface/interf_quete.class.php');
+	$cadre->set_dialogue( new interf_quete($_GET['q']) );
 }
 else
 {
-	$req = $db->query("SELECT * FROM quete WHERE quete.achat = 'oui' AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().") ORDER BY lvl_joueur");
-	echo "<div id='quete'>";
-	?>
-	<ul>
-	<li class='haut'>
-			<span class='quete_nom'>Nom</span>
-			<span class='quete_niveau'>Level</span>
-			<span class='quete_groupe'>Mode</span>
-			<span class='quete_repetable'>Répétable</span>
-			<span class='quete_nombre'>Nombre</span>
-			<span class='quete_cout'>Coût</span>
-			<span class='quete_star'>Stars</span>
-			<span class='quete_exp'>Expérience</span>
-			<span class='quete_honneur'>Honneur</span>
-	</li>
-<?php
-	$class = 't1';
-	while($quete = $db->read_object($req))
-	{
-    $royaumes = explode(';', $quete->royaume);
-    if( $quete->royaume && !in_array($R->get_id(), $royaumes) )
-      continue;
-	
-		$objectif = unserialize($quete->objectif);
-		$href = 'poscase='.$W_case.'&amp;direction=quete&amp;action=voir&amp;id='.$quete->id;
-		//$js = 'new Tip(\'quete_'.$row['id'].'\', \'content\');';
-		echo "
-		<li class='$class'>
-			<span class='quete_nom'>".$quete->nom."</span>
-			<span class='quete_niveau'>".$quete->lvl_joueur."</span>
-			<span class='quete_groupe'>".$quete->mode."</span>
-			<span class='quete_repetable'>".$quete->repete."</span>
-			<span class='quete_nombre'>".$objectif[0]->nombre."</span>";
-			
-		if($royaume->get_star() >= $quete->star_royaume)
-			echo "<span class='quete_cout'>".$quete->star_royaume."</span>";
-		else 
-			echo "<span class='quete_cout' style='color:red;'>".$quete->star_royaume."</span>";
-			
-		echo "
-			<span class='quete_star'>".$quete->star."</span>
-			<span class='quete_exp'>".$quete->exp."</span>
-			<span class='quete_honneur'>".$quete->honneur."</span>
-			<span class='quete_achat'><a onclick=\"affichePopUp('quete.php?".$href."');\" id='quete_".$quete->id."'>Détails de la quête</a></span>
-		</li>";
-		if ($class == 't1'){$class = 't2';}else{$class = 't1';}		
-	}
-	echo "</ul></div>";
-?>
-
-<?php
+	$cadre->set_gestion( $G_interf->creer_listequete_royaume() );
 }
 ?>
