@@ -693,6 +693,31 @@ class interf_factory
   {
   	return new interf_batiments_ville($royaume, $action);
 	}
+  ///
+  function creer_entretien($royaume, $onglet='balance')
+  {
+  	return new interf_entretien($royaume, $onglet);
+	}
+  function creer_balance_hier(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_balance_hier($royaume);
+	}
+  function creer_recettes(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_recettes($royaume);
+	}
+  function creer_evol_gains(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_evol_gains($royaume);
+	}
+  function creer_repart_gains(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_repart_gains($royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory

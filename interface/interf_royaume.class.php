@@ -19,6 +19,8 @@ class interf_royaume extends interf_sso_int
   {
   	global $Trace;
     interf_sso_int::__construct($css);
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/highcharts.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/roi.js');
     $this->css(static::prefixe_fichiers.'css/roi.css');
     $perso = joueur::get_perso();
     $royaume = new royaume($Trace[$perso->get_race()]['numrace']);
