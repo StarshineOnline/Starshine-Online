@@ -54,15 +54,15 @@ class interf_royaume extends interf_sso_int
     {
 	    $rsrc = $this->menu->add_elt( new interf_nav_deroul('Ressources') );
 	    $rsrc->add( new interf_elt_menu('Bourse', 'bourse.php') );
-	    $rsrc->add( new interf_elt_menu('Échanges', 'echanges.php') );//gestion_royaume.php?direction=echange
+	    $rsrc->add( new interf_elt_menu('Échanges', 'echanges.php') );
 	    $rsrc->add( new interf_elt_menu('Ressources', 'ressources.php') );
 	    $rsrc->add( new interf_elt_menu('Mines', 'mine.php') );
 	    $economie = $this->menu->add_elt( new interf_nav_deroul('Économie') );
 	    $economie->add( new interf_elt_menu('Bâtiments de la ville', 'batiments_ville.php') );
-	    $economie->add( new interf_elt_menu('Entretien & taxe', 'entretien.php') );//+ taxe.php
+	    $economie->add( new interf_elt_menu('Entretien', 'entretien.php') );
+	    $economie->add( new interf_elt_menu('Gestion des taxes', 'taxe.php') );
 	    if( $roi && $capitale && $vivant )
 	    	$economie->add( new interf_elt_menu('Drapeaux', 'drapeaux.php') );
-	    $economie->add( new interf_elt_menu('Quêtes', 'quete.php') );
 		}
     $militaire = $this->menu->add_elt( new interf_nav_deroul('Militaire') );
     if( $lieu && $vivant )
@@ -70,10 +70,10 @@ class interf_royaume extends interf_sso_int
     if( $non_raz )
     {
 	    $militaire->add( new interf_elt_menu('Boutique militaire', 'boutique_militaire.php') );
-	    $militaire->add( new interf_elt_menu('Buffs & debuffs bâtiments', 'buffs_batiments.php') );
 	    if( $mil )
 	    	$militaire->add( new interf_elt_menu('Batailles', 'gestion_bataille.php') );
 		}
+    $militaire->add( new interf_elt_menu('Carte', 'carte.php') );
     $com = $this->menu->add_elt( new interf_nav_deroul('Communication') );
     $com->add( new interf_elt_menu('Diplomatie', 'diplomatie.php') );
     if( $mil )
@@ -81,14 +81,14 @@ class interf_royaume extends interf_sso_int
     $com->add( new interf_elt_menu('Propagande', 'propagande.php') );
     $com->add( new interf_elt_menu('Groupes', 'gestion_groupe.php') );
     $divers = $this->menu->add_elt( new interf_nav_deroul('Divers') );
-    $divers->add( new interf_elt_menu('Carte', 'carte.php') );
+    $divers->add( new interf_elt_menu('Affaires du royaume', 'gestion_royaume.php') );
+	  $divers->add( new interf_elt_menu('Quêtes', 'quete.php') );
     if( $roi )
     {
-	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php') );
 	    if( $non_raz )
 	    	$divers->add( new interf_elt_menu('Points de victoire', 'point_victoire.php') );
+	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php') );
 		}
-    $divers->add( new interf_elt_menu('Affaires du royaume', 'gestion_royaume.php') );
     
     $this->contenu = $this->add( new interf_bal_cont('div', 'contenu') );
     $perso = $this->contenu->add( new interf_bal_cont('header', 'royaume') );
