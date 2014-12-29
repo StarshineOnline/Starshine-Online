@@ -118,7 +118,7 @@ a:hover, a:focus
 	color: #444;
 }
 
-#carte
+#carte, .bat_drap_droite.minicarte
 {
 	color:/*#ddd*/rgba(0, 0, 0, 0.5);
 }

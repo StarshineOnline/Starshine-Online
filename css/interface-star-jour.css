@@ -121,7 +121,7 @@ a:hover, a:focus
 	color: #2F2F4F!important;
 }
 
-#carte
+#carte, .bat_drap_droite.minicarte
 {
 	color: #E7CF98;
 }

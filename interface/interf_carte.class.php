@@ -30,7 +30,11 @@ class interf_carte extends interf_tableau
   const aff_diplo_vr = 0xb00;
   const aff_diplo_sup = 0x1000;
   const act_sons = 0x2000;
+  const aff_petit = 0x4000;
+  const aff_restreint = 0x8000; // seulement batiments du royaume
   const aff_defaut = 0x2b7e;
+  /// @bug debuguer l'afficahge des royaumes pour les petites textures et le remettre ici
+  const aff_gestion = 0xc000;
   const masque_ordre = 0x30;
   const masque_diplo = 0xf00;
 
@@ -43,13 +47,17 @@ class interf_carte extends interf_tableau
   protected $infos='';
   protected $diplos=array();
   protected $races=array();
+  protected $doss_prefixe = '';
 
 	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null)
 	{
-    global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y;
-		parent::__construct($id, 'aide', 'carte_bord_haut');
+    global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y, $G_url;
+    $this->grd_img = !($options & self::aff_petit);
+		parent::__construct($id, $this->grd_img ? 'aide' : 'carte_petit', 'carte_bord_haut');
+		
+		if( strpos($G_url->get(),'roi/') >= 0)
+			$this->doss_prefixe = '../';	
 
-    $this->grd_img = true;
     // Réduction de la vue en donjon
     if( $y > 190 )
     	$champ_vision--;
@@ -105,6 +113,7 @@ class interf_carte extends interf_tableau
     while($row = $db->read_object($req))
       $calques[$row->type] = $row;
 		// Carte
+		$tex = 'decor tex'.($this->grd_img ? '' : 'l');
 		$this->cases = array();
 		for($i=$this->y_min; $i<=$this->y_max; $i++)
 		{
@@ -118,15 +127,15 @@ class interf_carte extends interf_tableau
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
 			{
 				$this->infos[$i][$j] = '';
-				$this->cases[$i][$j] = &$this->nouv_cell(null, null, 'decor tex'.$infos_cases[$j.'|'.$i]['decor']);
+				$this->cases[$i][$j] = &$this->nouv_cell(null, null, $tex.$infos_cases[$j.'|'.$i]['decor']);
         $type = $infos_cases[$j.'|'.$i]['type'];
         $pos = 'rel_'.($j-$x).'_'.($i-$y);
-        if( array_key_exists($type, $calques) )
+        if( $this->grd_img && array_key_exists($type, $calques) )
         {
           $calque = $this->cases[$i][$j]->add( new interf_bal_cont('div') );
       		$dx = (-$j + $map_type_calque->decalage_x) * 60;
       		$dy = (-$i + $map_type_calque->decalage_y) * 60;
-          $style = 'background-image: url(image/texture/'.$calques[$type]->calque.');';
+          $style = 'background-image: url('.$this->doss_prefixe.'image/texture/'.$calques[$type]->calque.');';
           $style .= ' background-attachment: scroll; background-position: '.$dx.'px '.$dy.'px;';
           $style .= ' margin: -2px; height: 62px; width: 60px; background-repeat: repeat;';
           $calque->set_attribut('style', $style);
@@ -142,10 +151,13 @@ class interf_carte extends interf_tableau
 			$this->nouv_ligne();
 
     // Perso du joueur
-    $perso = joueur::get_perso();
-    $div = $this->cases[$perso->get_y()][$perso->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-    $img = 'image/personnage'.($this->grd_img?'':'_low').'/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]['type'].'.png';
-    $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
+	  $perso = joueur::get_perso();
+    if( !($options & self::aff_restreint) )
+    {
+	    $div = $this->cases[$perso->get_y()][$perso->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	    $img = $this->doss_prefixe.'image/personnage'.($this->grd_img?'':'_low').'/'.$perso->get_race().'/'.$perso->get_race().'_'.$Tclasse[$perso->get_classe()]['type'].'.png';
+	    $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
+		}
 
     /// @todo repères
     
@@ -154,7 +166,7 @@ class interf_carte extends interf_tableau
     {
 	    if( $y > 190 ) // Calque donjon
 	    {
-	    	$image = 'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
+	    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
 	    	$c_jour = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
 	    	$c_jour->set_attribut('style', 'background-image: url('.$image.');');
 			}
@@ -162,7 +174,7 @@ class interf_carte extends interf_tableau
 			{
 				if( $options & self::aff_jour )
 				{
-		    	$image = 'image/interface/calque-atmosphere-vide-'.strtolower(moment_jour()).'.png';
+		    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-vide-'.strtolower(moment_jour()).'.png';
 		    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
 		    	$c_donj->set_attribut('style', 'background-image: url('.$image.');');
 				}
@@ -170,86 +182,95 @@ class interf_carte extends interf_tableau
 		}
 
 		
-		// conditions
-		$diplo = ($options & self::masque_diplo) >> 8;
-		if( $diplo >= 11 )
-		{
-			if( $options & self::aff_diplo_sup )
-			{
-				$cond_bat = 'royaume = '.$Trace[$perso->get_race()]['numrace'];
-				$cond_pj = 'p.race = '.$perso->get_race();
-			}
-			else
-				$cond_bat = $cond_pj = '1';
+    // Éléments à afficher
+    if( $options & self::aff_restreint )
+    {
+    	$cond_bat = 'royaume = '.$Trace[$perso->get_race()]['numrace'];
+	    $this->afficher_placements($cond_bat);
+	    $this->afficher_batiments($cond_bat, false);
 		}
 		else
 		{
-			/// @todo passer à l'objet
-			$requete = 'SELECT race FROM diplomatie WHERE '.$perso->get_race();
-			if( $options & self::aff_diplo_sup )
-				$requete .= ' <= '.$diplo.' OR '.$perso->get_race().' = 127';
-			else
-				$requete .= ' >= '.$diplo.' AND '.$perso->get_race().' != 127';
-			$req = $db->query($requete);
-			$ids = $races = array();
-			while( $row = $db->read_array() )
+			// conditions
+			$diplo = ($options & self::masque_diplo) >> 8;
+			if( $diplo >= 11 )
 			{
-				$ids[] = $Trace[$row[0]]['numrace'];
-				$races[] = '"'.$row[0].'"';
+				if( $options & self::aff_diplo_sup )
+				{
+					$cond_bat = 'royaume = '.$Trace[$perso->get_race()]['numrace'];
+					$cond_pj = 'p.race = '.$perso->get_race();
+				}
+				else
+					$cond_bat = $cond_pj = '1';
 			}
-			$cond_bat = 'royaume IN ('.implode(',', $ids).')';
-			$cond_pj = 'p.race IN ('.implode(',', $races).')';
-		}
-		
-		// Diplomatie et royaumes
-		/// @todo passer à l'objet
-		$requete = 'SELECT * FROM diplomatie WHERE race = "'.$perso->get_race().'"';
-		$req = $db->query($requete);
-		$this->diplos = $db->read_array();
-		foreach($Trace as $r=>$t)
-			$this->races[$t['numrace']] = $r;
-		
-    // Éléments à afficher
-    if( $options & self::aff_pnj )
-    	$this->afficher_pnj();
-    switch( $options & self::masque_ordre )
-    {
-    case self::aff_pcb:
-	    $this->afficher_pj($perso, $cond_pj);
-	    $this->afficher_placements($cond_bat);
-	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
-    	break;
-    case self::aff_cbp:
-	    $this->afficher_placements($cond_bat);
-	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
-	    $this->afficher_pj($perso, $cond_pj);
-    	break;
-    case self::aff_cpb:
-	    $this->afficher_placements($cond_bat);
-	    $this->afficher_pj($perso, $cond_pj);
-	    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
-    	break;
-		}
-    if( $options & self::aff_monstres  )
-      $this->afficher_monstres($niv_min, $niv_max);
-      
-    // Navigation
-    for($i=$this->y_min; $i<=$this->y_max; $i++)
-    {
-    	for($j=$this->x_min; $j<=$this->x_max; $j++)
-    	{
-    		$cont = $this->cases[$i][$j]->get_fils(0);
-        if( !$cont || $cont->get_attribut('class') != 'carte_contenu' )
-          $cont = $this->cases[$i][$j]->insert( new interf_bal_cont('a', null, 'carte_contenu') );
-        else
-        	$cont->set_balise('a');
-        $pos = 'rel_'.($j-$x).'_'.($i-$y);
-        $cont->set_attribut('href', 'informationcase.php?case='.$pos);
-        $cont->set_attribut('onclick', 'return charger(this.href);');
-        if( $this->infos[$i][$j] )
-        {
-        	$cont->set_tooltip('<ul class=\'info_bulle\'>'.$this->infos[$i][$j].'</ul>');
-        	$cont->set_attribut('data-html', 'true');
+			else
+			{
+				/// @todo passer à l'objet
+				$requete = 'SELECT race FROM diplomatie WHERE '.$perso->get_race();
+				if( $options & self::aff_diplo_sup )
+					$requete .= ' <= '.$diplo.' OR '.$perso->get_race().' = 127';
+				else
+					$requete .= ' >= '.$diplo.' AND '.$perso->get_race().' != 127';
+				$req = $db->query($requete);
+				$ids = $races = array();
+				while( $row = $db->read_array() )
+				{
+					$ids[] = $Trace[$row[0]]['numrace'];
+					$races[] = '"'.$row[0].'"';
+				}
+				$cond_bat = 'royaume IN ('.implode(',', $ids).')';
+				$cond_pj = 'p.race IN ('.implode(',', $races).')';
+			}
+			
+			// Diplomatie et royaumes
+			/// @todo passer à l'objet
+			$requete = 'SELECT * FROM diplomatie WHERE race = "'.$perso->get_race().'"';
+			$req = $db->query($requete);
+			$this->diplos = $db->read_array();
+			foreach($Trace as $r=>$t)
+				$this->races[$t['numrace']] = $r;
+				
+	    if( $options & self::aff_pnj )
+	    	$this->afficher_pnj();
+	    switch( $options & self::masque_ordre )
+	    {
+	    case self::aff_pcb:
+		    $this->afficher_pj($perso, $cond_pj);
+		    $this->afficher_placements($cond_bat);
+		    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
+	    	break;
+	    case self::aff_cbp:
+		    $this->afficher_placements($cond_bat);
+		    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
+		    $this->afficher_pj($perso, $cond_pj);
+	    	break;
+	    case self::aff_cpb:
+		    $this->afficher_placements($cond_bat);
+		    $this->afficher_pj($perso, $cond_pj);
+		    $this->afficher_batiments($cond_bat, $options & self::aff_ads);
+	    	break;
+			}
+	    if( $options & self::aff_monstres  )
+	      $this->afficher_monstres($niv_min, $niv_max);
+	      
+	    // Navigation
+	    for($i=$this->y_min; $i<=$this->y_max; $i++)
+	    {
+	    	for($j=$this->x_min; $j<=$this->x_max; $j++)
+	    	{
+	    		$cont = $this->cases[$i][$j]->get_fils(0);
+	        if( !$cont || $cont->get_attribut('class') != 'carte_contenu' )
+	          $cont = $this->cases[$i][$j]->insert( new interf_bal_cont('a', null, 'carte_contenu') );
+	        else
+	        	$cont->set_balise('a');
+	        $pos = 'rel_'.($j-$x).'_'.($i-$y);
+	        $cont->set_attribut('href', 'informationcase.php?case='.$pos);
+	        $cont->set_attribut('onclick', 'return charger(this.href);');
+	        if( $this->infos[$i][$j] )
+	        {
+	        	$cont->set_tooltip('<ul class=\'info_bulle\'>'.$this->infos[$i][$j].'</ul>');
+	        	$cont->set_attribut('data-html', 'true');
+					}
 				}
 			}
 		}
@@ -317,7 +338,7 @@ class interf_carte extends interf_tableau
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\''.$b->image.'\');');
+      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
       $race = $this->races[$b->royaume];
       $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
@@ -330,7 +351,7 @@ class interf_carte extends interf_tableau
     foreach($bats as $b)
     {
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\''.$b->image.'\');');
+      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
       $race = $this->races[$b->royaume];
       $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
@@ -371,7 +392,7 @@ class interf_carte extends interf_tableau
 	      // Camouflage
 	      $p->check_specials();
 	      $race = $p->get_race_a();
-	      $img = 'image/personnage'.($this->grd_img?'':'_low').'/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
+	      $img = $this->doss_prefixe.'image/personnage'.($this->grd_img?'':'_low').'/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
 	      $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
 			}
 			
@@ -389,7 +410,7 @@ class interf_carte extends interf_tableau
       if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
         continue;
       $div = $this->cases[ $p['y'] ][ $p['x'] ]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\'image/pnj/'.$p['image'].'.png\');');
+      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/pnj/'.$p['image'].'.png\');');
     }
   }
 
@@ -413,7 +434,7 @@ class interf_carte extends interf_tableau
 	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
 	        continue;
 	      $div = $this->cases[$row->y][$row->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-	      $div->set_attribut('style', 'background-image: url(\'image/monstre/'.$row->lib.'.png\');');
+	      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/monstre/'.$row->lib.'.png\');');
       }
     }
   }
