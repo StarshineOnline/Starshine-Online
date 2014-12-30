@@ -28,7 +28,7 @@ if(array_key_exists('q', $_GET))
 elseif(array_key_exists('a', $_GET))
 {
 	include_once(root.'interface/interf_quete.class.php');
-	$cadre->set_dialogue( new interf_achat_quete(, $royaume) );
+	$cadre->set_dialogue( new interf_achat_quete($royaume) );
 }
 else
 {
