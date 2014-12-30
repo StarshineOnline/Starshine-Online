@@ -23,14 +23,12 @@
 	protected $requis;  ///< requis pour réaliser la quete.
 	protected $star_royaume;  ///< Cout de la quete pour le royaume.
 	protected $nombre_etape;  ///< Nombre d'étape de la quete.
+	protected $description;  ///< Nombre d'étape de la quete.
 
 	/**
 	 * Constructeur
-	 * @param  $nom		nom de l'objet
-	 * @param  $type	type de l'objet (epee, hache, dos, potion_hp,… )
-	 * @param  $prix	prix de l'objet em magasin
-	 */
-	function __construct($id ='', $nom='', $fournisseur='bureau_quete', $type='g', $repetable='n', $royaume='', $requis='', $star_royaume='', $nombre_etape=0)
+	*/
+	function __construct($id ='', $nom='', $fournisseur='bureau_quete', $type='g', $repetable='non', $royaume='', $requis='', $star_royaume='', $nombre_etape=0, $description ='')
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -49,6 +47,7 @@
 			$this->requis = $requis;
 			$this->star_royaume = $star_royaume;
 			$this->nombre_etape = $nombre_etape;
+			$this->description = $description;
 
 		}
 	}	
@@ -69,6 +68,7 @@
 		$this->requis = $vals['requis'];
 		$this->star_royaume = $vals['star_royaume'];
 		$this->nombre_etape = $vals['nombre_etape'];
+		$this->description = $vals['description'];
 	}
 		
 	// Renvoie le id de l'objet
@@ -185,6 +185,42 @@
 	{
 		$this->nombre_etape = $nombre_etape;
 		$this->champs_modif[] = 'nombre_etape';
+	}
+	
+	// Renvoie la description de l'objet
+	function get_description()
+	{
+		return $this->description;
+	}
+	
+	/// Modifie la description de l'objet
+	function set_description($description)
+	{
+		$this->description = $description;
+		$this->champs_modif[] = 'description';
+	}
+	
+	function achat(&$quete, &$royaume)
+	{
+		global $db;
+	
+		//Vérifie que le royaume a assez de stars pour l'acheter
+		if($royaume->get_star() >= $quete->get_star_royaume())
+		{
+			//Ajout de la quête dans la liste des quêtes du royaume
+			$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$quete->get_id().")";
+			$req = $db->query($requete);
+			//Mis a jour des stars du royaume
+			$requete = "UPDATE royaume SET star = star - ".$quete->get_star_royaume()." WHERE ID = ".$royaume->get_id();
+			$req = $db->query($requete);
+			$cadre = new interf_dialogBS($quete->get_nom(), true, 'achat');
+			$cadre->add( new interf_bal_smpl('span', 'Vous avez bien acheté la quête'.$quete->get_nom(), false, false));
+		}
+		else
+		{
+			$cadre = new interf_dialogBS($quete->get_nom(), true, 'achat');
+			$cadre->add( new interf_bal_smpl('span', 'Votre royaume n\'a pas assez de stars pour acheter cette quête', false, false));
+		}
 	}
 
 }

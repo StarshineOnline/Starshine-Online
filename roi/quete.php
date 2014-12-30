@@ -23,10 +23,15 @@ $cadre = $G_interf->creer_royaume();
 if(array_key_exists('q', $_GET))
 {
 	include_once(root.'interface/interf_quete.class.php');
-	$cadre->set_dialogue( new interf_quete($_GET['q']) );
+	$cadre->set_dialogue( new interf_quete($_GET['q'], $royaume) );
+}
+elseif(array_key_exists('a', $_GET))
+{
+	include_once(root.'interface/interf_quete.class.php');
+	$cadre->set_dialogue( new interf_achat_quete(, $royaume) );
 }
 else
 {
-	$cadre->set_gestion( $G_interf->creer_listequete_royaume() );
+	$cadre->set_gestion( $G_interf->creer_listequete_royaume($royaume) );
 }
 ?>

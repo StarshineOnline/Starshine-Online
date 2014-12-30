@@ -10,24 +10,39 @@ include_once(root.'class/quete.class.php');
 
 class interf_quete extends interf_dialogBS
 {
-	function __construct($idquete)
+	function __construct($idquete, &$royaume)
 	{
 		$quete = new quete($idquete);
-		parent::__construct($quete->get_nom(), true, 'quete');		
-	}
+		parent::__construct($quete->get_nom(), true, 'quete');	
+		$this->add( new interf_bal_smpl('h4', 'Nom de la quête', false, false));	
+		$this->add( new interf_bal_smpl('br'));	
+		$this->add( new interf_bal_smpl('span', $quete->get_nom(), false, false));
+		$this->add( new interf_bal_smpl('br'));	
 	
+		$this->add( new interf_bal_smpl('h4', 'Description', false, false));	
+		$this->add( new interf_bal_smpl('br'));	
+		$this->add( new interf_bal_smpl('span', $quete->get_description(), false, false));	
+		$this->add( new interf_bal_smpl('br'));	
 
+		$this->add( new interf_bal_smpl('h4', 'Achat de la quete ?', false, false));	
+		$this->add( new interf_bal_smpl('br'));	
+		$this->add( new interf_lien('Acheter', $quete->achat($quete, $royaume)));
+		
+		$this->add( new interf_bal_smpl('br'));	
+	}
 }
+	
+		
 //Créer l'interface de gestion des quetes pour les rois
 
 class interf_quete_royaume extends interf_cont
 {
-	function __construct()
+	function __construct(&$royaume)
 	{
-		$this->aff_tableau();
+		$this->aff_tableau($royaume);
 	}
 	
-	protected function aff_tableau()
+	protected function aff_tableau(&$royaume)
 	{
 		global $db, $ress;
 		$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
@@ -38,7 +53,7 @@ class interf_quete_royaume extends interf_cont
 		$tbl->nouv_cell('Cout');
 		
 		//on charge toutes les quetes
-		$requete = "SELECT id FROM quete";
+		$requete = "SELECT * FROM quete WHERE star_royaume > 0 AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().")";
 		$req = $db->query($requete);
 		
 		//var_dump($liste);

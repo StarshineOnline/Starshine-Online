@@ -19,6 +19,7 @@ if( $perso->get_rang() != 6 && $royaume->get_ministre_economie() != $perso->get_
 
 $cadre = $G_interf->creer_royaume();
 
+// utile ?
 function ressource($nom)
 {
 	$ressource['Pierre'] = 18;

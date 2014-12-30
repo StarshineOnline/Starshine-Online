@@ -123,3 +123,27 @@
 	width: 50px;
 	margin: 4px;
 }
+
+#tbl_entretien  tfoot tr:last-child, #tbl_recettes  tfoot tr:last-child
+{
+	font-weight: bold;
+}
+
+#tbl_entretien  tfoot tr:nth-last-child(-n+3)
+{
+	font-style: italic;
+}
+
+#evol_recettes
+{
+	width:900px;
+	height:300px;
+	margin: 5px 50px;
+}
+
+#repart_recettes
+{
+	width:900px;
+	height:600px;
+	margin: 5px 50px;
+}
