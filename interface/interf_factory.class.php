@@ -693,6 +693,15 @@ class interf_factory
   {
   	return new interf_batiments_ville($royaume, $action);
 	}
+
+	
+  ///
+  function creer_listequete_royaume(&$royaume)
+  {
+	include_once(root.'interface/interf_quete.class.php');
+  	return new interf_quete_royaume($royaume);
+  	}
+
   ///
   function creer_entretien($royaume, $onglet='balance')
   {
@@ -717,6 +726,7 @@ class interf_factory
   {
     include_once(root.'interface/interf_entretien.class.php');
   	return new interf_repart_gains($royaume);
+
 	}
   ///
   function creer_bat_drap($royaume, $onglet='invasions', $x=false, $y=false)
