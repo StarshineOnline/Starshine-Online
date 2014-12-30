@@ -16,13 +16,14 @@ class interf_carte_monde extends interf_bal_cont
 	protected $y_min;
 	protected $y_max;
 	protected $options = false;
+	protected $cases = array();
 	function __construct($id=false, $classe=false)
 	{
 		parent::__construct('div', $id, $classe);
 	}
 	function aff_svg($lim_vue=false)
 	{
-		global $G_max_x, $G_max_y;
+		global $G_max_x, $G_max_y, $G_url;
 		
 		if( $lim_vue )
 		{
@@ -43,6 +44,8 @@ class interf_carte_monde extends interf_bal_cont
 			$this->x_max = $G_max_x;
 			$this->y_max = $G_max_y;
 		}
+		if( strpos($G_url->get(), 'roi/') > 0 )
+			$lien = '../'.$lien;
 		$taille = ($lim_vue ? $lim_vue*2 + 1 : $G_max_x) * self::taille_case;
 		$this->svg = $this->add( new interf_bal_cont('svg', $this->options ? 'carte_monde' : false) );
 		$this->svg->set_attribut('width', $taille.'px');
@@ -84,6 +87,8 @@ class interf_carte_monde extends interf_bal_cont
 		foreach($groupe->membre_joueur as $membre)
 		{
 			$ind = $membre->get_x().'-'.$membre->get_y();
+			if( in_array($ind, $this->cases) )
+				break;
 			$soi = $membre->get_id() == $perso->get_id();
 			if( array_key_exists($ind, $membres) )
 			{
@@ -95,6 +100,7 @@ class interf_carte_monde extends interf_bal_cont
 		}
 		foreach($membres as $c=>$m)
 		{
+			$this->cases[] = $c;
 			$x = ($m['x'] - $this->x_min) * self::taille_case;
 			$y = ($m['y'] - $this->y_min) * self::taille_case;
 			$classe = $m['soi'] ? 'carte_perso' : 'carte_groupe';
@@ -132,6 +138,63 @@ class interf_carte_monde extends interf_bal_cont
 		$this->ajout_option('Trolls', 'trolls');
 		$this->ajout_option('Vampires', 'vampires');
 		$this->ajout_option('Monstres', 'monstres');
+	}
+	function aff_habitants(&$royaume, $taille=3)
+	{
+		if( !$this->svg )
+			return;
+		$perso = joueur::get_perso();
+		$habitants = perso::create(false, false, 'id', false, 'race = "'.$royaume->get_race().'" AND statut = "actif" AND level > 0 AND x < 190 AND y < 190');
+		$membres = array();
+		foreach($habitants as $hab)	
+		{
+			$ind = $hab->get_x().'-'.$hab->get_y();
+			if( in_array($ind, $this->cases) )
+				break;
+			$soi = $hab->get_id() == $perso->get_id();
+			if( array_key_exists($ind, $membres) )
+			{
+				$membres[$ind]['persos'][] = $hab->get_nom();
+				$membres[$ind]['soi'] |= $soi;
+			}
+			else
+				$membres[$ind] = array('x'=>$hab->get_x(), 'y'=>$hab->get_y(), 'soi'=>$soi, 'persos'=>array( $hab->get_nom() ));
+		}
+		foreach($membres as $c=>$m)
+		{
+			$this->cases[] = $c;
+			$x = ($m['x'] - $this->x_min) * self::taille_case;
+			$y = ($m['y'] - $this->y_min) * self::taille_case;
+			$classe = $m['soi'] ? 'carte_perso' : 'carte_groupe';
+			$rect = $this->svg->add( new interf_bal_smpl('rect', null, false, $classe) );
+			$rect->set_attribut('x', $x.'px');
+			$rect->set_attribut('y', $y.'px');
+			$rect->set_attribut('width', self::taille_case.'px');
+			$rect->set_attribut('height', self::taille_case.'px');
+			$rect->set_tooltip( implode(', ', $m['persos']) );
+		}
+	}
+	function aff_batiments(&$royaume, $taille=3)
+	{
+		if( !$this->svg )
+			return;
+		$batiments = construction::create(false, false, 'id', false, 'royaume = "'.$royaume->get_id().'" AND type != "arme_de_siege" AND x < 190 AND y < 190');
+		foreach($batiments as $b)	
+		{
+			$ind = $b->get_x().'-'.$b->get_y();
+			if( in_array($ind, $this->cases) )
+				break;
+			$this->cases[] = $c;
+			$x = ($b->get_x() - $this->x_min) * self::taille_case;
+			$y = ($b->get_y() - $this->y_min) * self::taille_case;
+			$classe = 'carte_'.$b->get_type();
+			$rect = $this->svg->add( new interf_bal_smpl('rect', null, false, $classe) );
+			$rect->set_attribut('x', $x.'px');
+			$rect->set_attribut('y', $y.'px');
+			$rect->set_attribut('width', self::taille_case.'px');
+			$rect->set_attribut('height', self::taille_case.'px');
+			$rect->set_tooltip( $b->get_nom() );
+		}
 	}
 	protected function ajout_option($nom, $id)
 	{

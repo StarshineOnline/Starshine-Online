@@ -245,3 +245,34 @@
 	padding-right: 7px;
 	margin-left: -5px;
 }
+
+/* carte */
+#carte
+{
+	margin-left: 200px;
+}
+
+.carte_mur
+{
+	fill: rgb(0, 0, 0);
+}
+
+.carte_tour
+{
+	fill: rgb(0, 255, 255);
+}
+
+.carte_bourg
+{
+	fill: rgb(255, 0, 200);
+}
+
+.carte_mine
+{
+	fill: rgb(255, 50, 150);
+}
+
+.carte_fort
+{
+	fill: rgb(100, 0, 255);
+}

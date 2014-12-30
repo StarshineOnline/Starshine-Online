@@ -19,7 +19,7 @@ if( !$lieu && $batiment = verif_batiment($perso->get_x(), $perso->get_y(), $roya
 		$lieu = $bourg->has_bonus('royaume');
 	}
 }
-if( ($perso->get_rang() != 6 && $perso->get_rang() != 1) || $royaume->is_raz() || !$lieu || $perso->get_hp() <= 0 )
+if( ($perso->get_rang() != 6 && $perso->get_rang() != 1) || !$lieu || $perso->get_hp() <= 0 )
 {
 	/// @todo logguer triche
 	exit;
