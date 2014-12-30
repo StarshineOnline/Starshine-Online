@@ -753,6 +753,11 @@ class interf_factory
     include_once(root.'interface/interf_bat_drap.class.php');
   	return new interf_bd_depot($royaume, $x, $y);
 	}
+  ///
+  function creer_boutique_mil(&$royaume, $action=false)
+  {
+  	return new interf_boutique_mil($royaume, $action);
+	}
 }
 
 class interf_factory_shine extends interf_factory

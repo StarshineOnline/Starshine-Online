@@ -224,3 +224,24 @@
 {
 	text-align: right;
 }
+
+/* boutique militaire */
+#boutique_militaire form
+{
+	width: 100px;
+	margin: 0px;
+}
+
+#boutique_militaire input
+{
+	height: 25px;
+	padding-right: 2px;
+}
+
+#boutique_militaire a.btn
+{
+	height: 25px;
+	line-height: 10px;
+	padding-right: 7px;
+	margin-left: -5px;
+}
