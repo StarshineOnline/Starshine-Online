@@ -728,6 +728,41 @@ class interf_factory
   	return new interf_repart_gains($royaume);
 
 	}
+  ///
+  function creer_bat_drap($royaume, $onglet='invasions', $x=false, $y=false)
+  {
+  	return new interf_bat_drap($royaume, $onglet, $x, $y);
+	}
+  function creer_bd_invasions(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_invasions($royaume, $x, $y, $x, $y);
+	}
+  function creer_bd_constructions(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_constructions($royaume, $x, $y);
+	}
+  function creer_bd_ads(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_ads($royaume, $x, $y);
+	}
+  function creer_interf_bd_drapeaux(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_drapeaux($royaume, $x, $y);
+	}
+  function creer_bd_batiments(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_batiments($royaume, $x, $y);
+	}
+  function creer_bd_depot(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_depot($royaume, $x, $y);
+	}
 }
 
 class interf_factory_shine extends interf_factory

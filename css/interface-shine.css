@@ -221,7 +221,7 @@ a:hover, a:focus
 	border-color: #0F056B;
 }
 
-#cadre_gauche
+#cadre_gauche, .bat_drap_droite.minicarte
 {
 	background: url('../image/v2/map.png');
 }

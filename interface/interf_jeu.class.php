@@ -264,6 +264,12 @@ class interf_jeu_ajax extends interf_princ_ob
 		$fils->add_js();
     return $cont->add($fils);
 	}
+	function add_section($id, $fils)
+	{
+    $cont = $this->add( new interf_bal_cont('section', $id) );
+		$fils->add_js();
+    return $cont->add($fils);
+	}
   function maj_royaume($complet=false)
 	{
 		global $db;

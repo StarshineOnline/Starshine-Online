@@ -1115,6 +1115,12 @@ p.accueil a
   display: block;
 }
 
+.carte_petit .carte_contenu
+{
+  width:28px;
+  height:28px;
+}
+
 #carte a:hover
 {
 	background-color: initial !important;

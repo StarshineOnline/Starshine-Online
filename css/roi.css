@@ -61,11 +61,13 @@
 .star {background:transparent url('../image/icone/ressources_star.png') no-repeat;}
 .nourriture, .food {background:transparent url('../image/icone/ressources_nourriture.png') no-repeat;}
 
+/* Communs */
 .ongl_gest
 {
 	width: 1000px;
 }
 
+/* Bourse */
 #bourse
 {
 	margin-bottom: 10px;
@@ -76,16 +78,19 @@
 	margin: 5px;
 }
 
+/* Échanges */
 #echanges_royaumes tr>td:first-child, #echanges_royaumes tr>th:first-child
 {
 	width: 16px;
 }
 
+/* Ressources */
 #dlg_ressources
 {
 	width: 940px;
 }
 
+/* Batiments de la ville */
 #batiments_ville .info_case
 {
 	height: 60px;
@@ -124,6 +129,7 @@
 	margin: 4px;
 }
 
+/* Entretien */
 #tbl_entretien  tfoot tr:last-child, #tbl_recettes  tfoot tr:last-child
 {
 	font-weight: bold;
@@ -146,4 +152,75 @@
 	width:900px;
 	height:600px;
 	margin: 5px 50px;
+}
+
+/* Batiments hors ville */
+#bat_drap tr th:first-child, #bat_drap tr td:first-child
+{
+	width: 16px;
+}
+
+#bat_drap div.jauge_case
+{
+	float: none;
+  width: 20px;
+  height: 20px;
+}
+
+#bat_drap table.dataTable td:last-child a
+{
+	padding-right: 10px;
+	font-size: 18px;
+}
+
+.bat_drap_gauche
+{
+	width: 630px;
+	border-right: dashed 1px white;
+}
+
+.bat_drap_droite
+{
+	width: 360px;
+	position: absolute;
+	right: 5px;
+}
+
+.bat_drap_droite.minicarte
+{
+	top: 190px;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.minicarte table
+{
+	width: 350px;
+}
+
+.minicarte td
+{
+	width: 30px !important;
+	height: 30px !important;
+}
+
+.minicarte th
+{
+	width: 20px !important;
+	height: 30px !important;
+}
+
+.minicarte thead th
+{
+	width: 30px !important;
+}
+
+.minicarte th
+{
+	font-size: 10px;
+}
+
+.minicarte tbody th
+{
+	text-align: right;
 }
