@@ -768,6 +768,17 @@ class interf_factory
   {
   	return new interf_boutique_mil($royaume, $action);
 	}
+  /// Gestion de la diplomatie
+  function creer_gest_diplo(&$royaume, $change=false)
+  {
+  	return new interf_gest_diplo($royaume, $change);
+	}
+  /// Gestion de la diplomatie
+  function creer_demande_diplo(&$royaume)
+  {
+    include_once(root.'interface/interf_gest_diplo.class.php');
+  	return new interf_demande_diplo($royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory
@@ -787,5 +798,11 @@ class interf_factory_shine extends interf_factory
     include_once(root.'interface/interf_gauche.class.php');
     return new interf_cadre_carte_shine($carte);
   }
+  /// Gestion de la diplomatie
+  function creer_gest_diplo(&$royaume, $change=false)
+  {
+    include_once(root.'interface/interf_gest_diplo.class.php');
+  	return new interf_gest_diplo_shine($royaume, $change);
+	}
 }
 ?>

@@ -276,3 +276,16 @@
 {
 	fill: rgb(100, 0, 255);
 }
+
+/* diplomatie */
+
+#dlg_choix_diplo
+{
+	width: 700px;
+}
+
+#demande_diplo .info_case a
+{
+	padding-top: 2px;
+	font-size: 25px;
+}
