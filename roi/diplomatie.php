@@ -24,7 +24,7 @@ if( $perso->get_rang() != 6 && $perso->get_rang() != 1 )
 	/// @todo logguer triche
 	exit;
 }
-$change = ($perso->get_rang() == 6 || $royaume->get_ministre_militaire() == $perso->get_id()) && $lieu && $perso->get_hp() > 0;
+$change = ($perso->get_rang() == 6 || $royaume->get_ministre_militaire() == $perso->get_id()) && $lieu && $perso->get_hp() > 0 && !$royaume->is_raz();
 
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 

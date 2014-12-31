@@ -773,7 +773,6 @@ class interf_factory
   {
   	return new interf_gest_diplo($royaume, $change);
 	}
-  /// Gestion de la diplomatie
   function creer_demande_diplo(&$royaume)
   {
     include_once(root.'interface/interf_gest_diplo.class.php');

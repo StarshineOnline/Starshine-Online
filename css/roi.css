@@ -289,3 +289,15 @@
 	padding-top: 2px;
 	font-size: 25px;
 }
+
+/* mot du roi et propagande */
+
+.editeur
+{
+	width: 100%;
+}
+
+.editeur-texte
+{
+	height: 400px;
+}

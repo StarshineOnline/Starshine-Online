@@ -2230,7 +2230,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	float: right;
 }
 
-#messagerie .editeur
+/*#messagerie*/ .editeur
 {
 	margin: 2px;
 	width: 464px;
@@ -2239,19 +2239,19 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	border: 1px solid;
 }
 
-#messagerie .editeur .editeur-outils
+/*#messagerie*/ .editeur .editeur-outils
 {
 	margin: 0;
 	background-color: rgba(255, 255, 255, 0.5);
 	border-bottom: 1px solid;
 }
 
-#messagerie .editeur .btn-group
+/*#messagerie*/ .editeur .btn-group
 {
 	margin: 0;
 }
 
-#messagerie .editeur-texte
+/*#messagerie*/ .editeur-texte
 {
 	width: 100%;
 	height: 150px;
