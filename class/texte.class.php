@@ -30,6 +30,7 @@ class texte
   const msg_monde = 0x86;   ///< message du monde
   const msg_roi = 0x46;   ///< message du roi
   const msg_roi_modif = 0x42;   ///< message du roi sans les balises non gérées par l'éditeur
+  const msg_propagande = 0x42;   ///< propagande
   const pnj = 0x3bf;   ///< textes des PNJ
   const cases = 0x3bf;   ///< textes des cases
   const tutoriel = 0x3b8;   ///< textes des tutoriels

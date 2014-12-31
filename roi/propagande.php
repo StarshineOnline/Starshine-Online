@@ -2,32 +2,53 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require_once('haut_roi.php');
-include_once(root.'fonction/messagerie.inc.php');
+//Connexion obligatoire
+$connexion = true;
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
 
-if($joueur->get_rang_royaume() != 6)
+
+$perso = joueur::get_perso();
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+if( $perso->get_rang() != 6 && $perso->get_rang() != 1 )
 {
-	echo '<p>Cette page vous est interdite</p>';
-	exit();
+	/// @todo logguer triche
+	exit;
 }
-elseif(array_key_exists('message', $_GET))
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+switch($action)
 {
-	if ($_GET['message'] != '')
+case 'modifier':
+	if($_POST['texte'])
 	{
-		$royaume->set_propagande(sSQL($_GET['message']));
-		echo '<h6>Propagande bien modifiée !</h6>';
+		$royaume->set_propagande(sSQL($_POST['texte']));
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'Propagande bien modifiée !');
 	}
 	else
-	{
-		echo '<h5>Vous n\'avez pas saisi de message</h5>';
-	}
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message !');
+	break;
 }
-	echo "<div id='propagande'>";
-	//Message actuel
-	$royaume->get_motk();
-	$message = transform_texte($royaume->motk->get_propagande());
 
-	$message = str_replace('[br]', '<br />', $message);
+$cadre = $G_interf->creer_royaume();
+
+
+
+$cont = $cadre->set_gestion( new interf_bal_cont('div') );
+interf_alerte::aff_enregistres($cont);
+$cont->add( new interf_bal_smpl('h4', 'Message du roi') );
+$editeur = $cont->add( new interf_editeur('mot_roi', $G_url->get('action', 'modifier'), false, 'editeur', interf_editeur::mot_roi) );
+$mot = $royaume->get_motk();
+if( $mot )
+{
+	$texte = new texte($mot->get_propagande(), texte::msg_propagande);
+	$editeur->set_texte( $texte->parse() );
+}
+$cadre->maj_tooltips();
+
+
+
+/*
 	//$message = $amessage.$message;
 	$message = preg_replace("`\[img\]([^[]*)\[/img\]`i", '<img src=\\1 title="\\1">`', $message );
 	$message = preg_replace("`\[b\]([^[]*)\[/b\]`i", '<strong>\\1</strong>`', $message );
@@ -36,21 +57,6 @@ elseif(array_key_exists('message', $_GET))
 	$message = str_ireplace("[/color]", "</span>", $message);
 	$regCouleur = "`\[color= ?(([[:alpha:]]+)|(#[[:digit:][:alpha:]]{6})) ?\]`i";
 	$message = preg_replace($regCouleur, "<span style=\"color: \\1\">", $message);
+*/
 
-	if (empty($message)){$message = "Aucune propagande pour l'instant";}
-	echo "<fieldset>";
-	echo "<legend>Propagande actuelle</legend>
-	<div id='message_propagande' onclick=\"$('#message_propagande_edit').show();$('#message_propagande').hide();\">
-	".$message."
-	</div>";
-	?>
-	<div id='message_propagande_edit' style='display:none;'>
-        <form method="post" action="propagande.php?direction=propagande" id="formPropagande">
-			<textarea name="message" id="message" cols="90" rows="12"><?php echo htmlspecialchars(stripslashes($royaume->motk->get_propagande())); ?></textarea><br />
-			<input type="button" value="Envoyer" onclick="envoiInfo('propagande.php?message='+encodeURIComponent($('#message').val()), 'contenu_jeu');" />
-		</form>
-	</div>
-	
-	</fieldset>
-	</div>
-
+?>

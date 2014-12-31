@@ -22,7 +22,6 @@ switch($action)
 case 'modifier':
 	if($_POST['texte'])
 	{
-my_dump($royaume);
 		$royaume->set_motk(sSQL($_POST['texte']));
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Message du roi bien modifié !');
 	}
