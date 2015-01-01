@@ -183,7 +183,7 @@ class interf_messages extends interf_cont
 
 class interf_nouveau_message extends interf_form
 {
-	function __construct($type)
+	function __construct($type, $id=null)
 	{
 		global $G_url;
 		$G_url->add('type', $type);
@@ -193,9 +193,18 @@ class interf_nouveau_message extends interf_form
 		if( $type == 'perso' )
 		{
 			$div_dest = $this->add( new interf_bal_cont('div', false, 'form-group') );
-			$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', false, false, 'form-control') );
-			$dest->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion\', this.id);');
-			$div_dest->add( new interf_bal_cont('div', 'suggestion') );
+			if( $id )
+			{
+				$perso = new perso($id);
+				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', $perso->get_nom(), false, 'form-control') );
+				$dest->set_attribut('disabled', 'disabled');
+			}
+			else
+			{
+				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', false, false, 'form-control') );
+				$dest->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion\', this.id);');
+				$div_dest->add( new interf_bal_cont('div', 'suggestion') );
+			}
 		}
 		$div_texte = $this->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_texte->add( new interf_bal_smpl('label', 'Message') );

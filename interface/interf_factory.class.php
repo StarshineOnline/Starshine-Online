@@ -503,10 +503,10 @@ class interf_factory
     include_once(root.'interface/interf_messagerie.class.php');
     return new interf_liste_messages($perso, $type, $id_sujet, $page);
   }
-  function creer_nouveau_message($type)
+  function creer_nouveau_message($type, $id=null)
   {
     include_once(root.'interface/interf_messagerie.class.php');
-    return new interf_nouveau_message($type);
+    return new interf_nouveau_message($type, $id);
   }
   function creer_echanges(&$perso, $actions=false)
   {
@@ -777,6 +777,26 @@ class interf_factory
   {
     include_once(root.'interface/interf_gest_diplo.class.php');
   	return new interf_demande_diplo($royaume);
+	}
+  /// Gestion des groupes
+  function creer_roi_groupe(&$royaume, $onglet='royaume')
+  {
+  	return new interf_roi_groupe($royaume, $onglet);
+	}
+  function creer_roi_groupe_roy(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_roy($royaume);
+	}
+  function creer_roi_groupe_ext(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_ext($royaume);
+	}
+  function creer_roi_groupe_sans(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_sans($royaume);
 	}
 }
 

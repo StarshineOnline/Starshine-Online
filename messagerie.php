@@ -47,8 +47,9 @@ case 'lire':
 	$interf_princ->maj_perso(true);
 	break;
 case 'nouveau':
+	$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
-	$cadre->add( $G_interf->creer_nouveau_message($type) );
+	$cadre->add( $G_interf->creer_nouveau_message($type, $id) );
 	exit;
 case 'nouveau_sujet':
 	if( !array_key_exists('titre', $_POST) || !$_POST['titre'] )

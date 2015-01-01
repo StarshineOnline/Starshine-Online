@@ -155,7 +155,7 @@
 }
 
 /* Batiments hors ville */
-#bat_drap tr th:first-child, #bat_drap tr td:first-child
+#bat_drap tr th:first-child, #bat_drap tr td:first-child, #groupes_etrangers tr th:first-child, #groupes_etrangers tr td:first-child, #groupes_sans tr th:first-child, #groupes_sans tr td:first-child
 {
 	width: 16px;
 }
