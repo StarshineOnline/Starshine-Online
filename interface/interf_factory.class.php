@@ -798,6 +798,11 @@ class interf_factory
     include_once(root.'interface/interf_roi_groupe.class.php');
   	return new interf_roi_groupe_sans($royaume);
 	}
+  /// Gestion des points de victoire
+  function creer_points_victoire($action=true)
+  {
+  	return new interf_points_victoire($action);
+	}
 }
 
 class interf_factory_shine extends interf_factory

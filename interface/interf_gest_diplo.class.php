@@ -1,7 +1,7 @@
 <?php
 /**
  * @file interf_gest_diplo.class.php
- * Interface de la bourse des royaume 
+ * Interface de gestion de la diplomatie
  */ 
 
 class interf_gest_diplo extends interf_data_tbl

@@ -2,80 +2,84 @@
 if (file_exists('../root.php'))
   include_once('../root.php');
 
-require_once('haut_roi.php');
-include_once(root.'fonction/messagerie.inc.php');
+//Connexion obligatoire
+$connexion = true;
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
 
-if($joueur->get_rang_royaume() != 6)
-	echo '<p>Cette page vous est interdite</p>';
-elseif(array_key_exists('action', $_GET))
+
+$perso = joueur::get_perso();
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+if( $perso->get_rang() != 6 || $royaume->is_raz() )
 {
-	$action = new point_victoire_action($_GET['action']);
-	if($royaume->get_point_victoire() >= $action->get_cout())
+	/// @todo logguer triche
+	exit;
+}
+
+$lieu = verif_ville($perso->get_x(), $perso->get_y(), $royaume->get_id());
+if( !$lieu && $batiment = verif_batiment($perso->get_x(), $perso->get_y(), $royaume->get_id()) )
+{
+	if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg')
 	{
-		$persos = "SELECT id FROM perso WHERE race = '".$royaume->get_race()."' AND statut = 'actif'";
+		$bourg = new batiment($batiment['id_batiment']);
+		$lieu = $bourg->has_bonus('royaume');
+	}
+}
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+
+$cadre = $G_interf->creer_royaume();
+
+if( $action && $lieu && $perso->get_hp()>0 )
+{
+	switch($action)
+	{
+	case 'utilise':
+		$action = new point_victoire_action($_GET['id']);
+		/// @todo passer à l'objet
+		if($royaume->get_point_victoire() >= $action->get_cout())
+		{
+			$persos = "SELECT id FROM perso WHERE race = '".$royaume->get_race()."' AND statut = 'actif'";
+		}
+		else
+		{
+				interf_alerte::enregistre(interff_alerte::msg_erreur, 'Vous n\'avez pas assez de point de victoire');
+				break;
+		}
 		switch($action->get_type())
 		{
 			case 'famine' :
 				$requete = "DELETE FROM buff WHERE type = 'famine' AND id_perso IN ($persos)";
 				$db->query($requete);
-				echo '<h6>La famine a bien été supprimée</h6>';
-			break;
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'La famine a bien été supprimée');
+				break;
 			case 'remove_buff' :
 				$requete = "DELETE FROM buff WHERE type = '".$action->get_type_buff()."' AND id_perso IN ($persos)";
 				$db->query($requete);
-				echo '<h6>'.$action->get_type_buff().' a bien été supprimé(e)</h6>';
-			break;
+				interf_alerte::enregistre(interf_alerte::msg_succes, $action->get_type_buff().' a bien été supprimé(e)');
+				break;
 			case 'remove_buffs' :
 				$requete = "DELETE FROM buff WHERE type IN (".$action->get_type_buff().") AND id_perso IN ($persos)";
 				$db->query($requete);
-				echo '<h6>'.$action->get_type_buff().' a bien été supprimé(e)</h6>';
-			break;
+				interf_alerte::enregistre(interf_alerte::msg_succes, $action->get_type_buff().' a bien été supprimé(e)');
+				break;
 			case 'buff' :
-			  
 			  $requete = "INSERT INTO buff(`type`, `effet`, `effet2`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`)
 								SELECT '".$action->get_type_buff()."', ".$action->get_effet().", 0, ".(time()+$action->get_duree()).", ".$action->get_duree().", id, '".$action->get_nom()."', '".addslashes($action->get_description())."', 1, 0
                 FROM ($persos) persos";
 				$db->query($requete);
-			  echo '<h6>Votre royaume bénéficie maintenant du buff : '.$action->get_nom().'</h6>';
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre royaume bénéficie maintenant du buff : '.$action->get_nom());
 			break;
 		}
 		$royaume->set_point_victoire($royaume->get_point_victoire() - $action->get_cout());
 		$royaume->sauver();
+		$cadre->maj_royaume();
+		break;
 	}
-	else echo '<h5>Vous n\'avez pas assez de point de victoire</h5>';
 }
-else
-{
-?>
-<div id='point_victoire'>
-	Point de victoire : <?php echo $royaume->get_point_victoire(); ?>
-	<table>
-	<tr>
-		<td>Nom</td>
-		<td>Coût</td>
-		<td>Description</td>
-	</tr>
-	<?php
-	$actions = point_victoire_action::create(0, 0);
-	foreach($actions as $action)
-	{	
-		$duree_j = floor($action->get_duree() / (3600 * 24));
-		$duree_h = floor(($action->get_duree() - ($duree_j * 3600 * 24)) / 3600);
-		$duree_m = floor(($action->get_duree() - ($duree_j * 3600 * 24) - ($duree_h * 3600)) / 60);
-		
-		if($action->get_type() == 'buff') $description = 'Buff l\'ensemble des joueurs de votre royaume avec : "'.$action->get_description().'"<br/>
-															Durée : '.$duree_j.'j '.$duree_h.'h '.$duree_m.'m <br />';
-		else $description = $action->get_description();
-		echo '
-		<tr>
-			<td><a href="point_victoire.php?action='.$action->get_id().'" onclick="return envoiInfo(this.href, \'contenu_jeu\');">'.$action->get_nom().'</a></td>
-			<td>'.$action->get_cout().'</td>
-			<td>'.$description.' </td>
-		</tr>';
-	}
-	?>
-	</table>
-</div>
-<?php
-}
+
+$cont = $cadre->set_gestion( new interf_bal_cont('div') );
+interf_alerte::aff_enregistres($cont);
+$cont->add( $G_interf->creer_points_victoire($lieu && $perso->get_hp()>0) );
+$cadre->maj_tooltips();
+
 ?>
