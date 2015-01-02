@@ -53,41 +53,41 @@ class interf_royaume extends interf_sso_int
     if( $eco && $non_raz )
     {
 	    $rsrc = $this->menu->add_elt( new interf_nav_deroul('Ressources') );
-	    $rsrc->add( new interf_elt_menu('Bourse', 'bourse.php') );
-	    $rsrc->add( new interf_elt_menu('Échanges', 'echanges.php') );
-	    $rsrc->add( new interf_elt_menu('Ressources', 'ressources.php') );
-	    $rsrc->add( new interf_elt_menu('Mines', 'mine.php') );
+	    $rsrc->add( new interf_elt_menu('Bourse', 'bourse.php', 'return charger(this.href);') );
+	    $rsrc->add( new interf_elt_menu('Échanges', 'echanges.php', 'return charger(this.href);') );
+	    $rsrc->add( new interf_elt_menu('Ressources', 'ressources.php', 'return charger(this.href);') );
+	    $rsrc->add( new interf_elt_menu('Mines', 'mine.php', 'return charger(this.href);') );
 	    $economie = $this->menu->add_elt( new interf_nav_deroul('Économie') );
-	    $economie->add( new interf_elt_menu('Bâtiments de la ville', 'batiments_ville.php') );
-	    $economie->add( new interf_elt_menu('Entretien', 'entretien.php') );
-	    $economie->add( new interf_elt_menu('Gestion des taxes', 'taxe.php') );
+	    $economie->add( new interf_elt_menu('Bâtiments de la ville', 'batiments_ville.php', 'return charger(this.href);') );
+	    $economie->add( new interf_elt_menu('Entretien', 'entretien.php', 'return charger(this.href);') );
+	    $economie->add( new interf_elt_menu('Gestion des taxes', 'taxe.php', 'return charger(this.href);') );
 	    if( $roi && $capitale && $vivant )
-	    	$economie->add( new interf_elt_menu('Drapeaux', 'drapeaux.php') );
+	    	$economie->add( new interf_elt_menu('Drapeaux', 'drapeaux.php', 'return charger(this.href);') );
 		}
     $militaire = $this->menu->add_elt( new interf_nav_deroul('Militaire') );
     if( $lieu && $vivant )
-    	$militaire->add( new interf_elt_menu('Bâtiments hors ville', 'construction.php') );
+    	$militaire->add( new interf_elt_menu('Bâtiments hors ville', 'construction.php', 'return charger(this.href);') );
     if( $non_raz )
     {
-	    $militaire->add( new interf_elt_menu('Boutique militaire', 'boutique_militaire.php') );
+	    $militaire->add( new interf_elt_menu('Boutique militaire', 'boutique_militaire.php', 'return charger(this.href);') );
 	    if( $mil )
-	    	$militaire->add( new interf_elt_menu('Batailles', 'gestion_bataille.php') );
+	    	$militaire->add( new interf_elt_menu('Batailles', 'gestion_bataille.php', 'return charger(this.href);') );
 		}
-    $militaire->add( new interf_elt_menu('Carte', 'carte.php') );
+    $militaire->add( new interf_elt_menu('Carte', 'carte.php', 'return charger(this.href);') );
     $com = $this->menu->add_elt( new interf_nav_deroul('Communication') );
-    $com->add( new interf_elt_menu('Diplomatie', 'diplomatie.php') );
+    $com->add( new interf_elt_menu('Diplomatie', 'diplomatie.php', 'return charger(this.href);') );
     if( $mil )
-    	$com->add( new interf_elt_menu('Mot du roi', 'motk.php') );
-    $com->add( new interf_elt_menu('Propagande', 'propagande.php') );
-    $com->add( new interf_elt_menu('Groupes', 'gestion_groupe.php') );
+    	$com->add( new interf_elt_menu('Mot du roi', 'motk.php', 'return charger(this.href);') );
+    $com->add( new interf_elt_menu('Propagande', 'propagande.php', 'return charger(this.href);') );
+    $com->add( new interf_elt_menu('Groupes', 'gestion_groupe.php', 'return charger(this.href);') );
     $divers = $this->menu->add_elt( new interf_nav_deroul('Divers') );
-    $divers->add( new interf_elt_menu('Affaires du royaume', 'gestion_royaume.php') );
-	  $divers->add( new interf_elt_menu('Quêtes', 'quete.php') );
+    $divers->add( new interf_elt_menu('Affaires du royaume', 'gestion_royaume.php', 'return charger(this.href);') );
+	  $divers->add( new interf_elt_menu('Quêtes', 'quete.php', 'return charger(this.href);') );
     if( $roi )
     {
 	    if( $non_raz )
-	    	$divers->add( new interf_elt_menu('Points de victoire', 'point_victoire.php') );
-	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php') );
+	    	$divers->add( new interf_elt_menu('Points de victoire', 'point_victoire.php', 'return charger(this.href);') );
+	    $divers->add( new interf_elt_menu('Criminels', 'criminels.php', 'return charger(this.href);') );
 		}
     
     $this->contenu = $this->add( new interf_bal_cont('div', 'contenu') );
