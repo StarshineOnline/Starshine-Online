@@ -15,17 +15,32 @@ class interf_messagerie extends interf_onglets
 		$url->add('ajax', 2);
 		$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
 		$non_lu = $messagerie->get_non_lu();
-		if( !$type )
-			$type = $perso->get_groupe() ? 'groupe' : 'perso';
+		switch( $type )
+		{
+		case null:
+			$onglet = $type = $perso->get_groupe() ? 'groupe' : 'perso';
+			break;
+		case 'perso':
+		case 'groupe':
+		case 'diplo':
+			$onglet = $type;
+			break;
+		default:
+			$onglet = 'royaume';
+		}
 		
 		if( $perso->get_groupe() )
-			$this->add_onglet('Groupe'.($non_lu['groupe']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'groupe'), 'onglet_groupe', 'invent', $type=='groupe');
-		$this->add_onglet('Perso'.($non_lu['perso']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'perso'), 'onglet_perso', 'invent', $type=='perso');
+			$this->add_onglet('Groupe'.($non_lu['groupe']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'groupe'), 'onglet_groupe', 'invent', $onglet=='groupe');
+		$this->add_onglet('Perso'.($non_lu['perso']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'perso'), 'onglet_perso', 'invent', $onglet=='perso');
+		/*if( $perso->get_groupe() || $perso->get_rang() == 6 || $perso->get_rang() == 1 )
+			$this->add_onglet('Royaume'.($non_lu['royaume']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'royaume'), 'onglet_royaume', 'invent', $onglet=='royaume');
+		if( $perso->get_rang() == 6 || $perso->get_rang() == 1 )
+			$this->add_onglet('Diplomatie'.($non_lu['diplo']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'diplo'), 'onglet_diplo', 'invent', $onglet=='diplo');*/
 		
 		if($id_sujet)
-			$this->get_onglet('onglet_'.$type)->add( new interf_messages($perso, $type, $id_sujet, $page, $messagerie) );
+			$this->get_onglet('onglet_'.$onglet)->add( new interf_messages($perso, $type, $id_sujet, $page, $messagerie) );
 		else
-			$this->get_onglet('onglet_'.$type)->add( new interf_liste_messages($perso, $type, $messagerie) );
+			$this->get_onglet('onglet_'.$onglet)->add( new interf_liste_messages($perso, $type, $messagerie) );
 	}
 }
 
@@ -188,6 +203,7 @@ class interf_nouveau_message extends interf_form
 		global $G_url;
 		$G_url->add('type', $type);
 		parent::__construct($G_url->get('action', 'nouveau_sujet'), 'messagerie', 'post');
+		//$this->add( new interf_chp_form('hidden', 'type', false, $type) );
 		$div_titre = $this->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_titre->add( new interf_chp_form('text', 'titre', 'Titre', false, false, 'form-control') );
 		if( $type == 'perso' )
@@ -206,6 +222,8 @@ class interf_nouveau_message extends interf_form
 				$div_dest->add( new interf_bal_cont('div', 'suggestion') );
 			}
 		}
+		else if( $id )
+			$this->add( new interf_chp_form('hidden', 'destinataire', false, $id) );
 		$div_texte = $this->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_texte->add( new interf_bal_smpl('label', 'Message') );
 		$div_texte->add( new interf_editeur('texte_msg', false, false, 'editeur') );

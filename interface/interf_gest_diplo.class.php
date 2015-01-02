@@ -23,7 +23,7 @@ class interf_gest_diplo extends interf_data_tbl
 		$this->nouv_cell('Ministre militaire');
 		$this->nouv_cell('&nbsp;');
 		$this->nouv_cell('Ministre de l\'économie');
-		$this->nouv_cell('Message');
+		//$this->nouv_cell('Message');
 		
 		$diplo = unserialize($royaume->get_diplo_time());
 		/// @todo passer à l'objet
@@ -127,14 +127,14 @@ class interf_gest_diplo extends interf_data_tbl
 				$this->nouv_cell('&nbsp;');
 				$this->nouv_cell('&nbsp;');
 			}
-			$this->aff_chp_message( $Trace[$keys[$i]]['numrace'] );
+			//$this->aff_chp_message( $Trace[$keys[$i]]['numrace'] );
 		}
 	}
 	protected function aff_chp_message($id)
 	{
 		global $G_url;
 		$this->nouv_cell( $lien = new interf_bal_smpl('a', '', false, 'icone icone-message') );
-		$lien->set_attribut('href', '../messagerie.php');
+		$lien->set_attribut('href', '../messagerie.php?action=nouveau&type=diplo&id='.$id);
 	}
 }
 
@@ -144,7 +144,7 @@ class interf_gest_diplo_shine extends interf_gest_diplo
 	{
 		global $G_url;
 		$this->nouv_cell( $lien = new interf_bal_cont('a') );
-		$lien->set_attribut('href', '../messagerie.php');
+		$lien->set_attribut('href', '../messagerie.php?action=nouveau&type=diplo&id='.$id);
 		$lien->add( new interf_img('../image/interface/message.png') );
 	}
 }

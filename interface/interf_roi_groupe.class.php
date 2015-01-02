@@ -43,7 +43,7 @@ class interf_roi_groupe_roy extends interf_data_tbl
 		$this->nouv_cell('Nombre');
 		$this->nouv_cell('Niveau');
 		$this->nouv_cell('Bataille');
-		$this->nouv_cell('Message');
+		//$this->nouv_cell('Message');
 	
 		$requete = "SELECT groupe.id as groupeid, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$royaume->get_race()."'";
 		$req = $db->query($requete);
@@ -72,8 +72,8 @@ class interf_roi_groupe_roy extends interf_data_tbl
 			//$this->nouv_cell( $partage );
 			$this->nouv_cell( $groupe->get_level() );
 			$this->nouv_cell( $nom );
-			$this->nouv_cell( $lien = new interf_bal_smpl('a', '', false, 'icone icone-message') );
-			$lien->set_attribut('href', '../messagerie.php?action=nouveau&type=roi&id='.$groupe->get_id());
+			/*$this->nouv_cell( $lien = new interf_bal_smpl('a', '', false, 'icone icone-message') );
+			$lien->set_attribut('href', '../messagerie.php?action=nouveau&type='.$royaume->get_race().'&id='.$groupe->get_id());*/
 		}
 	}
 }
