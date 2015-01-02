@@ -98,7 +98,9 @@ class interf_gest_diplo extends interf_data_tbl
 			{
 				$classe = $roi->get_cache_classe() >= 1 ? 'combattant' : $Tclasse[$roi->get_classe()]["type"];
 				$this->nouv_cell( new interf_img('../image/personnage/'.$roi->get_race().'/'.$roi->get_race().'_'.$classe.'.png') );
-				$this->nouv_cell( $roi->get_nom() );
+				$this->nouv_cell( $lien_roi = new interf_bal_smpl('a', $roi->get_nom()) );
+				$lien_roi->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$roi->get_id());
+				$lien_roi->set_tooltip('Cliquer pour envoyer un message');
 			}
 			else
 			{
@@ -109,7 +111,9 @@ class interf_gest_diplo extends interf_data_tbl
 			{
 				$classe = $mil->get_cache_classe() >= 1 ? 'combattant' : $Tclasse[$mil->get_classe()]["type"];
 				$this->nouv_cell( new interf_img('../image/personnage/'.$mil->get_race().'/'.$mil->get_race().'_'.$classe.'.png') );
-				$this->nouv_cell( $mil->get_nom() );
+				$this->nouv_cell( $lien_mil = new interf_bal_smpl('a', $mil->get_nom()) );
+				$lien_mil->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$mil->get_id());
+				$lien_mil->set_tooltip('Cliquer pour envoyer un message');
 			}
 			else
 			{
@@ -120,7 +124,9 @@ class interf_gest_diplo extends interf_data_tbl
 			{
 				$classe = $eco->get_cache_classe() >= 1 ? 'combattant' : $Tclasse[$eco->get_classe()]["type"];
 				$this->nouv_cell( new interf_img('../image/personnage/'.$eco->get_race().'/'.$eco->get_race().'_'.$classe.'.png') );
-				$this->nouv_cell( $eco->get_nom() );
+				$this->nouv_cell( $lien_eco = new interf_bal_smpl('a', $eco->get_nom()) );
+				$lien_eco->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$eco->get_id());
+				$lien_eco->set_tooltip('Cliquer pour envoyer un message');
 			}
 			else
 			{
