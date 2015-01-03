@@ -1,8 +1,7 @@
 <?php
 /**
- * @file 
- *  
- * Interface de la bourse des royaume 
+ * @file interf_points_victoire.class.php
+ * Interface de 
  */ 
 
 class interf_points_victoire extends interf_data_tbl

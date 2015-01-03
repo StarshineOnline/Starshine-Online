@@ -185,7 +185,7 @@ class interf_demande_diplo extends interf_bal_cont
 
 class interf_choix_diplo extends interf_dialogBS
 {
-	function __construct($royaume, $id)
+	function __construct(&$royaume, $id)
 	{
 		global $db, $G_url, $Trace, $Gtrad;
 		parent::__construct('Modification de la diplomatie avec '.$royaume->get_nom(), true, 'dlg_choix_diplo');

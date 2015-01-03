@@ -803,6 +803,11 @@ class interf_factory
   {
   	return new interf_points_victoire($action);
 	}
+  /// Gestion des criminels
+  function creer_gest_criminels(&$royaume)
+  {
+  	return new interf_gest_criminels($royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory
