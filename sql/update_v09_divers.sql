@@ -17,3 +17,25 @@ UPDATE `starshine_preprod`.`bonus` SET `id_categorie` = '0' WHERE `bonus`.`id_bo
 
 -- Options
 ALTER TABLE `options` CHANGE `valeur` `valeur` MEDIUMINT(16) UNSIGNED NOT NULL;
+
+
+-- Bourse des royaumes
+ALTER TABLE `bourse_royaume` ADD `type` ENUM('achat','vente') NOT NULL DEFAULT 'vente';
+
+
+-- Journal des royaumes
+CREATE TABLE IF NOT EXISTS `journal_royaume` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `action` varchar(20) NOT NULL,
+  `time` date NOT NULL,
+  `id_perso` int(11) NOT NULL,
+  `actif` varchar(50) NOT NULL,
+  `id_passif` int(11) NOT NULL,
+  `passif` varchar(50) NOT NULL,
+  `valeur` varchar(50) NOT NULL,
+  `valeur2` int(11) NOT NULL,
+  `x` int(11) NOT NULL,
+  `y` int(11) NOT NULL,
+  `id_royaume` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

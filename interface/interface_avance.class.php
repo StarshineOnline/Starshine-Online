@@ -645,6 +645,7 @@ class interf_pagination extends interf_bal_cont
 class interf_editeur extends interf_bal_cont
 {
 	protected $btn_grp;
+	protected $contenu;
 	const ind_exp = 0x1;
 	const liste = 0x2;
 	const indent = 0x4;
@@ -656,6 +657,9 @@ class interf_editeur extends interf_bal_cont
 	const lien = 0x10;
 	const image = 0x10;
 	const smiley = 0x10;*/
+	const mot_messagerie = 0;
+	const mot_roi = 0;
+	const mot_propagande = 0;
 	function __construct($id_editeur, $url=false, $id=false, $classe=false, $options=0)
 	{
 		parent::__construct('div', $id, $classe);
@@ -716,7 +720,7 @@ class interf_editeur extends interf_bal_cont
 			$btn->set_tooltip('Envoyer');
 		}
 		// Zone de texte
-		$this->add( new interf_bal_cont('div', $id_editeur, 'editeur-texte') );
+		$this->contenu = $this->add( new interf_bal_cont('div', $id_editeur, 'editeur-texte') );
 		self::code_js('$("#'.$id_editeur.'").wysiwyg();');
 	}
 	function add_boutton($icone, $action, $info)
@@ -725,6 +729,10 @@ class interf_editeur extends interf_bal_cont
 		$btn->set_attribut('data-edit', $action);
 		$btn->set_attribut('type', 'button');
 		$btn->set_tooltip($info);
+	}
+	function set_texte($texte)
+	{
+			$this->contenu->add( new interf_txt($texte) );
 	}
 }
 

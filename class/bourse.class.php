@@ -23,12 +23,12 @@ class bourse
 	{
 		global $db;
 		$this->encheres = array();
-		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif FROM bourse_royaume WHERE ".$where." ORDER BY ressource ASC, fin_vente ".$tri_date;
+		$requete = "SELECT id_bourse_royaume, id_royaume, ressource, nombre, id_royaume_acheteur, prix, fin_vente, actif, type FROM bourse_royaume WHERE ".$where." ORDER BY ressource ASC, fin_vente ".$tri_date;
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->encheres[$i] = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente'], $row['actif']);
+			$this->encheres[$i] = new bourse_royaume($row['id_bourse_royaume'], $row['id_royaume'], $row['ressource'], $row['nombre'], $row['id_royaume_acheteur'], $row['prix'], $row['fin_vente'], $row['actif'], $row['type']);
 			$i++;
 		}
 		return $this->encheres;

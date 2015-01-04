@@ -16,13 +16,13 @@ a:hover, a:focus
 
 /* ----  en-tête -------*/
 
-#perso
+#perso, #royaume
 {
 	background-color:rgba(255, 255, 255, 0.2);
 	border-color: #777;
 }
 
-#infos_perso, #infos_vie
+#infos_perso, #infos_vie, #infos_royaume, #ressources
 {
   background-color:rgba(255, 255, 255, 0.2);
   border: 1px solid #999999;
@@ -118,7 +118,7 @@ a:hover, a:focus
 	color: #444;
 }
 
-#carte
+#carte, .bat_drap_droite.minicarte
 {
 	color:/*#ddd*/rgba(0, 0, 0, 0.5);
 }
@@ -161,12 +161,17 @@ a#debug_droit
   border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
+#batiments_ville .info_case>a
+{
+  border-color: rgba(15, 5, 107, 0.3) !important;
+}
+
 #liste_gauche
 {
 	border-color: #808080;
 }
 
-#rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2)
+#rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2), #batiments_ville .info_case>a
 {
 	border-color: rgba(0, 0, 0, 0.3);
 }

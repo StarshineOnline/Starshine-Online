@@ -1,0 +1,311 @@
+/*-- Infos du royaume --------------------------------------------------*/
+
+#royaume
+{
+	height:70px;
+	margin-bottom: 10px;
+}
+
+#infos_royaume
+{
+  position:absolute;
+  left: 8px;
+  /*max-width:550px;*/
+  height:62px;
+  top: 3px;
+}
+
+#infos_royaume>ul
+{
+	float: left;
+	margin: 2px 10px;
+}
+
+#infos_royaume>ul>li
+{
+	margin: 2px;
+}
+
+#ressources
+{
+  position:absolute;
+  right: 8px;
+  width:425px;
+  height:62px;
+  top: 3px;
+}
+
+.ressource
+{
+	margin-left: 2px;
+	margin-right:20px;
+	line-height: 30px !important;
+	height:30px !important;
+	padding-left: 32px !important;
+	/*float:left;
+	display:block;*/
+}
+
+#ressources .ressource
+{
+	width:80px;
+	display:inline-block;
+}
+
+.bois {background:transparent url('../image/icone/ressources_bois.png') no-repeat;}
+.eau {background:transparent url('../image/icone/ressources_eau.png') no-repeat;}
+.essence {background:transparent url('../image/icone/ressources_essence.png') no-repeat;}
+.pierre {background:transparent url('../image/icone/ressources_pierre.png') no-repeat;}
+.charbon {background:transparent url('../image/icone/ressources_charbon.png') no-repeat;}
+.sable {background:transparent url('../image/icone/ressources_sable.png') no-repeat;}
+.star {background:transparent url('../image/icone/ressources_star.png') no-repeat;}
+.nourriture, .food {background:transparent url('../image/icone/ressources_nourriture.png') no-repeat;}
+
+/* Communs */
+.ongl_gest
+{
+	width: 1000px;
+}
+
+/* Bourse */
+#bourse
+{
+	margin-bottom: 10px;
+}
+
+.modal-body .input-group
+{
+	margin: 5px;
+}
+
+/* Échanges */
+#echanges_royaumes tr>td:first-child, #echanges_royaumes tr>th:first-child
+{
+	width: 16px;
+}
+
+/* Ressources */
+#dlg_ressources
+{
+	width: 940px;
+}
+
+/* Batiments de la ville */
+#batiments_ville .info_case
+{
+	height: 60px;
+}
+
+#batiments_ville .info_case span
+{
+	display:block;
+	padding:2px;
+}
+
+#batiments_ville .nom
+{
+	font-weight: bold;
+}
+
+#batiments_ville .info_case>a
+{
+	display:block;
+	float: right;
+	height: 100%;
+	width: 60px;
+	border-left: solid 1px;
+	text-align: center;
+}
+
+#batiments_ville .info_case>a>.icone
+{
+	font-size: 30px;
+}
+
+#batiments_ville li.info_case div.jauge_case
+{
+	height: 50px;
+	width: 50px;
+	margin: 4px;
+}
+
+/* Entretien */
+#tbl_entretien  tfoot tr:last-child, #tbl_recettes  tfoot tr:last-child
+{
+	font-weight: bold;
+}
+
+#tbl_entretien  tfoot tr:nth-last-child(-n+3)
+{
+	font-style: italic;
+}
+
+#evol_recettes
+{
+	width:900px;
+	height:300px;
+	margin: 5px 50px;
+}
+
+#repart_recettes
+{
+	width:900px;
+	height:600px;
+	margin: 5px 50px;
+}
+
+/* Batiments hors ville */
+#bat_drap tr th:first-child, #bat_drap tr td:first-child, #groupes_etrangers tr th:first-child, #groupes_etrangers tr td:first-child, #groupes_sans tr th:first-child, #groupes_sans tr td:first-child
+{
+	width: 16px;
+}
+
+#bat_drap div.jauge_case
+{
+	float: none;
+  width: 20px;
+  height: 20px;
+}
+
+#bat_drap table.dataTable td:last-child a
+{
+	padding-right: 10px;
+	font-size: 18px;
+}
+
+.bat_drap_gauche
+{
+	width: 630px;
+	border-right: dashed 1px white;
+}
+
+.bat_drap_droite
+{
+	width: 360px;
+	position: absolute;
+	right: 5px;
+}
+
+.bat_drap_droite.minicarte
+{
+	top: 190px;
+	border-radius: 10px;
+	padding: 5px;
+}
+
+.minicarte table
+{
+	width: 350px;
+}
+
+.minicarte td
+{
+	width: 30px !important;
+	height: 30px !important;
+}
+
+.minicarte th
+{
+	width: 20px !important;
+	height: 30px !important;
+}
+
+.minicarte thead th
+{
+	width: 30px !important;
+}
+
+.minicarte th
+{
+	font-size: 10px;
+}
+
+.minicarte tbody th
+{
+	text-align: right;
+}
+
+/* boutique militaire */
+#boutique_militaire form
+{
+	width: 100px;
+	margin: 0px;
+}
+
+#boutique_militaire input
+{
+	height: 25px;
+	padding-right: 2px;
+}
+
+#boutique_militaire a.btn
+{
+	height: 25px;
+	line-height: 10px;
+	padding-right: 7px;
+	margin-left: -5px;
+}
+
+/* carte */
+#carte
+{
+	margin-left: 200px;
+}
+
+.carte_mur
+{
+	fill: rgb(0, 0, 0);
+}
+
+.carte_tour
+{
+	fill: rgb(0, 255, 255);
+}
+
+.carte_bourg
+{
+	fill: rgb(255, 0, 200);
+}
+
+.carte_mine
+{
+	fill: rgb(255, 50, 150);
+}
+
+.carte_fort
+{
+	fill: rgb(100, 0, 255);
+}
+
+/* diplomatie */
+
+#dlg_choix_diplo
+{
+	width: 700px;
+}
+
+#demande_diplo .info_case a
+{
+	padding-top: 2px;
+	font-size: 25px;
+}
+
+/* mot du roi et propagande */
+
+.editeur
+{
+	width: 100%;
+}
+
+.editeur-texte
+{
+	height: 400px;
+}
+
+/* Affaires du royaume */
+
+#equipe_dirigeante li.info_case a
+{
+	font-size: 20px;
+	padding-top: 4px;
+}

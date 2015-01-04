@@ -68,7 +68,7 @@ if(array_key_exists('action', $_GET))
 				}
 				$i = 0;
 				$ids = implode(',', $quete_id);
-				$requete = 'SELECT * FROM quete WHERE id IN ('.$ids.') ORDER BY lvl_joueur DESC';
+				$requete = 'SELECT * FROM quete WHERE id IN ('.$ids.') ';
 				if(count($quete_id) > 0)
 				{
 					$req = $db->query($requete);

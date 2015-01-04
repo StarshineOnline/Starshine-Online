@@ -25,7 +25,8 @@ a:hover, a:focus
 #conteneur { width:985px; margin:auto; min-height:100%; }
 #centre { margin-top:3px; margin-left:7px; float:left; height:100%; z-index:3; }
 #information a/*, #information a:hover,.visu a,.visu a:hover*/ { text-decoration:none; }
-#perso { min-height:120px; margin:0; padding:0;border-left:1px solid;border-bottom: 1px solid; border-right:1px solid;border-radius: 0px 0px 4px 4px; }
+#perso, #royaume { margin:0; padding:0;border-left:1px solid;border-bottom: 1px solid; border-right:1px solid;border-radius: 0px 0px 4px 4px; }
+#perso { height:120px; }
 #contenu_jeu { margin:0 auto; width:100%; position:relative; }
 /*#conteneur_back { z-index:2; width:1000px; margin:0 auto;  min-height:120%; }
 #contenu_back { margin:0; padding:0; */
@@ -125,6 +126,16 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th
 {
     background-color: rgba(255, 255, 255, .3);
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td.danger
+{
+    background-color: #F5EBEB;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td.success
+{
+    background-color: #E9F2E5;
 }
 
 .btn.icone
@@ -1104,6 +1115,12 @@ p.accueil a
   display: block;
 }
 
+.carte_petit .carte_contenu
+{
+  width:28px;
+  height:28px;
+}
+
 #carte a:hover
 {
 	background-color: initial !important;
@@ -1260,6 +1277,7 @@ ul.info_bulle { text-align:left; }
 .info_case #royaume, .info_case #terrain
 {
 	font-weight: bold;
+	border: none;
 }
 
 .infranch
@@ -2212,7 +2230,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	float: right;
 }
 
-#messagerie .editeur
+/*#messagerie*/ .editeur
 {
 	margin: 2px;
 	width: 464px;
@@ -2221,19 +2239,19 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	border: 1px solid;
 }
 
-#messagerie .editeur .editeur-outils
+/*#messagerie*/ .editeur .editeur-outils
 {
 	margin: 0;
 	background-color: rgba(255, 255, 255, 0.5);
 	border-bottom: 1px solid;
 }
 
-#messagerie .editeur .btn-group
+/*#messagerie*/ .editeur .btn-group
 {
 	margin: 0;
 }
 
-#messagerie .editeur-texte
+/*#messagerie*/ .editeur-texte
 {
 	width: 100%;
 	height: 150px;
@@ -2338,7 +2356,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 	max-height: 45px;
 }
 
-.invent, .ecole_mag
+.invent, .ecole_mag, .ongl_gest
 {
   border-left: solid white 1px;
   border-right: solid white 1px;

@@ -503,10 +503,10 @@ class interf_factory
     include_once(root.'interface/interf_messagerie.class.php');
     return new interf_liste_messages($perso, $type, $id_sujet, $page);
   }
-  function creer_nouveau_message($type)
+  function creer_nouveau_message($type, $id=null)
   {
     include_once(root.'interface/interf_messagerie.class.php');
-    return new interf_nouveau_message($type);
+    return new interf_nouveau_message($type, $id);
   }
   function creer_echanges(&$perso, $actions=false)
   {
@@ -634,6 +634,185 @@ class interf_factory
     include_once(root.'interface/interf_votes_dons.class.php');
   	return new interf_dons();
 	}
+	
+	
+  /**
+   * interface de gestion du royaume
+   */
+  function creer_royaume()
+  {
+    include_once(root.'interface/interf_jeu.class.php');
+    $ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
+    switch($ajax)
+    {
+    case 1:
+  		return new interf_jeu_ajax();
+    case 2:
+  		return new interf_jeu_tab();
+    default:
+    	return new interf_royaume($this->css);
+		}
+  }
+  ///
+  function creer_bourse($onglet='achat')
+  {
+  	return new interf_bourse($onglet);
+	}
+  function creer_bourse_vente()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_vente();
+	}
+  function creer_bourse_achat()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_achat();
+	}
+  function creer_bourse_hist_vente()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_hist_vente();
+	}
+  function creer_bourse_hist_achat()
+  {
+    include_once(root.'interface/interf_bourse.class.php');
+  	return new interf_bourse_hist_achat();
+	}
+  ///
+  function creer_echange_roy($action=false)
+  {
+  	return new interf_echange_roy($action);
+	}
+  ///
+  function creer_ressources($royaume)
+  {
+  	return new interf_ressources($royaume);
+	}
+  ///
+  function creer_batiments_ville($royaume, $action=false)
+  {
+  	return new interf_batiments_ville($royaume, $action);
+	}
+
+	
+  ///
+  function creer_listequete_royaume(&$royaume)
+  {
+	include_once(root.'interface/interf_quete.class.php');
+  	return new interf_quete_royaume($royaume);
+  	}
+
+  ///
+  function creer_entretien($royaume, $onglet='balance')
+  {
+  	return new interf_entretien($royaume, $onglet);
+	}
+  function creer_balance_hier(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_balance_hier($royaume);
+	}
+  function creer_recettes(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_recettes($royaume);
+	}
+  function creer_evol_gains(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_evol_gains($royaume);
+	}
+  function creer_repart_gains(&$royaume)
+  {
+    include_once(root.'interface/interf_entretien.class.php');
+  	return new interf_repart_gains($royaume);
+
+	}
+  ///
+  function creer_bat_drap($royaume, $onglet='invasions', $x=false, $y=false)
+  {
+  	return new interf_bat_drap($royaume, $onglet, $x, $y);
+	}
+  function creer_bd_invasions(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_invasions($royaume, $x, $y, $x, $y);
+	}
+  function creer_bd_constructions(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_constructions($royaume, $x, $y);
+	}
+  function creer_bd_ads(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_ads($royaume, $x, $y);
+	}
+  function creer_interf_bd_drapeaux(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_drapeaux($royaume, $x, $y);
+	}
+  function creer_bd_batiments(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_batiments($royaume, $x, $y);
+	}
+  function creer_bd_depot(&$royaume, $x=false, $y=false)
+  {
+    include_once(root.'interface/interf_bat_drap.class.php');
+  	return new interf_bd_depot($royaume, $x, $y);
+	}
+  ///
+  function creer_boutique_mil(&$royaume, $action=false)
+  {
+  	return new interf_boutique_mil($royaume, $action);
+	}
+  /// Gestion de la diplomatie
+  function creer_gest_diplo(&$royaume, $change=false)
+  {
+  	return new interf_gest_diplo($royaume, $change);
+	}
+  function creer_demande_diplo(&$royaume)
+  {
+    include_once(root.'interface/interf_gest_diplo.class.php');
+  	return new interf_demande_diplo($royaume);
+	}
+  /// Gestion des groupes
+  function creer_roi_groupe(&$royaume, $onglet='royaume')
+  {
+  	return new interf_roi_groupe($royaume, $onglet);
+	}
+  function creer_roi_groupe_roy(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_roy($royaume);
+	}
+  function creer_roi_groupe_ext(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_ext($royaume);
+	}
+  function creer_roi_groupe_sans(&$royaume)
+  {
+    include_once(root.'interface/interf_roi_groupe.class.php');
+  	return new interf_roi_groupe_sans($royaume);
+	}
+  /// Gestion des points de victoire
+  function creer_points_victoire($action=true)
+  {
+  	return new interf_points_victoire($action);
+	}
+  /// Gestion des criminels
+  function creer_gest_criminels(&$royaume)
+  {
+  	return new interf_gest_criminels($royaume);
+	}
+  /// Gestion 
+  function creer_gestion_royaume(&$royaume, $action=true)
+  {
+  	return new interf_gestion_royaume($royaume, $action);
+	}
 }
 
 class interf_factory_shine extends interf_factory
@@ -653,5 +832,11 @@ class interf_factory_shine extends interf_factory
     include_once(root.'interface/interf_gauche.class.php');
     return new interf_cadre_carte_shine($carte);
   }
+  /// Gestion de la diplomatie
+  function creer_gest_diplo(&$royaume, $change=false)
+  {
+    include_once(root.'interface/interf_gest_diplo.class.php');
+  	return new interf_gest_diplo_shine($royaume, $change);
+	}
 }
 ?>

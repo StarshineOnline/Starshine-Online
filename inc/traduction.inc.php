@@ -285,6 +285,7 @@ $Gtrad['sable'] = 'Sable';
 $Gtrad['food'] = 'Nourriture';
 $Gtrad['charbon'] = 'Charbon';
 $Gtrad['essence'] = 'Essence Magique';
+$Gtrad['star'] = 'Stars';
 //@}
 
 

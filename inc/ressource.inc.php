@@ -1,7 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
+
 $ress = array();
 	$ress['Plaine']['Pierre'] = 4;
 	$ress['Plaine']['Bois'] = 5;

@@ -1,4 +1,5 @@
-<?php
+ <?php
+/// @deprecated
 if (file_exists('../root.php'))
   include_once('../root.php');
 ?><?php
@@ -39,10 +40,10 @@ require_once('haut_roi.php');
 		//Si on commence un nouvel échange
 		if(array_key_exists('nouvel_echange', $_GET))
 		{
-			//On créé l'échange
 			$requete = "INSERT INTO echange_royaume(id_r1, id_r2, statut, date_fin) VALUES(".$r1->get_id().", ".$r2->get_id().", 'creation', ".time().")";
 			$db->query($requete);
 			$echange = recup_echange($db->last_insert_id(), true);
+			//On créé l'échange
 		}
 		elseif(array_key_exists('annule', $_GET))
 		{

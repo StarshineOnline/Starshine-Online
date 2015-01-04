@@ -47,8 +47,9 @@ case 'lire':
 	$interf_princ->maj_perso(true);
 	break;
 case 'nouveau':
+	$id = array_key_exists('id', $_GET) ? $_GET['id'] : null;
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Messagerie') );
-	$cadre->add( $G_interf->creer_nouveau_message($type) );
+	$cadre->add( $G_interf->creer_nouveau_message($type, $id) );
 	exit;
 case 'nouveau_sujet':
 	if( !array_key_exists('titre', $_POST) || !$_POST['titre'] )
@@ -61,7 +62,7 @@ case 'nouveau_sujet':
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message.');
 		break;
 	}
-	if( array_key_exists('destinataire', $_POST) )
+	if( $_GET['type'] == 'perso' )
 	{
 		/// @todo passer à l'objet
 		$requete = 'SELECT id FROM perso WHERE nom = "'.$_POST['destinataire'].'"';
@@ -69,19 +70,24 @@ case 'nouveau_sujet':
 		$row = $db->read_row($req);
 		if( !$row )
 		{
-			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message.');
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de destinataire.');
 			break;
 		}
 		$id_dest = $row[0];
 		$id_groupe = 0;
 	}
-	else
+	else if( $_GET['type'] == 'groupe' )
 	{
 		$id_dest = 0;
 		$id_groupe = $perso->get_groupe();
 	}
+	/*else if( $_POST['type'] == 'diplo' )
+		$id_dest = $perso->get_groupe();
+	else
+	{
+	}*/
 	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
-	$sujet = $messagerie->envoi_message(0, $id_dest, $_POST['titre'], $_POST['texte'], $id_groupe);
+	$sujet = $messagerie->envoi_message(0, $id_dest, $_POST['titre'], $_POST['texte'], /*$_GET['type']*/$id_groupe);
 	$page = 1;
 	break;
 case 'suppr_sujet':
