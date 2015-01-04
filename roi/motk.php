@@ -24,6 +24,7 @@ case 'modifier':
 	{
 		$royaume->set_motk(sSQL($_POST['texte']));
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Message du roi bien modifié !');
+		journal_royaume::ecrire_perso('msg_roi');
 	}
 	else
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message !');

@@ -45,26 +45,30 @@ if( $action && $lieu && $perso->get_hp()>0 )
       $db->query($requete);
       $requete = "UPDATE royaume SET star = star - ".$row['dette']." WHERE ID = ".$royaume->get_id();
       if( $db->query($requete) )
+      {
       	interf_alerte::enregistre(interf_alerte::msg_succes, 'Batiment bien réactivé.');
+				journal_royaume::ecrire_perso('reactive_ville', new batiment_ville($row['id_batiment']), '', $row['dette']);
+			}
     }
     else
     	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars pour réactiver cette construction !');
   	break;
   case 'ameliore':
     $id_batiment = $_GET['id'];
-    $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
+    $batiment = new batiment_ville($id_batiment);
     //Si le royaume a assez de stars on achète le batiment
-    if($royaume->get_star() >= $row['cout'])
+    if($royaume->get_star() >= $batiment->get_cout())
     {
       //On paye
       $royaume->set_star($royaume->get_star() - $row['cout']);
       $royaume->sauver();
       //On remplace le batiment
-      $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$row['hp'].', date = '.time().' WHERE id = '.$id_batiment_ville;
+      $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$batiment->get_hp().', date = '.time().' WHERE id = '.$id_batiment_ville;
       if($db->query($requete))
+      {
       	interf_alerte::enregistre(interf_alerte::msg_succes, 'Batiment bien réactivé.');
+				journal_royaume::ecrire_perso('ameliore_ville', $batiment, '', $batiment->get_cout());
+			}
     }
     else
   		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume ne possède pas assez de stars !');
@@ -72,9 +76,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
   case 'reduit':
     // On récupère le nouveau bâtiment
     $id_batiment = $_GET['id'];
-    $requete = "SELECT cout, nom, hp FROM batiment_ville WHERE id = ".$id_batiment;
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
+    $batiment = new batiment_ville($id_batiment);
     // On récupère les HP de l'ancien bâtiment
     $requete = "SELECT hp FROM construction_ville WHERE id = ".$id_batiment_ville;
     $req = $db->query($requete);
@@ -82,29 +84,29 @@ if( $action && $lieu && $perso->get_hp()>0 )
     // Calcul des HP
     $hp = min($row['hp'], $row2['hp']);
     //On remplace le batiment
-    $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$hp.', date = '.time().' WHERE id = '.$id_batiment_ville;
+    $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$batiment->get_hp().', date = '.time().' WHERE id = '.$id_batiment_ville;
     if($db->query($requete))
+    {
       interf_alerte::enregistre(interf_alerte::msg_succes, 'Retour à '.$row['nom'].' effectué.');
+			journal_royaume::ecrire_perso('reduit_ville', $batiment);
+		}
 		break;      
   case 'reparation':
     // Récupération de informations sur le bâtiment
     $id_batiment = $_GET['id'];
-    $requete = "SELECT batiment_ville.cout AS cout, construction_ville.hp AS cur_hp, batiment_ville.hp AS max_hp FROM construction_ville LEFT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.id = ".$id_batiment;
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
-    // Calcul du cout
-    $cout = $row['cout'] * ($row['max_hp'] - $row['cur_hp']) / $row['max_hp'];
+    $batiment = new batiment_ville($id_batiment);
     // On vérifie qu'il a assez de stars
-    if($royaume->get_star() >= $cout)
+    if($royaume->get_star() >= $batiment->get_cout())
     {
       // On répare
       $requete = 'UPDATE construction_ville SET hp = '.$row['max_hp'].', date = '.time().' WHERE id = '.$id_batiment;
       if( $db->query($requete) )
       {
         //On paye
-        $royaume->set_star($royaume->get_star() - $cout);
+        $royaume->set_star($royaume->get_star() - $batiment->get_cout());
         $royaume->sauver();
       	interf_alerte::enregistre(interf_alerte::msg_succes, 'Réparation effectuée.');
+				journal_royaume::ecrire_perso('repare_ville', $batiment, '', $batiment->get_cout());
       }
     }
     else

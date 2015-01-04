@@ -66,6 +66,7 @@ if( $perso->get_hp() > 0 || $action == 'cours' )
 		$db->query($requete);
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre ressource a bien été mise en vente.');
 		$cadre->maj_royaume();
+		journal_royaume::ecrire_perso('vente_bourse', null, $_GET['ressource'], $_GET['nombre']);
 		break;
 	case 'acheter':
 		if($_GET['nombre'] <= 0)
@@ -101,6 +102,7 @@ if( $perso->get_hp() > 0 || $action == 'cours' )
 	   $enchere->id_royaume_acheteur = 0;
 		$enchere->sauver();
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre offre d\'achat a bien été enregistrée.');
+		journal_royaume::ecrire_perso('offre_achat', null, $_GET['ressource'], $_GET['nombre']);
 		break;
 	case 'annuler':
 		$enchere = new bourse_royaume($_GET['id']);

@@ -808,6 +808,11 @@ class interf_factory
   {
   	return new interf_gest_criminels($royaume);
 	}
+  /// Gestion 
+  function creer_gestion_royaume(&$royaume, $action=true)
+  {
+  	return new interf_gestion_royaume($royaume, $action);
+	}
 }
 
 class interf_factory_shine extends interf_factory

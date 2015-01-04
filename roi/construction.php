@@ -48,7 +48,10 @@ case 'modif_nom':
 case 'suppr':
 	$constr = new construction($_GET['id']);
 	if( !$constr->get_buff('assiege') )
+	{
 		$constr->supprimer();
+		journal_royaume::ecrire_perso('suppr_batiment', $constr->get_def(), $constr->get_nom(), $constr->get_id(), $constr->get_x(), $constr->get_y());
+	}
 	break;
 }
 

@@ -75,6 +75,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
 				$requete = "UPDATE echange_royaume SET statut = 'proposition' WHERE id_echange = '".$ide."'";
 				$db->query($requete);
 				interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre proposition a bien été envoyée.');
+				journal_royaume::ecrire_perso('echange', new royaume($echange['id_r2']), '', $ide);
 			}
 			else
 				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de ressources !');
@@ -100,6 +101,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
 				$requete = "UPDATE echange_royaume SET statut = 'finalisation' WHERE id_echange = '".$ide."'";
 				$db->query($requete);
 				interf_alerte::enregistre(interf_alerte::msg_succes, 'Votre proposition a bien été envoyée.');
+				journal_royaume::ecrire_perso('echange', new royaume($echange['id_r1']), '', $ide);
 			}
 			else
 				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de ressources !');

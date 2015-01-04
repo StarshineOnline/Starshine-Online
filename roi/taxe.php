@@ -27,7 +27,10 @@ else if($_GET['action'] == 'modifier')
 {
 	$requete = "UPDATE royaume SET taxe = ".sSQL($_GET['taux']).", taxe_time = ".time()." WHERE id = ".$royaume->get_id();
 	if($db->query($requete))
+	{
 		$cadre->set_gestion( new interf_alerte(interf_alerte::msg_succes, false, false, 'Taux de taxe modifié !') );
+		journal_royaume::ecrire_perso('taxe', null, '', $_GET['taux']);
+	}
 }
 else
 {

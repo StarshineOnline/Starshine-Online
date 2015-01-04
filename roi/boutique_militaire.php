@@ -34,12 +34,10 @@ if( $action && $lieu && $perso->get_hp()>0 )
 	switch($action)
 	{
 	case 'achat':
-		$requete = "SELECT * FROM objet_royaume WHERE id = ".sSQL($_GET['id']);
+		$obj = new objet_royaume(sSQL($_GET['id']));
 		$nombre = $_GET['nombre'];
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
 		//Si c'est pour une bourgade on vérifie combien il y en a déjà
-		if($row['type'] == 'bourg')
+		if($obj->get_type() == 'bourg')
 		{
 			$nb_bourg = nb_bourg($R->get_id());
 			$nb_case = nb_case($royaume->get_id());
@@ -50,13 +48,13 @@ if( $action && $lieu && $perso->get_hp()>0 )
 			}
 		}
 		//On vérifie les stars
-		if($royaume->get_star() < ($row['prix'] * $nombre))
+		if($royaume->get_star() < ($obj->get_prix() * $nombre))
 		{
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume n\'a pas assez de stars');
 			break;
 		}
 		//On vérifie les ressources
-		if(($royaume->get_pierre() < $row['pierre'] * $nombre) || ($royaume->get_bois() < $row['bois'] * $nombre) || ($royaume->get_eau() < $row['eau'] * $nombre) || ($royaume->get_charbon() < $row['charbon'] * $nombre) || ($royaume->get_sable() < $row['sable'] * $nombre) || ($royaume->get_essence() < $row['essence'] * $nombre))
+		if(($royaume->get_pierre() < $obj->get_pierre() * $nombre) || ($royaume->get_bois() < $obj->get_bois() * $nombre) || ($royaume->get_eau() < $obj->get_eau() * $nombre) || ($royaume->get_charbon() < $obj->get_charbon() * $nombre) || ($royaume->get_sable() < $obj->get_sable() * $nombre) || ($royaume->get_essence() < $obj->get_essence() * $nombre))
 		{
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous manque des ressources !');
 			break;
@@ -74,13 +72,13 @@ if( $action && $lieu && $perso->get_hp()>0 )
 				$royaume->set_bourg($royaume->get_bourg() + 1);
 			}
 			//On enlève les stars au royaume
-			$royaume->set_star($royaume->get_star() - $row['prix']);
-			$royaume->set_eau($royaume->get_eau() - $row['eau']);
-			$royaume->set_pierre($royaume->get_pierre() - $row['pierre']);
-			$royaume->set_bois($royaume->get_bois() - $row['bois']);
-			$royaume->set_sable($royaume->get_sable() - $row['sable']);
-			$royaume->set_essence($royaume->get_essence() - $row['essence']);
-			$royaume->set_charbon($royaume->get_charbon() - $row['charbon']);
+			$royaume->set_star($royaume->get_star() - $obj->get_prix());
+			$royaume->set_eau($royaume->get_eau() - $obj->get_eau());
+			$royaume->set_pierre($royaume->get_pierre() - $obj->get_pierre());
+			$royaume->set_bois($royaume->get_bois() - $obj->get_bois());
+			$royaume->set_sable($royaume->get_sable() - $obj->get_sable());
+			$royaume->set_essence($royaume->get_essence() - $obj->get_essence());
+			$royaume->set_charbon($royaume->get_charbon() - $obj->get_charbon());
 			$royaume->sauver();
 			$i++;
 		}
@@ -101,6 +99,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
        else
 					interf_alerte::enregistre(interf_alerte::msg_succes, $row['nom'].' bien acheté');
 	   }
+		 journal_royaume::ecrire_perso('achat', $obj, '', $nombre);
 	   break;
 	}
 }

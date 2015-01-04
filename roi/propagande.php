@@ -24,6 +24,7 @@ case 'modifier':
 	{
 		$royaume->set_propagande(sSQL($_POST['texte']));
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Propagande bien modifiée !');
+		journal_royaume::ecrire_perso('propagande');
 	}
 	else
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message !');
