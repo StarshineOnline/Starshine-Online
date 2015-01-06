@@ -9,17 +9,15 @@ include_once(root.'inc/fp.php');
 
 
 $perso = joueur::get_perso();
-if( !$perso->get_rang() == 6 )
+if( $perso->get_rang() != 6 && $perso->get_rang() != 1 )
 {
-	$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
-	if( $royaume->get_ministre_militaire() != $perso->get_id() && $royaume->get_ministre_economie() != $perso->get_id() )
-	{
-		/// @todo logguer triche
-		exit;
-	}
+	/// @todo logguer triche
+	exit;
 }
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
 
 $cadre = $G_interf->creer_royaume();
+$cadre->set_gestion( $G_interf->creer_gestion_royaume($royaume, $perso->get_rang() != 6) );
 $cadre->maj_tooltips();
 
 
