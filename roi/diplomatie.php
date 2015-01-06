@@ -84,7 +84,7 @@ if($change)
 		//Envoi de la demande
 		$db->query("INSERT INTO diplomatie_demande VALUES(NULL, ".$diplo_req.", '".$royaume->get_race()."', '".$race."',  ".$star.")");
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Une demande au royaume '.$Gtrad[$race].' pour passer en diplomatie <strong>'.$Gtrad['diplo'.$diplo_req].'</strong> en échange de <em>'.$star.'</em> stars a été envoyée.');
-		journal_royaume::ecrire_perso('monte_diplo', new royaume([$_GET['id']), $Gtrad['diplo'.$diplo_req], $star);
+		journal_royaume::ecrire_perso('monte_diplo', new royaume($_GET['id']), $Gtrad['diplo'.$diplo_req], $star);
 		break;
 	case 'baisser':
 		$diplo = unserialize($royaume->get_diplo_time());
@@ -136,7 +136,7 @@ if($change)
 		$db->query($requete);
 		interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous êtes maintenant en <strong>'.$Gtrad['diplo'.$diplo_req].'</strong> avec les '.$Gtrad[$race]);
 		/// Entrées dans les journaux
-		journal_royaume::ecrire_perso('baisse_diplo', new royaume([$_GET['id']), $Gtrad['diplo'.$diplo_req]);
+		journal_royaume::ecrire_perso('baisse_diplo', new royaume($_GET['id']), $Gtrad['diplo'.$diplo_req]);
 		journal_royaume::ecrire('baisse_diplo_autre', $_GET['id'], $royaume->get_id(), $royaume->get_nom(), 0, '', $Gtrad['diplo'.$diplo_req]);
 		break;
 	case 'refuser':
