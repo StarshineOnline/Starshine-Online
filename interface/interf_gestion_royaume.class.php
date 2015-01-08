@@ -40,7 +40,11 @@ class interf_gestion_royaume extends interf_cont
 			$li_eco->add( new interf_bal_smpl('strong', 'Ministre de l\'économie : ') );
 			$li_eco->add( new interf_bal_smpl('span', $eco->get_nom()) );
 			if( $roi )
-				$li_eco->add( $lien_eco = new interf_lien('', $G_url->get('action', 'suppr_eco'), false, 'icone icone-poubelle') );
+			{
+				$suppr_eco = $li_eco->add( $lien_eco = new interf_lien('', $G_url->get('action', 'suppr_eco'), false, 'icone icone-poubelle') );
+				$suppr_eco->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir virer ce ministre ?\');');
+				$suppr_eco->set_tooltip('Virer le ministre de l\'économie');
+			}
 			if( $eco->get_id() != $perso->get_id() )
 			{
 				$li_eco->add( $lien_eco = new interf_bal_smpl('a', $eco->get_nom(), false, 'icone icone-message') );
@@ -55,7 +59,11 @@ class interf_gestion_royaume extends interf_cont
 			$li_mil->add( new interf_bal_smpl('strong', 'Ministre militaire : ') );
 			$li_mil->add( new interf_bal_smpl('span', $mil->get_nom()) );
 			if( $roi )
-				$li_mil->add( $lien_eco = new interf_lien('', $G_url->get('action', 'suppr_mil'), false, 'icone icone-poubelle') );
+			{
+				$suppr_mil = $li_mil->add( $lien_eco = new interf_lien('', $G_url->get('action', 'suppr_mil'), false, 'icone icone-poubelle') );
+				$suppr_mil->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir virer ce ministre ?\');');
+				$suppr_mil->set_tooltip('Virer le ministre militaire');
+			}
 			if( $mil->get_id() != $perso->get_id() )
 			{
 				$li_mil->add( $lien_mil = new interf_bal_smpl('a', $mil->get_nom(), 'icone icone-message') );
