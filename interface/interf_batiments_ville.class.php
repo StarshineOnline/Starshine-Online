@@ -1,7 +1,7 @@
 <?php
 /**
  * @file interf_batiments_ville.class.php
- * Interface de la bourse des royaume 
+ * Interface de
  */ 
 
 class interf_batiments_ville extends interf_bal_cont
@@ -53,7 +53,7 @@ class interf_batiments_ville extends interf_bal_cont
         	{
 						$amel = $li->add( new interf_lien_cont($G_url->get('action', 'ameliore')) );
 						$amel->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir améliorer en '.$row2['nom'].'\');');
-						$amel->add( new interf_bal_smpl('span', '', false, 'icone icone-haut') );
+						$amel->add( new interf_bal_smpl('span', '', false, 'icone icone-plus') );
 						$amel->add( new interf_bal_smpl('span', $row2['cout'].' ('.$row2['entretien'].')', false, 'xsmall') );
 						$amel->set_tooltip('Améliorer en '.$row2['nom'].' ('.$row2['cout'].' stars, entretien : '.$row2['entretien'].' stars / jour)');
 					}
@@ -71,7 +71,7 @@ class interf_batiments_ville extends interf_bal_cont
 	        {
 						$red = $li->add( new interf_lien_cont($G_url->get('action', 'reduit')) );
 						$red->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir réduire en '.$row2['nom'].'\');');
-						$red->add( new interf_bal_smpl('span', '', false, 'icone icone-bas') );
+						$red->add( new interf_bal_smpl('span', '', false, 'icone icone-moins') );
 						$red->add( new interf_bal_smpl('span', '('.$row2['entretien'].')', false, 'xsmall') );
 						$red->set_tooltip('Réduire en '.$row2['nom'].' (entretien : '.$row2['entretien'].' stars / jour)');
 					}
