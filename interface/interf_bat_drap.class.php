@@ -263,6 +263,7 @@ class interf_batiment_nom extends interf_dialogBS
 		parent::__construct('Renommer bâtiment');
 		$form = $this->add( new interf_form($G_url->get('action', 'modif_nom'), 'nom_batiment') );
 		$nbr = $form->add_champ_bs('text', 'nom', null, $construction->get_nom(), 'Nom');
+		$nbr = $form->add_champ_bs('hidden', 'id', null, $construction->get_id());
     
     $this->ajout_btn('Annuler', 'fermer');
     $this->ajout_btn('Modifier', '$(\'#modal\').modal(\'hide\'); return charger_formulaire(\'nom_batiment\');', 'primary');

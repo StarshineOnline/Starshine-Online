@@ -32,9 +32,11 @@ class interf_carte extends interf_tableau
   const act_sons = 0x2000;
   const aff_petit = 0x4000;
   const aff_restreint = 0x8000; // seulement batiments du royaume
+  const aff_lien_gest = 0x10000;
   const aff_defaut = 0x2b7e;
-  /// @bug debuguer l'afficahge des royaumes pour les petites textures et le remettre ici
+  /// @bug debuguer l'affichage des royaumes pour les petites textures et le remettre ici
   const aff_gestion = 0xc000;
+  const aff_gest_bourgs = 0x18000;
   const masque_ordre = 0x30;
   const masque_diplo = 0xf00;
 
@@ -252,7 +254,10 @@ class interf_carte extends interf_tableau
 			}
 	    if( $options & self::aff_monstres  )
 	      $this->afficher_monstres($niv_min, $niv_max);
+		}
 	      
+	  if( !($options & self::aff_restreint) || $options & self::aff_lien_gest )
+	  {
 	    // Navigation
 	    for($i=$this->y_min; $i<=$this->y_max; $i++)
 	    {
@@ -264,7 +269,10 @@ class interf_carte extends interf_tableau
 	        else
 	        	$cont->set_balise('a');
 	        $pos = 'rel_'.($j-$x).'_'.($i-$y);
-	        $cont->set_attribut('href', 'informationcase.php?case='.$pos);
+	        if( $options & self::aff_lien_gest )
+	        	$cont->set_attribut('href', $G_url->get( array('action'=>'case', 'x'=>$j, 'y'=>$i) ));
+	        else
+	        	$cont->set_attribut('href', 'informationcase.php?case='.$pos);
 	        $cont->set_attribut('onclick', 'return charger(this.href);');
 	        if( $this->infos[$i][$j] )
 	        {

@@ -309,3 +309,93 @@
 	font-size: 20px;
 	padding-top: 4px;
 }
+
+#liste_bourgs
+{
+	width: 300px;
+}
+
+#liste_bourgs .info_case
+{
+	height: 34px;
+	line-height: 15px;
+	padding-left: 1px;
+}
+
+#liste_bourgs li.info_case a
+{
+	width: 34px;
+	padding-top: 1px;
+	font-size: 26px;
+}
+
+#liste_bourgs .info_case .xsmall
+{
+	display: block;
+}
+
+#liste_bourgs li.info_case > a > span.icone
+{
+	font-size: 18px;
+	line-height: 18px;
+}
+
+#liste_bourgs li.info_case .xsmall
+{
+	font-size: 10px;
+}
+
+#liste_bourgs div.info_case
+{
+	background: rgba(0, 0, 0, 0.3);
+	height: 47px;
+}
+
+#liste_bourgs div.info_case span
+{
+	padding: 2px;
+}
+
+#liste_bourgs div.info_case img
+{
+	height: 32px;
+	display: block;
+}
+
+#liste_bourgs div.info_case a .xsmall
+{
+	padding-top: 4px;
+}
+
+#liste_bourgs div.info_case > a > span.icone
+{
+	font-size: 22px;
+	line-height: 18px;
+}
+
+#liste_bourgs li.info_case div.jauge_case
+{
+	margin: 4px;
+}
+
+#liste_bourgs h5
+{
+	font-weight: bold;
+}
+
+#carte_bourg
+{    
+	position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+#carte_bourg #carte
+{
+	margin: 0;
+}
+
+#bourgs_mines
+{
+	position: relative;
+}

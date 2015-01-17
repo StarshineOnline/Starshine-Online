@@ -205,7 +205,7 @@ class placement extends entitenj_constr
     $doss = $type=='drapeau' ? 'drapeau' : 'batiment';
     if(!$grd_img)
       $doss .= '_low';
-    $avanc = ceil(3 * $avancement);
+    $avanc = max(ceil(3 * $avancement), 1);
     return 'image/'.$doss.'/'.$image.'_0'.$avanc.'.png';
   }
 }

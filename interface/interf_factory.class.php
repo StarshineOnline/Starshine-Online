@@ -813,6 +813,11 @@ class interf_factory
   {
   	return new interf_gestion_royaume($royaume, $action);
 	}
+  /// Gestion des bourgs & mines
+  function creer_gestion_mines(&$royaume, $action=true, $carte=null)
+  {
+  	return new interf_gestion_mines($royaume, $action, $carte);
+	}
 }
 
 class interf_factory_shine extends interf_factory
