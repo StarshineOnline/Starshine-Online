@@ -50,3 +50,20 @@ ALTER TABLE `objet_pet` ADD `bonus` VARCHAR(15) NOT NULL AFTER `dressage`, ADD `
 UPDATE `objet_pet` SET bonus='pp', valeur=PP WHERE PP > 0;
 UPDATE `objet_pet` SET bonus='pm', valeur=PM WHERE PM > 0;
 UPDATE `objet_pet` SET bonus='distance_tir', valeur=distance_tir WHERE distance_tir > 0;
+
+-- Objets de royaume
+ALTER TABLE `objet_royaume` ADD `rang_royaume` TINYINT NOT NULL DEFAULT '1';
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 3;
+UPDATE `objet_royaume` SET `rang_royaume` = '3' WHERE `id` = 4;
+UPDATE `objet_royaume` SET `rang_royaume` = '4' WHERE `id` = 5;
+UPDATE `objet_royaume` SET `rang_royaume` = '3' WHERE `id` = 7;
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 8;
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 9;
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 12;
+UPDATE `objet_royaume` SET `rang_royaume` = '3' WHERE `id` = 13;
+UPDATE `objet_royaume` SET `rang_royaume` = '4' WHERE `id` = 14;
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 16;
+UPDATE `objet_royaume` SET `rang_royaume` = '3' WHERE `id` = 17;
+UPDATE `objet_royaume` SET `rang_royaume` = '2' WHERE `id` = 19;
+UPDATE `objet_royaume` SET `rang_royaume` = '3' WHERE `id` = 20;
+UPDATE `objet_royaume` SET `rang_royaume` = '4' WHERE `id` = 21;

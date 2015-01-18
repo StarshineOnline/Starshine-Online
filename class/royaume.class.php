@@ -284,7 +284,7 @@ class royaume
    */
   function get_dist_bourgs($diff = false)
   {
-    return ceil(pow($this->get_facteur_entretien(), .9) * 7);
+    return 7;//ceil(pow($this->get_facteur_entretien(), .9) * 7);
   }
 
   /// Renvoie la distance minimale entre un bourg et une capitale
@@ -300,10 +300,10 @@ class royaume
    */
   function get_dist_forts($diff = false)
   {
-    if( $diff )
+    //if( $diff )
       return 4;
-    else
-      return ceil(pow($this->get_facteur_entretien(), .9) * 4);
+    /*else
+      return ceil(pow($this->get_facteur_entretien(), .9) * 4);*/
   }
 
   /// Renvoie la distance minimale entre un fort et une capitale

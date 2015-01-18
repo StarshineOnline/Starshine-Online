@@ -16,8 +16,9 @@ class buff_batiment extends buff_base
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
   // @{
-	protected $id_placement;  ///< id du monstre ayant le buff
-	protected $id_construction;  ///< id du monstre ayant le buff
+	protected $id_placement;  ///< id du placement ayant le buff
+	protected $id_construction;  ///< id de la construction ayant le buff
+	protected $id_perso;  ///< id du personnage ayant lancé le buff
 
 	/// Renvoie l'id du placement ayant le buff
 	function get_id_placement()
@@ -42,6 +43,18 @@ class buff_batiment extends buff_base
 		$this->id_construction = $id;
 		$this->champs_modif[] = 'id_construction';
 	}
+
+	/// Renvoie l'id du personnage ayant lancé le buff
+	function get_id_perso()
+	{
+		return $this->id_perso;
+	}
+	/// Modifie l'id du personnage ayant lancé le buff
+	function set_id_perso($id)
+	{
+		$this->id_perso = $id;
+		$this->champs_modif[] = 'id_perso';
+	}
 	// @}
 
 	/**
@@ -63,7 +76,7 @@ class buff_batiment extends buff_base
 	 * @param $description  		Description du buff
 	 * @param $debuff       		Pour un buff,  pour un debuff
 	*/
-	function __construct($id = 0, $id_placement=0, $id_construction=null, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0)
+	function __construct($id = 0, $id_placement=0, $id_construction=null, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0, $id_perso=0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -75,6 +88,7 @@ class buff_batiment extends buff_base
       buff_base::__construct($id, $type, $effet, $duree);
 			$this->id_placement = $id_placement;
 			$this->id_construction = $id_construction;
+			$this->id_perso = $id_perso;
 		}
 	}
 
@@ -87,41 +101,31 @@ class buff_batiment extends buff_base
     buff_base::init_tab($vals);
 		$this->id_placement = $vals['id_placement'] != 'NULL' ? $vals['id_placement'] : null;
 		$this->id_construction = $vals['id_construction'] != 'NULL' ? $vals['id_construction'] : null;
+		$this->id_perso = $vals['id_perso'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return buff_base::get_liste_champs().', id_placement, id_construction';
+    return buff_base::get_liste_champs().', id_placement, id_construction, id_perso';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return buff_base::get_valeurs_insert().', '.$this->id_placement.', '.$this->id_construction;
+		return buff_base::get_valeurs_insert().', '.$this->id_placement.', '.$this->id_construction.', '.$this->id_perso;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return buff_base::get_liste_update().', id_placement = '.$this->id_placement.', id_construction = '.$this->id_construction;
+		return buff_base::get_liste_update().', id_placement = '.$this->id_placement.', id_construction = '.$this->id_construction.', id_perso = '.$this->id_perso;
 	}
 	// @}
 
-	/**
-	 * Lance le buff sur un batiùent
-	 *
-	 * @param  $nb_buff       Nombre de buffs déjà actifs sur la cible.
-	 * @param  $nb_buff_max   Nombre de buffs max de la cible de la cible (grade+).
-	 *
-	 * @return      true si le sort a été lancé et false sinon.
-	 */
-	 /*function lance_buff($nb_buff=0, $nb_buff_max=0)
-	 {
-	    $this->set_duree( $this->get_duree() * 6 );
-	    $buffs = buff::create(array('id_monstre', 'type'), array($this->get_id_perso(), $this->get_type()));
-	    if( count($buffs) )
-	      return $this->lance_buff_int($buffs[0], $nb_buff, $nb_buff_max);
-	    else
-	      return $this->lance_buff_int(null, $nb_buff, $nb_buff_max);
-	 }*/
+	/// Supprime tous les buffs lancés par un personnage (suite à sa mort)
+	static function suppr_mort_perso(&$perso)
+	{
+		global $db;
+		$db->query( 'DELETE FROM buff_batiment WHERE id_perso = '.$perso->get_id() );
+	}
 }
 ?>

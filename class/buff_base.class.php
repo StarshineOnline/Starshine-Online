@@ -8,29 +8,14 @@
  * Classe buff_base
  * Classe buff_base servant de base aux buffs sur les personnages et les monstres
  */
-class buff_base extends comp_sort_buff
+class buff_base extends buff_batiment_def
 {
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
   // @{
-	protected $effet2; ///< Effet secondaire
 	protected $fin;  ///< Date et heure de fin du buff
-	protected $description;  ///< Description du buff
-	protected $debuff; ///< 0 pour un buff,  pour un debuff
-
-	/// Renvoie l'effet secondaire
-	function get_effet2()
-	{
-		return $this->effet2;
-	}
-	/// Modifie l'effet secondaire
-	function set_effet2($effet2)
-	{
-		$this->effet2 = $effet2;
-		$this->champs_modif[] = 'effet2';
-	}
 
 	/// Renvoie la date et heure de fin du buff
 	function get_fin()
@@ -43,31 +28,9 @@ class buff_base extends comp_sort_buff
 		$this->fin = $fin;
 		$this->champs_modif[] = 'fin';
 	}
-	/// Renvoie la description du buff
-	function get_description()
-	{
-		return $this->description;
-	}
-	/// Modifie la description du buff
-	function set_description($description)
-	{
-		$this->description = $description;
-		$this->champs_modif[] = 'description';
-	}
-
-	/// Renvoie si c'est un buff ou un debuff
-	function get_debuff()
-	{
-		return $this->debuff;
-	}
-	/// Modifie si c'est un buff ou un debuff
-	function set_debuff($debuff)
-	{
-		$this->debuff = $debuff;
-		$this->champs_modif[] = 'debuff';
-	}
 
 	/// Renvoie si le buff est supprimable ou non
+	/// @todo Qu'est-ce que ça vient faire là ?
 	function get_supprimable()
 	{
 		return $this->supprimable;
@@ -100,11 +63,8 @@ class buff_base extends comp_sort_buff
 		}
 		else
 		{
-      comp_sort_buff::__construct($id, $type, $effet, $duree);
-			$this->effet2 = $effet2;
+      buff_batiment_def::__construct($id, $type, $effet, $effet2, $duree, $nom, $description, $debuff);
 			$this->fin = $fin;
-			$this->description = $description;
-			$this->debuff = $debuff;
 		}
 	}
 
@@ -114,27 +74,24 @@ class buff_base extends comp_sort_buff
 	 */
   protected function init_tab($vals)
   {
-    comp_sort_buff::init_tab($vals);
-		$this->effet2 = $vals['effet2'];
+    buff_batiment_def::init_tab($vals);
 		$this->fin = $vals['fin'];
-		$this->description = $vals['description'];
-		$this->debuff = $vals['debuff'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return comp_sort_buff::get_liste_champs().', effet2, fin, description, debuff';
+    return buff_batiment_def::get_liste_champs().', fin';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return comp_sort_buff::get_valeurs_insert().', '.$this->effet2.', '.$this->fin.', "'.mysql_escape_string($this->description).'", '.$this->debuff;
+		return buff_batiment_def::get_valeurs_insert().', '.$this->fin;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return comp_sort_buff::get_liste_update().', effet2 = '.$this->effet2.', fin = '.$this->fin.', description = "'.mysql_escape_string($this->description).'", debuff = '.$this->debuff;
+		return buff_batiment_def::get_liste_update().', fin = '.$this->fin;
 	}
 	// @}
 

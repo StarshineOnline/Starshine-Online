@@ -190,14 +190,44 @@ abstract class entitenj_constr extends entnj_incarn
 	/// Récupère les buffs du bâtiment
 	abstract protected function constr_buff();
 	/**
-	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
+	 * Renvoie l'ensemble des buffs / débuffs sur le bâtiment.
 	 * @return     Tableau des buffs.
 	 */
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
 		if( $this->buff == null )
 			$this->constr_buff();
-		return $this->buff;
+	}
+	/**
+	 * Renvoie un buff / débuff actif (i.e. le lanceur est proche)sur le bâtiment d'un type précis.
+	 * @return     Buff ou null s'il n'y en pas.
+	 */
+	function get_buff_actif($type)
+	{
+		global $db;
+		if( $this->buff == null )
+		{
+			if( array_key_exists($type, $this->buff) )
+			{
+				$buff = $this->buff[$type];
+				if( $buff->get_id_perso() )
+				{
+					$perso = new perso($buff->get_id_perso());
+					return $this->calcule_distance($perso) <= 10 ? $buff : null;
+				}
+				else
+					return $buff
+			}
+			else
+				return null;
+		}
+		else
+		{
+			$requete = 'SELECT b.* FROM buff_batiment AS b LEFT JOIN perso AS p ON b.id_perso = p.id WHERE b.id_'.get_class().'='.$this->id.' AND b.type="'.$type.'" AND (b.id_perso=0 OR (p.x BETWEEN '.($this->x-10).' AND '.($this->x+10).' AND p.y BETWEEN '.($this->y-10).' AND '.($this->y+10).')) ORDER BY effet DESC, effet2 DESC LIMIT 0, 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return $row ? new buff_batiment($row) : null;
+		}
 	}
 	/**
 	 * Renvoie l'ensemble des buffs / débuffs actif sur un bâtiment.

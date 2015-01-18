@@ -53,8 +53,9 @@ if( $action && $lieu && $perso->get_hp()>0 )
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume n\'a pas assez de stars');
 			break;
 		}
+		$facteur = $royaume->get_facteur_entretien();
 		//On vérifie les ressources
-		if(($royaume->get_pierre() < $obj->get_pierre() * $nombre) || ($royaume->get_bois() < $obj->get_bois() * $nombre) || ($royaume->get_eau() < $obj->get_eau() * $nombre) || ($royaume->get_charbon() < $obj->get_charbon() * $nombre) || ($royaume->get_sable() < $obj->get_sable() * $nombre) || ($royaume->get_essence() < $obj->get_essence() * $nombre))
+		if(($royaume->get_pierre() < $obj->get_pierre($facteur) * $nombre) || ($royaume->get_bois() < $obj->get_bois($facteur) * $nombre) || ($royaume->get_eau() < $obj->get_eau($facteur) * $nombre) || ($royaume->get_charbon() < $obj->get_charbon($facteur) * $nombre) || ($royaume->get_sable() < $obj->get_sable($facteur) * $nombre) || ($royaume->get_essence() < $obj->get_essence($facteur) * $nombre))
 		{
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous manque des ressources !');
 			break;
@@ -73,12 +74,12 @@ if( $action && $lieu && $perso->get_hp()>0 )
 			}
 			//On enlève les stars au royaume
 			$royaume->set_star($royaume->get_star() - $obj->get_prix());
-			$royaume->set_eau($royaume->get_eau() - $obj->get_eau());
-			$royaume->set_pierre($royaume->get_pierre() - $obj->get_pierre());
-			$royaume->set_bois($royaume->get_bois() - $obj->get_bois());
-			$royaume->set_sable($royaume->get_sable() - $obj->get_sable());
-			$royaume->set_essence($royaume->get_essence() - $obj->get_essence());
-			$royaume->set_charbon($royaume->get_charbon() - $obj->get_charbon());
+			$royaume->set_eau($royaume->get_eau() - $obj->get_eau($facteur));
+			$royaume->set_pierre($royaume->get_pierre() - $obj->get_pierre($facteur));
+			$royaume->set_bois($royaume->get_bois() - $obj->get_bois($facteur));
+			$royaume->set_sable($royaume->get_sable() - $obj->get_sable($facteur));
+			$royaume->set_essence($royaume->get_essence() - $obj->get_essence($facteur));
+			$royaume->set_charbon($royaume->get_charbon() - $obj->get_charbon($facteur));
 			$royaume->sauver();
 			$i++;
 		}

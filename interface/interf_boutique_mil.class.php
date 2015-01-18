@@ -29,73 +29,78 @@ class interf_boutique_mil extends interf_data_tbl
   	/// @todo passer à l'objet
 		$requete = 'SELECT * FROM objet_royaume';
 		$req = $db->query($requete);
-		$i = 0;
-		$boutique_class = 't1';
-		while($row = $db->read_assoc($req))
+		$facteur = $royaume->get_facteur_entretien();
+		$objets = objet_royaume::create(false, false, 'id', false, 'rang_royaume < '.$royaume->get_rang());
+		foreach($objets as $objet)
 		{
 			// nombre dans le dépot
-			$requete = 'SELECT COUNT(*) FROM depot_royaume WHERE id_royaume = '.$royaume->get_id().' AND id_objet = '.$row['id'];
+			$requete = 'SELECT COUNT(*) FROM depot_royaume WHERE id_royaume = '.$royaume->get_id().' AND id_objet = '.$objet->get_id();
 			$req_d = $db->query($requete);
 			$depot = $db->read_array($req_d)[0];
 			// On calcul combien le royaume peut acheter au max
 			$max = 0;
-			$achetable = $royaume->get_star() > $row['prix'];// &&  $royaume->get_food() > $row['food'];
-			$achetable &= $royaume->get_bois() > $row['bois'] &&  $royaume->get_eau() > $row['eau'];
-			$achetable &= $royaume->get_pierre() > $row['pierre'] &&  $royaume->get_sable() > $row['sable'];
-			$achetable &= $royaume->get_essence() > $row['essence'] &&  $royaume->get_charbon() > $row['charbon'];
+			$achetable = $royaume->get_star() > $objet->get_prix();// &&  $royaume->get_food() > $objet->get_food($facteur);
+			$achetable &= $royaume->get_bois() > $objet->get_bois($facteur) &&  $royaume->get_eau() > $objet->get_eau($facteur);
+			$achetable &= $royaume->get_pierre() > $objet->get_pierre($facteur) &&  $royaume->get_sable() > $objet->get_sable($facteur);
+			$achetable &= $royaume->get_essence() > $objet->get_essence($facteur) &&  $royaume->get_charbon() > $objet->get_charbon($facteur);
 			if( $achetable )
 			{
 				if($row['prix'] != 0)
-					$max = floor($royaume->get_star() / $row['prix']);
+					$max = floor($royaume->get_star() / $objet->get_prix());
 				/*if($row['food'] != 0)
-					$max = min(floor($royaume->get_food() / $row['food']), $max);*/
-				if($row['pierre'] != 0)
-					$max = min(floor($royaume->get_pierre() / $row['pierre']), $max);
+					$max = min(floor($royaume->get_food($facteur) / $objet->get_food($facteur)), $max);*/
 				if($row['bois'] != 0)
-					$max = min(floor($royaume->get_bois()/$row['bois']), $max);
+					$max = min(floor($royaume->get_bois() / $objet->get_bois($facteur)), $max);
 				if($row['eau'] != 0 )
-					$max = min(floor($royaume->get_eau()/$row['eau']), $max);
+					$max = min(floor($royaume->get_eau() / $objet->get_eau($facteur)), $max);
+				if($row['pierre'] != 0)
+					$max = min(floor($royaume->get_pierre() / $objet->get_pierre($facteur)), $max);
 				if($row['sable'] != 0)
-					$max = min(floor($royaume->get_sable()/$row['sable']), $max);
-				if($row['charbon'] != 0)
-					$max = min(floor($royaume->get_charbon()/$row['charbon']), $max);
+					$max = min(floor($royaume->get_sable() / $royaume->get_sable()), $max);
 				if($row['essence'] != 0)
-					$max = min(floor($royaume->get_essence()/$row['essence']), $max);
+					$max = min(floor($royaume->get_essence() / $objet->get_essence($facteur)), $max);
+				if($row['charbon'] != 0)
+					$max = min(floor($royaume->get_charbon() / $objet->get_charbon($facteur)), $max);
 			}
 			else
 				$max = 0;
 
 			$this->nouv_ligne();
-			$this->nouv_cell($row['nom']);
-			$this->nouv_cell( $Gtrad[$row['type']] );
-			$this->aff_cell_rsrc($row['prix'], $royaume->get_star());
-			//$this->aff_cell_rsrc($row['food'], $royaume->get_food());
-			$this->aff_cell_rsrc($row['bois'], $royaume->get_bois());
-			$this->aff_cell_rsrc($row['eau'], $royaume->get_eau());
-			$this->aff_cell_rsrc($row['pierre'], $royaume->get_pierre());
-			$this->aff_cell_rsrc($row['sable'], $royaume->get_sable());
-			$this->aff_cell_rsrc($row['essence'], $royaume->get_essence());
-			$this->aff_cell_rsrc($row['charbon'], $royaume->get_charbon());
+			/// @todo ajouter informations sur les bâtiments (popover)
+			$nom = $this->nouv_cell($objet->get_nom());
+			$this->nouv_cell( $Gtrad[$objet->get_type()] );
+			$this->aff_cell_rsrc($objet->get_prix(), $royaume->get_star());
+			//$this->aff_cell_rsrc($objet->get_food($facteur), $royaume->get_food($facteur));
+			$this->aff_cell_rsrc($objet->get_bois($facteur), $royaume->get_bois($facteur));
+			$this->aff_cell_rsrc($objet->get_eau($facteur), $royaume->get_eau($facteur));
+			$this->aff_cell_rsrc($objet->get_pierre($facteur), $royaume->get_pierre($facteur));
+			$this->aff_cell_rsrc($objet->get_sable($facteur), $royaume->get_sable($facteur));
+			$this->aff_cell_rsrc($objet->get_essence($facteur), $royaume->get_essence($facteur));
+			$this->aff_cell_rsrc($objet->get_charbon($facteur), $royaume->get_charbon($facteur));
 			$this->nouv_cell($depot);
 			$cell_max = $this->nouv_cell( new interf_bal_smpl('a', $max) );
 			if( $achetable )
 			{
-				$cell_max->set_attribut('onclick', '$(\'#nbr_'.$row['id'].'\').attr(\'value\', '.$max.');');
+				$cell_max->set_attribut('onclick', '$(\'#nbr_'.$objet->get_id().'\').attr(\'value\', '.$max.');');
 				$cell_max->set_tooltip('Cliquez pour acheter le maximum possible.');
-				$form = new interf_form($G_url->get('action', 'achat'), 'achat_'.$row['id'], 'get', 'input-group');
+				$form = new interf_form($G_url->get('action', 'achat'), 'achat_'.$objet->get_id(), 'get', 'input-group');
 				$this->nouv_cell( $form );
-				$nbr = $form->add( new interf_chp_form('number', 'nombre', false, 0, 'nbr_'.$row['id'], 'form-control') );
+				$nbr = $form->add( new interf_chp_form('number', 'nombre', false, 0, 'nbr_'.$objet->get_id(), 'form-control') );
 		    $nbr->set_attribut('min', 0);
 		    $nbr->set_attribut('step', 1);
 		    $nbr->set_attribut('max', $max);
-				$form->add( new interf_chp_form('hidden', 'id', false, $row['id']) );
+				$form->add( new interf_chp_form('hidden', 'id', false, $objet->get_id()) );
 				$btns = $form->add( new interf_bal_cont('span', false, 'input-group-btn') );
 				//$btn = $btns->add( new interf_chp_form('submit', false, false, '', false, 'btn btn-default icone icone-argent') );
 				$btn = $btns->add( new interf_bal_smpl('a', '', false, 'btn btn-default icone icone-argent') );
-				$btn->set_attribut('onclick', 'return charger_formulaire(\'achat_'.$row['id'].'\');');
+				$btn->set_attribut('onclick', 'return charger_formulaire(\'achat_'.$objet->get_id().'\');');
 			}
 			else
 				$this->nouv_cell('&nbsp;');
+			// description
+			$obj = $objet->get_objet();
+			$nom->set_tooltip($obj->get_description());
+			$nom->set_attribut('data-html', 'true');
 		}
 	}
 	protected function aff_cell_rsrc($val, $caisse)
