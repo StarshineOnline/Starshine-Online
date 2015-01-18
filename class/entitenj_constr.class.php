@@ -216,7 +216,7 @@ abstract class entitenj_constr extends entnj_incarn
 					return $this->calcule_distance($perso) <= 10 ? $buff : null;
 				}
 				else
-					return $buff
+					return $buff;
 			}
 			else
 				return null;
