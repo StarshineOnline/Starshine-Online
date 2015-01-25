@@ -735,6 +735,8 @@ class entite extends placable
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
   	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 2;
+    if(array_key_exists('fleche_sable', $this->etat))
+      $this->potentiel_toucher /= 1 + ($this->etat['fleche_sable']['effet'] / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
