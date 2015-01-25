@@ -1,9 +1,79 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
-require_once('haut_roi.php');
-include_once(root.'fonction/messagerie.inc.php');
+
+//Connexion obligatoire
+$connexion = true;
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
+
+
+$perso = joueur::get_perso();
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+if( $perso->get_rang() != 6 && $royaume->get_ministre_militaire() != $perso->get_id() )
+{
+	/// @todo logguer triche
+	exit;
+}
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+$cadre = $G_interf->creer_royaume();
+
+switch($action)
+{
+case 'suppr':  // Suppression d'une bataille
+	$bataille = new bataille(sSQL($_GET['id']));
+	$bataille->supprimer(true);
+	break;
+case 'debut':  // Début d'une bataille
+	$bataille = new bataille(sSQL($_GET['id']));
+	$bataille = new bataille($_GET['id_bataille']);
+	$bataille->set_etat(1);
+	$bataille->sauver();
+	// Envoie des messages aux groupes participants
+	/// @todo à modifier quand on aura le nouveau type de messagerie
+	$groupes = $bataille->get_groupes();
+	foreach($groupes as $groupe)
+	{
+		$titre = 'Mission pour la bataille : '.$bataille->get_nom();
+		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->get_nom().'[br]
+		[bataille:'.$bataille->get_nom().']';
+		//Si le groupe n'a pas deja son thread pour cette bataille
+		if($groupe->get_id_thread() == 0)
+		{
+			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $joueur->get_id(), 1, null, $titre);
+			$thread->sauver();
+			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
+			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$groupe->set_id_thread($thread->id_thread);
+			$groupe->sauver();
+		}
+		else
+		{
+			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
+			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
+		}
+	}
+	break;
+case 'fermer':  // Fin d'une bataille
+	$bataille = new bataille(sSQL($_GET['id']));
+	$bataille->set_etat(2);
+	$bataille->sauver();
+	break;
+}
+
+$cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );
+$cadre->maj_tooltips();
+
+
+
+
+
+
+exit;
+
+
+
 
 function affiche_bataille($bataille)
 {
@@ -134,55 +204,6 @@ elseif(array_key_exists('info_bataille', $_GET))
 	</div>
 	<?php
 }
-//Début d'une bataille
-elseif(array_key_exists('debut_bataille', $_GET))
-{
-//ALTER TABLE `bataille_groupe` ADD `id_thread` INT( 10 ) NOT NULL 
-	$bataille = new bataille($_GET['id_bataille']);
-	$bataille->set_etat(1);
-	$bataille->sauver();
-	affiche_bataille($bataille);
-	
-	// Envoie des messages aux groupes participants
-	$groupes = $bataille->get_groupes();
-	foreach($groupes as $groupe)
-	{
-		$titre = 'Mission pour la bataille : '.$bataille->get_nom();
-		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->get_nom().'[br]
-		[bataille:'.$bataille->get_nom().']';
-		//Si le groupe n'a pas deja son thread pour cette bataille
-		if($groupe->get_id_thread() == 0)
-		{
-			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $joueur->get_id(), 1, null, $titre);
-			$thread->sauver();
-			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
-			$groupe->set_id_thread($thread->id_thread);
-			$groupe->sauver();
-		}
-		else
-		{
-			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
-		}
-	}
-}
-//Fin d'une bataille
-elseif(array_key_exists('fin_bataille', $_GET))
-{
-	$id_bataille = (int) $_GET['id_bataille'];
-	$bataille = new bataille($id_bataille);
-	$bataille->set_etat(2);
-	$bataille->sauver();
-	affiche_bataille($bataille);
-}
-//Suppression d'une bataille
-elseif(array_key_exists('suppr_bataille', $_GET))
-{
-	$id_bataille = (int) $_GET['id_bataille'];
-	$bataille = new bataille($id_bataille);
-	$bataille->supprimer(true);
-}
 //Suppression de repère
 elseif(array_key_exists('del_repere', $_GET))
 {
@@ -288,16 +309,5 @@ elseif(array_key_exists('del_repere', $_GET))
 	$repere = new bataille_repere($_GET['id_repere']);
 	$repere->supprimer(true);
 	echo 'Repère supprimé avec succès';
-}
-else
-{
-	include_once(root.'roi/gestion_bataille_menu.php');
-	$bataille_royaume = new bataille_royaume($royaume->get_id());
-	$bataille_royaume->get_batailles();
-	
-	foreach($bataille_royaume->batailles as $bataille)
-	{
-		affiche_bataille($bataille);
-	}
 }
 ?>

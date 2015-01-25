@@ -34,6 +34,7 @@ class texte
   const pnj = 0x3bf;   ///< textes des PNJ
   const cases = 0x3bf;   ///< textes des cases
   const tutoriel = 0x3b8;   ///< textes des tutoriels
+  const batailles = 0x42;   ///< textes des batailles
   
   /**
    * Constructeur

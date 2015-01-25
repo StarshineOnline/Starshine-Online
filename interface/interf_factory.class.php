@@ -818,6 +818,11 @@ class interf_factory
   {
   	return new interf_gestion_mines($royaume, $action, $carte);
 	}
+  /// Gestion des batailles
+  function creer_gest_batailles(&$royaume)
+  {
+  	return new interf_gest_batailles($royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory

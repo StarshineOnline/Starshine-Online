@@ -329,7 +329,7 @@
 	font-size: 26px;
 }
 
-#liste_bourgs .info_case .xsmall
+#liste_bourgs .info_case .xsmall, #liste_batailles .info_case .xsmall
 {
 	display: block;
 }
@@ -398,4 +398,30 @@
 #bourgs_mines
 {
 	position: relative;
+}
+
+#liste_batailles .info_case
+{
+	/*min-height: 45px;*/
+	height: auto;
+	width: 490px;
+	display: inline-block;
+}
+
+#liste_batailles .info_case:nth-child(odd)
+{
+	margin-right: 16px;
+}
+
+#liste_batailles .info_case div:first-child
+{
+	height: 45px;
+	border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+	padding: 0;
+}
+
+#nouv_bataille
+{
+	width: 100%;
+	margin-top: 10px;
 }

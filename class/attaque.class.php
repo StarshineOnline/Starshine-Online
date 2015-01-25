@@ -133,7 +133,7 @@ class attaque
   ///Méthode gérant l'attaque
   function attaque($distance, $type, $pa_attaque, $R, $pet, $defenseur_en_defense=false)
   {
-  	global $G_round_total;
+  	global $G_round_total, $attaque_hp_avant, $defense_hp_avant, $attaque_hp_apres, $defense_hp_apres;
   	$this->distance = $distance;
   	$this->type = $type;
   	
