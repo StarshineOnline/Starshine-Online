@@ -37,6 +37,7 @@ class interf_carte extends interf_tableau
   /// @bug debuguer l'affichage des royaumes pour les petites textures et le remettre ici
   const aff_gestion = 0xc000;
   const aff_gest_bourgs = 0x18000;
+  const aff_gest_batailles = 0x1c000;
   const masque_ordre = 0x30;
   const masque_diplo = 0xf00;
 
@@ -129,7 +130,8 @@ class interf_carte extends interf_tableau
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
 			{
 				$this->infos[$i][$j] = '';
-				$this->cases[$i][$j] = &$this->nouv_cell(null, null, $tex.$infos_cases[$j.'|'.$i]['decor']);
+				$case = (!($options & self::aff_lien_gest) && $infos_cases[$j.'|'.$i]['royaume']) || $infos_cases[$j.'|'.$i]['info'] == 5 ? $tex.$infos_cases[$j.'|'.$i]['decor'] : '';
+				$this->cases[$i][$j] = &$this->nouv_cell(null, null, $case);
         $type = $infos_cases[$j.'|'.$i]['type'];
         $pos = 'rel_'.($j-$x).'_'.($i-$y);
         if( $this->grd_img && array_key_exists($type, $calques) )

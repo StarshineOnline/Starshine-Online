@@ -657,9 +657,10 @@ class interf_editeur extends interf_bal_cont
 	const lien = 0x10;
 	const image = 0x10;
 	const smiley = 0x10;*/
-	const mot_messagerie = 0;
+	const messagerie = 0;
 	const mot_roi = 0;
-	const mot_propagande = 0;
+	const propagande = 0;
+	const descr_bataille = 0;
 	function __construct($id_editeur, $url=false, $id=false, $classe=false, $options=0)
 	{
 		parent::__construct('div', $id, $classe);

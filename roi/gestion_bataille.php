@@ -21,6 +21,9 @@ $cadre = $G_interf->creer_royaume();
 
 switch($action)
 {
+case 'carte':
+	$cadre->add_section('gest_bat_carte', new interf_carte($_GET['x'], $_GET['y'], interf_carte::aff_gest_batailles, 8, 'carte'));
+	exit;
 case 'suppr':  // Suppression d'une bataille
 	$bataille = new bataille(sSQL($_GET['id']));
 	$bataille->supprimer(true);
@@ -60,6 +63,22 @@ case 'fermer':  // Fin d'une bataille
 	$bataille->set_etat(2);
 	$bataille->sauver();
 	break;
+case 'modifier': // Modifier une bataille
+	$bataille = new bataille(sSQL($_GET['id']));
+	$cadre->set_gestion( $G_interf->creer_modif_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
+case 'nouveau': // Nouvelle bataille
+	$bataille = new bataille();
+	$cadre->set_gestion( $G_interf->creer_modif_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
+case 'creer': // validation de la création ou modification
+	$bataille = array_key_exists('id', $_GET) ? new bataille(sSQL($_GET['id'])) : new bataille();
+	$bataille->set_nom( $_POST['nom'] );
+	$bataille->set_description( $_POST['description'] );
+	$bataille->set_x( $_POST['x'] );
+	$bataille->set_y( $_POST['y'] );
 }
 
 $cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );

@@ -52,23 +52,49 @@ class interf_gest_batailles extends interf_cont
 
 class interf_gest_bat_base extends interf_cont
 {
-	protected $div_princ;
+	//protected $div_princ;
 	protected $div_gauche;
 	protected $div_droite;
 	function __construct()
 	{
 		interf_alerte::aff_enregistres($this);
-		$this->div_princ = $this->add( new interf_bal_cont('div', 'gestion_batailles') );
-		$this->div_gauche = $this->add( new interf_bal_cont('div', 'gest_bat_infos') );
-		$this->div_droite = $this->add( new interf_bal_cont('div', 'gest_bat_carte') );
+		$div_princ = $this->add( new interf_bal_cont('div', 'gestion_batailles') );
+		$this->div_gauche = $div_princ->add( new interf_bal_cont('div', 'gest_bat_infos') );
+		$this->div_droite = $div_princ->add( new interf_bal_cont('div', 'gest_bat_carte') );
 	}
 }
 
 class interf_modif_bataille extends interf_gest_bat_base
 {
-	function __construct($bataille=null)
+	function __construct(&$bataille)
 	{
+		global $G_url, $G_max_x, $G_max_y;
 		parent::__construct();
+		if( $bataille->get_id() )
+			$G_url->add('id', $bataille->get_id());
+		// Informations
+		$form = $this->div_gauche->add( new interf_form($G_url->get('action', 'creer'), 'info_bataille', 'post') );
+		$form->add_champ_bs('text', 'nom', null, $bataille->get_nom(), 'Nom');
+		$div = $form->add( new interf_bal_cont('div', false, 'input-group') );
+		$div->add( new interf_bal_smpl('span', 'X', false, 'input-group-addon') );
+		//$x = $form->add_champ_bs('number', 'x', null, $bataille->get_nom(), 'X');
+		$x = $div->add( new interf_chp_form('number', 'x', false, $bataille->get_x(), 'bataille_x', 'form-control') );
+		$x->set_attribut('min', 0);
+		$x->set_attribut('max', $G_max_x);
+		$x->set_attribut('step', 1);
+		//$y = $form->add_champ_bs('number', 'y', null, $bataille->get_nom(), 'Y');
+		$div->add( new interf_bal_smpl('span', 'Y', false, 'input-group-addon') );
+		$y = $div->add( new interf_chp_form('number', 'y', false, $bataille->get_y(), 'bataille_y', 'form-control') );
+		$y->set_attribut('min', 0);
+		$y->set_attribut('max', $G_max_y);
+		$y->set_attribut('step', 1);
+		$span = $div->add( new interf_bal_cont('span', false, 'input-group-btn') );
+		$span->add( new interf_bal_smpl('button', 'Voir', array('type'=>'button', 'class'=>'btn btn-default', 'onclick'=>'batailles_maj_carte();')) );
+		$editeur = $form->add( new interf_editeur('descr_bataille', false, false, 'editeur') );
+		$editeur->set_texte( $bataille->get_description() );
+		$btn = $form->add( new interf_chp_form('submit', false, false, $bataille->get_id() ? 'Modifier' : 'creer', false, 'btn btn-default') );
+		// carte
+		$this->div_droite->add( new interf_carte($bataille->get_x(), $bataille->get_y(), interf_carte::aff_gest_batailles, 8, 'carte') );
 	}
 }
 

@@ -198,29 +198,25 @@
 	width: 350px;
 }
 
-.minicarte td
+.minicarte td, #gest_bat_carte td
 {
 	width: 30px !important;
 	height: 30px !important;
 }
 
-.minicarte th
+.minicarte th, #gest_bat_carte th
 {
 	width: 20px !important;
 	height: 30px !important;
+	font-size: 10px;
 }
 
-.minicarte thead th
+.minicarte thead th, #gest_bat_carte thead th
 {
 	width: 30px !important;
 }
 
-.minicarte th
-{
-	font-size: 10px;
-}
-
-.minicarte tbody th
+.minicarte tbody th, #gest_bat_carte tbody th
 {
 	text-align: right;
 }
@@ -424,4 +420,36 @@
 {
 	width: 100%;
 	margin-top: 10px;
+}
+
+#gest_bat_infos
+{
+	width: 450px;
+}
+
+#gest_bat_infos .editeur
+{
+	height: 300px;
+}
+
+#gest_bat_carte
+{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	/*width: 600px;*/
+}
+#gest_bat_carte #carte
+{
+	margin-left: 0;
+}
+
+#gest_bat_carte #carte tbody tr
+{
+	height: 30px;
+}
+
+#gest_bat_infos .input-group
+{
+	margin-bottom: 5px;
 }

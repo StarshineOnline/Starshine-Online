@@ -1134,6 +1134,12 @@ p.accueil a
 	border-radius: 5px;
 }
 
+#carte.carte_petit td span
+{
+  height:26px!important;
+  width:26px!important;
+}
+
 #carte td div span
 {
   margin: 1px;

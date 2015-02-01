@@ -59,3 +59,11 @@ function repart_recettes(donnees)
 	 series: [{type: 'pie', data : donnees}]
   });
 }
+
+function batailles_maj_carte()
+{
+	var x = document.getElementById("bataille_x");
+	var y = document.getElementById("bataille_y");
+	var url = "gestion_bataille.php?action=carte&x="+x.value+"&y="+y.value;
+	return charger(url);
+}
