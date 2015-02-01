@@ -76,9 +76,37 @@ case 'nouveau': // Nouvelle bataille
 case 'creer': // validation de la création ou modification
 	$bataille = array_key_exists('id', $_GET) ? new bataille(sSQL($_GET['id'])) : new bataille();
 	$bataille->set_nom( $_POST['nom'] );
-	$bataille->set_description( $_POST['description'] );
+	$bataille->set_description( $_POST['texte'] );
 	$bataille->set_x( $_POST['x'] );
 	$bataille->set_y( $_POST['y'] );
+	$bataille->sauver();
+	// Groupes
+	/// @todo passer à l'objet
+	$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".joueur::get_perso()->get_race()."'";
+	$req = $db->query($requete);
+	// On regarde tous les groupes possibles
+	while($row = $db->read_assoc($req))
+	{
+		$bat_groupe = new bataille_groupe(0,0,$row['groupeid']);
+		if( $bat_groupe->is_bataille() )
+		{
+			// on regarde si le groupe a été retiré de la bataille
+			if( $bat_groupe->get_id_bataille() == $bataille->get_id() && !in_array($row['groupeid'], $_POST['groupes']) )
+			{
+				// On supprime les reperes associés au groupe, puis le groupe
+				$bat_groupe->get_reperes();
+				foreach ($bat_groupe->reperes as $repere)
+					$repere->supprimer();
+				$bat_groupe->supprimer();
+			}
+		}
+		else if( in_array($row['groupeid'], $_POST['groupes']) )
+		{
+			$bataille_groupe = new bataille_groupe(0, $bataille->get_id(), $row['groupeid']);
+			$bataille_groupe->sauver();
+			//unset($bataille_groupe);  // <- utile ?
+		}
+	}
 }
 
 $cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );
