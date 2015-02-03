@@ -20,6 +20,15 @@ class interf_bureau_quete extends interf_ville_onglets
 			$this->icone = $this->set_icone_centre('pentacle');
 			$niveau = 1;
 			
+			$this->centre->add( new interf_bal_smpl('h3', 'Bureau des quêtes') );
+			
+			$tbl = $this->centre->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
+			$tbl->nouv_cell('Voici les différentes Quêtes disponibles :');
+			$tbl->nouv_ligne();
+			$tbl->nouv_cell('Nom de la quete');
+			$tbl->nouv_cell('Type de quete');
+			$tbl->nouv_cell('Repetable');
+			
 			$return = array();
 			$quetes = array();
 			$liste_quete = $this->perso->get_liste_quete();
@@ -162,11 +171,7 @@ class interf_bureau_quete extends interf_ville_onglets
 					if($check)
 					{
 						$nombre_quete++;
-						$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
-						$tbl->nouv_cell('Quete');
-						$tbl->nouv_cell('Type');
-						$tbl->nouv_cell('Repetable');
-						
+												
 						$tbl->nouv_ligne();
 						$tbl->nouv_cell(new interf_lien($quete->get_nom(), 'quete.php?q='.$quete->get_id()));
 						$tbl->nouv_cell($quete->get_type());
