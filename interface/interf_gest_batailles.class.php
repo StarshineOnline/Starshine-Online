@@ -116,4 +116,11 @@ class interf_modif_bataille extends interf_gest_bat_base
 	}
 }
 
+class interf_gerer_bataille extends interf_gest_bat_base
+{
+	function __construct(&$bataille)
+	{
+	}
+}
+
 ?>

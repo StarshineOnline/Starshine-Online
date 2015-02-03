@@ -107,6 +107,11 @@ case 'creer': // validation de la création ou modification
 			//unset($bataille_groupe);  // <- utile ?
 		}
 	}
+case 'gerer': // Gérer une bataille
+	$bataille = new bataille(sSQL($_GET['id']));
+	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
 }
 
 $cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );
