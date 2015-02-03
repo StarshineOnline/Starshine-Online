@@ -9,8 +9,11 @@ include_once(root.'haut_ajax.php');
 $joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
+$interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
 
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
@@ -118,11 +121,12 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 	else
 	{
 		//Affichage des quêtes
-		$return = affiche_quetes('bureau_quete', $joueur);
-		echo $return[0];
+
+		$interf_princ->add( $G_interf->creer_bureau_quete($R) );
+	/*	$return = affiche_quetes('bureau_quete', $joueur);
 		if($return[1] > 0)
 			echo '<br /><br /><a href="bureau_quete.php?action=prendre_tout" onclick="return envoiInfo(this.href, \'carte\')">Prendre toutes les quêtes.</a>';
-
+*/
 	}
 }
 ?>
