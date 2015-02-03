@@ -9,8 +9,11 @@ include_once(root.'haut_ajax.php');
 $joueur = new perso($_SESSION['ID']);
 $joueur->check_perso();
 
+$interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
 
 $W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
 $W_req = $db->query($W_requete);
@@ -24,14 +27,6 @@ if ($R->is_raz() && $W_row['type'] == 1 && $joueur->get_x() <= 190 && $joueur->g
 	exit (0);
 }
 
-?>
-<fieldset>
-		<legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> >', $joueur->get_pos()); ?> <?php echo '<a href="bureau_quete.php" onclick="return envoiInfo(this.href,\'carte\')">';?> Bureau des Quêtes </a></legend>
- 		<?php include_once(root.'ville_bas.php');?>
-
-		<div class="ville_test">
-		<p>Voici les différentes Quêtes disponibles :</p>
-<?php
 if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race()) == 127)
 {
 	if(isset($_GET['action']))
@@ -118,13 +113,13 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 	else
 	{
 		//Affichage des quêtes
-		$return = affiche_quetes('', $joueur);
-		echo $return[0];
+
+		$interf_princ->set_gauche( $G_interf->creer_bureau_quete($R) );
+	/*	$return = affiche_quetes('bureau_quete', $joueur);
 		if($return[1] > 0)
 			echo '<br /><br /><a href="bureau_quete.php?action=prendre_tout" onclick="return envoiInfo(this.href, \'carte\')">Prendre toutes les quêtes.</a>';
-
+*/
 	}
 }
 ?>
-</div>
-</fieldset>
+
