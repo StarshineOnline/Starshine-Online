@@ -118,7 +118,7 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 	else
 	{
 		//Affichage des quêtes
-		$return = affiche_quetes('', $joueur);
+		$return = affiche_quetes('bureau_quete', $joueur);
 		echo $return[0];
 		if($return[1] > 0)
 			echo '<br /><br /><a href="bureau_quete.php?action=prendre_tout" onclick="return envoiInfo(this.href, \'carte\')">Prendre toutes les quêtes.</a>';

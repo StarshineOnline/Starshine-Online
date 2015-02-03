@@ -242,63 +242,129 @@ function affiche_quetes($fournisseur, &$joueur)
 	$where = "";
 	$id_royaume = $R->get_id();
 	if($id_royaume < 10) '0'.$id_royaume;
-	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
+	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = ".$R->get_id().") OR ( royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."'".$where." ".$notin."";
 	$req = $db->query($requete);
 	
 	$html = '';
 	$nombre_quete = 0;
 	while($row = $db->read_array($req))
 	{
+		$quete = new quete($row['idq']);
+		
 		$quete_fini = explode(';', $joueur->get_quete_fini());
-		//Si c'est une quête non répétable et que le joueur a déjà fini la quête, on affiche pas.
-		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
-		{
-		}
-		//Si c'est une quête qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
-		else
+		//On affiche si c'est répétable
+		if($quete->get_repetable() == 'oui' OR !in_array($quete->get_id(), $quete_fini))
 		{
 			$check = true;
-			$quete_requis = explode(';', $row['quete_requis']);
-			/*$i = 0;
-			$count = count($requis);
-			while($check AND $i < $count)*/
+			$quete_requis = explode(';', $quete->get_requis());
+
 			foreach($quete_requis as $requis)
 			{
-				/*if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
-				$i++;*/
-				//echo $requis.'<br/>';
+
 				if( !$requis ) continue;
 				$val = mb_substr($requis, 1);
-				if($requis[0] == 'q')
+				switch ($requis[0]) 
 				{
-					if( !in_array($val, $quete_fini) )
-					{
-					$check = false;
-					break;
-					}
-				}
-				else if($requis[0] == 't')
-				{
-					if( $joueur->get_tuto() != $val )
-					{
-					$check = false;
-					break;
-					}
-				}
-				else if($requis[0] == 'c')
-				{
-					$classes = explode('-', $val);
-					if( !in_array($joueur->get_classe_id(), $classes) )
-					{
-					$check = false;
-					break;
-					}
+					//une quete doit etre finies avant la présente
+					case 'q' : 	if( !in_array($val, $quete_fini) )
+								{
+									$check = false;
+									break;
+								}
+					//c'est une quete de tuto
+					case 't' : 	if( $joueur->get_tuto() != $val)
+								{
+									$check = false;
+									break;
+								}
+					//c'est une quete de classe
+					case 'c' :	$classes = explode('-', $val);
+								if( !in_array($joueur->get_classe_id(), $classes) )
+								{
+									$check = false;
+									break;
+								}
+					//c'est une quete de race
+					case 'r' :	if( $joueur->get_race() != $val )
+								{
+									$check = false;
+									break;
+								}
+					//c'est une quete de niveau
+					case 'n' :	$operateurs = '>=';
+								$operateurs = explode('|', $val);
+								foreach($operateurs as $operateur)
+								{	
+									switch ($operateur['0']) {
+										case '>' : if( $joueur->get_level() <= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '<' : if( $joueur->get_level() >= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '=' : if( $joueur->get_level() <> $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+												}
+								}
+					//c'est une quete d'honneur
+					case 'h' :	$operateurs = '>=';
+								$operateurs = explode('|', $val);
+								foreach($operateurs as $operateur)
+								{
+									switch ($operateur['0']) {
+										case '>' : if( $joueur->get_honneur() <= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '<' : if( $joueur->get_honneur() >= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '=' : if( $joueur->get_honneur() <> $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+												}
+								}
+					//c'est une quete de reputation
+					case 'r' :	$operateurs = '>=';
+								$operateurs = explode('|', $val);
+								foreach($operateurs as $operateur)
+								{
+									switch ($operateur['0']) {
+										case '>' : if( $joueur->get_reputation() <= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '<' : if( $joueur->get_reputation() >= $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+										case '=' : if( $joueur->get_reputation() <> $operateur['1'] )
+													{
+														$check = false;
+														break;
+													}
+												}
+								}
 				}
 			}
 			if($check)
 			{
 				$nombre_quete++;
-				$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span></li>';
+				$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$quete->get_id().'" onclick="return envoiInfo(this.href, \'carte\')">'.$quete->get_nom().'</a> </li>';
 			}
 		}
 	}

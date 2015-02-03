@@ -8,7 +8,7 @@
  * Classe représentant les etapes des quetes
  */
 
-class etape extends quete
+class quete_etape extends quete
 {
 	protected $id;  ///< id de la etape.
 	protected $id_quete;  ///< id de la quete.
@@ -21,10 +21,9 @@ class etape extends quete
 	protected $gain_perso;  ///< gain solo
 	protected $gain_groupe;  ///< gain de groupe
 	
-	
-	
+
 	/**
-	 * Constructeur
+	* Constructeur
 	*/
 	function __construct($id ='', $id_quete='', $id_etape='', $variante='', $description='', $niveau= 1 , $objectif='', $type='', $gain_perso='', $gain_groupe ='')
 	{
@@ -69,5 +68,18 @@ class etape extends quete
 		$this->gain_groupe = $vals['gain_groupe'];
 	}
 		
+		
+	// Renvoie le id de l'objet
+	function get_description()
+	{
+		return $this->description;
+	}
+	
+	/// Modifie le id de l'objet
+	function set_description($id)
+	{
+		$this->description = $description;
+		$this->champs_modif[] = 'description';
+	}
 	
 }

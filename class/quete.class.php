@@ -28,7 +28,7 @@
 	/**
 	 * Constructeur
 	*/
-	function __construct($id ='', $nom='', $fournisseur='bureau_quete', $type='g', $repetable='non', $royaume='', $requis='', $star_royaume='', $nombre_etape=0, $description ='')
+	function __construct($id ='', $nom='', $fournisseur='bureau_quete', $type='g', $repetable='non', $royaume='', $requis='', $star_royaume='', $nombre_etape=0)
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -47,7 +47,6 @@
 			$this->requis = $requis;
 			$this->star_royaume = $star_royaume;
 			$this->nombre_etape = $nombre_etape;
-			$this->description = $description;
 
 		}
 	}	
@@ -68,7 +67,6 @@
 		$this->requis = $vals['requis'];
 		$this->star_royaume = $vals['star_royaume'];
 		$this->nombre_etape = $vals['nombre_etape'];
-		$this->description = $vals['description'];
 	}
 		
 	// Renvoie le id de l'objet
@@ -186,20 +184,7 @@
 		$this->nombre_etape = $nombre_etape;
 		$this->champs_modif[] = 'nombre_etape';
 	}
-	
-	// Renvoie la description de l'objet
-	function get_description()
-	{
-		return $this->description;
-	}
-	
-	/// Modifie la description de l'objet
-	function set_description($description)
-	{
-		$this->description = $description;
-		$this->champs_modif[] = 'description';
-	}
-	
+		
 	function achat(&$quete, &$royaume)
 	{
 		global $db;

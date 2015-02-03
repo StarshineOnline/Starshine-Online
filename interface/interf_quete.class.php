@@ -5,6 +5,7 @@
  */ 
 include_once(root.'inc/ressource.inc.php');
 include_once(root.'class/quete.class.php');
+include_once(root.'class/quete_etape.class.php');
 
 //Créer l'interface de la quete selon l'id.
 
@@ -13,18 +14,23 @@ class interf_quete extends interf_dialogBS
 	function __construct($idquete, &$royaume)
 	{
 		$quete = new quete($idquete);
+		$champ = array('id_quete', 'etape', 'variante');
+		$valeur = array($idquete, 1, 0);
+		$etape = quete_etape::create($champ, $valeur)[0];
+		
 		parent::__construct($quete->get_nom(), true, 'quete');	
-		$this->add( new interf_bal_smpl('h4', 'Nom de la quête', false, false));	
+		$this->add( new interf_bal_smpl('h5', 'Nom de la quête', false, false));	
 		$this->add( new interf_bal_smpl('br'));	
 		$this->add( new interf_bal_smpl('span', $quete->get_nom(), false, false));
+		//$this->add( new interf_bal_smpl('span', $etape->get_nom(), false, false));
 		$this->add( new interf_bal_smpl('br'));	
 	
-		$this->add( new interf_bal_smpl('h4', 'Description', false, false));	
+		$this->add( new interf_bal_smpl('h5', 'Description', false, false));	
 		$this->add( new interf_bal_smpl('br'));	
-		$this->add( new interf_bal_smpl('span', $quete->get_description(), false, false));	
+		$this->add( new interf_bal_smpl('span', var_dump($etape), false, false));	
 		$this->add( new interf_bal_smpl('br'));	
 
-		$this->add( new interf_bal_smpl('h4', 'Achat de la quete ?', false, false));	
+		$this->add( new interf_bal_smpl('h5', 'Achat de la quete ?', false, false));	
 		$this->add( new interf_bal_smpl('br'));	
 		$this->add( new interf_lien('Acheter', $quete->achat($quete, $royaume)));
 		
