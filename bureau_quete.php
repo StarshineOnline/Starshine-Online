@@ -113,7 +113,6 @@ if($R->get_diplo($joueur->get_race()) <= 6 OR $R->get_diplo($joueur->get_race())
 	else
 	{
 		//Affichage des quêtes
-
 		$interf_princ->set_gauche( $G_interf->creer_bureau_quete($R) );
 	/*	$return = affiche_quetes('bureau_quete', $joueur);
 		if($return[1] > 0)

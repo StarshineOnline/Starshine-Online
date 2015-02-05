@@ -16,13 +16,9 @@ class interf_bureau_quete extends interf_ville_onglets
 			global $db;
 			parent::__construct($royaume);
 			
-			// Icone
-			$this->icone = $this->set_icone_centre('pentacle');
-			$niveau = 1;
+			$this->onglets->add_onglet( new interf_bal_smpl('h3', 'Bureau des quêtes') );
 			
-			$this->centre->add( new interf_bal_smpl('h3', 'Bureau des quêtes') );
-			
-			$tbl = $this->centre->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
+			$tbl = $this->centre->add( new interf_data_tbl('tbl_quete', '', false, false, 383, 3 ) );
 			$tbl->nouv_cell('Voici les différentes Quêtes disponibles :');
 			$tbl->nouv_ligne();
 			$tbl->nouv_cell('Nom de la quete');
@@ -52,7 +48,6 @@ class interf_bureau_quete extends interf_ville_onglets
 			$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = ".$royaume->get_id().") OR ( royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = 'bureau_quete'".$where." ".$notin."";
 			$req = $db->query($requete);
 			
-			$html = '';
 			$nombre_quete = 0;
 			while($row = $db->read_array($req))
 			{
@@ -173,7 +168,7 @@ class interf_bureau_quete extends interf_ville_onglets
 						$nombre_quete++;
 												
 						$tbl->nouv_ligne();
-						$tbl->nouv_cell(new interf_lien($quete->get_nom(), 'quete.php?q='.$quete->get_id()));
+						$tbl->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
 						$tbl->nouv_cell($quete->get_type());
 						$tbl->nouv_cell($quete->get_repetable());						
 						
@@ -188,6 +183,14 @@ class interf_bureau_quete extends interf_ville_onglets
 			}
 			$return[1] = $nombre_quete;
 		}
+		
+	// on formate la description de la quete pour l'affichage
+	function get_description(&$quete)
+	{
+		global $db;
+		
+		$this->centre->add( new interf_bal_smpl('h3', 'Bureau des quêtes') );
 	}
+}
 					
 					
