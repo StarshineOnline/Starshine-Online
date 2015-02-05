@@ -68,7 +68,7 @@ class interf_modif_bataille extends interf_gest_bat_base
 {
 	function __construct(&$bataille)
 	{
-		global $G_url, $G_max_x, $G_max_y;
+		global $G_url, $G_max_x, $G_max_y, $db;
 		parent::__construct();
 		if( $bataille->get_id() )
 			$G_url->add('id', $bataille->get_id());
@@ -92,9 +92,34 @@ class interf_modif_bataille extends interf_gest_bat_base
 		$span->add( new interf_bal_smpl('button', 'Voir', array('type'=>'button', 'class'=>'btn btn-default', 'onclick'=>'batailles_maj_carte();')) );
 		$editeur = $form->add( new interf_editeur('descr_bataille', false, false, 'editeur') );
 		$editeur->set_texte( $bataille->get_description() );
+		// Groupes
+		/// @todo passer à l'objet
+		$requete = "SELECT groupe.id as groupeid, groupe.nom as groupenom, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".joueur::get_perso()->get_race()."'";
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
+		{
+			$bat_groupe = new bataille_groupe(0,0,$row['groupeid']);
+			if( $bat_groupe->is_bataille() && $bat_groupe->get_id_bataille() != $bataille->get_id() )
+				continue;
+			$div = $form->add( new interf_bal_cont('div', false, 'input-group') );
+			$span = $div->add( new interf_bal_cont('span', false, 'input-group-addon') );
+			$checkbox = $span->add( new interf_chp_form('checkbox', 'groupes[]', false, $row['groupeid']) );
+			if( $bat_groupe->is_bataille() )
+				$checkbox->set_attribut('checked', 'checked');
+			$div->add( new interf_bal_smpl('span', 'Impliquer le groupe '.($row['groupenom']?$row['groupenom']:'groupe #'.$row['groupeid']), false, 'input-group-addon') );
+		}
+		// Bouton
 		$btn = $form->add( new interf_chp_form('submit', false, false, $bataille->get_id() ? 'Modifier' : 'creer', false, 'btn btn-default') );
+		$btn->set_attribut('onclick', 'return charger_formulaire_texte(\'info_bataille\',\'descr_bataille\');');
 		// carte
 		$this->div_droite->add( new interf_carte($bataille->get_x(), $bataille->get_y(), interf_carte::aff_gest_batailles, 8, 'carte') );
+	}
+}
+
+class interf_gerer_bataille extends interf_gest_bat_base
+{
+	function __construct(&$bataille)
+	{
 	}
 }
 

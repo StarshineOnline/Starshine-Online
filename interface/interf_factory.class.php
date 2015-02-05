@@ -833,6 +833,11 @@ class interf_factory
     include_once(root.'interface/interf_gest_batailles.class.php');
   	return new interf_modif_bataille($bataille);
 	}
+  function creer_gerer_bataille(&$bataille)
+  {
+    include_once(root.'interface/interf_gest_batailles.class.php');
+  	return new interf_gerer_bataille($bataille);
+	}
 }
 
 class interf_factory_shine extends interf_factory
