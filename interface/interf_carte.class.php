@@ -130,7 +130,7 @@ class interf_carte extends interf_tableau
 			for($j=$this->x_min; $j<=$this->x_max; $j++)
 			{
 				$this->infos[$i][$j] = '';
-				$case = (!($options & self::aff_lien_gest) && $infos_cases[$j.'|'.$i]['royaume']) || $infos_cases[$j.'|'.$i]['info'] == 5 ? $tex.$infos_cases[$j.'|'.$i]['decor'] : '';
+				$case = !($options & self::aff_lien_gest) || $infos_cases[$j.'|'.$i]['royaume'] || $infos_cases[$j.'|'.$i]['info'] == 5 ? $tex.$infos_cases[$j.'|'.$i]['decor'] : '';
 				$this->cases[$i][$j] = &$this->nouv_cell(null, null, $case);
         $type = $infos_cases[$j.'|'.$i]['type'];
         $pos = 'rel_'.($j-$x).'_'.($i-$y);

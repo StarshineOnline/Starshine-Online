@@ -13,6 +13,7 @@ class interf_quete extends interf_dialogBS
 {
 	function __construct($idquete, &$royaume)
 	{
+		global $G_url;
 		$quete = new quete($idquete);
 		$champ = array('id_quete', 'etape', 'variante');
 		$valeur = array($idquete, 1, 0);
@@ -29,10 +30,9 @@ class interf_quete extends interf_dialogBS
 		$this->add( new interf_bal_smpl('br'));	
 		$this->add( new interf_bal_smpl('span', var_dump($etape), false, false));	
 		$this->add( new interf_bal_smpl('br'));	
-
-		$this->add( new interf_bal_smpl('h5', 'Achat de la quete ?', false, false));	
-		$this->add( new interf_bal_smpl('br'));	
-		$this->add( new interf_lien('Acheter', $quete->achat($quete, $royaume)));
+		$this->ajout_btn('Fermer' , 'ferme');
+		$this->ajout_btn('Acheter' , '$(\'#modal\').modal(\'hide\'); return charger(\''.$G_url->get('Acheter', $quete->get_id()).'\');', 'primary');
+		
 		
 		$this->add( new interf_bal_smpl('br'));	
 	}
@@ -50,28 +50,31 @@ class interf_quete_royaume extends interf_cont
 	
 	protected function aff_tableau(&$royaume)
 	{
-		global $db, $ress;
+		global $db, $ress, $G_url;
 		$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
 		$tbl->nouv_cell('Quete');
 		$tbl->nouv_cell('Type');
 		$tbl->nouv_cell('Fournisseur');
 		$tbl->nouv_cell('Repetable');
 		$tbl->nouv_cell('Cout');
+		$tbl->nouv_cell('&nbsp;');
 		
 		//on charge toutes les quetes
 		$requete = "SELECT * FROM quete WHERE star_royaume > 0 AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().")";
 		$req = $db->query($requete);
 		
+		$G_url->add('action', 'voir');
 		//var_dump($liste);
 		while( $row = $db->read_assoc($req) )
 		{
 			$quete = new quete($row['id']);
 			$tbl->nouv_ligne();
-			$tbl->nouv_cell(new interf_lien($quete->get_nom(), 'quete.php?q='.$quete->get_id()));
+			$tbl->nouv_cell($quete->get_nom());
 			$tbl->nouv_cell($quete->get_type());
 			$tbl->nouv_cell($quete->get_fournisseur());
 			$tbl->nouv_cell($quete->get_repetable());
 			$tbl->nouv_cell($quete->get_star_royaume());
+			$tbl->nouv_cell( new interf_lien('voir', $G_url->get('id',$quete->get_id())) );
 		}
 	}
 }

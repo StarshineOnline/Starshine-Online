@@ -267,9 +267,9 @@ class interf_factory
     return new interf_terrain($royaume, $id);
 	}
 	/// Bureau des quetes
-	function creer_bureau_quete(&$royaume)
+	function creer_bureau_quete(&$royaume, $type='autre')
 	{
-    return new interf_bureau_quete($royaume, $id);
+    return new interf_bureau_quete($royaume, $type);
 	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)

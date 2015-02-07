@@ -8,22 +8,44 @@ include_once(root.'interface/interf_ville.class.php');
 include_once(root.'class/quete.class.php');
 include_once(root.'class/quete_etape.class.php');
 
-/// Classe gérant l'interface de l'alchimiste
+/// Classe gérant l'interface du bureau des quêtes
 class interf_bureau_quete extends interf_ville_onglets
 {
-	function __construct(&$royaume)
+	function __construct(&$royaume, $type='autre')
+	{
+		global $G_url;
+		parent::__construct($royaume);
+		
+		// Icone & jauges
+		$this->icone = $this->set_icone_centre('quetes');
+		$this->icone->set_tooltip('Bureau des quêtes');
+		
+		// Onglets
+		$this->onglets->add_onglet('Plaine', $G_url->get('type', 'plaine'), 'tab_plaine', 'ecole_mag', $type=='plaine');
+		$this->onglets->add_onglet('Forêt', $G_url->get('type', 'foret'), 'tab_foret', 'ecole_mag', $type=='foret');
+		$this->onglets->add_onglet('Désert', $G_url->get('type', 'desert'), 'tab_desert', 'ecole_mag', $type=='desert');
+		$this->onglets->add_onglet('Neige', $G_url->get('type', 'neige'), 'tab_neige', 'ecole_mag', $type=='neige');
+		$this->onglets->add_onglet('Montagne', $G_url->get('type', 'montagne'), 'tab_montagne', 'ecole_mag', $type=='montagne');
+		$this->onglets->add_onglet('Marais / TM', $G_url->get('type', 'marais'), 'tab_marais', 'ecole_mag', $type=='marais');
+		$this->onglets->add_onglet('Autres', $G_url->get('type', 'autre'), 'tab_autre', 'ecole_mag', $type=='autre');
+		
+		$this->onglets->get_onglet('tab_'.$type)->add( new interf_tbl_quetes($royaume, $type) );
+	}
+}
+
+/// Classe affichant les quêtes à prendre au bureau des quêtes
+class interf_tbl_quetes extends interf_data_tbl
+{
+	protected $perso;
+	function __construct(&$royaume, $type)
 		{
 			global $db;
-			parent::__construct($royaume);
+			parent::__construct('tbl_'.$type, '', false, false, 383, 3 );
+			$this->perso = &joueur::get_perso();
 			
-			$this->onglets->add_onglet( new interf_bal_smpl('h3', 'Bureau des quêtes') );
-			
-			$tbl = $this->centre->add( new interf_data_tbl('tbl_quete', '', false, false, 383, 3 ) );
-			$tbl->nouv_cell('Voici les différentes Quêtes disponibles :');
-			$tbl->nouv_ligne();
-			$tbl->nouv_cell('Nom de la quete');
-			$tbl->nouv_cell('Type de quete');
-			$tbl->nouv_cell('Repetable');
+			$this->nouv_cell('Nom de la quete');
+			$this->nouv_cell('Type de quete');
+			$this->nouv_cell('Repetable');
 			
 			$return = array();
 			$quetes = array();
@@ -167,10 +189,10 @@ class interf_bureau_quete extends interf_ville_onglets
 					{
 						$nombre_quete++;
 												
-						$tbl->nouv_ligne();
-						$tbl->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
-						$tbl->nouv_cell($quete->get_type());
-						$tbl->nouv_cell($quete->get_repetable());						
+						$this->nouv_ligne();
+						$this->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
+						$this->nouv_cell($quete->get_type());
+						$this->nouv_cell($quete->get_repetable());						
 						
 						
 						//$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$quete->get_id().'" onclick="return envoiInfo(this.href, \'carte\')">'.$quete->get_nom().'</a> </li>';
