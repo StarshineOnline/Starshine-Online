@@ -271,6 +271,12 @@ class interf_factory
 	{
     return new interf_bureau_quete($royaume, $type);
 	}
+	/// Liste des quêtes au bureau des quetes
+	function creer_tbl_quetes(&$royaume, $type='autre')
+	{
+    include_once(root.'interface/interf_bureau_quete.class.php');
+    return new interf_tbl_quetes($royaume, $type);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -701,7 +707,7 @@ class interf_factory
 
 	
   ///
-  function creer_listequete_royaume(&$royaume)
+  function creer_quete_royaume(&$royaume)
   {
 	include_once(root.'interface/interf_quete.class.php');
   	return new interf_quete_royaume($royaume);

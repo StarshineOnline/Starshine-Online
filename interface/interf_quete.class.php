@@ -45,37 +45,50 @@ class interf_quete_royaume extends interf_cont
 {
 	function __construct(&$royaume)
 	{
+		interf_alerte::aff_enregistres($this);
 		$this->aff_tableau($royaume);
 	}
 	
 	protected function aff_tableau(&$royaume)
 	{
 		global $db, $ress, $G_url;
-		$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 4	) );
+		$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 3	) );
 		$tbl->nouv_cell('Quete');
-		$tbl->nouv_cell('Type');
+		//$tbl->nouv_cell('Type');
 		$tbl->nouv_cell('Fournisseur');
 		$tbl->nouv_cell('Repetable');
 		$tbl->nouv_cell('Cout');
-		$tbl->nouv_cell('&nbsp;');
+		$tbl->nouv_cell('Achat');
 		
 		//on charge toutes les quetes
-		$requete = "SELECT * FROM quete WHERE star_royaume > 0 AND id NOT IN (SELECT id_quete FROM quete_royaume WHERE id_royaume = ".$royaume->get_id().")";
+		$requete = 'SELECT q.*, r.id as qr FROM quete AS q LEFT JOIN quete_royaume AS r ON q.id = r.id_quete WHERE star_royaume > 0 AND (r.id_royaume = '.$royaume->get_id().' OR r.id_royaume IS NULL)';
 		$req = $db->query($requete);
 		
-		$G_url->add('action', 'voir');
 		//var_dump($liste);
 		while( $row = $db->read_assoc($req) )
 		{
 			$quete = new quete($row['id']);
+			$G_url->add('id',$quete->get_id());
 			$tbl->nouv_ligne();
-			$tbl->nouv_cell($quete->get_nom());
-			$tbl->nouv_cell($quete->get_type());
+			$tbl->nouv_cell( new interf_lien($quete->get_nom(), $G_url->get('action', 'voir')) );
+			//$tbl->nouv_cell($quete->get_type());
 			$tbl->nouv_cell($quete->get_fournisseur());
 			$tbl->nouv_cell($quete->get_repetable());
 			$tbl->nouv_cell($quete->get_star_royaume());
-			$tbl->nouv_cell( new interf_lien('voir', $G_url->get('id',$quete->get_id())) );
+			if( $row['qr'] === null )
+				$tbl->nouv_cell( new interf_lien('acheter', $G_url->get('action', 'achat')) );
+			else
+				$tbl->nouv_cell('&nbsp;');
 		}
 	}
 }
+
+/*class interf_infos_quete extends interf_infos_popover
+{
+	function __construct($quete)
+	{
+		$etape = quete_etape::create(array('id_quete', 'etape', 'variante'), array($quete->get_id(), 1, 0))[0];
+		$this->
+	}
+}*/
 ?>

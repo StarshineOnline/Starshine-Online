@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `quete_etape` (
   `description` text NOT NULL,
   `niveau` int(10) NOT NULL,
   `objectif` text NOT NULL,
-  `type` enum('g','s') NOT NULL,
+  `collaboration` enum('aucune','groupe', 'royaume') NOT NULL,
   `gain_perso` text,
   `gain_groupe` text,
   KEY `id` (`id`)

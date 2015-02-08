@@ -185,27 +185,23 @@
 		$this->champs_modif[] = 'nombre_etape';
 	}
 		
-	function achat(&$quete, &$royaume)
+	function achat(&$royaume)
 	{
 		global $db;
 	
 		//Vérifie que le royaume a assez de stars pour l'acheter
-		if($royaume->get_star() >= $quete->get_star_royaume())
+		if($royaume->get_star() >= $this->get_star_royaume())
 		{
 			//Ajout de la quête dans la liste des quêtes du royaume
-			$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$quete->get_id().")";
+			$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$this->get_id().")";
 			$req = $db->query($requete);
 			//Mis a jour des stars du royaume
-			$requete = "UPDATE royaume SET star = star - ".$quete->get_star_royaume()." WHERE ID = ".$royaume->get_id();
+			$requete = "UPDATE royaume SET star = star - ".$this->get_star_royaume()." WHERE ID = ".$royaume->get_id();
 			$req = $db->query($requete);
-			$cadre = new interf_dialogBS($quete->get_nom(), true, 'achat');
-			$cadre->add( new interf_bal_smpl('span', 'Vous avez bien acheté la quête'.$quete->get_nom(), false, false));
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous avez bien acheté la quête '.$this->get_nom());
 		}
 		else
-		{
-			$cadre = new interf_dialogBS($quete->get_nom(), true, 'achat');
-			$cadre->add( new interf_bal_smpl('span', 'Votre royaume n\'a pas assez de stars pour acheter cette quête', false, false));
-		}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre royaume n\'a pas assez de stars pour acheter cette quête');
 	}
 
 }

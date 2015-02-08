@@ -586,6 +586,7 @@ class interf_data_tbl extends interf_tableau
     $options = $options ?  '{'.implode(',', $options).'}' : '';
 
     interf_base::code_js('var '.$id.' = $("#'.$id.'").DataTable('.$options.');');
+    //interf_base::code_js('var '.$id.' = $("#'.$id.'").DataTable({"language": {"emptyTable": "Pas d\'élément dans cette catégorie.", "search": "Recherche :", "zeroRecords": "Pas de résultat", "paginate": {"first":"Début", "last":"Fin", "next":"suivant", "previous":"Précédent"}, "info": "Affichage de _START_ à _END_ sur _TOTAL_ entrées", "infoFiltered": "(filtré à partir de _MAX_ entrées)", "lengthMenu": "Afficher _MENU_ entrées par page", "infoEmpty": "Affichage de 0 entrées sur 0"},"scrollY":"'.$scroll.'px", "scrollCollapse": true,"paging":false, "info":false,"order":[[0, "desc"]],"searching":false});');
   }
 }
 
