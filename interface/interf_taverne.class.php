@@ -13,10 +13,62 @@ class interf_taverne extends interf_ville_onglets
 	{
 		global $db;
 		parent::__construct($royaume, $case);
+		$perso = joueur::get_perso();
 		
 		// Icone & jauges
 		$this->icone = $this->set_icone_centre('biere');
-		//$this->recherche_batiment('taverne');
+		$this->icone->set_tooltip('Taverne');
+		// Meilleure régénération possible
+		$services = taverne::create(null, null, 'id ASC', false, '1');
+		$gains_hp = 0;
+		$gains_mp = 0;
+		foreach($services as $elt)
+		{
+			$requis = $elt->get_requis();
+			if($requis)
+			{ // Vérifier les conditions
+				$cond = explode(';', $requis);
+				foreach($cond as $tcond)
+				{
+					$ctype = substr($tcond, 0, 1);
+					$cval = substr($tcond, 1);
+					$cok = true;
+					switch ($ctype)
+					{
+					case 'q': // quete
+						$q = explode(';', $this->perso->get_quete_fini());
+						$cok = in_array($cval, $q);
+						break;
+					default:
+						$cok = false;
+						break;
+					}
+					if (!$cok)
+						break; // un requis pas matché : on s'arrête
+				}
+				if (!$cok) // un requis pas matché : on ignore la ligne
+					continue;
+			}
+			$prix = $elt->get_star() + ceil($elt->get_star() * $this->royaume->get_taxe_diplo($this->perso->get_race()) / 100);
+			$pa = $elt->get_pa();
+			$honneur = $elt->get_honneur() + ceil($this->perso->get_honneur() * $elt->get_honneur_pc() / 100);
+			$hp = $elt->get_hp() + ceil($this->perso->get_hp_maximum() * $elt->get_hp_pc() / 100);
+			$mp = $elt->get_mp() + ceil($this->perso->get_mp_maximum() * $elt->get_mp_pc() / 100);
+			$max_pa = floor($perso->get_pa() / $pa);
+			$max_prix = floor($perso->get_star() / $prix);
+			$max_honneur = floor($perso->get_honneur() / $honneur);
+			$n = min($max_pa, $max_prix, $max_honneur);
+			$gains_hp = max($gains_hp, $n*$hp);
+			$gains_mp = max($gains_mp, $n*$mp);
+		}
+		$prct_hp = min($gains_hp / ($perso->get_hp_max() - $perso->get_hp()), 1) * 100;
+		$prct_mp = min($gains_mp / ($perso->get_mp_max() - $perso->get_mp()), 1) * 100;
+		// Ivresse
+		$ivresse = $perso->get_buff('ivresse');
+		$ivresse = $ivresse ? $ivresse->get_effet() : 0; 
+		// Jauges
+		$this->set_jauge_ext(min($prct_hp, $prct_mp), 100, 'mp', 'Meilleure régénération possible : ');
+		$this->set_jauge_int($nbr_rec_connues, 100, 'pa', 'Ivresse : ');	
 		
 		// Onglets
 		$this->onglets->add_onglet('Repos', 'taverne.php?type=repos', 'tab_repos', 'ecole_mag', $type=='repos');

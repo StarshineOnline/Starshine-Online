@@ -15,7 +15,7 @@ class interf_enchanteur extends interf_ville_onglets
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('pentacle');
-		$niveau = 1;//$this->recherche_batiment('enchanteur');
+		$niveau = $this->recherche_batiment('enchanteur');
 		
 		// Onglets
 		$this->onglets->add_onglet('Grands accessoires', 'boutique.php?type=accessoire&ajax=2&categorie=grand', 'tab_grand', 'ecole_mag', $categorie=='grand');

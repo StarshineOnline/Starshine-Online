@@ -17,7 +17,7 @@ class interf_alchimiste extends interf_ville_onglets
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('alchimie');
-		//$this->recherche_batiment('alchimiste');
+		$this->icone->set_tooltip('Alchimiste');	
 		
 		// Nombre de recettes débloquées
 		$requete = 'SELECT COUNT(*) AS nbr FROM craft_recette WHERE royaume_alchimie < '.$royaume->get_alchimie();
@@ -29,7 +29,15 @@ class interf_alchimiste extends interf_ville_onglets
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);
 		$nbr_rec_tot = $row['nbr'];
-		$this->set_jauge_int($nbr_rec, $nbr_rec_tot, 'avance', 'Recettes débloquées : ');
+		// Nombre de recettes connues par le personnages parmi celles disponibles
+		/// @todo passer à l'objet
+		$requete = "SELECT COUNT(*) AS nbr FROM perso_recette AS pr INNER JOIN craft_recette AS cr ON pr.id_recette = cr.id WHERE id_perso = ".joueur::get_perso()->get_id().' AND cr.royaume_alchimie < '.$royaume->get_alchimie();
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		$nbr_rec_connues = $row['nbr'];
+		// Jauges
+		$this->set_jauge_ext($nbr_rec, $nbr_rec_tot, 'avance', 'Recettes débloquées : ');
+		$this->set_jauge_int($nbr_rec_connues, $nbr_rec, 'avance', 'Recettes débloquées : ');	
 		
 		// Onglets
 		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $onglet=='recherche');

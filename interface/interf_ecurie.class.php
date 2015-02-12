@@ -33,7 +33,7 @@ class interf_ecurie extends interf_ville
 		// Icone & jauges
 		$icone = $this->set_icone_centre('cheval');
 		$icone->set_tooltip('Ecuries');
-		//$this->recherche_batiment('', false);
+		$this->set_jauge_ext($this->perso->nb_pet(), $this->perso->get_comp('max_pet'), 'pa', 'Nombre de créatures sur vous : ');
 		$utilisation = $this->perso->nb_pet_ecurie() + $this->perso->nb_pet_ecurie_self();
 		$max = $max_ecurie + ($row ? $row['effet'] : 0);
 		$this->set_jauge_int($utilisation, $max, 'pa', 'Utilisation : ');

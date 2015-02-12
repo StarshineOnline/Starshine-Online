@@ -15,7 +15,7 @@ class interf_dresseur extends interf_ville_onglets
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('faucon');
-		$niveau = 7;//$this->recherche_batiment('dresseur');
+		$niveau = $this->recherche_batiment('dresseur');
 		
 		// Onglets
 		$this->onglets->add_onglet('Cou', 'boutique.php?type=dressage&ajax=2&categorie=cou', 'tab_cou', 'ecole_mag', $categorie=='cou');

@@ -15,7 +15,6 @@ class interf_tp extends interf_ville
 		// Icone jauges
 		$icone = $this->set_icone_centre('teleportation');
 		$icone->set_tooltip('Pierre de téléportation');
-		//$this->recherche_batiment('', false);
 		/// @todo passer par les objets
 		$requete = 'SELECT count(*) as nbr FROM map WHERE royaume = '.$royaume->get_id().' AND x <= 190 AND y <= 190';
 		$req = $db->query($requete);
@@ -37,6 +36,7 @@ class interf_tp extends interf_ville
 		/// @todo à revoir complètement (supprimer cette base)
 		$requete = 'SELECT * FROM teleport';
 		$req = $db->query($requete);
+		$this->set_jauge_ext($db->num_rows, 11, 'mp', 'Nombre de capitales accessibles : ');
 		while($row = $db->read_array($req))
 		{
 			// Bastien : Si coût = 0 (pas NULL), on saute l'entrée

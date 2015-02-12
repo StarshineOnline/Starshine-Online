@@ -16,7 +16,7 @@ class interf_hotel_vente extends interf_ville_onglets
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('encheres');
-		//$this->recherche_batiment('ecole_magie');
+		$this->icone->set_tooltip('Hotel des ventes');
     // Nombre d'objets en vente
     /// @todo à améliorer
     $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id();
@@ -25,7 +25,13 @@ class interf_hotel_vente extends interf_ville_onglets
 		$objet_max = 10;
 		$bonus_craft = ceil($this->perso->get_artisanat() / 5);
 		$objet_max += $bonus_craft;
-		$this->set_jauge_int($row[0], $objet_max, 'pa', 'Vos objets en vente : ');
+		$this->set_jauge_ext($row[0], $objet_max, 'pa', 'Vos objets en vente : ');
+		// Temps restant pour le plus vieil objet
+		$mois = 60 * 60 * 24 * 31;
+		$requete = 'SELECT time FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id().' ORDER BY time ASC LIMIT 0, 1';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$this->set_jauge_int(time() - $row[0], $mois, 'temps', false);
 		
 		// Onglets
 		$armes = new interf_bal_smpl('span', '', false, 'icone icone-forge');
