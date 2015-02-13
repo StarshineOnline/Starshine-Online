@@ -120,6 +120,12 @@ class interf_gerer_bataille extends interf_gest_bat_base
 {
 	function __construct(&$bataille)
 	{
+		//global $G_url, $G_max_x, $G_max_y, $db;
+		parent::__construct();
+		$this->div_gauche->add( new interf_bal_smpl('h4', $bataille->get_nom()) );
+		$this->div_gauche->add( new interf_bal_smpl('p', $bataille->get_description()) );
+		// carte
+		$this->div_droite->add( new interf_carte($bataille->get_x(), $bataille->get_y(), interf_carte::aff_gest_batailles, 8, 'carte') );
 	}
 }
 

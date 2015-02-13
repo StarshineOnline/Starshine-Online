@@ -112,6 +112,10 @@ case 'gerer': // Gérer une bataille
 	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
 	$cadre->maj_tooltips();
 	exit;
+case 'suppr_repere':  // Suppression d'un repère
+	$repere = new bataille_repere($_GET['id_repere']);
+	$repere->supprimer(true);
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'Repère supprimé avec succès');
 }
 
 $cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );
@@ -231,36 +235,15 @@ elseif(array_key_exists('refresh_bataille', $_GET))
 //Information et modification sur une bataille
 elseif(array_key_exists('info_bataille', $_GET))
 {
-	include_once(root.'roi/gestion_bataille_menu.php');
-	$bataille = new bataille($_GET['id_bataille']);
-	?>
-	<div id="map" style="float: right;">
-	<?php
-	affiche_map($bataille);
-	?>
-	</div>
-	<div id="info_bataille" style="float: left;">
-		<h1>Bataille : <?php echo $bataille->get_nom(); ?> <a href="gestion_bataille.php?refresh_bataille=<?php echo $bataille->get_id(); ?>" onclick="return envoiInfo(this.href, 'map');"><img src="../image/interface/icone_refresh_bataille.png" alt="R" /></a></h1>
-		<fieldset>
-			<legend>Description</legend>
-			<?php echo transform_texte($bataille->get_description()); ?>
-		</fieldset><hr />
-		<div id="information_modif"></div>
+		/*<div id="information_modif"></div>
 		<div id="menu_bataille">
 			<ul>
-				<li><a href="gestion_bataille_groupe.php?id_bataille=<?php echo $bataille->get_id(); ?>" onclick="return envoiInfo(this.href, 'information_onglet_bataille');">Groupes</a></li>
+				<li><a href="gestion_bataille_groupe.php?id_bataille=<?php echo $bataille->get_id(); " onclick="return envoiInfo(this.href, 'information_onglet_bataille');">Groupes</a></li>
 			</ul>
 		</div>
 		<div id="information_onglet_bataille">
 		</div>
-	</div>
-	<?php
-}
-//Suppression de repère
-elseif(array_key_exists('del_repere', $_GET))
-{
-	$repere = new bataille_repere($_GET['id_repere']);
-	$repere->supprimer();
+	</div>*/
 }
 //Information sur une case d'une bataille
 elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
@@ -354,12 +337,5 @@ elseif(array_key_exists('info_case', $_GET) OR array_key_exists('type', $_GET))
 		</select><input type="button" value="Ok" onclick="envoiInfo('gestion_bataille.php?id_type=' + $('#type').val() + '&amp;id_bataille=<?php echo $bataille->get_id(); ?>&amp;case=<?php echo $case; ?>&amp;type', 'popup_content');"/>
 		<?php
 	}
-}
-//Suppression d'un repère
-elseif(array_key_exists('del_repere', $_GET))
-{
-	$repere = new bataille_repere($_GET['id_repere']);
-	$repere->supprimer(true);
-	echo 'Repère supprimé avec succès';
 }
 ?>
