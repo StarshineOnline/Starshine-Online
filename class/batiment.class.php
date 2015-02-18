@@ -146,10 +146,11 @@ class batiment extends entitenj_def
 		if($resolution != 'high') $image = $root."image/batiment_low/";
 		else $image = $root."image/batiment/";
 
-		if(file_exists($image.$this->image."_04.png")) 		{ $image .= $this->image."_04.png"; }
+		/*if(file_exists($image.$this->image."_04.png")) 		{ $image .= $this->image."_04.png"; }
 		elseif(file_exists($image.$this->image."_04.gif")) 	{ $image .= $this->image."_04.gif"; }
 		else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
-		return $image;
+		return $image;*/
+		return $image.$this->image.'_04.png';
 	}
 	/// Modifie l'image du bâtiment
 	function set_image($image)

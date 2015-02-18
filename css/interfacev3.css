@@ -1243,6 +1243,7 @@ ul.info_bulle { text-align:left; }
 .info_batiment { font-weight:bold; color:#DDFF22; }
 .info_perso { font-weight:bold; color:#66bbFF; } /*#6633FF*/
 .info_monstre { font-weight:bold; color:#FF6622; } /*#CC3300*/
+.info_repere { font-weight:bold; color:#FFDD22; }
 
 /* Information de la case */
 

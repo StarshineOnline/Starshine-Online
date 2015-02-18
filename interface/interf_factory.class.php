@@ -844,6 +844,11 @@ class interf_factory
     include_once(root.'interface/interf_gest_batailles.class.php');
   	return new interf_gerer_bataille($bataille);
 	}
+  function creer_reperes(&$bataille, $x, $y, &$royaume)
+  {
+    include_once(root.'interface/interf_gest_batailles.class.php');
+  	return new interf_reperes($bataille, $x, $y, $royaume);
+	}
 }
 
 class interf_factory_shine extends interf_factory

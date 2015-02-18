@@ -453,3 +453,13 @@
 {
 	margin-bottom: 5px;
 }
+
+#gestion_batailles
+{
+	position: relative;
+}
+
+#reperes_case .info_case img
+{
+	max-height: 45px;
+}

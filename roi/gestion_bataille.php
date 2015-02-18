@@ -112,10 +112,83 @@ case 'gerer': // Gérer une bataille
 	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
 	$cadre->maj_tooltips();
 	exit;
+case 'suppr_mission';
+	$bataille = new bataille(sSQL($_GET['bataille']));
+	$mission = new bataille_groupe_repere($_GET['id']);
+	$mission->supprimer();
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'Mission supprimée avec succès');
+	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
+case 'mission';
+	$bataille = new bataille(sSQL($_GET['bataille']));
+	if( !$_GET['groupe'] || !$_GET['mission'])
+		break;
+	$mission = new bataille_groupe_repere();
+	$mission->set_id_repere(sSQL($_GET['mission']));
+	$mission->set_id_groupe(sSQL($_GET['groupe']));
+	$mission->accepter = 0;
+	$mission->sauver();
+	//Si la bataille est déjà lancée
+	if ($bataille->get_etat() == 1)
+	{
+		//On envoi un message au groupe
+		$groupe = new bataille_groupe($mission->get_id_groupe());
+		$titre = 'Mission pour la bataille : '.$bataille->get_nom();
+		$message = 'Votre groupe a été affecté à une mission concernant la bataille : '.$bataille->get_nom().'[br]
+		[bataille:'.$bataille->get_nom().'][br][br]';
+		// Si le groupe n'a pas deja son thread pour cette bataille
+		if($groupe->get_id_thread() == 0)
+		{
+			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $perso->get_id(), 1, null, $titre);
+			$thread->sauver();
+			$messagerie = new messagerie($joueur->get_id(), $perso->get_groupe());
+			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$groupe->set_id_thread($thread->id_thread);
+			$groupe->sauver();
+		}
+		else
+		{
+			$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
+		}
+	}
+	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
 case 'suppr_repere':  // Suppression d'un repère
 	$repere = new bataille_repere($_GET['id_repere']);
 	$repere->supprimer(true);
 	interf_alerte::enregistre(interf_alerte::msg_succes, 'Repère supprimé avec succès');
+	break;
+case 'case_repere':
+	$bataille = new bataille(sSQL($_GET['bataille']));
+	$cadre->set_dialogue( $G_interf->creer_reperes($bataille, sSQL($_GET['x']), sSQL($_GET['y']), $royaume) );
+	if( !array_key_exists('ajax', $_GET) )
+		$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
+case 'nouv_repere':
+	$bataille = new bataille(sSQL($_GET['bataille']));
+	$type = $_GET['repere'];
+	$repere = new bataille_repere();
+	switch($type[0])
+	{
+	case 'a' :
+		$repere->set_type('action');
+		break;
+	case 'b' :
+		$repere->set_type('batiment');
+		break;
+	}
+	$repere->set_id_bataille( $bataille->get_id() );
+	$repere->set_id_type(substr($type, 1, strlen($type)));
+	$repere->set_x(sSQL($_GET['x']));
+	$repere->set_y(sSQL($_GET['y']));
+	$repere->sauver();
+	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );
+	$cadre->maj_tooltips();
+	exit;
 }
 
 $cadre->set_gestion( $G_interf->creer_gest_batailles($royaume) );

@@ -52,13 +52,13 @@ class interf_carte extends interf_tableau
   protected $races=array();
   protected $doss_prefixe = '';
 
-	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null)
+	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null, &$reperes=null)
 	{
     global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y, $G_url;
     $this->grd_img = !($options & self::aff_petit);
 		parent::__construct($id, $this->grd_img ? 'aide' : 'carte_petit', 'carte_bord_haut');
 		
-		if( strpos($G_url->get(),'roi/') >= 0)
+		if( strpos($G_url->get(),'roi/') !== false)
 			$this->doss_prefixe = '../';	
 
     // Réduction de la vue en donjon
@@ -163,7 +163,6 @@ class interf_carte extends interf_tableau
 	    $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
 		}
 
-    /// @todo repères
     
     /// @todo calque atmosphere
     if( $parent_calques )
@@ -190,6 +189,11 @@ class interf_carte extends interf_tableau
     if( $options & self::aff_restreint )
     {
     	$cond_bat = 'royaume = '.$Trace[$perso->get_race()]['numrace'];
+	    if($reperes)
+	    {
+	    	$this->afficher_reperes($reperes['action']);
+	    	$this->afficher_bat_ennemi($reperes['batiment']);
+			}
 	    $this->afficher_placements($cond_bat);
 	    $this->afficher_batiments($cond_bat, false);
 		}
@@ -272,7 +276,7 @@ class interf_carte extends interf_tableau
 	        	$cont->set_balise('a');
 	        $pos = 'rel_'.($j-$x).'_'.($i-$y);
 	        if( $options & self::aff_lien_gest )
-	        	$cont->set_attribut('href', $G_url->get( array('action'=>'case', 'x'=>$j, 'y'=>$i) ));
+	        	$cont->set_attribut('href', $G_url->get( array(/*'action'=>'case',*/ 'x'=>$j, 'y'=>$i) ));
 	        else
 	        	$cont->set_attribut('href', 'informationcase.php?case='.$pos);
 	        $cont->set_attribut('onclick', 'return charger(this.href);');
@@ -448,6 +452,48 @@ class interf_carte extends interf_tableau
       }
     }
   }
+  
+  protected function afficher_reperes($reperes)
+  {
+    $pos = array();
+  	foreach($reperes as $repere)
+  	{
+    	$cle = $repere->get_x().'_'.$repere->get_y();
+			$repere_type = $repere->get_repere_type();
+			$this->infos[$repere->get_y()][$repere->get_x()] .= '<li><span class=\'info_repere\'>Mission</span> '.$repere_type->get_nom().'</li>';
+    	if( !array_key_exists($cle, $pos) )
+    	{
+      	$pos[$cle] = true;
+	      // S'il y a déjà un contenu on passe au suivant.
+	      $fils = $this->cases[$repere->get_y()][$repere->get_x()]->get_fils(0);
+	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
+	        continue;
+      	$div = $this->cases[$repere->get_y()][$repere->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/monstre/'.$repere_type->get_image().'.png\');');
+			}
+		}
+	}
+  
+  protected function afficher_bat_ennemi($reperes)
+  {
+    $pos = array();
+  	foreach($reperes as $repere)
+  	{
+    	$cle = $repere->get_x().'_'.$repere->get_y();
+			$repere_type = $repere->get_repere_type();
+			$this->infos[$repere->get_y()][$repere->get_x()] .= '<li><span class=\'info_repere\'>Bâtiment ennemi</span> '.$repere_type->get_nom().'</li>';
+    	if( !array_key_exists($cle, $pos) )
+    	{
+      	$pos[$cle] = true;
+	      // S'il y a déjà un contenu on passe au suivant.
+	      $fils = $this->cases[$repere->get_y()][$repere->get_x()]->get_fils(0);
+	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
+	        continue;
+      	$div = $this->cases[$repere->get_y()][$repere->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	      $div->set_attribut('style', 'background-image: url(\''.$repere_type->get_image_full($this->doss_prefixe, 'low').'\');');
+			}
+		}
+	}
 
   protected function afficher_claques_terrain()
   {
