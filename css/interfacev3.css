@@ -1113,6 +1113,8 @@ p.accueil a
   margin:/*2*/1px;
   background:transparent /*url(image/pixel.gif)*/ center no-repeat;
   display: block;
+  text-align: center;
+  color: red;
 }
 
 .carte_petit .carte_contenu
@@ -3510,6 +3512,50 @@ a .livre_nom
 {
 	padding-top: 4px;
 	font-size: 22px;
+}
+
+#batailles_groupe
+{
+	margin: 5px;
+}
+
+#batailles_groupe .panel-heading a.icone
+{
+	float: right;
+}
+
+#batailles_groupe .info_case
+{
+	height: 30px;
+}
+
+#batailles_groupe .info_case a
+{
+	height: 30px;
+	width: 30px;
+}
+
+#batailles_groupe .info_case span
+{
+	margin: 5px;
+	line-height: 26px;
+}
+
+#carte_bataille
+{
+	margin-left: 0;
+}
+
+#carte_bataille th
+{
+	width: 20px !important;
+	height: 30px !important;
+	font-size: 10px;
+}
+
+#carte_bataille thead th
+{
+	width: 30px !important;
 }
 
 

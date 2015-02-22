@@ -463,3 +463,13 @@
 {
 	max-height: 45px;
 }
+
+#batailles_groupes .info_case
+{
+	height: 45px;
+}
+
+#batailles_groupes .info_case .xsmall
+{
+	display: block;
+}

@@ -425,13 +425,16 @@ class interf_accordeon extends interf_bal_cont
   function &nouv_panneau($titre, $id, $montre=false, $style='default')
   {
   	if( is_object($titre) )
-  		$titre = new interf_bal_cont('a');
+  	{
+  		$lien_titre = new interf_bal_cont('a');
+  		$lien_titre->add($titre);
+		}
   	else
-  		$titre = new interf_bal_smpl('a', $titre);
-  	$titre->set_attribut('href', '#'.$id);
-  	$titre->set_attribut('data-toggle', 'collapse');
-  	$titre->set_attribut('data-parent', '#'.$this->id);
-    return $this->add( new interf_panneau($titre, null, 'h4', $id, $montre, $style) );
+  		$lien_titre = new interf_bal_smpl('a', $titre);
+  	$lien_titre->set_attribut('href', '#'.$id);
+  	$lien_titre->set_attribut('data-toggle', 'collapse');
+  	$lien_titre->set_attribut('data-parent', '#'.$this->id);
+    return $this->add( new interf_panneau($lien_titre, null, 'h4', $id, $montre, $style) );
   }
 }
 

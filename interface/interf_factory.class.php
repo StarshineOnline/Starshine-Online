@@ -549,6 +549,16 @@ class interf_factory
   {
     return new interf_groupe($id, $groupe);
   }
+  function creer_batailles($id, &$groupe)
+  {
+    include_once(root.'interface/interf_groupe.class.php');
+    return new interf_batailles($id, $groupe);
+  }
+  function creer_carte_bataille(&$bataille)
+  {
+    include_once(root.'interface/interf_groupe.class.php');
+    return new interf_carte_bataille($bataille);
+  }
   function creer_calendrier($nbr=15)
   {
     return new interf_calendrier($nbr);

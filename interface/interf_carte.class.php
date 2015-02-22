@@ -38,6 +38,7 @@ class interf_carte extends interf_tableau
   const aff_gestion = 0xc000;
   const aff_gest_bourgs = 0x18000;
   const aff_gest_batailles = 0x1c000;
+  const aff_batailles = 0xc000;
   const masque_ordre = 0x30;
   const masque_diplo = 0xf00;
 
@@ -288,6 +289,21 @@ class interf_carte extends interf_tableau
 				}
 			}
 		}
+		else
+		{
+	    for($i=$this->y_min; $i<=$this->y_max; $i++)
+	    {
+	    	for($j=$this->x_min; $j<=$this->x_max; $j++)
+	    	{
+	        if( $this->infos[$i][$j] )
+	        {
+	    			$cont = $this->cases[$i][$j]->get_fils(0);
+	        	$cont->set_tooltip('<ul class=\'info_bulle\'>'.$this->infos[$i][$j].'</ul>');
+	        	$cont->set_attribut('data-html', 'true');
+					}
+				}
+			}
+		}
 
     // Affichage des royaumes si nécessaire
     if( $options & self::aff_royaumes )
@@ -466,10 +482,13 @@ class interf_carte extends interf_tableau
       	$pos[$cle] = true;
 	      // S'il y a déjà un contenu on passe au suivant.
 	      $fils = $this->cases[$repere->get_y()][$repere->get_x()]->get_fils(0);
-	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
-	        continue;
-      	$div = $this->cases[$repere->get_y()][$repere->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-	      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/monstre/'.$repere_type->get_image().'.png\');');
+	      $img = new interf_img($this->doss_prefixe.'image/repere/'.$repere_type->get_image().'.png', $repere_type->get_nom()[0]); 
+	      //if( $fils )
+	        $div = $this->cases[$repere->get_y()][$repere->get_x()]->add( $img );
+	      /*else
+      		$div = $this->cases[$repere->get_y()][$repere->get_x()]->add( new interf_bal_cont('div', null, 'carte_contenu') );*/
+	      /*$div = $this->cases[$repere->get_y()][$repere->get_x()]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+				$div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/monstre/'.$repere_type->get_image().'.png\');');*/
 			}
 		}
 	}

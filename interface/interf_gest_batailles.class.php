@@ -127,7 +127,8 @@ class interf_gerer_bataille extends interf_gest_bat_base
 		parent::__construct();
 		$G_url->add('bataille', $bataille->get_id());
 		$this->div_gauche->add( new interf_bal_smpl('h4', $bataille->get_nom()) );
-		$this->div_gauche->add( new interf_bal_smpl('p', $bataille->get_description()) );
+		$texte = new texte($bataille->get_description(), texte::batailles);
+		$this->div_gauche->add( new interf_bal_smpl('p', $texte->parse()) );
 		// Groupes
 		$groupes = $bataille->get_groupes();
 		$this->reperes_bataille = $bataille->get_reperes('tri_type');
@@ -161,12 +162,12 @@ class interf_gerer_bataille extends interf_gest_bat_base
 			foreach($reperes_groupe as $repere_groupe)
 			{
 				$repere_groupe->get_repere()->get_type();
-				$url->add('id', $repere_groupe->get_id_repere());
+				$url->add('id', $repere_groupe->get_id());
 				$li = $liste->add( new interf_bal_cont('li', false, 'info_case') );
-				$suppr = $li->add( new interf_lien('', $G_url->get('action', 'suppr_mission'), false, 'icone icone-poubelle') );
+				$suppr = $li->add( new interf_lien('', $url->get('action','suppr_mission' ), false, 'icone icone-poubelle') );
 				$suppr->set_tooltip('Supprimer');
 				$li->add( new interf_bal_smpl('span', '<b>Mission :</b> '.$repere_groupe->get_repere()->get_repere_type()->get_nom()) );
-				$li->add( new interf_bal_smpl('span', 'X='.$repere_groupe->get_repere()->get_x().' - Y='.$repere_groupe->get_repere()->get_y().($repere_groupe->accepter ? 'Acceptée' : 'En attente d\'être acceptée'), false, 'xsmall') );
+				$li->add( new interf_bal_smpl('span', 'X='.$repere_groupe->get_repere()->get_x().' − Y='.$repere_groupe->get_repere()->get_y().($repere_groupe->accepter ? ' − Acceptée' : ' − En attente d\'être acceptée'), false, 'xsmall') );
 				$id_mission[$repere_groupe->get_id_repere()] = 1;
 			}
 		}
@@ -196,7 +197,9 @@ class interf_reperes extends interf_dialogBS
 		global $G_url, $db;
 		parent::__construct('Case X='.$x.' - Y='.$y, true, 'reperes_case');
 		$reperes = $bataille->get_repere_by_coord($x, $y);
-		$G_url->add( array('bataille'=>$bataille->get_id(), 'x'=>$x, 'y'=>$y) );
+		$G_url->add('bataille', $bataille->get_id());
+		$G_url->add('x', $x);
+		$G_url->add('y', $y);
 		
 		// bâtiment du royaumes
 		$batiment = false;
@@ -217,7 +220,7 @@ class interf_reperes extends interf_dialogBS
 			$type_reperes[] = $repere->get_type();
 			$type = $repere->get_repere_type();
 			$div = $this->add( new interf_bal_cont('div', 'repere_'.$repere->get_id(), 'info_case') );
-			$suppr = $div->add( new interf_lien('', $G_url->get(), false, 'icone icone-poubelle') );
+			$suppr = $div->add( new interf_lien('', $G_url->get( array('action'=>'suppr_repere', 'id'=>$repere->get_id()) ), false, 'icone icone-poubelle') );
 			$suppr->set_tooltip('Supprimer');
 			$suppr->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez-vous vraiment supprimer ce repère ?\');');
 			switch($repere->get_type())
