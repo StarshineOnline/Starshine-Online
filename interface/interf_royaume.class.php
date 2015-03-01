@@ -181,7 +181,7 @@ class interf_barre_royaume extends interf_bal_cont
   	$lst3 = $div->add( new interf_bal_cont('ul') );
   	$rang = $lst3->add( new interf_bal_cont('li') );
   	$rang->add( new interf_bal_smpl('strong', 'Rang : ') );
-  	$rang->add( new interf_bal_smpl('span', /*$this->royaume->get_star()*/'à faire', 'rang') );
+  	$rang->add( new interf_bal_smpl('span', $this->royaume->get_rang(), 'rang') );
   	$pv = $lst3->add( new interf_bal_cont('li') );
   	$pv->add( new interf_bal_smpl('strong', 'Points de victoire : ') );
   	$pv->add( new interf_bal_smpl('span', $this->royaume->get_point_victoire_total(), 'pts_victoire') );

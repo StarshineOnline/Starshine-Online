@@ -859,6 +859,10 @@ class interf_factory
     include_once(root.'interface/interf_gest_batailles.class.php');
   	return new interf_reperes($bataille, $x, $y, $royaume);
 	}
+  function creer_drapeaux(&$royaume, $mag_factor=1, $mleft=0, $mtop=0)
+  {
+  	return new interf_drapeaux($royaume, $mag_factor, $mleft, $mtop);
+	}
 }
 
 class interf_factory_shine extends interf_factory

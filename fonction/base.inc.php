@@ -3235,20 +3235,20 @@ function is_nobuild_type($type)
 
 function pose_drapeau_roi($x, $y)
 {
-	global $joueur;
 	global $db;
 	global $Trace;
 	global $G_max_x, $G_max_y;
+	$perso = joueur::get_perso();
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
-	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
+	if ($perso->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
-	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+	if (!verif_ville($perso->get_x(), $perso->get_y())) {
 		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
 		return false;
 	}
 
-	$race = $Trace[$joueur->get_race()]['numrace'];
+	$race = $Trace[$perso->get_race()]['numrace'];
 
 	$req = $db->query("select 1 from map where royaume = $race and ((x = $x + 1 and y = $y) or (x = $x - 1 and y = $y) or (x = $x and y = $y + 1) or (x = $x and y = $y - 1))");
 	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // Pas de case adjacente
@@ -3272,7 +3272,7 @@ function pose_drapeau_roi($x, $y)
 
 	$drapeau_id = $row['bid'];
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit 1");
-	$distance = abs($Trace[$joueur->get_race()]['spawn_x'] - $x) + abs($Trace[$joueur->get_race()]['spawn_y'] - $y);
+	$distance = abs($Trace[$perso->get_race()]['spawn_x'] - $x) + abs($Trace[$perso->get_race()]['spawn_y'] - $y);
 	$time = time() + ($row['temps_construction'] * $distance);
 	$requete = "
 		INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
@@ -3283,19 +3283,19 @@ function pose_drapeau_roi($x, $y)
 
 function pose_drapeau_roi_all()
 {
-	global $joueur;
 	global $db;
 	global $Trace;
 	global $G_max_x, $G_max_y;
+	$perso = joueur::get_perso();
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
-	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
+	if ($perso->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
-	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+	if (!verif_ville($perso->get_x(), $perso->get_y())) {
 		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
 		return false;
 	}
-	$race = $Trace[$joueur->get_race()]['numrace'];
+	$race = $Trace[$perso->get_race()]['numrace'];
 
 	
 	$req = $db->query("
@@ -3319,7 +3319,7 @@ function pose_drapeau_roi_all()
 	$nb = min($nb_cases, $nb_drapeaux);
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit $nb");
 	$time = time();
-	$expr_distance = '(abs('.$Trace[$joueur->get_race()]['spawn_x'].' - x) + abs('.$Trace[$joueur->get_race()]['spawn_y'].' - y))';
+	$expr_distance = '(abs('.$Trace[$perso->get_race()]['spawn_x'].' - x) + abs('.$Trace[$perso->get_race()]['spawn_y'].' - y))';
 	$req = $db->query("
 		INSERT into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
 		SELECT 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[bid], 1, '".$db->escape($row['bnom'])."', 0
@@ -3334,7 +3334,7 @@ function make_tmp_adj_tables($roy_id)
 
 	$db->query("drop table if exists tmp_royaume, tmp_adj, tmp_adj_lib");
 	// On va utiliser des tables temporaires car la requete kifaitout prends ~30 s à s'effectuer
-	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id";
+	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id and x <= 190 and y <= 190";
 	$db->query($req1); // on prends le royaume
 	$req15 = "alter table tmp_royaume ADD INDEX (x), ADD INDEX (y), ADD INDEX (x, y)";
 	$db->query($req15); // on crée des index pour éviter de faire des requêtes de 2 minutes 40 qui bouffent 98% du CPU

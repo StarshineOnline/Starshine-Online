@@ -1,10 +1,10 @@
 @font-face {
 	font-family: 'sso-icones';
-	src:url('fonts/sso-icones.eot?-379yww');
-	src:url('fonts/sso-icones.eot?#iefix-379yww') format('embedded-opentype'),
-		url('fonts/sso-icones.woff?-379yww') format('woff'),
-		url('fonts/sso-icones.ttf?-379yww') format('truetype'),
-		url('fonts/sso-icones.svg?-379yww#sso-icones') format('svg');
+	src:url('fonts/sso-icones.eot?nkbc2e');
+	src:url('fonts/sso-icones.eot?#iefixnkbc2e') format('embedded-opentype'),
+		url('fonts/sso-icones.woff?nkbc2e') format('woff'),
+		url('fonts/sso-icones.ttf?nkbc2e') format('truetype'),
+		url('fonts/sso-icones.svg?nkbc2e#sso-icones') format('svg');
 	font-weight: normal;
 	font-style: normal;
 }
@@ -41,6 +41,14 @@
 
 .icone-meteo-non:before {
 	content: "\e617";
+}
+
+.icone-zoom:before {
+	content: "\f00e";
+}
+
+.icone-dezoom:before {
+	content: "\f010";
 }
 
 .icone-ads:before {

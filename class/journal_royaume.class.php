@@ -65,7 +65,7 @@ class journal_royaume extends journal
 	*/
 	protected function init_tab($vals)
 	{
-		objet_invent::init_tab($vals);
+		parent::init_tab($vals);
 		$this->id_passif = $vals['id_passif'];
 		$this->id_royaume = $vals['id_royaume'];
 	}
@@ -73,7 +73,7 @@ class journal_royaume extends journal
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_champs()
 	{
-    $tbl = objet_invent::get_champs();
+    $tbl = parent::get_champs();
     $tbl['id_passif']='i';
     $tbl['id_royaume']='i';
 		return $tbl;
@@ -89,7 +89,7 @@ class journal_royaume extends journal
 	static function ecrire_perso($action, $passif=null, $valeur = '', $valeur2 = 0, $x = 0, $y = 0)
 	{
 		global $Trace;
-		$perso::get_perso();
+		$perso = joueur::get_perso();
 		$id_passif = $passif ? $passif->get_id() : 0;
 		$nom_passif = $passif ? $passif->get_nom() : '';
 		self::ecrire('bourse_vente', $Trace[$perso->get_race()]['numrace'], $perso->get_id(), $perso->get_nom(), $id_passif, $nom_passif, $valeur, $valeur2, $x, $y);

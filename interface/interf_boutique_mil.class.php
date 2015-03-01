@@ -27,8 +27,6 @@ class interf_boutique_mil extends interf_data_tbl
 		$this->nouv_cell('Achat');
 	
   	/// @todo passer à l'objet
-		$requete = 'SELECT * FROM objet_royaume';
-		$req = $db->query($requete);
 		$facteur = $royaume->get_facteur_entretien();
 		$objets = objet_royaume::create(false, false, 'id', false, 'rang_royaume < '.$royaume->get_rang());
 		foreach($objets as $objet)
@@ -45,21 +43,21 @@ class interf_boutique_mil extends interf_data_tbl
 			$achetable &= $royaume->get_essence() > $objet->get_essence($facteur) &&  $royaume->get_charbon() > $objet->get_charbon($facteur);
 			if( $achetable )
 			{
-				if($row['prix'] != 0)
+				if( $objet->get_prix() )
 					$max = floor($royaume->get_star() / $objet->get_prix());
 				/*if($row['food'] != 0)
 					$max = min(floor($royaume->get_food($facteur) / $objet->get_food($facteur)), $max);*/
-				if($row['bois'] != 0)
+				if( $objet->get_bois($facteur) )
 					$max = min(floor($royaume->get_bois() / $objet->get_bois($facteur)), $max);
-				if($row['eau'] != 0 )
+				if( $objet->get_eau($facteur) )
 					$max = min(floor($royaume->get_eau() / $objet->get_eau($facteur)), $max);
-				if($row['pierre'] != 0)
+				if( $objet->get_pierre($facteur) )
 					$max = min(floor($royaume->get_pierre() / $objet->get_pierre($facteur)), $max);
-				if($row['sable'] != 0)
-					$max = min(floor($royaume->get_sable() / $royaume->get_sable()), $max);
-				if($row['essence'] != 0)
+				if( $objet->get_sable($facteur) )
+					$max = min(floor($royaume->get_sable() / $objet->get_sable($facteur)), $max);
+				if( $objet->get_essence($facteur) )
 					$max = min(floor($royaume->get_essence() / $objet->get_essence($facteur)), $max);
-				if($row['charbon'] != 0)
+				if( $objet->get_charbon($facteur) )
 					$max = min(floor($royaume->get_charbon() / $objet->get_charbon($facteur)), $max);
 			}
 			else

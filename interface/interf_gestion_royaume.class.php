@@ -138,22 +138,6 @@ class interf_gestion_royaume extends interf_cont
 			return 'a pris '.$entree->get_valeur2().' éléments(s) de '.$entree->get_valeur().' au dépôt';
 		case 'pose_depot':
 			return 'a déposé 1 '.$entree->get_valeur().' au dépôt';
-		/*case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';
-		case '':
-			return '';*/
 		default:
 			return 'Action inconnue : '.$entree->get_action();
 		}

@@ -65,7 +65,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
 		{
 			//Achat
 			/// @todo passer à l'objet
-			$requete = "INSERT INTO depot_royaume VALUES (NULL, ".$row['id'].", ".$royaume->get_id().")";
+			$requete = "INSERT INTO depot_royaume VALUES (NULL, ".$obj->get_id().", ".$royaume->get_id().")";
 			$db->query($requete);
 			//On rajoute un bourg au compteur
 			if($row['type'] == 'bourg')
@@ -87,18 +87,18 @@ if( $action && $lieu && $perso->get_hp()>0 )
 		{
 			/// @todo mettre le pluriel en bddd
 			$tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
-			if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
-				interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$row['nom']].' bien achetées');
+			if( in_array($obj->get_nom(), array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+				interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$obj->get_nom()].' bien achetées');
 			else
-				interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$row['nom']].' bien achetés');
+				interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$obj->get_nom()].' bien achetés');
      
      }
 	   else
 	   {
        if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
-					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$row['nom'].' bien achetée');
+					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$obj->get_nom().' bien achetée');
        else
-					interf_alerte::enregistre(interf_alerte::msg_succes, $row['nom'].' bien acheté');
+					interf_alerte::enregistre(interf_alerte::msg_succes, $obj->get_nom().' bien acheté');
 	   }
 		 journal_royaume::ecrire_perso('achat', $obj, '', $nombre);
 	   break;

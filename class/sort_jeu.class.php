@@ -506,17 +506,16 @@ class sort_vie extends sort_jeu
       {
         if($cible->get_hp() < floor($cible->get_hp_maximum()))
         {
-              
-        if ($type_cible == 'joueur')
-		{
-		  //gestion des points de crime
-		  $crime = new crime();
-	      $crime->crime_soin($perso, $cible, $type_cible);
-		}
-		  $action = true;
+	        if ($type_cible == 'joueur')
+					{
+					  //gestion des points de crime
+					  $crime = new crime();
+				      $crime->crime_soin($perso, $cible, $type_cible);
+					}
+			  	$action = true;
           $effet = $this->get_effet();
           if ($perso->get_inventaire_partie('main_droite') === 'a85') 
-			$effet+=2;
+						$effet+=2;
           $de_degat_sort = de_soin($perso->get_comp($this->get_carac_assoc()), $effet);
           $i = 0;
           $de_degat_sort2 = array();

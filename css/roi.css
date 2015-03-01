@@ -67,6 +67,11 @@
 	width: 1000px;
 }
 
+#gestion_royaume
+{
+	position:relative;
+}
+
 /* Bourse */
 #bourse
 {
@@ -473,3 +478,65 @@
 {
 	display: block;
 }
+
+#carte_drapeaux
+{
+	position: relative;
+	width: 600px;
+	height: 600px;
+	overflow: hidden;
+}
+
+#mapim
+{
+	position: absolute;
+}
+
+#infos_drapeaux
+{
+	position: absolute;
+	top: 0;
+	left: 700px;
+}
+
+#depl_drapeaux
+{
+	height: 100px;
+	width: 150px;
+	display: table;
+	/*border-collapse: collapse;*/
+	border: 1px solid;
+	border-radius: 10px;
+}
+
+#depl_drapeaux div
+{
+	display: table-row;
+}
+
+#depl_drapeaux div:first-child a
+{
+	border-bottom: 1px solid;
+}
+
+#depl_drapeaux a
+{
+	height: 50px;
+	width: 50px;
+	display: table-cell;
+	/*border: 1px solid;*/
+	padding: 4px;
+	font-size: 40px;
+}
+
+#depl_drapeaux a:nth-child(2)
+{
+	border-left: 1px solid;
+	border-right: 1px solid;
+}
+
+#drapeaux_nbr, #drapeaux_legende, #infos_drapeaux>button, #infos_drapeaux .alert
+{
+	margin-top: 20px;
+}
+
