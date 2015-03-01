@@ -1528,5 +1528,22 @@ class royaume
 		// Si le batiment est inactif, on le met au niveau 1
 		return $row['statut'] == 'inactif' ? 1 : $row['level'];
 	}
+	function get_entretien()
+	{
+		global $db;
+		/// @todo passer à l'objet.
+		// Bâtiments internes
+		$requete = "SELECT SUM(entretien) FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$this->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$entretien = $row[0];
+		// Bâtiments externes
+		$requete = "SELECT SUM(entretien) FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$this->get_id()." AND x <= 190 AND y <= 190 ORDER BY entretien DESC";
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$entretien += $row[0];
+		
+		return $entretien * $this->facteur_entretien;
+	} 
 }
 ?>

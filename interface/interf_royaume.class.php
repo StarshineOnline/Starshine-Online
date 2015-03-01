@@ -168,7 +168,7 @@ class interf_barre_royaume extends interf_bal_cont
   	$taxe->add( new interf_bal_smpl('span', $this->royaume->get_taxe().'%', 'taxe') );
   	$entretien = $lst2->add( new interf_bal_cont('li') );
   	$entretien->add( new interf_bal_smpl('strong', 'Entretien : ') );
-  	$entretien->add( new interf_bal_smpl('span', /*$this->royaume->get_star()*/'à faire', 'entretien') );
+  	$entretien->add( new interf_bal_smpl('span', $this->royaume->get_entretien(), 'entretien') );
   	$conso = $lst2->add( new interf_bal_cont('li') );
   	$conso->add( new interf_bal_smpl('strong', 'Consommation : ') );
   	$conso->add( new interf_bal_smpl('span', $this->royaume->get_conso_food(), 'nouriture_besoin') );
