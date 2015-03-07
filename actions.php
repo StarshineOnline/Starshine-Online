@@ -18,9 +18,14 @@ $interf_princ = $G_interf->creer_jeu();
 
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 if( $pet = array_key_exists('id', $_GET) )
+	$id = $_GET['id'];
+else if( $pet = array_key_exists('creature', $_GET) )
+	$id = $_GET['creature'];
+
+if($pet && $action != 'perso')
 {
-	$entite = new pet($_GET['id']);
-	$G_url->add('id', $_GET['id']);
+	$entite = new pet($id);
+	$G_url->add('id', $id);
 }
 else
 	$entite = &$perso;
@@ -147,13 +152,17 @@ else
 {
 	//$cadre->add( new interf_bal_smpl('p', 'Voici l\'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.') );
 	$onglets = $cadre->add( new interf_onglets('ongl_scripts', 'scripts') );
-	$onglets->add_onglet('Perso', $G_url->get(), 'ongl_perso', 'invent', !$id);
+	$G_url->add('ajax', 2);
+	$onglets->add_onglet('Perso', $G_url->get('action', 'perso'), 'ongl_perso', 'invent', !$id);
 	$pets = $perso->get_pets(true);
 	foreach($pets as $pet)
 	{
 		$onglets->add_onglet($pet->get_nom(), $G_url->get(array('id'=>$pet->get_id(), 'ajax'=>2)), 'ongl_'.$pet->get_id(), 'invent', $id==$pet->get_id());
 	}
-	$onglets->get_onglet('ongl_perso')->add( $G_interf->creer_liste_scripts($entite) );
+	if( $id )
+		$onglets->get_onglet('ongl_'.$id)->add( $G_interf->creer_liste_scripts($entite) );
+	else
+		$onglets->get_onglet('ongl_perso')->add( $G_interf->creer_liste_scripts($entite) );
 	/*$aide = $cadre->add( new interf_bal_cont('div') );
 	$aide->add( new interf_bal_smpl('h4', 'Aide') );
 	$aide->add( new interf_bal_smpl('p', 'Une attaque sur un monstre ou un joueur se fait généralement en 10 rounds (11 si l\'un des deux est un Orc, 9 si l\'attaquant a le buff Sacrifice sur lui). Vous pouvez paramétrer les 10 actions que vous allez faire dans le script de combat, afin de les réaliser à chaque attaque. Il est donc conseillé de créer un script d\'attaque, et de créer vos 10 actions en ajoutant les compétences que vous voulez utiliser. Vous pouvez aussi créer un script de défense qui s\'exécutera automatiquement si vous êtes attaqué par d\'autres joueurs. (les compétences que vous pourrez utiliser dans votre script sont limitées par votre réserve de mana)') );

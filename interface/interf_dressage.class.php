@@ -134,7 +134,7 @@ class interf_dressage extends interf_cont
 				$script->add( new interf_txt($script_attaque['nom']) );
 		}
 		else
-			$script->add( new interf_bal_smpl('span', 'aucun', false, 'sans_script') );
+			$script->add( new interf_bal_smpl('span', 'défaut', false, 'sans_script') );
 		if( $this->actions && $monstre->get_sort_dressage() )
 		{
 			$div_buffs = $div->add( new interf_bal_cont('div', false, 'creat_buffs') );
