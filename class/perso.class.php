@@ -3,6 +3,7 @@
  * @file perso.class.php
  * Gestion des personnages joueurs
  */
+include_once(root.'class/gemme.class.php');
  
 /**
  * Classe représentant un personnage joueur
@@ -1115,6 +1116,7 @@ class perso extends entite
 	public $pm_para;                 ///< PM pour la resistance à para (sans les buffs avec bonus raciaux).
 	public $enchant;                 ///< plus utilisé.
 	public $armure;                  ///< true si la PP et la PM on été calculées, false sinon.
+	protected $encombrement;				 ///< encombrement total des objets portés dans l'inventaire
 	/// Renvoie les objets équipés par le personnage sous forme textuelle.
 	function get_inventaire()
 	{
@@ -1147,6 +1149,23 @@ class perso extends entite
 	{
 		$this->inventaire_slot = $inventaire_slot;
 		$this->champs_modif[] = 'inventaire_slot';
+	}
+	/// Renvoie l'encombrement total des objets portés dans l'inventaire.
+	function get_encombrement()
+	{
+		return $this->encombrement;
+	}
+	/// Modifie l'encombrement total des objets portés dans l'inventaire.
+	function set_encombrement($encombrement)
+	{
+		$this->encombrement = $encombrement;
+		$this->champs_modif[] = 'encombrement';
+	}
+	/// Renvoie l'encombrement maximal
+	function get_max_encombrement()
+	{
+		global $G_max_encombrement;
+		return $G_max_encombrement + $this->get_bonus_permanents('encombrement');
 	}
 	/**
 	 * Renvoie un objet équipé particulier.
@@ -1456,7 +1475,6 @@ class perso extends entite
   /// Refait les piles des objets
 	function restack_objet()
 	{
-		global $G_place_inventaire;
 		$partie = $this->get_inventaire_slot_partie();
 		$i = 0;
 		$compte_stack = array();
@@ -1490,10 +1508,26 @@ class perso extends entite
 		while($i > 0)
 		{
 			$objet = $this->recherche_objet($id_objet);
+			$obj = objet_invent::factory($inventaire[$objet[1]]);
 			//Vérification si objet "stacké"
-			$stack = explode('x', $inventaire[$objet[1]]);
-			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
-			else array_splice($inventaire, $objet[1], 1);
+			/*$stack = explode('x', $inventaire[$objet[1]]);
+			if($stack[1] > 1)
+				$inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
+			else
+			{
+				array_splice($inventaire, $objet[1], 1);
+			}*/
+			$nbr = $obj->get_nombre();
+			if( $nbr > 1 )
+			{
+				$obj->set_nombre($nbr - 1);
+				$inventaire[$objet[1]] = $obj->get_texte();
+			}
+			else
+			{
+				array_splice($inventaire, $objet[1], 1);
+				$this->set_encombrement( $this->encombrement - $obj->get_encombrement() );
+			}
 			$i--;
 		}
 		$this->set_inventaire_slot(serialize($inventaire));
@@ -1508,7 +1542,7 @@ class perso extends entite
 	function prend_objet($id_objet)
 	{
 		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
-		if($this->inventaire_perso->prend_objet($id_objet))
+		if($this->inventaire_perso->prend_objet($id_objet, $this))
 		{
 			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
 			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
@@ -1525,7 +1559,7 @@ class perso extends entite
 	function prend_objet_pet($id_objet)
 	{
 		if(!isset($this->inventaire_perso_pet)) $this->inventaire_perso_pet = new inventaire($this->inventaire_pet, $this->inventaire_slot);
-		if($this->inventaire_perso_pet->prend_objet($id_objet))
+		if($this->inventaire_perso_pet->prend_objet($id_objet, $this))
 		{
 			if(is_array($this->inventaire_perso_pet->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso_pet->slot_liste));
 			else $this->set_inventaire_slot($this->inventaire_perso_pet->slot_liste);
@@ -3738,17 +3772,17 @@ class perso extends entite
 	* @param tinyint(3) beta attribut
 	* @return none
 	*/
-	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
+	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $encombrement=0, $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
+			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, encombrement, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
+				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->encombrement, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -3833,6 +3867,7 @@ class perso extends entite
 			$this->id_joueur = $id['id_joueur'];
 			$this->tuto = $id['tuto'];
 			$this->date_creation = $id['date_creation'];
+			$this->encombrement = $id['encombrement'];
 		}
 		else
 		{
@@ -3857,6 +3892,7 @@ class perso extends entite
 			$this->inventaire = $inventaire;
 			$this->inventaire_pet = $inventaire_pet;
 			$this->inventaire_slot = $inventaire_slot;
+			$this->encombrement = $encombrement;
 			$this->pa = $pa;
 			$this->dernieraction = $dernieraction;
 			$this->action_a = $action_a;

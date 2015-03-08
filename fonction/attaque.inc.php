@@ -7,7 +7,7 @@ if (file_exists('../root.php'))
  * @deprecated
  */
 include_once(root.$root.'class/competence.class.php');
-include_once(root.$root.'class/gemmes.class.php');
+include_once(root.$root.'class/gemme.class.php');
 
 /**
  * Ca serait bien si dans cette fonction on se limitait à appliquer les effets,

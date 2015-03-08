@@ -41,7 +41,7 @@ class interf_inventaire extends interf_cont
     	$onglets->add_onglet('Actions', self::url.'?action=princ&page=actions', 'tab_actions', 'invent', $invent=='actions');
     $onglets->get_onglet('tab_'.$invent)->add( new interf_invent_equip($perso, $invent, $modif) );
     // un peu d'espace
-    $this->add( new interf_bal_smpl('br') );
+    //$this->add( new interf_bal_smpl('br') );
     // onglets des slots
     $onglets_slots = $this->add( new interf_onglets('onglets_sots', 'slots'/*, 'invent'*/) );
     $onglets_slots->add_onglet('Utile', self::url.'?action=sac&slot=utile', 'tab_utile', 'invent', $slot=='utile');
@@ -50,6 +50,7 @@ class interf_inventaire extends interf_cont
     $onglets_slots->add_onglet('Artisanat', self::url.'?action=sac&slot=artisanat', 'tab_artisanat', 'invent', $slot=='artisanat');
     $onglets_slots->get_onglet('tab_'.$slot)->add( new interf_invent_sac($perso, $slot, $modif) );
     interf_base::code_js( '$( "#slots" ).droppable({accept: ".equipe", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+    $onglets_slots->add( new interf_bal_smpl('span', $perso->get_encombrement().' / '.$perso->get_max_encombrement(), 'encombrement') )->set_tooltip('Encombrement');
   }
 }
 

@@ -23,14 +23,41 @@ class inventaire
 		else $this->slot_liste = $inventaire_slot;
 	}
 
-	function prend_objet($id_objet)
+	function prend_objet($id_objet, &$perso)
 	{
 		global $db, $G_erreur, $G_place_inventaire;
 		$trouver = false;
 		$stack = false;
+		$obj = objet_invent::factory($id_objet);
 		$objet_d = decompose_objet($id_objet);
+		if( $obj->get_stack() > 1 )
+		{
+			$deb = 'o'.$obj->get_id();
+			while($i < count($this->slot_liste) && !$trouver)
+			{
+				if( substr($this->slot_liste[$i], 0, strlen($deb)) == $deb )
+				{
+					$obj2 = objet_invent::factory($this->slot_liste[$i]);
+					$nbr = $obj2->get_nombre() + $obj->get_nombre();
+					if( $nbr < $obj->get_stack() )
+					{
+						$trouver = true;
+						$stack = true;
+					}
+				}
+				$i++;
+			}
+		}
+		if(!$trouve)
+		{
+			$encombrement = $perso->get_encombrement() + $obj->get_encombrement();
+			if( $encombrement < $perso->get_max_encombrement() )
+			{
+				$trouver = true;
+			}
+		}
 		// Maximum d'empilement possible
-		if($objet_d['categorie'] != 'o')
+	/*	if($objet_d['categorie'] != 'o')
 		{
 		  // Ne peut pas être empilé
 			$row['stack'] = 0;
@@ -70,7 +97,7 @@ class inventaire
 				}
 				else $i++;
 			}
-		}
+		}*/
 		if(!$trouver)
 		{
 		  //Inventaire plein
@@ -83,14 +110,18 @@ class inventaire
 			if(!$stack)
 			{
 				// ...dans un emplacement vide
-				$this->slot_liste[$i] = $id_objet;
+				//$this->slot_liste[$i] = $id_objet;
+				$this->slot_liste[] = $obj->get_texte();
+				$perso->set_encombrement( $encombrement );
 			}
 			else
 			{
 			  // ...à une pile d'objet identiques
-				$stacks = $objet_i['stack'] + 1;
+				/*$stacks = $objet_i['stack'] + 1;
 				if($stacks == 1) $stacks = 2;
-				$this->slot_liste[$i] = $objet_i['sans_stack'].'x'.$stacks;
+				$this->slot_liste[$i] = $objet_i['sans_stack'].'x'.$stacks;*/
+				$obj2->set_nombre( $obj2->get_nombre() + $obj->get_nombre() );
+				$this->slot_liste[$i] = $obj2->get_texte();
 			}
 			return true;
 		}

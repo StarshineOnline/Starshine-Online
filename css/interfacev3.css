@@ -2379,6 +2379,7 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .invent
 {
   width: 470px;
+  margin-bottom: 20px;
 }
 
 #invent tr
@@ -2411,6 +2412,19 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .invent_hover
 {
   background:#91AEF2;
+}
+
+#slots
+{
+	position: relative;
+}
+
+#encombrement
+{
+	position: absolute;
+	top: 13px;
+	right: 10px;
+	font-style: italic;
 }
 
 /***************************************************

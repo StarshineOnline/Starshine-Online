@@ -15,6 +15,7 @@ abstract class objet_invent extends table
 	protected $prix;  ///< Prix de l'objet en magasin.
 	protected $identifie = true;  ///< Indique si l'objet a été identifié
 	protected $texte;  ///< Forme textuelle
+	protected $encombrement;  ///< Encombrement de l'objet (place prise dans l'inventaire)
 	
 	// Renvoie le nom de l'objet
 	function get_nom()
@@ -42,28 +43,34 @@ abstract class objet_invent extends table
 		$this->champs_modif[] = 'type';
 	}
 	
-	// Renvoie le prix de l'objet em magasin
+	// Renvoie le prix de l'objet en magasin
 	function get_prix()
 	{
 		return $this->prix;
 	}
 	
-	/// Modifie le prix de l'objet em magasin
+	/// Modifie le prix de l'objet en magasin
 	function set_prix($prix)
 	{
 		$this->prix = $prix;
 		$this->champs_modif[] = 'prix';
 	}
 
-  /// Renvoie le nombre d'exmplaires disponibles.
+  /// Renvoie le nombre d'exemplaires disponibles.
 	function get_nombre()
 	{
 		return 1;
 	}
-	/// Modifie le nombre d'exmplaires disponibles.
+	/// Modifie le nombre d'exemplaires disponibles.
 	function set_nombre($stack)
 	{
     // Pas de stack par défaut
+	}
+
+  /// Renvoie le nombre d'exmplaires qu'on peut mettre dans un emplacement de l'inventaire.
+	function get_stack()
+	{
+		return 1;
 	}
 
   /// Renvoie l'enchantement par gemme
@@ -111,13 +118,26 @@ abstract class objet_invent extends table
 		$this->texte = $texte;
 	}
 	
+	// Renvoie l'encombrement de l'objet em magasin
+	function get_encombrement()
+	{
+		return $this->encombrement;
+	}
+	
+	/// Modifie l'encombrement de l'objet em magasin
+	function set_encombrement($encombrement)
+	{
+		$this->encombrement = $encombrement;
+		$this->champs_modif[] = 'encombrement';
+	}
+	
 	/**
 	 * Constructeur
 	 * @param  $nom		nom de l'objet
 	 * @param  $type	type de l'objet (epee, hache, dos, potion_hp,… )
 	 * @param  $prix	prix de l'objet em magasin
 	 */
-	function __construct($nom='', $type='', $prix=0)
+	function __construct($nom='', $type='', $prix=0, $encombrement=0)
 	{
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( func_num_args() == 1 )
@@ -129,6 +149,7 @@ abstract class objet_invent extends table
 			$this->nom = $nom;
 			$this->type = $type;
 			$this->prix = $prix;
+			$this->encombrement = $encombrement;
 		}
 	}
 	
@@ -142,6 +163,7 @@ abstract class objet_invent extends table
 		$this->nom = $vals['nom'];
 		$this->type = $vals['type'];
 		$this->prix = $vals['prix'];
+		$this->encombrement = $vals['encombrement'];
 	}
 
   /**
@@ -149,14 +171,14 @@ abstract class objet_invent extends table
    *
    * @param  $objet   Forme textuelle de l'objet
    */
-  function factory($objet, $cat=null)
+  static function factory($objet, $cat=null)
   {
   	if( !$cat )
   	{
 	    // nombre d'objet "stackés"
 			$decomp = explode('x', $objet);
 			$obj = $decomp[0];
-			$stack = $decomp[1];
+			$stack = count($decomp) > 1 ? $decomp[1] : 1;
 	    // enchantement par une gemme
 			$decomp = explode('e', $obj);
 			$obj = $decomp[0];
@@ -249,7 +271,7 @@ abstract class objet_invent extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_champs()
 	{
-		return array('nom'=>'s', 'type'=>'s', 'prix'=>'i');
+		return array('nom'=>'s', 'type'=>'s', 'prix'=>'i', 'encombrement'=>'i');
 	}
 
   /// recompose la forme textuelle de l'objet
