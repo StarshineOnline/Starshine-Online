@@ -7,7 +7,6 @@ $connexion = true;
 //Inclusion du haut du document html
 include_once(root.'inc/fp.php');
 include_once(root.'inc/ressource.inc.php');
-include_once(root.'interface/interf_quete.class.php');
 
 
 $perso = joueur::get_perso();
@@ -24,7 +23,8 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 switch($action)
 {
 case 'voir':
-	$cadre->set_dialogue( new interf_quete($_GET['id'], $royaume) );
+	$quete = new quete($_GET['id']);
+	$cadre->set_dialogue( $G_interf->creer_infos_quete($quete) );
 	if( array_key_exists('ajax', $_GET) )
 		exit;
 	break;

@@ -290,6 +290,20 @@ $Gtrad['star'] = 'Stars';
 
 
 /**
+ * @name Quêtes
+ * Traduction des fournisseurs de quête.
+ * @{
+ */
+$Gtrad['bureau_quete'] = 'Bureau des quêtes';
+$Gtrad['ecole_combat'] = 'École de combat';
+$Gtrad['taverne'] = 'Taverne';
+$Gtrad['alchimiste'] = 'Alchimiste';
+$Gtrad['université'] = 'Université';
+$Gtrad['special'] = 'Spécial';
+//@}
+
+
+/**
  * @name Classes
  * Traduction des classes.
  * @{  

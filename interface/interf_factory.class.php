@@ -738,6 +738,11 @@ class interf_factory
   {
   	return new interf_quete_royaume($royaume);
   }
+  function creer_infos_quete(&$quete)
+  {
+    include_once(root.'interface/interf_quete_royaume.class.php');
+  	return new interf_infos_quete($quete);
+  }
 
   ///
   function creer_entretien($royaume, $onglet='balance')
