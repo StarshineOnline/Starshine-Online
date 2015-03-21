@@ -1,15 +1,13 @@
 <?php
 /**
- * @file interf_quete.class.php
- * Interface de la bourse des royaume 
+ * @file interf_quete_royaume.class.php
+ * Interface royale des quêtes
  */ 
 include_once(root.'inc/ressource.inc.php');
-include_once(root.'class/quete.class.php');
-include_once(root.'class/quete_etape.class.php');
 
 //Créer l'interface de la quete selon l'id.
 
-class interf_quete extends interf_dialogBS
+/*class interf_quete extends interf_dialogBS
 {
 	function __construct($idquete, &$royaume)
 	{
@@ -36,7 +34,7 @@ class interf_quete extends interf_dialogBS
 		
 		$this->add( new interf_bal_smpl('br'));	
 	}
-}
+}*/
 	
 		
 //Créer l'interface de gestion des quetes pour les rois

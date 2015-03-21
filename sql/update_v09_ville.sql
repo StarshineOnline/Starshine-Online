@@ -28,8 +28,11 @@ INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`
 INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`, `hp`, `date`) VALUES (11, 30, 'actif', '0', '1000', '0');
 INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`, `hp`, `date`) VALUES (12, 30, 'actif', '0', '1000', '0');
 
--- Enchanteurs
+-- Enchanteur
 INSERT INTO `batiment_ville` (`id`, `nom`, `cout`, `entretien`, `type`, `level`, `hp`) VALUES (35, 'Enchanteur', 0, 0, 'enchanteur', 1, 1000);
+INSERT INTO `batiment_ville` (`nom`, `cout`, `entretien`, `type`, `level`, `hp`) VALUES ('Enchanteur bronze', 500, 5, 'enchanteur', 1, 2000);
+INSERT INTO `batiment_ville` (`nom`, `cout`, `entretien`, `type`, `level`, `hp`) VALUES ('Enchanteur argent', 1000, 10, 'enchanteur', 1, 4000);
+INSERT INTO `batiment_ville` (`nom`, `cout`, `entretien`, `type`, `level`, `hp`) VALUES ('Enchanteur or', 2000, 20, 'enchanteur', 1, 6000);
 INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`, `hp`, `date`) VALUES (1, 35, 'actif', '0', '1000', '0');
 INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`, `hp`, `date`) VALUES (2, 35, 'actif', '0', '1000', '0');
 INSERT INTO `construction_ville` (`id_royaume`, `id_batiment`, `statut`, `dette`, `hp`, `date`) VALUES (3, 35, 'actif', '0', '1000', '0');

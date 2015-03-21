@@ -3217,49 +3217,36 @@ class perso extends entite
 		$this->champs_modif[] = 'quete_fini';
 	}
   /// Ajoute une quête à la liste des quêtes que possède le personnage.
-	function prend_quete($quete)
+	function prend_quete($id_quete)
 	{
-		global $db;
-		$valid = true;
-		$requete = "SELECT id, objectif FROM quete WHERE id = ".$quete;
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		//Vérifie si le joueur n'a pas déjà pris la quète.
-		if($this->get_quete() != '')
+		$quete = new quete($id_quete);
+		//Vérifie si le joueur n'a pas déjà pris la quête.
+		$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $this->get_id()));
+		if( $qp )
 		{
-			foreach($this->get_liste_quete() as $quest)
-			{
-				if($quest['id_quete'] == $quete) $valid = false;
-			}
-			$numero_quete = (count($this->liste_quete));
-		}
-		else
-		{
-			$numero_quete = 0;
-		}
-		if($valid)
-		{
-			$quete = unserialize($row['objectif']);
-			$count = count($quete);
-			$i = 0;
-			while($i < $count)
-			{
-				$this->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
-				$this->liste_quete[$numero_quete]['id_quete'] = $row['id'];
-				$i++;
-			}
-			$this->set_quete(serialize($this->liste_quete));
-			$this->sauver();
-			return true;
-		}
-		else
-		{
-      global $G_erreur;
 			$G_erreur = 'Vous avez déjà cette quête en cours !';
 			return false;
 		}
+		// On vérifie que la quête peut être prise
+		if( $quete->a_requis($this) )
+		{
+			$qp = new quete_perso($this->id, $quete);
+			$qp->sauver();
+			return true;
+		}
+		/// @todo loguer triche
+		return false;
+	}
+	/// Ajoute les quête disponibles au bureau des quêtes à la liste des quêtes que possède le personnage.
+	function prend_quete_tout(&$royaume, $fournisseur='bureau_quete')
+	{
+		$quetes = quete::get_quetes_dispos($this, $royaume, $fournisseur);
+		foreach($quetes as $quete)
+		{
+			$qp = new quete_perso($this->id, $quete);
+			$qp->sauver();
+		}
+		return count($quetes);
 	}
 	// @}
 	

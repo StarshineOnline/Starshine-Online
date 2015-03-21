@@ -277,6 +277,23 @@ class interf_factory
     include_once(root.'interface/interf_bureau_quete.class.php');
     return new interf_tbl_quetes($royaume, $type);
 	}
+	/// Description d'une quête dansq le bureau des quetes
+	function creer_bureau_quete_descr(&$quete, $royaume)
+	{
+    include_once(root.'interface/interf_bureau_quete.class.php');
+    return new interf_bureau_quete_descr($quete, $royaume);
+	}
+	/// Liste des quêtes
+	function creer_quetes(&$perso, $type='autre')
+	{
+    return new interf_quetes($perso, $type);
+	}
+	/// Liste des quêtes
+	function creer_quetes_terrain(&$perso, $type='autre')
+	{
+    include_once(root.'interface/interf_quetes.class.php');
+    return new interf_quetes_terrain($perso, $type);
+	}
 	/// Liste d'achat des sort hors combat
 	function creer_achat_sort_jeu(&$royaume, $niveau=null)
 	{
@@ -719,9 +736,8 @@ class interf_factory
   ///
   function creer_quete_royaume(&$royaume)
   {
-	include_once(root.'interface/interf_quete.class.php');
   	return new interf_quete_royaume($royaume);
-  	}
+  }
 
   ///
   function creer_entretien($royaume, $onglet='balance')

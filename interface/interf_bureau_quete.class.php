@@ -5,8 +5,6 @@
  */
  
 include_once(root.'interface/interf_ville.class.php');
-include_once(root.'class/quete.class.php');
-include_once(root.'class/quete_etape.class.php');
 
 /// Classe gérant l'interface du bureau des quêtes
 class interf_bureau_quete extends interf_ville_onglets
@@ -19,6 +17,7 @@ class interf_bureau_quete extends interf_ville_onglets
 		// Icone & jauges
 		$this->icone = $this->set_icone_centre('quetes');
 		$this->icone->set_tooltip('Bureau des quêtes');
+		self::aff_jauges($this, $royaume);
 		
 		// Onglets
 		$url = $G_url->copie('ajax', 2);
@@ -32,6 +31,28 @@ class interf_bureau_quete extends interf_ville_onglets
 		
 		$this->onglets->get_onglet('tab_'.$type)->add( new interf_tbl_quetes($royaume, $type) );
 	}
+	
+	static function aff_jauges(&$interf, &$royaume)
+	{
+		global $db;
+		/// @todo passer à l'objet
+		// Jauge extérieure : nombre de quêtes achetées par le royaume
+		$requete = 'SELECT COUNT(*) FROM quete AS q WHERE star_royaume > 0';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$nbr_achetable = $row[0];
+		$requete = 'SELECT COUNT(*) FROM quete_royaume WHERE id_royaume = '.$royaume->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$nbr_achete = $row[0];
+		$interf->set_jauge_ext($nbr_achete, $nbr_achetable, 'avance', 'Nombre de quêtes disponibles : ');
+		// Jauge intétieure : nombre de quêtes prise par le personnage
+		$requete = 'SELECT COUNT(*) FROM quete_perso as qp INNER JOIN quete_royaume AS qr ON qr.id_quete = qp.id_quete WHERE qr.id_royaume = '.$royaume->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$nbr_prise = $row[0];
+		$interf->set_jauge_int($nbr_prise, $nbr_achete, 'pa', 'Nombre de quêtes prises : ');
+	}
 }
 
 /// Classe affichant les quêtes à prendre au bureau des quêtes
@@ -41,170 +62,23 @@ class interf_tbl_quetes extends interf_data_tbl
 	function __construct(&$royaume, $type)
 	{
 		global $db;
-		parent::__construct('tbl_'.$type, '', false, false, 383 );
+		parent::__construct('tbl_'.$type, '', false, false, 358 );
 		$this->perso = &joueur::get_perso();
 		
 		$this->nouv_cell('Nom de la quete');
 		$this->nouv_cell('Type de quete');
 		$this->nouv_cell('Repetable');
 		
-		$return = array();
-		$quetes = array();
-		$liste_quete = $this->perso->get_liste_quete();
-		if(is_array($liste_quete))
-		{
-			foreach($liste_quete as $quete)
-			{
-				if ($quete['id_quete']!='')
-				{
-					$quetes[] = $quete['id_quete'];
-				}
-			
-			}
-			if(count($quetes) > 0) $notin = "AND quete.id NOT IN (".implode(',', $quetes).")";
-			else $notin = '';
+		$quetes = quete::get_quetes_dispos($this->perso, $royaume, 'bureau_quete', $type);
+		foreach($quetes as $quete)
+		{				
+			$this->nouv_ligne();
+			$this->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
+			$this->nouv_cell($quete->get_type());
+			$this->nouv_cell($quete->get_repetable());
 		}
-		else $notin = '';
-		$where = "";
-		$id_royaume = $royaume->get_id();
-		if($id_royaume < 10) '0'.$id_royaume;
-		$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = ".$royaume->get_id().") OR ( royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = 'bureau_quete'".$where." ".$notin."";
-		$req = $db->query($requete);
-		
-		$nombre_quete = 0;
-		while($row = $db->read_array($req))
-		{
-			$quete = new quete($row['idq']);
-			
-			$quete_fini = explode(';', $this->perso->get_quete_fini());
-			//On affiche si c'est répétable
-			if($quete->get_repetable() == 'oui' OR !in_array($quete->get_id(), $quete_fini))
-			{
-				$check = true;
-				$quete_requis = explode(';', $quete->get_requis());
-
-				foreach($quete_requis as $requis)
-				{
-
-					if( !$requis ) continue;
-					$val = mb_substr($requis, 1);
-					switch ($requis[0]) 
-					{
-						//une quete doit etre finies avant la présente
-						case 'q' : 	if( !in_array($val, $quete_fini) )
-									{
-										$check = false;
-										break;
-									}
-						//c'est une quete de tuto
-						case 't' : 	if( $this->perso->get_tuto() != $val)
-									{
-										$check = false;
-										break;
-									}
-						//c'est une quete de classe
-						case 'c' :	$classes = explode('-', $val);
-									if( !in_array($this->perso->get_classe_id(), $classes) )
-									{
-										$check = false;
-										break;
-									}
-						//c'est une quete de race
-						case 'r' :	if( $this->perso->get_race() != $val )
-									{
-										$check = false;
-										break;
-									}
-						//c'est une quete de niveau
-						case 'n' :	$operateurs = '>=';
-									$operateurs = explode('|', $val);
-									foreach($operateurs as $operateur)
-									{	
-										switch ($operateur['0']) {
-											case '>' : if( $this->perso->get_level() <= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '<' : if( $this->perso->get_level() >= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '=' : if( $this->perso->get_level() <> $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-													}
-									}
-						//c'est une quete d'honneur
-						case 'h' :	$operateurs = '>=';
-									$operateurs = explode('|', $val);
-									foreach($operateurs as $operateur)
-									{
-										switch ($operateur['0']) {
-											case '>' : if( $this->perso->get_honneur() <= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '<' : if( $this->perso->get_honneur() >= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '=' : if( $this->perso->get_honneur() <> $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-													}
-									}
-						//c'est une quete de reputation
-						case 'r' :	$operateurs = '>=';
-									$operateurs = explode('|', $val);
-									foreach($operateurs as $operateur)
-									{
-										switch ($operateur['0']) {
-											case '>' : if( $this->perso->get_reputation() <= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '<' : if( $this->perso->get_reputation() >= $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-											case '=' : if( $this->perso->get_reputation() <> $operateur['1'] )
-														{
-															$check = false;
-															break;
-														}
-													}
-									}
-					}
-				}
-				if($check)
-				{
-					$nombre_quete++;
-											
-					$this->nouv_ligne();
-					$this->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
-					$this->nouv_cell($quete->get_type());
-					$this->nouv_cell($quete->get_repetable());						
-					
-					
-					//$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$quete->get_id().'" onclick="return envoiInfo(this.href, \'carte\')">'.$quete->get_nom().'</a> </li>';
-				}
-			}
-		}
-		/*if($nombre_quete > 0)
-		{
-			$return[0] =  '<ul class="ville">'.$html.'</ul>';
-		}
-		$return[1] = $nombre_quete;*/
+		// Lien pour prendre toutes les quêtes
+		$this->add( new interf_lien('Prendre toutes les quêtes', 'bureau_quete.php?action=prendre_tout', false, 'offre_achat') );
 	}
 		
 	// on formate la description de la quete pour l'affichage
@@ -213,6 +87,31 @@ class interf_tbl_quetes extends interf_data_tbl
 		global $db;
 		
 		$this->centre->add( new interf_bal_smpl('h3', 'Bureau des quêtes') );
+	}
+}
+
+/// Classe gérant l'interface du bureau des quêtes
+class interf_bureau_quete_descr extends interf_ville
+{
+	function __construct($quete, $royaume)
+	{
+		global $G_url;
+		parent::__construct($royaume);
+		$etape = quete_etape::create(array('id_quete', 'etape', 'variante'), array($quete->get_id(), 1, 0))[0];
+		
+		// Icone & jauges
+		$this->icone = $this->set_icone_centre('quetes', 'bureau_quete.php');
+		$this->icone->set_tooltip('Bureau des quêtes');
+		interf_bureau_quete::aff_jauges($this, $royaume);
+		
+		// Nom de la quête
+		$this->centre->add( new interf_bal_smpl('p', $quete->get_nom(), 'nom_quete') );
+		// Description & information
+		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ', 'reduit') );
+				include_once(root.'interface/interf_quetes.class.php');
+		$div->add( new interf_descr_quete($quete, $etape) );
+		// Lien pour prendre la quête
+		$this->centre->add( new interf_lien('Prendre', $G_url->get(array('action'=>'prendre', 'id'=>$quete->get_id())), 'ville_bas') );
 	}
 }
 					

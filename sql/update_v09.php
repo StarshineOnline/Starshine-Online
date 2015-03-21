@@ -1,18 +1,7 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-/*include_once(root."class/db.class.php");
-include_once(root."class/table.class.php");
-include_once(root."class/objet_invent.class.php");
-include_once(root."class/objet_equip.class.php");
-include_once(root."class/accessoire.class.php");
-include_once(root."class/arme.class.php");
-include_once(root."class/armure.class.php");
-include_once(root."class/grimoire.class.php");
-include_once(root."class/objet.class.php");
-include_once(root."class/objet_pet.class.php");
-include_once(root."class/gemme.class.php");
-include_once(root."class/objet_royaume.class.php");*/
+
 function __autoload($class_name)
 {
 	$file = root.'class/'.$class_name.'.class.php';
@@ -20,21 +9,66 @@ function __autoload($class_name)
 }
 include_once(root."connect.php");
 
-$requete = 'SELECT id, nom, inventaire_slot FROM perso WHERE inventaire NOT LIKE ""';
+$requete = 'SELECT id, inventaire_slot, quete FROM perso WHERE inventaire NOT LIKE ""';
 $req = $db->query($requete);
 while( $row = $db->read_assoc($req) )
 {
-	echo $row['nom'].' (#'.$row['id'].') : '.$row['inventaire_slot']."\n";
-	$tbl = unserialize($row['inventaire_slot']);
+	// encombrement
+	$inventaire = unserialize($row['inventaire_slot']);
 	$encombrement = 0;
-	foreach($tbl as $o)
+	foreach($inventaire as $o)
 	{
 		$obj = objet_invent::factory($o);
 		$encombrement += $obj->get_encombrement();
-		echo "\t$o -> $encombrement\n";
 	}
 	$requete = 'UPDATE perso SET encombrement = '.$encombrement.' WHERE id = '.$row['id'];
 	$db->query($requete);
+	// quêtes
+	$quetes = unserialize($row['inventaire_slot']);
+	foreach($quetes as $q)
+	{
+		$id = $q['id_quete'];
+		switch($id)
+		{
+		case 49:
+			$id = 53;
+			$etape = 1;
+			break;
+		case 50:
+			$id = 53;
+			$etape = 2;
+			break;
+		case 52:
+			$id = 53;
+			$etape = 3;
+			break;
+		case 53:
+			$etape = 4;
+			break;
+		case 86:
+			$id = 87;
+			$etape = 1;
+			break;
+		case 87:
+			$etape = 2;
+			break;
+		case 151:
+			$id = 87;
+			$etape = 3;
+			break;
+		default:
+			$etape = 1;
+		}
+		$etape = 1;
+		$obj = array();
+		foreach($q['objectif'] as $o)
+		{
+			$obj[] = $o->cible.':'.($o->nombre?$o->nombre:'0');
+		}
+		$objectif = implode(';', $obj);
+		$requete = "INSERT INTO quete_perso (id_perso, id_quete, id_etape, avancement) VALUES (".$row['id']."$id, $etape, '$objectif')";
+		$db->query($requete);
+	}
 }
 
 

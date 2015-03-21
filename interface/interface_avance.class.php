@@ -422,7 +422,7 @@ class interf_accordeon extends interf_bal_cont
 		$this->id = $id;
 	}
 	// Ajoute un panneau
-  function &nouv_panneau($titre, $id, $montre=false, $style='default')
+  function &nouv_panneau($titre, $id, $montre=false, $style='default', &$icone=null)
   {
   	if( is_object($titre) )
   	{
@@ -434,7 +434,15 @@ class interf_accordeon extends interf_bal_cont
   	$lien_titre->set_attribut('href', '#'.$id);
   	$lien_titre->set_attribut('data-toggle', 'collapse');
   	$lien_titre->set_attribut('data-parent', '#'.$this->id);
-    return $this->add( new interf_panneau($lien_titre, null, 'h4', $id, $montre, $style) );
+  	if( $icone )
+  	{
+  		$bal_titre = new interf_bal_cont('div');
+  		$bal_titre->add($icone);
+  		$bal_titre->add($lien_titre);
+		}
+  	else
+  		$bal_titre = &$lien_titre;
+    return $this->add( new interf_panneau($bal_titre, null, 'h4', $id, $montre, $style) );
   }
 }
 

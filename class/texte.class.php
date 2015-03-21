@@ -35,6 +35,7 @@ class texte
   const cases = 0x3bf;   ///< textes des cases
   const tutoriel = 0x3b8;   ///< textes des tutoriels
   const batailles = 0x42;   ///< textes des batailles
+  const descr_quetes = 0x86;   ///< textes des quêtes
   
   /**
    * Constructeur

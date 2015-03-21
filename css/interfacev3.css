@@ -3676,6 +3676,44 @@ a .livre_nom
 	margin-left: 5px;
 }
 
+/*********************************
+ Bureau des quêtes
+**********************************/
+
+#nom_quete
+{
+	font-weight: bold;
+}
+
+.descr_quete
+{
+	margin-top: 10px;
+	font-style: italic;
+}
+
+/*********************************
+ Liste des quêtes
+**********************************/
+
+#onglets_quetes.nav > li > a
+{
+	padding: 6px 10px;
+}
+
+.invent .panel
+{
+	margin: 5px;
+}
+
+.invent .panel a.icone
+{
+	float: right;
+}
+
+.invent .panel a.btn
+{
+	margin-top: 10px;
+}
 
 /*********************************
  Dialogue

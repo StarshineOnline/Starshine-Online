@@ -99,7 +99,8 @@ a:hover, a:focus
 	border-color: #777;
 }
 
-#menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a
+#menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a, #menu_carte li:first-child a, 
+#menu_ville li:first-child a
 {
 	border-color: #777;
 	color: #ddd;

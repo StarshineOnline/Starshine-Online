@@ -45,7 +45,7 @@ class interf_gauche extends interf_bal_cont
 		$livres = $menu->add( new interf_elt_menu('', 'livre.php', 'return charger(this.href);') );
 		$livres->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-livres') );
 		$livres->get_lien()->add( new interf_txt('Livres') );
-		$quetes = $menu->add( new interf_elt_menu('', 'quete.php', 'return envoiInfo(this.href, \'information\');') );
+		$quetes = $menu->add( new interf_elt_menu('', 'quete.php', 'return charger(this.href);') );
 		$quetes->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-quetes') );
 		$quetes->get_lien()->add( new interf_txt('Quetes') );
 		$journal = $menu->add( new interf_elt_menu('', 'journal.php', 'return charger(this.href);') );

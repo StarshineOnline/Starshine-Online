@@ -24,6 +24,7 @@
 	protected $star_royaume;  ///< Cout de la quete pour le royaume.
 	protected $nombre_etape;  ///< Nombre d'étape de la quete.
 	protected $description;  ///< Nombre d'étape de la quete.
+	protected $terrain;  ///< Terrain de la quete.
 
 	/**
 	 * Constructeur
@@ -47,6 +48,7 @@
 			$this->requis = $requis;
 			$this->star_royaume = $star_royaume;
 			$this->nombre_etape = $nombre_etape;
+			$this->terrain = $terrain;
 
 		}
 	}	
@@ -67,6 +69,7 @@
 		$this->requis = $vals['requis'];
 		$this->star_royaume = $vals['star_royaume'];
 		$this->nombre_etape = $vals['nombre_etape'];
+		$this->terrain = $vals['terrain'];
 	}
 		
 	// Renvoie le id de l'objet
@@ -184,6 +187,19 @@
 		$this->nombre_etape = $nombre_etape;
 		$this->champs_modif[] = 'nombre_etape';
 	}
+	
+	// Renvoie le terrain de la quête
+	function get_terrain()
+	{
+		return $this->terrain;
+	}
+	
+	/// Modifie le terrain de la quête
+	function set_terrain($terrain)
+	{
+		$this->terrain = $terrain;
+		$this->champs_modif[] = 'terrain';
+	}
 		
 	function achat(&$royaume)
 	{
@@ -204,4 +220,135 @@
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Votre royaume n\'a pas assez de stars pour acheter cette quête');
 	}
 
+	/**
+	 * Indique si le personnage a les requis	
+	 */
+	function a_requis(&$perso)
+	{
+		return self::verif_requis($this->requis, $perso);
+	}
+	/**
+	 * Vérifie des requis exprimé sous forme textuelle	
+	 */	
+	static function verif_requis($requis, &$perso, $delim=';')
+	{
+		$requis = explode($delim, $requis);
+		foreach($requis as $req)
+		{
+			if( !$req ) continue;
+			//$val = mb_substr($req, 1);
+			$vals = explode('|', mb_substr($req, 1));
+			$ok = false;
+			foreach($vals as $val)
+			{
+				switch( $req[0] ) 
+				{
+				case 'q':  // une quete doit être finies avant la présente
+					if( $val[0] == '!' )
+						$ok |= in_array(mb_substr($val, 1), $perso->get_quete_fini());
+					else
+						$ok |= !in_array($val, $perso->get_quete_fini());
+				case 't':  // avancement du tutoriel
+					switch($val[0])
+					{
+					case '>':
+						$ok |= $perso->get_tuto() > mb_substr($val, 1);
+						break;
+					case '<':
+						$ok |= $perso->get_tuto() < mb_substr($val, 1);
+						break;
+					case '=':
+						$ok |= $perso->get_tuto() == mb_substr($val, 1);
+						break;
+					default:
+						$ok |= $perso->get_tuto() == $val;
+					}
+					break;
+				case 'c':  // classe
+					if( $val[0] == '!' )
+						$ok |= in_array(mb_substr($val, 1), $perso->get_classe_id());
+					else
+						$ok |= !in_array($val, $perso->get_classe_id());
+					break;
+				case 'r':  // race
+					if( $val[0] == '!' )
+						$ok |= in_array(mb_substr($val, 1), $perso->get_race());
+					else
+						$ok |= !in_array($val, $perso->get_race());
+					break;
+				case 'n': // niveau
+					switch($val[0])
+					{
+					case '>':
+						$ok |= $perso->get_level()> mb_substr($val, 1);
+						break;
+					case '<':
+						$ok |= $perso->get_level() < mb_substr($val, 1);
+						break;
+					case '=': 
+						$ok |= $perso->get_level() == mb_substr($val, 1);
+						break;
+					default:
+						$ok |= $perso->get_level() >= $val;
+					}
+				case 'h':  // honneur
+					switch($val[0])
+					{
+					case '>':
+						$ok |= $perso->get_honneur()> mb_substr($val, 1);
+						break;
+					case '<':
+						$ok |= $perso->get_honneur() < mb_substr($val, 1);
+						break;
+					case '=': 
+						$ok |= $perso->get_honneur() == mb_substr($val, 1);
+						break;
+					default:
+						$ok |= $perso->get_honneur() >= $val;
+					}
+				case 'p':  // réputation
+					switch($val[0])
+					{
+					case '>':
+						$ok |= $perso->get_reputation()> mb_substr($val, 1);
+						break;
+					case '<':
+						$ok |= $perso->get_reputation() < mb_substr($val, 1);
+						break;
+					case '=': 
+						$ok |= $perso->get_reputation() == mb_substr($val, 1);
+						break;
+					default:
+						$ok |= $perso->get_reputation() >= $val;
+					}
+				}
+			}
+			if( !$ok )
+				return false;
+		}
+		return true;
+	}
+	
+	static function get_quetes_dispos(&$perso, &$royaume, $fournisseur, $terrain=false)
+	{
+		global $db;
+		$finies = $perso->get_quete_fini();
+		if( $finies[0] == ';' )
+			$finies = substr($finies, 1);
+		$notin = count($finies) > 0 ? 'AND NOT (quete.repetable = "non" AND quete.id IN ('.str_replace(';', ',', $finies).') )' : '';
+		$id_royaume = $royaume->get_id();
+		if($id_royaume < 10)
+			$id_royaume = '0'.$id_royaume;
+		$requete = 'SELECT quete.* FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = '.$royaume->get_id().') OR ( royaume LIKE "%'.$id_royaume.'%")) AND quete.fournisseur = "'.$fournisseur.'"'.($terrain ? ' AND quete.terrain = "'.$terrain.'"' : '').' AND quete.id NOT IN (SELECT id_quete FROM quete_perso WHERE id_perso = '.$perso->get_id().') '.$notin;
+		$req = $db->query($requete);
+		
+		$quetes = array();
+		while($row = $db->read_array($req))
+		{
+			$quete = new quete($row);
+			if( $quete->a_requis($perso) )
+				$quetes[] = $quete;
+		}
+		return $quetes;
+	}
 }

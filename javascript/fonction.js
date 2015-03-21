@@ -820,7 +820,7 @@ $(function () {
 		{
 			aff_ico_sso();
 			if (jqxhr.status == 403) // Sans doute un security_block
-				aff_erreur('Accès interdit !', jqxhr.responseText/*, 'stop'*/);
+				aff_erreur('Accès interdit !', jqxhr.responseText, 'stop');
 			else
 				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});
