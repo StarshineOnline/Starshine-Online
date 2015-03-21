@@ -59,17 +59,17 @@ class interf_bureau_quete extends interf_ville_onglets
 class interf_tbl_quetes extends interf_data_tbl
 {
 	protected $perso;
-	function __construct(&$royaume, $type)
+	function __construct(&$royaume, $type, $fournisseur='bureau_quete')
 	{
 		global $db;
-		parent::__construct('tbl_'.$type, '', false, false, 358 );
+		parent::__construct('tbl_'.$type, '', false, false, $fournisseur=='bureau_quete'?358:383 );
 		$this->perso = &joueur::get_perso();
 		
 		$this->nouv_cell('Nom de la quete');
 		$this->nouv_cell('Type de quete');
 		$this->nouv_cell('Repetable');
 		
-		$quetes = quete::get_quetes_dispos($this->perso, $royaume, 'bureau_quete', $type);
+		$quetes = quete::get_quetes_dispos($this->perso, $royaume, $fournisseur, $type);
 		foreach($quetes as $quete)
 		{				
 			$this->nouv_ligne();
@@ -78,7 +78,8 @@ class interf_tbl_quetes extends interf_data_tbl
 			$this->nouv_cell($quete->get_repetable());
 		}
 		// Lien pour prendre toutes les quêtes
-		$this->add( new interf_lien('Prendre toutes les quêtes', 'bureau_quete.php?action=prendre_tout', false, 'offre_achat') );
+		if( $fournisseur == 'bureau_quete' )
+			$this->add( new interf_lien('Prendre toutes les quêtes', 'bureau_quete.php?action=prendre_tout', false, 'offre_achat') );
 	}
 		
 	// on formate la description de la quete pour l'affichage

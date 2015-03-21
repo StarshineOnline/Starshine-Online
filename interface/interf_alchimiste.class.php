@@ -43,6 +43,8 @@ class interf_alchimiste extends interf_ville_onglets
 		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $onglet=='recherche');
 		$this->onglets->add_onglet('Consommables', 'alchimiste.php?categorie=objet&ajax=2', 'tab_objet', 'ecole_mag', $onglet=='objet');
 		$this->onglets->add_onglet('Recettes', 'alchimiste.php?categorie=recette&ajax=2', 'tab_recette', 'ecole_mag', $onglet=='recette');
+		if( quete::get_nombre_quetes(joueur::get_perso(), $royaume, 'ecole_combat') )
+			$this->onglets->add_onglet('Quêtes', 'alchimiste.php?categorie=quetes&ajax=2', 'tab_quetes', 'ecole_mag', $type=='quetes');
 		
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$onglet) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$onglet.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
@@ -54,6 +56,9 @@ class interf_alchimiste extends interf_ville_onglets
 			break;
 		case 'recette':
 			$this->onglets->get_onglet('tab_'.$onglet)->add( new interf_achat_recette($royaume, $n) );
+			break;
+		case 'recette':
+			$this->onglets->get_onglet('tab_'.$onglet)->add( $G_interf->creer_tbl_quetes($royaume, 'alchimiste'/*, $n*/) );
 			break;
 		}
 	}

@@ -31,7 +31,7 @@ class interf_quetes_terrain extends interf_accordeon
 	{
 		global $G_url;
 		parent::__construct('quetes_'.$type);
-		$quetes = quete_perso::create(array('id_perso'), array($perso->get_id(), ));
+		$quetes = quete_perso::create('id_perso', $perso->get_id());
 		foreach($quetes as $qp)
 		{
 			$quete = $qp->get_quete();

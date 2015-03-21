@@ -108,6 +108,9 @@ case 'comp_jeu':
 case 'comp_combat':
 	$interf_princ->add( $G_interf->creer_achat_comp_combat($R) );
 	break;
+case 'quetes':
+	$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'ecole_combat') );
+	break;
 }
 $interf_princ->maj_tooltips();
 ?>

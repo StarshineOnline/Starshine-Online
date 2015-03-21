@@ -14,7 +14,7 @@ $perso->check_perso();
 if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 {
 	$G_url->add('terrain', $_GET['type']);
-	$interf_princ->add( $G_interf->creer_quetes_terrain($perso, $_GET['type']) );
+	$interf_princ->add( $G_interf->creer_quetes_terrain($perso, 'bureau_quete', $_GET['type']) );
 	exit;
 }
 

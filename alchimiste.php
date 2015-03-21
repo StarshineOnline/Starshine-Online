@@ -139,6 +139,9 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	case 'recette':
 		$interf_princ->add( $G_interf->creer_achat_recette($R, $onglet) );
 		break;
+	case 'quetes':
+		$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'alchimiste') );
+		break;
 	}
 }
 else

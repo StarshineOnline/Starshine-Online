@@ -74,6 +74,8 @@ class interf_taverne extends interf_ville_onglets
 		$this->onglets->add_onglet('Repos', 'taverne.php?type=repos', 'tab_repos', 'ecole_mag', $type=='repos');
 		$this->onglets->add_onglet('Bar', 'taverne.php?type=bar', 'tab_bar', 'ecole_mag', $type=='bar');
 		$this->onglets->add_onglet('Jeux', 'taverne.php?type=jeux', 'tab_jeux', 'ecole_mag', $type=='jeux');
+		if( quete::get_nombre_quetes($perso, $royaume, 'taverne') )
+			$this->onglets->add_onglet('Quêtes', 'taverne.php?type=quetes&ajax=2', 'tab_quetes', 'ecole_mag', $type=='quetes');
 		/// @todo quêtes
 		
 		switch(	$type )
@@ -83,6 +85,9 @@ class interf_taverne extends interf_ville_onglets
 			/*$n = */interf_alerte::aff_enregistres( $tab );
 			$tab->add( new interf_taverne_repos($royaume/*, $n*/) );
 			break;
+		case 'quetes':
+			$this->onglets->get_onglet('tab_quetes')->add( $G_interf->creer_tbl_quetes($royaume, 'ecole_combat'/*, $n*/) );
+			break; 
 		}
 	}
 }

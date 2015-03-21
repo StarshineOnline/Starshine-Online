@@ -272,10 +272,10 @@ class interf_factory
     return new interf_bureau_quete($royaume, $type);
 	}
 	/// Liste des quêtes au bureau des quetes
-	function creer_tbl_quetes(&$royaume, $type='autre')
+	function creer_tbl_quetes(&$royaume, $fournisseur='bureau_quete', $type=null)
 	{
     include_once(root.'interface/interf_bureau_quete.class.php');
-    return new interf_tbl_quetes($royaume, $type);
+    return new interf_tbl_quetes($royaume, $type, $fournisseur);
 	}
 	/// Description d'une quête dansq le bureau des quetes
 	function creer_bureau_quete_descr(&$quete, $royaume)

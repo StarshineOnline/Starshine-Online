@@ -46,6 +46,19 @@ if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
+{
+	switch( $_GET['type'] )
+	{
+	case 'repos':
+		$interf_princ->add( $G_interf->creer_taverne($R, $case) );
+		exit;
+	case 'quetes':
+		$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'taverne') );
+		exit;
+	}
+}
+
 switch($action)
 {
 case 'achat':

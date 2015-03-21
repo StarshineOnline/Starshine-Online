@@ -18,8 +18,10 @@ class interf_ecole_combat extends interf_ville_onglets
 		$niveau = $this->recherche_batiment('ecole_combat');
 		
 		// Onglets
-		$this->onglets->add_onglet('Comp. hors combat', 'ecole.php?type=comp_jeu&ajax=2', 'tab_ecole_comp_jeu', 'ecole_mag', $type=='comp_jeu');
-		$this->onglets->add_onglet('Comp. de combat', 'ecole.php?type=comp_combat&ajax=2', 'tab_ecole_comp_combat', 'ecole_mag', $type=='comp_combat');
+		$this->onglets->add_onglet('Hors combat', 'ecole.php?type=comp_jeu&ajax=2', 'tab_ecole_comp_jeu', 'ecole_mag', $type=='comp_jeu');
+		$this->onglets->add_onglet('Combat', 'ecole.php?type=comp_combat&ajax=2', 'tab_ecole_comp_combat', 'ecole_mag', $type=='comp_combat');
+		if( quete::get_nombre_quetes(joueur::get_perso(), $royaume, 'ecole_combat') )
+			$this->onglets->add_onglet('Quêtes', 'ecole.php?type=quetes&ajax=2', 'tab_ecole_quetes', 'ecole_mag', $type=='quetes');
 		
 		// Filtres
 		$haut = $this->onglets->get_haut();
@@ -45,6 +47,9 @@ class interf_ecole_combat extends interf_ville_onglets
 			break; 
 		case 'comp_combat':
 			$this->onglets->get_onglet('tab_ecole_comp_combat')->add( new interf_achat_comp_combat($royaume, $niveau, $n) );
+			break; 
+		case 'quetes':
+			$this->onglets->get_onglet('tab_ecole_quetes')->add( $G_interf->creer_tbl_quetes($royaume, 'ecole_combat'/*, $n*/) );
 			break; 
 		}
 	}
