@@ -18,6 +18,7 @@ class quete_etape extends quete
 	protected $niveau;  ///< Niveu de l'étape
 	protected $objectif;  ///< objectif de l'étape
 	protected $collaboration;  ///< type de quete : groupe/solo
+	protected $requis;  ///< requis pour réaliser le choix de la variante de l'étape.
 	protected $gain_perso;  ///< gain solo
 	protected $gain_groupe;  ///< gain de groupe
 	
@@ -25,7 +26,7 @@ class quete_etape extends quete
 	/**
 	* Constructeur
 	*/
-	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $gain_perso='', $gain_groupe ='')
+	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='')
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -43,6 +44,7 @@ class quete_etape extends quete
 			$this->niveau = $niveau;
 			$this->objectif = $objectif;
 			$this->collaboration = $collaboration;
+			$this->requis = $requis;
 			$this->gain_perso = $gain_perso;
 			$this->gain_groupe = $gain_groupe;
 
@@ -64,6 +66,7 @@ class quete_etape extends quete
 		$this->niveau = $vals['niveau'];
 		$this->objectif = $vals['objectif'];
 		$this->collaboration = $vals['collaboration'];
+		$this->requis = $vals['requis'];
 		$this->gain_perso = $vals['gain_perso'];
 		$this->gain_groupe = $vals['gain_groupe'];
 	}
@@ -118,6 +121,19 @@ class quete_etape extends quete
 	{
 		$this->variante = $variante;
 		$this->champs_modif[] = 'variante';
+	}
+	
+	// Renvoie le requis de l'objet
+	function get_requis()
+	{
+		return $this->requis;
+	}
+	
+	/// Modifie le requis de l'objet
+	function set_requis($requis)
+	{
+		$this->requis = $requis;
+		$this->champs_modif[] = 'requis';
 	}
 	
 	// Renvoie la description de l'étape
