@@ -302,7 +302,7 @@ INSERT INTO `quete_etape` (`id`, `id_quete`, `etape`, `variante`, `titre`, `desc
 (141, 150, 1, 0, '', 'Hola mon garçon!!! Qu''est ce qui vous amène voir le vieux Cland? Chut, pas un bruit, aidez moi vite à mettre mes chèvres à l''abrit, je sens la venue de ces nuisibles. Ça fait déjà un moment qu''ils traînent dans les parages, et ravagent mon troupeau. Et je ne les sens pas toujours arriver. C''est un véritable fléau, toute la région est touchée, mais peut être pourriez vous me donner un petit coup de main. Une famille d''ours s''est installée dans une caverne un peu plus au nord. Rapportez moi leur peau pour que j''en fasse des descentes de lit et je récompenserai votre chasse à sa juste valeur.', 7, 'M53:15', 'groupe', '', 'e5500;h600;s1050', '');
 
 
---Table `quete_perso`
+-- Table `quete_perso`
 DROP TABLE IF EXISTS `quete_perso`;
 CREATE TABLE `quete_perso` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

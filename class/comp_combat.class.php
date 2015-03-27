@@ -616,15 +616,9 @@ class comp_combat extends comp
   				}
   			}
   		}
-  		//Art du critique : augmente les dégâts fait par un coup critique
-  		$art_critique = $actif->is_competence('art_critique') ?  $actif->get_competence2('art_critique')->get_valeur() / 1000 : 0;
-  		//Buff Colère
-  		$buff_colere = $actif->is_buff('buff_colere') ? $actif->get_buff('buff_colere', 'effet') / 100 : 0;
-  		//Orc
-  		$bonuscritique_race = $actif->get_race() == 'orc' ? 1.05 : 1;
+  		
   		$maluscritique_race = $passif->get_race() == 'troll' ? 1.2 : 1;
-
-  		$multiplicateur = (2 + $art_critique + $buff_colere) * $bonuscritique_race / $maluscritique_race;
+  		$multiplicateur = $this->get_mult_critique() / $maluscritique_race;
 
   		// Application des effets de multiplicateur critique
       $attaque->applique_effet('calcul_mult_critique', $multiplicateur);

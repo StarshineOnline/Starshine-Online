@@ -2939,6 +2939,23 @@ class perso extends entite
   // @{
 	private $max_pet;  ///< Nombre de créatures que le personnage peut posseder.
 
+	/// Renvoie le potentiel de dressage pour un type de monstre donné
+	function get_potentiel_dressage($type)
+	{
+		$dressage = $perso->get_dressage();
+		switch($type)
+		{
+		case 'bete':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_bete') / 100;
+			break;
+		case 'humanoide':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_humanoide') / 100;
+			break;
+		case 'magique':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_magique') / 100;
+		}
+		return $dressage * 3 + $perso->get_survie();
+	}
 	/// Renvoie le nombre de créatures que le personnage peut posseder.
 	function get_max_pet()
 	{

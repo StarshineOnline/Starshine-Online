@@ -112,6 +112,11 @@ class attaque
   {
     $this->degats_bloques = $degats_bloques;
   }
+  /// Ajoute une valeur aux les dégâts bloqués
+  function add_degats_bloques($degats_bloques)
+  {
+    $this->degats_bloques += $degats_bloques;
+  }
   /// Renvoie le type de dégâts infligés.
   function get_type_degats()
   {

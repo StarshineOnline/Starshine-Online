@@ -839,6 +839,23 @@ class entite extends placable
 	{
 		$this->potentiel_critique = $valeur;
 	}
+	/// Renvoie le multiplicateur de critique physique
+	function get_mult_critique()
+	{
+    if( isset($this->mult_critique) && $this->mult_critique )
+      return $this->mult_critique;
+
+    $this->mult_critique = $this->get_volonte() * 50;
+  	//Buff du critique
+  	if($this->is_buff('buff_colere', true))
+			$this->mult_critique += (($this->get_buff('buff_colere', 'effet')) / 100);
+		if( $this->is_competence('art_critique') )
+			$this->mult_critique +=  $this->get_competence2('art_critique')->get_valeur() / 1000;
+		$this->mult_critique += $this->get_bonus_permanents('mult_critique') / 100;
+	  if($this->get_race() == 'orc')
+			$this->mult_critique *= 1.05;
+		return $this->mult_critique;
+	}
 	/**
 	 * Calcul et renvoie le potentiel toucher physique
 	 * @param $comp_assoc  Coméptence associé au sort
@@ -927,6 +944,32 @@ class entite extends placable
 	function set_potentiel_parer_magique($valeur)
 	{
 		$this->potentiel_parer_magique = $valeur;
+	}
+	/// Renvoie le potentiel critique magique
+	function get_potentiel_critique_magique()
+	{
+    if( isset($this->potentiel_critique_magique) && $this->potentiel_critique_magique )
+      return $this->potentiel_critique_magique;
+
+    $this->potentiel_critique_magique = $this->get_volonte() * 50;
+  	//Buff du critique
+  	if($this->is_buff('buff_furie_magique', true))
+			$this->potentiel_critique_magique *= 1 + (($this->get_buff('buff_furie_magique', 'effet')) / 100);
+		$this->potentiel_critique_magique *= 1 + $this->get_bonus_permanents('pot_critique_magique') / 100;
+		return $this->potentiel_critique_magique;
+	}
+	/// Renvoie le multiplicateur de critique magique
+	function get_mult_critique_magique()
+	{
+    if( isset($this->mult_critique_magique) && $this->mult_critique_magique )
+      return $this->mult_critique_magique;
+
+    $this->mult_critique_magique = $this->get_volonte() * 50;
+  	//Buff du critique
+  	if($this->is_buff('buff_furie_magique', true))
+			$this->mult_critique_magique += (($this->get_buff('buff_furie_magique', 'effet2')) / 100);
+		$this->mult_critique_magique += $this->get_bonus_permanents('mult_critique_magique') / 100;
+		return $this->potentiel_critique_magique;
 	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()

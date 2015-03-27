@@ -169,6 +169,15 @@ class accessoire extends objet_equip
 		case 'pierre_precision':
 			$perso->add_effet_permanent('attaquant', new pierre_precision($this->effet, 'pierre_precision'));
 			break;
+		case 'chances_feu':
+			$perso->add_effet_permanent('attaquant', new chances_feu($this->effet));
+			break;
+		case 'degats_feu':
+			$perso->add_effet_permanent('attaquant', new degats_feu($this->effet));
+			break;
+		case 'reduction_blocage':
+			$perso->add_effet_permanent('defenseur', new reduction_blocage($this->effet));
+			break;
 		default:
 			$perso->add_bonus_permanents($this->type, $this->effet);
 		}

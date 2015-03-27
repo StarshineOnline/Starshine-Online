@@ -447,9 +447,7 @@ class sort_combat extends sort
     $degat = $attaque->get_degats();
   	global $debugs, $log_combat;  // Numéro des informations de debug.
   	// Calcule des chances de critique
-  	$actif_chance_critique = ($actif->get_volonte() * 50);
-  	if(array_key_exists('buff_furie_magique', $actif->buff))
-      $actif_chance_critique = $actif_chance_critique  * (1 + ($actif->get_buff('buff_furie_magique', 'effet') / 100));
+  	$actif_chance_critique = $actif->get_potentiel_critique_magique();
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
@@ -457,10 +455,7 @@ class sort_combat extends sort
       $attaque->add_log_combat('!');
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
-      if(array_key_exists('buff_furie_magique', $actif->buff))
-    	 $degat *= 2 + $actif->get_buff('buff_furie_magique', 'effet2') / 100;
-      else
-    	 $degat *= 2;
+    	$degat *= $actif->get_mult_critique_magique();
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
     	$attaque->get_interface()->reduction($degat_avant - $degat, 'la puissance');

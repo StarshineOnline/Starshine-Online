@@ -1084,4 +1084,78 @@ class bouclier_pensee extends effect
 	}
 }
 
+
+/**
+ * Chances de toucher des sorts de feu
+ * Ajouter lancer ? 
+ */
+class chances_feu extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='chances_feu')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_attaque_magique(&$attaque)
+	{
+		switch( $attaque->get_type_degats() )
+		{
+		case 'degat_feu':
+		case 'embrasement':
+      $attaque->valeur *= 1 + $this->effet / 100;
+      break;
+		}
+	}
+}
+
+
+/**
+ * Dégâts des sorts de feu
+ */
+class degats_feu extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='degats_feu')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_bonus_degats_magiques(&$attaque)
+	{
+		switch( $attaque->get_type_degats() )
+		{
+		case 'degat_feu':
+		case 'embrasement':
+      $attaque->add_degats($this->effet);
+      break;
+		}
+	}
+}
+
+
+/**
+ * Réduction du blocage
+ */
+class reduction_blocage extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='reduction_blocage')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_bloquage_reduction(&$attaque)
+	{
+		if( comp_sort::test_de(100, $this->effet) )
+			$attaque->add_degats_bloques(-1);
+	}
+}
+
 ?>
