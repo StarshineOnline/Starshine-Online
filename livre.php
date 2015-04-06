@@ -239,7 +239,7 @@ if( array_key_exists('action', $_GET) )
       // Amélioration des aptitudes si c'est un sort
       if( $type == 'sort_jeu' )
       {
-        //Augmentation des compétences
+        //Augmentation des aptitudes
         $difficulte = diff_sort($comp_sort->get_difficulte() * 1.1, $perso, 'incantation', $cout_pa_base, $cout_mp_base);
         $augmentation = augmentation_competence('incantation', $perso, $difficulte);
         if ($augmentation[1] == 1)

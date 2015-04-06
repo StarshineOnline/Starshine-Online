@@ -92,7 +92,6 @@ case 'achat':
 				else $perso->set_honneur(0);
 			
         $texte .= pute_effets($perso, $honneur_need);
-
       }
 			if($valid)
 			{
@@ -193,9 +192,198 @@ case 'boire':
 		$bar->rumeur($de);
 	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
 	exit;
+case 'mise':
+	$G_url->add('jeu', $_GET['jeu']);
+	$jeux = $G_interf->creer_taverne_jeux($_GET['jeu'], true);
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
+case 'jouer':
+	if( array_key_exists('mise', $_GET) )
+	{
+		$_SESSION['mise'] = $_GET['mise'];
+		$perso->add_star( -$_GET['mise'] );
+		$_SESSION['score'] = 0;
+		$_SESSION['score_adv'] = 0;
+		$_SESSION['passe'] = 0;
+		$_SESSION['avance'] = 0;
+	}
+	// calcul de deux valeurs aléatoires suivant une loi gaussienne (centré en 0 et d'écart-type 1)
+	$u = rand(0, 1000) / 1000;
+	$v = rand(0, 1000) / 1000;
+	$x = sqrt(-log($u)) * cos(2*pi()*$v);
+	$y = sqrt(-log($u)) * sin(2*pi()*$v);
+	$_SESSION['passe']++;
+	switch($_GET['jeu'])
+	{
+	case 'distance':
+		$score = score_flechettes( 200 * $x + $perso->get_distance() );
+		$score_adv = score_flechettes( 300 * $y + 500 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+		$perso->add_pa(-1);
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('distance', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_distance($augmentation[0]);
+    $perso->sauver();
+		break;
+	case 'melee':
+		$perso->add_pa(-1);
+		$x = sqrt(200 * $x + $perso->get_melee()) / 30;
+		$y = sqrt(300 * $y + 500) / 30;
+		$_SESSION['score'] += $x - $y;
+		if( $_SESSION['score'] > 1 )
+			$perso->add_star( $_SESSION['mise']*2 );
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('melee', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_melee($augmentation[0]);
+    $perso->sauver();
+		break;
+	case 'esquive':
+		$perso->add_pa(-1);
+		$score = (200 * $x + $perso->get_distance()) > 500 ? 1 : 0;
+		$score_adv = (300 * $y + 500) > 500 ? 1 : 0;
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('esquive', $perso, 4);
+    if ($augmentation[1] == 1)
+      $perso->set_esquive($augmentation[0]);
+    if( $_SESSION['score'] > $_SESSION['score_adv'] )
+			$perso->add_star( $_SESSION['mise']*2 );
+    $perso->sauver();
+		break;
+	case 'dressage':
+		$score = note( 200 * $x + $perso->get_distance() );
+		$score_adv = note( 300 * $y + 500 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+		$perso->add_pa(-1);
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('dressage', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_dressage($augmentation[0]);
+    $perso->sauver();
+    break;
+	case 'incantation':
+		$perso->add_pa(-1);
+		$x = sqrt(200 * $x + $perso->get_incantation()) / 30;
+		$y = sqrt(300 * $y + 500) / 30;
+		$_SESSION['score'] += $x - $y;
+		if( $_SESSION['score'] > 1 )
+			$perso->add_star( $_SESSION['mise']*2 );
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('incantation', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_incantation($augmentation[0]);
+    $perso->sauver();
+		break;
+	case 'sort_element':
+		$score = note( 200 * $x + $perso->get_sort_element() );
+		$score_adv = note( 300 * $y + 400 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+		$perso->add_pa(-1);
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('sort_element', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_sort_element($augmentation[0]);
+    $perso->sauver();
+    break;
+	case 'sort_vie':
+		$score = note( 200 * $x + $perso->get_sort_vie() );
+		$score_adv = note( 300 * $y + 400 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+		$perso->add_pa(-1);
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('sort_vie', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_sort_vie($augmentation[0]);
+    $perso->sauver();
+    break;
+	case 'sort_mort':
+		$score = note( 200 * $x + $perso->get_sort_mort() );
+		$score_adv = note( 300 * $y + 400 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+		$perso->add_pa(-1);
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('sort_mort', $perso, 7);
+    if ($augmentation[1] == 1)
+      $perso->set_sort_mort($augmentation[0]);
+    $perso->sauver();
+    break;
+	}
+	$perso->sauver();
+	$interf_princ->maj_perso();
+	$G_url->add('jeu', $_GET['jeu']);
+	$jeux = $G_interf->creer_taverne_jeux($_GET['jeu'], false, $score, $score_adv);
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
+case 'jeux':
+	$jeux = $G_interf->creer_taverne_jeux();
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
 }
 $interf_princ->set_gauche( $G_interf->creer_taverne($R, $case) );
 
+function score_flechettes($tir)
+{
+	if( $tir >= 800 )
+		return 50;
+	else if( $tir >= 550 )
+		return 30;
+	else if( $tir >= 300 )
+		return 25;
+	else if( $tir >= 100 )
+		return 15;
+	else if( $tir >= 10 )
+		return 10;
+	else
+		return 0;
+}
+
+function note($jet)
+{
+	return max(min(ceil($jet / 100), 10), 1);
+}
 
 
 		/*Bien le bonjour ami voyageur !<br />

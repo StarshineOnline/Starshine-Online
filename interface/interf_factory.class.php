@@ -242,7 +242,7 @@ class interf_factory
     return new interf_tribunal($royaume);
 	}
 	/// Taverne
-	function creer_taverne(&$royaume, &$case, &$type='repos')
+	function creer_taverne(&$royaume, &$case, &$type=null)
 	{
     return new interf_taverne($royaume, $case, $type);
 	}
@@ -259,10 +259,10 @@ class interf_factory
     return new interf_taverne_bar($royaume);
 	}
 	/// Taverne : jeux
-	function creer_taverne_jeux(&$royaume)
+	function creer_taverne_jeux($jeu=null, $mise=false, $score=0, $score_adv=0)
 	{
     include_once(root.'interface/interf_taverne.class.php');
-    return new interf_taverne_jeux($royaume);
+    return new interf_taverne_jeux($jeu, $mise, $score, $score_adv);
 	}
 	/// Ecurie
 	function creer_ecurie(&$royaume, &$case)
