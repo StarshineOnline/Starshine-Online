@@ -698,20 +698,15 @@ class interf_taverne_bar extends interf_cont
 		$requete = 'SELECT texte FROM rumeurs WHERE type = "'.$type.'" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
-		if( $row )
-		{
-			$texte = new texte( str_replace(array('%nom%', '%lieu%', '%race%', '%nom2%', '%lieu2%', '%race2%', '%diplo%'), array($nom, $lieu, $race, $nom2, $lieu2, $race2, $diplo), $row[0]), texte::descr_quetes);
-			$div->add( new interf_bal_smpl('span', $texte->parse()) );
-		}
-		else
+		if( !$row )
 		{
 			log_admin::log('erreur', 'Pas de rumeur trouvé pour '.$type);
 			$requete = 'SELECT texte FROM rumeurs WHERE type = "'.$type.'" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
-			$texte = new texte($row[0], texte::descr_quetes);
-			$div->add( new interf_bal_smpl('span', $texte->parse()) );
 		}
+		$texte = new texte( str_replace(array('%nom%', '%lieu%', '%race%', '%nom2%', '%lieu2%', '%race2%', '%diplo%'), array($nom, $lieu, $race, $nom2, $lieu2, $race2, $diplo), $row[0]), texte::descr_quetes);
+		$div->add( new interf_bal_smpl('span', $texte->parse()) );
 	}
 	function conversation()
 	{
@@ -728,6 +723,28 @@ class interf_taverne_bar extends interf_cont
 	}
 	function indice()
 	{
+		global $db;
+		$perso = joueur::get_perso();
+		$div = $this->add( new interf_bal_cont('div', 'rumeurs') );
+		$div->add( new interf_bal_smpl('p', 'Tout en buvant, vous écoutez les conversations autour de vous :', false, 'descr_rp') );
+		/// @todo passer à l'objet
+		$requete = 'SELECT r.texte FROM rumeurs AS r INNER JOIN quete_etape AS e ON e.id = r.etape_quete WHERE type = "indice" AND royaumes & '.$royaume.' AND e.id_perso = '.$perso->get_id().' ORDER BY RAND() LIMIT 1';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		if( !$row )
+		{
+			$requete = 'SELECT texte FROM rumeurs WHERE type = "indice" AND royaumes & '.$royaume.' AND quete = 0 ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+		}
+		if( !$row )
+		{
+			$requete = 'SELECT texte FROM rumeurs WHERE type = "'.$type.'" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+		}
+		$texte = new texte($row[0], texte::descr_quetes);
+		$div->add( new interf_bal_smpl('span', $texte->parse()) );
 	}
 	function gain_ivresse()
 	{
