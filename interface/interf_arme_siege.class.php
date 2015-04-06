@@ -37,7 +37,7 @@ class interf_arme_siege extends interf_cont
 			$tps = transform_sec_temp($tps_restant);
 		$infos->add( new interf_bal_smpl('span', 'Temps avant de pouvoir tirer : '.$tps) );
 		
-		// On vérifie si n peut tirer
+		// On vérifie si on peut tirer
 		if( $this->peut_tirer )
 		{
 			$this->cout_pa = $arme->get_cout_attaque($this->perso);

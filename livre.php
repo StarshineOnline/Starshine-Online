@@ -170,6 +170,26 @@ if( array_key_exists('action', $_GET) )
     	///TODO : à refaire ?
     	security_block(URL_MANIPULATION, 'Sort de groupe non autorisé');
 		}
+		// Ivresse
+		$ivresse = $perso->get_buff('ivresse');
+		if( $ivresse )
+		{
+			if( comp_sort::test_de(100, $ivresse->get_effet()) )
+			{
+				switch($type)
+				{
+				case 'comp_jeu':
+					$comps = explode(';', $perso->get_comp_jeu());
+					$ind = rand(0, count($comps)-1);
+					$comp_sort = new comp_jeu( $comps[$ind] );
+					break;
+				case 'sort_jeu':
+					$sorts = explode(';', $perso->get_sort_jeu());
+					$ind = rand(0, count($sorts)-1);
+					$comp_sort = new sort_jeu( $sorts[$ind] );
+				}
+			}
+		}
 		// Coût en PA & MP
     $cout_pa_base = $cout_pa = $comp_sort->get_pa();
     $cout_mp_base = $cout_mp = $comp_sort->get_mp_final($perso);

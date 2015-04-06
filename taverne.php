@@ -56,6 +56,12 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	case 'quetes':
 		$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'taverne') );
 		exit;
+	case 'bar':
+		$interf_princ->add( $G_interf->creer_taverne_bar($R) );
+		exit;
+	case 'jeux':
+		$interf_princ->add( $G_interf->creer_taverne_jeux($R) );
+		exit;
 	}
 }
 
@@ -130,6 +136,63 @@ case 'achat':
 	else
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de Stars');
 	break;
+case 'boire':
+	$bar = $G_interf->creer_taverne_bar($R);
+	/// @todo loguer triche
+	if( $bar->ivresse && $bar->ivresse->get_effet() >= 100  )
+		exit;
+	// Augmentation de l'ivresse ?
+	if( !comp_sort::test_de(100, $perso->get_constitution()) )
+	{
+		$duree = 6 * 3600;
+		if( $bar->ivresse )
+		{
+			$bar->ivresse->set_effet( $bar->ivresse->get_effet() + 1 );
+			$bar->ivresse->set_fin( time() + $duree );
+			$bar->ivresse->set_description('Vous avez '.$bar->ivresse->get_effet().'% de risques de vous tromper d\'action.');
+		}
+		else
+			$bar->ivresse = new buff(0, $perso->get_id(), 'ivresse', 1, 0, $duree, time()+$duree, 'Ivresse', 'Vous avez 1% de risques de vous tromper d\'action.', 1);
+		// ($id = 0, $id_perso=0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0, $supprimable=0)
+		$bar->ivresse->sauver();
+		$bar->gain_ivresse();
+	}
+	$perso->add_pa(-1);
+	$perso->add_star(-1);
+	$perso->sauver();
+	$interf_princ->maj_perso();
+	// quêtes / rumeurs
+	$de = rand(1, 100);
+	$ivresse = $bar->ivresse ? $bar->ivresse->get_effet() : 0;
+	if( $de <= 5 )
+	{ // indice
+		/// @todo faire indices
+		$bar->conversation();
+	}
+	else if( $de <= 10 - $ivresse )
+	{ // quête
+		$quetes = quete::get_quetes_dispos($this->perso, $R, 'bar');
+		$n = count($quetes);
+		$ok = false;
+	 	shuffle($quetes);
+	 	for($i=0; $i<$n; $i++)
+	 	{
+	 		if( !$perso->prend_quete($quetes[$i]->get_id()) )
+	 		{
+	 			$bar->quete( $quetes[$i] );
+	 			$ok = true;
+	 			break;
+			}
+		}
+		if( !$ok )
+			$bar->conversation();
+	}
+	else if( $de <= 20 )
+		$bar->conversation();
+	else
+		$bar->rumeur($de);
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
+	exit;
 }
 $interf_princ->set_gauche( $G_interf->creer_taverne($R, $case) );
 

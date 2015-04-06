@@ -297,7 +297,8 @@ a#depl_disque_centre.icone
 
 #depl_centre
 {
-	background: rgba(255, 255, 255, 0.2);
+	/*background: rgba(255, 255, 255, 0.2);*/
+	background: #A8C3E2;
 	border-color: rgba(15, 5, 107, 0.5);
 }
 

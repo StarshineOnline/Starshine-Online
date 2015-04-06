@@ -92,13 +92,16 @@ class interf_gauche extends interf_bal_cont
 	}
 	private function set_jauge($type, $valeur, $max, $style, $nom)
 	{
-		/// @todo ajuster quand ça vaut 0
-		$angle = round($valeur / $max * 360) - 180; 
+		// max pour ajuster quand ça vaut 0
+		if( $max == '%' )
+			$angle = max(round($valeur / 100 * 360) - 180, -177); 
+		else
+			$angle = max(round($valeur / $max * 360) - 180, -177); 
 		if( !$this->jauge_droite )
 			$this->jauge_droite = $this->disque->add( new interf_bal_cont('div', 'jauge_droite') );
 		$jauge_droite = $this->jauge_droite->add( new interf_bal_cont('div', '', 'jauge_'.$type.' jauge-'.$style) );
 		if( $nom )
-			$jauge_droite->set_tooltip($nom.($valeur?$valeur:'0').' / '.$max, 'right', '#cadre_gauche');
+			$jauge_droite->set_tooltip($nom.($valeur?$valeur:'0').($max=='%'?' %':' / '.$max), 'right', '#cadre_gauche');
 		if( $angle < 0 )
 			$jauge_droite->set_attribut('style', 'transform: rotate('.$angle.'deg);{-webkit-transform: rotate('.$angle.'deg);');
 		else if( $angle > 0)
@@ -107,7 +110,7 @@ class interf_gauche extends interf_bal_cont
 				$this->jauge_gauche = $this->disque->add( new interf_bal_cont('div', 'jauge_gauche') );
 			$jauge_gauche = $this->jauge_gauche->add( new interf_bal_cont('div', '', 'jauge_'.$type.' jauge-'.$style) );
 			if( $nom )
-				$jauge_gauche->set_tooltip($nom.($valeur?$valeur:'0').' / '.$max, 'right', '#cadre_gauche');
+				$jauge_gauche->set_tooltip($nom.($valeur?$valeur:'0').($max=='%'?' %':' / '.$max), 'right', '#cadre_gauche');
 			$jauge_gauche->set_attribut('style', 'transform: rotate('.$angle.'deg);{-webkit-transform: rotate('.$angle.'deg);');
 		}
 		$this->disque->add( new interf_bal_cont('div', 'jauge_'.$type.'_stop', 'depl_cache') );

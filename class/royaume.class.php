@@ -1544,6 +1544,44 @@ class royaume
 		$entretien += $row[0];
 		
 		return $entretien * $this->facteur_entretien;
-	} 
+	}
+	
+	static function get_royaume_rumeur($info, $plus, $class, $vrai)
+	{
+		global $db;
+		if( !$vrai )
+		{
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return new royaume($row);
+		}
+		$sens = $plus ? ' DESC' : ' ASC';
+		switch($info)
+		{
+		case 'batint':
+			$requete = 'SELECT r.*, SUM(level) as niv FROM royaume AS r INNER JOIN construction_ville AS c ON c.id_royaume=r.id INNER JOIN batiment_ville AS b ON b.id = c.id_batiment WHERE r.id > 0 GROUP BY r.id ORDER BY niv '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'bourg':
+		case 'mine':
+		case 'fort':
+		case 'tour':
+		case 'mur':
+		case 'arme_de_siege':
+			$requete = 'SELECT r.*, COUNT(*) as nbr FROM royaume AS r INNER JOIN construction AS c ON c.id_royaume=r.id INNER JOIN batiment AS b ON b.id = c.id_batiment WHERE r.id > 0 AND b.type = "'.$info.'" GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'entretien':
+			$requete = 'SELECT r.*, SUM(entr)*facteur_entretien AS entr_tot FROM (SELECT c.id_royaume, SUM(entretien) AS entr FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment=b.id GROUP BY c.id_royaume UNION ALL SELECT c.id_royaume, SUM(entretien) AS entr FROM construction_ville AS c INNER JOIN batiment_ville AS b ON c.id_batiment=b.id GROUP BY c.id_royaume) INNER JOIN royaume AS r ON r.id = id_royaume GROUP by r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'case':
+			$requete = 'SELECT r.*, COUNT(*) AS nbr FROM map as m INNER JOIN royaume AS r ON r.id = m.royaume WHERE x <= 190 AND y <= 190 GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			break;
+		default:
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY '.$info.$sens.' LIMIT '.$class.', 1';
+		}
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return new royaume($row);
+	}
 }
 ?>

@@ -618,7 +618,7 @@ class comp_combat extends comp
   		}
   		
   		$maluscritique_race = $passif->get_race() == 'troll' ? 1.2 : 1;
-  		$multiplicateur = $this->get_mult_critique() / $maluscritique_race;
+  		$multiplicateur = $actif->get_mult_critique() / $maluscritique_race;
 
   		// Application des effets de multiplicateur critique
       $attaque->applique_effet('calcul_mult_critique', $multiplicateur);

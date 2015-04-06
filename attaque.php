@@ -17,6 +17,92 @@ $interf_princ->verif_mort($perso);
 $check_pet = array_key_exists('pet', $_GET) && $perso->nb_pet() > 0;
 $donj = is_donjon($perso->get_x(), $perso->get_y()) && $perso->in_arene('and donj = 0') == false && $perso->get_y()>190;
 $type = $_GET['type'];
+
+// Ivresse
+$ivresse = $perso->get_buff('ivresse');
+if( $ivresse )
+{
+	if( comp_sort::test_de(100, $ivresse->get_effet()) )
+	{
+		$cibles = array();
+		switch($type)
+		{
+		case 'perso':
+		case 'monstre':
+		case 'batiment':
+			/// @todo passer à l'objet
+			switch($type)
+			{
+			case 'perso':
+				$requete = 'SELECT x, y FROM perso WHERE id = '.$_GET['id_perso'];
+				break;
+			case 'monstre':
+				$requete = 'SELECT x, y FROM map_monstre WHERE id = '.$_GET['id_monstre'];
+				break;
+			case 'batiment':
+				$requete = 'SELECT x, y FROM construction WHERE id = '.$_GET['id_batiment'];
+			}
+			$req = $db->query($requete);
+			$pos = $db->read_assoc($req);
+			$requete = 'SELECT id FROM construction WHERE type != "bourg" AND x = '.$pos['x'].' AND y = '.$pos['y'];
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'batiment', 'table'=>'construction', 'id'=>$row[0]);
+			$requete = 'SELECT id FROM placement WHERE x = '.$pos['x'].' AND y = '.$pos['y'];
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'batiment',  'table'=>'placement', 'id'=>$row[0]);
+			$requete = 'SELECT id FROM perso WHERE x = '.$pos['x'].' AND y = '.$pos['y'];
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'perso', 'id'=>$row[0]);
+			$requete = 'SELECT id FROM map_monstre WHERE x = '.$pos['x'].' AND y = '.$pos['y'];
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'monstre', 'id'=>$row[0]);
+			break;
+		case 'siege':
+		case 'ville':
+			$x_min = $perso->get_x() - 1;
+			$x_max = $perso->get_x() + 1;
+			$y_min = $perso->get_y() - 1;
+			$y_max = $perso->get_y() + 1;
+			$requete = 'SELECT id FROM construction WHERE x BETWEEN '.$x_min.' AND '.$x_max.' AND y = '.$y_min.' AND '.$y_max;
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'siege', 'table'=>'construction', 'id'=>$row[0]);
+			$requete = 'SELECT id FROM placement WHERE x BETWEEN '.$x_min.' AND '.$x_max.' AND y = '.$y_min.' AND '.$y_max;
+			$req = $db->query($requete);
+			while( $row = $db->read_array($req) )
+				$cibles[] = array('type'=>'siege', 'table'=>'placement', 'id'=>$row[0]);
+			$requete = 'SELECT map.x as x, map.y as y, nom, race, map.royaume FROM map LEFT JOIN royaume ON map.royaume = royaume.id WHERE map.x BETWEEN '.$x_min.' AND '.$x_max.' AND map.y BETWEEN '.$y_min.' AND '.$y_max.' AND type = 1 AND royaume.fin_raz_capitale = 0';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			if( $row )
+				$cibles[] = array('type'=>'ville', 'id'=>convert_in_pos($row['x'], $row['y']));
+		}
+		$ind = rand(0, count($cibles)-1);
+		$type = $cibles[$ind]['type'];
+		switch($type)
+		{
+		case 'perso':
+			$_GET['id_perso'] = $cibles[$ind]['id'];
+			break;
+		case 'monstre':
+			$_GET['id_monstre'] = $cibles[$ind]['id'];
+			break;
+		case 'batiment':
+		case 'siege':
+			$_GET['id_batiment'] = $cibles[$ind]['id'];
+			$_GET['table'] = $cibles[$ind]['table'];
+			break;
+		case 'ville':
+			$_GET['id_ville'] = $cibles[$ind]['id'];
+		}
+	}
+}
+
+
 switch($type)
 {
 	case 'perso' :

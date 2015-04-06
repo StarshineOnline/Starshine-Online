@@ -64,6 +64,7 @@ class buff_base extends buff_batiment_def
 		else
 		{
       buff_batiment_def::__construct($id, $type, $effet, $effet2, $duree, $nom, $description, $debuff);
+      // ($id = 0, $type='', $effet=0, $effet2=0, $duree=00, $nom='', $description='', $debuff=0)
 			$this->fin = $fin;
 		}
 	}

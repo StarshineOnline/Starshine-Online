@@ -117,7 +117,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 							
 		$att = rand(0, $sm);
 		$def = rand(0, $resist_para);
-		if( test_potentiel($att, $def) )
+		if( comp_sort::test_potentiel($att, $def) )
 		{
 			unset($joueur->etat['paralysie']['cpt']);
 			$joueur->etat['paralysie']['duree'] = 0;

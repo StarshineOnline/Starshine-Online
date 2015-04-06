@@ -4169,6 +4169,76 @@ class perso extends entite
 			return $this->get_race();
 	}
 	// @}
+	
+	static function get_perso_rumeur($champ, $vrai, $cache=false)
+	{
+		global $db;
+		$de = rand(1, 55);
+		$val = 10;
+		$incr = 9;
+		for($i=0; $de > $val; $i++)
+		{
+			$val += $incr;
+			$incr--;
+		}
+		$race = joueur::get_perso()->get_race();
+		$cond = $cache ? ' (cache_stat = 2 OR (cache_stat = 1 AND race != "'.$race.'"))' : ' (cache_stat = 0 OR (cache_stat = 1 AND race = "'.$race.'"))';
+		if( $vrai )
+		{
+			if( $champ == 'artisanat' )
+				$champ = 'SQRT( (architecture + alchimie + forge + indentification) / 10 )';
+			$requete = 'SELECT nom FROM perso WHERE statut = "actif" AND level > 0 AND '.$cond.' ORDER BY '.$champ.' DESC LIMIT '.$i.', 1';
+		}
+		else
+			$requete = 'SELECT nom FROM perso WHERE statut = "actif" AND level > 0 AND '.$cond.' ORDER BY RAND() LIMIT 1';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row[0];
+	}
+	
+	static function get_royaume_rumeur($info, $plus, $class, $vrai)
+	{
+		global $db, $Trace;
+		if( !$vrai )
+		{
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return new royaume($row);
+		}
+		$sens = $plus ? ' DESC' : ' ASC';
+		$requete = 'SELECT race, SUM('.$info.') AS val FROM perso WHERE statut = "actif" AND level > 0 ORDER BY val'.$sens.' LIMIT '.$class.', 1';
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return new royaume( $Trace[ $row['race'] ]['numrace'] );
+	} 
+	
+	static function get_groupe_rumeur($info, $plus, $vrai)
+	{
+		global $db, $Trace;
+		if( !$vrai )
+		{
+			$requete = 'SELECT nom FROM groupe ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			return new $row[0];
+		}
+		$de = rand(1, 55);
+		$val = 10;
+		$incr = 9;
+		for($i=0; $de > $val; $i++)
+		{
+			$val += $incr;
+			$incr--;
+		}
+		if( $info == 'artisanat' )
+			$info = 'SQRT( (architecture + alchimie + forge + indentification) / 10 )';
+		$requete = 'SELECT g.nom, SUM('.$info.') AS val FROM perso AS p INNER JOIN groupe AS g ON p.groupe = g.id WHERE statut = "actif" AND level > 0 GROUP BY g.id ORDER BY val'.$sens.' LIMIT '.$ind.', 1';
+		$sens = $plus ? ' DESC' : ' ASC';
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return $row['nom'];
+	}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

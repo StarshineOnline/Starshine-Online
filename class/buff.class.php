@@ -134,7 +134,8 @@ class buff extends buff_base
 		}
 		else
 		{
-      buff_base::__construct($id, $type, $effet, $duree);
+      buff_base::__construct($id, $type, $effet, $effet2, $duree, $fin, $nom, $description, $debuff);
+      // ($id = 0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0)
 			$this->id_perso = $id_perso;
 			$this->supprimable = $supprimable;
 		}

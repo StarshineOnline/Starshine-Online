@@ -179,9 +179,9 @@ class interf_jeu_ajax extends interf_princ_ob
   }
   function maj_perso($complet=false)
 	{
-		global $db;
+		global $db, $G_interf;
     $cont = $this->add( new interf_bal_cont('section', 'perso') );
-    $cont->add( new interf_barre_perso() );
+    $cont->add( $G_interf->creer_barre_perso() );
     if($complet)
     {
 			$nbr_msg = messagerie::get_non_lu_total($_SESSION['ID']);

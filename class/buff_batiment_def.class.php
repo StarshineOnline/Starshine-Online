@@ -78,7 +78,7 @@ class buff_batiment_def extends comp_sort_buff
 	 * @param description  Description du buff
 	 * @param debuff       pour un buff,  pour un debuff
 	*/
-	function __construct($id = 0, $type='', $effet=0, $effet2=0, $duree=00, $nom='', $description='', $debuff=0)
+	function __construct($id = 0, $type='', $effet=0, $effet2=0, $duree=0, $nom='', $description='', $debuff=0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -87,7 +87,8 @@ class buff_batiment_def extends comp_sort_buff
 		}
 		else
 		{
-      comp_sort_buff::__construct($id, $type, $effet, $duree);
+      comp_sort_buff::__construct($id, $nom, $type, $effet, $duree);
+      //($id=0, $nom='', $type='', $effet=0, $duree=0)
 			$this->effet2 = $effet2;
 			$this->description = $description;
 			$this->debuff = $debuff;

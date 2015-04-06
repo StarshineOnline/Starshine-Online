@@ -30,36 +30,58 @@ $action = array_key_exists('action', $_GET) ?  $_GET['action'] : null;
 $mouvement = true;
 $diagonale = false;
 $complet = false;
+// Ivresse
 switch( $action )
 {
-case 'haut';
+case 'haut':
+case 'bas':
+case 'gauche':
+case 'droite':
+case 'haut-gauche':
+case 'haut-droite':
+case 'bas-gauche':
+case 'bas-droite':
+	$ivresse = $perso->get_buff('ivresse');
+	if( $ivresse )
+	{
+		if( comp_sort::test_de(100, $ivresse->get_effet()) )
+		{
+			$dir = array('haut', 'bas', 'gauche', 'droite', 'haut-gauche', 'haut-droite', 'bas-gauche', 'bas-droite');
+			$action = $dir[ rand(0, 7) ];
+		}
+	}
+}
+// action
+switch( $action )
+{
+case 'haut':
 	$y--;
 	break;
-case 'bas';
+case 'bas':
 	$y++;
 	break;
-case 'gauche';
+case 'gauche':
 	$x--;
 	break;
-case 'droite';
+case 'droite':
 	$x++;
 	break;
-case 'haut-gauche';
+case 'haut-gauche':
 	$x--;
 	$y--;
 	$diagonale = true;
 	break;
-case 'haut-droite';
+case 'haut-droite':
 	$x++;
 	$y--;
 	$diagonale = true;
 	break;
-case 'bas-gauche';
+case 'bas-gauche':
 	$x--;
 	$y++;
 	$diagonale = true;
 	break;
-case 'bas-droite';
+case 'bas-droite':
 	$x++;
 	$y++;
 	$diagonale = true;
