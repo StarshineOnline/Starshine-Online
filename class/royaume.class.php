@@ -177,14 +177,16 @@ class royaume
     $date = time() - self::duree_actif;
     if( !isset($ref_actifs) )
     {
-      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE statut like "actif" AND level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot DESC';
+      $requete = 'SELECT COUNT(*) as tot FROM perso WHERE statut like "actif" AND level >= '.self::get_niveau_ref_actifs().' AND dernier_connexion > '.$date.' GROUP BY race ORDER BY tot ASC';
       $res = $db->query($requete);
       $ref_actifs = 1;
+      $val = array();
       while( $row = $db->read_array($res) )
       {
         $ref_actifs *= $row['tot'];
-        $min = $row['tot'];
+        $val[] = $row['tot'];
       }
+      $min = array_sum( array_slice($val, 0, 3) ) / 3;
       $ref_actifs = (pow($ref_actifs, 1/11) + $min)/2;
     }
     $facteur = $this->get_habitants_actif() / $ref_actifs;
