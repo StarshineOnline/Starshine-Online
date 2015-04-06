@@ -103,6 +103,7 @@ if($W_distance < 4)
 		$S_requete = 'SELECT * from map_event WHERE x = '.$case->get_x().
 		  ' AND y = '.$case->get_y();
 		$S_query = $db->query($S_requete);
+		
 		if ($db->num_rows > 0)
 		{
 			$S_row = $db->read_array($S_query);
@@ -283,7 +284,6 @@ if($W_distance < 4)
 	
 	$W_requete = 'SELECT mm.id, m.nom, mm.type, mm.hp, m.level, m.affiche, m.quete FROM map_monstre mm, monstre m WHERE mm.type = m.id AND (x = '.$case->get_x().') AND (y = '.$case->get_y().') ORDER BY level ASC, nom ASC, id ASC';
 	$W_query = $db->query($W_requete);
-	
 	//Affichage des infos des monstres
 	if($db->num_rows > 0)
 	{

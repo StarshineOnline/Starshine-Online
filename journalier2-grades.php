@@ -7,6 +7,19 @@ include_once('journalier2-head.php');
 
 if(date("N") == 1)
 {
+	//Diminution hebdomadaire des points de crime
+	$requete = "SELECT ID, crime FROM perso WHERE crime > 0";
+	$req = $db->query($requete);
+	while($row = $db->read_assoc($req))
+	{
+		$id = $row['ID'];
+		echo $id;
+		$crime = ( $row['crime'] - 1 );
+		if ( $crime < 0 ) $crime = 0;
+		$requete2 = "UPDATE perso SET crime = ".$crime." WHERE ID = ".$id."";
+		$db->query($requete2);
+	}
+		
 	//Attribution des grades
 	require_once('grade.php');
 	//Les rois peuvent de nouveau se téléporter

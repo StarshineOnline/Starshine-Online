@@ -155,7 +155,7 @@ switch($type)
 	case 'batiment' :
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$joueur = new perso($_SESSION['ID']);
-    $joueur->check_perso();
+		$joueur->check_perso();
 		if(!$check_pet)
 		{
 			$joueur->action_do = $joueur->recupaction('attaque');
@@ -184,7 +184,7 @@ switch($type)
 		if ($joueur->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
 		$joueur = new perso($_SESSION['ID']);
-    $joueur->check_perso();
+		$joueur->check_perso();
 		$map_case = new map_case($_GET['id_ville']);
 		$map_royaume = new royaume($map_case->get_royaume());
 		$map_royaume->verif_hp();
@@ -361,34 +361,6 @@ else
 				$requete = "DELETE FROM buff WHERE id = ".$attaquant->get_buff('longue_portee', 'id');
 				$db->query($requete);
 			}
-			//Gestion des points de crime
-			if($type == 'joueur')
-			{
-				$crime = false;
-				$requete = "SELECT ".$defenseur->get_race()." FROM diplomatie WHERE race = '".$attaquant->get_race()."'";
-				$req = $db->query($requete);
-				$row = $db->read_row($req);
-				$pascrime = false;
-				//Vérification si crime
-				if(array_key_exists($row[0], $G_crime))
-				{
-					if($row[0] == 127)
-					{
-						$amende = recup_amende($joueur_defenseur->get_id());
-						if($amende)
-						{
-							if($amende['statut'] != 'normal') $pascrime = true;
-						}
-					}
-					if(!$pascrime)
-					{
-						$crime = true;
-						$points = ($G_crime[$row[0]] / 10);
-						$joueur->set_crime($joueur->get_crime() + $points);
-						echo '<h5>Vous attaquez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
-					}
-				}
-			}
 
 			$attaque_hp_avant = $attaquant->get_hp();
 			$defense_hp_avant = $defenseur->get_hp();
@@ -532,6 +504,9 @@ else
 					
 					if ($siege_true) break;
 			}
+			//Gestion des points de crime
+			$crime=new crime();
+			$crime->crime_fin_combat($joueur, $defenseur, $type, $_GET['table']);
 			
 			$attaque_hp_apres = $attaquant->get_hp();
 			$defense_hp_apres = $defenseur->get_hp();
@@ -539,6 +514,7 @@ else
 			//On donne les bons HP à l'attaque et la défense
 			$attaquant->fin_combat($joueur);
 			$defenseur->fin_combat($joueur, $degat_defense);
+			
 			//Fin du combat
 			if($mode == 'attaquant')
 			{
@@ -629,6 +605,8 @@ else
 				}
 			}
 			
+			
+			
 			echo '<div id="combat_cartouche">
 				<ul style="float:left;">
 					<li><span style="display:block;float:left;width:150px;">'.$attaquant->get_nom().'</span>
@@ -658,7 +636,7 @@ else
 				<div style="clear:both;">';
 			}
 			echo '<ul>';
-	
+						
 			if ($defenseur->get_race() == $attaquant->get_race() AND $defenseur->get_rang_royaume() == 6 AND $defenseur->get_hp()<=0 ) {
 				echo '<li>';
 				$joueur->unlock_achiev('roi_race_mort');
