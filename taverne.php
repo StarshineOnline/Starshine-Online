@@ -205,7 +205,6 @@ case 'jouer':
 		$_SESSION['score'] = 0;
 		$_SESSION['score_adv'] = 0;
 		$_SESSION['passe'] = 0;
-		$_SESSION['avance'] = 0;
 	}
 	// calcul de deux valeurs aléatoires suivant une loi gaussienne (centré en 0 et d'écart-type 1)
 	$u = rand(0, 1000) / 1000;
@@ -213,6 +212,7 @@ case 'jouer':
 	$x = sqrt(-log($u)) * cos(2*pi()*$v);
 	$y = sqrt(-log($u)) * sin(2*pi()*$v);
 	$_SESSION['passe']++;
+	$perso->add_pa(-1);
 	switch($_GET['jeu'])
 	{
 	case 'distance':
@@ -220,14 +220,13 @@ case 'jouer':
 		$score_adv = score_flechettes( 300 * $y + 500 );
 		$_SESSION['score'] += $score;
 		$_SESSION['score_adv'] += $score_adv;
-		if( $_SESSION['score_adv'] == 5 )
+		if( $_SESSION['passe'] == 5 )
 		{
 			if( $_SESSION['score'] > $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise']*2 );
 			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise'] );
 		}
-		$perso->add_pa(-1);
     //Augmentation de l'aptitude
 		$augmentation = augmentation_competence('distance', $perso, 7);
     if ($augmentation[1] == 1)
@@ -235,7 +234,6 @@ case 'jouer':
     $perso->sauver();
 		break;
 	case 'melee':
-		$perso->add_pa(-1);
 		$x = sqrt(200 * $x + $perso->get_melee()) / 30;
 		$y = sqrt(300 * $y + 500) / 30;
 		$_SESSION['score'] += $x - $y;
@@ -248,7 +246,6 @@ case 'jouer':
     $perso->sauver();
 		break;
 	case 'esquive':
-		$perso->add_pa(-1);
 		$score = (200 * $x + $perso->get_distance()) > 500 ? 1 : 0;
 		$score_adv = (300 * $y + 500) > 500 ? 1 : 0;
 		$_SESSION['score'] += $score;
@@ -261,9 +258,22 @@ case 'jouer':
 			$perso->add_star( $_SESSION['mise']*2 );
     $perso->sauver();
 		break;
+	case 'blocage':
+		$score = (200 * $x + $perso->get_distance()) > 300 ? 1 : 0;
+		$score_adv = (300 * $y + 400) > 300 ? 1 : 0;
+		$_SESSION['score'] += $score;//date
+		$_SESSION['score_adv'] += $score_adv;
+    //Augmentation de l'aptitude
+		$augmentation = augmentation_competence('blocage', $perso, 4);
+    if ($augmentation[1] == 1)
+      $perso->set_blocage($augmentation[0]);
+    if( $_SESSION['score'] > $_SESSION['score_adv'] )
+			$perso->add_star( $_SESSION['mise']*2 );
+    $perso->sauver();
+		break;
 	case 'dressage':
 		$score = note( 200 * $x + $perso->get_distance() );
-		$score_adv = note( 300 * $y + 500 );
+		$score_adv = note( 300 * $y + 350 );
 		$_SESSION['score'] += $score;
 		$_SESSION['score_adv'] += $score_adv;
 		if( $_SESSION['score_adv'] == 5 )
@@ -273,7 +283,6 @@ case 'jouer':
 			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise'] );
 		}
-		$perso->add_pa(-1);
     //Augmentation de l'aptitude
 		$augmentation = augmentation_competence('dressage', $perso, 7);
     if ($augmentation[1] == 1)
@@ -281,7 +290,6 @@ case 'jouer':
     $perso->sauver();
     break;
 	case 'incantation':
-		$perso->add_pa(-1);
 		$x = sqrt(200 * $x + $perso->get_incantation()) / 30;
 		$y = sqrt(300 * $y + 500) / 30;
 		$_SESSION['score'] += $x - $y;
@@ -298,14 +306,13 @@ case 'jouer':
 		$score_adv = note( 300 * $y + 400 );
 		$_SESSION['score'] += $score;
 		$_SESSION['score_adv'] += $score_adv;
-		if( $_SESSION['score_adv'] == 5 )
+		if( $_SESSION['passe'] == 5 )
 		{
 			if( $_SESSION['score'] > $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise']*2 );
 			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise'] );
 		}
-		$perso->add_pa(-1);
     //Augmentation de l'aptitude
 		$augmentation = augmentation_competence('sort_element', $perso, 7);
     if ($augmentation[1] == 1)
@@ -313,18 +320,20 @@ case 'jouer':
     $perso->sauver();
     break;
 	case 'sort_vie':
-		$score = note( 200 * $x + $perso->get_sort_vie() );
-		$score_adv = note( 300 * $y + 400 );
-		$_SESSION['score'] += $score;
-		$_SESSION['score_adv'] += $score_adv;
-		if( $_SESSION['score_adv'] == 5 )
+		$x = 200 * $x + $perso->get_sort_vie();
+		$y = 300 * $y + 400;
+		$score = $x - $y > 0;
+		if( $score )
+			$_SESSION['score']++;
+		else
+			$_SESSION['score_adv']++;
+		if( $_SESSION['passe'] == 5 )
 		{
 			if( $_SESSION['score'] > $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise']*2 );
 			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise'] );
 		}
-		$perso->add_pa(-1);
     //Augmentation de l'aptitude
 		$augmentation = augmentation_competence('sort_vie', $perso, 7);
     if ($augmentation[1] == 1)
@@ -332,18 +341,20 @@ case 'jouer':
     $perso->sauver();
     break;
 	case 'sort_mort':
-		$score = note( 200 * $x + $perso->get_sort_mort() );
-		$score_adv = note( 300 * $y + 400 );
-		$_SESSION['score'] += $score;
-		$_SESSION['score_adv'] += $score_adv;
-		if( $_SESSION['score_adv'] == 5 )
+		$x = 200 * $x + $perso->get_sort_vie();
+		$y = 300 * $y + 400;
+		$score = $x - $y > 0;
+		if( $score )
+			$_SESSION['score']++;
+		else
+			$_SESSION['score_adv']++;
+		if( $_SESSION['passe'] == 5 )
 		{
 			if( $_SESSION['score'] > $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise']*2 );
 			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
 				$perso->add_star( $_SESSION['mise'] );
 		}
-		$perso->add_pa(-1);
     //Augmentation de l'aptitude
 		$augmentation = augmentation_competence('sort_mort', $perso, 7);
     if ($augmentation[1] == 1)

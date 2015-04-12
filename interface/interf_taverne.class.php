@@ -745,6 +745,9 @@ class interf_taverne_jeux extends interf_cont
 			case 'esquive':
 				$this->esquive($score, $score_adv);
 				break;
+			case 'blocage':
+				$this->blocage($score, $score_adv);
+				break;
 			case 'dressage':
 				$this->dressage($score, $score_adv);
 				break;
@@ -752,13 +755,13 @@ class interf_taverne_jeux extends interf_cont
 				$this->melee();
 				break;
 			case 'sort_element':
-				$this->dressage($score, $score_adv);
+				$this->sort_element($score, $score_adv);
 				break;
 			case 'sort_vie':
-				$this->dressage($score, $score_adv);
+				$this->sort_vie($score);
 				break;
 			case 'sort_mort':
-				$this->dressage($score, $score_adv);
+				$this->sort_mort($score);
 				break;
 			default:
 				$this->accueil();
@@ -766,7 +769,7 @@ class interf_taverne_jeux extends interf_cont
 			}
 		}
 	}
-	function accueil()
+	protected function accueil()
 	{
 		global $G_url;
 		$div = $this->add( new interf_bal_cont('div', 'jeux') );
@@ -776,13 +779,14 @@ class interf_taverne_jeux extends interf_cont
 		$div_btn->add( new interf_lien('Bras de fer (mêlée, coût variable)', $G_url->get('jeu', 'melee'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Flêchettes (tir à distance, 5 PA)', $G_url->get('jeu', 'distance'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Évitement (esquive, coût variable)', $G_url->get('jeu', 'esquive'), false, 'btn btn-default') );
+		$div_btn->add( new interf_lien('Attrape-balle (blocage, coût variable)', $G_url->get('jeu', 'blocage'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Adresse animalière (dressage, 5 PA)', $G_url->get('jeu', 'dressage'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Jeu télékinétique (incantation, 5 PA)', $G_url->get('jeu', 'incantation'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Animation du feu (magie élémentaire, 5 PA)', $G_url->get('jeu', 'sort_element'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Développement végétal (magie de la vie, 5 PA)', $G_url->get('jeu', 'sort_vie'), false, 'btn btn-default') );
 		$div_btn->add( new interf_lien('Osselets magiques (nécromancie, 5 PA)', $G_url->get('jeu', 'sort_mort'), false, 'btn btn-default') );
 	}
-	function mise($jeu)
+	protected function mise($jeu)
 	{
 		global $G_url;
 		$perso = joueur::get_perso();
@@ -797,8 +801,11 @@ class interf_taverne_jeux extends interf_cont
 		case 'esquive':
 			$ratio = $perso->get_esquive() / 800;
 			break;
+		case 'blocage':
+			$ratio = $perso->get_blocage() / 650;
+			break;
 		case 'dressage':
-			$ratio = $perso->get_dressage() / 800;
+			$ratio = $perso->get_dressage() / 600;
 			break;
 		case 'incantation':
 			$ratio = $perso->get_incantation() / 800;
@@ -828,9 +835,10 @@ class interf_taverne_jeux extends interf_cont
 		$btn->set_attribut('onclick', 'return charger_formulaire(\'mise\');');
 		$div->add( new interf_lien('Revenir à la liste des jeux', $G_url->get('action', 'jeux'), false, 'btn btn-default') );
 	}
-	function distance($score, $score_adv)
+	protected function distance($score, $score_adv)
 	{
 		global $G_url;
+		$this->add( new interf_bal_smpl('p', 'Une cible se trouve devans vous, votre adversaire et vous avez chacun cinq flêchettes. Les anneaux concentriques donnent des points croissant vers le centre.', false, 'descr_rp') );
 		$div = $this->add( new interf_bal_cont('div', false, 'descr_rp') );
 		$div->add( new interf_bal_smpl('p', 'Vous lancez votre flêchette et marquez '.$score.' points') );
 		$div->add( new interf_bal_smpl('p', 'Votre adversaire lance sa flêchette et marque '.$score_adv.' points') );
@@ -865,7 +873,11 @@ class interf_taverne_jeux extends interf_cont
 			$btns->add( new interf_lien('Continuer', $G_url->get('action', 'jouer'), false, 'btn btn-primary') );
 		}
 	}
-	function melee()
+	protected function melee()
+	{
+		$this->opposition();
+	}
+	protected function opposition()
 	{
 		global $G_url;
 		if( $_SESSION['score'] >= 1 )
@@ -894,8 +906,14 @@ class interf_taverne_jeux extends interf_cont
 			$btns->add( new interf_lien('Continuer', $G_url->get('action', 'jouer'), false, 'btn btn-primary') );
 		}
 	}
-	function esquive($score, $score_adv)
+	protected function incantation()
 	{
+		$this->add( new interf_bal_smpl('p', 'Vous faites fasse à votre adversaire. Entre vous, à égales distances, se trouve un gobelet. Le but est de pousser le gobelet jusqu\'à ce qu\'il touche l\'autre joueur, sans le toucher !', false, 'descr_rp') );
+		$this->opposition();
+	}
+	protected function esquive($score, $score_adv)
+	{
+		$this->add( new interf_bal_smpl('p', 'Vous devez retirer votre main avant que votre adversaire ne la touche. Le gagnant est le premier à réussir alors que l\'autre a raté.', false, 'descr_rp') );
 		global $G_url;
 		$div = $this->add( new interf_bal_cont('div', false, 'descr_rp') );
 		if( $score )
@@ -906,6 +924,11 @@ class interf_taverne_jeux extends interf_cont
 			$div->add( new interf_bal_smpl('p', 'Votre adversaire vous a esquivé.') );
 		else
 			$div->add( new interf_bal_smpl('p', 'Votre adversaire ne vous a pas esquivé.') );
+		$this->premier_gagnant();
+	}
+	protected function premier_gagnant()
+	{
+		global $G_url;
 		interf_alerte::aff_enregistres($this);
 		$liste = $this->add( new interf_bal_cont('ul') );
 		$li1 = $liste->add( new interf_bal_cont('li') );
@@ -933,7 +956,27 @@ class interf_taverne_jeux extends interf_cont
 			$btns->add( new interf_lien('Continuer', $G_url->get('action', 'jouer'), false, 'btn btn-primary') );
 		}
 	}
-	function dressage($score, $score_adv)
+	protected function blocage($score, $score_adv)
+	{
+		$this->add( new interf_bal_smpl('p', 'Chaque joueur lance une petite balle sur l\'autre qui doit l\'attraper avec un gobelet. Le premier à l\'attraper alors que l\'autre rate a gagné.', false, 'descr_rp') );
+		global $G_url;
+		$div = $this->add( new interf_bal_cont('div', false, 'descr_rp') );
+		if( $score )
+			$div->add( new interf_bal_smpl('p', 'Vous avez attrapé la balle.') );
+		else
+			$div->add( new interf_bal_smpl('p', 'Vous n\'avez pas attrapé la balle.') );
+		if( $score_adv )
+			$div->add( new interf_bal_smpl('p', 'Votre adversaire a attrapé la balle.') );
+		else
+			$div->add( new interf_bal_smpl('p', 'Votre adversaire n\'a pas attrapé la balle.') );
+		$this->premier_gagnant();
+	}
+	protected function dressage($score, $score_adv)
+	{
+		$this->add( new interf_bal_smpl('p', 'Le jeu se déroule en cinq étapes. Chacune correspond à un tour que vous devez faire faire à un petit animal que vous avez dressé ou une épreuve que vous devez lui faire passer. Votre adversaire doit en faire de même. Chaque épreuve est noté à l\'applaudimètre.', false, 'descr_rp') );
+		$this->note($score, $score_adv);
+	}
+	protected function note($score, $score_adv)
 	{
 		global $G_url;
 		$div = $this->add( new interf_bal_cont('div', false, 'descr_rp') );
@@ -948,7 +991,61 @@ class interf_taverne_jeux extends interf_cont
 		$li2->add( new interf_bal_smpl('strong', 'Score de votre adversaire : ') );
 		$li2->add( new interf_bal_smpl('span', $_SESSION['score_adv'], 'score_adv') );
 		$li3 = $liste->add( new interf_bal_cont('li') );
-		$li3->add( new interf_bal_smpl('strong', 'Lancer : ') );
+		$li3->add( new interf_bal_smpl('strong', 'Passe : ') );
+		$li3->add( new interf_bal_smpl('span', $_SESSION['passe'], 'passe') );
+		$li3->add( new interf_txt(' / 5') );
+		if( $_SESSION['passe'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$this->add( new interf_bal_smpl('p', 'Vous gnagnez la partie et remportez '.($_SESSION['mise']*2).' stars.', false, 'descr_rp') );
+			else if( $_SESSION['score'] < $_SESSION['score_adv'] )
+				$this->add( new interf_bal_smpl('p', 'Vous perdez la partie, votre adversaire rafle la mise.', false, 'descr_rp') );
+			else
+				$this->add( new interf_bal_smpl('p', 'Match nul, vous récupérez votre mise.', false, 'descr_rp') );
+			$btns = $this->add( new interf_bal_cont('div', 'jeux', 'btn-group') );
+			$btns->add( new interf_lien('Changer de jeu', $G_url->get('action', 'jeux'), false, 'btn btn-default') );
+			$btns->add( new interf_lien('Rejouer', $G_url->get('action', 'mise'), false, 'btn btn-default') );
+		}
+		else
+		{
+			$btns = $this->add( new interf_bal_cont('div', 'jeux', 'btn-group') );
+			$btns->add( new interf_lien('Arrêter le jeu', $G_url->get('action', 'jeux'), false, 'btn btn-default') );
+			$btns->add( new interf_lien('Continuer', $G_url->get('action', 'jouer'), false, 'btn btn-primary') );
+		}
+	}
+	protected function sort_element($score, $score_adv)
+	{
+		$this->add( new interf_bal_smpl('p', 'Le jeu se déroule près de la cheminée de la taverne. À chacune des cinq épreuves vous devez utiliser la magie pour manipuler les flammes afin de créer un spectacle sur un thème donné. Votre adversaire doit en faire de même. Chaque épreuve est noté à l\'applaudimètre.', false, 'descr_rp') );
+		$this->note($score);
+	}
+	protected function sort_vie($score)
+	{
+		$this->add( new interf_bal_smpl('p', 'Le jeu se déroule en cinq épreuve. À chacune on apporte à votrre adversaire et vous une plante ou un bout de plante dans un état plus ou moins bon. Le but est d\'utiliser votre magie pour faire ce dévelloper cette plante. Celui qui a le meilleur résultat gagne l\'épreuve.', false, 'descr_rp') );
+		$this->binaire($score);
+	}
+	protected function sort_mort($score)
+	{
+		$this->add( new interf_bal_smpl('p', 'Le jeu se déroule en cinq épreuve. À chacune vous et votre adversaire devez animer des osselets et leur faire réaliser un certaine tâche (en opposition ou en parallèle). Celui qui réussi le mieux gagne l\'épreuve.', false, 'descr_rp') );
+		$this->binaire($score);
+	}
+	protected function binaire($score)
+	{
+		global $G_url;
+		$div = $this->add( new interf_bal_cont('div', false, 'descr_rp') );
+		if($score)
+			$div->add( new interf_bal_smpl('p', 'Votre prestation est la plus appréciée.') );
+		else
+			$div->add( new interf_bal_smpl('p', 'La prestation de votre adversaire est la plus appréciée.') );
+		interf_alerte::aff_enregistres($this);
+		$liste = $this->add( new interf_bal_cont('ul') );
+		$li1 = $liste->add( new interf_bal_cont('li') );
+		$li1->add( new interf_bal_smpl('strong', 'Votre score : ') );
+		$li1->add( new interf_bal_smpl('span', $_SESSION['score'], 'score') );
+		$li2 = $liste->add( new interf_bal_cont('li') );
+		$li2->add( new interf_bal_smpl('strong', 'Score de votre adversaire : ') );
+		$li2->add( new interf_bal_smpl('span', $_SESSION['score_adv'], 'score_adv') );
+		$li3 = $liste->add( new interf_bal_cont('li') );
+		$li3->add( new interf_bal_smpl('strong', 'Passe : ') );
 		$li3->add( new interf_bal_smpl('span', $_SESSION['passe'], 'passe') );
 		$li3->add( new interf_txt(' / 5') );
 		if( $_SESSION['passe'] == 5 )

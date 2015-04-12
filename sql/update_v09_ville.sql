@@ -54,11 +54,6 @@ CREATE TABLE IF NOT EXISTS `rumeurs` (
   `texte` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=135 ;
-
---
--- Contenu de la table `rumeurs`
---
-
 INSERT INTO `rumeurs` (`id`, `type`, `royaumes`, `etape_quete`, `texte`) VALUES
 (1, 'perso-star', 65535, 0, '- Il parait que %nom% est riche.'),
 (2, 'perso-melee', 65535, 0, '- Il parait que %nom% est un bon escrimeur.'),

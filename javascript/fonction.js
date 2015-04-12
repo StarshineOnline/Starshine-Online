@@ -197,9 +197,9 @@ function aff_ico_sso()
 function formate_duree(duree, detail)
 {
 	var txt = "";
-	var jours = Math.ceil(duree / (3600*24));
-	var heures = Math.ceil(duree/3600) % 24;
-	var mins = Math.ceil(duree/60) % 60;
+	var jours = Math.floor(duree / (3600*24));
+	var heures = Math.floor(duree/3600) % 24;
+	var mins = Math.floor(duree/60) % 60;
 	var sec = duree % 60;
 	if( jours )
 		txt = jours+"j ";
