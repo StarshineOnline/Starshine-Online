@@ -13,9 +13,10 @@ class interf_ville extends interf_gauche
 	
 	function __construct(&$royaume, &$case=null)
 	{
+		global $G_interf;
 		$this->royaume = &$royaume;
 		$this->perso = joueur::get_perso();
-		parent::__construct('carte');
+		parent::__construct('carte', 'ville');
 		if( $case && !$case->is_ville() )
 		{
 			$construction = construction::create(array('x', 'y'), array($this->perso->get_x(),$this->perso->get_y()));
@@ -26,6 +27,17 @@ class interf_ville extends interf_gauche
 
 		// Menu ville
 		$menu = $this->barre_haut->add( new interf_menu(false, 'menu_ville', false) );
+		switch( get_class($G_interf) )
+		{
+		case 'interf_factory_shine':
+			$this->aff_menu_ville_shine($batiment, $menu);
+			break;
+		default:
+			$this->aff_menu_ville($batiment, $menu);
+		}
+	}
+	protected function aff_menu_ville(&$batiment, &$menu)
+	{
 		if( $batiment )
 		{
 			$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
@@ -47,7 +59,7 @@ class interf_ville extends interf_gauche
 			{
 				$tavene = $menu->add( new interf_elt_menu('', 'teleport.php', 'return charger(this.href);') );
 				$tavene->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-teleportation') );
-				$tavene->get_lien()->add( new interf_txt('Teleportation') );
+				$tavene->get_lien()->add( new interf_txt('Téléportation') );
 			}
 			if($batiment->has_bonus('alchimiste'))
 			{
@@ -82,6 +94,53 @@ class interf_ville extends interf_gauche
 			$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );
 			$tavene->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-biere') );
 			$tavene->get_lien()->add( new interf_txt('Taverne') );
+		}
+	}
+	protected function aff_menu_ville_shine(&$batiment, &$menu)
+	{
+		if( $batiment )
+		{
+			$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
+			$carte->get_lien()->add( new interf_img('image/ville/bureau_des_quete.png', 'Quêtes') );
+			if($batiment->has_bonus('taverne'))
+			{
+				$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );
+				$carte->get_lien()->add( new interf_img('image/ville/taverne.png', 'Taverne') );
+			}
+			if($batiment->has_bonus('ecurie'))
+			{
+				$ecurie = $menu->add( new interf_elt_menu('', 'ecurie.php', 'return charger(this.href);') );
+				$ecurie->get_lien()->add( new interf_img('image/ville/ecuries.png', 'Ecurie') );
+			}
+			if($batiment->has_bonus('teleport'))
+			{
+				$teleport = $menu->add( new interf_elt_menu('', 'teleport.php', 'return charger(this.href);') );
+				$teleport->get_lien()->add( new interf_img('image/ville/teleportation.png', 'Téléportation') );
+			}
+			if($batiment->has_bonus('alchimiste'))
+			{
+				$alchimiste = $menu->add( new interf_elt_menu('', 'alchimiste.php', 'return charger(this.href);') );
+				$alchimiste->get_lien()->add( new interf_img('image/ville/alchimiste.png', 'Alchimiste') );
+			}
+		}
+		else
+		{
+			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return charger(this.href);') );
+			$ville->get_lien()->add( new interf_img('image/ville/retour_ville.png', 'Ville') );
+			$forgeron = $menu->add( new interf_elt_menu('', 'boutique.php?type=arme', 'return charger(this.href);') );
+			$forgeron->get_lien()->add( new interf_img('image/ville/forgeron.png', 'Forgeron') );
+			$armurerie = $menu->add( new interf_elt_menu('', 'boutique.php?type=armure', 'return charger(this.href);') );
+			$armurerie->get_lien()->add( new interf_img('image/ville/armurerie.png', 'Armurerie') );
+			$hotel_ventes = $menu->add( new interf_elt_menu('', 'hotel.php', 'return charger(this.href);') );
+			$hotel_ventes->get_lien()->add( new interf_img('image/ville/hotel_des_ventes.png', 'Hôtel des ventes') );
+			$ecole_magie = $menu->add( new interf_elt_menu('', 'ecole.php?type=sort', 'return charger(this.href);') );
+			$ecole_magie->get_lien()->add( new interf_img('image/ville/ecole_de_magie.png', 'École de magie') );
+			$ecole_combat = $menu->add( new interf_elt_menu('', 'ecole.php?type=comp', 'return charger(this.href);') );
+			$ecole_combat->get_lien()->add( new interf_img('image/ville/ecole_de_combat.png', 'École de combat') );
+			$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
+			$quetes->get_lien()->add( new interf_img('image/ville/bureau_des_quete.png', 'Bureau des quêtes') );
+			$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );
+			$tavene->get_lien()->add( new interf_img('image/ville/taverne.png', 'Taverne') );
 		}
 	}
 	

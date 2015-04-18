@@ -335,7 +335,7 @@
 		$finies = $perso->get_quete_fini();
 		if( $finies[0] == ';' )
 			$finies = substr($finies, 1);
-		$notin = count($finies) > 0 ? 'AND NOT (quete.repetable = "non" AND quete.id IN ('.str_replace(';', ',', $finies).') )' : '';
+		$notin = strlen($finies) > 0 ? 'AND NOT (quete.repetable = "non" AND quete.id IN ('.str_replace(';', ',', $finies).') )' : '';
 		$id_royaume = $royaume->get_id();
 		if($id_royaume < 10)
 			$id_royaume = '0'.$id_royaume;
@@ -359,7 +359,7 @@
 		$finies = $perso->get_quete_fini();
 		if( $finies[0] == ';' )
 			$finies = substr($finies, 1);
-		$notin = count($finies) > 0 ? 'AND NOT (quete.repetable = "non" AND quete.id IN ('.str_replace(';', ',', $finies).') )' : '';
+		$notin = strlen($finies) > 0 ? 'AND NOT (quete.repetable = "non" AND quete.id IN ('.str_replace(';', ',', $finies).') )' : '';
 		$id_royaume = $royaume->get_id();
 		$requete = 'SELECT COUNT(*) FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = '.$royaume->get_id().') OR ( royaume LIKE "%'.$id_royaume.'%")) AND quete.fournisseur = "'.$fournisseur.'" AND quete.id NOT IN (SELECT id_quete FROM quete_perso WHERE id_perso = '.$perso->get_id().') '.$notin;
 		$req = $db->query($requete);

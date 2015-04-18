@@ -13,9 +13,10 @@ class interf_gauche extends interf_bal_cont
 	protected $centre;
 	protected $jauge_droite = false;
 	protected $jauge_gauche = false;
-	function __construct($prem_bouton='carte')
+	function __construct($prem_bouton='carte', $classe='')
 	{
-		parent::__construct('div', 'cadre_gauche');
+		global $G_interf;
+		parent::__construct('div', 'cadre_gauche', $classe);
 		//$princ = $this->add( new interf_bal_cont('div', 'cadre_gauche') );
 		$this->disque = $this->add( new interf_bal_cont('div', 'depl_disque', 'aide') );
 		$this->barre_haut = $this->add( new interf_bal_cont('div', 'depl_barre_haut') );
@@ -24,6 +25,17 @@ class interf_gauche extends interf_bal_cont
 		
 		// menu
 		$menu = $this->barre_gauche->add( new interf_menu(false, 'menu_panneaux', 'aide') );
+		switch( get_class($G_interf) )
+		{
+		case 'interf_factory_shine':
+			$this->aff_menu_shine($prem_bouton, $menu);
+			break;
+		default:
+			$this->aff_menu($prem_bouton, $menu);
+		}
+	}
+	protected function aff_menu($prem_bouton, &$menu)
+	{
 		switch($prem_bouton)
 		{
 		case 'carte':
@@ -60,6 +72,49 @@ class interf_gauche extends interf_bal_cont
 		$dressage = $menu->add( new interf_elt_menu('', 'gestion_monstre.php', 'return charger(this.href);') );
 		$dressage->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-lapin') );
 		$dressage->get_lien()->add( new interf_txt('Dressage') );
+	}
+	protected function aff_menu_shine($prem_bouton, &$menu)
+	{
+		switch($prem_bouton)
+		{
+		case 'carte':
+			$carte = $menu->add( new interf_elt_menu('', 'deplacement.php', 'return charger(this.href);', 'menu_ville_carte') );
+			$carte->get_lien()->add( new interf_img('image/affiche_carte.png', 'Carte') );
+			break;
+		case 'ville':
+			$ville = $menu->add( new interf_elt_menu('', 'ville.php', 'return charger(this.href);', 'menu_ville_carte') );
+			$ville->get_lien()->add( new interf_img('image/affiche_ville.png', 'Ville') );
+			break;
+		case 'mort':
+			$mort = $menu->add( new interf_elt_menu('', 'mort.php', 'return charger(this.href);', 'menu_ville_carte') );
+			$mort->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-mort') );
+			$mort->get_lien()->add( new interf_txt('Mort') );
+			break;
+		}
+		$livres = $menu->add( new interf_elt_menu('', 'livre.php', 'return charger(this.href);') );
+		$livres->get_lien()->add( new interf_img('image/icone/livre.png', 'Livres', 'image_livre') );
+		$livres->set_attribut('onmouseover', 'document.getElementById(\'image_livre\').src = \'image/icone/livre_over.png\';');
+		$livres->set_attribut('onmouseout', 'document.getElementById(\'image_livre\').src = \'image/icone/livre.png\';');
+		$quetes = $menu->add( new interf_elt_menu('', 'quete.php', 'return charger(this.href);') );
+		$quetes->get_lien()->add( new interf_img('image/icone/quete_icone.png', 'Quetes', 'image_quetes') );
+		$quetes->set_attribut('onmouseover', 'document.getElementById(\'image_quetes\').src = \'image/icone/quete_icone_over.png\';');
+		$quetes->set_attribut('onmouseout', 'document.getElementById(\'image_quetes\').src = \'image/icone/quete_icone.png\';');
+		$journal = $menu->add( new interf_elt_menu('', 'journal.php', 'return charger(this.href);') );
+		$journal->get_lien()->add( new interf_img('image/icone/journal-des-actions.png', 'Journal', 'image_journal') );
+		$journal->set_attribut('onmouseover', 'document.getElementById(\'image_journal\').src = \'image/icone/journal-des-actions_over.png\';');
+		$journal->set_attribut('onmouseout', 'document.getElementById(\'image_journal\').src = \'image/icone/journal-des-actions.png\';');
+		$scripts = $menu->add( new interf_elt_menu('', 'actions.php', 'return charger(this.href);') );
+		$scripts->get_lien()->add( new interf_img('image/icone/script_combat.png', 'Scripts', 'image_scripts') );
+		$scripts->set_attribut('onmouseover', 'document.getElementById(\'image_scripts\').src = \'image/icone/script_combat_over.png\';');
+		$scripts->set_attribut('onmouseout', 'document.getElementById(\'image_scripts\').src = \'image/icone/script_combat.png\';');
+		$inventaire = $menu->add( new interf_elt_menu('', 'inventaire.php', 'return charger(this.href);') );
+		$inventaire->get_lien()->add( new interf_img('image/icone/inventaire.png', 'Inventaire', 'image_inventaire') );
+		$inventaire->set_attribut('onmouseover', 'document.getElementById(\'image_inventaire\').src = \'image/icone/inventaire_over.png\';');
+		$inventaire->set_attribut('onmouseout', 'document.getElementById(\'image_inventaire\').src = \'image/icone/inventaire.png\';');
+		$dressage = $menu->add( new interf_elt_menu('', 'gestion_monstre.php', 'return charger(this.href);') );
+		$dressage->get_lien()->add( new interf_img('image/icone/icone dressage.png', 'Dressage', 'image_dressage') );
+		$dressage->set_attribut('onmouseover', 'document.getElementById(\'image_dressage\').src = \'image/icone/icone dressage_over.png\';');
+		$dressage->set_attribut('onmouseout', 'document.getElementById(\'image_dressage\').src = \'image/icone/icone dressage.png\';');
 	}
 	protected function set_icone_centre($icone, $url=false)
 	{
@@ -126,7 +181,8 @@ class interf_cadre_carte extends interf_gauche
 	{
 		global $db, $Gtrad;
 		$perso = joueur::get_perso();
-		parent::__construct( is_ville($perso->get_x(), $perso->get_y(), true) ? 'ville' : 'carte' );
+		
+		parent::__construct( is_ville($perso->get_x(), $perso->get_y(), true) ? 'ville' : 'carte', 'carte');
 		// Options
 		/// @todo passer à l'objet
 		$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_min_monstres"');

@@ -213,6 +213,18 @@ a:hover, a:focus
   top: 15px;
 }
 
+.groupe_activite
+{
+	border: none;
+}
+.activite_hibern { background: url("../image/groupes/clair.png"); }
+.activite_ban { background:  url("../image/groupes/rouge.png"); }
+.activite_supppr { background:  url("../image/groupes/noir.png"); }
+.activite_inactif { background: url("../image/groupes/gris.png"); }
+.activite_actif { background: url("../image/groupes/orange.png"); }
+.activite_tres_actif { background: url("../image/groupes/bleu.png"); }
+.activite_connecte { background: url("../image/groupes/vert.png"); }
+
 
 /* ----  Partie gauche -------*/
 
@@ -221,7 +233,22 @@ a:hover, a:focus
 	border-color: #0F056B;
 }
 
-#cadre_gauche, .bat_drap_droite.minicarte
+#menu_panneaux a 
+{
+	padding: 4px 0;
+}
+
+#menu_panneaux a img
+{
+	width: 46px;
+}
+
+#cadre_gauche.carte
+{
+	background: rgba(3, 48, 126, 0.5);
+}
+
+#cadre_gauche.ville
 {
 	background: url('../image/v2/map.png');
 }
@@ -297,9 +324,17 @@ a#depl_disque_centre.icone
 
 #depl_centre
 {
-	/*background: rgba(255, 255, 255, 0.2);*/
-	background: #A8C3E2;
 	border-color: rgba(15, 5, 107, 0.5);
+}
+
+#cadre_gauche.ville #depl_centre
+{
+	background: #A8C3E2;
+}
+
+#cadre_gauche.carte #depl_centre, .bat_drap_droite.minicarte
+{
+	background: url('../image/v2/map.png');
 }
 
 #menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a, #menu_carte li:first-child a, #menu_ville li:first-child a, #depl_disque a
@@ -308,10 +343,30 @@ a#depl_disque_centre.icone
 	color: #22427C;
 }
 
-#menu_panneaux a:hover, #menu_carte a:hover, #menu_ville a:hover, #depl_disque a:hover, #depl_disque a:active
+#menu_panneaux a:hover, #menu_ville a:hover, #depl_disque a:hover, #depl_disque a:active
 {
 	/*background: rgba(255, 255, 255, 0.3);*/
 	color: #2F2F4F!important;
+}
+
+#cadre_gauche.carte #menu_carte a
+{
+  color: #E0C072;
+}
+
+#cadre_gauche.carte #menu_carte a:hover, #cadre_gauche.carte #menu_carte a:active
+{
+  color: #EC971F;
+}
+
+#menu_panneaux a, #menu_ville a
+{
+	border: none !important;
+}
+
+#menu_ville ul
+{
+	margin-top: -10px;
 }
 
 #carte
@@ -356,6 +411,83 @@ span#depl_disque_centre
 	top: 30px;
 	left: 31px;
 }*/
+
+#ville div.panel
+{
+	width: 144px;
+	border: none;
+	padding-bottom: 5px;
+}
+
+#ville div.panel-heading
+{
+	color: #463300 !important;
+	font-weight: bold;
+	border: none;
+}
+
+#quartier_marchand 
+{
+	background: url("../image/ville/cadrebiseauQR.png") no-repeat;
+	background-size: 144px 157px;
+}
+
+#quartier_marchand > div.panel-heading
+{
+	background: url("../image/ville/cadretitreQM.png") no-repeat scroll center top transparent;
+	padding: 7px;
+}
+
+#quartier_royal 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 151px;
+}
+
+#quartier_royal > div.panel-heading
+{
+	background: url("../image/ville/cadretitreQR.png") no-repeat scroll center top transparent;
+	padding: 8px;
+}
+
+#haut_quartier 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 139px;
+}
+
+#haut_quartier > div.panel-heading
+{
+	background: url("../image/ville/cadretitreHQ.png") no-repeat scroll center top transparent;
+	padding: 10px;
+}
+
+#bas_quartier 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 157px;
+}
+
+#bas_quartier > div.panel-heading
+{
+	background: url("../image/ville/cadretitreBQ.png") no-repeat scroll center top transparent;
+	padding: 11px;
+}
+
+#ville a.list-group-item
+{
+  padding: 2px 10px;
+	margin: 2px 4px;
+	background: none repeat scroll 0% 0% #BFCCDD;
+	border: 1px solid #8D7845;
+	border-radius: 6px;
+}
+
+#ville a.list-group-item:hover
+{
+	background: #FFF;
+	color: #3A3A4F;
+}
 
 /* ----  Partie droite -------*/
 

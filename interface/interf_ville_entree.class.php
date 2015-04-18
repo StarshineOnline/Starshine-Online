@@ -14,7 +14,7 @@ class interf_ville_entree_base extends interf_gauche
 	function __construct(&$royaume)
 	{
 		$this->royaume = &$royaume;
-		parent::__construct('carte');
+		parent::__construct('carte', 'ville');
 		// Icone et titre
 		$this->set_icone_centre('ville');
 		$this->barre_haut->add( new interf_txt($royaume->get_nom()) );

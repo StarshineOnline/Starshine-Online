@@ -210,9 +210,9 @@ class interf_barre_perso extends interf_bal_cont
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
 			/// @todo gérer les coordonnées cachées
-	    $txt = 'Pos. : '.$membre->get_x().' / '.$membre->get_y();
-	    $txt .= ' - '.'dist. : '.$dist;
-	    $pos->add( new interf_bal_smpl('span', $txt, null, 'membre_pos'.($dist>7?' trop_loin':'')) );
+	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
+	    $pos->add( new interf_txt(' - ') );
+	    $pos->add( new interf_bal_smpl('span', 'dist. : '.$dist, null, 'membre_dist text-'.($dist>7?'danger':'success')) );
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
@@ -333,7 +333,7 @@ class interf_barre_perso_shine extends interf_barre_perso
 			}
 			/// @todo gérer les coordonnées cachées
 	    $pos = $li->add( new interf_bal_smpl('div', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), false, 'membre_lieu'.($dist>7?' trop_loin':'')) );
-	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist'.($dist>7?' trop_loin':'')) );
+	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist text-'.($dist>7?'danger':'success')) );
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
