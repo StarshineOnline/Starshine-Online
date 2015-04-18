@@ -254,8 +254,21 @@ switch($type)
 	case 'siege' :
 		if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
 		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
-		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
-		else $map_batiment = new placement($_GET['id_batiment']);
+		if($_GET['table'] == 'construction')
+		{
+			$map_batiment = new construction($_GET['id_batiment']);
+			$id_constr = $_GET['id_batiment'];
+			$id_plac = 0;
+		}
+		else
+		{
+			$map_batiment = new placement($_GET['id_batiment']);
+			$id_constr = 0;
+			$id_plac = $_GET['id_batiment'];
+		}
+		/// debuff empêchant la suppression du bâtiment
+		$buff = new buff_batiment_def(1);
+		$buff->lance($id_constr, $id_plac);
 		$perso = new perso($_SESSION['ID']);
     $perso->check_perso();
 		$siege = new batiment($map_siege->get_id_batiment());

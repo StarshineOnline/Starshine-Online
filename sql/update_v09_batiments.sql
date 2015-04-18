@@ -19,3 +19,6 @@ CREATE TABLE IF NOT EXISTS `buff_batiment_def` (
   `debuff` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+-- (de)buffs de bâtiments
+INSERT INTO `starshine_simul`.`buff_batiment_def` (`id`, `nom`, `type`, `effet`, `effet2`, `duree`, `description`, `debuff`) VALUES ('1', 'Assiégé', 'assiege', '0', '0', '259200', 'Empêche la suppression du bâtiment tant qu''il est assiégé.', '1');
