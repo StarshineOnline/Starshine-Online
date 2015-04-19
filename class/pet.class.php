@@ -323,16 +323,6 @@ class pet extends map_monstre
 			$this->pp_base = $this->pp;
 			$this->pm_base = $this->pm;
 
-			//Buffs
-			if($joueur->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_bouclier', 'effet') / 100)));
-			if($joueur->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($joueur->get_buff('buff_barriere', 'effet') / 100)));
-			if($joueur->is_buff('buff_forteresse'))
-			{
-				$this->pp = round($this->pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
-			}
-			if($joueur->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($joueur->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($joueur->get_buff('debuff_desespoir', 'effet')) / 100)));
 			//Maladie suppr_defense
 			if($joueur->is_buff('suppr_defense')) $this->pp = 0;
 		}

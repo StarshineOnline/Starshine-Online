@@ -84,6 +84,10 @@ class interf_tp extends interf_ville
 			    $distance = $perso->calcule_distance($row['x'], $row['y']);
 			    if ($distance == 0) continue;
 			    $cout =  $distance * 7;
+					if($this->is_buff('buff_cout_tp'))
+						$cout = round($cout / (1 + (($this->get_buff('buff_cout_tp', 'effet')) / 100)));
+					if($this->is_buff('debuff_cout_tp'))
+						$cout = round($cout * (1 + (($this->get_buff('debuff_cout_tp', 'effet')) / 100)));
 			    $cout = ceil(($cout * $royaume->get_taxe_diplo($perso->get_race()) / 100) + $cout);
 					$this->aff_dest($liste, $row['nom'], $cout, $row['x'], $row['y'], $row['nom_bat'], $row['id'], 'bourg');
 		    }

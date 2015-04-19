@@ -478,12 +478,24 @@ class batiment extends entitenj_def
 	function get_arme_degat($perso=null, $adversaire=null)
   {
     if( $adversaire != null && $adversaire->get_type_def() == 'arme_de_siege')
+    {
       $degats = $this->get_bonus('degats_siege');
+			if($this->is_buff('buff_degats_siege'))
+				$degats += $this->get_buff('buff_degats_siege', 'effet');
+			if($this->is_buff('debuff_degats_siege'))
+				$degats -= $this->get_buff('debuff_degats_siege', 'effet');
+		}
     else
+    {
       $degats = $this->get_bonus('degats_bat');
+			if($this->is_buff('buff_degats_bat'))
+				$degats += $this->get_buff('buff_degats_bat', 'effet');
+			if($this->is_buff('debuff_degats_bat'))
+				$degats -= $this->get_buff('debuff_degats_bat', 'effet');
+		}
     if( $degats === false )
       return 0;
-    elseif( $perso != null && $perso->get_race() == 'barbare' )
+    else if( $perso != null && $perso->get_race() == 'barbare' )
       return ceil($degats * 1.1);
     else
       return $degats;

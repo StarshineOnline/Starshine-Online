@@ -70,15 +70,17 @@ case 'tp':
 		if($W_distance != 0)
 		{
 			/// @todo passer par un objet
-			$requete = "SELECT id, x, y FROM construction WHERE id = ".sSQL($_GET['id']);
-			$req = $db->query($requete);
-			$row = $db->read_array($req);
-			$P_distance = $perso->calcule_distance($row['x'], $row['y']);
-			$cout = ($P_distance * 7);
+			$bourg = new construction(sSQL($_GET['id']);
+			$distance = $perso->calcule_distance($bourg);
+			$cout = distance * 7;
+			if($this->is_buff('buff_cout_tp'))
+				$cout = round($cout / (1 + (($this->get_buff('buff_cout_tp', 'effet')) / 100)));
+			if($this->is_buff('debuff_cout_tp'))
+				$cout = round($cout * (1 + (($this->get_buff('debuff_cout_tp', 'effet')) / 100)));
 			$taxe = ceil($cout * $R->get_taxe_diplo($perso->get_race()) / 100);
 			$cout = $cout + $taxe;
-			$x = $row['x'];
-			$y = $row['y'];
+			$x = $bourg->get_x();
+			$y = $bourg->get_y();
 		}
 		break;
 	}

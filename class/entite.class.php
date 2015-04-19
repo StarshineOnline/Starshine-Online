@@ -527,7 +527,16 @@ class entite extends placable
 	/// Renvoie la PP
 	function get_pp()
 	{
-		return $this->pp;
+		$pp = $this->pp;
+		if($this->is_buff('buff_bouclier'))
+			$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+		if($this->is_buff('buff_forteresse'))
+			$pp = round($pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
+		if($this->is_buff('buff_cri_protecteur'))
+			$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+		if($this->is_buff('debuff_pp'))
+			$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
+		return $pp;
 	}
 	/// Modifie la PP
 	function set_pp($valeur)
@@ -537,7 +546,14 @@ class entite extends placable
 	/// Renvoie la PM
 	function get_pm()
 	{
-		return $this->pm;
+		$pm = $this->pm;
+		if($this->is_buff('buff_barriere'))
+			$pm = round($pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+		if($this->is_buff('buff_forteresse'))
+			$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
+		if($this->is_buff('debuff_desespoir'))
+			$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+		return $pm;
 	}
 	//renvoi la PM pour resister a paralysie
 	function get_pm_para()
@@ -780,6 +796,7 @@ class entite extends placable
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1.5;
   	if(array_key_exists('botte_chat', $this->etat)) $this->potentiel_parer *= 1 + $this->etat['botte_chat']['effet'] / 100;
+  	if($this->is_buff('debuff_esquive')) $this->potentiel_parer /= 1 + (($this->get_buff('debuff_esquive', 'effet')) / 100);
 
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
