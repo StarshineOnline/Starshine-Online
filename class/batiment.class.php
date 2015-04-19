@@ -481,17 +481,17 @@ class batiment extends entitenj_def
     {
       $degats = $this->get_bonus('degats_siege');
 			if($this->is_buff('buff_degats_siege'))
-				$degats += $this->get_buff('buff_degats_siege', 'effet');
+				$degats = round($degats * (1 + $this->get_buff('buff_degats_siege', 'effet')/100));
 			if($this->is_buff('debuff_degats_siege'))
-				$degats -= $this->get_buff('debuff_degats_siege', 'effet');
+				$degats = round($degats / (1 + $this->get_buff('debuff_degats_siege', 'effet')/100));
 		}
     else
     {
       $degats = $this->get_bonus('degats_bat');
 			if($this->is_buff('buff_degats_bat'))
-				$degats += $this->get_buff('buff_degats_bat', 'effet');
+				$degats = round($degats * (1 + $this->get_buff('buff_degats_bat', 'effet')/100));
 			if($this->is_buff('debuff_degats_bat'))
-				$degats -= $this->get_buff('debuff_degats_bat', 'effet');
+				$degats = round($degats / (1 + $this->get_buff('debuff_degats_bat', 'effet')/100));
 		}
     if( $degats === false )
       return 0;
