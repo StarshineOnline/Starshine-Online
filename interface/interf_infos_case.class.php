@@ -332,6 +332,7 @@ class interf_infos_case extends interf_cont
     while($row = $db->read_object($req))
 		{
 			// Monstre spécifiques à une quête
+			/// @todo à améliorer
 			if( $row->quete )
 			{
 				if( !isset($quetes) )
@@ -340,7 +341,7 @@ class interf_infos_case extends interf_cont
           $lq = $this->perso->get_liste_quete();
           foreach($lq as $q)
           {
-            $quetes[] = $q['id_quete'];
+            $quetes[] = $q->get_id();
           }
         }
         if( !in_array($row->quete, $quete) )

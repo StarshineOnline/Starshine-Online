@@ -85,14 +85,14 @@ function checkTpAbo(&$joueur)
   $dontrefresh = true;
 	$quetes = $joueur->get_liste_quete();
 	$found = false;
-	foreach ($quetes as $id => $q) {
-		if ($q['id_quete'] == 86) {
+	foreach ($quetes as $q) {
+		if ($q->get_id() == 86) {
 			$found = true;
 				echo '<fieldset><legend>Descente vers les profondeurs</legend>'.
 					'<div id="info_case">';
 				echo 'Comme vous l\'avait demandé le gobelin, vous descendez explorer'.
 					' les profondeurs. Qui sait ce que vous allez y trouver ?<br/>';
-				fin_quete($joueur, $id, $q['id_quete']);
+				$q->get_etape()->fin($joueur);
 				echo '</div>';
 		}
 	}
@@ -124,13 +124,13 @@ function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 	$quetes = $joueur->get_liste_quete();
 	$found = false;
 	foreach ($quetes as $id => $q) {
-		if ($q['id_quete'] == $queteId) {
+		if ($q->get_id() == $queteId) {
 			$found = true;
       $qd = $db->query_get_object("select * from quete where id = $queteId");
       echo '<fieldset><legend>'.$qd->nom.'</legend><div id="info_case">';
       echo 'Comme on vous l\'avait demandé, vous empruntez le passage. '.
         'Qui sait ce que vous allez y trouver ?<br/>';
-      fin_quete($joueur, $id, $q['id_quete']);
+     $q->get_etape()->fin($joueur);
       echo '</div>';
 		}
 	}

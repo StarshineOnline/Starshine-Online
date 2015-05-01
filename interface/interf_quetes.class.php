@@ -106,7 +106,7 @@ class interf_descr_quete extends interf_cont
 				$liste_obj->add( new interf_bal_smpl('li', $texte) );
 				$this->nbr_obj_total += $valeur[1];
 				break;
-			case 'P': //parler à un PNJ
+			case 'P': // parler à un PNJ
 				$requete = "SELECT nom FROM pnj WHERE id = ". $valeur[0];
 				$req = $db->query($requete);
 				$row = $db->read_array($req);

@@ -707,14 +707,12 @@ class map_monstre extends entnj_incarn
 					if($objet[0] == 'q')
 					{
 						$check = false;
-						$i_quete = 0;
 						$liste_quete = $perso->get_liste_quete();
 						$count_quete = count($liste_quete);
-						while(!$check AND $i_quete < $count_quete)
+						foreach($liste_quete as $q)
 						{
-							if($liste_quete[$i_quete]['id_quete'] == $share[1])
+							if($q->get_id_quete() == $share[1])
 								$check = true;
-							$i_quete++;
 						}
 						if($check) $tirage = 1;
 						else $tirage = 2;
@@ -749,8 +747,8 @@ class map_monstre extends entnj_incarn
 				//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
 				if($this->get_hp() <= 0)
 				{
-					if($membre->get_id() == $perso->get_id()) verif_action('M'.$this->get_type(), $membre, 's');
-					else verif_action('M'.$this->get_type(), $membre, 'g');
+					if($membre->get_id() == $perso->get_id()) quete_perso::verif_action('M'.$this->get_type(), $membre, 's');
+					else quete_perso::verif_action('M'.$this->get_type(), $membre, 'g');
 				}
 				$membre->sauver();
 			}

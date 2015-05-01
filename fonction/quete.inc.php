@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -122,16 +123,7 @@ function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 	$row = $db->read_array($req);
 	if( $liste_quete === null )
 		$liste_quete = $joueur->get_liste_quete();
-	//Validation de la quête et mis à jour des quêtes du perso
-	array_splice($liste_quete, $id_quete_joueur, 1);
-	$joueur->set_quete(serialize($liste_quete));
-	//On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies
-	$quete_fini = explode(';', $joueur->get_quete_fini());
-	if(!in_array($id_quete, $quete_fini))
-	{
-		$quete_fini[] = $id_quete;
-		$joueur->set_quete_fini(implode(';', $quete_fini));
-	}
+	//Validation de la quête et mis à jour des quêtes du perso	array_splice($liste_quete, $id_quete_joueur, 1); 	$joueur->set_quete(serialize($liste_quete)); 	//On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies 	$quete_fini = explode(';', $joueur->get_quete_fini()); 	if(!in_array($id_quete, $quete_fini)) 	{ 		$quete_fini[] = $id_quete; 		$joueur->set_quete_fini(implode(';', $quete_fini)); 	}
 	$rewards = explode(';', $row['reward']);
 	//print_r($rewards);
 	$r = 0;

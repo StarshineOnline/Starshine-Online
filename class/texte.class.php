@@ -176,23 +176,27 @@ class texte
     $texte = preg_replace('`\[QUETEFINI([0-9]*):([0-9]*)\](.*)\[/QUETEFINI(\g1):\g2\]`i', '', $texte);
     $texte = preg_replace('`\[quete_finie:([0-9]*)\](.*)\[/quete_finie:(\g1)\]`i', '', $texte);
     // quêtes non prises
-    while( preg_match('`\[non_quete:([0-9]*)\](.*)\[/non_quete:(\g1)\]`i', $texte, $regs) )
+    while( preg_match('`\[non_quete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/non_quete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$numq = $regs[1];
-    	if( in_array($numq, $quetes_actives) == false && in_array($numq, $quete_fini) == false )
-    		$texte = preg_replace('`\[non_quete:'.$numq.'\](.*)\[/non_quete:'.$numq.'\]`i', $regs[2], $texte);
+    	$qp = self::get_quete_perso($regs);
+    	$debut = str_replace(']', '\\)', $regs[0]); 
+    	$fin = '[/'.mb_substr($debut, 1);
+    	if( !$qp && !in_array($regs[1], $quete_fini )
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
-    		$texte = preg_replace('`\[non_quete:'.$numq.'\](.*)\[/non_quete:'.$numq.'\]`i', '', $texte);
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
       $trouve = true;
     }
     // quête prises
-    while( preg_match('`\[ISQUETE:([0-9]*)\](.*)\[/ISQUETE:(\g1)\]`i', $texte, $regs) )
+    while( preg_match('`\[isquete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/isquete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$numq = $regs[1];
-    	if (in_array($numq, $quetes_actives))
-    		$texte = preg_replace('`\[ISQUETE:'.$numq.'\](.*)\[/ISQUETE:'.$numq.'\]`i', $regs[2], $texte);
+    	$qp = self::get_quete_perso($regs);
+    	$debut = str_replace(']', '\\)', $regs[0]); 
+    	$fin = '[/'.mb_substr($debut, 1);
+    	if ($qp)
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
-    		$texte = preg_replace('`\[ISQUETE:'.$numq.'\](.*)\[/ISQUETE:'.$numq.'\]`i', '', $texte);
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
     	$trouve = true;
     }
     //Validation de la quête
@@ -200,7 +204,7 @@ class texte
     {
       if( $regs[1] == ':silencieux' )
         echo '<span class="debug">';
-    	verif_action($this->id, $this->perso, 's');
+    	quete_perso::verif_action($this->id, $this->perso, 's');
       if( $regs[1] == ':silencieux' )
         echo '</span>';
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
@@ -214,10 +218,10 @@ class texte
       {
         $groupe = new groupe($this->perso->get_groupe());
         foreach($groupe->get_membre_joueur() as $pj)
-          verif_action($this->id, $pj, 'g');
+          quete_perso::verif_action($this->id, $pj, 'g');
       }
       else
-        verif_action($this->id, $this->perso, 's');
+        quete_perso::verif_action($this->id, $this->perso, 's');
       if( $regs[1] == ':silencieux' )
         echo '<span class="debug">';
     	$texte = preg_replace('`\[quetegroupe(:[[:alpha:]]+)?]`i', '', $texte);
@@ -225,7 +229,7 @@ class texte
     //Prise d'une quête
     if(preg_match('`\[prendquete:([0-9]*)\]`i', $texte, $regs))
     {
-    	prend_quete($regs[1], $this->perso);
+    	$this->perso->prend_quete($regs[1]);
     	$texte = str_ireplace('[prendquete:'.$regs[1].']', '', $texte);
     }
     //Donne un item
@@ -233,7 +237,7 @@ class texte
     {
     	$this->perso->prend_objet($regs[1]);
     	$texte = str_ireplace('[donneitem:'.$regs[1].']', '', $texte);
-    	verif_action($regs[1], $this->perso, 's');
+    	quete_perso::verif_action($regs[1], $this->perso, 's');
     	//$trouve = true;
     }
     //Vends un item
@@ -249,17 +253,18 @@ class texte
     		$this->perso->prend_objet($regs[1]);
     		$this->perso->sauver();
     		$replace = 'Vous recevez un objet.<br/>';
-    		verif_action($regs[1], $this->perso, 's');
+    		quete_perso::verif_action($regs[1], $this->perso, 's');
     	}
     	$texte = str_ireplace('[vendsitem:'.$regs[1].':'.$regs[2].']', $replace, $texte);
     }
     //validation inventaire
-    if(preg_match('`\[verifinventaire:([0-9]*)\]`i', $texte, $regs))
+    if(preg_match('`\[verifinventaire:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\]`i', $texte, $regs))
     {
-    	if (verif_inventaire($regs[1], $this->perso) == false)
+    	$qp = self::get_quete_perso($regs);
+    	if ($qp && $qp->verif_inventaire() == false)
     		$texte = "Tu te moques de moi, mon bonhomme ?";
     	else
-    		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);
+    		$texte = str_ireplace($regs[0], '', $texte);
     }
     
     if( $trouve )
@@ -267,6 +272,23 @@ class texte
     else
       return $texte;
   }
+  
+  static protected function get_quete_perso($regs)
+  {
+    $qp = quete_etape(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
+    if( !$qp )
+    	return null;
+  	if( count($regs) > 1 && $regs[2][1] == 'e' )
+  	{
+			if( $qp[0]->get_etape()->get_etape() !=  mb_substr($regs[2], 3) )
+				return null;
+		}
+		if( count($regs) > 2 && $regs[3][1] == 'v' )
+		{
+			if( $qp[0]->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
+				return null;
+		}
+	}
   
   /// Fonction formattant les balises gérant la navigation (par ex. [retour])
   protected function parse_navig($texte)

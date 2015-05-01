@@ -702,7 +702,7 @@ function loot_item(&$joueur, &$groupe, $item)
 		$gagnant->restack_objet();
 		if($type_obj == 'quete')
 		{
-			verif_action('L'.$id_objet, $gagnant, 's');
+			quete_perso::verif_action('L'.$id_objet, $gagnant, 's');
 			$gagnant->prend_objet($item);
 		}
 		else

@@ -6,6 +6,9 @@ class quete_perso extends table
 	protected $id_quete;
 	protected $id_etape;
 	protected $avancement;
+	protected $etape=null;
+	protected $perso=null;
+	protected $quete=null;
 	/**
 	* Constructeur
 	*/
@@ -59,21 +62,229 @@ class quete_perso extends table
 	}
 	
 	/// Renvoie la quete corespondante
-	function get_quete()
+	function &get_quete()
 	{
-		return new quete($this->id_quete);
+		if( !$this->quete )
+			$this->quete = new quete($this->id_quete);
+	}
+	
+	/// Modifie l'étape
+	function set_id_etape($valeur)
+	{
+		$this->id_etape = $valeur;
+		$this->champs_modif[] = 'id_etape';
 	}
 	
 	/// Renvoie l'épape corespondante
-	function get_etape()
+	function &get_etape()
 	{
-		return new quete_etape($this->id_etape);
+		if( !$this->etape )
+			$this->etape = new quete_etape($this->id_etape); 
+		return $this->etape;
+	}
+	
+	/// Renvoie le personnage corespondant
+	function &get_perso()
+	{
+		if( !$this->perso )
+			$this->perso = new perso($this->id_perso); 
+		return $this->perso;
 	}
 	
 	/// Renvoie l'avancement
 	function get_avancement()
 	{
 		return $this->avancement;
+	}
+	
+	/// Modifie l'avancement
+	function set_avancement($valeur)
+	{
+		$this->avancement = $valeur;
+		$this->champs_modif[] = 'avancement';
+	}
+	
+	// Vérification si une étape est finie ou non
+	function verifier()
+	{
+		$etape = $this->get_etape();
+		
+		// Avancement des objetifs
+		$avancement = array();
+		$avanc = explode(';', $this->get_avancement());
+		foreach($avanc as $a)
+		{
+			$a = explode(':', $a);
+			$avancement[$a[0]] = $a[1];
+		}
+		
+		// On vérifie les objectifs
+		$objectifs = explode(';', $etape->get_objectif());
+		foreach($objectifs as $obj)
+		{
+			$type = mb_substr($obj, 1);
+			$valeur = explode(':', $type);
+			/// @todo passer à l'objet
+			switch($obj[0])
+			{
+			case 'M':  // tuer des monstres
+			case 'J': // tuer des perso selon la diplomatie
+			case 'L': // trouver un objet
+			case 'O': // rapporter un objet
+				if( $avancement[$obj[0].$valeur[0]] < $valeur[1] )
+					return false;
+				break;
+			case 'P': // parler à un PNJ;
+			case 'C': // case
+				if( $avancement[$obj[0].$valeur[0]] == 0 )
+					return false;
+				break;
+			}
+		}
+		return true;
+	}
+	
+	function avance($objectif, $valeur=1)
+	{
+		$avanc = explode(';', $this->avancement);
+		if( is_numeric($objectif) )
+		{
+			$av = explode(':', $avanc[$objectif]);
+			$av[1] += $valeur;
+		}
+		else
+		{
+			for($i=0; $i<count($avanc); $i++)
+			{
+				$av = explode(':', $avanc[$i]);
+				if( $av[0] == $objectif )
+				{
+					$av[1] += $valeur;
+					break;
+				}
+			}
+		}
+		$this->avancement = implode(';', $avanc);
+		$this->champs_modif[] = 'type';
+	}
+	
+	static function verif_action($type_cible, &$perso, $mode)
+	{
+		/// Quêtes du personnage
+		$quetes_perso = quete_perso::create('id_perso', $perso->get_id());
+		foreach($quetes_perso as $qp)
+		{
+			// Avancements
+			$avancements = explode(';', $qp->get_avancement());
+			$a_verifier = false;
+			foreach($avancements as $i=>$avanc)
+			{
+				// on vérifie si l'objectif correspond 
+				$valeur = explode(':', $avanc);
+				switch($avanc[0])
+				{
+				case 'M':  // tuer des monstres
+				case 'J': // tuer des perso selon la diplomatie
+				case 'L': // trouver un objet
+				case 'O': // rapporter un objet
+					$ok = $valeur[0] == $type_cible;
+					$max = null;
+					break;
+				case 'P': // parler à un PNJ;
+				case 'C': // case
+					$cibles = explode('|', mb_substr($valeur[0], 1))
+					$id_cible = substr($type_cible, 1);
+					$ok = in_array($id_cible, $cibles);
+					$max = 1;
+				break;
+				default:
+					/// @todo loguer erreur
+					$ok = false;
+				}
+				if( $ok )
+				{
+					// On récupère l'étape correspondante
+					$etape = $qp->get_etape();
+					// On vérifie la collaboration
+					if( ($etape->get_collaboration() == "aucune" && $mode == "s") || ($etape->get_collaboration() == "royaume" && $mode != "r") )
+						break;
+					// on regarde la valeur à atteindre
+					if( $max === null )
+					{
+						$objectifs = explode(';', $etape->get_objectif());
+						foreach($objectifs as $obj)
+						{
+							$o = explode(':', $obj);
+							if( $avanc[0] = $o[0] )
+							{
+								$max = $o[1];
+								break;
+							}
+						}
+					}
+					// On regarde si on atteint le maximum du compteur
+					if( $valeur[1] < $max )
+					{
+						$valeur[1]++;
+						$avancements[$i] = implode(':', $valeur);
+						$qp->set_avancement( implode(';', $avancements) );
+					}
+				}
+			}
+			if($a_verifier)
+			{
+				if( $qp->verifier() )
+				{
+					$etape->fin($perso);
+					$qp->perso = &$perso;
+					$qp->fin();
+				}
+				else
+					$qp->sauver();
+			}
+		}
+	}
+	protected function fin()
+	{
+		$etape = $this->get_etape()->get_etape();
+		$nbr = $this->get_quete()->get_nombre_etape();
+		if( $etape < $nbr )
+		{
+			$nouv = quete_etape(array('id_quete','etape'), array($this->id_quete, $etape+1));
+			$this->set_id_etape( $nouv->get_id() );
+			$this->sauver();
+		}
+		else
+			$this->supprimer();
+	}
+	function verif_inventaire()
+	{
+		$objets = $this->get_etape()->verif_inventaire($this->get_perso());
+		if( $objets )
+		{
+			$avancements = explode(';', $qp->get_avancement());
+			foreach($objets as $obj=$n)
+			{
+				$this->perso->supprime_objet($obj, $n);
+				foreach($avancements as $i=>$avanc)
+				{
+					$valeur = explode(':', $avanc);
+					if( $valeur[0] == 'o'.$obj )
+					{
+						$valeur[1] = $n;
+						$avancements[$i] = implode(':', $valeur);
+						break;
+					}
+				}
+			}
+			$qp->set_avancement( implode(';', $avancements) );
+			$this->perso->sauver();
+			if( $this->verifier() )
+			{
+				$this->etape->fin($this->perso);
+				$this->fin();
+			}
+		}
 	}
 }
 

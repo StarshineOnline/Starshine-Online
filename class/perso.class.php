@@ -3195,6 +3195,7 @@ class perso extends entite
 	}
 	
 	/// Renvoie la liste des quêtes que possède le personnage sous forme textuelle.
+	/// @deprecated
 	function get_quete()
 	{
 		return $this->quete;
@@ -3203,10 +3204,12 @@ class perso extends entite
   /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
 	function get_liste_quete()
 	{
-		$this->liste_quete = unserialize($this->quete);
-		return $this->liste_quete;
+		/*$this->liste_quete = unserialize($this->quete);
+		return $this->liste_quete;*/
+		return quete_perso::create('id_perso', $this->id);
 	}
 	/// Modifie la liste des quêtes que possède le personnage.
+	/// @deprecated
 	function set_quete($quete)
 	{
 		$this->quete = $quete;
@@ -3612,8 +3615,8 @@ class perso extends entite
 				$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
 				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
 				$membre->sauver();
-				if($defense && $membre->get_id() == $ennemi->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
-				else verif_action('J'.$row_diplo[0], $membre, 'g');
+				if($defense && $membre->get_id() == $ennemi->get_id()) quete_perso::verif_action('J'.$row_diplo[0], $membre, 's');
+				else quete_perso::verif_action('J'.$row_diplo[0], $membre, 'g');
 			}
 
 			// Augmentation du compteur de l'achievement
