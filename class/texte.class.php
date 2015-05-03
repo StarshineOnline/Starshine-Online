@@ -188,7 +188,7 @@ class texte
     	$qp = self::get_quete_perso($regs);
     	$debut = str_replace(']', '\\)', $regs[0]); 
     	$fin = '[/'.mb_substr($debut, 1);
-    	if( !$qp && !in_array($regs[1], $quete_fini )
+    	if( (!$qp && !in_array($regs[1], $quete_fini) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
@@ -207,17 +207,17 @@ class texte
     	$trouve = true;
     }
     //Validation de la quête
-    if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
+    if(preg_match('`\[quete(:[[:alnum:]]+)?]`i', $texte, $regs))
     {
       if( $regs[1] == ':silencieux' )
         echo '<span class="debug">';
-    	quete_perso::verif_action($this->id, $this->perso, 's');
+    	quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
       if( $regs[1] == ':silencieux' )
         echo '</span>';
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
-    if(preg_match('`\[quetegroupe(:[[:alpha:]]+)?]`i', $texte))
+    if(preg_match('`\[quetegroupe(:[[:alnum:]]+)?]`i', $texte))
     {
       if( $regs[1] == ':silencieux' )
         echo '<span class="debug">';
@@ -225,10 +225,10 @@ class texte
       {
         $groupe = new groupe($this->perso->get_groupe());
         foreach($groupe->get_membre_joueur() as $pj)
-          quete_perso::verif_action($this->id, $pj, 'g');
+          quete_perso::verif_action($this->id, $pj, 'g', $regs[1]);
       }
       else
-        quete_perso::verif_action($this->id, $this->perso, 's');
+        quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
       if( $regs[1] == ':silencieux' )
         echo '<span class="debug">';
     	$texte = preg_replace('`\[quetegroupe(:[[:alpha:]]+)?]`i', '', $texte);

@@ -168,7 +168,7 @@ class quete_perso extends table
 		$this->champs_modif[] = 'type';
 	}
 	
-	static function verif_action($type_cible, &$perso, $mode)
+	static function verif_action($type_cible, &$perso, $mode, $option=null)
 	{
 		/// Quêtes du personnage
 		$quetes_perso = quete_perso::create('id_perso', $perso->get_id());
@@ -235,22 +235,26 @@ class quete_perso extends table
 			{
 				if( $qp->verifier() )
 				{
-					$etape->fin($perso);
+					$etape->fin($perso, $option == ':silencieux');
 					$qp->perso = &$perso;
-					$qp->fin();
+					$qp->fin($option);
 				}
 				else
 					$qp->sauver();
 			}
 		}
 	}
-	protected function fin()
+	protected function fin($option)
 	{
 		$etape = $this->get_etape()->get_etape();
 		$nbr = $this->get_quete()->get_nombre_etape();
 		if( $etape < $nbr )
 		{
-			$nouv = quete_etape(array('id_quete','etape'), array($this->id_quete, $etape+1));
+			if( $option && is_numeric($option) )
+				$nouv = quete_etape(array('id_quete', 'etape', 'variante'), array($this->id_quete, $etape+1, $option));
+			else
+				$nouv = quete_etape(array('id_quete','etape'), array($this->id_quete, $etape+1));
+			/// @todo loguer erreur
 			$this->set_id_etape( $nouv->get_id() );
 			$this->sauver();
 		}
