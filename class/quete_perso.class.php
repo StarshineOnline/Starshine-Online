@@ -254,7 +254,25 @@ class quete_perso extends table
 				$nouv = quete_etape(array('id_quete', 'etape', 'variante'), array($this->id_quete, $etape+1, $option));
 			else
 				$nouv = quete_etape(array('id_quete','etape'), array($this->id_quete, $etape+1));
-			/// @todo loguer erreur
+			switch( count($nouv) )
+			{
+			case 0:
+				/// @todo loguer erreur
+				$this->supprimer();
+				return;
+			case 1:
+				$nouv = $nouv[0];
+				break;
+			default:
+				foreach($nouv as $n)
+				{
+					if( quete::verif_requis($n->get_requis(), $this->get_perso()) )
+					{
+						$nouv = $n;
+						break;
+					}
+				}
+			}
 			$this->set_id_etape( $nouv->get_id() );
 			$this->sauver();
 		}
