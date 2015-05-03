@@ -127,5 +127,21 @@ class buff_batiment extends buff_base
 		global $db;
 		$db->query( 'DELETE FROM buff_batiment WHERE id_perso = '.$perso->get_id() );
 	}
+	
+	/// Indique si le buff est actif (lanceur à 10 cases ou moins)
+	function est_actif()
+	{
+		global $db;
+		// Buff sans lanceur (assiégé) : toujours actif
+		if( !$this->id_perso )
+			return true;
+		if( $this->id_construction )
+			$requete = 'SELECT MAX(ABS(p.x - c.x), ABS(p.y - c.y)) AS dist FROM perso AS p, construction AS c WHERE p.id = '.$this->id_perso.' AND c.id = '.$this->id_construction;
+		else
+			$requete = 'SELECT MAX(ABS(p.x - c.x), ABS(p.y - c.y)) AS dist FROM perso AS p, placement AS c WHERE p.id = '.$this->id_perso.' AND c.id = '.$this->id_placement;
+		$res = $db->query($requete);
+		$row = $db->read_array($res);
+		return $row[0] <= 10;
+	}
 }
 ?>

@@ -143,6 +143,11 @@ class buff_base extends buff_batiment_def
 	}
 	return $lancement;
  }
+ 
+	function est_actif()
+	{
+		return true;
+	}
 }
 
 

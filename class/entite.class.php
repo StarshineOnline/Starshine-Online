@@ -452,9 +452,10 @@ class entite extends placable
 	 * Permet de savoir si le joueur est sous le buff nom
 	 * @param $nom le nom du buff
 	 * @param $type si le nom est le type du buff
+	 * @param $actif le buff doit être actif (pour les buffs de bâtiment)
 	 * @return true si le perso est sous le buff false sinon.
  	*/
-	function is_buff($nom = '', $type = true)
+	function is_buff($nom = '', $type = true, $actif = true)
 	{
 		$buffe = false;
 		if(is_array($this->buff))
@@ -469,7 +470,7 @@ class entite extends placable
 					}
 					else if($buff->get_nom() ==  $nom)
 					{
-						$buffe = true;
+						$buffe = !$actif || $buff->est_actif();
 					}
 				}
 			}
