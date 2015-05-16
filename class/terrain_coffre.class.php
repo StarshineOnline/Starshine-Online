@@ -8,6 +8,7 @@ class terrain_coffre
 	public $id_coffre;
 	public $objet;
 	public $nombre;
+	public $encombrement;
 	
 	/**	
 		*	Constructeur permettant la création d'un terrain_batiment.
@@ -39,6 +40,7 @@ class terrain_coffre
 			$this->id_coffre = $id['id_coffre'];
 			$this->objet = $id['objet'];
 			$this->nombre = $id['nombre'];
+			$this->encombrement = $id['encombrement'];
 		}
 		else
 		{
@@ -46,6 +48,7 @@ class terrain_coffre
 			$this->objet = $objet;
 			$this->id = $id;
 			$this->nombre = $nombre;
+			$this->encombrement = $encombrement;
 		}
 	}
 
@@ -56,14 +59,14 @@ class terrain_coffre
 		if( $this->id > 0 )
 		{
 			$requete = 'UPDATE terrain_coffre SET ';
-			$requete .= 'id_coffre = '.$this->id_coffre.', objet = "'.$this->objet.'", nombre = '.$this->nombre;
+			$requete .= 'id_coffre = '.$this->id_coffre.', objet = "'.$this->objet.'", nombre = '.$this->nombre.', encombrement = '.$this->encombrement;
 			$requete .= ' WHERE id = '.$this->id;
 			$db->query($requete);
 		}
 		else
 		{
-			$requete = 'INSERT INTO terrain_coffre (id_coffre, objet, nombre) VALUES(';
-			$requete .= $this->id_coffre.', "'.$this->objet.'", '.$this->nombre.')';
+			$requete = 'INSERT INTO terrain_coffre (id_coffre, objet, nombre, encombrement) VALUES(';
+			$requete .= $this->id_coffre.', "'.$this->objet.'", '.$this->nombre.', '.$this->encombrement.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			list($this->id) = $db->last_insert_id();
@@ -92,6 +95,8 @@ class terrain_coffre
 		else
 		{
 			$this->nombre--;
+			$objet = objet_invent::factory($this->objet);
+			$this->encombrement -= $objet->get_encombrement();
 			$this->sauver();
 		}
 	}

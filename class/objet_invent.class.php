@@ -117,6 +117,13 @@ abstract class objet_invent extends table
 	{
 		$this->texte = $texte;
 	}
+
+	// Renvoie l'id textuel
+	function get_texte_id()
+	{
+		$id = explode('x', $this->texte);
+		return $id[0];
+	}
 	
 	// Renvoie l'encombrement de l'objet em magasin
 	function get_encombrement()

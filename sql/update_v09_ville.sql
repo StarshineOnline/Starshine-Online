@@ -189,3 +189,10 @@ INSERT INTO `rumeurs` (`id`, `type`, `royaumes`, `etape_quete`, `texte`) VALUES
 (132, 'royaume-tour-peu', 65535, 0, '- Il parait que %nom% ne sait jamais ce qu''il se passe sur son territoire.'),
 (133, 'royaume-mine', 65535, 0, '- Il parait que %nom% a une bonne économie.'),
 (134, 'royaume-mine-peu', 65535, 0, '- Il parait que %nom% ne produit pas grand chose.');
+
+
+-- Terrains de joueurs
+ALTER TABLE `terrain_coffre` ADD `encombrement` INT NOT NULL ;
+UPDATE terrain_batiment SET effet = 100 WHERE id  = 1;
+UPDATE terrain_batiment SET effet = 200 WHERE id  = 3;
+UPDATE terrain_batiment SET effet = 300 WHERE id  = 9;

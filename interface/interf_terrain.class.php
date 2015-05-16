@@ -165,7 +165,7 @@ class interf_coffre extends interf_cont
 		$div = $this->add( new interf_bal_cont('div') );
 		// Objets dans le coffre
 		$div_coffre = $div->add( new interf_bal_cont('div', 'coffre') );
-		$div_coffre->add( new interf_bal_smpl('h6', 'Coffre ('.count($coffre_inventaire).' / '.$batiment->effet.')') );
+		$div_coffre->add( new interf_bal_smpl('h6', 'Coffre ('.$coffre_inventaire->get_encombrement().' / '.$batiment->effet.')') );
 		$liste_coffre = $div_coffre->add( new interf_bal_cont('ul') );
 		foreach($coffre_inventaire as $index => $objet)
 		{
