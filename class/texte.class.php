@@ -188,7 +188,7 @@ class texte
     	$qp = self::get_quete_perso($regs);
     	$debut = str_replace(']', '\\)', $regs[0]); 
     	$fin = '[/'.mb_substr($debut, 1);
-    	if( (!$qp && !in_array($regs[1], $quete_fini) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
+    	if( (!$qp && !in_array($regs[1], $quete_fini)) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
