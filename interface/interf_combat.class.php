@@ -229,11 +229,11 @@ class interf_combat extends interf_bal_cont
 			$texte =  $nom_actif.' se ressaisi et gagne '.$effet.' RM';
 			$classe = 'effet';
 			break;
-		case 16:  // 
+		case 16:  // flèche étourdissante
 			$texte =  $nom_actif.' est étourdi par la flêche !';
 			$classe = 'effet';
 			break;
-		case 17:  // 
+		case 17:  // coup de bouclier
 			$texte =  'Le coup de bouclier étourdit '.$nom_passif.' pour '.$effet.' rounds !';
 			$classe = 'effet';
 			break;
@@ -245,15 +245,15 @@ class interf_combat extends interf_bal_cont
 			$texte =  '<strong>'.$nom_actif.'</strong> gagne '.$effet.' PA';
 			$classe = 'effet';
 			break;
-		case 20:  // 
+		case 20:  // drain de points de vie
 			$texte =  'Et gagne <strong>'.$effet.'</strong> HP grâce au drain';
 			$classe = 'soin';
 			break;
-		case 21:  // 
+		case 21:  // drain de RM
 			$texte =  'Et gagne <strong>'.$effet.'</strong> RM grâce au drain';
 			$classe = 'effet';
 			break;
-		case 22:  // 
+		case 22:  // retire RM (brûlure de mana)
 			$texte =  'Et retire '.$effet.' réserve de mana à '.$nom_passif;
 			$classe = 'degat';
 			break;
@@ -289,7 +289,7 @@ class interf_combat extends interf_bal_cont
 			$texte =  $nom_actif.' gagne '.$effet.' HP par vampirisme';
 			$classe = 'soin';
 			break;
-		case 31:  // fleche_poison
+		case 31:  // fleche_poison et poison des modification de forge
 			$texte =  '<strong>'.$nom_passif.'</strong> est empoisonné pour '.$effet.' rounds !';
 			$classe = 'degat';
 			break;
@@ -297,6 +297,9 @@ class interf_combat extends interf_bal_cont
 			$texte =  $nom_passif.' est ensablé pour '.$effet.' rounds';
 			$classe = 'effet';
 			break;
+		case 33: // retour
+			$texte =  $nom_passif.' subit '.$effet.' dégâts en retour.';
+			$classe = 'degat';
 		default:
 			return;
 		}

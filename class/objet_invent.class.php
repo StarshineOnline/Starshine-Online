@@ -26,7 +26,7 @@ abstract class objet_invent extends table
 	/// Modifie le nom de l'objet
 	function set_nom($nom)
 	{
-		$this->nom = $om;
+		$this->nom = $nom;
 		$this->champs_modif[] = 'nom';
 	}
 	
@@ -80,6 +80,17 @@ abstract class objet_invent extends table
   }
 	/// Modifie l'enchantement par gemme
 	function set_enchantement($enchantement)
+	{
+    // Pas d'enchantement par défaut
+	}
+
+  /// Renvoie la modification par la forge
+  function get_modification()
+  {
+    return null;
+  }
+	/// Modifie la modification par la forge
+	function set_modification($modif)
 	{
     // Pas d'enchantement par défaut
 	}
@@ -190,6 +201,10 @@ abstract class objet_invent extends table
 			$decomp = explode('e', $obj);
 			$obj = $decomp[0];
 			$enchantement = count($decomp)>1 ? $decomp[1] : null;
+			// Modification de forge
+			$decomp = explode('f', $obj);
+			$obj = $decomp[0];
+			$modif = count($decomp)>1 ? $decomp[1] : null;
 	    // slot disponible
 			$decomp = explode('s', $obj);
 			$obj = $decomp[0];
@@ -265,6 +280,7 @@ abstract class objet_invent extends table
 	    $obj->set_texte($objet);
 	    $obj->set_nombre($stack);
 	    $obj->set_enchantement($enchantement);
+	    $obj->set_modification($modif);
 	    $obj->set_slot($slot);
 	    $obj->set_identifie($ident);
 		}
@@ -291,6 +307,9 @@ abstract class objet_invent extends table
     $slot = $this->get_slot();
     if( $slot !== null )
       $this->texte .= 's'.$slot;
+    $modif = $this->get_modification();
+    if( $modif !== null )
+      $this->texte .= 'f'.$modif->get_id();
     $enchant = $this->get_enchantement();
     if( $enchant !== null )
       $this->texte .= 'e'.$enchant;
@@ -359,6 +378,9 @@ abstract class objet_invent extends table
   function est_slotable() { return false; }
 
   /// Indique si l'objet est slotable
+  function est_enchassable() { return false; }
+
+  /// Indique si l'objet est modifiable par la forge
   function est_enchassable() { return false; }
 
   /**

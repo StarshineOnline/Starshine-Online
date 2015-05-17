@@ -331,7 +331,9 @@ class sort_debuff extends sort_jeu
       if($cible->get_id() != $perso->get_id())
       {
         //Test d'esquive du sort
+        /// @todo à intégrer à la classe entite
         $protection = $cible->get_volonte() * $cible->get_pm() / 3;
+        $protection *= 1 + $cible->get_bonus_permanents('resiste_debuff') / 100;
         if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
         if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
         $puissance = $perso->get_volonte() * $perso->get_comp($this->get_comp_assoc());
@@ -341,8 +343,8 @@ class sort_debuff extends sort_jeu
         $interf->add( new interf_debug('Lance sort: '.$attaque.' ('.$puissance.') vs '.$defense.' ('.$protection.')') );
         if ($attaque > $defense)
         {
-			$crime = new crime();
-			$crime->crime_debuff($perso, $cible, $type_cible);
+					$crime = new crime();
+					$crime->crime_debuff($perso, $cible, $type_cible);
           $duree = $this->get_duree();
           if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
             $duree *= $soufr_ext->get_effet();

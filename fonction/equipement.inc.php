@@ -45,8 +45,11 @@ function decompose_objet($objet)
 		$objet_dec['id'] = $decomp[0];
 		$objet_dec['enchantement'] = $decomp[1];
 		$decomp = explode('s', $objet_dec['id']);
-		$objet_dec['id'] = $decomp[0];
+		$objet_dec['id_mod'] = $decomp[0];
 		$objet_dec['slot'] = $decomp[1];
+		$decomp = explode('f', $objet_dec['id_mod']);
+		$objet_dec['id'] = $decomp[0];
+		$objet_dec['mod'] = $decomp[1];
 		$objet_dec['identifier'] = true;
 		if($objet_dec['id'][0] != 'h')
 		{

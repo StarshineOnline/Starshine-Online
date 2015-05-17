@@ -293,6 +293,7 @@ class comp_combat extends comp
     }
   	else
     {
+    	$attaque->applique_effet('rate');
     	$attaque->get_interface()->manque($actif->get_nom());
       $passif->precedent['esquive'] = true;
       $passif->precedent['bloque'] = false;
@@ -305,7 +306,7 @@ class comp_combat extends comp
   }
 
   /**
-   * Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
+   * Méthode gérant ce qu'il se passe lorsque la compétence à été utilisé avec succès
    * @param  $actif   Personnage utuilisant la coméptence
    * @param  $passif  Personnage adverse
    * @param  $effets  Effets
@@ -833,6 +834,7 @@ class comp_combat_etourdi extends comp_combat_degat_etat
     comp_combat::touche($attaque);
     $pot_att = ($actif->get_force() + $actif->get_dexterite()) / 2;
 		$pot_deff = $passif->get_vie();
+    $attaque->applique_effet('resite_etourdissement', $pot_deff);
     if( $this->test_potentiel($pot_att, $pot_deff) )
     {
       $this->ajout_etat($attaque);
@@ -980,7 +982,7 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
   /// Méthode gérant l'utilisation d'une compétence
   function lance(&$attaque)
   {
-	$actif = &$attaque->get_actif();
+		$actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
     $actif->set_comp_att('melee');
     return parent::lance($attaque);
@@ -1009,7 +1011,9 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
     // @todo
 
 		$att = $degat + $actif->get_force();
+    $attaque->applique_effet('coup_bouclier', $att);
 		$def = $passif->get_vie() + round($passif->get_pp() / 100);
+    $attaque->applique_effet('resite_etourdissement', $def);
 		//Hop ca étourdit
 		if( $this->test_potentiel($att, $def) )
 		{

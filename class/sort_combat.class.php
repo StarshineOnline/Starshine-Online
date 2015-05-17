@@ -339,6 +339,7 @@ class sort_combat extends sort
       $this->touche($attaque);
     else
     {
+    	$attaque->applique_effet('rate');
     	$attaque->get_interface()->manque($actif->get_nom()/*, $this->get_nom()*/);
       $attaque->add_log_combat('~m');
     }
@@ -448,6 +449,7 @@ class sort_combat extends sort
   	global $debugs, $log_combat;  // Numéro des informations de debug.
   	// Calcule des chances de critique
   	$actif_chance_critique = $actif->get_potentiel_critique_magique();
+    $attaque->applique_effet('calcul_critique_magique', $actif_chance_critique);
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
@@ -455,7 +457,10 @@ class sort_combat extends sort
       $attaque->add_log_combat('!');
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);
-    	$degat *= $actif->get_mult_critique_magique();
+    	$multiplicateur = $actif->get_mult_critique_magique();
+  		// Application des effets de multiplicateur critique
+      $attaque->applique_effet('calcul_mult_critique_magique', $multiplicateur);
+    	$degat *= $multiplicateur;
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
     	$attaque->get_interface()->reduction($degat_avant - $degat, 'la puissance');

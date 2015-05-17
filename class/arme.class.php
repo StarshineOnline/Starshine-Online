@@ -19,9 +19,11 @@ class arme extends objet_equip
 	const code = 'a';   ///< Code de l'objet.
 
 	/// Retourne les dégâts de l'arme
-	function get_degat()
+	function get_degat($sans_modif=false)
 	{
-		return $this->degat;
+		if( $sans_modif || !($modif = $this->get_modification()) )
+			return $this->degat;
+		return $this->degat + $modif->get_modif_degats();
 	}
 	/// Modifie les dégâts de l'arme
 	function set_degat($degat)
@@ -43,9 +45,11 @@ class arme extends objet_equip
 	}
 
 	/// Retourne le coefficient minimal pour utiliser l'arme
-	function get_coefficient()
+	function get_coefficient($sans_modif=false)
 	{
-		return $this->coefficient;
+		if( $sans_modif || !($modif = $this->get_modification()) )
+			return $this->coefficient;
+		return $this->coefficient + $modif->get_modif_coeff();
 	}
 	/// Modifie le coefficient minimal pour utiliser l'arme
 	function set_coefficient($coefficient)
@@ -105,6 +109,9 @@ class arme extends objet_equip
 		$this->effet = $effet;
 		$this->champs_modif[] = 'effet';
 	}
+
+  /// Indique si l'objet est modifiable par la forge
+  function est_enchassable() { return true; }
 
 	/**
 	 * Constructeur

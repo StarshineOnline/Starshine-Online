@@ -208,7 +208,13 @@ class effect
    *
    * @return    MP requis
    */
-  function calcul_mp(&$attaque) { return $mp; }
+  function calcul_mp(&$attaque) {  }
+  /**
+   * Modifie l'anticipation
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function anticipation(&$attaque) {  }
   /**
    * Modifie le potentiel toucher magique
    * 
@@ -368,6 +374,24 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.
    * @param  $degats    Dégâts infligés.           
    */ 
+  function calcul_critique_magique(&$attaque) {  }
+  /**
+   * Modifie le multiplicateur de dégâts en cas ce coup critique
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $mult      Multiplicateur de dégâts avant modification.
+   * 
+   * @return    Multiplicateur de dégâts après modification.              
+   */ 
+  function calcul_mult_critique_magique(&$attaque) {  }
+  /**
+   * Applique les effets ayant lieu lorsque les dégâts ont lieu
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $degats    Dégâts infligés.           
+   */ 
   function inflige_degats(&$attaque) {  }
   /**
    * Applique les effets ayant lieu lorsque les dégâts magiques ont lieu
@@ -378,6 +402,24 @@ class effect
    * @param  $degats    Dégâts infligés.           
    */ 
   function inflige_degats_magiques(&$attaque) { }
+  /**
+   * Applique les effets ayant lieu lorsque l'attaque est ratée
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function rate(&$attaque) { }
+  /**
+   * Modification du potentiel pour étourdir avec un bouclier
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function coup_bouclier(&$attaque) { }
+  /**
+   * Modification du potentiel pour résister aux étourdissement
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function resite_etourdissement(&$attaque) { }
   /**
    * Action a effectuer en fin de round
    * 

@@ -477,6 +477,7 @@ class fleche_poison extends comp_comb {
 
   function inflige_degats(&$attaque) {
     $pot_att = $attaque->get_actif()->get_force() + $this->effet;
+		$pot_att *= 1 + $attaque->get_actif()->get_bonus_permanents('resiste_debuff') / 100;
     $pot_def = $attaque->get_passif()->get_volonte();
     $de_att = rand(0, $pot_att);
     $de_deff = rand(0, $pot_def);
@@ -492,7 +493,7 @@ class fleche_poison extends comp_comb {
   function fin_round(&$attaque) {
     $passif = $attaque->get_passif();
 		if ($this->poison) {
-			$attaque->get_interface()->effet(31,  $this->duree, '', $actif->get_nom());
+			$attaque->get_interface()->effet(31,  $this->duree, '', $passif->get_nom());
 			$attaque->add_log_effet_actif('&ef31~'. $this->duree);
 			$passif->etat['empoisonne']['effet'] = $this->effet2;
 			$passif->etat['empoisonne']['duree'] = $this->duree;

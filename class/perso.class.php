@@ -757,7 +757,12 @@ class perso extends entite
 		if ($base)
 			return $this->melee;
 		else
-			return $this->melee + $this->get_bonus_permanents('melee');
+		{
+			$melee = $this->melee + $this->get_bonus_permanents('melee')
+			$melee *= 1 + $this->get_bonus_permanents('mult_melee')/100;
+			$melee /= 1 + $this->get_bonus_permanents('div_melee')/100;
+			return round($melee);
+		}
 	}
 	/// Modifie la mêlée
 	function set_melee($melee)
@@ -771,7 +776,12 @@ class perso extends entite
 		if ($base)
 			return $this->distance;
 		else
-			return $this->distance + $this->get_bonus_permanents('distance');
+		{
+			$distance = $this->distance + $this->get_bonus_permanents('distance')
+			$distance *= 1 + $this->get_bonus_permanents('mult_distance')/100;
+			$distance /= 1 + $this->get_bonus_permanents('div_distance')/100;
+			return round($distance);
+		}
 	}
 	/// Modifie le tir à distance
 	function set_distance($distance)
@@ -785,7 +795,12 @@ class perso extends entite
 		if ($base)
 			return $this->esquive;
 		else
-			return $this->esquive + $this->get_bonus_permanents('esquive');
+		{
+			$esquive = $this->esquive + $this->get_bonus_permanents('esquive')
+			$esquive *= 1 + $this->get_bonus_permanents('mult_esquive')/100;
+			$esquive /= 1 + $this->get_bonus_permanents('div_esquive')/100;
+			return round($esquive);
+		}
 	}
 	/// Modifie l'esquive
 	function set_esquive($esquive)
@@ -799,7 +814,12 @@ class perso extends entite
 		if ($base)
 			return $this->blocage;
 		else
-			return $this->blocage + $this->get_bonus_permanents('blocage');
+		{
+			$blocage = $this->blocage + $this->get_bonus_permanents('blocage')
+			$blocage *= 1 + $this->get_bonus_permanents('mult_blocage')/100;
+			$blocage /= 1 + $this->get_bonus_permanents('div_blocage')/100;
+			return round($blocage);
+		}
 	}
 	/// Modifie le blocage
 	function set_blocage($blocage)
@@ -813,7 +833,12 @@ class perso extends entite
 		if ($base)
 			return $this->incantation;
 		else
-			return $this->incantation + $this->get_bonus_permanents('incantation');
+		{
+			$incantation = $this->incantation + $this->get_bonus_permanents('incantation')
+			$incantation *= 1 + $this->get_bonus_permanents('mult_incantation')/100;
+			$incantation /= 1 + $this->get_bonus_permanents('div_incantation')/100;
+			return round($incantation);
+		}
 	}
 	/// Modifie l'incantation
 	function set_incantation($incantation)
@@ -827,7 +852,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_vie;
 		else
-			return $this->sort_vie + $this->get_bonus_permanents('sort_vie');
+		{
+			$sort_vie = $this->sort_vie + $this->get_bonus_permanents('sort_vie')
+			$sort_vie *= 1 + $this->get_bonus_permanents('mult_sort_vie')/100;
+			$sort_vie /= 1 + $this->get_bonus_permanents('div_sort_vie')/100;
+			return round($sort_vie);
+		}
 	}
 	/// Modifie la magie de la vie
 	function set_sort_vie($sort_vie)
@@ -841,7 +871,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_element;
 		else
-			return $this->sort_element + $this->get_bonus_permanents('sort_element');
+		{
+			$sort_element = $this->sort_element + $this->get_bonus_permanents('sort_element')
+			$sort_element *= 1 + $this->get_bonus_permanents('mult_sort_element')/100;
+			$sort_element /= 1 + $this->get_bonus_permanents('div_sort_element')/100;
+			return round($sort_element);
+		}
 	}
 	/// Modifie la magie élémentaire
 	function set_sort_element($sort_element)
@@ -855,7 +890,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_mort;
 		else
-			return $this->sort_mort + $this->get_bonus_permanents('sort_mort');
+		{
+			$sort_mort = $this->sort_mort + $this->get_bonus_permanents('sort_mort')
+			$sort_mort *= 1 + $this->get_bonus_permanents('mult_sort_mort')/100;
+			$sort_mort /= 1 + $this->get_bonus_permanents('div_sort_mort')/100;
+			return round($sort_mort);
+		}
 	}
 	/// Modifie la nécromancie
 	function set_sort_mort($sort_mort)
@@ -1245,6 +1285,7 @@ class perso extends entite
 			$arme = $this->inventaire()->main_droite;
 			if($arme != '')
 			{
+				/// @todo à refaire
 				$arme_d = decompose_objet($arme);
 				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
@@ -1256,6 +1297,11 @@ class perso extends entite
 						$this->arme->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
 					//my_dump($this->enchantement);
+				}
+				if( $arme_d['mod'] )
+				{
+					$mod = new forge_recette($arme_d['mod']);
+					$this->arme->degat += $mod->get_modif_degats();
 				}
         if ($this->arme->effet)
         {
@@ -1287,13 +1333,21 @@ class perso extends entite
 				$this->arme_gauche = $db->read_object($req);
 				if($this->arme_gauche->type == 'bouclier')
 					$this->arme_gauche = false;
-				else if ($arme_d['enchantement'] != null)
+				else
 				{
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-						$this->arme_gauche->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
+					if ($arme_d['enchantement'] != null)
+					{
+						$gemme = new gemme_enchassee($arme_d['enchantement']);
+						if ($gemme->enchantement_type == 'degat')
+							$this->arme_gauche->degat += $gemme->enchantement_effet;
+						$this->register_gemme_enchantement($gemme);
+						//my_dump($this->enchantement);
+					}
+					if( $arme_d['mod'] )
+					{
+						$mod = new forge_recette($arme_d['mod']);
+						$this->arme_gauche->degat += $mod->get_modif_degats();
+					}
 				}
 			}
 			else $this->arme_gauche = false;
@@ -1930,6 +1984,12 @@ class perso extends entite
 						$row = $db->read_row($req);
 						$this->pp += $row[0];
 						$this->pm += $row[1];
+						if( $partie_d['mod'] )
+						{
+							$mod = new forge_recette($partie_d['mod']);
+							$this->pp += $mod->get_modif_pp();
+							$this->pm += $mod->get_modif_pm();
+						}
 						// Effets magiques
 						if ($row[2] != '')
 						{
@@ -1970,6 +2030,10 @@ class perso extends entite
 			//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
+			
+			// Malus permanents
+    	$this->pp = round($this->pp / ( 1 + $this->get_bonus_permanents('div_pp')/100) );
+    	$this->pm = round($this->pm / ( 1 + $this->get_bonus_permanents('div_pm')/100) );
 
 			//pm pour le 3eme jet de para
 			$this->pm_para = $this->pm;

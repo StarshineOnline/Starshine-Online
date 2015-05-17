@@ -13,6 +13,7 @@ abstract class objet_equip extends objet_invent
 	protected $effet;  ///< Valeur de l'effet de l'objet
 	protected $lvl_batiment;  ///< Niveau du bâtiment à partir duquel l'objet est disponible
   protected $enchantement = null;  ///< Enchantement par gemme
+  protected $modification = null;  ///< Modification par la forge
   protected $slot = null;  ///< Slot
 
 
@@ -51,6 +52,19 @@ abstract class objet_equip extends objet_invent
 		$this->enchantement = $enchantement;
 	}
 
+  /// Renvoie la modification par la forge
+  function get_modification()
+  {
+		return $this->modification;
+  }
+	/// Modifie la modification par la forge
+	function set_modification($modif)
+	{
+		if( is_numeric($modif) )
+			$modif =  new forge_recete($modif);
+		$this->modification = $modif;
+	}
+
   /// Renvoie le slot
   function get_slot()
   {
@@ -60,6 +74,14 @@ abstract class objet_equip extends objet_invent
 	function set_slot($slot)
 	{
 		$this->slot = $slot;
+	}
+	
+	// Renvoie le nom de l'objet
+	function get_nom()
+	{
+		if( $this->modification )
+			return $this->modification->get_nom();
+		return $this->nom;
 	}
 
 	/**

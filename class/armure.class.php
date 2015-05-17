@@ -17,9 +17,11 @@ class armure extends objet_invent
 	const code = 'p';   ///< Code de l'objet.
 
 	/// Retourne la force nécessaire pour utiliser l'arme
-	function get_pp()
+	function get_pp($sans_modif=false)
 	{
-		return $this->PP;
+		if( $sans_modif || !($modif = $this->get_modification()) )
+			return $this->PP;
+		return $this->PP + $modif->get_modif_pp();
 	}
 	/// Modifie la PP de l'armure
 	function set_pp($pp)
@@ -29,9 +31,11 @@ class armure extends objet_invent
 	}
 
 	/// Retourne la force nécessaire pour utiliser l'arme
-	function get_pm()
+	function get_pm($sans_modif=false)
 	{
-		return $this->PM;
+		if( $sans_modif || !($modif = $this->get_modification()) )
+			return $this->PM;
+		return $this->PM + $modif->get_modif_pm();
 	}
 	/// Modifie la force nécessaire pour utiliser l'arme
 	function set_pm($pm)
@@ -63,6 +67,9 @@ class armure extends objet_invent
 		$this->puissance = $puissance;
 		$this->champs_modif[] = 'puissance';
 	}
+
+  /// Indique si l'objet est modifiable par la forge
+  function est_enchassable() { return true; }
 
 	/**
 	 * Constructeur

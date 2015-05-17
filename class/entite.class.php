@@ -835,6 +835,8 @@ class entite extends placable
       return $this->potentiel_critique;
 
     $this->potentiel_critique = ceil(pow($this->get_dexterite(), 1.5) * 10);
+    $this->potentiel_critique *= ( 1 + $this->get_bonus_permanents('critique')/100);
+    $this->potentiel_critique /= ( 1 + $this->get_bonus_permanents('div_pot_critique')/100);
   	//Buff du critique
   	if($this->is_buff('buff_critique', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_critique', 'effet', true)) / 100);
   	if($this->is_buff('buff_cri_rage', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_cri_rage', 'effet')) / 100);
@@ -864,6 +866,8 @@ class entite extends placable
       return $this->mult_critique;
 
     $this->mult_critique = $this->get_volonte() * 50;
+    $this->mult_critique *= 1 + $this->get_bonus_permanents('mult_critique') / 100;
+    $this->mult_critique /= 1 + $this->get_bonus_permanents('div_mult_critique') / 100;
   	//Buff du critique
   	if($this->is_buff('buff_colere', true))
 			$this->mult_critique += (($this->get_buff('buff_colere', 'effet')) / 100);
@@ -951,7 +955,8 @@ class entite extends placable
 		if($this->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($this->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
-		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+		$malus_perm = 1 + $this->get_bonus_permanents('div_parer_magique') / 100;
+		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir / $malus_perm);
   	if(array_key_exists('fleche_debilitante', $this->etat))
       $this->potentiel_parer_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1.5;
@@ -970,6 +975,8 @@ class entite extends placable
       return $this->potentiel_critique_magique;
 
     $this->potentiel_critique_magique = $this->get_volonte() * 50;
+    $this->potentiel_critique_magique *= ( 1 + $this->get_bonus_permanents('critique_magique')/100);
+    $this->potentiel_critique_magique /= ( 1 + $this->get_bonus_permanents('div_pot_critique_magique')/100);
   	//Buff du critique
   	if($this->is_buff('buff_furie_magique', true))
 			$this->potentiel_critique_magique *= 1 + (($this->get_buff('buff_furie_magique', 'effet')) / 100);
@@ -983,6 +990,8 @@ class entite extends placable
       return $this->mult_critique_magique;
 
     $this->mult_critique_magique = $this->get_volonte() * 50;
+    $this->mult_critique_magique *= 1 + $this->get_bonus_permanents('mult_critique_magique') / 100;
+    $this->mult_critique_magique /= 1 + $this->get_bonus_permanents('div_mult_critique_magique') / 100;
   	//Buff du critique
   	if($this->is_buff('buff_furie_magique', true))
 			$this->mult_critique_magique += (($this->get_buff('buff_furie_magique', 'effet2')) / 100);

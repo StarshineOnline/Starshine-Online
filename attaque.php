@@ -473,11 +473,6 @@ else
     $interf = $cadre->add( $G_interf->creer_combat() );
 		$attaque->set_interface( $interf );
     $attaque->attaque($distance, $type, $pa_attaque, $R, $pet, $defenseur_en_defense);
-		//Boucle principale qui fait durer le combat $round_total round
-		/*while( $round < ($round_total + 1) && $attaquant->get_hp() > 0 && $defenseur->get_hp() > 0 )
-		{
-				if ($siege_true) break;
-		}*/			
 		if( interf_debug::doit_aff_bouton() )
 		{
 			$lien = $interf->add( new interf_bal_smpl('a', '', 'debug_droit', 'icone icone-debug') );
@@ -496,8 +491,6 @@ else
 			$perso->set_pa($perso->get_pa() - $pa_attaque);
 			$perso->sauver();
 		}
-		/*else
-			echo "<b>Error: </b> type is [$type] !<br/>";*/
 
 		//Mise dans les journaux si attaque pvp
 		if($type == 'perso')

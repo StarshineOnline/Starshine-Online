@@ -360,7 +360,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 							}
 
               /* Application des effets de mana */
-              $attaque->applique_effet('calcul_mp');
+              $attaque->set_type_degats('sort');
+              $attaque->applique_effet('calcul_mp', $mp_need);
               /* ~Mana */
 
 							// Si le joueur a assez de reserve on indique l'action à effectuer
@@ -401,6 +402,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 							}
 							
               /* Application des effets de mana */
+              $attaque->set_type_degats('comp');
               $attaque->applique_effet('calcul_mp');
               /* ~Mana */
 
@@ -473,6 +475,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 						}
 					}
 				}
+        $attaque->applique_effet('anticipation', $chance_reussite);
 				
 				// On détermine si l'action est anticipée
 				/*$rand = rand(0, 100);
