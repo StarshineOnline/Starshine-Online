@@ -3458,17 +3458,17 @@ a .livre_nom
 	margin: 0;
 }
 
-#livre_alchimie .panel
+#livre_alchimie .panel, #livre_forge .panel
 {
 	margin: 3px;
 }
 
-#livre_alchimie .panel-heading
+#livre_alchimie .panel-heading, #livre_forge .panel-heading
 {
 	padding: 1px 5px;
 }
 
-#livre_alchimie .panel-body
+#livre_alchimie .panel-body, #livre_forge .panel-body
 {
 	padding: 3px;
 }
@@ -3480,12 +3480,19 @@ a .livre_nom
 	padding: 2px;
 }
 
-#livre_alchimie .panel-body>.liste:nth-of-type(n+3)
+#livre_forge .liste
+{
+	display: table-cell;
+	width: 225px;
+	padding: 2px;
+}
+
+#livre_alchimie .panel-body>.liste:nth-of-type(n+3), #livre_forge .panel-body>.liste:nth-of-type(n+3)
 {
 	border-left: solid 1px #777;
 }
 
-#livre_alchimie h6
+#livre_alchimie h6, #livre_forge h6
 {
 	text-align: center;
 	margin: 2px;

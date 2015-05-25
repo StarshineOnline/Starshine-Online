@@ -61,7 +61,7 @@ abstract class objet_equip extends objet_invent
 	function set_modification($modif)
 	{
 		if( is_numeric($modif) )
-			$modif =  new forge_recete($modif);
+			$modif =  new forge_rectete($modif);
 		$this->modification = $modif;
 	}
 

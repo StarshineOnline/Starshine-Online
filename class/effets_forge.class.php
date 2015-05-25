@@ -1,8 +1,6 @@
 <?php
 
-include_once(root.'class/effect.class.php');
-
-class effet_forge extends effet
+class effet_forge extends effect
 {
 	protected $effet;
 	protected $cible_passif;
@@ -290,7 +288,7 @@ class forge_etat extends effet_forge
 		if( $this->type & self::comp && comp_sort::test_de($this->effet, 100) )
 		{
 			$attaque->get_interface()->effet(14, 1, '', $cible->get_nom());
-			$attaque->add_log_effet_actif('&ef14~'.1);
+			$attaque->add_log_effet_actif('&ef14~'. 1);
 			$cible->etat[$this->etat]['effet'] = 1;
 			$cible->etat[$this->etat]['duree'] = 1;
 		}
@@ -301,7 +299,7 @@ class forge_etat extends effet_forge
 		if( $this->type & self::sort && comp_sort::test_de($this->effet, 100) )
 		{
 			$attaque->get_interface()->effet(14, 1, '', $cible->get_nom());
-			$attaque->add_log_effet_actif('&ef14~'.1);
+			$attaque->add_log_effet_actif('&ef14~'. 1);
 			$cible->etat[$this->etat]['effet'] = 1;
 			$cible->etat[$this->etat]['duree'] = 1;
 		}
@@ -401,7 +399,7 @@ class forge_enflame extends effet_forge
 		if( comp_sort::test_de($this->effet, 100) )
 		{
 			$attaque->get_interface()->effet(18, 1, '', $cible->get_nom());
-			$attaque->add_log_effet_actif('&ef18~'.1);
+			$attaque->add_log_effet_actif('&ef18~'. 1);
 			$cible->set_hp( $cible->get_hp() - 1 );
 		}
 	}

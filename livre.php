@@ -360,6 +360,46 @@ if( array_key_exists('action', $_GET) )
 		$perso->add_star(-$star_total);
 		$perso->sauver();
 		break;
+	case 'forge':
+		$recette = new forge_recette($_GET['id']);
+		if($perso->get_pa() < 10 )
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de PA pour faire cette recette.');
+			break;
+		}
+		/// @todo faire verification
+		
+		$forge = $perso->get_forge();
+		$reussie = comp_sort::test_potentiel($forge, $recette->get_difficulte());
+		if( $reussie )
+		{
+			interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !');
+			$perso->supprime_objet($recette->get_objet());
+			$obj = objet_invent::factory( $recette->get_objet() );
+			$obj->set_modification( $recette );
+			$obj->recompose_texte();
+			$perso->prend_objet($obj);
+		}
+		else
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…');
+		//On utilise tous les objets de la recette
+		foreach($recette->get_ingredients() as $ingredient)
+		{
+			//Suppression des objets de l'inventaire
+			if($reussie || rand(1, 100) < 50)
+			{
+				$perso->supprime_objet('o'.$ingredient->id_ingredient, $ingredient->nombre);
+			}
+		}
+		$difficulte = 3 * 2.65 / sqrt(10);
+		$augmentation = augmentation_competence('alchimie', $perso, $difficulte);
+		if ($augmentation[1] == 1)
+		{
+			$perso->set_alchimie($augmentation[0]);
+		}
+		$perso->add_pa(-10);
+		$perso->sauver();
+		break;
 	}
 } // fin action
 
@@ -405,7 +445,10 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 		$tabs->add_onglet($img, 'livre.php?type=alchimie&action=onglet', 'tab_alchimie', 'invent', $type == 'alchimie');
 	}
 	//Si le perso a des recettes de forge, affichage de l'onglet correspondant
-	if( true )
+	/// @todo à améliorer
+	$requete = 'SELECT * FROM perso_forge WHERE id_perso = '.$perso->get_id().' LIMIT 0, 1';
+	$req = $db->query($requete);
+	if( $db->num_rows($req) )
 	{
 		$img = new interf_img('image/interface/livres/iconeforge.png', 'Forge');
 		$tabs->add_onglet($img, 'livre.php?type=forge&action=onglet', 'tab_forge', 'invent', $type == 'forge');

@@ -5890,3 +5890,11 @@ INSERT INTO grimoire (prix, nom, type, id_apprend) VALUES (3000, "Manuel d'annea
 INSERT INTO grimoire (prix, nom, type, id_apprend) VALUES (3000, "Manuel d'anneau en or d'amplification magique", "forge", 369);
 INSERT INTO grimoire (prix, nom, type, id_apprend) VALUES (3500, "Manuel d'anneau en or d'ornement d'empoisonnement", "forge", 370);
 INSERT INTO grimoire (prix, nom, type, id_apprend) VALUES (3500, "Manuel d'anneau en or d'ornement anti-paralysie", "forge", 371);
+
+-- Recettes de forge connues par les personnages
+CREATE TABLE IF NOT EXISTS `perso_forge` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_recette` int(11) NOT NULL,
+  `id_perso` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

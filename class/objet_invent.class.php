@@ -381,7 +381,7 @@ abstract class objet_invent extends table
   function est_enchassable() { return false; }
 
   /// Indique si l'objet est modifiable par la forge
-  function est_enchassable() { return false; }
+  function est_modifiable() { return false; }
 
   /**
    * Utilise l'objet

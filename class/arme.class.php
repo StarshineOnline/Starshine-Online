@@ -223,6 +223,11 @@ class arme extends objet_equip
     else
       $noms[] = 'Coeff.';
     $noms[] = 'Portée';
+    if( $this->modification )
+    {
+    	$noms[] = 'Bonus';
+    	$noms[] = 'Malus';
+		}
     $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
     return $noms;
   }
@@ -240,6 +245,11 @@ class arme extends objet_equip
     if( $complet )
       $vals[] = $this->forcex;
     $vals[] = $this->distance_tir;
+    if( $this->modification )
+    {
+    	$noms[] = $this->modification->get_descr_bonus();
+    	$noms[] = $this->modification->get_descr_malus();
+		}
     $vals[] = $this->prix;
     return $vals;
   }

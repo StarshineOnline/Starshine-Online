@@ -145,6 +145,11 @@ class armure extends objet_invent
   {
     $noms = array('PP', 'PM');
     $noms[] = $complet ? 'Force nécessaire' : 'Force';
+    if( $this->modification )
+    {
+    	$noms[] = 'Bonus';
+    	$noms[] = 'Malus';
+		}
     $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
     return $noms;
   }
@@ -155,7 +160,13 @@ class armure extends objet_invent
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->PP, $this->PM, $this->forcex, $this->prix);
+    $vals = array($this->PP, $this->PM, $this->forcex);
+    if( $this->modification )
+    {
+    	$noms[] = $this->modification->get_descr_bonus();
+    	$noms[] = $this->modification->get_descr_malus();
+		}
+		$vals[] = $this->prix;
     return $vals;
   }
 

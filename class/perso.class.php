@@ -758,7 +758,7 @@ class perso extends entite
 			return $this->melee;
 		else
 		{
-			$melee = $this->melee + $this->get_bonus_permanents('melee')
+			$melee = $this->melee + $this->get_bonus_permanents('melee');
 			$melee *= 1 + $this->get_bonus_permanents('mult_melee')/100;
 			$melee /= 1 + $this->get_bonus_permanents('div_melee')/100;
 			return round($melee);
@@ -777,7 +777,7 @@ class perso extends entite
 			return $this->distance;
 		else
 		{
-			$distance = $this->distance + $this->get_bonus_permanents('distance')
+			$distance = $this->distance + $this->get_bonus_permanents('distance');
 			$distance *= 1 + $this->get_bonus_permanents('mult_distance')/100;
 			$distance /= 1 + $this->get_bonus_permanents('div_distance')/100;
 			return round($distance);
@@ -796,7 +796,7 @@ class perso extends entite
 			return $this->esquive;
 		else
 		{
-			$esquive = $this->esquive + $this->get_bonus_permanents('esquive')
+			$esquive = $this->esquive + $this->get_bonus_permanents('esquive');
 			$esquive *= 1 + $this->get_bonus_permanents('mult_esquive')/100;
 			$esquive /= 1 + $this->get_bonus_permanents('div_esquive')/100;
 			return round($esquive);
@@ -815,7 +815,7 @@ class perso extends entite
 			return $this->blocage;
 		else
 		{
-			$blocage = $this->blocage + $this->get_bonus_permanents('blocage')
+			$blocage = $this->blocage + $this->get_bonus_permanents('blocage');
 			$blocage *= 1 + $this->get_bonus_permanents('mult_blocage')/100;
 			$blocage /= 1 + $this->get_bonus_permanents('div_blocage')/100;
 			return round($blocage);
@@ -834,7 +834,7 @@ class perso extends entite
 			return $this->incantation;
 		else
 		{
-			$incantation = $this->incantation + $this->get_bonus_permanents('incantation')
+			$incantation = $this->incantation + $this->get_bonus_permanents('incantation');
 			$incantation *= 1 + $this->get_bonus_permanents('mult_incantation')/100;
 			$incantation /= 1 + $this->get_bonus_permanents('div_incantation')/100;
 			return round($incantation);
@@ -853,7 +853,7 @@ class perso extends entite
 			return $this->sort_vie;
 		else
 		{
-			$sort_vie = $this->sort_vie + $this->get_bonus_permanents('sort_vie')
+			$sort_vie = $this->sort_vie + $this->get_bonus_permanents('sort_vie');
 			$sort_vie *= 1 + $this->get_bonus_permanents('mult_sort_vie')/100;
 			$sort_vie /= 1 + $this->get_bonus_permanents('div_sort_vie')/100;
 			return round($sort_vie);
@@ -872,7 +872,7 @@ class perso extends entite
 			return $this->sort_element;
 		else
 		{
-			$sort_element = $this->sort_element + $this->get_bonus_permanents('sort_element')
+			$sort_element = $this->sort_element + $this->get_bonus_permanents('sort_element');
 			$sort_element *= 1 + $this->get_bonus_permanents('mult_sort_element')/100;
 			$sort_element /= 1 + $this->get_bonus_permanents('div_sort_element')/100;
 			return round($sort_element);
@@ -891,7 +891,7 @@ class perso extends entite
 			return $this->sort_mort;
 		else
 		{
-			$sort_mort = $this->sort_mort + $this->get_bonus_permanents('sort_mort')
+			$sort_mort = $this->sort_mort + $this->get_bonus_permanents('sort_mort');
 			$sort_mort *= 1 + $this->get_bonus_permanents('mult_sort_mort')/100;
 			$sort_mort /= 1 + $this->get_bonus_permanents('div_sort_mort')/100;
 			return round($sort_mort);
