@@ -437,7 +437,7 @@ class sort_combat extends sort
 
   /**
    * Méthode gérant les coups critiques
-   * @param  $actif   Personnage utuilisant la coméptence
+   * @param  $actif   Personnage utilisant la compétence
    * @param  $passif  Personnage adverse
    * @param  $degat   Facteur de dégats de base.
    */
@@ -464,9 +464,10 @@ class sort_combat extends sort
     	$degat_avant = $degat;
     	$degat = round($degat / $puissance);
     	$attaque->get_interface()->reduction($degat_avant - $degat, 'la puissance');
+    	$attaque->set_degats($degat);
+			$attaque->applique_effet('inflige_critique_magique');
   	}
 
-    $attaque->set_degats($degat);
     return $degat;
   }
 	// @}

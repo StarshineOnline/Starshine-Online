@@ -356,6 +356,8 @@ class comp_combat extends comp
 		interf_debug::enregistre('Dégâts de base : '.$attaque->get_degats().', multiplicateur : '.$multiplicateur);
     $attaque->mult_degats($multiplicateur);
 		$degat_avant = round($degat_avant * $multiplicateur);
+		if( $multiplicateur > 1 )
+			$attaque->applique_effet('inflige_critique');
 
     $degat = $attaque->get_degats();
 		$reduction = $degat_avant - $degat;

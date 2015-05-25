@@ -146,6 +146,10 @@ class forge_toucher extends effet_forge
 	{
 		$attaque->valeur *= $this->effet;
 	}
+	function calcul_attaque_magique(&$attaque)
+	{
+		$attaque->valeur *= $this->effet;
+	}
 }
 
 class forge_coup_bouclier extends effet_forge
@@ -318,8 +322,9 @@ class forge_surcharge extends effet_forge
 	{
 		if( $this->type & self::comp && comp_sort::test_de($this->effet, 100) )
 		{
-			$attaque->get_interface()->effet(33,  2, '', $cible->get_nom());
-			$attaque->add_log_effet_actif('&ef33~'. 2);
+			$cible = $attaque->get_actif();
+			$attaque->get_interface()->effet(33, $this->effet, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef33~'.$this->effet);
 			$cible->set_hp( $cible->get_hp() - $this->effet );
 		}
 	}
@@ -327,9 +332,139 @@ class forge_surcharge extends effet_forge
 	{
 		if( $this->type & self::sort && comp_sort::test_de($this->effet, 100) )
 		{
+			$cible = $attaque->get_actif();
+			$attaque->get_interface()->effet(33, $this->effet, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef33~'.$this->effet);
+			$cible->set_hp( $cible->get_hp() - $this->effet );
+		}
+	}
+}
+
+class forge_malediction extends effet_forge
+{
+	function __construct($chances, $effet)
+	{
+		$this->effet = $effet;
+		$this->chances = $chances;
+	}
+	function rate(&$attaque)
+	{
+		$cible = $attaque->get_actif();
+		$chances = 10 + 5 * $this->effet;
+		if( comp_sort::test_de($this->chances, 100) )
+		{
 			$attaque->get_interface()->effet(33,  2, '', $cible->get_nom());
 			$attaque->add_log_effet_actif('&ef33~'. 2);
 			$cible->set_hp( $cible->get_hp() - $this->effet );
+		}
+	}
+}
+
+class forge_etourdit extends effet_forge
+{
+	protected $type;
+	protected $chances;
+	function __construct($effet, $cible_passif=true , $type=3)
+	{
+		$this->chances = $chances;
+		$this->effet = $effet;
+		$this->type = $type;
+	}
+	function inflige_degats(&$attaque)
+	{
+		if( $this->type & self::comp && comp_sort::test_de($this->effet, 100) )
+		{
+			$cible = $this->get_cible();
+			$attaque->get_interface()->effet(34, 1, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef34~'. 1);
+			$cible->etat['etourdit']['effet'] = 1;
+			$cible->etat['etourdit']['duree'] = 1;
+		}
+	}
+	function inflige_degats_magiques(&$attaque)
+	{
+		if( $this->type & self::sort && comp_sort::test_de($this->effet, 100) )
+		{
+			$cible = $this->get_cible();
+			$attaque->get_interface()->effet(34, 1, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef34~'. 1);
+			$cible->etat['etourdit']['effet'] = 1;
+			$cible->etat['etourdit']['duree'] = 1;
+		}
+	}
+}
+
+class forge_enflame extends effet_forge
+{
+  function fin_round(&$attaque )
+	{
+		if( comp_sort::test_de($this->effet, 100) )
+		{
+			$attaque->get_interface()->effet(18, 1, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef18~'.1);
+			$cible->set_hp( $cible->get_hp() - 1 );
+		}
+	}
+}
+
+class forge_lancer extends effet_forge
+{
+	function debut_round(&$attaque)
+	{
+		$potentiel = $attaque->get_actif->get_potentiel_lancer_magique() * $this->effet;
+		$attaque->get_actif->set_potentiel_lancer_magique( $potentiel );
+	}
+}
+
+class forge_etourdit_blocage extends effet_forge
+{
+	function applique_bloquage(&$attaque)
+	{
+		$cible = $this->get_cible();
+		$attaque->get_interface()->effet(34, 1, '', $cible->get_nom());
+		$attaque->add_log_effet_actif('&ef34~'. 1);
+		$cible->etat['etourdit']['effet'] = 1;
+		$cible->etat['etourdit']['duree'] = 1;
+	}
+}
+
+class forge_mirroir_critique extends effet_forge
+{
+	function inflige_critique(&$attaque)
+	{
+		if( comp_sort::test_de($this->effet, 100) )
+		{
+			$cible->get_actif();
+			$degats = $attaque->get_degats();
+			$attaque->get_interface()->effet(33, $degats, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef33~'.$degats);
+			$cible->set_hp( $cible->get_hp() - $degats );
+		}
+	}
+	function inflige_critique_magique(&$attaque)
+	{
+		if( comp_sort::test_de($this->effet, 100) )
+		{
+			$cible->get_actif();
+			$degats = $attaque->get_degats();
+			$attaque->get_interface()->effet(33, $degats, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef33~'.$degats);
+			$cible->set_hp( $cible->get_hp() - $degats );
+		}
+	}
+}
+
+class forge_maladresse extends effet_forge
+{
+	function rate(&$attaque)
+	{
+		$cible = $attaque->get_actif();
+		if( comp_sort::test_de($chances, 100) )
+		{
+			$attaque->get_interface()->effet(35,  $this->effet, '', $cible->get_nom());
+			$attaque->add_log_effet_actif('&ef35~'. $this->effet);
+			$passif->etat['desarme']['effet'] = true;
+			$passif->etat['desarme']['duree'] = 1;
 		}
 	}
 }

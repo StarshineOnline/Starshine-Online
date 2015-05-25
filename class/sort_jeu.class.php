@@ -348,6 +348,36 @@ class sort_debuff extends sort_jeu
           $duree = $this->get_duree();
           if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
             $duree *= $soufr_ext->get_effet();
+          // Malus de forge
+          if( $mod = $cible->get_bonus_permanents('duree_debuff_subis') )
+          {
+          	$duree *= 1 + $mod / 100;
+					}
+          if( $chances = $cible->get_bonus_permanents('double_debuff') )
+          {
+          	if( comp_sort::test_de($chances, 100) )
+          	{      		
+					    // Suppression d'un debuff au hasard
+					    if($cible->is_buff())
+					    {
+					      $buff_tab = array();
+					      foreach($cible->get_buff() as $buff)
+					      {
+					        if( !$buff->get_debuff() && $buff->is_supprimable() )
+					          $buff_tab[] = $buff->get_id();
+					      }
+					      $db->query("DELETE FROM buff WHERE id=".$debuff_tab[rand(0, count($debuff_tab)-1)].";");
+					    }
+						}
+					}
+          if( $chances = $cible->get_bonus_permanents('debuf_mana') )
+          {
+          	if( comp_sort::test_de($chances, 100) )
+          	{
+          		$mana = $cible->get_mp();
+          		$cible->set_mp( max($mana-20, 0) );
+						}
+					}
           //Mis en place du debuff pour tous
           if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 1, 0, 0))
           {

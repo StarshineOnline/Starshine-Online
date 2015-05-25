@@ -300,6 +300,15 @@ class interf_combat extends interf_bal_cont
 		case 33: // retour
 			$texte =  $nom_passif.' subit '.$effet.' dégâts en retour.';
 			$classe = 'degat';
+			break;
+		case 34:  // étourdissement
+			$texte =  'Le coup étourdit '.$nom_passif.' pour '.$effet.' round'.($effet>1?'s':'').' !';
+			$classe = 'effet';
+			break;
+		case 35:  // désarmement
+			$texte =  $nom_passif.' est désarmé !';
+			$classe = 'effet';
+			break;
 		default:
 			return;
 		}

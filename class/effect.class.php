@@ -403,6 +403,18 @@ class effect
    */ 
   function inflige_degats_magiques(&$attaque) { }
   /**
+   * Applique les effets ayant lieu lorsqu'un critique est infilge
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function inflige_critique(&$attaque) {  }
+  /**
+   * Applique les effets ayant lieu lorsqu'un critique magique est infilge
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function inflige_critique_magique(&$attaque) {  }
+  /**
    * Applique les effets ayant lieu lorsque l'attaque est ratée
    * 
    * @param  $attaque		Objet contenant les paramètres du combat

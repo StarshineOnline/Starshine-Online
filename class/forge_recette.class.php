@@ -309,19 +309,23 @@ class forge_recette extends table
 			$perso->add_effet_permanent('attaquant', new forge_toucher(10+5*$this->effet_bonus, $this->effet_bonus);
 			break;
 		case 'malediction': // 10+10*X% de chance de subir X lors d'une attaque ratée
+			$perso->add_effet_permanent('attaquant', new forge_malediction(10+10*$this->effet_bonus, $this->effet_bonus);
 			break;
 		case 'blocage_etourdissant': // X% de chance d'être étourdi un round après avoir bloqué
+			$perso->add_effet_permanent('attaquant', new forge_malediction($this->effet_bonus, false);
 			break;
 		case 'armure': // -X% PP et PM
 			$perso->add_bonus_permanents('div_pp', $this->effet_bonus);
 			$perso->add_bonus_permanents('div_pm', $this->effet_bonus);
 			break;
 		case 'enflamme': // X% de chance de subir 1 dégat chaque round
+			$perso->add_effet_permanent('attaquant', new forge_enflame($this->effet_bonus));
 			break;
 		case 'rm_mag': // X% de perdre 1 RM à chaque sort lancé
 			$perso->add_effet_permanent('attaquant', new forge_rm($this->effet_bonus, 1, false));
 			break;
 		case 'magie_etourdissante': // X% d'être étourdi 1 round après avoir infligé des dégâts avec un sort
+			$perso->add_effet_permanent('attaquant', new forge_malediction($this->effet_bonus, false, effet_forge::sort));
 			break;
 		case 'lancer': // -X% au potentiel lancer et toucher magique
 			$perso->add_bonus_permanents('div_incantation', $this->effet_bonus);
@@ -330,8 +334,10 @@ class forge_recette extends table
 			$perso->add_bonus_permanents('div_sort_mort', $this->effet_bonus);
 			break;
 		case 'mirroir_critique': // X% de s'infliger autant de dégât qu'à l'adversaire en cas de critique
+			$perso->add_effet_permanent('attaquant', new forge_mirroir_critique($this->effet_bonus));
 			break;
 		case 'maladresse': // X% de chance d'être désarmé après avoir raté une attaque
+			$perso->add_effet_permanent('attaquant', new forge_maladresse($this->effet_bonus));
 			break;
 		case 'critique_mag_adv': // +X% chances de critique magique à l'adversaire 
 			$perso->add_effet_permanent('defenseur', new forge_critique(1 + $this->effet_bonus / 100, forge_critique::sort );
@@ -339,13 +345,17 @@ class forge_recette extends table
 		case 'rm': // X% de chance que les compétences et sorts coutent 1 RM de plus
 			$perso->add_effet_permanent('attaquant', new forge_rm($this->effet_bonus, 1, true));
 			break;
-		case 'duree_debuff': // +X% à la durée des débuffs subis
+		case 'duree_debuff_subis': // +X% à la durée des débuffs subis
+			$perso->add_bonus_permanents('duree_debuff', $this->effet_bonus);
 			break;
 		case 'double_debuff': // X% d'avoir un buff supprimé en plus de subir le débuff
+			$perso->add_bonus_permanents('double_debuff', $this->effet_bonus);
 			break;
-		case 'debuf_mana': // X% de perdre 20 de mana quand  un débuff est subi
+		case 'debuf_mana': // X% de perdre 20 de mana quand un débuff est subi
+			$perso->add_bonus_permanents('debuf_mana', $this->effet_bonus);
 			break;
 		case 'attaque_etourdissante': // X% d'être assomé un round après une attaque ou un sort réussi
+			$perso->add_effet_permanent('attaquant', new forge_malediction($this->effet_bonus, false));
 			break;
 		case 'surcharge_mag': // X% de subir 10 dégat après un critique magique
 			$perso->add_effet_permanent('defenseur', new forge_surcharge(10+10*$this->effet_bonus, $this->effet_bonus*5, forge_surcharge::sort));
@@ -361,8 +371,10 @@ class forge_recette extends table
 			$perso->add_bonus_permanents('div_distance', $this->effet_bonus);
 			break;
 		case 'degats_etourdissants': // X% de chances d'être assomé un round quand on subit des dégats physiques
+			$perso->add_effet_permanent('defenseur', new forge_malediction($this->effet_bonus));
 			break;
 		case 'lancer_adv': // + X% au potentiel lancer et toucher magique de l'adversaire
+			$perso->add_effet_permanent('defenseur', new forge_lancer( 1 + $this->effet_bonus/100 );
 			break;
 		case 'anticipation_adv': // -X au chances d'anticiper de l'adversaire
 			$perso->add_effet_permanent('defenseur', new forge_anticipation( -$this->effet_bonus );
