@@ -171,16 +171,31 @@ class interf_carte extends interf_tableau
 	    if( $y > 190 ) // Calque donjon
 	    {
 	    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-noir'.($cache?'plannysin':'').'.png';
-	    	$c_jour = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
-	    	$c_jour->set_attribut('style', 'background-image: url('.$image.');');
+	    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+	    	$c_donj->set_attribut('style', 'background-image: url('.$image.');');
 			}
 			else
 			{
 				if( $options & self::aff_jour )
 				{
 		    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-vide-'.strtolower(moment_jour()).'.png';
-		    	$c_donj = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
-		    	$c_donj->set_attribut('style', 'background-image: url('.$image.');');
+		    	$c_jour = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+		    	$c_jour->set_attribut('style', 'background-image: url('.$image.');');
+				}
+				if( $options & self::aff_atmosphere )
+				{
+					$requete = 'SELECT * FROM map_zone WHERE x1 < '.$this->x_max.' AND x2 > '.$this->x_min.' AND y1 < '.$this->y_max.' AND y2 > '.$this->y_min;
+					$req = $db->query($requete);
+					while( $row = $db->read_assoc($req) )
+					{
+			    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-'.$row['type'].'.png';
+			    	$c_atm = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
+			    	$dx = ($this->x_min - $row['x1'])*60;
+			    	$dy = ($this->y_min - $row['y1'])*60;
+			    	$larg = (min($row['x2'], $this->x_max) - $this->x_min + 1) * 60;
+			    	$haut = (min($row['y2'], $this->y_max) - $this->y_min + 1) * 60;
+			    	$c_atm->set_attribut('style', 'background-image: url('.$image.'); background-repeat: repeat;background-position: '.$dx.'px '.$dy.'px; width:'.$larg.'px; height: '.$haut.'px;');
+					}
 				}
 			}
 		}
