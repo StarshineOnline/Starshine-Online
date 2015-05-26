@@ -229,15 +229,75 @@ class quete_perso extends table
 						$avancements[$i] = implode(':', $valeur);
 						$qp->set_avancement( implode(';', $avancements) );
 					}
+					// Si la copération est à royaume on reagarde les autres membres du royaume (hors groupe)
+					if( $etape->get_collaboration() == "royaume" && $mode == 's' )
+					{
+						/// @todo à améliorer
+						$requete = 'SELECT p.* FROM perso AS p INNER JOIN quete_perso AS qp ON qp.id_perso = p.id WHERE p.race = "'.$perso->get_race().'" AND qp.id_etape = '.$qp->get_id_etape().' AND ';
+						if( $perso->get_groupe() )
+							$requete .= 'p.groupe != '.$perso->get_groupe();
+						else
+							$requete .= 'p.id != '.$perso->get_id();
+						$req = $db->query($requete);
+						while( $row = $db->read_assoc($req) )
+						{
+							$p = new perso($row);
+							verif_action($type_cible, $p, 'r', $option);
+						}
+					}
 				}
 			}
 			if($a_verifier)
 			{
 				if( $qp->verifier() )
 				{
-					$etape->fin($perso, $option == ':silencieux');
-					$qp->perso = &$perso;
-					$qp->fin($option);
+					switch( $this->get_quete()->get_type() )
+					{
+					case 'royaume':
+					case 'groupe':
+						if( $perso->get_groupe() )
+						{
+							$requete = 'SELECT qp.*, p.id AS pid FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$this->id_quete;
+							$req = $db->query($requete);
+							while( $row = $db->read_assoc($req) )
+							{
+								$membre = $row['pid'] == $perso->get_id() ? &$perso : new perso($row['pid']);
+								$qpm = new quete_perso($row);
+								$etape->fin($membre, $option == ':silencieux');
+								$qpm->perso = &$membre;
+								$suiv = $qpm->fin($option);
+							}
+						}
+						else
+						{
+							$etape->fin($perso, $option == ':silencieux');
+							$qp->perso = &$perso;
+							$suiv = $qp->fin($option);
+						}
+						if( $this->get_quete()->get_type() == 'royaume' )
+						{
+							if( $suiv )
+							{ 
+								// si c'est une quête de royaume on avance pour les autres (hors membres du groupe pour qui c'est déjà fait)
+								if( $perso->get_groupe() )
+									$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.groupe != '.$perso->get_groupe();
+								else
+									$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.id_perso != '.$this->id_perso;
+								$req = $db->query($requete);
+							}
+							else
+							{
+								// si on fini une quête de royaume alors on la supprime pour tout le monde
+								$requete = 'DELETE FROM quete_perso WHERE id_quete = '.$this->id_quete;
+								$req = $db->query($requete);
+							}
+						}
+						break;
+					case 'individuel':
+						$etape->fin($perso, $option == ':silencieux');
+						$qp->perso = &$perso;
+						$qp->fin($option);
+					}
 				}
 				else
 					$qp->sauver();
@@ -246,6 +306,7 @@ class quete_perso extends table
 	}
 	protected function fin($option)
 	{
+		global $db;
 		$etape = $this->get_etape()->get_etape();
 		$nbr = $this->get_quete()->get_nombre_etape();
 		if( $etape < $nbr )
@@ -275,9 +336,13 @@ class quete_perso extends table
 			}
 			$this->set_id_etape( $nouv->get_id() );
 			$this->sauver();
+			return $nouv->get_id();
 		}
 		else
+		{
 			$this->supprimer();
+			return false;
+		}
 	}
 	function verif_inventaire()
 	{

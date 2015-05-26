@@ -3294,6 +3294,42 @@ class perso extends entite
 	function prend_quete($id_quete)
 	{
 		$quete = new quete($id_quete);
+		// quêtes prises pour tout le groupe en même temps
+		$etape = 1;
+		switch( $quete->get_type() )
+		{
+		case 'royaume':
+			/// @todo passer à l'objet
+			$requete = 'SELECT id_etape, qe.id FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.race ="'.$this->race.'" AND qp.id_quete = '.$quete->get_id().' ORDER ON qe.etape DESC LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			if( $row )
+					$etape = $row[0];
+		case 'groupe':
+			if( $groupe=$this->get_groupe() )
+			{
+				$groupe = new groupe($groupe);
+				/// @todo passer à l'objet
+				$requete = 'SELECT id_etape FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.groupe = '.$this->groupe.' AND qp.id_quete = '.$quete->get_id().' ORDER ON qe.etape DESC LIMIT 1';
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				if( $row )
+					$etape = max($row[0], $etape);
+				
+				$etape = quete_etape::create(array('id_quete', 'etape'), array($quete->get_id(), $etape))[0];
+				foreach($groupe->membre_joueur as $membre)
+				{
+					if( $membre->get_id() == $this->id )
+						continue;
+					$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $membre->get_id()));
+					if( !$qp && $quete->a_requis($membre) )
+					{
+						$qp = new quete_perso($membre->id, $quete, $etape->get_id());
+						$qp->sauver();
+					}
+				}
+			}
+		}
 		//Vérifie si le joueur n'a pas déjà pris la quête.
 		$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $this->get_id()));
 		if( $qp )
