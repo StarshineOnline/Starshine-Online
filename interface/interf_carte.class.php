@@ -382,6 +382,8 @@ class interf_carte extends interf_tableau
     $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat, $royaumes);
     foreach($bats as $b)
     {
+    	if( $b->get_quete() && !count(quete_perso::create(array('id_etape', 'id_perso'), array($b->get_quete(), $perso->get_id()))) )
+    			continue;
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
       $race = $this->races[$b->royaume];
@@ -465,10 +467,12 @@ class interf_carte extends interf_tableau
     $pos = array();
     $perso = joueur::get_perso();
     /// @todo à améliorer
-    $requete = 'SELECT x, y, lib, nom, COUNT(*) AS nbr FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y, lib ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT x, y, lib, nom, quete, COUNT(*) AS nbr FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND x != '.$perso->get_x().' AND y != '.$perso->get_y().' AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y, lib ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
+    	if( $row['quete'] && !count(quete_perso::create(array('id_etape', 'id_perso'), array($row['quete'], $perso->get_id()))) )
+    			continue;
     	$cle = $row->x.'_'.$row->y;
       $this->infos[$row->y][$row->x] .= '<li><span class=\'info_monstre\'>Monstre</span> '.$row->nom.' x '.$row->nbr.'</li>';
       if( !array_key_exists($cle, $pos) )

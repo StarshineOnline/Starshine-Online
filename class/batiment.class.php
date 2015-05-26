@@ -26,6 +26,7 @@ class batiment extends entitenj_def
 	protected $temps_construction_min;///< Temps de construction minimal du bâtiment.
 	protected $image;  ///< Image du bâtiment.
 	protected $point_victoire;  ///< Points de victoire gagnés lors de la destruction du bâtiment.
+	protected $quete;  ///< id de l'étape de la quête liée au bâtiment
 
 	/// Renvoie le coût d'achat en stars du bâtiment
 	function get_cout()
@@ -171,6 +172,11 @@ class batiment extends entitenj_def
 		$this->champs_modif[] = 'point_victoire';
 	}
 	
+	function get_quete()
+	{
+		return $this->quete;
+	}
+	
 	/**
 	* Renvoie la PP de l'entité
 	* @deprecated Utiliser get_pp() à la place
@@ -241,7 +247,7 @@ class batiment extends entitenj_def
 	 * @param  $image                 	Image du bâtiment.
 	 * @param  $point_victoire        	Points de victoire gagnés lors de la destruction du bâtiment.
 	 */
-	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '',$temps_construction_min = '', $image = '', $point_victoire = '')
+	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '',$temps_construction_min = '', $image = '', $point_victoire = '', $quete = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -261,6 +267,8 @@ class batiment extends entitenj_def
 			$this->temps_construction = $temps_construction;
 			$this->temps_construction_min = $temps_construction_min;
 			$this->image = $image;
+			$this->point_victoire = $point_victoire;
+			$this->quete = $quete;
 		}
 	}
 
@@ -282,22 +290,23 @@ class batiment extends entitenj_def
 		$this->temps_construction_min = $vals['temps_construction_min'];
 		$this->image = $vals['image'];
 		$this->point_victoire = $vals['point_victoire'];
+		$this->quete = $vals['quete'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction,temps_construction_min, image, point_victoire';
+    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction,temps_construction_min, image, point_victoire, quete';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->temps_construction_min.', '.$this->image.', '.$this->point_victoire;
+		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->temps_construction_min.', '.$this->image.', '.$this->point_victoire.', '.$this->quete;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', temps_construction_min = '.$this->temps_construction_min.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
+		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', temps_construction_min = '.$this->temps_construction_min.', image = '.$this->image.', point_victoire = '.$this->point_victoire.', quete = '.$this->quete;
 	}
 	// @}
 

@@ -21,12 +21,13 @@ class quete_etape extends quete
 	protected $requis;  ///< requis pour réaliser le choix de la variante de l'étape.
 	protected $gain_perso;  ///< gain solo
 	protected $gain_groupe;  ///< gain de groupe
+	protected $gain_royaume;  ///< gain du royaume
 	
 
 	/**
 	* Constructeur
 	*/
-	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='')
+	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='', $gain_groupe ='')
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -47,6 +48,7 @@ class quete_etape extends quete
 			$this->requis = $requis;
 			$this->gain_perso = $gain_perso;
 			$this->gain_groupe = $gain_groupe;
+			$this->gain_royaume = $gain_royaume;
 
 		}
 	}	
@@ -69,6 +71,7 @@ class quete_etape extends quete
 		$this->requis = $vals['requis'];
 		$this->gain_perso = $vals['gain_perso'];
 		$this->gain_groupe = $vals['gain_groupe'];
+		$this->gain_royaume = $vals['gain_royaume'];
 	}
 				
 	// Renvoie le id de l'objet
@@ -355,12 +358,20 @@ class quete_etape extends quete
 					$row_r = $db->read_assoc($req_r);
 					$texte[] = ' recette de '.$row_r['nom'].' X '.$reward_nb;
 					//On lui donne la recette
-					$requete = "INSERT INTO perso_recette VALUES(NULL, ".$reward_id_objet.", ".$joueur->get_id().", 0)";
+					$requete = "INSERT INTO perso_recette VALUES(NULL, ".$reward_id_objet.", ".$perso->get_id().", 0)";
 					$db->query($requete);
 				}
 				break;
-			/*case 'f':  // recette de forge
-				break;*/
+			case 'f':  // recette de forge
+				/// @todo passer à l'objet
+				$requete = 'SELECT * FROM perso_forge WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$gains;
+				$req = $db->query($requete);
+				if( $db->num_rows == 0 )
+				{
+					$requete = 'INSERT INTO perso_forge (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$gains.')';
+					$req = $db->query($requete);
+				}
+				break;
 			// @todo b : (de)buff
 			case 't': // achievement
 				$joueur->unlock_achiev($gains);
@@ -382,6 +393,66 @@ class quete_etape extends quete
 			$perso->set_quete_fini(implode(';', $quete_fini));
 		}
 		$perso->sauver();
+	}
+	function gain_groupe(&$perso)
+	{
+		/// @todo à faire
+	}
+	function gain_royaume(&$perso)
+	{
+		global $Trace;
+		if( $this->get_gain_royaume() )
+		{
+			$royaume = new royaume( $Trace[$perso->get_race()]['numrace'] );
+			$gains = explode(';', $this->get_gain_royaume());
+			foreach($gains as $recomp)
+			{
+				$gains = mb_substr($recomp, 1);
+				switch( $recomp[0] )
+				{
+				case 's': // stars
+					$royaume->set_star( $royaume->get_star() + $gains );
+					break;
+				case 'p': // pierre
+					$royaume->set_pierre( $royaume->get_pierre() + $gains );
+					break;
+				case 'a': // sable
+					$royaume->set_sable( $royaume->get_sable() + $gains );
+					break;
+				case 'b': // bois
+					$royaume->set_bois( $royaume->get_bois() + $gains );
+					break;
+				case 'e': // eau
+					$royaume->set_eau( $royaume->get_eau() + $gains );
+					break;
+				case 'c': // charbon
+					$royaume->set_charbon( $royaume->get_charbon() + $gains );
+					break;
+				case 'm': // essence magique
+					$royaume->set_essence( $royaume->get_essence() + $gains );
+					break;
+				case 'n': // nourriture
+					$royaume->set_food( $royaume->get_food() + $gains );
+					break;
+				case 'v': // points de victoire
+					$royaume->set_point_victoire_total( $royaume->get_point_victoire_total() + $gains );
+					break;
+				case 'r': // points de royaume
+					$royaume->set_point_victoire( $royaume->get_point_victoire() + $gains );
+					break;
+				case 'o': // objet dans le quartier général
+					$gains = explode('*', $gains);
+					$nbr = count($gains) > 1 ? $gains[1] : 1;
+					for($i=0; $i<$nbr; $i++)
+					{
+						$requete = 'INSERT INTO depot_royaume (id_objet, id_royaume) VALUES ('.$gains[0].', '.$royaume->get_id().')';
+						$db->query($requete);
+					}
+					break;
+				}
+			}
+			$royaume->sauver();
+		}
 	}
 	function verif_inventaire(&$perso)
 	{

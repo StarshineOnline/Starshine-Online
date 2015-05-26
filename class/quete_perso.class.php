@@ -229,7 +229,7 @@ class quete_perso extends table
 						$avancements[$i] = implode(':', $valeur);
 						$qp->set_avancement( implode(';', $avancements) );
 					}
-					// Si la copération est à royaume on reagarde les autres membres du royaume (hors groupe)
+					// Si la copération est à royaume on regarde les autres membres du royaume (hors groupe)
 					if( $etape->get_collaboration() == "royaume" && $mode == 's' )
 					{
 						/// @todo à améliorer
@@ -251,45 +251,54 @@ class quete_perso extends table
 			{
 				if( $qp->verifier() )
 				{
+					if( $mode == 's' )
+					{
+						$etape->gain_groupe($perso);
+						$etape->gain_royaume($perso);
+					}
 					switch( $this->get_quete()->get_type() )
 					{
 					case 'royaume':
 					case 'groupe':
-						if( $perso->get_groupe() )
+						if( $mode == 's' )
 						{
-							$requete = 'SELECT qp.*, p.id AS pid FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$this->id_quete;
-							$req = $db->query($requete);
-							while( $row = $db->read_assoc($req) )
+							if( $perso->get_groupe() )
 							{
-								$membre = $row['pid'] == $perso->get_id() ? &$perso : new perso($row['pid']);
-								$qpm = new quete_perso($row);
-								$etape->fin($membre, $option == ':silencieux');
-								$qpm->perso = &$membre;
-								$suiv = $qpm->fin($option);
-							}
-						}
-						else
-						{
-							$etape->fin($perso, $option == ':silencieux');
-							$qp->perso = &$perso;
-							$suiv = $qp->fin($option);
-						}
-						if( $this->get_quete()->get_type() == 'royaume' )
-						{
-							if( $suiv )
-							{ 
-								// si c'est une quête de royaume on avance pour les autres (hors membres du groupe pour qui c'est déjà fait)
-								if( $perso->get_groupe() )
-									$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.groupe != '.$perso->get_groupe();
-								else
-									$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.id_perso != '.$this->id_perso;
+								$requete = 'SELECT qp.*, p.id AS pid FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$this->id_quete;
 								$req = $db->query($requete);
+								while( $row = $db->read_assoc($req) )
+								{
+									$membre = $row['pid'] == $perso->get_id() ? &$perso : new perso($row['pid']);
+									$qpm = new quete_perso($row);
+									$etape->fin($membre, $option == ':silencieux');
+									$qpm->perso = &$membre;
+									$suiv = $qpm->fin($option);
+								}
 							}
 							else
 							{
-								// si on fini une quête de royaume alors on la supprime pour tout le monde
-								$requete = 'DELETE FROM quete_perso WHERE id_quete = '.$this->id_quete;
-								$req = $db->query($requete);
+								$etape->fin($perso, $option == ':silencieux');
+								$qp->perso = &$perso;
+								$suiv = $qp->fin($option);
+							}
+							if( $this->get_quete()->get_type() == 'royaume' )
+							{
+								if( $suiv )
+								{ 
+									// si c'est une quête de royaume on avance pour les autres (hors membres du groupe pour qui c'est déjà fait)
+									if( $perso->get_groupe() )
+										$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.groupe != '.$perso->get_groupe();
+									else
+										$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.id_perso != '.$this->id_perso;
+									$req = $db->query($requete);
+								}
+								else
+								{
+									// si on fini une quête de royaume alors on la supprime pour tout le monde
+									/// @todo mettre une ligne dans le journal
+									$requete = 'DELETE FROM quete_perso WHERE id_quete = '.$this->id_quete;
+									$req = $db->query($requete);
+								}
 							}
 						}
 						break;

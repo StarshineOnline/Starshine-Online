@@ -7,6 +7,9 @@ ALTER TABLE `buff_batiment` ADD `id_perso` INT NOT NULL DEFAULT '0';
 -- Modification de la compétence de rang 4
 UPDATE comp_jeu SET cible = 7 WHERE type LIKE 'sabotage';
 
+-- Modification de la table bâtiment (pour les quêtes)
+ALTER TABLE `batiment` ADD `quete` INT NULL DEFAULT NULL ;
+
 -- Définitions des (de)buffs de bâtiments
 CREATE TABLE IF NOT EXISTS `buff_batiment_def` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

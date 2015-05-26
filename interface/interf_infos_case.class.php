@@ -118,6 +118,8 @@ class interf_infos_case extends interf_cont
 		foreach($placements as $plac)
 		{
 			$bat = $plac->get_def();
+    	if( $bat->get_quete() && !count(quete_perso::create(array('id_etape', 'id_perso'), array($bat->get_quete(), $perso->get_id()))) )
+    			continue;
 			$royaume = new royaume(  $plac->get_royaume() );
 			
 			$div = $this->add( new interf_bal_cont('div', false, 'info_case placement') );
@@ -333,20 +335,8 @@ class interf_infos_case extends interf_cont
 		{
 			// Monstre spécifiques à une quête
 			/// @todo à améliorer
-			if( $row->quete )
-			{
-				if( !isset($quetes) )
-        {
-          $quetes = array();
-          $lq = $this->perso->get_liste_quete();
-          foreach($lq as $q)
-          {
-            $quetes[] = $q->get_id();
-          }
-        }
-        if( !in_array($row->quete, $quete) )
-          continue;
-			}
+    	if( $row->quete && !count(quete_perso::create(array('id_etape', 'id_perso'), array($row->quete, $perso->get_id()))) )
+    			continue;
 			//$monstre = $m->get_def();
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case monstre') );
 			$lien = $li->add( new interf_lien_cont('info_monstre.php?id='.$row->id, false, 'info_elt') );

@@ -117,10 +117,12 @@ class interf_tour extends interf_batiment
 	
 		// Recherche des placements
 		/// @todo à améliorer
-		$requete = 'SELECT p.nom, p.x, p.y, p.hp, p.debut_placement, p.fin_placement, b.nom as nom_bat, b.image, b.type, b.hp AS hp_max, r.race, d.'.$this->perso->get_race().' AS diplo, GREATEST(ABS('.$this->tour->get_x().' - CAST(p.x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(p.y AS SIGNED))) as distance FROM	placement p INNER JOIN batiment b ON b.id = p.id_batiment INNER JOIN royaume r ON r.id = p.royaume INNER JOIN diplomatie AS d ON r.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, b.type, b.nom';
+		$requete = 'SELECT p.nom, p.x, p.y, p.hp, p.debut_placement, p.fin_placement, b.nom as nom_bat, b.image, b.type, b.hp AS hp_max, r.race, d.'.$this->perso->get_race().' AS diplo, GREATEST(ABS('.$this->tour->get_x().' - CAST(p.x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(p.y AS SIGNED))) as distance, quete FROM	placement p INNER JOIN batiment b ON b.id = p.id_batiment INNER JOIN royaume r ON r.id = p.royaume INNER JOIN diplomatie AS d ON r.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, b.type, b.nom';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
 		{
+			if( $row['quete'] && !count(quete_perso::create(array('id_etape', 'id_perso'), array($row['quete'], $perso->get_id()))) )
+    		continue;
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case placement') );
 			$li->add( new interf_img(placement::calc_image($row['image'], $row['type'], $row['debut_placement'], $row['fin_placement'])) );
 			$avanc = $li->add( new interf_jauge_bulle(false, time() - $row['debut_placement'], $row['fin_placement'] - $row['debut_placement'], false, 'avance', false, 'jauge_case') );
