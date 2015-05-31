@@ -22,12 +22,13 @@ class quete_etape extends quete
 	protected $gain_perso;  ///< gain solo
 	protected $gain_groupe;  ///< gain de groupe
 	protected $gain_royaume;  ///< gain du royaume
+	protected $init;  ///< action d'initialisation de l'étape
 	
 
 	/**
 	* Constructeur
 	*/
-	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='', $gain_groupe ='')
+	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='', $gain_groupe ='', $init='')
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -49,7 +50,7 @@ class quete_etape extends quete
 			$this->gain_perso = $gain_perso;
 			$this->gain_groupe = $gain_groupe;
 			$this->gain_royaume = $gain_royaume;
-
+			$this->init = $init;
 		}
 	}	
 
@@ -72,6 +73,7 @@ class quete_etape extends quete
 		$this->gain_perso = $vals['gain_perso'];
 		$this->gain_groupe = $vals['gain_groupe'];
 		$this->gain_royaume = $vals['gain_royaume'];
+		$this->init = $vals['init'];
 	}
 				
 	// Renvoie le id de l'objet
@@ -202,7 +204,7 @@ class quete_etape extends quete
 	{
 		$this->gain_perso = $gain_perso;
 		$this->champs_modif[] = 'gain_perso';
-	}	
+	}
 	
 	// Renvoie les gains pour le groupe
 	function get_gain_groupe()
@@ -215,6 +217,18 @@ class quete_etape extends quete
 	{
 		$this->gain_groupe = $gain_groupe;
 		$this->champs_modif[] = 'gain_groupe';
+	}
+	
+	// Renvoie les gains pour le royaume
+	function get_gain_royaume()
+	{
+		return $this->gain_royaume;
+	}
+	
+	// Renvoie les actions d'initialisation de l'étape
+	function get_init()
+	{
+		return $this->init;
 	}
 	
 	/// Calcul le gain obtenu parmis les différentes possibilités
@@ -449,6 +463,16 @@ class quete_etape extends quete
 						$db->query($requete);
 					}
 					break;
+				case 'x': // Supprimer un monstre
+					/// @todo passer à l'objet
+					$requete = 'DELETE FROM map_monstre WHERE type = '.$gains;
+					$db->query($requete);
+					break
+				case 'X': // Supprimer un bâtiment
+					/// @todo passer à l'objet
+					$requete = 'DELETE FROM construction WHERE id_batiment = '.$gains;
+					$db->query($requete);
+					break
 				}
 			}
 			$royaume->sauver();
@@ -476,5 +500,97 @@ class quete_etape extends quete
 			}
 		}
 		return $objets;
+	}
+	
+	function initialiser(&$perso)
+	{
+		global $db;
+		$init = explode(';', $this->init);
+		foreach($init as $act)
+		{
+			$param = explode(':', substr($act, 1));
+			$cond = count($param) > 1 ? explode(',', $param[1]) : array();
+			switch($act[0])
+			{
+			case 'C': // Création d'un bâtiment
+				// le bâtiment existe-t-il déjà ?
+				$constr = construction::create('id_batiment', $param[0]);
+				$agit = count($constr) == 0 || count( quete_etape::create('id_etape', $this->id) ) == 0;
+				if( $agit )
+				{
+					// choix de la case
+					$where = ' WHERE 1'.$this->cond_terrain($cond, $perso);
+					$requete = 'SELECT x, y FROM map '.$where.' ORDER BY RAND() LIMIT 1';
+					$req = $db->query();
+					$row = $db->read_assoc($req);
+					if( !$row )
+						return false;
+					if( $constr )
+					{
+						$constr[0]->set_x( $row['x'] );
+						$constr[0]->set_y( $row['y'] );
+						$constr[0]->sauver();
+					}
+					else
+					{
+						$bat = new batiment($param[0]);
+						$constr = new constuction(0, $param[0], $row['x'], $row['y'], 0, $bat->get_hp(), $bat->get_nom());
+						$constr->sauver();
+					}
+				}
+				break;
+			case 'c': // Création d'un monstre
+				// le monstre existe-t-il déjà ?
+				$mm = map_monstre::create('type', $param[0]);
+				$agit = count($mm) == 0 || count( quete_etape::create('id_etape', $this->id) ) == 0;
+				if( $agit )
+				{
+					// choix de la case
+					$where = ' WHERE 1'.$this->cond_terrain($cond, $perso);
+					$requete = 'SELECT x, y FROM map '.$where.' ORDER BY RAND() LIMIT 1';
+					$req = $db->query();
+					$row = $db->read_assoc($req);
+					if( !$row )
+						return false;
+					if( $mm )
+					{
+						$mm[0]->set_x( $row['x'] );
+						$mm[0]->set_y( $row['y'] );
+						$mm[0]->sauver();
+					}
+					else
+					{
+						$monstre = new monstre($param[0]);
+						$mm = new map_monstre(0, $param[0], $row['x'], $row['y'], 0, $monstre->get_hp(), $monstre->get_level(), $monstre->get_nom(), $monstre->get_lib(), '99999999999');
+						$mm->sauver();
+					}
+				}
+				break;
+			}
+		}
+	}
+	protected function cond_terrain($cond, &$perso)
+	{
+		global $Trace;
+		foreach( $cond as $c )
+		{
+			$p = explode('|', substr($c, 1));
+			switch($c[0])
+			{
+			case 't': // type de terrain
+				// type dédoubles
+				$where .= ' AND type IN ('.implode(',', $p).')';
+				break;
+			case 'r':  // royaume d'appartenance du terrain
+				if( $p[0] == 'p' )
+					$where .= ' AND royaume = '.$Trace[$perso->get_race()]['numrace'];
+				else
+					$where .= ' AND royaume IN ('.implode(',', $p).')';
+				break;
+			case 'z': // zone
+				if( $p[0] <= 1 )
+					$where .= ' AND x < 190 AND y < 190';
+			}
+		}
 	}
 }

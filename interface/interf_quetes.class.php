@@ -215,7 +215,7 @@ class interf_descr_quete extends interf_cont
 					$liste_recomp->add( new interf_bal_smpl('li', 'La recette de '.$recette->get_nom()) );
 				}
 				break;
-			/*case 'f':  // recette de forge
+			case 'f':  // recette de forge
 				if( is_array($gains) )
 					$liste_recomp->add( new interf_bal_smpl('li', 'Une recette de forge') );
 				else
@@ -223,11 +223,61 @@ class interf_descr_quete extends interf_cont
 					$recette = new forge_recette($gains);
 					$liste_recomp->add( new interf_bal_smpl('li', 'La recette de '.$recette->get_nom() );
 				}
-				break;*/
+				break;
 			// b : (de)buff -> on cache
 			// t : achievement  -> on cache
 			}
 		}
+		// gains de groupe
+		if( $etape->get_gain_groupe() )
+			$liste_recomp->add( new interf_bal_smpl('li', 'Des gains pour le groupe…')) );
+		// gains du royaume
+		$recompenses = explode(';', $etape->get_gain_royaume());
+		foreach($recompenses as $recomp)
+		{
+			$gains = mb_substr($recomp, 1);
+			switch($recomp[0])
+			{
+			case 's': // stars
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' stars pour le royaume.') );
+				break;
+			case 'p': // pierre
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' de pierre pour le royaume.') );
+				break;
+			case 'a': // sable
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' de sable pour le royaume.') );
+				break;
+			case 'b': // bois
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' de bois pour le royaume.') );
+				break;
+			case 'e': // eau
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' d\'eau pour le royaume.') );
+				break;
+			case 'c': // charbon
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' de charbon pour le royaume.') );
+				break;
+			case 'm': // essence magique
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' d\'essence magique pour le royaume.') );
+				break;
+			case 'n': // nourriture
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' de nourriture pour le royaume.') );
+				break;
+			case 'v': // points de victoire
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' points de victoire pour le royaume.') );
+				break;
+			case 'r': // points de royaume
+				$liste_recomp->add( new interf_bal_smpl('li', $gains.' points de royaume pour le royaume.') );
+				break;
+			case 'o': // objet dans le quartier général
+				$gains = explode('*', $gains);
+				$nbr = count($gains) > 1 ? $gains[1] : 1;
+				$obj = objet_royaume($gains[0]);
+				$liste_recomp->add( new interf_bal_smpl('li', $nbr.' '.$obj->nom().' pour le royaume.') );
+				break;
+			// 'x', 'X' -> on cache
+			}
+		}
+		
 		if( $liste_recomp->get_fils() )
 		{
 			$div_recomp = $this->add( new interf_bal_cont('div', false, 'recompenses_quete') );
