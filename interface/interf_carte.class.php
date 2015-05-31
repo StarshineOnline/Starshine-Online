@@ -382,7 +382,7 @@ class interf_carte extends interf_tableau
     $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat, $royaumes);
     foreach($bats as $b)
     {
-    	if( $b->get_quete() && !count(quete_perso::create(array('id_etape', 'id_perso'), array($b->get_quete(), $perso->get_id()))) )
+    	if( $b->quete && !count(quete_perso::create(array('id_etape', 'id_perso'), array($b->quete, $perso->get_id()))) )
     			continue;
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
@@ -471,7 +471,7 @@ class interf_carte extends interf_tableau
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
-    	if( $row['quete'] && !count(quete_perso::create(array('id_etape', 'id_perso'), array($row['quete'], $perso->get_id()))) )
+    	if( $row->quete && !count(quete_perso::create(array('id_etape', 'id_perso'), array($row->quete, $perso->get_id()))) )
     			continue;
     	$cle = $row->x.'_'.$row->y;
       $this->infos[$row->y][$row->x] .= '<li><span class=\'info_monstre\'>Monstre</span> '.$row->nom.' x '.$row->nbr.'</li>';
