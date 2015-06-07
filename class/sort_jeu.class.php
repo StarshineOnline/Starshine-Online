@@ -273,7 +273,7 @@ class sort_jeu extends sort
 			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				//Gestion du crime
-				if ($type_cible == 'joueur')
+				if ($type_cible == 'perso')
 				{
 					$crime = new crime();
 					$crime->crime_sort($perso, $cible, $type_cible);				

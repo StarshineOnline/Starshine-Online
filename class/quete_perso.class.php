@@ -329,7 +329,7 @@ class quete_perso extends table
 			case 0:
 				/// @todo loguer erreur
 				$this->supprimer();
-				return;
+				return false;
 			case 1:
 				$nouv = $nouv[0];
 				break;
@@ -343,6 +343,7 @@ class quete_perso extends table
 					}
 				}
 			}
+			$nouv->initialiser();
 			$this->set_id_etape( $nouv->get_id() );
 			$this->sauver();
 			return $nouv->get_id();

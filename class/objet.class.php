@@ -233,13 +233,24 @@ class objet extends objet_equip
     switch( $this->type )
     {
     case 'globe_pa':
-    case 'parchemin_pa':
-    case 'parchemin_tp':
     case 'potion_guerison':
     case 'potion_pm':
     case 'potion_vie':
     case 'objet_quete':
     case 'repaation_canalisation':
+    case 'globe_buff':
+    case 'globe_invocation':
+    case 'globe_redist_mana':
+    case 'globe_redist_vie':
+    case 'globe_tp':
+    case 'grand_parchemin_comp':
+    case 'grand_parchemin_sort':
+    case 'parchemin_comp':
+    case 'parchemin_sort':
+    case 'petit_parchemin_comp':
+    case 'petit_parchemin_sort':
+    case 'potion_buff':
+    case 'potion_mana':
       return true;
     default:
       return false;
@@ -254,6 +265,7 @@ class objet extends objet_equip
 
   function utiliser(&$perso, &$princ)
   {
+  	global $Trace;
     if( $perso->get_hp() <= 0 )
     {
       $princ->add( new interf_alerte('danger', true) )->add_message('Vous êtes mort !');
@@ -283,7 +295,7 @@ class objet extends objet_equip
 			$achiev = $perso->get_compteur('use_potion');
 			$achiev->set_compteur($achiev->get_compteur() + 1);
 			$achiev->sauver();
-		break;
+			break;
 		case 'potion_guerison' :
       $buff_tab = array();
 			foreach($perso->get_buff() as $buff)
@@ -304,23 +316,20 @@ class objet extends objet_equip
 			}
 			else
         $princ->add( new interf_alerte('warning', true) )->add_message('Vous n\'avez pas de malédiction a supprimer');
-		break;
+			break;
 		case 'globe_pa' :
 				$perso->add_pa( $this->effet );
         $princ->add( new interf_alerte('success', true) )->add_message('Vous utilisez un '.$this->nom);
         $utilise = true;
         $modif_perso = true;
-		break;
-		/*case 'parchemin_tp' :
-			$requete = "SELECT effet, nom, pa, mp FROM objet WHERE id = ".$objet['id_objet'];
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
+			break;
+    case 'globe_tp':
 			$W_case = convertd_in_pos($joueur->get_x(), $joueur->get_y());
 			//Calcul de la distance entre le point où est le joueur et sa ville natale
-			$distance = detection_distance($W_case, convert_in_pos($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']));
-			if($row['effet'] >= $distance)
+			$distance = $perso->calcule_distance($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']); 
+			if($this->effet >= $distance)
 			{
-				if(check_utilisation_objet($joueur, $objet))
+				if(check_utilisation_objet($perso, $objet))
 				{
 					//Téléportation du joueur
           $princ->add( new interf_txt('Vous utilisez un '.$row['nom']) );
@@ -335,9 +344,90 @@ class objet extends objet_equip
 			}
 			else
 			{
-        $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce parchemin.', false);
+        $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce globe.', false);
 			}
-		break;*/
+		break;
+		case 'potion_buff':
+		case 'globe_buff':
+			$sort = new sort_jeu($this->effet);
+  		$utilise = $compsort->lance($perso, $perso, false, '', 'perso');
+  		break;
+		case 'petit_parchemin_sort':
+			$utilise = $this->parchemin($perso, new sort_jeu($this->effet), false);
+			break;
+		case 'parchemin_sort':
+			$utilise = $this->parchemin($perso, new sort_jeu($this->effet), 3);
+			break;
+		case 'grand_parchemin_sort':
+			$utilise = $this->parchemin($perso, new sort_jeu($this->effet), true);
+			break;
+		case 'petit_parchemin_comp':
+			$utilise = $this->parchemin($perso, new comp_jeu($this->effet), false);
+			break;
+		case 'parchemin_comp':
+			$utilise = $this->parchemin($perso, new comp_jeu($this->effet), 3);
+			break;
+		case 'grand_parchemin_comp':
+			$utilise = $this->parchemin($perso, new comp_jeu($this->effet), true);
+			break;
+		case 'potion_mana':
+      $princ->add( new interf_alerte('success', true) )->add_message('Vous utilisez une '.$this->nom.' elle vous redonne '.$this->effet.' points de mana.');
+      $perso->add_mp($this->get_effet());
+      $utilise = true;
+      $modif_perso = true;
+			break;
+    case 'globe_invocation':
+    	$monstre = new monstre($this->effet );
+			if( !$perso->can_dresse($monstre) )
+			{
+		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez en dressage pour dresser ce monstre.');
+		    break;
+			}
+			if($perso->nb_pet() >= $perso->get_comp('max_pet'))
+			{
+		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas dresser plus de '.$perso->get_comp('max_pet').' créatures.');
+		    break;
+			}
+			$utilise = $perso->add_pet($monstre->get_id(), $monstre->get_hp(), $monstre->get_energie() * 10);
+			break;
+    case 'globe_redist_mana':
+    	if( $perso->get_mp() < $this->effet + $this->mp )
+    	{
+		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de points de mana.');
+		    break;
+			}
+			$groupe = new groupe( $perso->get_groupe() );
+			$gain = round($this->effet / (count($groupe->get_membre()) - 1));
+			foreach($groupe->get_membre() as $membre)
+			{
+				if( $membre->get_id() == $perso->get_id() )
+					continue;
+				$membre->add_mp( $gain );
+				$membre->sauver();
+			}
+			$perso->add_mp( -$this->effet );
+      $utilise = true;
+      $modif_perso = true;
+			break;
+    case 'globe_redist_vie':
+    	if( $perso->get_hp() <= $this->effet )
+    	{
+		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de points de vie.');
+		    break;
+			}
+			$groupe = new groupe( $perso->get_groupe() );
+			$gain = round($this->effet / (count($groupe->get_membre()) - 1));
+			foreach($groupe->get_membre() as $membre)
+			{
+				if( $membre->get_id() == $perso->get_id() )
+					continue;
+				$membre->add_hp( $gain );
+				$membre->sauver();
+			}
+			$perso->add_hp( -$this->effet );
+      $utilise = true;
+      $modif_perso = true;
+			break;
 		case 'objet_quete' :
 			if($this->id == 27)
 			{ /// @todo mettre en base
@@ -391,6 +481,11 @@ un nécromancien ( la suite est déchirée ).<br />
     }
     return false;
   }
+  protected function parchemin(&$perso, &$compsort, $groupe)
+  {
+  	$compsort->set_duree( $compsort->get_duree() * 2 );
+  	return $compsort->lance($perso, $perso, $groupe, '', 'perso');
+	}
 
   /**
    * Mettre un slot

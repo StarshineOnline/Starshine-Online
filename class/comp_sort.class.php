@@ -411,7 +411,8 @@ abstract class comp_sort extends comp_sort_buff
 				foreach($groupe_cible->get_membre() as $membre)
 				{
 					// On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-					if($membre->get_distance_pytagore($cible) <= 7)
+					$dist = $groupe === true ? 7 : $groupe;
+					if($membre->get_distance_pytagore($cible) <= $dist)
             $cibles[] = new perso($membre->get_id_joueur());
 				}
 				return $cibles;

@@ -936,10 +936,12 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->alchimie;
-		elseif ($this->get_race() == 'scavenger')
-			return round($this->alchimie * 1.40 * (1 + $this->get_bonus_permanents('alchimie') / 100));
-		else
-			return round($this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100));
+		$alchimie = $this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100));
+		if ($this->get_race() == 'scavenger')
+			$alchimie *= 1.40;
+		if($this->is_buff('globe_alchimie'))
+			$alchimie *= 1 + $this->get_buff('globe_alchimie', 'effet')/100;
+		return round($alchimie);
 	}
 	/// Modifie l'alchimie
 	function set_alchimie($alchimie)
@@ -952,10 +954,13 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->architecture;
-		elseif ($this->get_race() == 'scavenger')
-			return $this->architecture * 1.20 + $this->get_bonus_permanents('architecture');
-		else
-			return $this->architecture + $this->get_bonus_permanents('architecture');
+		if ($this->get_race() == 'scavenger')
+			$architecture * 1.20;
+		$architecture = $this->architecture
+		$architecture += $this->get_bonus_permanents('architecture');
+		if($this->is_buff('globe_forge'))
+			$architecture *= 1 + $this->get_buff('globe_forge', 'effet')/100;
+		return $architecture;
 	}
 	/// Modifie l'architecture
 	function set_architecture($architecture)
@@ -968,10 +973,12 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->forge;
-		elseif ($this->get_race() == 'scavenger')
-			return $this->forge * 1.40 + $this->get_bonus_permanents('forge');
-		else
-			return $this->forge + $this->get_bonus_permanents('forge');
+		$forge = $this->forge;
+		if ($this->get_race() == 'scavenger')
+			$forge *= 1.40;
+		if($this->is_buff('globe_architecture'))
+			$forge *= 1 + $this->get_buff('globe_architecture', 'effet')/100;
+		return $forge;
 	}
 	/// Modifie la forge
 	function set_forge($forge)
@@ -2432,7 +2439,10 @@ class perso extends entite
 	{
 		$this->hp_maximum = floor($this->get_hp_max());
 		//Famine
-		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_buff('famine'))
+			$this->hp_maximum -= $this->hp_maximum * ($this->get_buff('famine', 'effet') / 100);
+		if($this->is_buff('globe_vie'))
+			$this->hp_maximum += $this->get_buff('globe_vie', 'effet');
 		return $this->hp_maximum;
 	}
 	/// Renvoie les MP maximums après bonus et malus
@@ -2440,7 +2450,10 @@ class perso extends entite
 	{
 		$this->mp_maximum = floor($this->get_mp_max());
 		//Famine
-		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_buff('famine'))
+			$this->mp_maximum -= $this->mp_maximum * ($this->get_buff('famine', 'effet') / 100);
+		if($this->is_buff('globe_mana'))
+			$this->mp_maximum += + $this->get_buff('globe_mana', 'effet');
 		return $this->mp_maximum;
 	}
 	/// Renvoie la date de la dernière action
