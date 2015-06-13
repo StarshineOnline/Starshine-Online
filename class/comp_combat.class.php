@@ -329,6 +329,18 @@ class comp_combat extends comp
   	if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
   	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('fleche_tranchante', 'effet');
   	if($actif->is_buff('oeil_chasseur') && $passif->get_espece() == 'bete' && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('oeil_chasseur', 'effet');
+  	if($actif->is_buff('potion_inerte') && $passif->get_espece() == 'magique')
+			$degat += $actif->get_buff('potion_inerte', 'effet');
+  	if($actif->is_buff('potion_tueuse_homme') && $passif->get_espece() == 'humanoide')
+			$degat += $actif->get_buff('potion_tueuse_homme', 'effet');
+  	if($actif->is_buff('potion_tueuse_bete') && $passif->get_espece() == 'bete')
+			$degat += $actif->get_buff('potion_tueuse_bete', 'effet');
+		if($actif->is_buff('potion_berzerk'))
+			$degat += $actif->get_buff('potion_berzerk', 'effet');
+		if($passif->is_buff('potion_berzerk'))
+			$degat += $passif->get_buff('potion_berzerk', 'effet2');
+		if($actif->is_buff('potion_force'))
+			$degat += $actif->get_buff('potion_force', 'effet');
     $degat = $degat + $buff_bene_degat + $buff_berz_degat + $buff_berz_degat_r + $buff_posture_degat + $buff_force + $buff_cri_victoire;
   	if($actif->is_buff('maladie_mollesse')) $degat = ceil($degat / (1 + ($actif->get_buff('maladie_mollesse', 'effet') / 100)));
     $attaque->set_degats($degat);
@@ -358,6 +370,10 @@ class comp_combat extends comp
 		$degat_avant = round($degat_avant * $multiplicateur);
 		if( $multiplicateur > 1 )
 			$attaque->applique_effet('inflige_critique');
+			
+		// Potion d'épiderme
+    if($passif->is_buff('buff_epine', true))
+    	$attaque->add_degats( -$passif->get_buff('buff_epine', 'effet') );
 
     $degat = $attaque->get_degats();
 		$reduction = $degat_avant - $degat;
@@ -375,7 +391,8 @@ class comp_combat extends comp
 				$effet = floor($actif->get_hp_max() - $actif->get_hp());
 			}
 			// Augmentation du nombre de HP récupérable par récupération
-			if(array_key_exists('recuperation', $actif->etat)) $actif->etat['recuperation']['hp_max'] += $effet;
+			if(array_key_exists('recuperation', $actif->etat))
+				$actif->etat['recuperation']['hp_max'] += $effet;
 			$actif->set_hp($actif->get_hp() + $effet);
 			if($effet > 0)
 			{
@@ -408,10 +425,29 @@ class comp_combat extends comp
 				$actif->etat['paralysie']['duree'] += 1;
 			}
 		}
+		// Potion du moustique / vampire
+    if( $actif->is_buff('potion_moustique') )
+    {
+    	$hp = $actif->get_buff('potion_moustique', 'effet');
+    	$actif->add_hp( $hp );
+			$attaque->get_interface()->effet(20,  $hp, '', $rm->get_nom());
+			$attaque->add_log_effet_actif('&ef20~'.$hp);
+		}
 
 		// Application des effets de dégâts infligés
     $attaque->applique_effet('inflige_degats');
     $passif->set_hp($passif->get_hp() - $degat);
+    // Potion de poison
+    if( $actif->is_buff('potion_poison') )
+    {
+    	$passif->etat['poison']['effet'] = $actif->get_buff('potion_poison', 'effet');
+    	$passif->etat['poison']['duree'] = $actif->get_buff('potion_poison', 'effet');
+		}
+		if( $actif->is_buff('potion_affaiblissement') )
+		{
+    	$passif->etat['affaiblissement']['effet'] += $actif->get_buff('potion_affaiblissement', 'effet');
+    	$passif->etat['affaiblissement']['duree'] = 21;
+		}
   }
 
   /**

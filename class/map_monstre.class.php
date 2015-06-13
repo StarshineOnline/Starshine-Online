@@ -701,6 +701,8 @@ class map_monstre extends entnj_incarn
 					$taux = ceil($share[1] / $G_drop_rate);
 					if($perso->get_race() == 'humain') $taux = $taux / 1.3;
 					if($perso->is_buff('fouille_gibier')) $taux = $taux / (1 + ($perso->get_buff('fouille_gibier', 'effet') / 100));
+					if( ($objet[0] == 'o' || substr($objet, 0, 2)  = "ho") && $perso->is_buff('potion_trouvaille') )
+						 $taux /= 1 + $perso->get_buff('potion_trouvaille', 'effet') / 100;
 					if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
 					$tirage = rand(1, floor($taux));
 					//Si c'est un objet de quête :

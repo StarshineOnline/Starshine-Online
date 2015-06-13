@@ -365,6 +365,8 @@ class entite extends placable
 	{
 		return $this->hp_max;
 	}
+  /// Ajoute des MP.
+  function add_mp($add_mp) {}
   // @}
 
   /**
@@ -537,6 +539,8 @@ class entite extends placable
 			$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
 		if($this->is_buff('debuff_pp'))
 			$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
+		if($this->is_buff('potion_pierre'))
+			$pp = round($pp * (1 + ($this->get_buff('potion_pierre', 'effet') / 100)));
 		return $pp;
 	}
 	/// Modifie la PP
@@ -554,6 +558,8 @@ class entite extends placable
 			$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
 		if($this->is_buff('debuff_desespoir'))
 			$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+		if($this->is_buff('potion_pm'))
+			$pm = round($pm * (1 + ($this->get_buff('potion_pm', 'effet') / 100)));
 		return $pm;
 	}
 	//renvoi la PM pour resister a paralysie
@@ -754,6 +760,10 @@ class entite extends placable
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 2;
     if(array_key_exists('fleche_sable', $this->etat))
       $this->potentiel_toucher /= 1 + ($this->etat['fleche_sable']['effet'] / 100);
+  	if($this->is_buff('potion_surcharge'))
+			$this->potentiel_toucher /= 1 + (($this->get_buff('potion_surcharge', 'effet')) / 100);
+  	if($this->is_buff('potion_force'))
+			$this->potentiel_toucher /= 1 + (($this->get_buff('potion_force', 'effet')) / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -764,6 +774,8 @@ class entite extends placable
   	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if(array_key_exists('affaiblissement', $this->etat))
+			$this->potentiel_toucher /= 1 + $this->etat['affaiblissement']['effet']) / 100;
 
 		return $this->potentiel_toucher;
 	}
@@ -845,6 +857,8 @@ class entite extends placable
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
   	if(array_key_exists('coup_sournois', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['coup_sournois']['effet']) / 100);
   	if(array_key_exists('fleche_sanglante', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['fleche_sanglante']['effet']) / 100);
+  	if($this->is_buff('potion_surcharge', true))
+			$this->potentiel_critique *= 1 + (($this->get_buff('potion_surcharge', 'effet', true)) / 100);
     //Elfe des bois
 	  if($this->get_race() == 'elfebois') $this->potentiel_critique *= 1.15;
   	if(array_key_exists('coup_mortel', $this->etat) && array_key_exists('dissimulation', $this->etat))
@@ -910,6 +924,8 @@ class entite extends placable
     if ($this->get_bonus_permanents('potentiel_magique'))
        $this->potentiel_magique += $potentiel_magique_arme * 
          (1 + $this->get_bonus_permanents('potentiel_magique') / 100);
+  	if(array_key_exists('affaiblissement', $this->etat))
+			$this->potentiel_magique /= 1 + $this->etat['affaiblissement']['effet'] / 100;
   	return $this->potentiel_magique;
 	}
 	/**
@@ -1044,6 +1060,7 @@ class entite extends placable
     if( $perso->is_buff('cout_attaque') ) $cout = ceil($cout / $perso->get_buff('cout_attaque', 'effet'));
     if( $perso->is_buff('plus_cout_attaque') ) $cout *= $perso->get_buff('plus_cout_attaque', 'effet');
     if( $perso->is_buff('buff_rapidite') ) $cout -= $perso->get_buff('buff_rapidite', 'effet');
+    if( $perso->is_buff('potion_rapidite') ) $cout -= $perso->get_buff('potion_rapidite', 'effet');
     if( $perso->is_buff('debuff_ralentissement') ) $cout += $perso->get_buff('debuff_ralentissement', 'effet');
     if( $cout < 1 ) $cout = 1;
     return $cout;

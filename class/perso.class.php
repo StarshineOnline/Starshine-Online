@@ -253,9 +253,9 @@ class perso extends entite
 		if(!isset($this->grade)) {
 			$this->grade = new grade($this->rang_royaume);
 			if ($this->is_buff('buff_charisme')) $this->grade->add_bonus_buff(2);
+			if ($this->is_buff('potion_buff')) $this->grade->add_bonus_buff(2);
 			if ($this->is_buff('debuff_charisme')) 
-        $this->grade->add_bonus_buff(-1 * $this->get_buff('debuff_charisme',
-                                                          'effet'));
+        $this->grade->add_bonus_buff(-$this->get_buff('debuff_charisme', 'effet'));
 		}
 		return $this->grade;
 	}
@@ -2572,12 +2572,12 @@ class perso extends entite
 			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
 
 			// Gemme du troll
-			if (array_key_exists('regeneration', $this->get_enchantement())) {
-				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
-				if ($G_temps_regen_hp <= $bonus_regen) {
-					$bonus_regen = $G_temps_regen_hp - 3600; // 1h min de regen
-				}
-			} else $bonus_regen = 0;
+			$bonus_regen = array_key_exists('regeneration', $this->get_enchantement()) ? $this->get_enchantement('regeneration', 'effet') * 60 : 0;
+			if($this->is_buff('potion_feu"'))
+				$bonus_regen += $this->get_buff('potion_feu"', 'effet') * 60;
+			// 1h min de regen
+			if ($G_temps_regen_hp <= $bonus_regen)
+				$bonus_regen = $G_temps_regen_hp - 3600; 
 
 			if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
 			{
@@ -2627,25 +2627,14 @@ class perso extends entite
 					}
 				}*/
 				$bonus_arme = $this->get_bonus_permanents('regen_hp');
-				$bonus_add_mp = $this->get_bonus_permanents('regen_hp_add');
+				$bonus_add_hp = $this->get_bonus_permanents('regen_hp_add');
 				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
 				$bonus_add_mp = $this->get_bonus_permanents('regen_mp_add');
-				// Effets magiques des objets
-				/*foreach($this['objet_effet'] as $effet)
-				{
-					switch($effet['id'])
-					{
-						case '1' :
-							$bonus_accessoire += $effet['effet'];
-						break;
-						case '10' :
-							$bonus_accessoire_mp += $effet['effet'];
-						break;
-					}
-				}*/
+				if($this->is_buff('potion_troll'))
+					$bonus_add_hp += $this->get_buff('potion_troll', 'effet');
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) /*+ $bonus_accessoire*/ + $bonus_arme + $bonus_add_hp);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) /*+ $bonus_accessoire_mp*/ + $bonus_arme_mp + $bonus_add_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_arme + $bonus_add_hp);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_arme_mp + $bonus_add_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{
@@ -4269,7 +4258,10 @@ class perso extends entite
 
 	function get_race_a()
 	{
-		if ($this->camouflage)
+		global $Trace;
+		if( $this->is_buff('potion_apparence') )
+			return $Trace['liste'][ $this->get_buff('potion_apparence', 'effet') ];
+		else if( $this->camouflage )
 			return $this->camouflage;
 		else 
 			return $this->get_race();

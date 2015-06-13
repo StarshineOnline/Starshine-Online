@@ -55,7 +55,7 @@ class interf_tour extends interf_batiment
     while($row = $db->read_assoc($req))
 		{
       $pj = new perso($row);
-			if( $pj->get_id() == $this->perso->get_id() )
+			if( $pj->get_id() == $this->perso->get_id() || $pj->is_buff('potion_discretion') )
 				continue;
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case pj') );
 			$lien = $li->add( new interf_lien_cont('infoperso.php?id='.$pj->get_id(), false, 'info_elt') );

@@ -208,6 +208,20 @@ if($mouvement)
 		}
 	}
 	$coutpa = cout_pa2($coutpa, $perso, $case, $diagonale);
+	if( $perso->is_buff('potion_plaine') && $type_terrain == 'plaine' )
+		$cout -= $perso->get_buff('potion_plaine', 'effet');
+	if( $perso->is_buff('potion_foret') && $type_terrain == 'foret' )
+		$cout -= $perso->get_buff('potion_foret', 'effet');
+	if( $perso->is_buff('potion_desert') && $type_terrain == 'desert' )
+		$cout -= $perso->get_buff('potion_desert', 'effet');
+	if( $perso->is_buff('potion_banquise') && $type_terrain == 'glace' )
+		$cout -= $perso->get_buff('potion_banquise', 'effet');
+	if( $perso->is_buff('potion_marais') && $type_terrain == 'marais' )
+		$cout -= $perso->get_buff('potion_marais', 'effet');
+	if( $perso->is_buff('potion_montagne') && $type_terrain == 'montagne' )
+		$cout -= $perso->get_buff('potion_montagne', 'effet');
+	if( $perso->is_buff('potion_terres_maudites') && $type_terrain == 'terre_maudite' )
+		$cout -= $perso->get_buff('potion_terres_maudites', 'effet');
 	//Si le joueur a un buff ou débuff qui l'empèche de bouger
 	if($perso->is_buff('buff_forteresse') OR $perso->is_buff('buff_position') OR $perso->is_buff('debuff_enracinement') OR $perso->is_buff('bloque_deplacement') OR $perso->is_buff('dressage') OR $perso->is_buff('petrifie'))
 	{

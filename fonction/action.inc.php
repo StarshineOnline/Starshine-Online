@@ -456,6 +456,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 				if($ennemi->etat['glace_anticipe']['duree'] > 0) $chance_reussite = $chance_reussite + $ennemi->etat['glace_anticipe']['effet'];
 				// Réduction des chances d'anticiper si adversaire amorphe
 				if($joueur->is_buff('maladie_amorphe')) $chance_reussite = $chance_reussite - $joueur->get_buff('maladie_amorphe', 'effet');
+				// 
+				if($joueur->is_buff('potion_vitesse')) $chance_reussite *= 1 + $joueur->get_buff('maladie_amorphe', 'effet')/100;
 				// item donjon
 				if ($ennemi->get_type() == 'joueur')
 				{

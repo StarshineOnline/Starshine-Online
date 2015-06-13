@@ -337,6 +337,8 @@ class sort_debuff extends sort_jeu
         if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
         if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
         $puissance = $perso->get_volonte() * $perso->get_comp($this->get_comp_assoc());
+        if($perso->is_buff('potion_debuff', true))
+					$puissance *= $cible->get_buff('potion_debuff','effet');
         $attaque = rand(0, $puissance);
         $defense = rand(0, $protection);
         $interf = interf_base::get_courrent();
@@ -405,6 +407,15 @@ class sort_debuff extends sort_jeu
                 $achiev->sauver();
               }
             }
+            // Potion de mimique
+            if( $cible->is_buff('potion_mimique') )
+            {
+            	if( lance_buff($this->get_type(), $perso->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), 'perso', 1, 0, 0) )
+            	{
+	              $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'debuff', '".$perso->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, ".$perso->get_x().", ".$perso->get_y().")";
+	              $db->query($requete);
+							}
+						}
           }
           else
           {

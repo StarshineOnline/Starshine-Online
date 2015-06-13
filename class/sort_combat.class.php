@@ -366,9 +366,47 @@ class sort_combat extends sort
     $degats = $attaque->get_degats();
 		if($actif->is_buff('buff_surpuissance'))
 			$degats += $actif->get_buff('buff_surpuissance', 'effet');
+  	if($actif->is_buff('potion_inerte') && $passif->get_espece() == 'magique')
+			$degat += $actif->get_buff('potion_inerte', 'effet');
+  	if($actif->is_buff('potion_tueuse_homme') && $passif->get_espece() == 'humanoide')
+			$degat += $actif->get_buff('potion_tueuse_homme', 'effet');
+  	if($actif->is_buff('potion_tueuse_bete') && $passif->get_espece() == 'bete')
+			$degat += $actif->get_buff('potion_tueuse_bete', 'effet');
+		if($actif->is_buff('potion_berzerk'))
+			$degat += $actif->get_buff('potion_berzerk', 'effet');
+		if($passif->is_buff('potion_berzerk'))
+			$degat += $passif->get_buff('potion_berzerk', 'effet2');
 		$attaque->get_interface()->degats($degats, $actif->get_nom()/*, $this->get_nom()*/);
     $attaque->add_log_combat('~'.$degats);
     $passif->set_hp($passif->get_hp() - $degats);
+    if( $actif->is_buff('potion_drain_mana') )
+    {
+    	$rm = round( $degats * $actif->get_buff('potion_drain_mana', 'effet') );
+    	$actif->get_rm_restant( $actif->get_rm_restant() + $rm );
+			$attaque->get_interface()->effet(21,  $rm, '', $rm->get_nom());
+			$attaque->add_log_effet_actif('&ef21~'.$rm);
+		}
+    if( $actif->is_buff('potion_moustique') )
+    {
+    	$hp = $actif->get_buff('potion_moustique', 'effet');
+    	$actif->add_hp( $hp );
+			$attaque->get_interface()->effet(20,  $hp, '', $rm->get_nom());
+			$attaque->add_log_effet_actif('&ef20~'.$hp);
+		}
+    if( $actif->is_buff('potion_poison_mental') )
+    {
+    	$rm = $actif->get_buff('potion_poison_mental', 'effet');
+    	$mp = $actif->get_buff('potion_poison_mental', 'effet2');
+    	$passif->set_rm_restant( $passif->get_rm_restant() - $rm );
+    	$passif->add_mp( -$mp );
+			$attaque->get_interface()->effet(22,  $rm, '', $rm->get_nom());
+			$attaque->add_log_effet_actif('&ef22~'.$rm);
+		}
+		if( $actif->is_buff('potion_affaiblissement') )
+		{
+    	$passif->etat['affaiblissement']['effet'] += $actif->get_buff('potion_affaiblissement', 'effet');
+    	$passif->etat['affaiblissement']['duree'] = 21;
+		}
   }
 
   /**
