@@ -209,10 +209,32 @@ class interf_barre_perso extends interf_bal_cont
 	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+	    $place_buff = $membre->get_grade()->get_nb_buff() - $membre->get_nb_buff();
 			/// @todo gérer les coordonnées cachées
 	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
 	    $pos->add( new interf_txt(' - ') );
-	    $pos->add( new interf_bal_smpl('span', 'dist. : '.$dist, null, 'membre_dist text-'.($dist>7?'danger':'success')) );
+	    if( $dist <= 7 )
+	    {
+	    	if( $place_buff > 0 )
+	    	{
+	    		$classe = 'success';
+	    		$tooltip = 'Ce personnage est à portée pour des sorts de groupe ou compétences et peut encore recevoir '.$place_buff.' buffs.';
+				}
+				else
+	    	{
+	    		$classe = 'warning';
+	    		$tooltip = 'Ce personnage est à portée pour des sorts de groupe ou compétences mais ne peut plus recevoir de buffs.';
+				}
+			}
+			else
+	    {
+	    	$classe = 'danger';
+	    	if( $place_buff > 0 )
+	    		$tooltip = 'Ce personnage n\'est pas à portée (il peut néanmoins encore recevoir '.$place_buff.' buffs).';
+	    	else
+	    		$tooltip = 'Ce personnage n\'est pas à portée et ne peut plus recevoir de buffs.';
+			}
+	    $pos->add( new interf_bal_smpl('span', 'dist. : '.$dist, null, 'membre_dist text-'.$classe) )->set_tooltip($tooltip, 'left');
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
