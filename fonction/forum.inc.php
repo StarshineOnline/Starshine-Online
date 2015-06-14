@@ -34,8 +34,9 @@ function creer_sujet_forum($titre, $msg, $forum, $posteur)
 	$db_forum->query($requete);
 	$id_sujet = $db_forum->last_insert_id();
 	
-	// Création du post
-	$requete = 'INSERT INTO '.$G_prefixe_forum.'posts (poster, poster_id, message, posted, topic_id) VALUES("'.mysql_escape_string($nom).'", '.$posteur.', "'.mysql_escape_string($msg).'", '.$time.', '.$id_sujet.')';
+	// Création du poste
+	creer_message_forum($msg, $id_sujet, $posteur);
+	/*$requete = 'INSERT INTO '.$G_prefixe_forum.'posts (poster, poster_id, message, posted, topic_id) VALUES("'.mysql_escape_string($nom).'", '.$posteur.', "'.mysql_escape_string($msg).'", '.$time.', '.$id_sujet.')';
 	$db_forum->query($requete);
 	$id_post = $db_forum->last_insert_id();
 	
@@ -45,7 +46,8 @@ function creer_sujet_forum($titre, $msg, $forum, $posteur)
 	
 	// Incrémentation du nombre de posts
 	$requete = 'UPDATE '.$G_prefixe_forum.'users SET num_posts=num_posts+1, last_post='.$time.' WHERE id='.$posteur;
-	$db_forum->query($requete);
+	$db_forum->query($requete);*/
+	return $id_sujet;
 }
  
 /**
@@ -61,7 +63,28 @@ function creer_annonce($titre, $msg, $posteur=0)
   
   if( !$posteur)
     $posteur = isset($G_id_forum) ? $G_id_forum : 2;
-  creer_sujet_forum($titre, $msg, 5, $posteur);
+  return creer_sujet_forum($titre, $msg, 5, $posteur);
+}
+
+function creer_message_forum($msg, $id_sujet, $posteur=0)
+{
+  global $G_prefixe_forum, $db_forum, $G_id_forum;
+  if( !$posteur)
+    $posteur = isset($G_id_forum) ? $G_id_forum : 2;
+	$time = time();
+	// Création du post
+	$requete = 'INSERT INTO '.$G_prefixe_forum.'posts (poster, poster_id, message, posted, topic_id) VALUES("'.mysql_escape_string($nom).'", '.$posteur.', "'.mysql_escape_string($msg).'", '.$time.', '.$id_sujet.')';
+	$db_forum->query($requete);
+	$id_post = $db_forum->last_insert_id();
+	
+	// Ajout de l'id du dernier post au sujet
+	$requete = 'UPDATE '.$G_prefixe_forum.'topics SET last_post_id='.$id_post.', first_post_id='.$id_post.' WHERE id='.$id_sujet;
+	$db_forum->query($requete);
+	
+	// Incrémentation du nombre de posts
+	$requete = 'UPDATE '.$G_prefixe_forum.'users SET num_posts=num_posts+1, last_post='.$time.' WHERE id='.$posteur;
+	$db_forum->query($requete);
+	return $id_post;
 }
 
 /**

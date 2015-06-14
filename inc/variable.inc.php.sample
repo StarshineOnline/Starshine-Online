@@ -227,6 +227,8 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 				 
   /// id d'utilisateur du forum à utiliser pour les posts automatiques
   $G_id_forum = 2;
+  /// id du poste du forum pour les informations (0 pour désactiver)
+  $G_sujet_infos = 0;
 
   /// utiliser les calques
   $G_use_atmosphere = true;

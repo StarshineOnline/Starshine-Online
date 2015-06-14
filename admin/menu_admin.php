@@ -25,6 +25,10 @@ else
 	$menu[$i]['url'] = 'admin_mess.php';
 	$menu[$i++]['acces'] = joueur::droit_anim;
 
+	$menu[$i]['nom'] = 'Annonce';
+	$menu[$i]['url'] = 'annonce.php';
+	$menu[$i++]['acces'] = joueur::droit_staf;
+
 	$menu[$i]['nom'] = '--'; // Séparateur
 	$menu[$i]['url'] = '';
 	$menu[$i++]['acces'] = '';

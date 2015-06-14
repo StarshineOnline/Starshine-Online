@@ -70,6 +70,30 @@ class interf_accueil extends interf_cont
 			}
 		}
 		
+		// Annonces
+		$nouv_annonces = annonce::nouvelles( $perso->get_dernier_connexion() );
+		if( $nouv_annonces )
+		{
+			$annonces = array('id'=>'annonce', 'titre'=>'Annonce(s)', 'contenu'=>array());
+			foreach($nouv_annonces as $a)
+			{
+				$div = new interf_bal_cont('div', null, 'message_monde');
+				$div->add( new interf_bal_smpl('h5', $a->get_date(), false, 'date') );
+				$div->add( new interf_bal_smpl('p', texte::parse_url($a->get_message())) );
+				$annonces['contenu'][] = $div;
+			}
+			$nouveaux[] = &$infos;
+		}
+		else if( $ancienne = annonce::derniere() )
+		{
+			$annonce = array('id'=>'annonce', 'titre'=>'Dernière annonce', 'contenu'=>array());
+			$div = new interf_bal_cont('div');
+			$div->add( new interf_bal_smpl('h5', $ancienne[0]->get_date(), false, 'date') );
+			$div->add( new interf_bal_smpl('p', texte::parse_url($ancienne[0]->get_message())) );
+			$annonce['contenu'][] = $div;
+			$anciens[] = &$annonce;
+		}
+		
 		// Message du monde
 		$requete = "SELECT * FROM motd WHERE publie = 1 ORDER BY date DESC";
 		$req = $db->query($requete);
@@ -105,7 +129,7 @@ class interf_accueil extends interf_cont
 			$anciens[] = &$motk;
 			
 		// Annonce forum
-		if( $db_forum )
+		/*if( $db_forum )
 		{
 			$requete = 'SELECT * FROM punbbtopics WHERE forum_id = 5 AND posted > '.$perso->get_dernier_connexion();
 			$req = $db_forum->query($requete);
@@ -135,8 +159,7 @@ class interf_accueil extends interf_cont
 				$nouveaux[] = &$annonce;
 			else
 				$anciens[] = &$annonce;
-			
-		}
+		}*/
 		
 		// Messages nouveaux
 		foreach( $nouveaux as $msg )
