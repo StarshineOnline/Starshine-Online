@@ -171,5 +171,14 @@ class journal extends table
     else
       return false;
   }
+  
+  static function get_nombre_recents(&$perso)
+	{
+		global $db;
+		$requete = 'SELECT COUNT(*) FROM journal WHERE action IN ("defense", "mort", "loot", "f_quete", "pet_leave", "rp", "attaque", "tue") AND time > "'.date('Y-m-d G:i:s', $perso->get_dernier_connexion()).'" AND id_perso = '.$perso->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row[0];
+	} 
 }
 ?>

@@ -37,8 +37,6 @@ class interf_accueil extends interf_cont
 			}
 		}
 		
-		$accordeon = $this->add( new interf_accordeon('acceuil_messages') );
-		
 		// Révolution
 		if( revolution::is_mois_revolution($R[0]->get_id(), $perso->get_id()) )
 		{
@@ -48,6 +46,19 @@ class interf_accueil extends interf_cont
 			if(!$db->num_rows)
 				$this->add( new interf_bal_smpl('p', 'Une révolution a été déclenchée, vous pouvez aller voter pour ou contre.', null, 'accueil') );
 		}
+		
+		// Journal
+		$nbr = journal::get_nombre_recents($perso);
+		if( $nbr )
+		{
+			$p = $this->add( new interf_bal_cont('p', null, 'accueil') );
+			$p->add( new interf_txt('Vous avez '.$nbr.' nouvelles entrées importantes dans votre ') );
+			$lien = $p->add( new interf_lien('journal', 'journal.php') );
+			$lien->set_attribut('onclick', 'return charger(this.href);');
+			$p->add( new interf_txt('.') );
+		}
+		
+		$accordeon = $this->add( new interf_accordeon('acceuil_messages') );
 		
 		// tutoriel
 		if( $perso->get_tuto() > 0  )
