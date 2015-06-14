@@ -936,7 +936,7 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->alchimie;
-		$alchimie = $this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100));
+		$alchimie = $this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100);
 		if ($this->get_race() == 'scavenger')
 			$alchimie *= 1.40;
 		if($this->is_buff('globe_alchimie'))
@@ -956,7 +956,7 @@ class perso extends entite
 			return $this->architecture;
 		if ($this->get_race() == 'scavenger')
 			$architecture * 1.20;
-		$architecture = $this->architecture
+		$architecture = $this->architecture;
 		$architecture += $this->get_bonus_permanents('architecture');
 		if($this->is_buff('globe_forge'))
 			$architecture *= 1 + $this->get_buff('globe_forge', 'effet')/100;

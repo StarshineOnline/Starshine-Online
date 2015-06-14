@@ -774,8 +774,8 @@ class entite extends placable
   	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
-  	if(array_key_exists('affaiblissement', $this->etat))
-			$this->potentiel_toucher /= 1 + $this->etat['affaiblissement']['effet']) / 100;
+  	if( array_key_exists('affaiblissement', $this->etat) )
+			$this->potentiel_toucher /= 1 + $this->etat['affaiblissement']['effet'] / 100;
 
 		return $this->potentiel_toucher;
 	}
