@@ -1153,7 +1153,7 @@ p.accueil a
   animation-name:pos_anim;
   animation-duration:1s;
   animation-iteration-count:infinite;
-  -webkit-animation-name:charger_rot;
+  -webkit-animation-name:pos_anim;
   -webkit-animation-duration:1s;
   -webkit-animation-iteration-count:infinite;
   -webkit-animation-direction:linear;
