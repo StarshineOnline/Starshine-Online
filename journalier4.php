@@ -183,6 +183,8 @@ while($row = $db->read_assoc($req))
 
 foreach($ressource_final as $key => $value)
 {
+	if( $key == 'liste' )
+		continue;
 	$requete = "SELECT ".$key." FROM stat_jeu WHERE date = '".$date."'";
 	//echo $requete."\n";
 	$req_stat_jeu = $db->query($requete);

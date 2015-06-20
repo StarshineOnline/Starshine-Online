@@ -106,6 +106,8 @@ $req = $db->query($requete);
 /// Calcule l'entertien courant des batiments
 foreach($royaumes as $royaume)
 {
+	if( !$royaume['id'] )
+		continue;
 	$royaume['stars'] -= $royaume['total'];
 	if($royaume['stars'] < 0)
 	{
