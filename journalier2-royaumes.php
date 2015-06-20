@@ -146,6 +146,8 @@ while($row = $db->read_assoc($req))
 //Entretien !
 foreach($royaumes as $royaume)
 {
+	if( !$royaume['id'] )
+		continue;
 	$royaume['stars'] -= $royaume['total_c'];
 	if($royaume['stars'] < 0)
 	{
