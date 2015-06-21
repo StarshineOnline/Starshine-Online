@@ -235,7 +235,7 @@ class attaque
 		if($nbr_barre_total > 100)
 			$nbr_barre_total = 100;
 		$nbr_barre = round( $this->defenseur->get_hp() / $this->defenseur->get_hp_max() * $nbr_barre_total );
-		$longueur = $actif->is_buff('potion_illusion') ? 100 : max(round(100 * $nbr_barre / $nbr_barre_total, 2), 0);
+		$longueur = $this->defenseur->is_buff('potion_illusion') ? 100 : max(round(100 * $nbr_barre / $nbr_barre_total, 2), 0);
 		$fiabilite = round(100 / $nbr_barre_total / 2, 2);
 			
 		//Augmentation des compétences liées

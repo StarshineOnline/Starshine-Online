@@ -456,7 +456,7 @@ else
 		{
 		case 'joueur':
 		case 'perso':
-			$G_url->add('id_perso', $joueur_defenseur->get_id());
+			$G_url->add('id_perso', $defenseur->get_id());
 			break;
 		case 'monstre':
 			$G_url->add('id_monstre', $map_monstre->get_id());
