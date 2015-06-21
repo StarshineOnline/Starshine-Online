@@ -311,7 +311,7 @@ class quete_etape extends quete
 				break;
 			case 'a':  // points d'aptitude
 				$apt = explode(':', $gains);
-				switch($apt[1)
+				switch($apt[1])
 				{
 				case 'melee':
 					$perso->set_melee($perso->get_melee() + $apt[1]);
@@ -395,7 +395,7 @@ class quete_etape extends quete
 		/// @todo gains du groupe
 		// Texte
 		if( !$cache )
-			interf_alerte::enregistre(interf_alerte::succes, $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.';);
+			interf_alerte::enregistre(interf_alerte::succes, $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.');
 		// Mis dans le journal
 		$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", 'f_quete', '".$perso->get_nom()."', '', NOW(), '".addslashes($nom)."', 0, 0, 0)";
 		$db->query($requete);
@@ -467,12 +467,12 @@ class quete_etape extends quete
 					/// @todo passer à l'objet
 					$requete = 'DELETE FROM map_monstre WHERE type = '.$gains;
 					$db->query($requete);
-					break
+					break;
 				case 'X': // Supprimer un bâtiment
 					/// @todo passer à l'objet
 					$requete = 'DELETE FROM construction WHERE id_batiment = '.$gains;
 					$db->query($requete);
-					break
+					break;
 				}
 			}
 			$royaume->sauver();

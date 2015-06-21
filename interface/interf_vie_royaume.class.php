@@ -285,7 +285,6 @@ class interf_vote extends interf_vie_royaume_base
 		
 		$this->centre->add( new interf_bal_smpl('p', 'Nombre de candidats : '.count($candidats)) );
 		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ') );
-		my_dump($candidats);
 		if( count($candidats) )
 		{
 			$form = $div->add( new interf_form('vie_royaume.php?action=vote2', 'vote') );

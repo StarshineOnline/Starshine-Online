@@ -153,7 +153,7 @@ class texte
     $quete_fini = explode(';', $this->perso->get_quete_fini());
     while( preg_match('`\[quete_finie:([0-9]*)(-e[0-9]*)?\](.*)\[/quete_finie:(\g1)(\g2)?\]`i', $texte, $regs) )
     {
-    	$qp = self::get_quete_perso($regs);
+    	$qp = $this->get_quete_perso($regs);
     	$debut = str_replace(']', '\\)', $regs[0]); 
     	$fin = '[/'.mb_substr($debut, 1);
     	if( in_array($regs[1], $quete_fini) || ($qp && $regs[2] && $qp->get_etape()->get_etape() > $regs[2]))
@@ -185,7 +185,7 @@ class texte
     // quêtes non prises
     while( preg_match('`\[non_quete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/non_quete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$qp = self::get_quete_perso($regs);
+    	$qp = $this->get_quete_perso($regs);
     	$debut = str_replace(']', '\\)', $regs[0]); 
     	$fin = '[/'.mb_substr($debut, 1);
     	if( (!$qp && !in_array($regs[1], $quete_fini)) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
@@ -197,7 +197,7 @@ class texte
     // quête prises
     while( preg_match('`\[isquete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/isquete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$qp = self::get_quete_perso($regs);
+    	$qp = $this->get_quete_perso($regs);
     	$debut = str_replace(']', '\\)', $regs[0]); 
     	$fin = '[/'.mb_substr($debut, 1);
     	if ($qp)
@@ -267,7 +267,7 @@ class texte
     //validation inventaire
     if(preg_match('`\[verifinventaire:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\]`i', $texte, $regs))
     {
-    	$qp = self::get_quete_perso($regs);
+    	$qp = $this->get_quete_perso($regs);
     	if ($qp && $qp->verif_inventaire() == false)
     		$texte = "Tu te moques de moi, mon bonhomme ?";
     	else
@@ -280,7 +280,7 @@ class texte
       return $texte;
   }
   
-  static protected function get_quete_perso($regs)
+  protected function get_quete_perso($regs)
   {
     $qp = new quete_etape(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
     if( !$qp )
