@@ -31,7 +31,7 @@ $interf_princ = $G_interf->creer_jeu();
 $onglet = array_key_exists('onglet', $_GET) ? $_GET['onglet'] : null;
 
 
-if( array_key_exists('action', $_GET) && $_GET['action'] == 'teleport'  && $joueur->get_teleport_roi() != 'true' )
+if( array_key_exists('action', $_GET) && $_GET['action'] == 'teleport'  && $perso->get_teleport_roi() != 'true' )
 {
 	$perso->set_x($Trace[$perso->get_race()]['spawn_x']);
 	$perso->set_y($Trace[$perso->get_race()]['spawn_y']);

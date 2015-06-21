@@ -454,8 +454,11 @@ if( (!array_key_exists('ajax', $_GET) || $action != 'afficher') && $auto_cible )
 		$tabs->add_onglet($img, 'livre.php?type=forge&action=onglet', 'tab_forge', 'invent', $type == 'forge');
 	}
 	$onglet = $tabs->get_onglet('tab_'.$type);
-	interf_alerte::aff_enregistres($onglet);
-	$onglet->add( $G_interf->creer_livre($type, $cible, $categorie, !$perso->est_mort()) );
+	if( $onglet )
+	{
+		interf_alerte::aff_enregistres($onglet);
+		$onglet->add( $G_interf->creer_livre($type, $cible, $categorie, !$perso->est_mort()) );
+	}
 }
 else if( $auto_cible )
 {

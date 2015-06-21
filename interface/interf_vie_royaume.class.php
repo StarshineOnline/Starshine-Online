@@ -285,18 +285,23 @@ class interf_vote extends interf_vie_royaume_base
 		
 		$this->centre->add( new interf_bal_smpl('p', 'Nombre de candidats : ') );
 		$div = $this->centre->add( new interf_bal_cont('div', 'ville_princ') );
-		$form = $div->add( new interf_form('vie_royaume.php?action=vote2', 'vote') );
-		$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
-		$div_sel->add( new interf_bal_smpl('span', 'Candidat', false, 'input-group-addon') );
-		$sel = $div_sel->add( new interf_select_form('candidat', false, false, 'form-control') );
-		foreach($candidats as $c)
+		if( count($candidats) )
 		{
-			$sel->add_option($c->get_nom(), $c->get_id(), $id == $c->get_id());
+			$form = $div->add( new interf_form('vie_royaume.php?action=vote2', 'vote') );
+			$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
+			$div_sel->add( new interf_bal_smpl('span', 'Candidat', false, 'input-group-addon') );
+			$sel = $div_sel->add( new interf_select_form('candidat', false, false, 'form-control') );
+			foreach($candidats as $c)
+			{
+				$sel->add_option($c->get_nom(), $c->get_id(), $id == $c->get_id());
+			}
+			$infos = $form->add( new interf_bal_cont('div', 'infos_candidature') );
+			$div_btn = $form->add( new interf_bal_cont('div', false, 'boutons') );
+	    $btn = $div_btn->add( new interf_chp_form('submit', false, false, $texte, null, 'btn btn-primary') );
+	    $btn->set_attribut('onclick', 'return charger_formulaire(\'vote\');');
 		}
-		$infos = $form->add( new interf_bal_cont('div', 'infos_candidature') );
-		$div_btn = $form->add( new interf_bal_cont('div', false, 'boutons') );
-    $btn = $div_btn->add( new interf_chp_form('submit', false, false, $texte, null, 'btn btn-primary') );
-    $btn->set_attribut('onclick', 'return charger_formulaire(\'vote\');');
+		else
+			$div->add( new interf_bal_smpl('p', 'Il n\'y a pas de candidat. Le roi actuel et ses ministres seront reconduis pour un mois.') );
 	}
 }
 

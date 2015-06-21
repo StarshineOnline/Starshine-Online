@@ -39,7 +39,7 @@
   if( $joueur->get_droits() & joueur::droit_admin )
   	$persos = perso::create('id_joueur', $joueur->get_id());
 	else
-  	$persos = perso::create(false, false, 'id ASC', false, 'id_joueur='.$joueur->get_id().' AND (statut IN ("actif", "inactif") OR statut LIKE "hibern"" AND fin_ban <= '.time().')');
+  	$persos = perso::create(false, false, 'id ASC', false, 'id_joueur='.$joueur->get_id().' AND (statut IN ("actif", "inactif") OR statut LIKE "hibern" AND fin_ban <= '.time().')');
   $dlg->add( $G_interf->creer_liste_perso($persos, 'changer_perso.php') );
   if( $joueur->get_droits() & joueur::droit_pnj  )
   {
