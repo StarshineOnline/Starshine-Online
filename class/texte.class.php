@@ -282,7 +282,7 @@ class texte
   
   static protected function get_quete_perso($regs)
   {
-    $qp = quete_etape(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
+    $qp = new quete_etape(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
     if( !$qp )
     	return null;
   	if( count($regs) > 1 && $regs[2][1] == 'e' )
