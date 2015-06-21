@@ -1507,7 +1507,7 @@ class royaume
 			$batiment = 'ecole_magie';
 			break;
 		case 'arme':
-			$batiment = 'forgerone';
+			$batiment = 'forgeron';
 			break;
 		case 'armure':
 			$batiment = 'armurerie';

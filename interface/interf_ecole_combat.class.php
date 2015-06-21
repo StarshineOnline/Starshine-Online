@@ -36,8 +36,7 @@ class interf_ecole_combat extends interf_ville_onglets
 		$li2 = $haut->add( new interf_elt_menu(new interf_img('image/distance.png'), 'javascript:filtre_table(\'distance\');', false, false, 'filtre') );
 		$li3 = $haut->add( new interf_elt_menu(new interf_img('image/esquive.png'), 'javascript:filtre_table(\'esquive\');', false, false, 'filtre') );
 		$li4 = $haut->add( new interf_elt_menu(new interf_img('image/melee.png'), 'javascript:filtre_table(\'melee\');', false, false, 'filtre') );
-		
-		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$type) );
+		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_ecole_'.$type) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$type.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		// Contenu
 		switch( $type )

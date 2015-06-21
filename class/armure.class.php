@@ -8,7 +8,7 @@
  * Classe gérant les armures
  * Correspond à la table du même nom dans la bdd.
  */
-class armure extends objet_invent
+class armure extends objet_equip
 {
 	protected $PP;  ///< PP de l'armure
 	protected $PM;  ///< PM de l'armure

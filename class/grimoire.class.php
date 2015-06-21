@@ -177,7 +177,7 @@ class grimoire extends objet_invent
       break;
     case 'alchimie':
     case 'forge':
-    	$type = 'la recette pour'
+    	$type = 'la recette pour';
     	break;
     case 'attr_perso':
       return array( 'Entraîne la compétence '.traduit($this->attr_perso).' de '.$this->ajout_attr );
