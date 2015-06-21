@@ -3010,7 +3010,7 @@ class perso extends entite
 		case 'magique':
 			$dressage *= 1 + $this->get_bonus_permanents('dressage_magique') / 100;
 		}
-		return $dressage * 3 + $perso->get_survie();
+		return $dressage * 3 + $this->get_survie();
 	}
 	/// Renvoie le nombre de créatures que le personnage peut posseder.
 	function get_max_pet()
