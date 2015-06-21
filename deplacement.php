@@ -296,8 +296,16 @@ if( $donjon && $peu_bouger )
 check_son_ambiance();*/
 if( $action )
 {
+	// Options
+	/// @todo passer à l'objet
+	$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_min_monstres"');
+	$row = $db->read_array($req);
+	$niv_min = $row ? $row[0] : '0';
+	$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_max_monstres"');
+	$row = $db->read_array($req);
+	$niv_max = $row ? $row[0] : 255;
 	$options  = interf_carte::calcul_options( $perso->get_id() );
-	$carte = $interf_princ->set_carte( new interf_carte($x, $y, $options) );
+	$carte = $interf_princ->set_carte( new interf_carte($x, $y, $options, 3, 'carte', $niv_min, $niv_max) );
 	$interf_princ->maj_perso($complet);
 	$interf_princ->maj_ville();
 }

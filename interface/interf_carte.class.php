@@ -410,7 +410,8 @@ class interf_carte extends interf_tableau
     /// @todo à améliorer
     $pos = array();
     if( $perso )
-      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.$this->x_min.' AND '.$this->x_max.' AND y BETWEEN '.$this->y_min.' AND '.$this->y_max.' AND NOT ( x = '.$perso->get_x().' AND y = '.$perso->get_y().' ) AND statut="actif" AND '.$cond_pj.' ORDER BY d.'.$perso->get_race().' DESC, level DESC';
+    	//$requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.$this->x_min.' AND '.$this->x_max.' AND y BETWEEN '.$this->y_min.' AND '.$this->y_max.' AND NOT ( x = '.$perso->get_x().' AND y = '.$perso->get_y().' ) AND statut="actif" AND '.$cond_pj.' ORDER BY d.'.$perso->get_race().' DESC, level DESC';
+      $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.$this->x_min.' AND '.$this->x_max.' AND y BETWEEN '.$this->y_min.' AND '.$this->y_max.' AND statut="actif" AND '.$cond_pj.' ORDER BY d.'.$perso->get_race().' DESC, level DESC';
     else
       $requete = 'SELECT * FROM perso WHERE x BETWEEN '.$this->x_min.' AND '.$this->x_max.' AND y BETWEEN '.$this->y_min.' AND '.$this->y_max.' AND statut="actif" AND '.$cond_pj.' ORDER BY level DESC';
     $req = $db->query($requete);
@@ -467,7 +468,9 @@ class interf_carte extends interf_tableau
     $pos = array();
     $perso = joueur::get_perso();
     /// @todo à améliorer
+    //
     $requete = 'SELECT x, y, lib, nom, quete, COUNT(*) AS nbr FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND NOT (x = '.$perso->get_x().' AND y = '.$perso->get_y().') AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y, lib ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
+    $requete = 'SELECT x, y, lib, nom, quete, COUNT(*) AS nbr FROM map_monstre AS mm INNER JOIN monstre AS m ON mm.type = m.id WHERE (x BETWEEN '.$this->x_min.' AND '.$this->x_max.') AND (y BETWEEN '.$this->y_min.' AND '.$this->y_max.') AND (level BETWEEN '.$niv_min.' AND '.$niv_max.') GROUP BY x, y, lib ORDER BY ABS(CAST(level AS SIGNED) - '.$perso->get_level().') ASC, level DESC';
     $req = $db->query($requete);
     while($row = $db->read_object($req))
     {
