@@ -879,12 +879,12 @@ class entite extends placable
     if( isset($this->mult_critique) && $this->mult_critique )
       return $this->mult_critique;
 
-    $this->mult_critique = $this->get_volonte() * 50;
-    $this->mult_critique *= 1 + $this->get_bonus_permanents('mult_critique') / 100;
+    $this->mult_critique = 2;
+    //$this->mult_critique *= 1 + $this->get_bonus_permanents('mult_critique') / 100;
     $this->mult_critique /= 1 + $this->get_bonus_permanents('div_mult_critique') / 100;
   	//Buff du critique
   	if($this->is_buff('buff_colere', true))
-			$this->mult_critique += (($this->get_buff('buff_colere', 'effet')) / 100);
+			$this->mult_critique += $this->get_buff('buff_colere', 'effet') / 100;
 		if( $this->is_competence('art_critique') )
 			$this->mult_critique +=  $this->get_competence2('art_critique')->get_valeur() / 1000;
 		$this->mult_critique += $this->get_bonus_permanents('mult_critique') / 100;
@@ -1005,7 +1005,7 @@ class entite extends placable
     if( isset($this->mult_critique_magique) && $this->mult_critique_magique )
       return $this->mult_critique_magique;
 
-    $this->mult_critique_magique = $this->get_volonte() * 50;
+    $this->mult_critique_magique = 2;
     $this->mult_critique_magique *= 1 + $this->get_bonus_permanents('mult_critique_magique') / 100;
     $this->mult_critique_magique /= 1 + $this->get_bonus_permanents('div_mult_critique_magique') / 100;
   	//Buff du critique

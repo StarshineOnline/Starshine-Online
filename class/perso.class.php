@@ -2998,7 +2998,7 @@ class perso extends entite
 	/// Renvoie le potentiel de dressage pour un type de monstre donné
 	function get_potentiel_dressage($type)
 	{
-		$dressage = $perso->get_dressage();
+		$dressage = $this->get_dressage();
 		switch($type)
 		{
 		case 'bete':
