@@ -66,6 +66,7 @@ class quete_perso extends table
 	{
 		if( !$this->quete )
 			$this->quete = new quete($this->id_quete);
+		return $this->quete;
 	}
 	
 	/// Modifie l'étape
@@ -192,7 +193,7 @@ class quete_perso extends table
 					break;
 				case 'P': // parler à un PNJ;
 				case 'C': // case
-					$cibles = explode('|', mb_substr($valeur[0], 1))
+					$cibles = explode('|', mb_substr($valeur[0], 1));
 					$id_cible = substr($type_cible, 1);
 					$ok = in_array($id_cible, $cibles);
 					$max = 1;
@@ -268,7 +269,7 @@ class quete_perso extends table
 								$req = $db->query($requete);
 								while( $row = $db->read_assoc($req) )
 								{
-									$membre = $row['pid'] == $perso->get_id() ? &$perso : new perso($row['pid']);
+									$membre = $row['pid'] == $perso->get_id() ? $perso : new perso($row['pid']);
 									$qpm = new quete_perso($row);
 									$etape->fin($membre, $option == ':silencieux');
 									$qpm->perso = &$membre;
@@ -360,7 +361,7 @@ class quete_perso extends table
 		if( $objets )
 		{
 			$avancements = explode(';', $qp->get_avancement());
-			foreach($objets as $obj=$n)
+			foreach($objets as $obj=>$n)
 			{
 				$this->perso->supprime_objet($obj, $n);
 				foreach($avancements as $i=>$avanc)

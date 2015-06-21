@@ -221,7 +221,7 @@ class interf_descr_quete extends interf_cont
 				else
 				{
 					$recette = new forge_recette($gains);
-					$liste_recomp->add( new interf_bal_smpl('li', 'La recette de '.$recette->get_nom() );
+					$liste_recomp->add( new interf_bal_smpl('li', 'La recette de '.$recette->get_nom()) );
 				}
 				break;
 			// b : (de)buff -> on cache
@@ -230,7 +230,7 @@ class interf_descr_quete extends interf_cont
 		}
 		// gains de groupe
 		if( $etape->get_gain_groupe() )
-			$liste_recomp->add( new interf_bal_smpl('li', 'Des gains pour le groupe…')) );
+			$liste_recomp->add( new interf_bal_smpl('li', 'Des gains pour le groupe…') );
 		// gains du royaume
 		$recompenses = explode(';', $etape->get_gain_royaume());
 		foreach($recompenses as $recomp)

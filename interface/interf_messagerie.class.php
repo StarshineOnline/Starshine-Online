@@ -31,7 +31,7 @@ class interf_messagerie extends interf_onglets
 		
 		if( $perso->get_groupe() )
 			$this->add_onglet('Groupe'.($non_lu['groupe']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'groupe'), 'onglet_groupe', 'invent', $onglet=='groupe');
-		$this->add_onglet('Perso'.($non_lu['perso']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'perso'), 'onglet_perso', 'invent', $onglet=='perso');
+		$this->add_onglet('Perso'.($non_lu['perso']?' <span class="badge">'.$non_lu['perso'].'<span>':''), $url->get('type', 'perso'), 'onglet_perso', 'invent', $onglet=='perso');
 		/*if( $perso->get_groupe() || $perso->get_rang() == 6 || $perso->get_rang() == 1 )
 			$this->add_onglet('Royaume'.($non_lu['royaume']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'royaume'), 'onglet_royaume', 'invent', $onglet=='royaume');
 		if( $perso->get_rang() == 6 || $perso->get_rang() == 1 )

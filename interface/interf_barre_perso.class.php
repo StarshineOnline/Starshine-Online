@@ -353,9 +353,30 @@ class interf_barre_perso_shine extends interf_barre_perso
 				$hp->set_attribut('class', $hp->get_attribut('class').' mort' );
 				$mp->set_attribut('class', $mp->get_attribut('class').' mort' );
 			}
+	    if( $dist <= 7 )
+	    {
+	    	if( $place_buff > 0 )
+	    	{
+	    		$classe = 'success';
+	    		$tooltip = 'Ce personnage est à portée pour des sorts de groupe ou compétences et peut encore recevoir '.$place_buff.' buffs.';
+				}
+				else
+	    	{
+	    		$classe = 'warning';
+	    		$tooltip = 'Ce personnage est à portée pour des sorts de groupe ou compétences mais ne peut plus recevoir de buffs.';
+				}
+			}
+			else
+	    {
+	    	$classe = 'danger';
+	    	if( $place_buff > 0 )
+	    		$tooltip = 'Ce personnage n\'est pas à portée (il peut néanmoins encore recevoir '.$place_buff.' buffs).';
+	    	else
+	    		$tooltip = 'Ce personnage n\'est pas à portée et ne peut plus recevoir de buffs.';
+			}
 			/// @todo gérer les coordonnées cachées
 	    $pos = $li->add( new interf_bal_smpl('div', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), false, 'membre_lieu'.($dist>7?' trop_loin':'')) );
-	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist text-'.($dist>7?'danger':'success')) );
+	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist text-'.$classe) )->set_tooltip($tooltip, 'left');
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );
 	    $debuffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );

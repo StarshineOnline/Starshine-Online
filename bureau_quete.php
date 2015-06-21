@@ -42,7 +42,7 @@ $type = array_key_exists('type', $_GET) ? $_GET['type'] : 'autre';
 
 if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 {
-	$interf_princ->add( $G_interf->creer_tbl_quetes($R, $type) );
+	$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'bureau_quete', $type) );
 	exit;
 }
 
