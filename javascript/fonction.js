@@ -46,8 +46,10 @@ function affiche_ajax(data, status, jqXHR)
   });
 }
 
-function aff_erreur(contenu, donnees, icone='bug')
+function aff_erreur(contenu, donnees, icone/*='bug'*/)
 {
+	if( icone == undefined )
+		icone = 'bug';
 		var cont = document.getElementById('contenu_jeu');
 		var alerte = document.createElement('div');
 		alerte.className = 'alert alert-danger alert-dismissable';
