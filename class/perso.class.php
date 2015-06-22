@@ -4331,7 +4331,7 @@ class perso extends entite
 		}
 		if( $info == 'artisanat' )
 			$info = 'SQRT( (architecture + alchimie + forge + indentification) / 10 )';
-		$requete = 'SELECT g.nom, SUM('.$info.') AS val FROM perso AS p INNER JOIN groupe AS g ON p.groupe = g.id WHERE statut = "actif" AND level > 0 GROUP BY g.id ORDER BY val'.$sens.' LIMIT '.$ind.', 1';
+		$requete = 'SELECT g.nom, SUM('.$info.') AS val FROM perso AS p INNER JOIN groupe AS g ON p.groupe = g.id WHERE statut = "actif" AND level > 0 GROUP BY g.id ORDER BY val'.$sens.' LIMIT '.$val.', 1';
 		$sens = $plus ? ' DESC' : ' ASC';
 		$req = $db->query($requete);
 		$row = $db->read_assoc($req);

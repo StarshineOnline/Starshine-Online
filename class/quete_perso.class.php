@@ -29,7 +29,7 @@ class quete_perso extends table
 			$this->id_etape = $etape ? $etape->get_id() : 0;
 			if( is_object($id_quete) )
 			{
-				$objectifs = explode(';', $etape->get_objectif());
+				$objectifs = $etape ? explode(';', $etape->get_objectif()) : array();
 				for($i=0; $i<count($objectifs); $i++)
 				{
 					$obj = explode(':', $objectifs[$i]);

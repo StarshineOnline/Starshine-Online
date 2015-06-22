@@ -335,7 +335,7 @@ class interf_taverne_bar extends interf_cont
 				$req = $db->query($requete);
 				$row = $db->read_assoc($req);
 				$royaume = new royaume($row['id_royaume']);
-				$this->aff_rumeur('royaume-batint-'.($row['etat']>.5 ? 'bon':'mauvais'), $Gtrad[$row['nom']], $roy->get_capitale(), $Gtrad[$roy->get_race()], $roy->get_nom());
+				$this->aff_rumeur('royaume-batint-'.($row['etat']>.5 ? 'bon':'mauvais'), $Gtrad[$row['nom']], $royaume->get_capitale(), $Gtrad[$royaume->get_race()], $royaume->get_nom());
 			}
 			else if( $de <= 25 )
 			{ // resssource

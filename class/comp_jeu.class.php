@@ -32,6 +32,12 @@ class comp_jeu extends comp
 	{
 		return 'image/buff/'.$this->type.'.png';
 	}
+
+  /// Renvoie la portée du sort
+	function get_portee()
+	{
+		return 7;
+	}
 	// @}
 	
 	/**

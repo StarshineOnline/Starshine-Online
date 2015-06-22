@@ -97,7 +97,7 @@ case 'achat':
 		switch($onglet)
 		{
 		case 'objet':
-			$ok = $perso->prend_objet_pet( 'd'.$objet->get_id() );
+			$ok = $perso->prend_objet_pet( 'd'.$achat->get_id() );
 			break;
 		case 'recette':
 			$ok = !perso_recette::recov($perso->get_id(), $_GET['id']);
