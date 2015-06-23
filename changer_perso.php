@@ -18,7 +18,7 @@
   		$perso = new perso( $_GET['id'] );
   		$ok = $joueur->get_droits() & (joueur::droit_anim | joueur::droit_modo) && $perso->get_id_joueur() == 0;
   		if( !$ok )
-  			$ok = $perso->get_joueur() == $joueur->get_id();
+  			$ok = $perso->get_id_joueur() == $joueur->get_id();
 		}
 		if( $ok )
 		{
