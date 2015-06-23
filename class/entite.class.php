@@ -1006,13 +1006,13 @@ class entite extends placable
       return $this->mult_critique_magique;
 
     $this->mult_critique_magique = 2;
-    $this->mult_critique_magique *= 1 + $this->get_bonus_permanents('mult_critique_magique') / 100;
+    //$this->mult_critique_magique *= 1 + $this->get_bonus_permanents('mult_critique_magique') / 100;
     $this->mult_critique_magique /= 1 + $this->get_bonus_permanents('div_mult_critique_magique') / 100;
   	//Buff du critique
   	if($this->is_buff('buff_furie_magique', true))
 			$this->mult_critique_magique += (($this->get_buff('buff_furie_magique', 'effet2')) / 100);
 		$this->mult_critique_magique += $this->get_bonus_permanents('mult_critique_magique') / 100;
-		return $this->potentiel_critique_magique;
+		return $this->mult_critique_magique;
 	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()
