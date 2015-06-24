@@ -517,6 +517,7 @@ class perte_hp extends etat
  */
 class empoisonne extends effect {
 	var $vigueur;
+  const type_log = 1;
 
   function __construct($aVigueur) {
     parent::__construct('poison');

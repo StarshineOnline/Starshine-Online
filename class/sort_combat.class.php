@@ -754,7 +754,7 @@ class sort_combat_brul_mana extends sort_combat
     $passif = &$attaque->get_passif();
 		$brule_mana = $this->get_effet();
 		$degat = $this->get_effet() * $this->get_effet2();
-		$attaque->get_interface()->degats($degat, $actif->get_nom(), $this->get_nom());
+		$attaque->get_interface()->degats($degat, $attaque->get_actif()->get_nom(), $this->get_nom());
 		$attaque->get_interface()->effet(22, $brule_mana, $attaque->get_actif()->get_nom(), $passif->get_nom());
 		$attaque->add_log_effet_actif('&ef22~'.$drain);
 		$passif->set_hp($passif->get_hp() - $degat);
