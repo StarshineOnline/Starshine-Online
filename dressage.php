@@ -45,7 +45,7 @@ case 'fin':
 		$buff->supprimer();
     break;
 	}
-	$p_suc = $cadre->interf_bal_cont('p');
+	$p_suc = $cadre->add( new interf_bal_cont('p') );
 	$p_suc->add( new interf_txt( 'Vous avez réussi à dresser ce monstre.') );
 	//On le met dans son inventaire de monstre
 	if($perso->add_pet($pet->get_id(), $monstre->get_hp(), ($pet->get_energie() * 10)))

@@ -35,6 +35,15 @@ class identification
       $requete = 'SELECT ID, nom, race, rang_royaume, password, statut, fin_ban FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "suppr") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
+			$prem = $row = $db->read_assoc($req);
+			while( $row )
+			{
+				if( $row['statut'] != 'hibern' || $row['fin_ban'] < time() )
+					break;
+				$row = $db->read_assoc($req);
+			}
+			if( !$row )
+				$row = $prem;
       //echo "nb: $nbr_perso";
 			if( $nbr_perso )
 			{

@@ -1661,9 +1661,9 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			$R_retour[1] = false;
 			$dbg->add_message('Chances : ');
 			$dbg->add_message('Jet d\'un dé à : '.$reussite.' faces.<br />');
-			$dbg->add_message('Le résultat doit être inférieur à <b>'.round($chance,0));
+			$dbg->add_message('Le résultat doit être inférieur à <b>'.round($chance,0).'</b>');
 			$dbg->add_message('soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence);
-			$dbg->add_message('Résultat : <b>'.$numero);
+			$dbg->add_message('Résultat : <b>'.$numero.'</b>');
 			//Si le numero est inférieur a chance, alors la compétence augmente d'un
 			if($numero < $chance)
 			{
