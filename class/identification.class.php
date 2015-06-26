@@ -47,7 +47,6 @@ class identification
       //echo "nb: $nbr_perso";
 			if( $nbr_perso )
 			{
-        $row = $db->read_assoc($req);
 				if($row['statut'] == 'hibern' AND $row['fin_ban'] >= time())
 				{
 					$erreur_login = 'Vous êtes en hibernation pour une durée de '.transform_sec_temp($row['fin_ban'] - time());

@@ -2017,7 +2017,7 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 .coupcritique { font-weight:bold; }
 .degat { color:#A94442; }
 .manque { color:#31708F; } /*#428BCA*/
-.augcomp { color:#ff791c; font-weight:bold; } /*#8A6D3B*/
+.augcomp { color:#ff791c; font-weight:bold; display: block; } /*#8A6D3B*/
 .reward { color:#B8860B; }
 .soin { color:#3C763D; }
 /*#777*/
