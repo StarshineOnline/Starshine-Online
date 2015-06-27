@@ -235,8 +235,8 @@ class interf_cadre_carte extends interf_gauche
 		$div_diplo = $form->add( new interf_bal_cont('div', false, 'input-group') );
 		$div_diplo->add( new interf_bal_smpl('span', 'Diplomatie ', false, 'input-group-addon') );
 		$diplo_rel = $div_diplo->add( new interf_select_form('diplo_rel', false, 'diplo_rel', 'form-control') );
-		$diplo_rel->add_option('<', '0', !($this->options & interf_carte::aff_diplo_sup));
-		$diplo_rel->add_option('>', '1', $this->options & interf_carte::aff_diplo_sup);
+		$diplo_rel->add_option('≤', '0', !($this->options & interf_carte::aff_diplo_sup));
+		$diplo_rel->add_option('≥', '1', $this->options & interf_carte::aff_diplo_sup);
 		$diplo = $div_diplo->add( new interf_select_form('diplo', false, 'diplo_lim', 'form-control') );
 		$diplo->add_option($Gtrad['diplo127'], interf_carte::aff_diplo_vr, ($this->options & interf_carte::masque_diplo)==interf_carte::aff_diplo_vr);
 		$lst_diplos = array(interf_carte::aff_diplo_af, interf_carte::aff_diplo_a, interf_carte::aff_diplo_p, interf_carte::aff_diplo_pd, interf_carte::aff_diplo_bt, interf_carte::aff_diplo_n, interf_carte::aff_diplo_mt, interf_carte::aff_diplo_g, interf_carte::aff_diplo_gd, interf_carte::aff_diplo_e, interf_carte::aff_diplo_ee, interf_carte::aff_diplo_vr);

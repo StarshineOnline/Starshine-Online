@@ -689,6 +689,7 @@ class map_monstre extends entnj_incarn
 			$this->check_boss_loot($perso, $perso->get_groupe() ? $groupe : null);
 
 			//Drop d'un objet ?
+			$objets = '';
 			$drops = explode(';', $drop);
 			if($drops[0] != '')
 			{
@@ -720,7 +721,7 @@ class map_monstre extends entnj_incarn
 						else $tirage = 2;
 					}
 					if($tirage == 1)
-						loot_item($perso, $groupe, $objet);
+						$objets .= loot_item($perso, $groupe, $objet);
 					$i++;
 				}
 			}
@@ -755,7 +756,7 @@ class map_monstre extends entnj_incarn
 				$membre->sauver();
 			}
 		}
-		return $msg_xp;
+		return $msg_xp.$objets;
 	}
 
 	function dernieres_paroles() {

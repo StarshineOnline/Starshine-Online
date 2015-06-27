@@ -287,7 +287,7 @@ class texte
     	return null;
   	if( count($regs) > 1 && $regs[2][1] == 'e' )
   	{
-			if( $qp->get_etape()->get_etape() !=  mb_substr($regs[2], 3) )
+			if( $qp->get_id_etape() !=  mb_substr($regs[2], 3) )
 				return null;
 		}
 		if( count($regs) > 2 && $regs[3][1] == 'v' )
