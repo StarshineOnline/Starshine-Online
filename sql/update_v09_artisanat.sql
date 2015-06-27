@@ -2897,15 +2897,16 @@ INSERT INTO craft_recette_recipient (id_recette, id_objet, resultat, prefixe) VA
 
 
 -- Objets d'alchimie
+UPDATE objet SET stack = 3 WHERE id BETWEEN 31 AND 39 OR id IN (55, 148, 149);
 UPDATE objet SET pa = 0, mp = 20 WHERE id = 38;
-INSERT INTO objet VALUES(148, 'Potion éclair de protection magique', 'potion_pm', 2000, 'n', 0, 'y', 75, 'Augmente la PM de %effet% %', 0, 10, 5);
-INSERT INTO objet VALUES(149, 'Potion à bouchon de protection magique', 'potion_pm', 2000, 'n', 0, 'y', 75, 'Augmente la PM de %effet% %', 10, 0, 5);
-UPDATE objet SET nom = "Globe de télépotation mineure", type = "globe_tp", effet = 50, pa = 10, mp = 50 WHERE id = 24;
-UPDATE objet SET nom = "Globe de télépotation", type = "globe_tp", effet = 100, pa = 10, mp = 50 WHERE id = 25;
-UPDATE objet SET nom = "Globe de télépotation majeure", type = "globe_tp", description = "Vous téléporte dans votre ville.", effet = 200, pa = 10, mp = 50 WHERE id = 26;
-UPDATE objet SET nom = "Grand globe de télépotation mineure", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 50, encombrement = 10, pa = 5, mp = 0 WHERE id = 49;
-UPDATE objet SET nom = "Grand globe de télépotation", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 100, encombrement = 10, pa = 5, mp = 0 WHERE id = 50;
-UPDATE objet SET nom = "Grand globe de télépotation majeure", type = "globe_tp", effet = 200, encombrement = 10, pa = 5, mp = 0 WHERE id = 51;
+INSERT INTO objet VALUES(148, 'Potion éclair de protection magique', 'potion_pm', 2000, 'n', 3, 'y', 75, 'Augmente la PM de %effet% %', 0, 10, 5);
+INSERT INTO objet VALUES(149, 'Potion à bouchon de protection magique', 'potion_pm', 2000, 'n', 5, 'y', 75, 'Augmente la PM de %effet% %', 10, 0, 5);
+UPDATE objet SET nom = "Globe de télépotation mineure", type = "globe_tp", effet = 50, pa = 10, mp = 50, stack = 3 WHERE id = 24;
+UPDATE objet SET nom = "Globe de télépotation", type = "globe_tp", effet = 100, pa = 10, mp = 50, stack = 3 WHERE id = 25;
+UPDATE objet SET nom = "Globe de télépotation majeure", type = "globe_tp", description = "Vous téléporte dans votre ville.", effet = 200, pa = 10, mp = 50, stack = 3 WHERE id = 26;
+UPDATE objet SET nom = "Grand globe de télépotation mineure", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 50, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 49;
+UPDATE objet SET nom = "Gros globe de télépotation", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 100, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 50;
+UPDATE objet SET nom = "Gros globe de télépotation majeure", type = "globe_tp", effet = 200, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 51;
 INSERT INTO objet VALUES (150, "Fiole de mana mineure", "potion_mana", 125, "n", 3, "y", 10, "Rend 10 mana", 5, 0, 5);
 INSERT INTO objet VALUES (151, "Fiole de promotion mineure", "potion_buff", 195, "n", 3, "y", 166, "Donne un emplacement de buff suplémentaire", 5, 50, 5);
 INSERT INTO objet VALUES (152, "Fiole éclair de promotion mineure", "potion_buff", 240, "n", 3, "y", 166, "Donne un emplacement de buff suplémentaire", 0, 100, 5);
