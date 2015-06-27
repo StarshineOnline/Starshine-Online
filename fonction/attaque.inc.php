@@ -688,7 +688,7 @@ function loot_item(&$joueur, &$groupe, $item)
 			$gagnant = new perso($joueur->get_id());
 			break;
 		}
-		$msg .=  ' : '.$gagnant->get_nom().' reçoit "'.$objet_nom.'"';
+		$msg .=  ' : '.$gagnant->get_nom().' reçoit "'.$objet_nom.'".<br/>';
 	}
 	else
 	{

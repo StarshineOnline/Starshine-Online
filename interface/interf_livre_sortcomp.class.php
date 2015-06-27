@@ -119,7 +119,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 		        if($cible->get_id() == $this->perso->get_id())
 		        {
 		        	$sort_groupe = $elt->get_cible() == comp_sort::cible_unique && $elt->get_type() != 'rez';
-		        	$cond = $sort_groupe || $elt->get_cible() == comp_sort::cible_perso || $elt->get_cible() == comp_sort::cible_groupe || $elt->get_cible() == comp_sort::cible_case || $elt->get_cible() == comp_sort::cible_batiment || $elt->get_cible() == comp_sort::cible_9cases;
+		        	$cond = $elt->get_cible() == comp_sort::cible_perso || $elt->get_cible() == comp_sort::cible_groupe || $elt->get_cible() == comp_sort::cible_case || $elt->get_cible() == comp_sort::cible_batiment || $elt->get_cible() == comp_sort::cible_9cases;
 		        }
 		        else
 		        	$cond = ($elt->get_cible() == comp_sort::cible_unique || $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp || $elt->get_cible() == comp_sort::cible_9cases);

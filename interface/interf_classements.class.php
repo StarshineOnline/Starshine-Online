@@ -198,7 +198,7 @@ class interf_classement_perso_tous extends interf_pills
 	    $requete = 'SELECT COUNT(*) as val, perso.nom, perso.id, race, classe, cache_classe, cache_stat, cache_niveau FROM achievement INNER JOIN perso ON perso.id = achievement.id_perso WHERE statut = "actif" and level > 0 GROUP BY achievement.id_perso ORDER BY val DESC';
 	    break;
 	  case 'artisanat':
-	    $requete = 'SELECT ROUND(SQRT(architecture + alchimie + forge + indentification)*10) as val, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
+	    $requete = 'SELECT ROUND(SQRT(architecture + alchimie + forge + identification)*10) as val, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
 	    break;
 	  default:
 	    $requete = 'SELECT '.$type.' as val, nom, id, race, classe, cache_classe, cache_stat, cache_niveau FROM perso WHERE statut = "actif" and level > 0 ORDER BY val DESC';
