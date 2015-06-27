@@ -71,7 +71,7 @@ class interf_carte_monde extends interf_bal_cont
 			$this->ajout_filtre('monstres', '-.5 -.5 0 0 1', false, 1);
 		}
 		
-		$img = $this->svg->add( new interf_bal_smpl('image', 'img_monde') );
+		$img = $this->svg->add( new interf_bal_smpl('image', null, 'img_monde') );
 		$img->set_attribut('width', $taille.'px');
 		$img->set_attribut('height', $taille.'px');
 		$img->set_attribut('xlink:href', $lien);
@@ -81,35 +81,49 @@ class interf_carte_monde extends interf_bal_cont
 		if( !$this->svg )
 			return;
 		$perso = joueur::get_perso();
-		$groupe = new groupe( $id_groupe );
-		$groupe->get_membre_joueur();
-		$membres = array();
-		foreach($groupe->membre_joueur as $membre)
+		if( $id_groupe )
 		{
-			$ind = $membre->get_x().'-'.$membre->get_y();
-			if( in_array($ind, $this->cases) )
-				break;
-			$soi = $membre->get_id() == $perso->get_id();
-			if( array_key_exists($ind, $membres) )
+			$groupe = new groupe( $id_groupe );
+			$groupe->get_membre_joueur();
+			$membres = array();
+			foreach($groupe->membre_joueur as $membre)
 			{
-				$membres[$ind]['persos'][] = $membre->get_nom();
-				$membres[$ind]['soi'] |= $soi;
+				$ind = $membre->get_x().'-'.$membre->get_y();
+				if( in_array($ind, $this->cases) )
+					break;
+				$soi = $membre->get_id() == $perso->get_id();
+				if( array_key_exists($ind, $membres) )
+				{
+					$membres[$ind]['persos'][] = $membre->get_nom();
+					$membres[$ind]['soi'] |= $soi;
+				}
+				else
+					$membres[$ind] = array('x'=>$membre->get_x(), 'y'=>$membre->get_y(), 'soi'=>$soi, 'persos'=>array( $membre->get_nom() ));
 			}
-			else
-				$membres[$ind] = array('x'=>$membre->get_x(), 'y'=>$membre->get_y(), 'soi'=>$soi, 'persos'=>array( $membre->get_nom() ));
+			foreach($membres as $c=>$m)
+			{
+				$this->cases[] = $c;
+				$x = ($m['x'] - $this->x_min) * self::taille_case;
+				$y = ($m['y'] - $this->y_min) * self::taille_case;
+				$classe = $m['soi'] ? 'carte_perso' : 'carte_groupe';
+				$rect = $this->svg->add( new interf_bal_smpl('rect', null, false, $classe) );
+				$rect->set_attribut('x', $x.'px');
+				$rect->set_attribut('y', $y.'px');
+				$rect->set_attribut('width', self::taille_case.'px');
+				$rect->set_attribut('height', self::taille_case.'px');
+				$rect->set_tooltip( implode(', ', $m['persos']) );
+			}
 		}
-		foreach($membres as $c=>$m)
+		else
 		{
-			$this->cases[] = $c;
-			$x = ($m['x'] - $this->x_min) * self::taille_case;
-			$y = ($m['y'] - $this->y_min) * self::taille_case;
-			$classe = $m['soi'] ? 'carte_perso' : 'carte_groupe';
-			$rect = $this->svg->add( new interf_bal_smpl('rect', null, false, $classe) );
-			$rect->set_attribut('x', $x.'px');
-			$rect->set_attribut('y', $y.'px');
-			$rect->set_attribut('width', self::taille_case.'px');
-			$rect->set_attribut('height', self::taille_case.'px');
-			$rect->set_tooltip( implode(', ', $m['persos']) );
+				$x = ($perso->get_x() - $this->x_min) * self::taille_case;
+				$y = ($perso->get_y() - $this->y_min) * self::taille_case;
+				$rect = $this->svg->add( new interf_bal_smpl('rect', null, false, 'carte_perso') );
+				$rect->set_attribut('x', $x.'px');
+				$rect->set_attribut('y', $y.'px');
+				$rect->set_attribut('width', self::taille_case.'px');
+				$rect->set_attribut('height', self::taille_case.'px');
+				$rect->set_tooltip('Votre position');
 		}
 	}
 	function aff_pos($x, $y)
