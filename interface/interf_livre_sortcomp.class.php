@@ -48,7 +48,7 @@ class interf_livre_sortcomp extends interf_bal_cont
   			$cond = 'id IN ('.implode(',', $favoris).')';
   		else
 				$cond = 'comp_assoc = "'.$categorie.'" AND id IN ('.strtr($this->perso->get_sort_jeu(), ';', ',').')';
-			$elts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $cond);
+			$elts = $favoris ? sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $cond) : array();
 			$lance = true; 
 			break;
 		case 'sort_combat':
@@ -68,7 +68,7 @@ class interf_livre_sortcomp extends interf_bal_cont
   			$cond = 'id IN ('.implode(',', $favoris).')';
   		else
 				$cond = 'comp_assoc = "'.$categorie.'" AND id IN ('.strtr($this->perso->get_comp_jeu(), ';', ',').')';
-			$elts = comp_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $cond);
+			$elts = $favoris ? comp_jeu::create('', '', 'comp_assoc ASC, type ASC', false, $cond) : array();
 			$lance = true; 
 			break;
 		case 'comp_combat':

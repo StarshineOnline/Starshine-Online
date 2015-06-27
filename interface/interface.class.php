@@ -530,6 +530,13 @@ class interf_html extends interf_princ_ob
   {
     $this->entete[] ='<meta name="'.$nom.'"  content="'.$contenu.'"/>';
   }
+  /**
+   * Ajout d'une balise meta
+   */
+  function link($rel, $type, $href)
+  {
+    $this->entete[] ='<link rel="'.$rel.'"  type="'.$type.'"  href="'.$href.'"/>';
+  }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {

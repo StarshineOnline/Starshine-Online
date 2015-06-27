@@ -34,6 +34,8 @@ class interf_sso extends interf_html
     $this->javascript(static::prefixe_fichiers.'javascript/bootstrap-wysiwyg.js');
     $this->javascript(static::prefixe_fichiers.'javascript/bbcodeParser.js');
     $this->javascript(static::prefixe_fichiers.'javascript/fonction.js');
+    // icone de favori
+    $this->link('icon', 'image/png', 'image/favicon.png');
   }
 }
 
