@@ -1573,7 +1573,7 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	return $total;
 }
 
-function augmentation_competences($liste_augmentations, $joueur)
+function augmentation_competences($liste_augmentations, &$joueur)
 {
   /*echo 'augmentation_competences :';
   print_r($liste_augmentations);*/
@@ -1621,7 +1621,7 @@ function merge_augmentations($a1, $a2)
  * @return  [0]     Nouvelle valeur de la compétence.
  * @return  [1]     1 s'il y a augmentation, 0 sinon.
  */ 
-function augmentation_competence($competence, $joueur, $difficulte)
+function augmentation_competence($competence, &$joueur, $difficulte)
 {
 	global $db, $Tmaxcomp, $G_apprentissage_rate, $debugs;
 	$R_retour = array('melee', false);

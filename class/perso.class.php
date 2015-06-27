@@ -3543,8 +3543,9 @@ class perso extends entite
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null)
   {
-    $this->objet_ref->set_hp( $this->get_hp() );
-    $this->objet_ref->sauver();
+    /*$this->objet_ref->set_hp( $this->get_hp() );
+    $this->objet_ref->sauver();*/
+    $this->sauver();
   }
   /// Action effectuées à la fin d'un combat PvP
   function fin_combat_pvp(&$ennemi, $defense, $batiment=false)
@@ -4072,6 +4073,7 @@ class perso extends entite
 				else
 				{
 					$champs = '';
+					$this->champs_modif = array_unique($this->champs_modif);
 					foreach($this->champs_modif as $champ)
 					{
 						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
