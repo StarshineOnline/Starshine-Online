@@ -724,6 +724,7 @@ class map_monstre extends entnj_incarn
 						$objets .= loot_item($perso, $groupe, $objet);
 					$i++;
 				}
+				//$perso->restack_objet();
 			}
 		}
 

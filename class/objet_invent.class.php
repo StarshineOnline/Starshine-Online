@@ -67,7 +67,7 @@ abstract class objet_invent extends table
     // Pas de stack par défaut
 	}
 
-  /// Renvoie le nombre d'exmplaires qu'on peut mettre dans un emplacement de l'inventaire.
+  /// Renvoie le nombre d'exemplaires qu'on peut mettre dans un emplacement de l'inventaire.
 	function get_stack()
 	{
 		return 1;
@@ -272,8 +272,8 @@ abstract class objet_invent extends table
       $txt = 'r';
       break;
     default:
-      debug_print_backtrace();
-      die("catégorie d'objet inconnue : '$cat'");
+      //debug_print_backtrace();
+      log_admin::log('erreur','catégorie d\'objet inconnue : "'.$cat.'"', true);
     }
   	if( $decomp )
   	{

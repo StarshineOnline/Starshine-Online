@@ -143,9 +143,9 @@ class grimoire extends objet_invent
   {
     global $Gtrad;
     $noms = array('Description');
-    $class = $this->type;
-    if( $this->type != 'attr_perso' )
+    if( !in_array($this->type, array('attr_perso', 'alchimie', 'forge')) )
     {
+    	$class = $this->type;
       $cible = new $class($this->id_apprend);
       if( $class == 'sort_jeu' or  $class == 'sort_combat' )
         $noms[] = 'Incantation';
@@ -176,9 +176,11 @@ class grimoire extends objet_invent
       $description = null;
       break;
     case 'alchimie':
+    	$recette = new craft_recette($this->id_apprend);
+    	return array( 'Apprend la recette pour '.$recette->get_nom() );
     case 'forge':
-    	$type = 'la recette pour';
-    	break;
+    	$recette = new forge_recette($this->id_apprend);
+    	return array( 'Apprend la recette pour '.$recette->get_nom() );
     case 'attr_perso':
       return array( 'Entraîne la compétence '.traduit($this->attr_perso).' de '.$this->ajout_attr );
     }
@@ -249,8 +251,8 @@ class grimoire extends objet_invent
 			return true;
 		case 'alchimie':
 			/// @todo passer à l'objet
-			$requete = 'SELECT FROM perso_recette WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
-			$req = $db->querry($requete);
+			$requete = 'SELECT * FROM perso_recette WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
+			$req = $db->query($requete);
 			if( $db->num_rows )
 			{
         $princ->add( new interf_alerte('danger', true) )->add_message('Vous connaissez déjà cette recette.');
@@ -258,14 +260,15 @@ class grimoire extends objet_invent
 			}
 			else
 			{
-				$requete = 'INSERT INTO perso_recette (id_perso, id-recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
-				$db->querry($requete);
+				$requete = 'INSERT INTO perso_recette (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
+				$db->query($requete);
+      	$perso->supprime_objet($this->get_texte(), 1);
 				return true;
 			}
 		case 'forge':
 			/// @todo passer à l'objet
-			$requete = 'SELECT FROM perso_forge WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
-			$req = $db->querry($requete);
+			$requete = 'SELECT * FROM perso_forge WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
+			$req = $db->query($requete);
 			if( $db->num_rows )
 			{
         $princ->add( new interf_alerte('danger', true) )->add_message('Vous connaissez déjà ce manuel.');
@@ -273,8 +276,9 @@ class grimoire extends objet_invent
 			}
 			else
 			{
-				$requete = 'INSERT INTO perso_forge (id_perso, id-recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
-				$db->querry($requete);
+				$requete = 'INSERT INTO perso_forge (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
+				$db->query($requete);
+      	$perso->supprime_objet($this->get_texte(), 1);
 				return true;
 			}
     }

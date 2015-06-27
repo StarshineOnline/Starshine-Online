@@ -1515,14 +1515,16 @@ class perso extends entite
 		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
 		$i = 0;
 		$partie = $this->get_inventaire_slot_partie();
-		while(($i < $G_place_inventaire) AND !$trouver)
+		//while(($i < $G_place_inventaire) AND !$trouver)
+		foreach($partie as $o)
 		{
-			$objet_i = decompose_objet($partie[$i]);
+			$objet_i = decompose_objet($o);
 			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
 			{
 				$trouver = true;
+				break;
 			}
-			else $i++;
+			$i++;
 		}
 		if($trouver)
 		{
