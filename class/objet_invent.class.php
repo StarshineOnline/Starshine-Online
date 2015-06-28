@@ -274,6 +274,7 @@ abstract class objet_invent extends table
     default:
       //debug_print_backtrace();
       log_admin::log('erreur','catégorie d\'objet inconnue : "'.$cat.'"', true);
+      return null;
     }
   	if( $decomp )
   	{

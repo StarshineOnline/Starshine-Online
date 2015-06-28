@@ -37,7 +37,6 @@ function drop_func( event, ui )
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
     break;
   case 'desequip':
-    //$("#information").load( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
     charger( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
     break;
   case 'vendre_marchand':
@@ -45,7 +44,6 @@ function drop_func( event, ui )
     $(drag[0]).hide();
     break;
   default:
-    //$("#information").load( get_url_invent("action="+drop+"&objet="+objet) );
     charger( get_url_invent("action="+drop+"&objet="+objet) );
   }
 }
@@ -198,8 +196,7 @@ function vendre()
       objs += objets_vente[i].slot + "x" + objets_vente[i].nombre;
     }
   }
-  $("#information").load( get_url_invent("action=vente&objets="+objs) );
-  alert(get_url_invent("action=vente&objets="+objs));
+  charger(get_url_invent("action=vente&objets="+objs));
 }
 
 function start_drag(event, ui)
