@@ -124,7 +124,6 @@ class inventaire
 				$obj2->set_nombre( $obj2->get_nombre() + $obj->get_nombre() );
 				$obj2->recompose_texte();
 				$this->slot_liste[$i] = $obj2->get_texte();
-				//my_dump($obj->get_nom().' : '.$no2.' + '.$obj->get_nombre().' -> '.$obj2->get_texte());
 			}
 			return true;
 		}

@@ -1539,24 +1539,36 @@ class perso extends entite
 	function restack_objet()
 	{
 		$partie = $this->get_inventaire_slot_partie();
-		$i = 0;
 		$compte_stack = array();
 		$poursuite = true;
 		foreach($partie as $part)
 		{
 			$objet = decompose_objet($part);
 			if(array_key_exists($objet['sans_stack'], $compte_stack))
-				$compte_stack[$objet['sans_stack']] += $objet['stack'];
+				$compte_stack[$objet['sans_stack']] += $objet['stack'] ? $objet['stack'] : 1;
 			else
-				$compte_stack[$objet['sans_stack']] = $objet['stack'];
+				$compte_stack[$objet['sans_stack']] = $objet['stack'] ? $objet['stack'] : 1;
 			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
 		}
 
+		$inventaire = array();
+		$encombrement = 0;
 		foreach($compte_stack as $objet => $valeur)
 		{
-			for($i = 0; $i < $valeur; $i++)
-				$this->prend_objet($objet);
+			$obj = objet_invent::factory($objet);
+			while($valeur > 0)
+			{
+				$n = min($valeur, max($obj->get_stack(), 1));
+				$valeur -= $n;
+				$obj->set_nombre($n);
+				$obj->recompose_texte();
+				$inventaire[] = $obj->get_texte();
+				$encombrement += $obj->get_encombrement();
+			}
 		}
+		$this->set_inventaire_slot( serialize($inventaire) );
+		$this->set_encombrement($encombrement);
+		$this->sauver();
 	}
   /**
    * Supprime un objet de l'inventaire

@@ -301,9 +301,6 @@ abstract class objet_invent extends table
   function recompose_texte()
   {
     $this->texte = ($this->identifie ? '' : 'h').$this::code.$this->id;
-    $nbr = $this->get_nombre();
-    if( $nbr > 1 )
-      $this->texte .= 'x'.$nbr;
     $slot = $this->get_slot();
     if( $slot !== null )
       $this->texte .= 's'.$slot;
@@ -313,6 +310,9 @@ abstract class objet_invent extends table
     $enchant = $this->get_enchantement();
     if( $enchant !== null )
       $this->texte .= 'e'.$enchant;
+    $nbr = $this->get_nombre();
+    if( $nbr > 1 )
+      $this->texte .= 'x'.$nbr;
   }
 
 	/// Méthode renvoyant l'image de l'objet

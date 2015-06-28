@@ -237,16 +237,19 @@ class interf_infos_case extends interf_cont
 		
 		//$pnjs = pnj::create(array('x', 'y'), array($this->case->get_x(), $this->case->get_y()));
 		$pnjs = pnj::get_valeurs('id, nom, image', 'x = '.$this->case->get_x().' AND y = '.$this->case->get_y());
-		foreach($pnjs as $pnj)
+		if( $pnjs )
 		{
-			$li = $lst->add( new interf_bal_cont('li', false, 'info_case pnj') );
-			if( $this->distance )
-				$lien = $li->add( new interf_bal_cont('div') );
-			else
-				$lien = $li->add( new interf_lien_cont('pnj.php?id='.$pnj['id'], false, 'info_elt') );
-			$lien->add( new interf_img('image/pnj/'.$pnj['image'].'.png') );
-			$nom = $lien->add( new interf_bal_smpl('span', $pnj['nom']) );
-			$nom->set_tooltip('PNJ', 'bottom');
+			foreach($pnjs as $pnj)
+			{
+				$li = $lst->add( new interf_bal_cont('li', false, 'info_case pnj') );
+				if( $this->distance )
+					$lien = $li->add( new interf_bal_cont('div') );
+				else
+					$lien = $li->add( new interf_lien_cont('pnj.php?id='.$pnj['id'], false, 'info_elt') );
+				$lien->add( new interf_img('image/pnj/'.$pnj['image'].'.png') );
+				$nom = $lien->add( new interf_bal_smpl('span', $pnj['nom']) );
+				$nom->set_tooltip('PNJ', 'bottom');
+			}
 		}
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );

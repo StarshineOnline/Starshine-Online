@@ -451,16 +451,19 @@ class interf_carte extends interf_tableau
   {
     /// @todo à améliorer
 		$pnj = pnj::get_valeurs('x, y, image, nom', 'x >= '.$this->x_min.' AND x <= '.$this->x_max.' AND y >= '.$this->y_min.' AND y <= '.$this->y_max);
-		foreach($pnj as $p)
-    {
-      $this->infos[$p['y']][$p['x']] .= '<li><span class=\'info_pnj\'>PNJ</span> '.$p['nom'].'</li>';
-      // S'il y a déjà un contenu on passe au suivant.
-      $fils = $this->cases[ $p['y'] ][ $p['x'] ]->get_fils(0);
-      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
-        continue;
-      $div = $this->cases[ $p['y'] ][ $p['x'] ]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
-      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/pnj/'.$p['image'].'.png\');');
-    }
+		if( $pnj )
+		{
+			foreach($pnj as $p)
+	    {
+	      $this->infos[$p['y']][$p['x']] .= '<li><span class=\'info_pnj\'>PNJ</span> '.$p['nom'].'</li>';
+	      // S'il y a déjà un contenu on passe au suivant.
+	      $fils = $this->cases[ $p['y'] ][ $p['x'] ]->get_fils(0);
+	      if( $fils && $fils->get_attribut('class') == 'carte_contenu' )
+	        continue;
+	      $div = $this->cases[ $p['y'] ][ $p['x'] ]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
+	      $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.'image/pnj/'.$p['image'].'.png\');');
+	    }
+		}
   }
 
   protected function afficher_monstres($niv_min=0, $niv_max=255)

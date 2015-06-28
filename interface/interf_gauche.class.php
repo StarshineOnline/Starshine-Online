@@ -148,7 +148,9 @@ class interf_gauche extends interf_bal_cont
 	private function set_jauge($type, $valeur, $max, $style, $nom)
 	{
 		// max pour ajuster quand ça vaut 0
-		if( $max == '%' )
+		if( $max == 0 )
+			$angle = 0;
+		else if( $max == '%' )
 			$angle = max(round($valeur / 100 * 360) - 180, -177); 
 		else
 			$angle = max(round($valeur / $max * 360) - 180, -177); 

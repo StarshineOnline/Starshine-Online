@@ -183,7 +183,7 @@ class interf_ville_onglets extends interf_ville
 	function __construct(&$royaume, &$case=null)
 	{
 		parent::__construct($royaume, $case);
-		$this->onglets = $this->centre->add( new interf_onglets('tab_ville') );
+		$this->onglets = $this->centre->add( new interf_onglets('tab_ville', 'onglet_ville') );
 	}
 }
 

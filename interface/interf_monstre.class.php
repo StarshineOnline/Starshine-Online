@@ -159,7 +159,7 @@ class interf_monstre extends interf_cont
 		
 		// gauche
 		$gauche = $this->add( new interf_bal_cont('div', 'liste_gauche', 'liste_case') );
-		$lg = $gauche->add( new interf_descr_tbl() );
+		$lg = $gauche->add( new interf_descr_tbl('tbl_gauche') );
 		if($coeff >= 30)
 			$lg->nouv_elt('HP', $this->entite->get_hp_max());
 		if($coeff >= 11)
@@ -188,7 +188,7 @@ class interf_monstre extends interf_cont
 		
 		// droite
 		$droite = $this->add( new interf_bal_cont('div', 'liste_droite', 'liste_case') );
-		$ld = $droite->add( new interf_descr_tbl() );
+		$ld = $droite->add( new interf_descr_tbl('tbl_droite') );
 		if($coeff >= 5)
 			$ld->nouv_elt('Arme', $Gtrad[$this->entite->get_arme_type()]);
 		if($coeff >= 21)
