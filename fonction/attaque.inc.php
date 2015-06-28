@@ -643,6 +643,8 @@ function loot_item(&$joueur, &$groupe, $item)
 		$row = $db->read_row($req);
 		$objet_nom = 'Grimoire : '.$row[0];
 		break;
+	default:
+		log_admin::log('erreur', 'Type de loot inconnu : '.$item);
 	}
 	
 	$msg .= 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" ! ';
