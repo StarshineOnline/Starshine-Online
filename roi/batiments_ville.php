@@ -54,60 +54,64 @@ if( $action && $lieu && $perso->get_hp()>0 )
     	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars pour réactiver cette construction !');
   	break;
   case 'ameliore':
-    $id_batiment = $_GET['id'];
-    $batiment = new batiment_ville($id_batiment);
-    //Si le royaume a assez de stars on achète le batiment
-    if($royaume->get_star() >= $batiment->get_cout())
+    $constr = new construction_ville($_GET['id']);
+    $batiment = new batiment_ville( $constr->get_id_batiment() );
+    $requete = "SELECT * FROM batiment_ville WHERE level = ".$batiment->get_level()."+1 AND type = '".$batiment->get_type()."'";
+    $req = $db->query($requete);
+    if( $constr->get_hp() == $batiment->get_hp() && $row = $db->read_assoc($req) )
     {
-      //On paye
-      $royaume->set_star($royaume->get_star() - $row['cout']);
-      $royaume->sauver();
-      //On remplace le batiment
-      $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$batiment->get_hp().', date = '.time().' WHERE id = '.$id_batiment_ville;
-      if($db->query($requete))
-      {
-      	interf_alerte::enregistre(interf_alerte::msg_succes, 'Batiment bien réactivé.');
-				journal_royaume::ecrire_perso('ameliore_ville', $batiment, '', $batiment->get_cout());
-			}
-    }
-    else
-  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume ne possède pas assez de stars !');
+    	$nouv_batiment = new batiment_ville($row);
+	    //Si le royaume a assez de stars on achète le batiment
+	    if( $royaume->get_star() >= $nouv_batiment->get_cout())
+	    {
+	      //On paye
+	      $royaume->set_star($royaume->get_star() - $row['cout']);
+	      $royaume->sauver();
+	      //On remplace le batiment
+	      $constr->set_id_batiment( $nouv_batiment->get_id() );
+	      $constr->set_hp( $nouv_batiment->get_hp() );
+	      $constr->set_date( time() );
+				$constr->sauver();
+      	interf_alerte::enregistre(interf_alerte::msg_succes, 'Batiment bien amélioré.');
+				journal_royaume::ecrire_perso('ameliore_ville', $nouv_batiment, '', $batiment->get_cout());
+	    }
+	    else
+	  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume ne possède pas assez de stars !');
+		}
   	break;
   case 'reduit':
     // On récupère le nouveau bâtiment
-    $id_batiment = $_GET['id'];
-    $batiment = new batiment_ville($id_batiment);
-    // On récupère les HP de l'ancien bâtiment
-    $requete = "SELECT hp FROM construction_ville WHERE id = ".$id_batiment_ville;
+    $constr = new construction_ville($_GET['id']);
+    $batiment = new batiment_ville( $constr->get_id_batiment() );
+    $requete = "SELECT * FROM batiment_ville WHERE level = ".$batiment->get_level()."-1 AND type = '".$batiment->get_type()."'";
     $req = $db->query($requete);
-    $row2 = $db->read_assoc($req);
-    // Calcul des HP
-    $hp = min($row['hp'], $row2['hp']);
-    //On remplace le batiment
-    $requete = 'UPDATE construction_ville SET id_batiment = '.$id_batiment.', hp = '.$batiment->get_hp().', date = '.time().' WHERE id = '.$id_batiment_ville;
-    if($db->query($requete))
+    if( $row = $db->read_assoc($req) )
     {
-      interf_alerte::enregistre(interf_alerte::msg_succes, 'Retour à '.$row['nom'].' effectué.');
-			journal_royaume::ecrire_perso('reduit_ville', $batiment);
+    	$nouv_batiment = new batiment_ville($row);
+      //On remplace le batiment
+      $constr->set_id_batiment( $nouv_batiment->get_id() );
+      $constr->set_hp( min($nouv_batiment->get_hp(), $constr->get_hp()) );
+      $constr->set_date( time() );
+			$constr->sauver();
+      interf_alerte::enregistre(interf_alerte::msg_succes, 'Retour à '.$nouv_batiment->get_nom().' effectué.');
+			journal_royaume::ecrire_perso('reduit_ville', $nouv_batiment);
 		}
 		break;      
   case 'reparation':
     // Récupération de informations sur le bâtiment
-    $id_batiment = $_GET['id'];
-    $batiment = new batiment_ville($id_batiment);
+    $constr = new construction_ville($_GET['id']);
+    $batiment = new batiment_ville( $constr->get_id_batiment() );
     // On vérifie qu'il a assez de stars
     if($royaume->get_star() >= $batiment->get_cout())
     {
       // On répare
-      $requete = 'UPDATE construction_ville SET hp = '.$row['max_hp'].', date = '.time().' WHERE id = '.$id_batiment;
-      if( $db->query($requete) )
-      {
-        //On paye
-        $royaume->set_star($royaume->get_star() - $batiment->get_cout());
-        $royaume->sauver();
-      	interf_alerte::enregistre(interf_alerte::msg_succes, 'Réparation effectuée.');
-				journal_royaume::ecrire_perso('repare_ville', $batiment, '', $batiment->get_cout());
-      }
+      $constr->set_hp( $batiment->get_hp() );
+			$constr->sauver();
+      //On paye
+      $royaume->set_star($royaume->get_star() - $batiment->get_cout());
+      $royaume->sauver();
+    	interf_alerte::enregistre(interf_alerte::msg_succes, 'Réparation effectuée.');
+			journal_royaume::ecrire_perso('repare_ville', $batiment, '', $batiment->get_cout());
     }
     else
   		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Le royaume ne possède pas assez de stars !');

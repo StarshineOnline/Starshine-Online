@@ -38,7 +38,7 @@ class interf_batiments_ville extends interf_bal_cont
 				 $rep->set_tooltip('Réparer ('.$cout.' stars)');
 				}
 				else
-					$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($G_tps_reparation-$temps).' pour réparer') );
+					$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($G_tps_reparation-$temps).' pour réparer', false, 'imposs') );
 			}
 			else
 			{
@@ -58,7 +58,7 @@ class interf_batiments_ville extends interf_bal_cont
 						$amel->set_tooltip('Améliorer en '.$row2['nom'].' ('.$row2['cout'].' stars, entretien : '.$row2['entretien'].' stars / jour)');
 					}
 					else
-						$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($temps_requis-$temps).' pour améliorer') );
+						$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($temps_requis-$temps).' pour améliorer', false, 'imposs') );
 				}
 				// réduction
 				$requete = "SELECT * FROM batiment_ville WHERE level = ".$row['level']."-1 AND type = '".$row['type']."' ORDER BY level DESC";
@@ -76,7 +76,7 @@ class interf_batiments_ville extends interf_bal_cont
 						$red->set_tooltip('Réduire en '.$row2['nom'].' (entretien : '.$row2['entretien'].' stars / jour)');
 					}
 					else
-						$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($temps_requis-$temps).' pour réduire') );
+						$li->add( new interf_bal_smpl('div', 'Vous devez attendre '.transform_min_temp($temps_requis-$temps).' pour réduire', false, 'imposs') );
         }
 			}
 			$li->add( new interf_jauge_bulle('HP', $row['cur_hp'], $row['max_hp'], '%', 'hp', false, 'jauge_case') );

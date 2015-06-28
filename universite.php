@@ -82,11 +82,11 @@ case 'prendre':
 		{
 			if($row['new'] == 'yes') $new[] = $row['competence'];
 			if($row['competence'] == 'facteur_magie')
-				$joueur->set_facteur_magie($row['permet']);
+				$perso->set_facteur_magie($row['permet']);
 			if($row['competence'] == 'sort_vie+')
-				$joueur->set_sort_vie($joueur->get_sort_vie() + $row['permet']);
+				$perso->set_sort_vie($perso->get_sort_vie() + $row['permet']);
 			if($row['competence'] == 'max_pet')
-				$joueur->set_max_pet($row['permet']);
+				$perso->set_max_pet($row['permet']);
 		}
 		$newi = 0;
 		while($newi < count($new))

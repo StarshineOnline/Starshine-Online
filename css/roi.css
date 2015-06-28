@@ -112,7 +112,7 @@
 	font-weight: bold;
 }
 
-#batiments_ville .info_case>a
+#batiments_ville .info_case>a, #batiments_ville .info_case>.imposs
 {
 	display:block;
 	float: right;
@@ -120,6 +120,13 @@
 	width: 60px;
 	border-left: solid 1px;
 	text-align: center;
+}
+
+#batiments_ville .info_case>.imposs
+{
+	font-size: 13px;
+	line-height: 13px;
+	width: 100px;
 }
 
 #batiments_ville .info_case>a>.icone

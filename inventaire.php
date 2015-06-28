@@ -132,7 +132,6 @@ if( !$visu && $action )
       {
         $obj = explode('x', $objet);
         $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj[0]) );
-        my_dump($objet);
         if( $objet->get_nombre() >= $obj[1] )
           $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
         else
