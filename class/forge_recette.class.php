@@ -254,6 +254,8 @@ class forge_recette extends table
 		case 'resiste_paralysie': // + X% au potentiel pour sortir de la paralysie
 			$perso->add_bonus_permanents('resistance_para', $this->effet_bonus);
 			break;
+		default:
+			log_admin::log('erreur', 'bonus inconnu : '.$this->type_bonus);
 		}
 		switch($this->type_malus)
 		{
@@ -384,6 +386,8 @@ class forge_recette extends table
 		case 'anticipation_adv': // -X au chances d'anticiper de l'adversaire
 			$perso->add_effet_permanent('defenseur', new forge_anticipation( -$this->effet_bonus ));
 			break;
+		default:
+			log_admin::log('erreur', 'malus inconnu : '.$this->type_bonus);
 		}
 	}
 	
@@ -492,6 +496,11 @@ class forge_recette extends table
 			return $this->effet_bonus.'% de silence l\'adversaire quand subi des dégats d\'un sort';
 		case 'resiste_paralysie':
 			return '+ '.$this->effet_bonus.'% au potentiel pour sortir de la paralysie';
+		case 'parer':
+			return '+ '.$this->effet_bonus.'% aux chances de parer une attaque.';
+		default:
+			log_admin::log('erreur', 'bonus sans description : '.$this->type_bonus);
+			return '';
 		}
 	}
 	
@@ -576,6 +585,9 @@ class forge_recette extends table
 			return '+ '.$this->effet_bonus.'% au potentiel lancer et toucher magique de l\'adversaire';
 		case 'anticipation_adv':
 			return '-'.$this->effet_bonus.' au chances d\'anticiper de l\'adversaire';
+		default:
+			log_admin::log('erreur', 'malus sans description : '.$this->type_bonus);
+			return '';
 		}
 	}
 }

@@ -117,7 +117,7 @@ case 'prendre':
 		$perso->set_sort_jeu(implode(';', $sort_jeu));
 		$perso->set_sort_combat(implode(';', $sort_combat));
 		$perso->set_classe_id($_GET['id']);
-		$row_classe = $row['nom'];
+		$nom = $row_classe['nom'];
 		$perso->set_classe(mb_strtolower($nom, 'UTF-8'));
 		$perso->sauver();
 		$perso->unlock_achiev("rang_$rang");
