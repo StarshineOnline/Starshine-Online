@@ -48,7 +48,7 @@ function script_action($joueur, $ennemi, $mode, &$attaque)
 		// Si la cible est l'adversaire, alors c'est foiré
 		if( $att->get_cible() == comp_sort::cible_autre )
 		{
-			$attaque->get_interface()->non_attaque('cc', $joueur->get_nom(), $ennemi->get_nom());
+			$attaque->get_interface()->special('cc', $joueur->get_nom(), $ennemi->get_nom());
 			$attaque->add_log_combat('cc');
 			return null;
 		}

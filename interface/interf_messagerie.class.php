@@ -167,7 +167,7 @@ class interf_messages extends interf_cont
 		// pagination
 		$pagination = $this->add( new interf_bal_cont('div', 'pagination') );
 		$G_url->add('action', 'lire');
-		$pagination->add( new interf_pagination($page, $page_max, $G_url->copie) );	
+		$pagination->add( new interf_pagination($page, $page_max, $G_url->copie()) );	
 		// réponse
 		$this->add( new interf_editeur('nouv_'.$type, $G_url->get('action', 'ecrire'), false, 'editeur') );
 	}

@@ -39,7 +39,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
 		//Si c'est pour une bourgade on vérifie combien il y en a déjà
 		if($obj->get_type() == 'bourg')
 		{
-			$nb_bourg = nb_bourg($R->get_id());
+			$nb_bourg = nb_bourg($royaume->get_id());
 			$nb_case = nb_case($royaume->get_id());
 			if(($nb_bourg + $nombre - 1) >= ceil($nb_case / 250))
 			{

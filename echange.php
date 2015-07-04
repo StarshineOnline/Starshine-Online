@@ -202,7 +202,7 @@ case 'valider':
 	$achiev->set_compteur($achiev->get_compteur() + $nb_objet['j2']);
 	$achiev->sauver();
 	
-	if($nb_objet['j2'] == 0 AND $echange['star'][$j1->get_id()]['objet'] > 0)
+	if($nb_objet['j2'] == 0 AND $echange['star'][$perso->get_id()]['objet'] > 0)
 	{
 		// Augmentation du compteur de l'achievement
 		$achiev = $perso->get_compteur('donner_stars');

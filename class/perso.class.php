@@ -3572,7 +3572,7 @@ class perso extends entite
 			$this->trigger_arene();
 			//On supprime toutes les rez et (de)bufffs bâtiments
 			$this->supprime_rez();
-			buff_batiment::suppr_mort_perso($this->id);
+			buff_batiment::suppr_mort_perso($this);
 			//Achievement
 			if($this->get_hp() == 0)
 				$this->unlock_achiev('near_kill');

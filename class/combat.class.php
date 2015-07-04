@@ -240,7 +240,7 @@ class combat
 			$interf->anticipe($attaquant ? $passif->get_nom() : $actif->get_nom() );
 			break;
 		case 'n':
-			$interf->approche($actif->get_nom());
+			$interf->approche($actif);
 			break;
 		}
 

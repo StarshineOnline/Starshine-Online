@@ -108,7 +108,7 @@ case 'fin':
 						$objet_nom = 'Grimoire : '.$row[0];
 					break;
 				}
-				$p_loot = $cadre->interf_bal_cont('p');
+				$p_loot = $cadre->add( new interf_bal_cont('p') );
 				$p_suc->add( new interf_txt( 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />') );
 				//Si le joueur a un groupe
 				if($perso->get_groupe() > 0)
