@@ -212,9 +212,9 @@ class interf_factory
     return new interf_dresseur($royaume, $categorie);
 	}
 	/// Alchimiste
-	function creer_alchimiste(&$royaume, &$case, $onglet='recherche')
+	function creer_alchimiste(&$royaume, &$case, $onglet='recherche', &$elt=null)
 	{
-    return new interf_alchimiste($royaume, $case, $onglet);
+    return new interf_alchimiste($royaume, $case, $onglet, $elt);
 	}
 	/// Hotel des ventes
 	function creer_hotel_vente(&$royaume, $type='vente', $categorie='arme')

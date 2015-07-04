@@ -156,7 +156,7 @@ class forge_recette extends table
 		case 'reduction': // X% de réduire les dégats de 2 (avant critique)
 			$perso->add_effet_permanent('defenseur', new forge_degats($this->effet_bonus, -2));
 			break;
-		case 'degats_supp': // X% d'infliger 2 dégât en plus (avant critique)
+		case 'degats_sup': // X% d'infliger 2 dégât en plus (avant critique)
 			$perso->add_effet_permanent('attaquant', new forge_degats($this->effet_bonus, 2));
 			break;
 		case 'blocage_adv': // -X% au potentiel bloquer adverse
@@ -296,7 +296,7 @@ class forge_recette extends table
 		case 'reduction': // X% d'avoir les dégâts réduits de 2 (avant critique)
 			$perso->add_effet_permanent('attaquant', new forge_degats($this->effet_bonus, -2));
 			break;
-		case 'degats_supp': // 20+5*X% de subir X de dégat quand touché par l'adversaire (magie ou physique)
+		case 'degats_sup': // 20+5*X% de subir X de dégat quand touché par l'adversaire (magie ou physique)
 			$perso->add_effet_permanent('defenseur', new forge_degats(20+5*$this->effet_bonus, $this->effet_bonus));
 			break;
 		case 'surcharge': // 10+10*X% de subir 5*X à chaque critique infligé à l'adversaire
@@ -438,7 +438,7 @@ class forge_recette extends table
 			return (10+5*$this->effet_bonus).'% d\'empoisonner niveau '.$this->effet_bonus.' quand une attaque physique touche';
 		case 'reduction':
 			return $this->effet_bonus.'% de réduire les dégats de 2';
-		case 'degats_supp':
+		case 'degats_sup':
 			return $this->effet_bonus.'% d\'infliger 2 dégât en plus';
 		case 'blocage_adv':
 			return '-'.$this->effet_bonus.'% au potentiel bloquer adverse';
@@ -498,6 +498,14 @@ class forge_recette extends table
 			return '+ '.$this->effet_bonus.'% au potentiel pour sortir de la paralysie';
 		case 'parer':
 			return '+ '.$this->effet_bonus.'% aux chances de parer une attaque.';
+		case 'pp':
+			return '+ '.$this->effet_bonus.' de protection physique.';
+		case 'pm':
+			return '+ '.$this->effet_bonus.' de protection magique.';
+		case 'coefficient':
+			return '- '.$this->effet_bonus.' au coefficient requis pour utiliser l\'arme.';
+		case 'degats':
+			return '+ '.$this->effet_bonus.' aux dégâts de l\'arme.';
 		default:
 			log_admin::log('erreur', 'bonus sans description : '.$this->type_bonus.' ('.$this->nom.')');
 			return '';
@@ -529,7 +537,7 @@ class forge_recette extends table
 			return '-'.$this->effet_bonus.'% aux chances de critique';
 		case 'reduction':
 			return $this->effet_bonus.'% d\'avoir les dégâts réduits de 2';
-		case 'degats_supp':
+		case 'degats_sup':
 			return (20+5*$this->effet_bonus).'% de subir '.$this->effet_bonus.' de dégat quand touché par l\'adversaire';
 		case 'surcharge':
 			return (10+10*$this->effet_bonus).'% de subir '.(5*$this->effet_bonus).' à chaque critique infligé à l\'adversaire';
@@ -587,6 +595,14 @@ class forge_recette extends table
 			return '-'.$this->effet_bonus.' au chances d\'anticiper de l\'adversaire';
 		case 'parer':
 			return 'Chances de parrer une attaque divisées par 1,'.$this->effet_bonus.'.';
+		case 'pp':
+			return '- '.$this->effet_bonus.' de protection physique.';
+		case 'pm':
+			return '- '.$this->effet_bonus.' de protection magique.';
+		case 'coefficient':
+			return '+ '.$this->effet_bonus.' au coefficient requis pour utiliser l\'arme.';
+		case 'degats':
+			return '- '.$this->effet_bonus.' aux dégâts de l\'arme.';
 		default:
 			log_admin::log('erreur', 'malus sans description : '.$this->type_malus.' ('.$this->nom.')');
 			return '';

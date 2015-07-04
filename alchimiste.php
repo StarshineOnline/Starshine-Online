@@ -54,6 +54,8 @@ if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()
 if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	
+$div_aug = new interf_bal_cont('div');
+interf_base::set_courrent($div_aug);
 
 switch( $action )
 {
@@ -145,4 +147,6 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	}
 }
 else
-	$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $case, $onglet) );
+{
+	$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $case, $onglet, $div_aug) );
+}

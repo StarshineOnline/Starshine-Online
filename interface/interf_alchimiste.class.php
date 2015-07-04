@@ -10,7 +10,7 @@ include_once(root.'interface/interf_liste_achat.class.php');
 /// Classe gérant l'interface de l'alchimiste
 class interf_alchimiste extends interf_ville_onglets
 {
-	function __construct(&$royaume, &$case, $onglet)
+	function __construct(&$royaume, &$case, $onglet, &$elt=null)
 	{
 		global $db;
 		parent::__construct($royaume, $case);
@@ -48,7 +48,7 @@ class interf_alchimiste extends interf_ville_onglets
 		
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$onglet) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$onglet.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
-		$this->aff_recherche($royaume);
+		$this->aff_recherche($royaume, $elt);
 		switch($tab)
 		{
 		case 'objet':
@@ -63,7 +63,7 @@ class interf_alchimiste extends interf_ville_onglets
 		}
 	}
 	
-	function aff_recherche(&$royaume)
+	function aff_recherche(&$royaume, &$elt=null)
 	{
 		global $db;
 		$requete = "SELECT royaume_alchimie FROM craft_recette WHERE royaume_alchimie < ".$royaume->get_alchimie()." ORDER BY royaume_alchimie DESC LIMIT 0, 1";
@@ -75,6 +75,9 @@ class interf_alchimiste extends interf_ville_onglets
 		$row = $db->read_assoc($req);
 		$max = $row['royaume_alchimie'];
 		$onglet = $this->onglets->get_onglet('tab_recherche');
+		my_dump($elt);
+		if( $elt )
+			$onglet->add( $elt );
 		if( $max )
 		{
 			$total = $max - $min;
@@ -87,7 +90,7 @@ class interf_alchimiste extends interf_ville_onglets
 			$onglet->add( new interf_bal_smpl('p', 'Il n\'y a plus de recette à débloquer. Mais vous pouvez tout de même continuer à effectuer des recherches pour vous entrainer.') );
 		}
 		$onglet->add( new interf_lien('Faire des recherches en alchimie (10 PA).', 'alchimiste.php?action=recherche', false, 'btn btn-default') );
-	} 
+	}
 }
 
 /// Classe de base pour les listes d'objet d'alchimie
