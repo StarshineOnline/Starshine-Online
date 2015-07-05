@@ -2527,6 +2527,13 @@ class perso extends entite
 		
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
+		// Passage de niveau
+		if ($this->get_exp() > prochain_level($this->get_level()))
+		{
+			$this->set_level($this->get_level() + 1);
+			$this->set_point_sso($this->get_point_sso() + 1);
+			$this->sauver();
+		}
 		// On vérifie que le personnage est vivant
 		if($this->hp > 0)
 		{
