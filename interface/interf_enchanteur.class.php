@@ -25,6 +25,7 @@ class interf_enchanteur extends interf_ville_onglets
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$categorie) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$categorie.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		$this->onglets->get_onglet('tab_'.$categorie)->add( new interf_achat_accessoire($royaume, $categorie, $niveau, $n) );
+		//interf_base::code_js('alert("coucou");');
 	}
 }
 
@@ -32,6 +33,7 @@ class interf_enchanteur extends interf_ville_onglets
 class interf_achat_accessoire extends interf_achat_objet
 {
 	const type = 'accessoire';
+	protected $ordre = 1;
 	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
 	{
 		global $db;
