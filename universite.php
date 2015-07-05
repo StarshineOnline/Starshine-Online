@@ -117,6 +117,10 @@ case 'prendre':
 		$perso->set_sort_jeu(implode(';', $sort_jeu));
 		$perso->set_sort_combat(implode(';', $sort_combat));
 		$perso->set_classe_id($_GET['id']);
+		/// @todo  passer par les objets
+		$requete = "SELECT * FROM classe WHERE id = ".sSQL($_GET['id'])s;
+		$req_classe = $db->query($requete);
+		$row_classe = $db->read_array($req_classe);
 		$nom = $row_classe['nom'];
 		$perso->set_classe(mb_strtolower($nom, 'UTF-8'));
 		$perso->sauver();
