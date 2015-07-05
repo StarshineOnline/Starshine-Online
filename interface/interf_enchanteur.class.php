@@ -33,7 +33,7 @@ class interf_enchanteur extends interf_ville_onglets
 class interf_achat_accessoire extends interf_achat_objet
 {
 	const type = 'accessoire';
-	protected $ordre = 1;
+	protected $ordre = 2;
 	function __construct(&$royaume, $categorie, $niveau, $nbr_alertes=0)
 	{
 		global $db;
@@ -44,13 +44,14 @@ class interf_achat_accessoire extends interf_achat_objet
 	}
 	function aff_titres_col()
 	{
-		/*$this->tbl->nouv_cell('');*/
+		$this->tbl->nouv_cell('Puissance');
 		parent::aff_titres_col();
 	}
 	
 	function aff_cont_col(&$elt)
 	{
-		/*$this->tbl->nouv_cell( $elt->get_() );*/
+		$classe =  $elt->get_puissance() > $this->perso->get_puissance() ? 'text-danger' : '';
+		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_puissance(), false, $classe) );
 		parent::aff_cont_col($elt);
 	}
 }

@@ -208,12 +208,12 @@ if( array_key_exists('action', $_GET) )
         interf_debug::enregistre($dbg.$cout_pa.'/'.$cout_mp);
       }
     }
-    if($perso->get_pa() < $sortpa)
+    if($perso->get_pa() < $cout_pa)
 		{
 	    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Pas assez de PA !');
 			break;
 		}
-    if($perso->get_mp() < $sortmp)
+    if($perso->get_mp() < $cout_mp)
 		{
 	    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Pas assez de mana !');
 			break;

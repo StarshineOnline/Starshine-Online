@@ -105,7 +105,7 @@ case 'achat':
 			$ok = !perso_recette::recov($perso->get_id(), $_GET['id']);
 			if($ok)
 			{
-				$perso_recette = new perso_recette(0, $perso->get_id(), $_GET['id']);
+				$perso_recette = new perso_recette(0, $_GET['id'], $perso->get_id());
 				$perso_recette->sauver();
 			}
 			break;

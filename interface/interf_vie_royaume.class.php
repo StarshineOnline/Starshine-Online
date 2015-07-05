@@ -168,7 +168,7 @@ class interf_vie_royaume extends interf_vie_royaume_base
 				$pour->set_tooltip($txt_pour);
 				$contre = $btns->add( new interf_lien('Contre la révolution', 'vie_royaume.php?action=revolution&vote=0', false, 'btn btn-'.$style_contre) );
 				$contre->set_tooltip($txt_contre);
-				$this->aff_jauge_revolution( revolution::get_prochain_revolution($this->royaume->get_id(), true) );
+				$this->aff_jauge_revolution( revolution::get_prochain_revolution($this->royaume->get_id(), true)[0] );
 			}
 			else if( $jour >= 2 && $jour < 15 )
 			{

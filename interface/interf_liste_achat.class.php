@@ -44,7 +44,8 @@ abstract class interf_liste_achat extends interf_cont
 			else
 				$this->tbl->nouv_cell( $e->get_nom() );
 			$this->aff_cont_col($e);
-			$prix = $e->get_prix() + $this::taxe ? ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100) : 0;
+			$taxe = $this::taxe ? ceil($e->get_prix() * $royaume->get_taxe_diplo($this->perso->get_race()) / 100) : 0;
+			$prix = $e->get_prix() + $taxe;
 			$classe =  $prix > $this->perso->get_star() ? 'text-danger' : '';
 			$this->tbl->nouv_cell( new interf_bal_smpl('span', $prix, false, $classe) );
 			if( $achat === null )
@@ -54,7 +55,6 @@ abstract class interf_liste_achat extends interf_cont
 			else
 				$this->tbl->nouv_cell('&nbsp;');
 		}
-		
 	}
 	
 	protected function recherche_batiment(&$royaume, $batiment)

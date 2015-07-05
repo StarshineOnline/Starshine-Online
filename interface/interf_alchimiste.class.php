@@ -49,7 +49,7 @@ class interf_alchimiste extends interf_ville_onglets
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$onglet) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$onglet.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		$this->aff_recherche($royaume, $elt);
-		switch($tab)
+		switch($onglet)
 		{
 		case 'objet':
 			$this->onglets->get_onglet('tab_'.$onglet)->add( new interf_achat_alchimie($royaume, $n) );
@@ -57,7 +57,7 @@ class interf_alchimiste extends interf_ville_onglets
 		case 'recette':
 			$this->onglets->get_onglet('tab_'.$onglet)->add( new interf_achat_recette($royaume, $n) );
 			break;
-		case 'recette':
+		case 'quetes':
 			$this->onglets->get_onglet('tab_'.$onglet)->add( $G_interf->creer_tbl_quetes($royaume, 'alchimiste'/*, $n*/) );
 			break;
 		}
@@ -75,7 +75,6 @@ class interf_alchimiste extends interf_ville_onglets
 		$row = $db->read_assoc($req);
 		$max = $row['royaume_alchimie'];
 		$onglet = $this->onglets->get_onglet('tab_recherche');
-		my_dump($elt);
 		if( $elt )
 			$onglet->add( $elt );
 		if( $max )
