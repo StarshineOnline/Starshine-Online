@@ -181,7 +181,6 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 			$count = count($actions);
 			$action = false;
 			$i = 0;
-			//my_dump($actions);
 			while(($i < $count) && (!$action))
 			{
 			  // Récupération des conditions et de l'action

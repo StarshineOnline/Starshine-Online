@@ -420,7 +420,6 @@ class map_monstre extends entnj_incarn
 		if ($db->num_rows($req_d))
 		{
 			$row = $db->read_assoc($req);
-			my_dump($row);
 			// On va vérifier les prérequis
 			$prerequis = true;
 			if ($row['condition_sql'] !== null)

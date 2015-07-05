@@ -205,7 +205,7 @@ class objet extends objet_equip
     {
     case 'fabrication':
       return ($partie == 'artisanat') ? 0 : false;
-    case 'fiole':
+    case 'recipient':
     case 'identification':
       return ($partie == 'artisanat') ? 1 : false;
     case 'globe_pa':

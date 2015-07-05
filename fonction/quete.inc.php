@@ -223,7 +223,6 @@ function prend_quete($id_quete, &$joueur)
 	$valid = true;
 	$G_erreur = '';
 	//Vérifie si le joueur n'a pas déjà pris la quête.
-	//my_dump($row);
 	if($liste_quete != '')
 	{
 		foreach($liste_quete as $quest)
@@ -272,7 +271,6 @@ function prend_quete($id_quete, &$joueur)
 	if($valid)
 	{
 		$quete = unserialize($row['objectif']);
-    //my_dump($quete);
     $liste_quete[$numero_quete] = array();
     $liste_quete[$numero_quete]['id_quete'] = $row['id'];
     $count = count($quete);
@@ -285,7 +283,6 @@ function prend_quete($id_quete, &$joueur)
 			$liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
 			$i++;
 		}
-    //my_dump($liste_quete);
 		$joueur_quete = serialize($liste_quete);
 		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE id = ".$joueur->get_id();
 		$req = $db->query($requete);

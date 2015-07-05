@@ -104,6 +104,10 @@ UPDATE objet SET prix = 25 WHERE id = 12;
 UPDATE objet SET prix = 15 WHERE id = 16;
 UPDATE objet SET prix = 5 WHERE id = 3;
 
+-- instruments
+UPDATE objet SET type = "recipient"  WHERE id IN (5, 6, 14, 15, 40, 41, 42, 48);
+
+
 
 -- trésors des monstres
 UPDATE `monstre` SET `drops` = 'o3-16;o20-30;o64-20;o87-20;o107-20;o136-20;o68-20;o92-20;o124-20;o79-40;o80-40;o114-40;o115-40;o119-40;o60-40;o120-20;l263-100;l278-100;l304-100;l331-100;l346-100;l360-100;l377-100;l480-100;l490-100;l499-100;l566-100;l598-100' WHERE `monstre`.`id` = 1; -- lapin (niv. 1, plaine)

@@ -97,7 +97,6 @@ class interf_taverne_repos extends interf_tableau//interf_liste_achat
 		$this->royaume = &$royaume;
 		$this->aff_titres_col();
 		$services = taverne::create(null, null, 'id ASC', false, '1');
-		//my_dump($services);
 		foreach($services as $elt)
 		{
 			$requis = $elt->get_requis();

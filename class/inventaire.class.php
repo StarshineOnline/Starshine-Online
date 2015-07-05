@@ -35,7 +35,8 @@ class inventaire
 			$deb = 'o'.$obj->get_id();
 			while($i < count($this->slot_liste) && !$trouver)
 			{
-				if( substr($this->slot_liste[$i], 0, strlen($deb)) == $deb )
+				$decomp = explode('x', $this->slot_liste[$i]);
+				if( $decomp[0] == $deb )
 				{
 					$obj2 = objet_invent::factory($this->slot_liste[$i]);
 					$nbr = $obj2->get_nombre() + $obj->get_nombre();
@@ -43,6 +44,7 @@ class inventaire
 					{
 						$trouver = true;
 						$stack = true;
+						break;
 					}
 				}
 				$i++;
@@ -56,48 +58,6 @@ class inventaire
 				$trouver = true;
 			}
 		}
-		// Maximum d'empilement possible
-	/*	if($objet_d['categorie'] != 'o')
-		{
-		  // Ne peut pas être empilé
-			$row['stack'] = 0;
-		}
-		else
-		{
-		  // Récupération de la description de l'objet
-			$id_reel_objet = $objet_d['id_objet'];
-			//Recherche de l'objet
-			$requete = "SELECT * FROM objet WHERE id = ".$id_reel_objet;
-			$req = $db->query($requete);
-			$row = $db->read_assoc($req);
-		}
-		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
-		$i = 0;
-		while(($i < $G_place_inventaire) AND !$trouver)
-		{
-			$objet_i = decompose_objet($this->slot_liste[$i]);
-			//echo '$objet_i[\'sans_stack\'] => '.$objet_i['sans_stack'].'  / $objet_d[\'sans_stack\'] => '.$objet_d['sans_stack'].' / intval($objet_i[\'stack\']) => '.intval($objet_i['stack']).' / $row[\'stack\'] => '.$row['stack'];
-			// Comparaison de la description ('sans_stack') et du nombre d'objet empilé par rapport au maximum
-			if($objet_i['sans_stack'] == $objet_d['sans_stack'] AND $row['stack'] > 1 AND intval($objet_i['stack']) < $row['stack'])
-			{
-				$trouver = true;
-				$stack = true;
-			}
-			else $i++;
-		}
-		if(!$trouver)
-		{
-			//Recherche un emplacement libre
-			$i = 0;
-			while(($i < $G_place_inventaire) AND !$trouver)
-			{
-				if($this->slot_liste[$i] === 0 OR $this->slot_liste[$i] == '')
-				{
-					$trouver = true;
-				}
-				else $i++;
-			}
-		}*/
 		if(!$trouver)
 		{
 		  //Inventaire plein
@@ -110,17 +70,12 @@ class inventaire
 			if(!$stack)
 			{
 				// ...dans un emplacement vide
-				//$this->slot_liste[$i] = $id_objet;
 				$this->slot_liste[] = $obj->get_texte();
 				$perso->set_encombrement( $encombrement );
 			}
 			else
 			{
 			  // ...à une pile d'objet identiques
-				/*$stacks = $objet_i['stack'] + 1;
-				if($stacks == 1) $stacks = 2;
-				$this->slot_liste[$i] = $objet_i['sans_stack'].'x'.$stacks;*/
-				$no2 = $obj2->get_nombre();
 				$obj2->set_nombre( $obj2->get_nombre() + $obj->get_nombre() );
 				$obj2->recompose_texte();
 				$this->slot_liste[$i] = $obj2->get_texte();

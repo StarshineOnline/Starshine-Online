@@ -48,7 +48,6 @@ case 'revolution':
 	}
 	$vote->set_pour( array_key_exists('vote', $_GET) ? $_GET['vote'] : 1 );
 	$vote->set_poid_vote($perso->get_level());
-	//my_dump($vote);
 	$vote->sauver();
 	$interf_princ->set_gauche( $G_interf->creer_vie_royaume() );
 	break;

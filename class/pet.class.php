@@ -313,8 +313,6 @@ class pet extends map_monstre
 					{
 						$gemme = new gemme_enchassee($partie_d['enchantement']);
 						$this->register_gemme_enchantement($gemme);
-						//my_dump($this->enchantement);
-						//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
 			}
@@ -391,23 +389,6 @@ class pet extends map_monstre
 				$requete = "SELECT * FROM objet_pet WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
 				$this->arme_pet = $db->read_object($req);
-				/*if ($arme_d['enchantement'] != null)
-				 {
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-					$this->arme_pet->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-					}
-					if ($this->arme_pet->effet)
-					{
-					$effets = split(';', $this->arme_pet->effet);
-					foreach ($effets as $effet)
-					{
-					$d_effet = split('-', $effet);
-					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme_pet);
-					}
-					}*/
 			}
 			else $this->arme_pet = false;
 		}

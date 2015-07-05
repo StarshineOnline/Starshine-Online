@@ -15,7 +15,6 @@ class identification
 		$mdp_ok = false;
 
 		$joueur = joueur::Chercher($nom);
-    //my_dump($joueur);
     if ($joueur)
     {
 			// Quand on se loggue en mode API, on utilise pas le mot de passe joueur, mais le sha1sum du mot de passe jeu

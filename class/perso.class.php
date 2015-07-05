@@ -1303,7 +1303,6 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
 				}
 				if( $arme_d['mod'] )
 				{
@@ -1319,7 +1318,6 @@ class perso extends entite
 						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
           }
         }
-        //my_dump($this->arme);
 			}
 			else $this->arme = false;
 		}
@@ -1348,7 +1346,6 @@ class perso extends entite
 						if ($gemme->enchantement_type == 'degat')
 							$this->arme_gauche->degat += $gemme->enchantement_effet;
 						$this->register_gemme_enchantement($gemme);
-						//my_dump($this->enchantement);
 					}
 					if( $arme_d['mod'] )
 					{
@@ -1380,7 +1377,6 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
 				}
 				if ($this->arme_pet->effet)
 				{
@@ -1391,7 +1387,6 @@ class perso extends entite
 								$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
 				  }
 				}
-				//my_dump($this->arme);
 			}
 			else $this->arme_pet = false;
 		}
@@ -1417,7 +1412,6 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'bouclier')
 						$this->bouclier->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
 				}
         if ($this->bouclier->effet)
         {
@@ -2027,7 +2021,6 @@ class perso extends entite
 					{
 						$gemme = new gemme_enchassee($partie_d['enchantement']);
 						$this->register_gemme_enchantement($gemme);
-          //my_dump($this->enchantement);
 					//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}

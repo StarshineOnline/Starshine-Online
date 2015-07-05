@@ -34,6 +34,11 @@ class interf_debug extends interf_bal_cont
 	{
 		return $parent->add( new interf_debug($texte) );
 	}
+	
+	static function dump($parent, $var, $classe='')
+	{
+		return self::creer($parent, new interf_bal_smpl('pre', var_export($var, true))); 
+	}
   
   /**
    * Crée et enregistre un message qui sera affiché grâce à la methode affiche_enregistres
@@ -46,6 +51,11 @@ class interf_debug extends interf_bal_cont
   	$debug = new interf_debug($texte, $classe);
   	self::$debugs[] = &$debug;
   	return $debug;
+	}
+	
+	static function dump_enreg($var, $classe='')
+	{
+		return self::enregistre(new interf_bal_smpl('pre', var_export($var, true)), $classe); 
 	}
 	
 	/**

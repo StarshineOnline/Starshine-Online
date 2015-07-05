@@ -23,7 +23,6 @@ class interf_diplomatie extends interf_tableau
 		{
 			$fields[] = $row->name;
 		}
-		//my_dump($fields);
 		
 		//$this->nouv_cell('&nbsp;');
 		foreach($fields as $field)

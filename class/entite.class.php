@@ -595,12 +595,12 @@ class entite extends placable
 	{
 		switch($this->type)
 		{
-			case 'joueur' :
-				//$this->dump();
+			case 'joueur':
+			case 'perso':
 				return $this->objet_ref->get_bouclier();
 				break;
-			case 'monstre' :
-			case 'pet' :
+			case 'monstre':
+			case 'pet':
         return $this->get_blocage();
 				break;
 		}
@@ -1094,8 +1094,6 @@ class entite extends placable
 		{
 			case 'joueur' :
 				$objet->check_materiel();
-
-				//my_dump($objet->get_enchantement());
 
 				$this->id = $objet->get_id();
 				$this->action = $objet->action_do;
