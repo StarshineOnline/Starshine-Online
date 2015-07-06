@@ -116,6 +116,7 @@ class interf_achat_alchimie extends interf_liste_achat
 class interf_achat_recette extends interf_liste_achat
 {
 	const url='alchimiste.php';
+	protected $ordre = 1;
 	function __construct(&$royaume, $nbr_alertes=0)
 	{
 		global $db;

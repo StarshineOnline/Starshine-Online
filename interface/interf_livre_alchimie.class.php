@@ -104,7 +104,7 @@ class interf_livre_alchimie extends interf_accordeon
 				$star_total += $types[$instrument->type]['cout'];
 			}
 			// Coût
-			if( $pa_total + $pa_total > 0 && $complet && $recip )
+			if( $perso->get_perso() > $pa_total && $complet && $recip )
 			{
 				$id = 'alch_fabr_'.$row['id_recette'];
 				$form = $panneau->add( new interf_form('livre.php?type=alchimie&action=alchimie&id='.$row['id_recette'], $id, 'get', 'input-group') );
