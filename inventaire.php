@@ -132,6 +132,8 @@ if( !$visu && $action )
       {
         $obj = explode('x', $objet);
         $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj[0]) );
+        if( !$objet )
+        	log_admin::log('erreur', 'Objet non trouvé dans l\'inventaire : '.$obj[0]);
         if( $objet->get_nombre() >= $obj[1] )
           $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
         else
