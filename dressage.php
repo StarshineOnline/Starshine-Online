@@ -48,7 +48,7 @@ case 'fin':
 	$p_suc = $cadre->add( new interf_bal_cont('p') );
 	$p_suc->add( new interf_txt( 'Vous avez réussi à dresser ce monstre.') );
 	//On le met dans son inventaire de monstre
-	if($perso->add_pet($pet->get_id(), $monstre->get_hp(), ($pet->get_energie() * 10)))
+	if( !$perso->add_pet($pet->get_id(), $monstre->get_hp(), $pet->get_energie() * 10) )
 	{
     interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez plus de place pour ce monstre.');
     break;
