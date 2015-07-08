@@ -285,14 +285,16 @@ class texte
     $qp = new quete_etape(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
     if( !$qp )
     	return null;
+    if( is_array($qp) )
+    	$qp = $qp[0];
   	if( count($regs) > 1 && $regs[2][1] == 'e' )
   	{
-			if( $qp[0]->get_id_etape() !=  mb_substr($regs[2], 3) )
+			if( $qp->get_id_etape() !=  mb_substr($regs[2], 3) )
 				return null;
 		}
 		if( count($regs) > 2 && $regs[3][1] == 'v' )
 		{
-			if( $qp[0]->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
+			if( $qp->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
 				return null;
 		}
 	}

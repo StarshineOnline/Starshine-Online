@@ -4007,7 +4007,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (2, "Epée courte empoisonnée", "a2", 20, "poison", 1, "blocage_adv", 15);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (3, "Epée simplifiée", "a10", 35, "coefficient", 200, "toucher", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (4, "Epée de réduction des domages", "a10", 35, "reduction", 10, "critique_adv", 20);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (5, "Glaive bloque-lame", "a11", 55, "blocage", 10, "coeffcient", 400);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (5, "Glaive bloque-lame", "a11", 55, "blocage", 10, "coefficient", 400);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (6, "Glaive empoisonnée", "a11", 55, "poison", 2, "poison", 2);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (7, "Epée longue simplifiée", "a13", 85, "coefficient", 600, "blocage", 30);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (8, "Epée longue de réduction des domages", "a13", 85, "reduction", 15, "coefficient", 900);
