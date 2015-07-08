@@ -378,7 +378,7 @@ if( array_key_exists('action', $_GET) )
 			$obj = objet_invent::factory( $recette->get_objet() );
 			$obj->set_modification( $recette );
 			$obj->recompose_texte();
-			$perso->prend_objet($obj);
+			$perso->prend_objet($obj->get_texte());
 		}
 		else
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…');
