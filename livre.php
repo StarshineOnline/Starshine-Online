@@ -388,7 +388,7 @@ if( array_key_exists('action', $_GET) )
 			//Suppression des objets de l'inventaire
 			if($reussie || rand(1, 100) < 50)
 			{
-				$perso->supprime_objet('o'.$ingredient->get_id_ingredient(), $ingredient->nombre);
+				$perso->supprime_objet('o'.$ingredient->get_id_ingredient(), $ingredient->get_nombre());
 			}
 		}
 		$difficulte = 3 * 2.65 / sqrt(10);
