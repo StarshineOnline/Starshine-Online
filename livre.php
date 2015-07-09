@@ -392,7 +392,7 @@ if( array_key_exists('action', $_GET) )
 			}
 		}
 		$difficulte = 3 * 2.65 / sqrt(10);
-		$augmentation = augmentation_competence('alchimie', $perso, $difficulte);
+		$augmentation = augmentation_competence('forge', $perso, $difficulte);
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_alchimie($augmentation[0]);
