@@ -98,7 +98,8 @@ class interf_livre_alchimie extends interf_accordeon
 			$star_total = 0;
 			foreach($recette->instruments as $instrument)
 			{
-				$lst_instr->add( new interf_bal_smpl('li', $instrument->type/*, false, $classe*/) );
+				$txt = $instrument->type.' ('.$types[$instrument->type]['pa'].' pa, '.$types[$instrument->type]['mp'].' mp, '.$types[$instrument->type]['cout'].' stars)';
+				$lst_instr->add( new interf_bal_smpl('li', $txt/*, false, $classe*/) );
 				$pa_total += $types[$instrument->type]['pa'];
 				$mp_total += $types[$instrument->type]['mp'];
 				$star_total += $types[$instrument->type]['cout'];
@@ -118,6 +119,7 @@ class interf_livre_alchimie extends interf_accordeon
 				//$btns->add( new interf_bal_smpl('Fabriquer', array('class'=>'btn btn-default', 'onclick'=>'')) );
 				$btns->add( new interf_chp_form('submit', false, false, 'Fabriquer', array('class'=>'btn btn-default', 'onclick'=>'return charger_formulaire(\''.$id.'\');')) );
 			}
+			unset($sel);
 		}
 	}
 }
