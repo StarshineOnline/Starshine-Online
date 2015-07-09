@@ -332,9 +332,9 @@ if( array_key_exists('action', $_GET) )
 			foreach($resultats as $res)
 			{
 				$objets = explode('-', $res);
-				foreach($objets as $obj)
+				for($i=0; $i<$objets[1]; $i++)
 				{
-					$perso->prend_objet($obj->get_texte());
+					$perso->prend_objet($objets[0]);
 				}
 			}
 		}

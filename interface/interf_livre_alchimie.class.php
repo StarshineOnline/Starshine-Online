@@ -78,7 +78,7 @@ class interf_livre_alchimie extends interf_accordeon
 				{
 					$classe = 'text-success';
 					$recip = true;
-					$sel->add_option($row_r[0], $recipient->id_objet);
+					$sel->add_option($row_r[0], $recipient->id);
 				}
 				//Recherche du résultat
 				$id_resultat = explode('-', $recipient->resultat);
