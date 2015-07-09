@@ -98,11 +98,14 @@ class interf_livre_alchimie extends interf_accordeon
 			$star_total = 0;
 			foreach($recette->instruments as $instrument)
 			{
-				$txt = $instrument->type.' ('.$types[$instrument->type]['pa'].' pa, '.$types[$instrument->type]['mp'].' mp, '.$types[$instrument->type]['cout'].' stars)';
+				$pa = $types[$instrument->type]['pa'] ? $types[$instrument->type]['pa'] : 0;
+				$mp = $types[$instrument->type]['pa'] ? $types[$instrument->type]['mp'] : 0;
+				$stars = $types[$instrument->type]['pa'] ? $types[$instrument->type]['cout'] : 0;
+				$txt = $instrument->type.' ('.$pa.' pa, '.$mp.' mp, '.$stars.' stars)';
 				$lst_instr->add( new interf_bal_smpl('li', $txt/*, false, $classe*/) );
-				$pa_total += $types[$instrument->type]['pa'];
-				$mp_total += $types[$instrument->type]['mp'];
-				$star_total += $types[$instrument->type]['cout'];
+				$pa_total += $pa;
+				$mp_total += $mp;
+				$star_total += $stars;
 			}
 			// Coût
 			if( $perso->get_pa() > $pa_total && $complet && $recip )
