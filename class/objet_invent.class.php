@@ -348,7 +348,7 @@ abstract class objet_invent extends table
       $slot = $this->get_slot();
       if( $slot )
         return 'Slot niveau '.$slot;
-      else if( $slot === 0 )
+      else if( $slot === '0' )
         return 'Slot impossible';
       else
         return null;
