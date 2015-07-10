@@ -70,7 +70,7 @@ case 'tp':
 		if($W_distance != 0)
 		{
 			/// @todo passer par un objet
-			$bourg = new construction(sSQL($_GET['id']);
+			$bourg = new construction(sSQL($_GET['id']));
 			$distance = $perso->calcule_distance($bourg);
 			$cout = distance * 7;
 			if($this->is_buff('buff_cout_tp'))
