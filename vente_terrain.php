@@ -40,7 +40,7 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
 /// @todo ajouter des vérifications et des messages
 switch($action)
 {
-case 'enchere' :
+case 'encherir' :
 	$vente_terrain = new vente_terrain($_GET['id']);
 	$verif = $vente_terrain->verif_joueur($perso);
 	if($verif)

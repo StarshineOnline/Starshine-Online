@@ -1112,6 +1112,12 @@ p.accueil a
   color: red;
 }
 
+.carte_contenu>div
+{
+	height: inherit !important;
+	border: inherit;
+}
+
 .carte_petit .carte_contenu
 {
   width:28px;
