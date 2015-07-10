@@ -36,7 +36,7 @@ class interf_tp extends interf_ville
 		/// @todo à revoir complètement (supprimer cette base)
 		$requete = 'SELECT * FROM teleport';
 		$req = $db->query($requete);
-		$this->set_jauge_ext($db->num_rows, 11, 'mp', 'Nombre de capitales accessibles : ');
+		$nb_villes = 0;
 		while($row = $db->read_array($req))
 		{
 			// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
@@ -64,8 +64,12 @@ class interf_tp extends interf_ville
 				$row_diplo[0] = 8;
 			// Si au moins en paix
 			if(($row_diplo[0] <= 3 || $row_diplo[0] == 127) && $distance > 2 && $cout != 0)
-				$this->aff_dest($liste, $row_race['capitale'], $cout, $row['posx'], $row['posy'], $Gtrad[$row_race['race']], $row_roy['royaume']);
+			{
+				$this->aff_dest($liste, $row_race['capitale'], $cout, $row['posx'], $row['posy'], $Gtrad[$row_race['race']], $row['ID']);
+				$nb_villes++;
+			}
 		}
+		$this->set_jauge_ext($nb_villes, 11, 'mp', 'Nombre de capitales accessibles : ');
 		// bourgs
 		if($royaume->get_diplo($perso->get_race()) == 127)
 		{
