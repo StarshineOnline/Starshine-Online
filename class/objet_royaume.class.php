@@ -59,7 +59,7 @@ class objet_royaume extends objet_invent
 	function get_pierre($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->pierre * $facteur;
+			return round($this->pierre * $facteur);
 		else
 			return $this->pierre;
 	}
@@ -74,7 +74,7 @@ class objet_royaume extends objet_invent
 	function get_bois($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->bois * $facteur;
+			return round($this->bois * $facteur);
 		else
 			return $this->bois;
 	}
@@ -89,7 +89,7 @@ class objet_royaume extends objet_invent
 	function get_eau($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->eau * $facteur;
+			return round($this->eau * $facteur);
 		else
 			return $this->eau;
 	}
@@ -104,7 +104,7 @@ class objet_royaume extends objet_invent
 	function get_sable($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->sable * $facteur;
+			return round($this->sable * $facteur);
 		else
 			return $this->sable;
 	}
@@ -119,7 +119,7 @@ class objet_royaume extends objet_invent
 	function get_charbon($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->charbon * $facteur;
+			return round($this->charbon * $facteur);
 		else
 			return $this->charbon;
 	}
@@ -134,7 +134,7 @@ class objet_royaume extends objet_invent
 	function get_essence($facteur=1)
 	{
 		if( $this->type == 'buff' || $this->type == 'debuff' )
-			return $this->essence * $facteur;
+			return round($this->essence * $facteur);
 		else
 			return $this->essence;
 	}

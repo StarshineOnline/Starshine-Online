@@ -28,7 +28,7 @@ class interf_boutique_mil extends interf_data_tbl
 	
   	/// @todo passer à l'objet
 		$facteur = $royaume->get_facteur_entretien();
-		$objets = objet_royaume::create(false, false, 'id', false, 'rang_royaume < '.$royaume->get_rang());
+		$objets = objet_royaume::create(false, false, 'id', false, 'rang_royaume <= '.$royaume->get_rang());
 		foreach($objets as $objet)
 		{
 			// nombre dans le dépot

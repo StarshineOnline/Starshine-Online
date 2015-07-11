@@ -239,6 +239,7 @@ class interf_jeu_ajax extends interf_princ_ob
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
+  	$this->set_javascript( self::$code_js );
     $this->ouvre('main');
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.

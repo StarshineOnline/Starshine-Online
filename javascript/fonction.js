@@ -368,6 +368,9 @@ function debugs()
 
 function carte_royaume(id)
 {
+	var url = '';
+	if( document.URL.search('/roi/') >= 0 )
+		url = '../'
 	var id_img = 'carte_'+id;
 	var svg = document.getElementById('carte_monde');
 	var img = document.getElementById(id_img);
@@ -383,9 +386,9 @@ function carte_royaume(id)
 		img.setAttribute('width', '450px');
 		img.setAttribute('height', '450px');
 		if( id == 'monstres' )
-			img.setAttributeNS('http://www.w3.org/1999/xlink','href', 'image/carte_densite_mob.png');
+			img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_densite_mob.png');
 		else
-			img.setAttributeNS('http://www.w3.org/1999/xlink','href', 'image/carte_royaume.png');
+			img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_royaume.png');
 		img.setAttribute('filter', 'url(#filtre_'+id+')');
 		svg.insertBefore(img, rect[0]);
 	}

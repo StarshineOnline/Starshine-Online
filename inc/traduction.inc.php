@@ -270,6 +270,8 @@ $Gtrad['drapeau'] = 'Drapeaux';
 $Gtrad['fort'] = 'Forts';
 $Gtrad['mur'] = 'Murs';
 $Gtrad['tour'] = 'Tours';
+$Gtrad['buff'] = 'Buff';
+$Gtrad['debuff'] = 'Débuff';
 //@}
 
 
