@@ -246,6 +246,7 @@ class quete_perso extends table
 							verif_action($type_cible, $p, 'r', $option);
 						}
 					}
+					$a_verifier = true;
 				}
 			}
 			if($a_verifier)

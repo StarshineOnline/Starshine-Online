@@ -27,10 +27,9 @@ class interf_quete_royaume extends interf_cont
 		$tbl->nouv_cell('Achat');
 		
 		//on charge toutes les quetes
-		$requete = 'SELECT q.*, r.id as qr FROM quete AS q LEFT JOIN quete_royaume AS r ON q.id = r.id_quete WHERE star_royaume > 0 AND (r.id_royaume = '.$royaume->get_id().' OR r.id_royaume IS NULL)';
+		$requete = 'SELECT q.*, r.id as qr FROM quete AS q LEFT JOIN quete_royaume AS r ON q.id = r.id_quete AND r.id_royaume = '.$royaume->get_id().' WHERE star_royaume > 0 ';
 		$req = $db->query($requete);
 		
-		//var_dump($liste);
 		while( $row = $db->read_assoc($req) )
 		{
 			$quete = new quete($row['id']);
