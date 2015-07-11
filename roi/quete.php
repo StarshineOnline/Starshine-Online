@@ -24,11 +24,12 @@ switch($action)
 {
 case 'voir':
 	$quete = new quete($_GET['id']);
-	$cadre->set_dialogue( $G_interf->creer_infos_quete($quete) );
+	$cadre->set_dialogue( $G_interf->creer_infos_quete($quete, $royaume) );
 	if( array_key_exists('ajax', $_GET) )
 		exit;
 	break;
 case 'achat':
+	/// @todo vérifier si déja acheter et logguer triche
 	$quete = new quete( sSQL($_GET['id']) );
 	$quete->achat($royaume);
 	break;

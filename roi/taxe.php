@@ -35,7 +35,7 @@ else if($_GET['action'] == 'modifier')
 else
 {
 	$form = $cadre->set_gestion( new interf_form('taxe.php?action=modifier', 'modif_taxe', 'get', 'input-group') );
-	$form->add( new interf_bal_smpl('span', 'Modifier le taux de taxe pour', false, 'input-group-addon') );
+	$form->add( new interf_bal_smpl('span', 'Modifier le taux des taxes à', false, 'input-group-addon') );
 	$sel = $form->add( new interf_select_form('taxe', false, false, 'form-control') );
 	$debut = max($royaume->get_taxe() - 3, 0);
 	$fin = $royaume->get_taxe() + 3;
