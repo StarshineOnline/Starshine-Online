@@ -50,9 +50,9 @@ class interf_quete_royaume extends interf_cont
 
 class interf_infos_quete extends interf_dialogBS
 {
-	function __construct($quete)
+	function __construct(&$quete, &$royaume)
 	{
-		global $Gtrad, $G_url;
+		global $Gtrad, $G_url, $db;
 		$etape = quete_etape::create(array('id_quete', 'etape', 'variante'), array($quete->get_id(), 1, 0))[0];
 		$G_url->add('id', $quete->get_id());
 		
@@ -177,7 +177,12 @@ class interf_infos_quete extends interf_dialogBS
 		
 		// Boutons
 		$this->ajout_btn('Fermer' , 'ferme');
-		$this->ajout_btn('Acheter' , '$(\'#modal\').modal(\'hide\'); return charger(\''.$G_url->get('action', 'achat').'\');', 'primary');
+		/// @todo passer à l'objet
+		$requete = 'SELECT COUNT(*) FROM quete_royaume WHERE id_royaume = '.$royaume->get_id().' AND id_quete = '.$quete->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		if( $row[0] == 0 )
+			$this->ajout_btn('Acheter' , '$(\'#modal\').modal(\'hide\'); return charger(\''.$G_url->get('action', 'achat').'\');', 'primary');
 	}
 }
 ?>

@@ -47,14 +47,14 @@ class interf_gestion_royaume extends interf_cont
 			}
 			if( $eco->get_id() != $perso->get_id() )
 			{
-				$li_eco->add( $lien_eco = new interf_bal_smpl('a', $eco->get_nom(), false, 'icone icone-message') );
+				$lien_eco = $li_eco->add( new interf_bal_smpl('a', '', false, 'icone icone-message') );
 				$lien_eco->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$eco->get_id());
 				$lien_eco->set_tooltip('Envoyer un message');
 			}
 		}
 		if( $this->royaume->get_ministre_militaire() )
 		{
-			$mil = new perso( $this->royaume->get_ministre_economie() );
+			$mil = new perso( $this->royaume->get_ministre_militaire() );
 			$li_mil = $liste->add( new interf_bal_cont('li', false, 'info_case') );
 			$li_mil->add( new interf_bal_smpl('strong', 'Ministre militaire : ') );
 			$li_mil->add( new interf_bal_smpl('span', $mil->get_nom()) );
@@ -66,7 +66,7 @@ class interf_gestion_royaume extends interf_cont
 			}
 			if( $mil->get_id() != $perso->get_id() )
 			{
-				$li_mil->add( $lien_mil = new interf_bal_smpl('a', $mil->get_nom(), 'icone icone-message') );
+				$lien_mil = $li_mil->add( new interf_bal_smpl('a', '', false, 'icone icone-message') );
 				$lien_mil->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$mil->get_id());
 				$lien_mil->set_tooltip('Envoyer un message');
 			}

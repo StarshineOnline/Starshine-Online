@@ -121,8 +121,6 @@ class interf_descr_quete extends interf_cont
 				$this->nbr_obj_total += $valeur[1];
 				break;
 			case 'L': // trouver un objet
-				$req = $db->query($requete);
-				$row = $db->read_array($req);
 				$obj = objet::factory($valeur[0]);
 				$texte = 'Trouver '.$valeur[1].' '.$obj->get_nom();
 				if($quete_perso)
@@ -131,8 +129,6 @@ class interf_descr_quete extends interf_cont
 				$this->nbr_obj_total += $valeur[1];
 				break;
 			case 'O': // rapporter un objet
-				$req = $db->query($requete);
-				$row = $db->read_array($req);
 				$obj = objet::factory($valeur[0]);
 				$texte = 'Rapporter '.$valeur[1].' '.$obj->get_nom();
 				if($quete_perso)

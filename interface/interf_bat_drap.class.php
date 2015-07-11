@@ -50,26 +50,29 @@ class interf_bat_drap extends interf_onglets
 			$cles = array_keys($this->divs);
 			$div = $this->divs[$cles[0]];
 		}
-		switch($onglet)
+		if( $div )
 		{
-		case 'invasions':
-			$div->add( new interf_bd_invasions($royaume, $x, $y) );
-			break;
-		case 'constructions':
-			$div->add( new interf_bd_constructions($royaume, $x, $y) );
-			break;
-		case 'ads':
-			$div->add( new interf_bd_ads($royaume, $x, $y) );
-			break;
-		case 'drapeaux':
-			$div->add( new interf_bd_drapeaux($royaume, $x, $y) );
-			break;
-		case 'batiments':
-			$b=$div->add( new interf_bd_batiments($royaume, $x, $y) );
-			break;
-		case 'depot':
-			$div->add( new interf_bd_depot($royaume, $x, $y) );
-			break;
+			switch($onglet)
+			{
+			case 'invasions':
+				$div->add( new interf_bd_invasions($royaume, $x, $y) );
+				break;
+			case 'constructions':
+				$div->add( new interf_bd_constructions($royaume, $x, $y) );
+				break;
+			case 'ads':
+				$div->add( new interf_bd_ads($royaume, $x, $y) );
+				break;
+			case 'drapeaux':
+				$div->add( new interf_bd_drapeaux($royaume, $x, $y) );
+				break;
+			case 'batiments':
+				$div->add( new interf_bd_batiments($royaume, $x, $y) );
+				break;
+			case 'depot':
+				$div->add( new interf_bd_depot($royaume, $x, $y) );
+				break;
+			}
 		}
 	}
 }
