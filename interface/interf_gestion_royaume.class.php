@@ -28,7 +28,7 @@ class interf_gestion_royaume extends interf_cont
 			$li_roi->add( new interf_bal_smpl('span', $roi->get_nom()) );
 			if( $roi->get_id() != $perso->get_id() )
 			{
-				$li_roi->add( $lien_roi = new interf_bal_smpl('a', $roi->get_nom(), 'icone icone-message') );
+				$li_roi->add( $lien_roi = new interf_bal_smpl('a', '', false, 'icone icone-message') );
 				$lien_roi->set_attribut('href', '../messagerie.php?action=nouveau&type=perso&id='.$roi->get_id());
 				$lien_roi->set_tooltip('Envoyer un message');
 			}

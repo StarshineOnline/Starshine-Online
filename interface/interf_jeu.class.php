@@ -240,6 +240,7 @@ class interf_jeu_ajax extends interf_princ_ob
   protected function debut()
   {
   	$this->set_javascript( self::$code_js );
+  	self::$code_js = '';
     $this->ouvre('main');
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.

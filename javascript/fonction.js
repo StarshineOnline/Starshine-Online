@@ -4,9 +4,9 @@
 function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();
-	//alert(status+' : '+data);
   $("[data-toggle='tooltip']").tooltip('hide');
   $("[data-toggle='popover']").tooltip('hide');
+  var maj_tooltip = false;
   $(data).find('section').each( function()
   {
   	switch(this.id)
@@ -26,12 +26,13 @@ function affiche_ajax(data, status, jqXHR)
 		  }
     	modal.innerHTML =  this.innerHTML;
 			$("#modal").modal('show');
+			maj_tooltip = true;
   		break;
   	case 'recharger':
   		document.location=this.innerHTML.trim();
   		document.location.reload();
   	case 'maj_tooltips':
-  		maj_tooltips();
+			maj_tooltip = true;
   		break;
   	case 'erreur':
   		aff_erreur(this.innerHTML, data);
@@ -42,8 +43,11 @@ function affiche_ajax(data, status, jqXHR)
   		//alert(this.innerHTML);
   	default:
     	$('#'+this.id).html( this.innerHTML );
+			maj_tooltip = true;
 		}
   });
+  if( maj_tooltip )
+  	maj_tooltips();
 }
 
 function aff_erreur(contenu, donnees, icone/*='bug'*/)

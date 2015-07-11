@@ -132,6 +132,24 @@ class comp_sort_buff extends table
 		return 'nom = "'.mysql_escape_string($this->nom).'", type = "'.mysql_escape_string($this->type).'", effet = '.$this->effet.', duree = '.$this->duree;
 	}
 	// @}
+	/// Formate la description
+	function formate_description($texte)
+	{
+  	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
+  	{
+  		$get = 'get_'.$regs[1];
+  		$texte = str_replace('%'.$regs[1].'%', $this->$get(), $texte);
+  	}
+  	// Evaluation
+  	$valeur = '';
+  	while(preg_match('`@(.*)@`', $texte, $regs))
+  	{
+  		$r = $regs[1];
+  		eval("\$valeur = ".$r.";");
+  		$texte = str_replace('@'.$regs[1].'@', $valeur, $texte);
+  	}
+  	return $texte;
+  }
 }
  
 

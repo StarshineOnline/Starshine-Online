@@ -32,9 +32,12 @@ class buff_batiment_def extends comp_sort_buff
 	}
 	
 	/// Renvoie la description du buff
-	function get_description()
+	function get_description($format=true)
 	{
-		return $this->description;
+		if( $format )
+			return $this->formate_description($this->description);
+		else
+			return $this->description;
 	}
 	/// Modifie la description du buff
 	function set_description($description)
