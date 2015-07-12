@@ -46,6 +46,7 @@ $Tclasse['derviche']['type'] = 'voleur';				#4
 # Archer
 $Tclasse['archer']['type'] = 'archer';					#2
 $Tclasse['archer d élite']['type'] = 'archer';	#3
+$Tclasse['archer d\'élite']['type'] = 'archer';	#3
 $Tclasse['sniper']['type'] = 'archer';					#4
 
 # Archer noir

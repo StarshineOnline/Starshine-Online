@@ -936,7 +936,7 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->alchimie;
-		$alchimie = $this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100);
+		$alchimie *= 1 + $this->get_bonus_permanents('alchimie') / 100;
 		if ($this->get_race() == 'scavenger')
 			$alchimie *= 1.40;
 		if($this->is_buff('globe_alchimie'))
@@ -957,9 +957,9 @@ class perso extends entite
 		if ($this->get_race() == 'scavenger')
 			$architecture * 1.20;
 		$architecture = $this->architecture;
-		$architecture += $this->get_bonus_permanents('architecture');
-		if($this->is_buff('globe_forge'))
-			$architecture *= 1 + $this->get_buff('globe_forge', 'effet')/100;
+		$architecture *= 1 + $this->get_bonus_permanents('architecture') / 100;
+		if($this->is_buff('globe_architecture'))
+			$architecture *= 1 + $this->get_buff('globe_architecture', 'effet')/100;
 		return $architecture;
 	}
 	/// Modifie l'architecture
@@ -974,11 +974,12 @@ class perso extends entite
 		if ($base)
 			return $this->forge;
 		$forge = $this->forge;
+		$forge *= 1 + $this->get_bonus_permanents('forge') / 100;
 		if ($this->get_race() == 'scavenger')
 			$forge *= 1.40;
-		if($this->is_buff('globe_architecture'))
-			$forge *= 1 + $this->get_buff('globe_architecture', 'effet')/100;
-		return $forge;
+		if($this->is_buff('globe_forge'))
+			$forge *= 1 + $this->get_buff('globe_forge', 'effet')/100;
+		return round($forge);
 	}
 	/// Modifie la forge
 	function set_forge($forge)

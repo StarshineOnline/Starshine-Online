@@ -29,5 +29,5 @@ else
 if( $id )
 	degroup($id, $groupe->get_id())
 	
-$interf_princ = $G_interf->maj_perso();
+$interf_princ->maj_perso();
 
