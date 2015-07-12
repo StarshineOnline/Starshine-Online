@@ -225,6 +225,7 @@ class interf_objet_invent extends interf_bal_cont
       $nbr = $objet->get_nombre();
       $this->set_attribut('data-nombre', $nbr);
       $this->set_attribut('data-prix', $objet->get_prix_vente());
+      $this->set_attribut('data-id', $objet->get_texte_id());
       $image = $objet->get_image();
       $enchant = $objet->get_info_enchant();
       $infos = $objet->get_info_princ();
@@ -294,7 +295,7 @@ class interf_infos_objet extends interf_infos_popover
  */
 class interf_vente_hotel extends interf_dialogBS
 {
-  function __construct(&$perso, $index)
+  function __construct(&$perso, $obj, $nombre)
   {
     global $db;
 
@@ -316,29 +317,39 @@ class interf_vente_hotel extends interf_dialogBS
       return;
     }
     $this->ajout_btn('Annuler', 'fermer');
-    $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');charger_formulaire(\'vente_hdv\');', 'primary');
+    $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');return charger_formulaire(\'vente_hdv\');', 'primary');
 
-    $objet =  objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
+    $objet =  objet_invent::factory( /*$perso->get_inventaire_slot_partie($index)*/$obj );
     $prix = $objet->get_prix_vente() * 2;
 		$prixmax = $prix * 10;
     $case = new map_case( $perso->get_pos() );
     $R = new royaume( $case->get_royaume() );
 
     $taxe = $R->get_taxe_diplo($perso->get_race()) / 100;
-    $form = $this->add( new interf_form('inventaire.php?action=vente_hotel&objet='.$index, 'vente_hdv') );
+    $form = $this->add( new interf_form('inventaire.php?action=vente_hotel&objet='.$objet->get_texte_id(), 'vente_hdv') );
     $form->set_attribut('name', 'formulaire');
-    $chp1 = $form->add_champ_bs('number', 'prix', null, $prix, 'Prix de vente', 'stars');
+    $txt_stars = 'stars'.( $nombre > 1 ? ' / unité' : '' );
+    $chp1 = $form->add_champ_bs('number', 'prix', null, $prix, 'Prix de vente', $txt_stars);
     $chp1->set_attribut('onchange', 'formulaire.comm.value = Math.Round(formulaire.prix.value * '.$taxe.')');
     $chp1->set_attribut('onkeyup', 'formulaire.comm.value = Math.Round(formulaire.prix.value * '.$taxe.')');
     $chp1->set_attribut('min', 0);
     $chp1->set_attribut('max', $prixmax);
     $chp1->set_attribut('step', 1);
     $form->add( new interf_bal_smpl('br') );
-    $chp2 = $form->add_champ_bs('text', 'comm', null, $prix * $taxe, 'Taxe', 'stars');
+    $chp2 = $form->add_champ_bs('text', 'comm', null, $prix * $taxe, 'Taxe', $txt_stars);
     $chp2->set_attribut('disabled', 'true');
     $form->add( new interf_bal_smpl('br') );
-    $chp3 = $form->add_champ_bs('text', 'max', null, $prixmax, 'Maximum', 'stars');
+    $chp3 = $form->add_champ_bs('text', 'max', null, $prixmax, 'Maximum', $txt_stars);
     $chp3->set_attribut('disabled', 'true');
+    /// @todo ajouter possibilmité de faire un lot au lieu de vendre séparément
+    if( $nombre > 1 )
+    {
+    	$form->add( new interf_bal_smpl('br') );
+    	$chp4 = $form->add_champ_bs('number', 'nombre', null, 1, 'Nombre');
+	    $chp4->set_attribut('min', 1);
+	    $chp4->set_attribut('max', $nombre);
+	    $chp4->set_attribut('step', 1);
+		}
     interf_base::code_js('ajout_filtre_form("vente_hdv");');
   }
 }
@@ -348,11 +359,11 @@ class interf_vente_hotel extends interf_dialogBS
  */
 class interf_enchasser extends interf_dialogBS
 {
-  function __construct(&$perso, $index)
+  function __construct(&$perso, $id_objet)
   {
     global $G_place_inventaire;
 
-    $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($index) );
+    $objet = objet_invent::factory( $id_objet );
     // Chances de succès
     $niveau = $objet->est_enchassable();
 		switch($niveau)
@@ -420,16 +431,16 @@ class interf_enchasser extends interf_dialogBS
       if( count($objs) )
       {
         $this->add( new interf_txt('Choisissez '.$type.' pour l\'enchassement : ') );
-        $form = $this->add( new interf_form('inventaire.php?action=enchasse&'.$var1.'='.$index, 'enchasser') );
+        $form = $this->add( new interf_form('inventaire.php?action=enchasse&'.$var1.'='.$id_objet, 'enchasser') );
         $choix = $form->add( new interf_select_form($var2, 'enchasser') );
         foreach( $objs as $i=>$o )
         {
           $obj = objet_invent::factory($o);
-          $choix->add_option($obj->get_nom(), $i);
+          $choix->add_option($obj->get_nom(), $obj->get_texte_id());
         }
         $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
         $this->ajout_btn('Annuler', 'fermer');
-        $btn = $this->ajout_btn('Enchasser', '$(\'#modal\').modal(\'hide\');envoiFormulaire(\'enchasser\', \'information\'); alert(\'ok\');', 'primary');
+        $btn = $this->ajout_btn('Enchasser', '$(\'#modal\').modal(\'hide\');return charger_formulaire(\'enchasser\');', 'primary');
         interf_base::code_js('ajout_filtre_form("enchasser");');
       }
       else

@@ -24,23 +24,26 @@ function ajout_filtre_form(id)
 function drop_func( event, ui )
 {
   var drag = ui.draggable;
-  var objet = drag[0].id.substr(11);
+  //var objet = drag[0].id.substr(11);
+  var objet = drag[0].getAttribute('data-id');
   var drop = this.id == 'slots' ? 'desequip' : this.id.substr(5);
   switch( drop )
   {
   case 'hotel_vente':
-    show_modal( get_url_invent("action=hotel_vente&objet="+objet) );
+    //show_modal( get_url_invent("action=hotel_vente&objet="+objet) );
+    charger( get_url_invent("action=hotel_vente&objet="+objet+"&nombre="+drag[0].getAttribute('data-nombre')) );
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
     break;
   case 'enchasser':
-    show_modal( get_url_invent("action=gemme&objet="+objet) );
+    //show_modal( get_url_invent("action=gemme&objet="+objet) );
+    charger( get_url_invent("action=gemme&objet="+objet) );
     drag.animate(drag.data("ui-draggable").originalPosition,"slow");
     break;
   case 'desequip':
     charger( get_url_invent("action=desequip&zone="+drag[0].id.substr(5)) );
     break;
   case 'vendre_marchand':
-    vente(drag[0].id);
+    vente(drag[0].id, objet);
     $(drag[0]).hide();
     break;
   default:
@@ -53,7 +56,7 @@ function show_modal(url)
   var modal = document.getElementById("modal");
   if( !modal )
   {
-    var cont =  document.getElementById("conteneur");
+    var cont =  document.getElementById("contenu_jeu");
     modal = document.createElement("div");
     modal.id = "modal";
     modal.className = "modal fade";
@@ -69,7 +72,7 @@ function show_modal(url)
 
 objets_vente = new Array();
 
-function vente(id)
+function vente(id, obj)
 {
   var tbody = document.getElementById("vente_table");
   if( !tbody )
@@ -109,6 +112,7 @@ function vente(id)
   var nbr = Number( objet.getAttribute("data-nombre") );
   var index = objets_vente.length;
   objets_vente[index] = new Object();
+  objets_vente[index].objet = obj;
   objets_vente[index].slot = id.substr(11);
   objets_vente[index].prix = prix;
   objets_vente[index].nombre = 1;
@@ -193,7 +197,7 @@ function vendre()
     {
       if( objs.length )
         objs += "-";
-      objs += objets_vente[i].slot + "x" + objets_vente[i].nombre;
+      objs += objets_vente[i].objet + "x" + objets_vente[i].nombre;
     }
   }
   charger(get_url_invent("action=vente&objets="+objs));
@@ -220,7 +224,6 @@ function start_drag(event, ui)
   {
     var elt = utiliser.getElementsByClassName("infos");
     var infos = ui.helper.children(".infos");
-    //alert(infos[0]);
     elt[0].innerHTML = infos[0].innerHTML;
   }
 }

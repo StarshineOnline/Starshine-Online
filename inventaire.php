@@ -51,10 +51,12 @@ case 'sac':
   $cadre->add( $G_interf->creer_invent_sac($perso, $_GET['slot'], !$visu) );
   exit;
 case 'hotel_vente':
-  $G_interf->creer_vente_hotel($perso, $_GET['objet']);
+	$interf_princ = $G_interf->creer_jeu();
+  $interf_princ->set_dialogue( $G_interf->creer_vente_hotel($perso, $_GET['objet'], $_GET['nombre']) );
   exit;
 case 'gemme':
-  $G_interf->creer_enchasser($perso, $_GET['objet']);
+	$interf_princ = $G_interf->creer_jeu();
+  $interf_princ->set_dialogue( $G_interf->creer_enchasser($perso, $_GET['objet']) );
   exit;
 }
 $interf_princ = $G_interf->creer_jeu();
@@ -68,7 +70,7 @@ $cadre = $interf_princ->set_droite( $G_interf->creer_droite('Inventaire du Perso
 if( !$visu && $action )
 {
   if( array_key_exists('objet', $_GET) )
-    $obj = $perso->get_inventaire_slot_partie($_GET['objet']);
+    $obj = $_GET['objet'];// = $perso->get_inventaire_slot_partie($_GET['objet']);
 	switch($action)
 	{
     /// TODO : faire plus de vérifications
@@ -116,14 +118,20 @@ if( !$visu && $action )
       $objet = objet_invent::factory( $obj );
       if( $objet->mettre_slot($perso, $cadre, $action[5]) )
       {
-        $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
+      	$ind = $perso->recherche_objet($obj);
+        $perso->set_inventaire_slot_partie($objet->get_texte(), $ind[1]);
+        interf_base::code_js('alert("'.$ind[1].'");');
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
         $perso->sauver();
       }
       break;
 		case 'vente_hotel':
       $objet = objet_invent::factory( $obj );
-      $objet->vendre_hdv($perso, $cadre, $_GET['prix']);
+      $nombre = array_key_exists('nombre', $_GET) ? $_GET['nombre'] : 1;
+      for($i=0; $i<$nombre; $i++)
+      {
+      	$objet->vendre_hdv($perso, $cadre, $_GET['prix']);
+			}
 		  break;
 		case 'vente':
       $objets = explode('-', $_GET['objets']);
@@ -131,11 +139,14 @@ if( !$visu && $action )
       foreach($objets as $objet)
       {
         $obj = explode('x', $objet);
-        $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj[0]) );
+        $objet = $perso->recherche_objet($objet);
         if( !$objet )
         	log_admin::log('erreur', 'Objet non trouvé dans l\'inventaire : '.$obj[0]);
-        if( $objet->get_nombre() >= $obj[1] )
+        if( $objet[0] >= $obj[1] )
+        {
+        	$objet = objet_invent::factory( $perso->get_inventaire_slot_partie($objet[1]) );
           $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
+				}
         else
           $cadre->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
         
@@ -144,11 +155,13 @@ if( !$visu && $action )
         $cadre->add( new interf_alerte('success') )->add_message('Objet(s) vendu(s) pour '.$stars.' stars.');
 		  break;
 		case 'enchasse':
+			///@todo vérifier présence objet et loguer triche
       $objet = objet_invent::factory( $obj );
-      $gemme = objet_invent::factory( $perso->get_inventaire_slot_partie($_GET['gemme']) );
+      $gemme = objet_invent::factory( $_GET['gemme'] );
       if( $objet->enchasser($perso, $cadre, $gemme) )
       {
-        $perso->set_inventaire_slot_partie($objet->get_texte(), $_GET['objet']);
+      	$ind = $perso->recherche_objet($obj);
+        $perso->set_inventaire_slot_partie($objet->get_texte(), $ind[1]);
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
         $perso->supprime_objet($gemme->get_texte(), 1);
       }

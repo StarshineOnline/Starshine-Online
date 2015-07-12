@@ -27,7 +27,7 @@ else
 	$id = $perso->get_perso();
 
 if( $id )
-	degroup($id, $groupe->get_id())
+	degroup($id, $groupe->get_id());
 	
 $interf_princ->maj_perso();
 

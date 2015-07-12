@@ -474,10 +474,10 @@ class interf_factory
   }
   /*
    */
-  function creer_vente_hotel(&$perso, $index)
+  function creer_vente_hotel(&$perso, $objet, $nombre)
   {
     include_once(root.'interface/interf_inventaire.class.php');
-    return new interf_vente_hotel($perso, $index);
+    return new interf_vente_hotel($perso, $objet, $nombre);
   }
   /*
    */

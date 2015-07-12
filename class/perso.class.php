@@ -1514,7 +1514,7 @@ class perso extends entite
 		foreach($partie as $o)
 		{
 			$objet_i = decompose_objet($o);
-			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
+			if($objet_i['sans_stack'] == $objet_d['sans_stack'] && $objet_i['stack']>= $objet_d['stack'])
 			{
 				$trouver = true;
 				break;

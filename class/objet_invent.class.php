@@ -483,7 +483,7 @@ abstract class objet_invent extends table
 		$requete = 'UPDATE argent_royaume SET hv = hv + '.$taxe.' WHERE race = "'.$R->get_race().'"';
 		$db->query($requete);
     // On ajoute l'objet dans l'hotel de ville
-		$requete = 'INSERT INTO hotel VALUES (NULL, "'.$this->get_texte().'", '.$perso->get_id().', "vente", '.$prix.', 1, "'.$R->get_race().'", '.time().')';
+		$requete = 'INSERT INTO hotel VALUES (NULL, "'.$this->get_texte_id().'", '.$perso->get_id().', "vente", '.$prix.', "'.$R->get_race().'", '.time().')';
 		$req = $db->query($requete);
     // On enregistre dans les logs
     log_admin::log('mis en vente HV', $perso->get_nom().' vend '.$this->nom.' ('.$this->id.') pour '.$prix.' stars. Taxes : '.$taxe.' stars');

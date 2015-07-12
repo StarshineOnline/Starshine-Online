@@ -2359,6 +2359,8 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
   background-image:url(../image/interface/1.png);
   border-radius: 9px; -moz-border-radius:9px; -webkit-border-radius:9px;
   color:#222;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .inventaire2>img
