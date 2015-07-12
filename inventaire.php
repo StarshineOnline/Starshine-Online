@@ -120,7 +120,6 @@ if( !$visu && $action )
       {
       	$ind = $perso->recherche_objet($obj);
         $perso->set_inventaire_slot_partie($objet->get_texte(), $ind[1]);
-        interf_base::code_js('alert("'.$ind[1].'");');
   		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
         $perso->sauver();
       }

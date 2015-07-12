@@ -243,7 +243,7 @@ class quete_perso extends table
 						while( $row = $db->read_assoc($req) )
 						{
 							$p = new perso($row);
-							verif_action($type_cible, $p, 'r', $option);
+							self::verif_action($type_cible, $p, 'r', $option);
 						}
 					}
 					$a_verifier = true;
@@ -258,7 +258,7 @@ class quete_perso extends table
 						$etape->gain_groupe($perso);
 						$etape->gain_royaume($perso);
 					}
-					switch( $this->get_quete()->get_type() )
+					switch( $qp->get_quete()->get_type() )
 					{
 					case 'royaume':
 					case 'groupe':
