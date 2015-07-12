@@ -325,8 +325,11 @@ abstract class comp_sort extends comp_sort_buff
   protected function verif_requis($liste, $txt_type, $txt_action=false)
   {
   	global $Gtrad;
+  	if( !$this->requis )
+  		return true;
   	
     $res = true;
+    $prerequis = explode(';', $this->requis);
 		foreach ($prerequis as $requis)
 		{
     	$regs = array();

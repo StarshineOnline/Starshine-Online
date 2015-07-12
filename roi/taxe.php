@@ -25,7 +25,7 @@ if((time() - $duree) < $royaume->get_taxe_time())
 }
 else if($_GET['action'] == 'modifier')
 {
-	$requete = "UPDATE royaume SET taxe = ".sSQL($_GET['taux']).", taxe_time = ".time()." WHERE id = ".$royaume->get_id();
+	$requete = "UPDATE royaume SET taxe = ".sSQL($_GET['taxe']).", taxe_time = ".time()." WHERE id = ".$royaume->get_id();
 	if($db->query($requete))
 	{
 		$cadre->set_gestion( new interf_alerte(interf_alerte::msg_succes, false, false, 'Taux de taxe modifié !') );

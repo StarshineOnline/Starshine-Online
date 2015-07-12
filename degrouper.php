@@ -9,7 +9,7 @@ $interf_princ = $G_interf->creer_jeu();
 
 /// @todo à améliorer
 $perso = joueur::get_perso();
-$groupe = new groupe($perso->get_groupe())
+$groupe = new groupe($perso->get_groupe());
 
 $id = false;
 if( array_key_exists('id', $_GET) )

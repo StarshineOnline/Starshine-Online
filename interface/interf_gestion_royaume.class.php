@@ -82,14 +82,17 @@ class interf_gestion_royaume extends interf_cont
 		$this->tbl->nouv_cell('Y');
 		
 		$entrees = journal_royaume::create('id_royaume', $this->royaume->get_id(), 'id DESC');
-		foreach($entree as $e)
+		if( $entrees )
 		{
-			$this->tbl->nouv_ligne();
-			$this->tbl->nouv_cell( $e->get_time() );
-			$this->tbl->nouv_cell( $e->get_actif() );
-			$this->tbl->nouv_cell( $this->get_texte_journal($e) );
-			$this->tbl->nouv_cell( $e->get_x() );
-			$this->tbl->nouv_cell( $e->get_y() );
+			foreach($entree as $e)
+			{
+				$this->tbl->nouv_ligne();
+				$this->tbl->nouv_cell( $e->get_time() );
+				$this->tbl->nouv_cell( $e->get_actif() );
+				$this->tbl->nouv_cell( $this->get_texte_journal($e) );
+				$this->tbl->nouv_cell( $e->get_x() );
+				$this->tbl->nouv_cell( $e->get_y() );
+			}
 		}
 	}
 	protected function get_texte_journal(&$entree)
