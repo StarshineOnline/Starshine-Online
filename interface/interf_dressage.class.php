@@ -18,13 +18,16 @@ class interf_dressage extends interf_cont
 		$creatures = $perso->get_pets(true);
 		$princ = null;
 		$second = array();
+		my_dump($creatures);
 		foreach($creatures as $creat)
 		{
 			if( $creat->get_principale() == 1 )
-				$princ = &$creat;
+				$princ = $creat;
 			else
-				$second[] = &$creat;
+				$second[] = $creat;
 		}
+		my_dump($princ);
+		my_dump($second);
 		
 		// Créature principale
 		if( $princ )

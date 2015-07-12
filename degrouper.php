@@ -24,7 +24,7 @@ if( array_key_exists('id', $_GET) )
 	}
 }
 else
-	$id = $perso->get_perso();
+	$id = $perso->get_id();
 
 if( $id )
 	degroup($id, $groupe->get_id());
