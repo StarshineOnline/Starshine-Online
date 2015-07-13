@@ -213,7 +213,7 @@ class interf_nouveau_message extends interf_form
 			{
 				$perso = new perso($id);
 				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', $perso->get_nom(), false, 'form-control') );
-				$dest->set_attribut('disabled', 'disabled');
+				//$dest->set_attribut('disabled', 'disabled');
 			}
 			else
 			{

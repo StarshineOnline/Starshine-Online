@@ -141,11 +141,9 @@ if( !$visu && $action )
         $objet = $perso->recherche_objet($objet);
         if( !$objet )
         	log_admin::log('erreur', 'Objet non trouvé dans l\'inventaire : '.$obj[0]);
+        $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($objet[1]) );
         if( $objet[0] >= $obj[1] )
-        {
-        	$objet = objet_invent::factory( $perso->get_inventaire_slot_partie($objet[1]) );
           $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
-				}
         else
           $cadre->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
         
