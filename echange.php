@@ -144,21 +144,31 @@ case 'valider':
 	//On compte les objets de chaque personne
 	$nb_objet['j1'] = 0;
 	$nb_objet['j2'] = 0;
+	$encombr1 = 0;
+	$encombr2 = 0;
+	my_dump($echange);
 	foreach($echange['objet'] as $objet)
 	{
+		$obj = objet_invent::factory($objet['objet']);
 		if($perso->get_id() == $objet['id_j'])
+		{
 			$nb_objet['j1']++;
+			$encombr1 += $obj->get_encombrement();
+		}
 		else
+		{
 			$nb_objet['j2']++;
+			$encombr2 += $obj->get_encombrement();
+		}
 	}
 	
 	//Vérification qu'ils ont bien assez de place
-	if($G_place_inventaire - count($perso->get_inventaire_slot_partie()) < ($nb_objet['j2'] - $nb_objet['j1']))
+	if($perso->get_max_encombrement() - $perso->get_encombrement() < ($encombr2 - $encombr1))
 	{
 		interf_alerte::enregistre(interf_alerte::msg_erreur, $perso->get_nom().' n\'a pas assez de place dans son inventaire.');
 		break;
 	}
-	if($G_place_inventaire - count($receveur->get_inventaire_slot_partie()) < ($nb_objet['j1'] - $nb_objet['j2']))
+	if($perso->get_max_encombrement() - $receveur->get_encombrement() < ($encombr1 - $encombr2))
 	{
 		interf_alerte::enregistre(interf_alerte::msg_erreur, $receveur->get_nom().' n\'a pas assez de place dans son inventaire.');
 		break;

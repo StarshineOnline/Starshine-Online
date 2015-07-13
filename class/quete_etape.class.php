@@ -255,7 +255,7 @@ class quete_etape extends quete
 	
 	function fin(&$perso, $cache=false)
 	{
-		global $Gtrad;
+		global $Gtrad, $db;
 		$texte = array();
 		$nom = $this->get_nom();
 		if( !$nom )

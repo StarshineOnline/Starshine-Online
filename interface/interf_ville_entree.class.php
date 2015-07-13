@@ -23,7 +23,7 @@ class interf_ville_entree_base extends interf_gauche
 		$this->set_jauge_int($royaume->get_rang(), 4, 'avance', 'Rang : ');
 		
 		// Ligne pour le message
-		$this->message = $this->centre->add( new interf_bal_cont('p') ); 
+		$this->message = $this->centre->add( new interf_bal_cont('marquee') );//p 
 		/// @todo à améliorer
 		$this->message->add( new interf_txt('&nbsp;') );
 		

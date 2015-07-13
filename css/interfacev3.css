@@ -733,10 +733,13 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border-left: 1px solid;
 }
 
-#depl_centre>p, #depl_centre>h3
+#depl_centre>p, #depl_centre>h3, #depl_centre>marquee
 {
 	margin: 5px 10px 5px 30px;
 	text-align: center;
+	height: 16px;
+	white-space: nowrap;
+	overflow: hidden;
 }
 
 /*-- Rose des vents ---------------------------------------------------*/
