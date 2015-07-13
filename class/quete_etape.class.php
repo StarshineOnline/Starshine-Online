@@ -300,7 +300,7 @@ class quete_etape extends quete
 				$texte[] = $gains.' points d\'expérience';
 				break;
 			case 'h':  // honneur
-				if($joueur->is_buff('moral'))
+				if($perso->is_buff('moral'))
 					$gains = round($gains * (1 + ($perso->get_buff('moral', 'effet') / 100)));
 				$perso->set_honneur( $perso->get_honneur() + $gains );
 				$texte[] = $gains.' points d\'honneur';

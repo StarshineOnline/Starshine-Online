@@ -252,6 +252,7 @@ class messagerie
 			$type_echange = 0;
 		
 		//On ajoute un état pour chaque membre
+		my_dump($ids_dest);
 		foreach($ids_dest as $id)
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';

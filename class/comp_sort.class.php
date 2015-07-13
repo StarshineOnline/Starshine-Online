@@ -335,6 +335,7 @@ abstract class comp_sort extends comp_sort_buff
     	$regs = array();
       if( mb_ereg('^classe:(.*)$', $requis, $regs) )
 			{
+				$perso = joueur::get_perso();
         if( $regs[1] != mb_strtolower($perso->get_classe()) )
 				{
 					interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous devez être '.$Gtrad[$regs[1]].' pour '.$txt_action.' '.$txt_type);
