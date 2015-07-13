@@ -46,6 +46,8 @@ function drop_func( event, ui )
     vente(drag[0].id, objet);
     $(drag[0]).hide();
     break;
+  case 'identifier':
+    charger( get_url_invent("action="+drop+"&objet="+drag[0].id.substr(11)) );
   default:
     charger( get_url_invent("action="+drop+"&objet="+objet) );
   }

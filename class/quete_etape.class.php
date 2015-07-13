@@ -296,7 +296,7 @@ class quete_etape extends quete
 				$texte[] = $gains.' stars';
 				break;
 			case 'e':  // expérience
-				$perso->set_experience( $perso->get_experience() + $gains );
+				$perso->set_exp( $perso->get_exp() + $gains );
 				$texte[] = $gains.' points d\'expérience';
 				break;
 			case 'h':  // honneur

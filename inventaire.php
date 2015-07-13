@@ -171,7 +171,7 @@ if( !$visu && $action )
       $objet->recup_gemme($perso, $cadre);
 		  break;
 		case 'identifier':
-      $objet = objet_invent::factory( $obj );
+      $objet = objet_invent::factory( $perso->get_inventaire_slot_partie($obj) );
       $objet->identifier($perso, $cadre, $_GET['objet']);
 		  break;
 	}

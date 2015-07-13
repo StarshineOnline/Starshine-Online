@@ -55,7 +55,7 @@ class interf_info_perso extends interf_cont
 				$msg = $div->add( new interf_lien('', 'echange.php?action=creer&perso='.$pj->get_id(), false, 'icone icone-echange') );
 				$msg->set_tooltip('Initier un échange', 'bottom', '#information');
 				// message
-				$msg = $div->add( new interf_lien('', 'envoimessage.php?id_type=p'.$pj->get_id(), false, 'icone icone-message') );
+				$msg = $div->add( new interf_lien('', 'messagerie.php?action=nouveau&type=perso&id='.$pj->get_id(), false, 'icone icone-message') );
 				$msg->set_tooltip('Envoyer un message', 'bottom', '#information');
 			}
 			else
