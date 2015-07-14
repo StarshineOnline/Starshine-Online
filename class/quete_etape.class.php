@@ -395,7 +395,7 @@ class quete_etape extends quete
 		/// @todo gains du groupe
 		// Texte
 		if( !$cache )
-			interf_alerte::enregistre(interf_alerte::succes, $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.');
+			interf_alerte::enregistre(interf_alerte::msg_succes, $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.');
 		// Mis dans le journal
 		$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", 'f_quete', '".$perso->get_nom()."', '', NOW(), '".addslashes($nom)."', 0, 0, 0)";
 		$db->query($requete);
