@@ -89,6 +89,8 @@ class interf_combat extends interf_bal_cont
 			else
 				$tbl->nouv_cell( 'détruit' );
 		}
+		// test
+		interf_debug::aff_enregistres($this);
 	}
 	
 	function formate_degats($degats)

@@ -1591,6 +1591,7 @@ class perso extends entite
 			if( $nbr > 1 )
 			{
 				$obj->set_nombre($nbr - 1);
+				$obj->recompose_texte();
 				$inventaire[$objet[1]] = $obj->get_texte();
 			}
 			else

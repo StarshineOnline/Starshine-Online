@@ -55,7 +55,7 @@ class interf_carte extends interf_tableau
 
 	function __construct($x, $y, $options=0x2b7e, $champ_vision=3, $id='carte', $niv_min=0, $niv_max=255, $parent_calques=null, &$reperes=null)
 	{
-    global $Tclasse, $Gcouleurs_vis, $db, $Trace, $G_max_x, $G_max_y, $G_url;
+    global $Tclasse, $Gcouleurs, $db, $Trace, $G_max_x, $G_max_y, $G_url;
     $this->grd_img = !($options & self::aff_petit);
 		parent::__construct($id, $this->grd_img ? 'aide' : 'carte_petit', 'carte_bord_haut');
 		
@@ -331,7 +331,7 @@ class interf_carte extends interf_tableau
           if( $roy )
           {
             $border = '';
-            $commun = ': dashed 1px '.$Gcouleurs_vis[$roy].';';
+            $commun = ': dashed 1px '.$Gcouleurs[$roy].';';
             $bords = 0;
             if( $j == $this->x_min or $infos_cases[($j-1).'|'.$i]['royaume'] != $roy )
             {

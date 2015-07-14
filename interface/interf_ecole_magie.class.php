@@ -21,7 +21,7 @@ class interf_ecole_magie extends interf_ville_onglets
 		$this->onglets->add_onglet('Sorts hors combat', 'ecole.php?type=sort_jeu&ajax=2', 'tab_ecole_sort_jeu', 'ecole_mag', $type=='sort_jeu');
 		$this->onglets->add_onglet('Sorts de combat', 'ecole.php?type=sort_combat&ajax=2', 'tab_ecole_sort_combat', 'ecole_mag', $type=='sort_combat');
 		if( !$this->perso->get_sort_element() || !$this->perso->get_sort_mort() || !$this->perso->get_sort_vie() )
-			$this->onglets->add_onglet('Magies', 'ecole.php?type=sort_combat&ajax=2', 'tab_magie', 'ecole_mag', $type=='magie');
+			$this->onglets->add_onglet('Magies', 'ecole.php?type=magie&ajax=2', 'tab_magie', 'ecole_mag', $type=='magie');
 		
 		// Filtres
 		$haut = $this->onglets->get_haut();
@@ -40,6 +40,8 @@ class interf_ecole_magie extends interf_ville_onglets
 		case 'sort_combat':
 			$this->onglets->get_onglet('tab_ecole_sort_combat')->add( new interf_achat_sort_combat($royaume, $niveau, $n) );
 			break; 
+		case 'magie':
+			break;
 		}
 	}
 }
@@ -61,7 +63,7 @@ class interf_achat_sort extends interf_achat_compsort
 		$classe =  $requis > $this->perso->get_incantation() ? 'text-danger' : '';
 		$this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$methode = 'get_'.$elt->get_comp_assoc();
-		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() * (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10)) );
+		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() /* (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10))*/ );
 		$classe =  $requis > $this->perso->$methode() ? 'text-danger' : '';
 		$cell = $this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$cell->add( new interf_img('image/icone/'.$elt->get_comp_assoc().'.png') );
