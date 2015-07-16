@@ -2532,6 +2532,17 @@ div#amende.panel
   height: 408px;
 }
 
+#achat_magie
+{
+	margin: 20px 40px;
+}
+
+#achat_magie a
+{
+	margin: 20px;
+	width: 300px;
+}
+
 #tab_ville .filtre, #tab_ville .action_hdv
 {
 	float: right;

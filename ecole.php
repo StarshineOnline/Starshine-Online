@@ -47,8 +47,9 @@ if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	
 $type = $_GET['type'];
 
-if( $action == 'achat' )
+switch( $action )
 {
+case 'achat':
 	$comp_sort = comp_sort::factory_gen($type, $_GET['id']);
 	///@todo loguer triche
 	$taxe = ceil($comp_sort->get_prix() * $R->get_taxe_diplo($perso->get_race()) / 100);
@@ -85,6 +86,37 @@ if( $action == 'achat' )
 		}
 	}
 	$type = substr($type, 0, 4);
+	break;
+case 'magie':
+	$cout_app = 500;
+	$taxe = ceil($cout_app * $R->get_taxe_diplo($perso->get_race()) / 100);
+	$cout = $cout_app + $taxe;
+	if($perso->get_star() >= $cout)
+	{
+		$perso->add_star( - $cout);
+		$set = 'set_'.$_GET['magie'];
+		$perso->$set(3);
+		$perso->sauver();
+		
+		// Augmentation du compteur de l'achievement
+		$achiev = $perso->get_compteur('type_magie');
+		$achiev->set_compteur($achiev->get_compteur() + 1);
+		$achiev->sauver();
+			
+		interf_alerte::enregistre(interf_alerte::msg_succes, 'L\'apprentissage de '.$Gtrad[$_GET['magie']].' est un succès !');
+		if($taxe > 0)
+		{
+			$R->set_star($R->get_star() + $taxe);
+			$R->sauver();
+		}
+		if( $perso->get_sort_element() && $perso->get_sort_mort() && $perso->get_sort_vie() )
+			$type = 'sort_jeu';
+	}
+	else
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars.');
+	}
+	break;
 }
 	
 // Type d'école
@@ -107,6 +139,9 @@ case 'comp_jeu':
 	break;
 case 'comp_combat':
 	$interf_princ->add( $G_interf->creer_achat_comp_combat($R) );
+	break;
+case 'magie':
+	$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, 'magie') );
 	break;
 case 'quetes':
 	$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'ecole_combat') );

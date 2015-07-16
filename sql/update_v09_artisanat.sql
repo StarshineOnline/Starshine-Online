@@ -252,8 +252,8 @@ INSERT INTO craft_instrument VALUES(36, "Pontil en cuivre", "pontil", "", 35, 3,
 
 -- Recettes d'alchimie
 UPDATE craft_recette SET nom = "Globe de téléportation", difficulte = 150, royaume_alchimie = 14700, prix = 5500 WHERE id = 5;
-INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (9, "Globe de télépotation mineure", 50, 3000, 1000);
-INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (10, "Globe de télépotation majeure", 250, 34000, 8600);
+INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (9, "Globe de téléportation mineure", 50, 3000, 1000);
+INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (10, "Globe de téléportation majeure", 250, 34000, 8600);
 INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (11, "Potion de mana mineure", 40, 99999999, 99999999);
 INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (12, "Potion de promotion mineure", 50, 99999999, 99999999);
 INSERT INTO craft_recette (id, nom, difficulte, royaume_alchimie, prix) VALUES (13, "Potion de feu intérieur mineur", 70, 99999999, 99999999);
@@ -2905,12 +2905,12 @@ UPDATE objet SET stack = 5 WHERE id BETWEEN 28 AND 39 OR id IN (55, 148, 149);
 UPDATE objet SET pa = 0, mp = 20 WHERE id = 38;
 INSERT INTO objet VALUES(148, 'Potion éclair de protection magique', 'potion_pm', 2000, 'n', 5, 'y', 75, 'Augmente la PM de %effet% %', 0, 10, 5);
 INSERT INTO objet VALUES(149, 'Potion à bouchon de protection magique', 'potion_pm', 2000, 'n', 5, 'y', 75, 'Augmente la PM de %effet% %', 10, 0, 5);
-UPDATE objet SET nom = "Globe de télépotation mineure", type = "globe_tp", effet = 50, pa = 10, mp = 50, stack = 5 WHERE id = 24;
-UPDATE objet SET nom = "Globe de télépotation", type = "globe_tp", effet = 100, pa = 10, mp = 50, stack = 5 WHERE id = 25;
-UPDATE objet SET nom = "Globe de télépotation majeure", type = "globe_tp", description = "Vous téléporte dans votre ville.", effet = 200, pa = 10, mp = 50, stack = 5 WHERE id = 26;
-UPDATE objet SET nom = "Gros globe de télépotation mineure", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 50, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 49;
-UPDATE objet SET nom = "Gros globe de télépotation", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 100, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 50;
-UPDATE objet SET nom = "Gros globe de télépotation majeure", type = "globe_tp", effet = 200, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 51;
+UPDATE objet SET nom = "Globe de téléportation mineure", type = "globe_tp", effet = 50, pa = 10, mp = 50, stack = 5 WHERE id = 24;
+UPDATE objet SET nom = "Globe de téléportation", type = "globe_tp", effet = 100, pa = 10, mp = 50, stack = 5 WHERE id = 25;
+UPDATE objet SET nom = "Globe de téléportation majeure", type = "globe_tp", description = "Vous téléporte dans votre ville.", effet = 200, pa = 10, mp = 50, stack = 5 WHERE id = 26;
+UPDATE objet SET nom = "Gros globe de téléportation mineure", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 50, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 49;
+UPDATE objet SET nom = "Gros globe de Globe de téléportation", type = "globe_tp", description = "Téléporte dans votre ville natale si vous êtes a moins de %effet% cases d'elle.", effet = 100, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 50;
+UPDATE objet SET nom = "Gros globe de Globe de téléportation majeure", type = "globe_tp", effet = 200, encombrement = 10, pa = 5, mp = 0, stack = 1 WHERE id = 51;
 INSERT INTO objet VALUES (150, "Fiole de mana mineure", "potion_mana", 125, "n", 5, "y", 10, "Rend 10 mana", 5, 0, 5);
 INSERT INTO objet VALUES (151, "Fiole de promotion mineure", "potion_buff", 195, "n", 5, "y", 166, "Donne un emplacement de buff suplémentaire", 5, 50, 5);
 INSERT INTO objet VALUES (152, "Fiole éclair de promotion mineure", "potion_buff", 240, "n", 5, "y", 166, "Donne un emplacement de buff suplémentaire", 0, 100, 5);

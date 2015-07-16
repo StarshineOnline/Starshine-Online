@@ -12,6 +12,7 @@ class interf_ecole_magie extends interf_ville_onglets
 	function __construct(&$royaume, $type)
 	{
 		parent::__construct($royaume);
+		$perso = joueur::get_perso();
 		
 		// Icone
 		$this->icone = $this->set_icone_centre('sorts');
@@ -20,8 +21,8 @@ class interf_ecole_magie extends interf_ville_onglets
 		// Onglets
 		$this->onglets->add_onglet('Sorts hors combat', 'ecole.php?type=sort_jeu&ajax=2', 'tab_ecole_sort_jeu', 'ecole_mag', $type=='sort_jeu');
 		$this->onglets->add_onglet('Sorts de combat', 'ecole.php?type=sort_combat&ajax=2', 'tab_ecole_sort_combat', 'ecole_mag', $type=='sort_combat');
-		if( !$this->perso->get_sort_element() || !$this->perso->get_sort_mort() || !$this->perso->get_sort_vie() )
-			$this->onglets->add_onglet('Magies', 'ecole.php?type=magie&ajax=2', 'tab_magie', 'ecole_mag', $type=='magie');
+		if( !$perso->get_sort_element() || !$perso->get_sort_mort() || !$perso->get_sort_vie() )
+			$this->onglets->add_onglet('Magies', 'ecole.php?type=magie&ajax=2', 'tab_ecole_magie', 'ecole_mag', $type=='magie');
 		
 		// Filtres
 		$haut = $this->onglets->get_haut();
@@ -40,8 +41,19 @@ class interf_ecole_magie extends interf_ville_onglets
 		case 'sort_combat':
 			$this->onglets->get_onglet('tab_ecole_sort_combat')->add( new interf_achat_sort_combat($royaume, $niveau, $n) );
 			break; 
-		case 'magie':
-			break;
+		}
+		if( !$perso->get_sort_element() || !$perso->get_sort_mort() || !$perso->get_sort_vie() )
+		{
+			$cout_app = 500;
+			$taxe = ceil($cout_app * $royaume->get_taxe_diplo($perso->get_race()) / 100);
+			$cout = $cout_app + $taxe;
+			$div = $this->onglets->get_onglet('tab_ecole_magie')->add( new interf_bal_cont('div', 'achat_magie') );
+			if( !$perso->get_sort_vie() )
+				$div->add( new interf_lien('Acheter magie de la vie ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_vie', false, 'btn btn-default') );
+			if( !$perso->get_sort_mort() )
+				$div->add( new interf_lien('Acheter magie élémentaire ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_mort', false, 'btn btn-default') );
+			if( !$perso->get_sort_element() )
+				$div->add( new interf_lien('Acheter magie de la mort ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_element', false, 'btn btn-default') );
 		}
 	}
 }
