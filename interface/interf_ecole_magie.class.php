@@ -51,9 +51,9 @@ class interf_ecole_magie extends interf_ville_onglets
 			if( !$perso->get_sort_vie() )
 				$div->add( new interf_lien('Acheter magie de la vie ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_vie', false, 'btn btn-default') );
 			if( !$perso->get_sort_mort() )
-				$div->add( new interf_lien('Acheter magie élémentaire ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_mort', false, 'btn btn-default') );
+				$div->add( new interf_lien('Acheter magie de la mort ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_mort', false, 'btn btn-default') );
 			if( !$perso->get_sort_element() )
-				$div->add( new interf_lien('Acheter magie de la mort ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_element', false, 'btn btn-default') );
+				$div->add( new interf_lien('Acheter magie élémentaire ('.$cout.' stars)', 'ecole.php?type=magie&action=magie&magie=sort_element', false, 'btn btn-default') );
 		}
 	}
 }
