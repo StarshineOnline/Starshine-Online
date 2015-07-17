@@ -50,10 +50,11 @@ case 'prendre':
 	  if( substr($cle, 0, 3) == 'nbr' && $nombre > 0)
 	  {
 	  	$id_objet = substr($cle, 3);
+	  	$objet = new objet_royaume($id_objet);
 	    $i = 0;
-	    if ($nombre > ($G_place_inventaire - count($perso->get_inventaire_slot_partie())))
+	    $reste = $perso->get_encombrement_max() - $perso->get_encombrement();
+	    if ( $objet->get_encombrement() > $reste  )
 	    {
-	      $reste = $G_place_inventaire - count($perso->get_inventaire_slot_partie()) ;
 	      if($reste != 0)
 	      {
 	  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il ne vous reste que '.$reste.' places dans votre inventaire.');

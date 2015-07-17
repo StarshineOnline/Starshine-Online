@@ -1514,11 +1514,9 @@ class royaume
 			break;
 		case 'accessoire':
 			$batiment = 'enchanteur';
-			return 1;
 			break;
 		case 'dressage':
 			$batiment = 'dresseur';
-			return 1;
 			break;
 		}
 		///@todo à améliorer
