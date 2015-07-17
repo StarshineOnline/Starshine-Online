@@ -74,7 +74,7 @@ case 'prendre':
 	        $row = $db->read_array($req);
 	        if($db->num_rows > 0)
 	        {
-	          if($perso->prend_objet('r'.$_GET['id_objet']))
+	          if($perso->prend_objet('r'.$id_objet))
 	          {
 	          	$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
 	            $db->query($requete2);
