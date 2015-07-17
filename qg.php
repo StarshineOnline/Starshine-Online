@@ -52,7 +52,7 @@ case 'prendre':
 	  	$id_objet = substr($cle, 3);
 	  	$objet = new objet_royaume($id_objet);
 	    $i = 0;
-	    $reste = $perso->get_encombrement_max() - $perso->get_encombrement();
+	    $reste = $perso->get_max_encombrement() - $perso->get_encombrement();
 	    if ( $objet->get_encombrement() > $reste  )
 	    {
 	      if($reste != 0)
