@@ -214,6 +214,19 @@ class objet extends objet_equip
     case 'potion_guerison':
     case 'potion_pm':
     case 'potion_vie':
+    case 'globe_buff':
+    case 'globe_invocation':
+    case 'globe_redist_mana':
+    case 'globe_redist_vie':
+    case 'globe_tp':
+    case 'grand_parchemin_comp':
+    case 'grand_parchemin_sort':
+    case 'parchemin_comp':
+    case 'parchemin_sort':
+    case 'petit_parchemin_comp':
+    case 'petit_parchemin_sort':
+    case 'potion_buff':
+    case 'potion_mana':
       return ($partie == 'utile') ? 0 : false;
     case 'objet_quete':
     case 'repaation_canalisation':
