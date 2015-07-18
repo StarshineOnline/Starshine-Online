@@ -315,7 +315,7 @@ abstract class entitenj_constr extends entnj_incarn
       $roy = 'AND royaume '.($diff_roy?'!=':'=').$royaume;
     else
       $roy = '';
-		$requete = 'SELECT id, x, y, royaume FROM '.static::get_table()
+		$requete = 'SELECT id, x, y, royaume FROM '.self::get_table()
 			.' WHERE x >= '.max(($x - $distance), 1)
 			.' AND x <= '.min(($x + $distance), $G_max_x)
 			.' AND y >= '.max(($y - $distance), 1)
