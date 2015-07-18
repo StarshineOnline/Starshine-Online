@@ -98,8 +98,23 @@ if( !$visu && $action )
 			else
 				$cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
       break;
+    case 'cou_pet':
+    case 'selle_pet':
+    case 'dos_pet':
+    case 'arme_pet':
+    case 'torse_pet':
+    case 'pattes_pet':
+			if( $perso->equip_objet($obj, true, $action) )
+			{
+				//On supprime l'objet de l'inventaire
+				$perso->supprime_objet($obj, 1);
+				$perso->sauver();
+			}
+			else
+				$cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
+      break;
 	  case 'desequip':
-			if(!$perso->desequip($_GET['zone'], $page=='pet'))
+			if(!$perso->desequip(substr($_GET['zone'], 0, strlen($_GET['zone'])-4), $page=='pet'))
         $cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
       break;
 	  case 'utiliser':

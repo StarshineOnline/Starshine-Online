@@ -159,7 +159,7 @@ class objet_pet extends objet_equip
 
   function get_emplacement()
   {
-    return $this->type;
+    return $this->type.'_pet';
   }
   
   function peut_utiliser(&$perso, $msg=true)

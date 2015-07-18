@@ -61,6 +61,7 @@ class interf_invent_equip extends interf_tableau
     interf_tableau::__construct();
     $this->set_entete(false);
     $tab_loc = array();
+    $suffixe = '';
     switch($type)
     {
     case 'perso':
@@ -76,8 +77,9 @@ class interf_invent_equip extends interf_tableau
     case 'pet':
       $style = 'background: url(\'image/creature.png\') center no-repeat;';
 
-      $emplacements = array(  'cou_pet',   'selle',       'dos_pet',
-                              'arme_pet',  'torse_pet',   'pattes');
+      $emplacements = array(  'cou',   'selle',       'dos',
+                              'arme',  'torse',   'pattes');
+      $suffixe = '_pet';
       $invent = $perso->inventaire_pet();
       break;
     case 'actions':
@@ -114,16 +116,16 @@ class interf_invent_equip extends interf_tableau
         else
         {
           $desequip = false;
-          $obj = new zone_invent($loc, $objet === 'lock', $perso);
+          $obj = new zone_invent($loc.$suffixe, $objet === 'lock', $perso);
     		}
-        $td->add( new interf_objet_invent($obj, $desequip?'equipe':'', 'drop_'.$loc) );
+        $td->add( new interf_objet_invent($obj, $desequip?'equipe':'', 'drop_'.$loc.$suffixe) );
         if( $desequip )
-          interf_base::code_js( '$( "#drop_'.$loc.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
+          interf_base::code_js( '$( "#drop_'.$loc.$suffixe.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
       $compteur++;
       if($modif)
       {
-				interf_base::code_js( '$( "#drop_'.$loc.'" ).droppable({accept: ".drag_'.substr($loc, 0, 16).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+				interf_base::code_js( '$( "#drop_'.$loc.$suffixe.'" ).droppable({accept: ".drag_'.substr($loc.$suffixe, 0, 16).'", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
 			}
     }
     interf_base::code_js('page = "'.$type.'"');

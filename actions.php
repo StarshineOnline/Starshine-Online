@@ -97,13 +97,13 @@ case 'modifier_nom':
 	break;
 case 'attaque':
 	$id_script = $script ? $script->get_id() : $_GET['id_script'];
-	$perso->set_action_a($id_script);
-	$perso->sauver();
+	$entite->set_action_a($id_script);
+	$entite->sauver();
 	break;
 case 'defense':
 	$id_script = $script ? $script->get_id() : $_GET['id_script'];
-	$perso->set_action_d($id_script);
-	$perso->sauver();
+	$entite->set_action_d($id_script);
+	$entite->sauver();
 	break;
 case 'supprimer':
 	$script->supprimer();
@@ -152,12 +152,12 @@ else
 {
 	//$cadre->add( new interf_bal_smpl('p', 'Voici l\'interface du script de combat, grâce à celui-ci vous pourrez attaquer avec des sorts ou des compétences.') );
 	$onglets = $cadre->add( new interf_onglets('ongl_scripts', 'scripts') );
-	$G_url->add('ajax', 2);
-	$onglets->add_onglet('Perso', $G_url->get('action', 'perso'), 'ongl_perso', 'invent', !$id);
+	$url = $G_url->copie('ajax', 2);
+	$onglets->add_onglet('Perso', $url->get('action', 'perso'), 'ongl_perso', 'invent', !$id);
 	$pets = $perso->get_pets(true);
 	foreach($pets as $pet)
 	{
-		$onglets->add_onglet($pet->get_nom(), $G_url->get(array('id'=>$pet->get_id(), 'ajax'=>2)), 'ongl_'.$pet->get_id(), 'invent', $id==$pet->get_id());
+		$onglets->add_onglet($pet->get_nom(), $url->get(array('id'=>$pet->get_id(), 'ajax'=>2)), 'ongl_'.$pet->get_id(), 'invent', $id==$pet->get_id());
 	}
 	if( $id )
 		$onglets->get_onglet('ongl_'.$id)->add( $G_interf->creer_liste_scripts($entite) );
