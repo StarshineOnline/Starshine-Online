@@ -326,7 +326,7 @@ if( array_key_exists('action', $_GET) )
 		$reussie = comp_sort::test_potentiel($alchimie, $recette->difficulte);
 		if( $reussie )
 		{
-			interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !');
+			interf_alerte::enregistre(interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !'));
 			$resultats = explode(';', $recipient->resultat);
 			$i = 0;
 			foreach($resultats as $res)
@@ -339,7 +339,7 @@ if( array_key_exists('action', $_GET) )
 			}
 		}
 		else
-			interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…');
+			interf_alerte::enregistre(interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…'));
 		//On utilise tous les objets de la recette
 		foreach($recette->ingredients as $ingredient)
 		{

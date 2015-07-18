@@ -40,7 +40,7 @@ class interf_livre_alchimie extends interf_accordeon
 			$div_diff->add( new interf_bal_smpl('span', ' ('.$chance_reussite.'% de chances de réussite)', alse, 'small') );
 			// Ingrédients
 			$div_ingred = $panneau->add( new interf_bal_cont('div', false, 'liste') );
-			$div_ingred->add( new interf_bal_smpl('h6', 'Récipients') );
+			$div_ingred->add( new interf_bal_smpl('h6', 'Ingédients') );
 			$lst_ingred = $div_ingred->add( new interf_bal_cont('ul') );
 			$complet = true;
 			foreach($recette->ingredients as $ingredient)
@@ -61,7 +61,7 @@ class interf_livre_alchimie extends interf_accordeon
 			}
 			// Récipients
 			$div_recip = $panneau->add( new interf_bal_cont('div', false, 'liste') );
-			$div_recip->add( new interf_bal_smpl('h6', 'Ingédients') );
+			$div_recip->add( new interf_bal_smpl('h6', 'Récipients') );
 			$lst_recip = $div_recip->add( new interf_bal_cont('ul') );
 			$recip = false;
 			$sel = new interf_select_form('recipient', false, false, 'form-control');

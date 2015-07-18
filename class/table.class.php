@@ -14,7 +14,7 @@ abstract class table
 		return 'id';
 	}
 	/// Renvoie le nom de la table (par défaut le nom de la classe)
-	function get_table()
+	static function get_table()
 	{
 		return get_called_class();
 	}
