@@ -151,6 +151,7 @@ if( $agit )
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_architecture($augmentation[0]);
+			$perso->sauver();
 		}
 	}
 	$interf_princ->maj_perso();
