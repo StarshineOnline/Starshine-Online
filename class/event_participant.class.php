@@ -147,7 +147,7 @@ class event_participant extends table
    * Renvoie le nom de la table.
    * Doit être redéfinie à cause des classes filles
    */
-  protected function get_table()
+  static function get_table()
   {
     return 'event_participant';
   }

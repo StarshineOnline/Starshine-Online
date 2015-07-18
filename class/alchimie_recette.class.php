@@ -11,7 +11,7 @@
 class alchimie_recette extends table
 {
 	/// Renvoie le nom de la table (surcharge temporaire en attendant de modifier la table)
-	public function get_table()
+	static function get_table()
 	{
 		return 'craft_recette';
 	}

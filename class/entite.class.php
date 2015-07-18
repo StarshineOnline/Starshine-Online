@@ -14,7 +14,7 @@ class entite extends placable
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
 
 
-	function get_table() { return ''; }
+	static function get_table() { return ''; }
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
