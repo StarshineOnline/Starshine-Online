@@ -138,7 +138,7 @@ class interf_echange extends interf_cont
 		$script->set_attribut('src', 'javascript/echanges.js');
 		$this->add( new interf_bal_smpl('h4', 'Vous proposez') );
 		$form = $this->add( new interf_form($G_url->get('action', 'modifier'), 'echange') );
-		$val = $this->echange ? $this->echange['star'][$this->perso->get_id()]['objet'] : 0;
+		$val = $this->echange ? $this->echange['star'][$this->perso->get_id()]['objet'] : '0';
 		$stars = $form->add_champ_bs('number', 'stars', null, $val, null, 'stars');
 		$stars->set_attribut('min', 0);
 		$stars->set_attribut('max', $this->perso->get_star());

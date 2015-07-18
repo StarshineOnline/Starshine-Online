@@ -79,10 +79,10 @@ case 'construit':
 		$cadre->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'La convalescence réduit l\'efficacité de l\'accélération') );
 		$secondes = floor($secondes / 2);
 	}
-	$fin = $placement->get_fin_placement() + $secondes;
+	$fin = $entite->get_fin_placement() + $secondes;
 	if( $fin > $fin_min )
 	{
-		$secondes = $fin_min - $placement->get_fin_placement();
+		$secondes = $fin_min - $entite->get_fin_placement();
 		$fin = $fin_min;
 		$continue = false;
 	}
