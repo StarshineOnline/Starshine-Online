@@ -80,7 +80,7 @@ case 'construit':
 		$secondes = floor($secondes / 2);
 	}
 	$fin = $entite->get_fin_placement() + $secondes;
-	if( $fin > $fin_min )
+	if( $fin < $fin_min )
 	{
 		$secondes = $fin_min - $entite->get_fin_placement();
 		$fin = $fin_min;
