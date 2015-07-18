@@ -308,7 +308,7 @@ abstract class entitenj_constr extends entnj_incarn
    * @var  $diff_roy  True si on cherche un bâtiment d'un royaume différent, false c'est du même royaume
    * @var  $liste     True si on renvoie la liste s'il y a des bâtiments, sinon renvoie le nombre de bâtiments
    */
-  function batiments_proche($x, $y, $type, $distance, $royaume=null, $diff_roy=false, $liste=false)
+  static function batiments_proche($x, $y, $type, $distance, $royaume=null, $diff_roy=false, $liste=false)
   {
     global $db, $G_max_x, $G_max_y;
     if( $royaume )
