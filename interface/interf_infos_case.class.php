@@ -156,7 +156,7 @@ class interf_infos_case extends interf_cont
 			$avanc = $div2->add( new interf_jauge_bulle(false, time() - $plac->get_debut_placement(), $plac->get_fin_placement() - $plac->get_debut_placement(), false, 'avance', false, 'jauge_case') );
 			$avanc->add( new interf_bal_smpl('div', round((time() - $plac->get_debut_placement()) / ($plac->get_fin_placement() - $plac->get_debut_placement()) * 100).'%', false, 'bulle_valeur') );
 			$avanc->set_tooltip(transform_sec_temp($plac->get_fin_placement() - time()).' avant fin de construction', 'bottom', '#contenu');
-			$div2->add( new interf_jauge_bulle('HP', $plac->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
+			$hp = $div2->add( new interf_jauge_bulle('HP', $plac->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
 			$hp->add( new interf_bal_smpl('div', round($plac->get_hp() / $bat->get_hp() * 100).'%', false, 'bulle_valeur') );
 		}
 		

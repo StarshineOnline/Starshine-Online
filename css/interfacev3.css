@@ -742,6 +742,12 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	overflow: hidden;
 }
 
+#depl_centre>h3
+{
+	font-size: 18px;
+	line-height: 12px;
+}
+
 /*-- Rose des vents ---------------------------------------------------*/
 
 #depl_disque a
