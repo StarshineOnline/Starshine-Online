@@ -494,10 +494,10 @@ class objet_royaume extends objet_invent
 	  			$distanceMax = $this->get_type() == 'bourg' ? 5 : 7;
 	
 	  			$requete = "SELECT 1 FROM map"
-	  							." WHERE x >= ".max(($joueur->get_x() - $distanceMax), 1)
-	  							." AND x <= ".min(($joueur->get_x() + $distanceMax), 190)
-	  							." AND y >= ".max(($joueur->get_y() - $distanceMax), 1)
-	  							." AND y <= ".min(($joueur->get_y() + $distanceMax), 190)
+	  							." WHERE x >= ".max(($perso->get_x() - $distanceMax), 1)
+	  							." AND x <= ".min(($perso->get_x() + $distanceMax), 190)
+	  							." AND y >= ".max(($perso->get_y() - $distanceMax), 1)
+	  							." AND y <= ".min(($perso->get_y() + $distanceMax), 190)
 	  							." AND type = 1";
 	  			$req = $db->query($requete);
 	  			if($db->num_rows > 0)
