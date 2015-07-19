@@ -267,6 +267,13 @@ class interf_script extends interf_cont
 					}
 					$this->sorts[$apt][$row['type']][$row['id']] = $row['nom'];
 				}
+				if( count($this->sorts[$apt][$comp_sort]) == 1 )
+				{
+					$cle = array_keys($this->sorts[$apt][$comp_sort])[0];
+					$elt = array_pop($this->sorts[$apt][$comp_sort]);
+					unset($this->sorts[$apt][$comp_sort]);
+					$this->sorts[$apt][$cle] = $elt;
+				}
 				foreach($this->sorts as $apt=>$liste)
 				{
 					if( count($liste) == 1 && is_array( array_values($liste)[0] ) )
@@ -278,7 +285,9 @@ class interf_script extends interf_cont
 			$comps = $this->entite->get_comp_combat();
 			if( $comps )
 			{
-				$requete = 'SELECT id, nom, comp_assoc FROM comp_combat WHERE id IN ('.str_replace(';', ',', $comps).') ORDER BY comp_assoc, nom';
+				$apt = null;
+				$comp_sort=null;
+				$requete = 'SELECT id, nom, comp_assoc, type FROM comp_combat WHERE id IN ('.str_replace(';', ',', $comps).') ORDER BY comp_assoc, nom';
 				$req = $db->query($requete);
 				while( $row = $db->read_array($req) )
 				{
@@ -307,6 +316,13 @@ class interf_script extends interf_cont
 						$this->comps[$apt][$comp_sort] = array();
 					}
 					$this->comps[$apt][$row['type']][$row['id']] = $row['nom'];
+				}
+				if( count($this->comps[$apt][$comp_sort]) == 1 )
+				{
+					$cle = array_keys($this->comps[$apt][$comp_sort])[0];
+					$elt = array_pop($this->comps[$apt][$comp_sort]);
+					unset($this->comps[$apt][$comp_sort]);
+					$this->comps[$apt][$cle] = $elt;
 				}
 				foreach($this->comps as $apt=>$liste)
 				{

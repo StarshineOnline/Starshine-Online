@@ -68,7 +68,7 @@ class interf_liste_buff extends interf_bal_cont
     $ratio = floor(100 * (($buff->get_fin() - time()) / ($buff->get_duree())));
     $pere = $elt->add( new interf_bal_cont('div', null, 'progress barre_buff jauge_buff') );
     $fils = $pere->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-info') );
-    $fils->set_attribut('style', 'width:'.$ratio);
+    $fils->set_attribut('style', 'width:'.$ratio.'%');
   }
 }
 

@@ -9,7 +9,7 @@ if (file_exists('root.php'))
 //Inclusion des fichiers indispensables
 include_once(root.'inc/fp.php');
 
-$perso = joueur::get_perso();
+$perso = &joueur::get_perso();
 $interf_princ = $G_interf->creer_jeu();
 $interf_princ->verif_mort($perso);
 
@@ -478,8 +478,6 @@ else
 			$lien = $interf->add( new interf_bal_smpl('a', '', 'debug_droit', 'icone icone-debug') );
 			$lien->set_attribut('onclick', 'return debugs();');
 		}
-		$interf_princ->maj_tooltips();
-		$interf_princ->maj_perso();
 
 		//Suppression des PA si c'est une attaque du perso
 		if ($type == 'perso' OR $type == 'monstre' OR $type == 'batiment') {
@@ -491,6 +489,8 @@ else
 			$perso->set_pa($perso->get_pa() - $pa_attaque);
 			$perso->sauver();
 		}
+		$interf_princ->maj_perso();
+		$interf_princ->maj_tooltips();
 
 		//Mise dans les journaux si attaque pvp
 		if($type == 'perso')

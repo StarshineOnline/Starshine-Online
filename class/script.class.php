@@ -280,6 +280,7 @@ abstract class action_comp_sort extends action
 	function __construct($id, $conds)
 	{
 		parent::__construct(is_string($conds) ? $conds : '');
+		$this->id = $id;
 		if( $conds === true )
 		{
 			$comp_sort = $this->get_comp_sort();
@@ -287,7 +288,6 @@ abstract class action_comp_sort extends action
 			if( $etat )
 				$this->conds[] = condition::creer_etat($etat);
 		}
-		$this->id = $id;
 	}
 	function get_nom()
 	{

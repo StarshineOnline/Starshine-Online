@@ -12,6 +12,7 @@ include_once(root.'fonction/forum.inc.php');
 class interf_jeu extends interf_sso_int
 {
 	protected $contenu;
+  protected $perso;
   protected $gauche;
   protected $droite;
 
@@ -52,8 +53,7 @@ class interf_jeu extends interf_sso_int
     $autres->add( new interf_elt_menu('Classement', 'classement.php', 'return charger(this.href);') );
 
     $this->contenu = $this->add( new interf_bal_cont('div', 'contenu') );
-    $perso = $this->contenu->add( new interf_bal_cont('header', 'perso') );
-    $perso->add( $G_interf->creer_barre_perso() );
+    $this->perso = $this->contenu->add( new interf_bal_cont('header', 'perso') );
     $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
@@ -137,11 +137,13 @@ class interf_jeu extends interf_sso_int
   }
   function affiche($tab = 0)
 	{
+		global $G_interf;
 		// On remplie les parties gauche et droites si elles sont vides
 		if( !$this->gauche->get_fils() )
 			$this->set_gauche();
 		if( !$this->droite->get_fils() )
 			$this->set_droite();
+    $this->perso->add( $G_interf->creer_barre_perso() );
 		parent::affiche($tab);
 	}
 	function recharger_interface($url='interface.php')
