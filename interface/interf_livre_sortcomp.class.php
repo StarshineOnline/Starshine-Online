@@ -110,7 +110,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 				
 				$inf = $e->add( new interf_bal_smpl('a', '', false, 'icone icone-info') );
 				$inf->set_tooltip('Afficher/masquer les informations');
-				$inf->set_attribut('onclick', '$(\'#info_'.$elt->get_id().'\').slideToggle();');
+				$inf->set_attribut('onclick', '$(\'#info_'.$type.'_'.$elt->get_id().'\').slideToggle();');
         if( $type == 'sort_jeu' )
         {
         	$sort_groupe = false;
@@ -159,7 +159,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 			{
 				$inf = $e->add( new interf_bal_smpl('a', '', false, 'icone icone-info') );
 				$inf->set_tooltip('Afficher/masquer les informations');
-				$inf->set_attribut('onclick', '$(\'#info_'.$elt->get_id().'\').toggle();');
+				$inf->set_attribut('onclick', '$(\'#info_'.$type.'_'.$elt->get_id().'\').slideToggle();');
 			}
 			$e->add( new interf_bal_smpl('span', $elt->get_nom(), false, 'livre_nom') );
 			if( $lance )
@@ -204,7 +204,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 				$e->add( new interf_bal_smpl('span', $texte, false, 'xsmall') );
 			}
 			// Informations
-			$infos = $li->add( new interf_bal_cont('div', 'info_'.$elt->get_id(), 'livre_infos') );
+			$infos = $li->add( new interf_bal_cont('div', 'info_'.$type.'_'.$elt->get_id(), 'livre_infos') );
 			$infos->add( new interf_bal_smpl('p', $elt->get_description(true)) );
 			if( $type == 'sort_jeu' || $type == 'sort_combat' )
 			{

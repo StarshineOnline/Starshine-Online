@@ -225,10 +225,12 @@ class grimoire extends objet_invent
     {
     case 'comp_jeu':
     case 'comp_combat':
-      return apprend_competence($this->type, $this->id_apprend, $perso, null, true, $princ);
+      if( !apprend_competence($this->type, $this->id_apprend, $perso, null, true, $princ) )
+      	return false;
     case 'sort_jeu':
     case 'sort_combat':
-      return apprend_sort($this->type, $this->id_apprend, $perso, null, true, $princ);
+      if( !apprend_sort($this->type, $this->id_apprend, $perso, null, true, $princ) )
+      	return false;
     case 'comp_combat':
       $comp = $perso->get_comp( $this->attr_perso );
       if( $comp === false )
@@ -247,8 +249,6 @@ class grimoire extends objet_invent
         $comp = $permet->get_permet();
       $perso->set_comp($this->attr_perso, $comp);
       $princ->add( new interf_alerte('success', true) )->add_message('Compétence entraînée.');
-      $perso->supprime_objet($this->get_texte(), 1);
-			return true;
 		case 'alchimie':
 			/// @todo passer à l'objet
 			$requete = 'SELECT * FROM perso_recette WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
@@ -262,8 +262,6 @@ class grimoire extends objet_invent
 			{
 				$requete = 'INSERT INTO perso_recette (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
 				$db->query($requete);
-      	$perso->supprime_objet($this->get_texte(), 1);
-				return true;
 			}
 		case 'forge':
 			/// @todo passer à l'objet
@@ -278,10 +276,13 @@ class grimoire extends objet_invent
 			{
 				$requete = 'INSERT INTO perso_forge (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
 				$db->query($requete);
-      	$perso->supprime_objet($this->get_texte(), 1);
-				return true;
 			}
+		default:
+			log_admin::log('erreur', 'Type de grimoire inconnu : '.$this->type);
+			return false;
     }
+    $perso->supprime_objet($this->get_texte(), 1);
+		return true;
   }
 }
 

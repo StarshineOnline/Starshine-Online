@@ -251,12 +251,12 @@ class interf_barre_perso extends interf_bal_cont
 		$oui->add( new interf_bal_smpl('span', '', false, 'icone icone-ok2') );
 		$oui->add( new interf_bal_smpl('span', 'Accepter', false, 'texte') );
 		$oui->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=oui&groupe='.$invitation->get_groupe());
-		$oui->set_attribut('onclick', 'charger(this.href);');
+		$oui->set_attribut('onclick', 'return charger(this.href);');
 		$non = $div->add( new interf_bal_cont('a', false, 'choix_invitation') );
 		$non->add( new interf_bal_smpl('span', '', false, 'icone icone-croix2') );
 		$non->add( new interf_bal_smpl('span', 'Refuser', false, 'texte') );
 		$non->set_attribut('href', 'reponseinvitation.php?id='.$invitation->get_id().'&reponse=non&groupe='.$invitation->get_groupe());
-		$non->set_attribut('onclick', 'charger(this.href);');
+		$non->set_attribut('onclick', 'return charger(this.href);');
 	}
 	static function creer_activite(&$perso, &$parent, $classe='')
 	{
