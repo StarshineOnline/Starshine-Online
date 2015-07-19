@@ -18,7 +18,7 @@ class comp_jeu extends comp
 	protected $pa;   ///< Coût en PA de la compétence
 	
 	/// Renvoie le coût de la comptétence
-	function get_pa(&$joueur = null)
+	function get_pa(&$perso = null)
 	{
 		return $this->pa;
 	}

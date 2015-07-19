@@ -191,7 +191,7 @@ default:
 		{
 			$debugs = 0;
 			//Calcul du potentiel du joueur => Eventuellement rajouter les connaissances
-			$potentiel = $perso->get_potentiel_dressage();
+			$potentiel = $perso->get_potentiel_dressage($monstre->get_type());
 			$rand = rand(0, $potentiel);
 			//On modifie le buff
 			$buff = $perso->get_buff('dressage');

@@ -344,7 +344,7 @@ abstract class comp_sort extends comp_sort_buff
       }
 			else if( mb_ereg('^([0-9]+)$', $this->requis, $regs) )
 			{
-			  if (!in_array($regs[1], explode(';', $liste)))
+			  if ($regs[1] != 999 && !in_array($regs[1], explode(';', $liste)))
 				{
 			    if( $txt_action )
 			    {

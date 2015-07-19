@@ -258,11 +258,9 @@ class grimoire extends objet_invent
         $princ->add( new interf_alerte('danger', true) )->add_message('Vous connaissez déjà cette recette.');
   			return false;
 			}
-			else
-			{
-				$requete = 'INSERT INTO perso_recette (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
-				$db->query($requete);
-			}
+			$requete = 'INSERT INTO perso_recette (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
+			$db->query($requete);
+    	$princ->add( new interf_alerte('success', true) )->add_message('Recette apprise.');
 		case 'forge':
 			/// @todo passer à l'objet
 			$requete = 'SELECT * FROM perso_forge WHERE id_perso = '.$perso->get_id().' AND id_recette = '.$this->id_apprend;
@@ -272,11 +270,10 @@ class grimoire extends objet_invent
         $princ->add( new interf_alerte('danger', true) )->add_message('Vous connaissez déjà ce manuel.');
   			return false;
 			}
-			else
-			{
-				$requete = 'INSERT INTO perso_forge (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
-				$db->query($requete);
-			}
+			$requete = 'INSERT INTO perso_forge (id_perso, id_recette) VALUES ('.$perso->get_id().', '.$this->id_apprend.')';
+			$db->query($requete);
+    	$princ->add( new interf_alerte('success', true) )->add_message('Recette apprise.');
+    	break;
 		default:
 			log_admin::log('erreur', 'Type de grimoire inconnu : '.$this->type);
 			return false;

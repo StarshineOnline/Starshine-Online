@@ -18,16 +18,21 @@ $W_reponse = $_GET['reponse'];
 $joueur = new perso($_SESSION['ID']);
 $invitation = new invitation($W_ID);
 if ($W_reponse == 'non')
+{
 	$invitation->supprimer();
+	$interf_princ->maj_perso();
+}
 elseif ($W_reponse == 'oui')
 {
 	$groupe = new groupe($W_groupe);
+	$dlg = $interf_princ->set_dialogue( new interf_dialogBS('Invitation', true) );
+	$dlg->ajout_btn('Ok', 'fermer');
 
 	//Vérifie avant si l'utilisateur n'a pas déjà de groupe (problème rencontré si la personne clic très rapidement sur le lien)
 	if ($joueur->get_groupe() > 0)
-		 $interf_princ->set_dialogue( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes déjà groupé.');
+		 $dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes déjà groupé.') );
 	elseif(count($groupe->get_membre()) >= 5)
-		$interf_princ->set_dialogue( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Le groupe a atteint son maximum de membres.');
+		$dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Le groupe a atteint son maximum de membres.') );
 	else
 	{
 		if(!$joueur->is_buff('debuff_groupe'))
@@ -40,14 +45,14 @@ elseif ($W_reponse == 'oui')
 			$invitation->supprimer();
 			$groupe_joueur->sauver();
 			$joueur->sauver();
-			$interf_princ->set_dialogue( new interf_alerte(interf_alerte::msg_succes, false, false, 'Vous êtes maintenant membre du groupe !');
+			$dlg->add( new interf_alerte(interf_alerte::msg_succes, false, false, 'Vous êtes maintenant membre du groupe !') );
 			$interf_princ->maj_perso();
 			
 			// On debloque l'achievement
 			$joueur->unlock_achiev('rejoindre_groupe');
 		}
 		else
-			$interf_princ->set_dialogue( new interf_alerte(interf_alerte::msg_erreur, false, false, "Vous êtes trop déprimé pour rejoindre un groupe. Pour le moment vous ne voulez parler à personne.");
+			$dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, "Vous êtes trop déprimé pour rejoindre un groupe. Pour le moment vous ne voulez parler à personne.") );
 	}
 }
 ?>

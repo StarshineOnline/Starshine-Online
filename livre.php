@@ -191,7 +191,7 @@ if( array_key_exists('action', $_GET) )
 			}
 		}
 		// Coût en PA & MP
-    $cout_pa_base = $cout_pa = $comp_sort->get_pa();
+    $cout_pa_base = $cout_pa = $comp_sort->get_pa($perso);
     $cout_mp_base = $cout_mp = $comp_sort->get_mp_final($perso);
     if($groupe)
 			$cout_mp = ceil($cout_mp * 1.5);

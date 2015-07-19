@@ -225,8 +225,8 @@ class interf_dialog extends interf_bal_cont
       }
       $code .= ', buttons: {'.implode(',', $btn).'}';
     }
-    interf_base::CodeJS($code.'});');
-    $this->ouvre($this->Creerbalise());
+    interf_base::code_js($code.'});');
+    $this->ouvre($this->creer_balise());
   }
   /// Renvoie le code javascript pour l'ouverture de la boite de dialogue
   function code_affiche()
