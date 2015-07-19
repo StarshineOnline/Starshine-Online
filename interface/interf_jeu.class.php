@@ -163,7 +163,7 @@ class interf_jeu_ajax extends interf_princ_ob
 {
 	function __construct()
 	{
-		if( !joueur::get() )
+		if( !joueur::get_perso() )
 		{
 			$this->recharger_interface('index.php');
 			exit;
