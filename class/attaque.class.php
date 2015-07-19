@@ -181,10 +181,10 @@ class attaque
 	  	$this->gere_passe(false);
 	  	
 	  	// Fin du round
+	    $this->log_combat .= ','.$this->log_effects_attaquant.','.$this->log_effects_defenseur;
 			$round++;
 			if( $round <= $round_total )
         $this->add_log_combat(';');
-	    $this->log_combat .= ','.$this->log_effects_attaquant.','.$this->log_effects_defenseur;
 			$this->log_effects_attaquant = '';
 			$this->log_effects_defenseur = '';
 		}

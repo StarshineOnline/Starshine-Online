@@ -372,8 +372,8 @@ class comp_combat extends comp
 			$attaque->applique_effet('inflige_critique');
 			
 		// Potion d'épiderme
-    if($passif->is_buff('buff_epine', true))
-    	$attaque->add_degats( -$passif->get_buff('buff_epine', 'effet') );
+    if($passif->is_buff('potion_epiderme', true))
+    	$attaque->add_degats( -$passif->get_buff('potion_epiderme', 'effet') );
 
     $degat = $attaque->get_degats();
 		$reduction = $degat_avant - $degat;

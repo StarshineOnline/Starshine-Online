@@ -49,15 +49,15 @@ class journal extends table
 	protected function init_tab($vals)
 	{
 		table::init_tab($vals);
-		$this->id_perso = $id['id_perso'];
-		$this->action = $id['action'];
-		$this->actif = $id['actif'];
-		$this->passif = $id['passif'];
-		$this->time = $id['time'];
-		$this->valeur = $id['valeur'];
-		$this->valeur2 = $id['valeur2'];
-		$this->x = $id['x'];
-		$this->y = $id['y'];
+		$this->id_perso = $vals['id_perso'];
+		$this->action = $vals['action'];
+		$this->actif = $vals['actif'];
+		$this->passif = $vals['passif'];
+		$this->time = $vals['time'];
+		$this->valeur = $vals['valeur'];
+		$this->valeur2 = $vals['valeur2'];
+		$this->x = $vals['x'];
+		$this->y = $vals['y'];
 	}
 	
 	/// Renvoie la liste des champs pour une insertion dans la base
