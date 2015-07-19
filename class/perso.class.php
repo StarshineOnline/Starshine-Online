@@ -1579,6 +1579,11 @@ class perso extends entite
 		{
 			$objet = $this->recherche_objet($id_objet);
 			$obj = objet_invent::factory($inventaire[$objet[1]]);
+			if( !$obj )
+			{
+				log_admin::log('erreur', 'Objet à supprimer non trouvé : '.$id_objet.' -> '.$objet[1].' : '.$inventaire[$objet[1]]);
+				return false;
+			}
 			//Vérification si objet "stacké"
 			/*$stack = explode('x', $inventaire[$objet[1]]);
 			if($stack[1] > 1)

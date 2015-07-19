@@ -207,10 +207,10 @@ function apprend_sort($ecole, $id_sort, &$joueur, $R, $grimoire, &$interface=nul
         interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez en '.traduit($row['comp_assoc']), false);
 		}
 		else
-      $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez en incantation');
+      interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez en incantation');
 	}
 	else
-    $interface->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez de Stars');
+    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de Stars');
 	return false;
 }
 ?>

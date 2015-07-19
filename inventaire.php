@@ -160,7 +160,7 @@ if( !$visu && $action )
         if( $objet_rech[0] >= $obj[1] )
           $stars += $objet->vendre_marchand($perso, $cadre, $obj[1]);
         else
-          $cadre->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.$objet->get_nom().' !');
+          $cadre->add( new interf_alerte('danger') )->add_message('Vous n\'avez pas assez d\'exemplaires de '.objet_invent::factory($obj[0])->get_nom().' !');
         
       }
       if( $stars )

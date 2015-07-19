@@ -161,6 +161,14 @@ class interf_jeu extends interf_sso_int
 
 class interf_jeu_ajax extends interf_princ_ob
 {
+	function __construct()
+	{
+		if( !joueur::get() )
+		{
+			$this->recharger_interface('index.php');
+			exit;
+		}
+	}
   function set_gauche($fils=null)
   {
   	global $G_interf;
