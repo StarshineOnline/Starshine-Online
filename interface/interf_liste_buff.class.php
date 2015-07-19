@@ -18,7 +18,7 @@ class interf_liste_buff extends interf_bal_cont
           $li = $this->add( new interf_bal_cont('li', null, 'buff') );
           $img = $li->add( new interf_bal_smpl('img') );
           $fich = 'image/buff/'.$buff->get_type().'_p.png';
-          if( !file_exists($fich) )
+          if( !file_exists(root.$fich) )
           	$fich = 'image/buff/'.($buff->get_debuff()?'debuff':'buff').'.png';
           $img->set_attribut('src', $fich);
           $img->set_attribut('alt', $buff->get_nom());
