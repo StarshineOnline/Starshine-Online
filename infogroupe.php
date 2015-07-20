@@ -48,6 +48,7 @@ $onglets = $cadre->add( new interf_onglets('onglets_groupe', 'groupe') );
 $onglets->add_onglet('Infos groupe', 'infogroupe.php?action=infos&ajax=2', 'ongl_infos', false, $action=='infos' || $action == 'modifier_infos' || $action == 'suppr_invit');
 $onglets->add_onglet('Batailles', 'infogroupe.php?action=batailles&ajax=2', 'ongl_batailles', 'invent', $action=='batailles' || $action == 'accepter');
 
+my_dump($_GET);
 switch($action)
 {
 case 'modifier_infos':
@@ -57,7 +58,7 @@ case 'modifier_infos':
 	/// @todo passer à l'objet
 	$requete = "UPDATE groupe_joueur SET leader = 'n' WHERE id_groupe = ".sSQL($_GET['id']);
 	$db->query($requete);
-	$requete = "UPDATE groupe_joueur SET leader = 'y' WHERE id_joueur = ".sSQL($_GET['leader']);
+	$requete = "UPDATE groupe_joueur SET leader = 'y' WHERE id_joueur = ".sSQL($_GET['chef']);
 	$db->query($requete);
 case 'infos':
 	$onglets->get_onglet('ongl_infos')->add( $G_interf->creer_groupe('infos_groupe', $groupe) );

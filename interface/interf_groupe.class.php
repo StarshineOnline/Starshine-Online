@@ -9,7 +9,7 @@ class interf_groupe extends interf_form
 	function __construct($id, &$groupe)
 	{
 		global $G_url, $Gtrad;
-		parent::__construct($G_url->get('action', 'modifier_infos'), $id, 'get', 'invent');
+		parent::__construct($G_url->get( array('action'=>'modifier_infos', 'id'=>$groupe->get_id()) ), $id, 'get', 'invent');
 		$modif = $groupe->get_leader() == joueur::get_perso()->get_id();
 		$nom = $this->add_champ_bs('text', 'nom', null, $groupe->get_nom(), 'Nom');
 		if( !$modif )
@@ -18,18 +18,18 @@ class interf_groupe extends interf_form
 		$niveau->set_attribut('disabled', 'disabled');
 		// Partage
 		$div_partage = $this->add( new interf_bal_cont('div', false, 'input-group') );
-		$div_partage->add( new interf_bal_smpl('span', 'Durée du mandat', false, 'input-group-addon') );
-		$partage = $div_partage->add( new interf_select_form('duree', false, false, 'form-control') );
+		$div_partage->add( new interf_bal_smpl('span', 'Répartition des objets', false, 'input-group-addon') );
+		$partage = $div_partage->add( new interf_select_form('partage', false, false, 'form-control') );
 		$partage->add_option('Aléatoire', 'r',  $groupe->get_partage()=='r');
-		$partage->add_option('Par tour', 'r',  $groupe->get_partage()=='t');
-		$partage->add_option('Chef', 'r',  $groupe->get_partage()=='l');
-		$partage->add_option('Trouve = Garde', 'r',  $groupe->get_partage()=='k');
+		$partage->add_option('Par tour', 't',  $groupe->get_partage()=='t');
+		$partage->add_option('Chef', 'l',  $groupe->get_partage()=='l');
+		$partage->add_option('Trouve = Garde', 'k',  $groupe->get_partage()=='k');
 		if( !$modif )
 			$partage->set_attribut('disabled', 'disabled');
 		// Chef
 		$div_chef = $this->add( new interf_bal_cont('div', false, 'input-group') );
 		$div_chef->add( new interf_bal_smpl('span', 'Chef', false, 'input-group-addon') );
-		$chef = $div_chef->add( new interf_select_form('duree', false, false, 'form-control') );
+		$chef = $div_chef->add( new interf_select_form('chef', false, false, 'form-control') );
 		$membres = $groupe->get_membre();
 		foreach($membres as $m)
 		{
@@ -47,6 +47,7 @@ class interf_groupe extends interf_form
 		if( $modif )
 		{
 			$btn = $btns->add( new interf_chp_form('submit', false, false, 'Modifier', false, 'btn btn-primary') );
+			$btn->set_attribut('onclick', 'return charger_formulaire(\''.$id.'\');');
 		}
 		
 		// Invitations
