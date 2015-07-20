@@ -48,6 +48,7 @@ function drop_func( event, ui )
     break;
   case 'identifier':
     charger( get_url_invent("action="+drop+"&objet="+drag[0].id.substr(11)) );
+    break;
   default:
     charger( get_url_invent("action="+drop+"&objet="+objet) );
   }
