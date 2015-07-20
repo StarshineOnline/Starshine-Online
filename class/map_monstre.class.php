@@ -565,7 +565,7 @@ class map_monstre extends entnj_incarn
 		$gains_drop = false;
 		$gains_star = false;
 		$msg_xp = '';
-		
+	
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
 		{

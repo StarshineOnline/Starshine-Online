@@ -270,7 +270,7 @@ class attaque
 		
 		// Affichage de la fin du combat
 		$this->interf->aff_fin($this->attaquant, $this->defenseur, $degat_attaque, $degat_defense, $longueur, $fiabilite, $type, true);
-		$msg_xp .= $this->defenseur->fin_defense($this->perso, $R, $pet, $degat_defense, $defenseur_en_defense);
+		$msg_xp .= $this->defenseur->fin_defense($this->perso, $R, $pet, $degat_attaque, $defenseur_en_defense);
 		if( $msg_xp )
 			$this->interf->aff_messages_fin($msg_xp);
 		
