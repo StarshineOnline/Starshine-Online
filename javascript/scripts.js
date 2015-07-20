@@ -12,7 +12,8 @@ $(function()
 				if( tab[i] == id_elt )
 					break;
 			}
-			charger(url_page+"&action=change_ordre&ligne="+id_elt.substr(7)+"&pos="+i);
+			var url = $('<textarea />').html(url_page).text();
+			charger(url+"&action=change_ordre&ligne="+id_elt.substr(7)+"&pos="+i);
 			return;
     }   		          	          
   });

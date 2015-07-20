@@ -46,7 +46,6 @@ if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
 	exit;
 }
 
-
 $change_script = false;
 switch($action)
 {
