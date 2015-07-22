@@ -227,18 +227,20 @@ class grimoire extends objet_invent
     case 'comp_combat':
       if( !apprend_competence($this->type, $this->id_apprend, $perso, null, true, $princ) )
       	return false;
+      break;
     case 'sort_jeu':
     case 'sort_combat':
       if( !apprend_sort($this->type, $this->id_apprend, $perso, null, true, $princ) )
       	return false;
-    case 'comp_combat':
+      break;
+    case 'attr_perso':
       $comp = $perso->get_comp( $this->attr_perso );
       if( $comp === false )
       {
         $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous ne la connaissez pas !');
   			return false;
       }
-      $permet = classe_permet::create('id_classe', $perso->get_id_classe());
+      $permet = classe_permet::create('id_classe', $perso->get_classe_id());
       if( $comp >= $permet->get_permet() )
       {
         $princ->add( new interf_alerte('danger', true) )->add_message('Impossible d\'entraîner cette compétence : vous en connaissez toutes les arcanes !');
