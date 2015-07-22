@@ -47,7 +47,7 @@ class interf_bourg_fort extends interf_batiment
 		{
 			$menu->add(  new interf_lien('Taverne', 'taverne.php', false, 'list-group-item') );
 		}
-		$menu->add(  new interf_lien('Bureau des quêtes', 'quete.php', false, 'list-group-item') );
+		$menu->add(  new interf_lien('Bureau des quêtes', 'bureau_quete.php', false, 'list-group-item') );
 		if($this->batiment->has_bonus('ecurie'))
 		{
 			$menu->add(  new interf_lien('Ecurie', 'ecurie.php', false, 'list-group-item') );

@@ -24,7 +24,7 @@ $R = new royaume($W_row['royaume']);
 // On vérifie qu'on est bien sur une ville
 /// @todo logguer triche
 $case = new map_case(array('x' => $perso->get_x(), 'y' => $perso->get_y()));
-if( !$case->is_ville(true, 'taverne') )
+if( !$case->is_ville(true, 'teleport') )
 	exit();
 
 // On vérifie la diplomatie
