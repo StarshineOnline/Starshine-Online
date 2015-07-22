@@ -114,7 +114,8 @@ if( !$visu && $action )
 				$cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible d\'équiper cet objet.');
       break;
 	  case 'desequip':
-			if(!$perso->desequip(substr($_GET['zone'], 0, strlen($_GET['zone'])-4), $page=='pet'))
+	  	$zone = $page=='pet' ? substr($_GET['zone'], 0, strlen($_GET['zone'])-4) : $_GET['zone'];
+			if(!$perso->desequip($zone, $page=='pet'))
         $cadre->add( new interf_alerte('danger') )->add_message($G_erreur?$G_erreur:'Impossible de deséquiper cet objet.');
       break;
 	  case 'utiliser':

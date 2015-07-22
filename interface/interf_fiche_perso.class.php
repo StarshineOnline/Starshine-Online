@@ -210,7 +210,7 @@ class interf_fiche_perso_apt extends interf_cont
 			$val_tot = $val = $nom->get_valeur();
 			$nom = $nom->get_competence();
 		}
-		$max = $nom == 'artisanat' ? 123 : recup_max_comp($nom, $this->perso->get_classe_id());
+		$max = $nom == 'artisanat' ? 141 : recup_max_comp($nom, $this->perso->get_classe_id());
 		$this->aptitudes->nouv_cell( new interf_jauge_bulle('Valeur', $val, $max, false, 'avance', false, 'jauge_case') );
 		$this->aptitudes->nouv_cell( $Gtrad[$nom] );
 		$this->aptitudes->nouv_cell( $val );

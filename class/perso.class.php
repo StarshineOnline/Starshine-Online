@@ -960,7 +960,7 @@ class perso extends entite
 		$architecture *= 1 + $this->get_bonus_permanents('architecture') / 100;
 		if($this->is_buff('globe_architecture'))
 			$architecture *= 1 + $this->get_buff('globe_architecture', 'effet')/100;
-		return $architecture;
+		return round($architecture);
 	}
 	/// Modifie l'architecture
 	function set_architecture($architecture)
@@ -1014,9 +1014,9 @@ class perso extends entite
    * L'artisanat est calculé à partir des 3 compétences d'artisanat : c'est 10 
    * fois la racine carré de leur somme.
    */       
-	function get_artisanat()
+	function get_artisanat($base = false)
 	{
-		return round(sqrt(($this->architecture + $this->forge + $this->alchimie + $this->indentification) * 10));
+		return round(sqrt(($this->get_architecture($base) + $this->get_forge($base) + $this->get_alchimie($base) + $this->get_identification($base)) * 10));
 	}
 	/**
 	 * Renvoie la compétence demandée
