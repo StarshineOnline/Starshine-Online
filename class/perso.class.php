@@ -1543,7 +1543,7 @@ class perso extends entite
 				$compte_stack[$objet['sans_stack']] += $objet['stack'] ? $objet['stack'] : 1;
 			else
 				$compte_stack[$objet['sans_stack']] = $objet['stack'] ? $objet['stack'] : 1;
-			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
+			//$this->supprime_objet($objet['sans_stack'], $objet['stack']);
 		}
 
 		$inventaire = array();

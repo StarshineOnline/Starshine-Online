@@ -112,7 +112,7 @@ class interf_barre_perso extends interf_bal_cont
   }
   protected function creer_infos_pos()
   {
-  	global $G_interf;
+  	global $G_interf, $Trace;
     $heure = $this->add( new interf_lien_cont('moment_jour.php', 'perso_heure', 'aide') );
     $heure->set_attribut('style', 'background-image:url(image/interface/'.moment_jour().'.png);');
     $heure->set_tooltip(moment_jour(), 'bottom');
@@ -121,6 +121,8 @@ class interf_barre_perso extends interf_bal_cont
     $carte = $pos->add( $G_interf->creer_carte_monde() );
     $carte->aff_svg(12);
 		$carte->aff_groupe( $this->perso->get_groupe() );
+		/*$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
+		$carte->aff_batiments($royaume, 12);*/
   }
 	protected function creer_jauge($parent, $nom, $valeur, $maximum, $grand, /*$style=false,*/ $type=null)
 	{

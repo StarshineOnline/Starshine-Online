@@ -29,11 +29,32 @@ class interf_carte_monde extends interf_bal_cont
 		{
 			$perso = joueur::get_perso();
 			$taille = ($lim_vue*2 + 1) * self::taille_case;
-			$lien = 'carte_perso.php?vue='.$lim_vue;
+			//$lien = 'carte_perso.php?vue='.$lim_vue;
+			$lien = 'image/carte.png';
 			$this->x_min = $perso->get_x() - $lim_vue;
 			$this->y_min = $perso->get_y() - $lim_vue;
 			$this->x_max = $perso->get_x() + $lim_vue;
 			$this->y_max = $perso->get_y() + $lim_vue;
+			if( $this->x_min < 0 )
+			{
+				$this->x_max -= $this->x_min;
+				$this->x_min = 0;
+			}
+			if( $this->y_min < 1 )
+			{
+				$this->y_max -= $this->y_min;
+				$this->y_min = 1;
+			}
+			if( $this->x_max > $G_max_x )
+			{
+				$this->x_min += $this->x_max - $G_max_x;
+				$this->x_max = $G_max_x;
+			}
+			if( $this->y_max > $G_max_y )
+			{
+				$this->y_min += $this->y_max - $G_max_y;
+				$this->y_max = $G_max_y;
+			}
 		}
 		else
 		{
@@ -44,6 +65,7 @@ class interf_carte_monde extends interf_bal_cont
 			$this->x_max = $G_max_x;
 			$this->y_max = $G_max_y;
 		}
+		$taille_img = $G_max_x * self::taille_case;
 		if( strpos($G_url->get(), 'roi/') > 0 )
 			$lien = '../'.$lien;
 		$taille = ($lim_vue ? $lim_vue*2 + 1 : $G_max_x) * self::taille_case;
@@ -72,8 +94,12 @@ class interf_carte_monde extends interf_bal_cont
 		}
 		
 		$img = $this->svg->add( new interf_bal_smpl('image', null, 'img_monde') );
-		$img->set_attribut('width', $taille.'px');
-		$img->set_attribut('height', $taille.'px');
+		/*$img->set_attribut('width', $taille.'px');
+		$img->set_attribut('height', $taille.'px');*/
+		$img->set_attribut('x', '-'.($this->x_min*3 - 3).'px');
+		$img->set_attribut('y', '-'.($this->y_min*3 - 3).'px');
+		$img->set_attribut('width', $taille_img.'px');
+		$img->set_attribut('height', $taille_img.'px');
 		$img->set_attribut('xlink:href', $lien);
 	}
 	function aff_groupe($id_groupe, $taille=3)
