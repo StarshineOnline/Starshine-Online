@@ -40,9 +40,12 @@ class interf_ville extends interf_gauche
 	{
 		if( $batiment )
 		{
-			$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
-			$quetes->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-quetes') );
-			$quetes->get_lien()->add( new interf_txt('Quêtes') );
+			if($batiment->has_bonus('quete'))
+			{
+				$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
+				$quetes->get_lien()->add( new interf_bal_smpl('div', '', null, 'icone icone-quetes') );
+				$quetes->get_lien()->add( new interf_txt('Quêtes') );
+			}
 			if($batiment->has_bonus('taverne'))
 			{
 				$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );

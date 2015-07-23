@@ -9,10 +9,10 @@ include_once(root.'interface/interf_ville.class.php');
 /// Classe gérant l'interface du bureau des quêtes
 class interf_bureau_quete extends interf_ville_onglets
 {
-	function __construct(&$royaume, $type='autre')
+	function __construct(&$royaume, $case, $type='autre')
 	{
 		global $G_url;
-		parent::__construct($royaume);
+		parent::__construct($royaume, $case);
 		
 		// Icone & jauges
 		$this->icone = $this->set_icone_centre('quetes');

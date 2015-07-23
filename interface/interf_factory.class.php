@@ -285,9 +285,9 @@ class interf_factory
     return new interf_terrain($royaume, $id);
 	}
 	/// Bureau des quetes
-	function creer_bureau_quete(&$royaume, $type='autre')
+	function creer_bureau_quete(&$royaume, $case, $type='autre')
 	{
-    return new interf_bureau_quete($royaume, $type);
+    return new interf_bureau_quete($royaume, $case, $type);
 	}
 	/// Liste des quêtes au bureau des quetes
 	function creer_tbl_quetes(&$royaume, $fournisseur='bureau_quete', $type=null)

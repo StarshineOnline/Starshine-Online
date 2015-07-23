@@ -69,5 +69,5 @@ case 'prendre_tout' :
 }
 
 //Affichage des quêtes
-$interf_princ->set_gauche( $G_interf->creer_bureau_quete($R, $type) );
+$interf_princ->set_gauche( $G_interf->creer_bureau_quete($R, $case, $type) );
 $interf_princ->maj_tooltips();
