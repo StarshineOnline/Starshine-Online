@@ -292,7 +292,7 @@ class interf_carte extends interf_tableau
 	        	$cont->set_balise('a');
 	        $pos = 'rel_'.($j-$x).'_'.($i-$y);
 	        if( $options & self::aff_lien_gest )
-	        	$cont->set_attribut('href', $G_url->get( array(/*'action'=>'case',*/ 'x'=>$j, 'y'=>$i) ));
+	        	$cont->set_attribut('href', $G_url->get( array('action'=>'case', 'x'=>$j, 'y'=>$i) ));
 	        else
 	        	$cont->set_attribut('href', 'informationcase.php?case='.$pos);
 	        $cont->set_attribut('onclick', 'return charger(this.href);');
