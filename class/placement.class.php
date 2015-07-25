@@ -202,7 +202,6 @@ class placement extends entitenj_constr
   
   static function calc_image($image, $type, $debut, $fin, $royaume, $grd_img=true)
   {
-  	$image = $this->get_batiment()->get_image();
     if( $type=='drapeau' )
     	return 'image/drapeaux/'.$image.'_'.$royaume.'.png';
     else
