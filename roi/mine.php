@@ -113,10 +113,8 @@ if( $action && $lieu && $perso->get_hp()>0 )
 		break;
 	case 'construire':
 		$bourg = new bourg($_GET['bourg']);
-		$bourg->get_mine_total();
-		$bourg->get_mine_max();
 	
-		if($bourg->mine_total >= $bourg->mine_max)
+		if($bourg->get_mine_total() >= $bourg->get_mine_max())
 		{
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Construction impossible, ce bourg ne peut plus avoir de mine associée');
 			break;
