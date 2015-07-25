@@ -406,7 +406,7 @@ class objet_royaume extends objet_invent
 		    		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez poser un drapeau que sur les royaumes avec lesquels vous êtes en guerre.');
 	    			return false;
 	        }
-	        if( $case->get_nom() == 'Petit Drapeau' )
+	        if( $this->get_nom() == 'Petit Drapeau' )
 	        {
 		    		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas poser de petit drapeau sur une case non neutre !');
 	    			return false;
