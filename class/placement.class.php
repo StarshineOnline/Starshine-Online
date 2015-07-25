@@ -194,16 +194,22 @@ class placement extends entitenj_constr
     {
       /*$avanc = (time() - $row->debut_placement) / ($row->fin_placement - $row->debut_placement);
       $row->image = self::make_url_image($row->image, $row->type, $avanc, $grd_img);*/
-      $row->image = self::calc_image($row->image, $row->type, $row->debut_placement, $row->fin_placement, $grd_img);
+      $row->image = self::calc_image($row->image, $row->type, $row->debut_placement, $row->fin_placement, $row->royaume, $grd_img);
       $res[] = $row;
     }
     return $res;
   }
   
-  static function calc_image($image, $type, $debut, $fin, $grd_img=true)
+  static function calc_image($image, $type, $debut, $fin, $royaume, $grd_img=true)
   {
-    $avancement = (time() - $debut) / ($fin - $debut);
-  	return self::make_url_image($image, $type, $avancement, $grd_img);
+  	$image = $this->get_batiment()->get_image();
+    if( $type=='drapeau' )
+    	return 'image/drapeaux/'.$image.'_'.$royaume.'.png';
+    else
+    {
+    	$avanc = (time() - $debut) / ($fin - $debut);
+    	return 'image/batiment'.($grd_img?'':'_low').'/'.$image.'_0'.max(ceil(3 * $avanc), 1).'.png';
+		}
 	}
 
 	/// @todo à remplacer si encore utilisée

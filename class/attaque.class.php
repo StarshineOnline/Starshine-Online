@@ -176,7 +176,7 @@ class attaque
 		$this->round = 1;
 		
 		// Boucle principale qui fait durer le combat $round_total rounds
-  	while( $round <= $this->round_total && $this->attaquant->get_hp() > 0 && $this->defenseur->get_hp() > 0 )
+  	while( $this->round <= $round_total && $this->attaquant->get_hp() > 0 && $this->defenseur->get_hp() > 0 )
   	{
 	  	$this->interf->nouveau_round($this->round);
 	  	$this->add_log_combat('r'.$this->round.':');
