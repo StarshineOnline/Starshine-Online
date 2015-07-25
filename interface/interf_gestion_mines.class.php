@@ -114,7 +114,7 @@ class interf_gestion_mines extends interf_cont
 				$liste = $panneau->add( new interf_bal_cont('ul') );
 				foreach($bourg->placements as $placement)
 				{
-					$url->add('id', $mine->get_id());
+					$url->add('id', $placement->get_id());
 					$li = $liste->add( new interf_bal_cont('li', false, 'info_case') );
 					$suppr = $li->add( new interf_lien('', $url->get('action', 'suppr_constr'), false, 'icone icone-poubelle') );
 					$suppr->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir supprimer cette construction ?\');');
