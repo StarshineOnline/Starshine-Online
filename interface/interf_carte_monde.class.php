@@ -47,12 +47,12 @@ class interf_carte_monde extends interf_bal_cont
 			}
 			if( $this->x_max > $G_max_x )
 			{
-				$this->x_min += $this->x_max - $G_max_x;
+				$this->x_min -= $this->x_max - $G_max_x;
 				$this->x_max = $G_max_x;
 			}
 			if( $this->y_max > $G_max_y )
 			{
-				$this->y_min += $this->y_max - $G_max_y;
+				$this->y_min -= $this->y_max - $G_max_y;
 				$this->y_max = $G_max_y;
 			}
 		}

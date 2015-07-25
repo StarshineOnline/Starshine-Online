@@ -92,9 +92,10 @@ function get_array_condition($valeur) {
  */   
 function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 {
-	global $db, $round, $Trace, $debugs, $log_combat;
+	global $db, $Trace, $debugs, $log_combat;
 	$stop = false;
 	$test = true;
+	$round = $attaque->get_round();
 	if($joueur->etat['paralysie'] > 0)
 	{
 		$attaque->get_interface()->special('cp', $joueur->get_nom());

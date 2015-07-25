@@ -22,6 +22,7 @@ class attaque
   private $degats_bloques;  ///< dégâts bloqués
   private $type_degats;  ///< Type de dégâts infligés.
   private $distance;  ///< Distance entre les protagonistes.
+  private $round;
 
   public $valeur;  ///< Variable utilisé pour transmettre le résultat de l'application des effets (voir function applique_effet)
 
@@ -127,6 +128,11 @@ class attaque
   {
     $this->type_degats = $type;
   }
+  //
+  function get_round()
+  {
+    return $this->round;
+	}
   // @}
 
 	/**
@@ -167,13 +173,13 @@ class attaque
 		$this->defenseur->etat = array();
 		$attaque_hp_avant = $this->attaquant->get_hp();
 		$defense_hp_avant = $this->defenseur->get_hp();
-		$round = 1;
+		$this->round = 1;
 		
 		// Boucle principale qui fait durer le combat $round_total rounds
-  	while( $round <= $round_total && $this->attaquant->get_hp() > 0 && $this->defenseur->get_hp() > 0 )
+  	while( $round <= $this->round_total && $this->attaquant->get_hp() > 0 && $this->defenseur->get_hp() > 0 )
   	{
-	  	$this->interf->nouveau_round($round);
-	  	$this->add_log_combat('r'.$round.':');
+	  	$this->interf->nouveau_round($this->round);
+	  	$this->add_log_combat('r'.$this->round.':');
 	  	// L'attaquant agit
 	  	$this->gere_passe(true);
 	  	$this->add_log_combat(',');
@@ -182,8 +188,8 @@ class attaque
 	  	
 	  	// Fin du round
 	    $this->log_combat .= ','.$this->log_effects_attaquant.','.$this->log_effects_defenseur;
-			$round++;
-			if( $round <= $round_total )
+			$this->round++;
+			if( $this->round <= $this->round_total )
         $this->add_log_combat(';');
 			$this->log_effects_attaquant = '';
 			$this->log_effects_defenseur = '';

@@ -66,8 +66,14 @@ class placement extends entitenj_constr
 	/// Renvoie l'image du bâtiment
   function get_image()
   {
-    $avanc = (time() - $this->debut_placement) / ($this->fin_placement - $this->debut_placement);
-  	return $this->make_url_image($this->get_batiment()->get_image(), $this->type, $avanc);
+  	$image = $this->get_batiment()->get_image();
+    if( $this->type=='drapeau' )
+    	return 'image/drapeaux/'.$image.'_'.$this->royaume.'.png';
+    else
+    {
+    	$avanc = (time() - $this->debut_placement) / ($this->fin_placement - $this->debut_placement);
+    	return 'image/batiment/'.$image.'_0'.max(ceil(3 * $avanc), 1).'.png';
+		}
 	}
 	// @}
 
@@ -200,6 +206,7 @@ class placement extends entitenj_constr
   	return self::make_url_image($image, $type, $avancement, $grd_img);
 	}
 
+	/// @todo à remplacer si encore utilisée
   protected static function make_url_image($image, $type, $avancement, $grd_img=true)
   {
     $doss = $type=='drapeau' ? 'drapeau' : 'batiment';

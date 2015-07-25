@@ -20,7 +20,7 @@ class interf_ville extends interf_gauche
 		if( $case && !$case->is_ville() )
 		{
 			$construction = construction::create(array('x', 'y'), array($this->perso->get_x(),$this->perso->get_y()));
-			$batiment = $construction[0]->get_def();
+			$batiment = $construction ? $construction[0]->get_def() : null;
 		}
 		else
 			$batiment = null;

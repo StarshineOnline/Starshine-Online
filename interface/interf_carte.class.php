@@ -79,7 +79,7 @@ class interf_carte extends interf_tableau
 		}
 		else if( $x <= $G_max_x && $this->x_max > $G_max_x )
 		{
-			$this->x_min += $this->x_max - $G_max_x;
+			$this->x_min -= $this->x_max - $G_max_x;
 			$this->x_max = $G_max_x;
 		}
 		if( $this->y_min <= 0 )
@@ -89,7 +89,7 @@ class interf_carte extends interf_tableau
 		}
 		else if( $y <= $G_max_y && $this->y_max > $G_max_y )
 		{
-			$this->y_min += $this->y_max - $G_max_y;
+			$this->y_min -= $this->y_max - $G_max_y;
 			$this->y_max = $G_max_y;
 		}		
 
