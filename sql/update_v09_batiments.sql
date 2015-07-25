@@ -23,6 +23,11 @@ CREATE TABLE IF NOT EXISTS `buff_batiment_def` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
+-- nombre de mines en bonus
+INSERT INTO batiment_bonus VALUES (10, 'mines', 1);
+INSERT INTO batiment_bonus VALUES (11, 'mines', 2);
+INSERT INTO batiment_bonus VALUES (12, 'mines', 4);
+
 -- définitions des (de)buffs de bâtiments
 INSERT INTO buff_batiment_def (`id`, `nom`, `type`, `effet`, `effet2`, `duree`, `description`, `debuff`) VALUES ('1', 'Assiégé', 'assiege', '0', '0', '259200', 'Empêche la suppression du bâtiment tant qu''il est assiégé.', '1');
 INSERT INTO buff_batiment_def (id, nom, type, effet, effet2, duree, description, debuff) VALUES (2, "Protection physique", "buff_bouclier", 20, 0, 3, "Augmente la PP de %effet% %.", 0);

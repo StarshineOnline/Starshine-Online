@@ -345,8 +345,8 @@ class batiment extends entitenj_def
 			return false;
 	}
   /**
-   * Renvoie les informations sur un bonus donné ou false s'il n'est aps accessible
-   * Si $bonus vaut null, alors tous les bonus sotn renvoyés comme pour get_boni()
+   * Renvoie les informations sur un bonus donné ou false s'il n'est pas accessible
+   * Si $bonus vaut null, alors tous les bonus sont renvoyés comme pour get_boni()
    */
 	function get_bonus($bonus)
 	{

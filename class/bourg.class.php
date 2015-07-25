@@ -9,7 +9,8 @@ class bourg extends construction
 	function get_mine_max()
 	{
 		//Mines max
-		switch($this->get_nom())
+		return $this->get_batiment()->get_bonus('mines');
+		/*switch()
 		{
 			case 'Bourgade' :
 				$this->mine_max = 1;
@@ -21,7 +22,7 @@ class bourg extends construction
 			case 'Bourg' :
 				$this->mine_max = 4;
 			break;
-		}
+		}*/
 	}
 
 	function get_mines($ressource = false)
