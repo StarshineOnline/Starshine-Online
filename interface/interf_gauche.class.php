@@ -149,7 +149,7 @@ class interf_gauche extends interf_bal_cont
 	{
 		// max pour ajuster quand ça vaut 0
 		if( $max == 0 )
-			$angle = 0;
+			$angle = -177;
 		else if( $max == '%' )
 			$angle = max(round($valeur / 100 * 360) - 180, -177); 
 		else

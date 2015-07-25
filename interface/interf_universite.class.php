@@ -23,7 +23,7 @@ class interf_universite_base extends interf_ville
 		$this->classe = new classe( $this->perso->get_classe_id() );
 		$this->set_jauge_ext($this->classe->get_rang(), 4, 'avance', 'Rang : ');
 		$avance = $this->calc_avance();
-		$this->set_jauge_int(round($avance, 1), 100, 'avance', 'Avancement du rang : ')/*->set_tooltip('Avancement : '.$avance.'%', 'right', 'body')*/;
+		$this->set_jauge_int(round($avance, 1), '%', 'avance', 'Avancement du rang : ');
 	}
 	protected function calc_avance()
 	{

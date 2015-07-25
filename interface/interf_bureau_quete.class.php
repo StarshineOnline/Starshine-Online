@@ -47,7 +47,7 @@ class interf_bureau_quete extends interf_ville_onglets
 		$nbr_achete = $row[0];
 		$interf->set_jauge_ext($nbr_achete, $nbr_achetable, 'avance', 'Nombre de quêtes disponibles : ');
 		// Jauge intétieure : nombre de quêtes prise par le personnage
-		$requete = 'SELECT COUNT(*) FROM quete_perso as qp INNER JOIN quete_royaume AS qr ON qr.id_quete = qp.id_quete WHERE qr.id_royaume = '.$royaume->get_id();
+		$requete = 'SELECT COUNT(*) FROM quete_perso as qp INNER JOIN quete_royaume AS qr ON qr.id_quete = qp.id_quete WHERE qp.id_perso = '.joueur::get_perso()->get_id().' AND qr.id_royaume = '.$royaume->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
 		$nbr_prise = $row[0];
