@@ -18,9 +18,7 @@ class interf_gestion_mines extends interf_cont
 		{
 			$bourg->get_mines();
 			$bourg->get_placements();
-			$bourg->get_mine_total();
-			$bourg->get_mine_max();
-			$panneau = $acordeon->nouv_panneau($bourg->get_nom().' : '.$bourg->get_x().' / '.$bourg->get_y().' ('.$bourg->mine_total.' / '.$bourg->mine_max.')', 'bourg_'.$bourg->get_id(), $carte==$bourg->get_id());
+			$panneau = $acordeon->nouv_panneau($bourg->get_nom().' : '.$bourg->get_x().' / '.$bourg->get_y().' ('.$bourg->get_mine_total().' / '.$bourg->get_mine_max().')', 'bourg_'.$bourg->get_id(), $carte==$bourg->get_id());
 			$bat = $bourg->get_batiment();
 			$G_url->add('bourg', $bourg->get_id());
 			$url = $G_url->copie('id', $bourg->get_id());
@@ -149,10 +147,8 @@ class interf_bourg_case extends interf_dialogBS
 		global $G_url, $db;
 		parent::__construct('Poser une mine', true);
 		$bourg->get_mines();
-		$bourg->get_mine_max();
 		$bourg->get_placements();
-		$bourg->get_mine_total();
-		if($bourg->mine_max <= $bourg->mine_total)
+		if($bourg->get_mine_max() <= $bourg->get_mine_total())
 		{
 			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, ce bourg ne peut plus avoir de mine associée') );
 			return;
