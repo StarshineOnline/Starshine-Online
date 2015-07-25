@@ -156,13 +156,15 @@ case 'options':
 	$db->query($requete);
 	$action = false;
 	break;
-case 'quete':
-	$quete_perso = new quete_perso( sSQL($_GET['id'], SSQL_INTEGER) );
-	$etape = $quete_perso->get_etape();
-	$_GET['niveau'] = $etape->get_niveau();
 case 'niveau':
 	$mouvement = false;
 	$action = false;
+	$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_min_monstres"');
+	$row = $db->read_array($req);
+	$niv_min = $row ? $row[0] : '0';
+	$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_max_monstres"');
+	$row = $db->read_array($req);
+	$niv_max = $row ? $row[0] : 255;
 	$val = sSQL($_GET['niveau'], SSQL_INTEGER);
 	// niveau minimum des monstres
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_min_monstres', $val)";
@@ -171,6 +173,13 @@ case 'niveau':
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_max_monstres', $val)";
 	$db->query($requete);
 	break;
+case 'tous_monstres':
+	// niveau minimum des monstres
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_min_monstres', 0)";
+	$db->query($requete);
+	// niveau maximum des monstres
+	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_max_monstres', 255)";
+	$db->query($requete);
 case 'raffraichir':
 	$complet = true;
 default:

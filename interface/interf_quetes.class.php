@@ -29,7 +29,7 @@ class interf_quetes_terrain extends interf_accordeon
 {
 	function __construct(&$perso, $type='autre')
 	{
-		global $G_url;
+		global $G_url, $db;
 		parent::__construct('quetes_'.$type);
 		$quetes = quete_perso::create('id_perso', $perso->get_id());
 		foreach($quetes as $qp)
@@ -46,8 +46,25 @@ class interf_quetes_terrain extends interf_accordeon
 				$titre .= ' R';
 			$descr = new interf_descr_quete($quete, $etape, $qp);
 			$titre .= ' - '.$descr->nbr_obj_reussi.' / '.$descr->nbr_obj_total.')';
-			$filtre = new interf_lien('', 'deplacement.php?action=quete&id='.$qp->get_id(), false, 'icone icone-oeil');
-			$filtre->set_tooltip('Filtrer les monstres');
+			
+			/// @todo passer à l'objet
+			$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_min_monstres"');
+			$row = $db->read_array($req);
+			$niv_min = $row ? $row[0] : '0';
+			$req = $db->query('select valeur from options where id_perso = '.$perso->get_id().' and nom = "niv_max_monstres"');
+			$row = $db->read_array($req);
+			$niv_max = $row ? $row[0] : 255;
+			$niv_aff = $niv_min == $niv_max ? $niv_max : false;
+			if( $niv_aff == $etape->get_niveau() )
+			{
+				$filtre = new interf_lien_cont('deplacement.php?action=tous_monstres', false, 'icone icone-oeil-bare');
+				$filtre->set_tooltip('Afficher tous les monstres', 'bottom', '#information');
+			}
+			else
+			{
+				$filtre = new interf_lien_cont('deplacement.php?action=niveau&niveau='.$etape->get_niveau(), false, 'icone icone-oeil');
+				$filtre->set_tooltip('Afficher uniquement les monstres de ce niveau sur la carte', 'bottom', '#information');
+			}
 			$panneau = $this->nouv_panneau($titre, 'quete_'.$quete->get_id(), false, 'default', $filtre);
 			if( $quete->get_nombre_etape() > 1 )
 				$panneau->add( new interf_bal_smpl('h4', $etape->get_etape().' / '.$quete->get_nombre_etape().' : '.$etape->get_nom()) );

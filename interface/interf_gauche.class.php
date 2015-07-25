@@ -219,15 +219,19 @@ class interf_cadre_carte extends interf_gauche
 		$form = $dropdown->add( new interf_form('deplacement.php?action=options', 'form_opt_carte') );
 		$div_niv = $form->add( new interf_bal_cont('div', false, 'input-group') );
 		$div_niv->add( new interf_bal_smpl('span', 'Monstres de niveau ', false, 'input-group-addon') );
-		$sel_min = $div_niv->add( new interf_select_form('niv_min', false, false, 'form-control') );
+		$sel_min = $div_niv->add( new interf_select_form('niv_min', false, 'niv_monstre_min', 'form-control') );
 		for($i=0; $i<=25; $i++)
 			$sel_min->add_option($i?$i:'0', $i?$i:'0', $i==$niv_min);
 		$sel_min->add_option('25 et +', 255, $niv_min>25);
 		$div_niv->add( new interf_bal_smpl('span', ' à ', false, 'input-group-addon') );
-		$sel_max = $div_niv->add( new interf_select_form('niv_max', false, false, 'form-control') );
+		$sel_max = $div_niv->add( new interf_select_form('niv_max', false, 'niv_monstre_max', 'form-control') );
 		for($i=0; $i<=25; $i++)
 			$sel_max->add_option($i?$i:'0', $i?$i:'0', $i==$niv_max);
 		$sel_max->add_option('25 et +', 255, $niv_max>25);
+		$btns = $div_niv->add( new interf_bal_cont('span', false, 'input-group-btn') );
+		$btn = $btns->add( new interf_bal_smpl('button', 'voir tous', false, 'btn btn-default') );
+		$btn->set_attribut('type', 'button');
+		$btn->set_attribut('onclick', 'document.getElementById(\'niv_monstre_min\').selectedIndex = 0;document.getElementById(\'niv_monstre_max\').selectedIndex = 26;');
 		$div_ordre = $form->add( new interf_bal_cont('div', false, 'input-group') );
 		$div_ordre->add( new interf_bal_smpl('span', 'Priorités ', false, 'input-group-addon') );
 		$ordre = $div_ordre->add( new interf_select_form('ordre', false, false, 'form-control') );

@@ -13,7 +13,7 @@ class interf_monstre extends interf_cont
 	protected $def;
 	function __construct(&$entite, $actions)
 	{
-		global $G_url;
+		global $G_url, $db;
 		$this->perso = &joueur::get_perso();
 		$this->entite = &entite::factory('monstre', $entite, $this->perso);
 		$monstre = &$entite->get_def();
@@ -24,6 +24,14 @@ class interf_monstre extends interf_cont
 		
 		$infos_monstre = $this->add( new interf_bal_cont('div', 'infos_monstre', 'info_case') );
 		
+		/// @todo passer à l'objet
+		$req = $db->query('select valeur from options where id_perso = '.$this->perso->get_id().' and nom = "niv_min_monstres"');
+		$row = $db->read_array($req);
+		$niv_min = $row ? $row[0] : '0';
+		$req = $db->query('select valeur from options where id_perso = '.$this->perso->get_id().' and nom = "niv_max_monstres"');
+		$row = $db->read_array($req);
+		$niv_max = $row ? $row[0] : 255;
+		$niv_aff = $niv_min == $niv_max ? $niv_max : false;
 		// Actions
 		switch( get_class($entite) )
 		{
@@ -31,8 +39,16 @@ class interf_monstre extends interf_cont
 			$case = convert_in_pos($entite->get_x(), $entite->get_y());
 			$retour = $infos_monstre->add( new interf_lien_cont('informationcase.php?case='.$case, false, 'icone icone-retour') );
 			$retour->set_tooltip('Retour aux informations de la case', 'bottom', '#information');
-			$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=niveau&niveau='.$entite->get_level(), false, 'icone icone-oeil') );
-			$vue->set_tooltip('Afficher uniquement les monstres de ce type sur la carte', 'bottom', '#information');
+			if( $niv_aff == $entite->get_level() )
+			{
+				$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=tous_monstres', false, 'icone icone-oeil-bare') );
+				$vue->set_tooltip('Afficher tous les monstres', 'bottom', '#information');
+			}
+			else
+			{
+				$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=niveau&niveau='.$entite->get_level(), false, 'icone icone-oeil') );
+				$vue->set_tooltip('Afficher uniquement les monstres de ce type sur la carte', 'bottom', '#information');
+			}
 			if( $distance == 0 && $this->perso->can_dresse($monstre) && $this->perso->nb_pet() < $this->perso->get_comp('max_pet') )
 			{
 				$dresse = $this->perso->is_buff('dressage');
@@ -77,8 +93,16 @@ class interf_monstre extends interf_cont
 			$G_url->add('id', $entite->get_id());
 			$retour = $infos_monstre->add( new interf_lien_cont($G_url->get(), false, 'icone icone-retour') );
 			$retour->set_tooltip('Retour à la gestion de vos créatures', 'bottom', '#information');
-			$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=niveau&niveau='.$entite->get_level(), false, 'icone icone-oeil') );
-			$vue->set_tooltip('Afficher uniquement les monstres de ce type sur la carte', 'bottom', '#information');
+			if( $niv_aff == $entite->get_level() )
+			{
+				$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=tous_monstres', false, 'icone icone-oeil-bare') );
+				$vue->set_tooltip('Afficher tous les monstres', 'bottom', '#information');
+			}
+			else
+			{
+				$vue = $infos_monstre->add( new interf_lien_cont('deplacement.php?action=niveau&niveau='.$entite->get_level(), false, 'icone icone-oeil') );
+				$vue->set_tooltip('Afficher uniquement les monstres de ce niveau sur la carte', 'bottom', '#information');
+			}
 			if( $entite->get_hp() < $monstre->get_hp() || $entite->get_mp() < $entite->get_mp_max() )
 			{
 				$soin = $infos_monstre->add( new interf_lien_cont($G_url->get('action', 'soin'), false, 'icone') );
