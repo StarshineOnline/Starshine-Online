@@ -583,10 +583,10 @@ class map_monstre extends entnj_incarn
 			$gains_star = true;
 
 			// On gere les monstres de donjon
-			$this->kill_monstre_de_donjon($perso);
+			$der_parole = $this->kill_monstre_de_donjon($perso);
 
 			// On gere les monstres normaux
-			$der_parole = $this->dernieres_paroles();
+			$der_parole .= $this->dernieres_paroles();
 			$msg_xp .= $der_parole ? $der_parole : $this->message_kill_rp($perso);
 
 			// Augmentation du compteur de l'achievement
