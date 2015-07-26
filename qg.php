@@ -53,7 +53,7 @@ case 'prendre':
 	  	$objet = new objet_royaume($id_objet);
 	    $i = 0;
 	    $reste = $perso->get_max_encombrement() - $perso->get_encombrement();
-	    if ( $objet->get_encombrement() > $reste  )
+	    if ( $objet->get_encombrement() * $nombre > $reste  )
 	    {
 	      if($reste != 0)
 	      {

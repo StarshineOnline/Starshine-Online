@@ -639,6 +639,7 @@ class objet_royaume extends objet_invent
 
   function deposer(&$perso, &$princ)
   {
+  	global $db;
     $case = new map_case( $perso->get_pos() );
     $R = new royaume( $case->get_royaume() );
 		if ($R->get_race() != $perso->get_race())

@@ -310,19 +310,19 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 								break;
 							// Vérification si le personnage est dans un certain état
 							case '+' :
-                				$array_valeurs = get_array_condition($valeur);
-                				foreach ($array_valeurs as $la_valeur)
-                				{
-                  					if(!array_key_exists($la_valeur, $param))
-                  					{
-                    					$valid = false;
-                  					}
-                  					else
-                  					{
-                    					$valid = true;
-                    					break;
-                  					}
-                				}
+          				$array_valeurs = get_array_condition($valeur);
+          				foreach ($array_valeurs as $la_valeur)
+          				{
+            					if(!array_key_exists($la_valeur, $param))
+            					{
+              					$valid = false;
+            					}
+            					else
+            					{
+              					$valid = true;
+              					break;
+            					}
+          				}
 								break;
 						}
 						$c++;

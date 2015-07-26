@@ -1481,7 +1481,7 @@ class perso extends entite
    * La plupart du temps on s'en fiche, de la main, on veut les degats
    * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
    */
-	function get_arme_degat($main = false)
+	function get_arme_degat($main = false, $adversaire=null)
 	{
 		$degats = 0;
 		if ($main == false || $main == 'droite')

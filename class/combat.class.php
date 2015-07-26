@@ -121,8 +121,9 @@ class combat
 		global $db, $G_interf, $G_url;
 		if ($this->combat != NULL)
 		{
-			$attaquant = new perso($this->attaquant);
-			$defenseur = new perso($this->defenseur);
+			$this->journal = $this->get_journal();
+			$attaquant = new perso(0, 0, $this->journal->get_actif());
+			$defenseur = new perso(0, 0, $this->journal->get_passif());
 			$logcombat = preg_replace("#r[0-9]+:#", "", $this->combat);
 			$rounds = explode(';', $logcombat);
 

@@ -342,7 +342,7 @@ if($db->num_rows > 0)
   else if( $attaquant->get_arme_type() == 'baton' && $batiment_off->has_bonus('distance_baton') )
     $dist_tir_att += $batiment_off->get_bonus('distance_baton');
 }
-		
+
 if($perso->is_buff('repos_sage') && !$no_pa_attaque)
 	$cadre->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes sous repos du sage, vous ne pouvez pas attaquer.') );
 elseif($no_rvr)

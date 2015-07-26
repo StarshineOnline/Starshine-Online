@@ -189,7 +189,7 @@ class attaque
 	  	// Fin du round
 	    $this->log_combat .= ','.$this->log_effects_attaquant.','.$this->log_effects_defenseur;
 			$this->round++;
-			if( $this->round <= $this->round_total )
+			if( $this->round <= $round_total && $this->attaquant->get_hp() > 0 && $this->defenseur->get_hp() > 0 )
         $this->add_log_combat(';');
 			$this->log_effects_attaquant = '';
 			$this->log_effects_defenseur = '';
@@ -500,6 +500,15 @@ class attaque
     $this->attaquant = &$attaquant;
     $this->defenseur = &$defenseur;
     $this->log_combat = '';
+    
+    $this->attaquant->precedent['esquive'] = false;
+    $this->attaquant->precedent['bloque'] = false;
+    $this->attaquant->precedent['critique'] = false;
+    $this->attaquant->precedent['touche'] = false;
+    $this->defenseur->precedent['esquive'] = false;
+    $this->defenseur->precedent['bloque'] = false;
+    $this->defenseur->precedent['critique'] = false;
+    $this->defenseur->precedent['touche'] = false;
   }
 }
 ?>

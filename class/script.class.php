@@ -494,6 +494,7 @@ class condition_action extends condition
 {
 	function get_code() { return '15'; }
 	function get_type_parametre() { return self::param_action; }
+	function get_operateur() { return '='; }
 	function get_actions()
 	{
 		return array('E'=>'esquiver', 'C'=>'faire un critique', 'B'=>'bloquer', 'T'=>'toucher');

@@ -171,7 +171,8 @@ class interf_infos_case extends interf_cont
 			$lien = false;
 			if( $this->perso->get_race() != $royaume->get_race() )
 			{
-				if( $this->perso->peut_attaquer() )
+				/// @todo à améliorer
+				if( $this->perso->peut_attaquer() && $constr->get_type() != 'bourg' )
 				{
 					if( $this->perso->nb_pet() > 0 && $this->perso->get_pet() && $this->distance <= $this->perso->get_distance_tir() )
 					{
@@ -180,7 +181,7 @@ class interf_infos_case extends interf_cont
 					}
 					if( $this->distance <= $this->perso->get_distance_tir() )
 					{
-						$att = $div->add( new interf_lien('', 'attaque.php?id_batiment='.$constr->get_id().'&amp;type=batiment&amp;table=placement', false, 'icone icone-attaque') );
+						$att = $div->add( new interf_lien('', 'attaque.php?id_batiment='.$constr->get_id().'&amp;type=batiment&amp;table=construction', false, 'icone icone-attaque') );
 						$att->set_tooltip('Attaquer ('.($G_PA_attaque_batiment - $reduction_pa).' PA)', 'bottom', '#information');
 					}
 				}
