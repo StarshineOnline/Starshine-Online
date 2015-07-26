@@ -148,16 +148,6 @@ class combat
 			$journal = $this->get_journal();
 			
 			$interf->aff_fin($attaquant, $defenseur, $journal->get_valeur(), $journal->get_valeur2(), null, null, 'perso', false);
-			/*
-			if($suivant) 
-				echo '<a href="journal_combat.php?id='.$suivant->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Suivant</a> - ';
-			else 
-				echo 'Suivant - ';
-			if($precedent) 
-				echo '<a href="journal_combat.php?id='.$precedent->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Précédent</a>';
-			else 
-				echo 'Précédent';
-			*/
 			
 			$suivant = $journal->get_suivant('action = "attaque" OR action = "defense"');
 			$precedent = $journal->get_precedent('action = "attaque" OR action = "defense"');

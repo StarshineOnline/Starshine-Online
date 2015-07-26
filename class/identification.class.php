@@ -43,7 +43,6 @@ class identification
 			}
 			if( !$row )
 				$row = $prem;
-      //echo "nb: $nbr_perso";
 			if( $nbr_perso )
 			{
 				if($row['statut'] == 'hibern' AND $row['fin_ban'] >= time())

@@ -279,13 +279,14 @@ class map_monstre extends entnj_incarn
 		global $db;
     global $G_no_ambiance_kill_message;
     $log = new log_admin();
+    $msg = '';
 		switch ($this->id_monstre)
 		{
 		case 64: //Si c'est Devorsis on fait pop le fossoyeur
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<li><strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong></li>';
+			$msg = '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
       $log->send(0, 'donjon', "devoris tué, pop du fossoyeur");
 			break;
 			
@@ -293,12 +294,12 @@ class map_monstre extends entnj_incarn
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<li><strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><li/>';
+			$msg = '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
       $log->send(0, 'donjon', "fossoyeur tué, pop de finwir");
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
-			echo '<li><strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong></li>';
+			$msg = '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
       $req = $db->query("select decor from map where x = 20 and y = 227");
       $row = $db->read_assoc($req);
 			if ($row['decor'] == 1601) // Si le gros monstre n'a pas ete vaincu, le passage vers le portail est encore un mur
@@ -313,14 +314,14 @@ class map_monstre extends entnj_incarn
 			}
 			else
 			{
-				echo '<li><em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em></li>';
+				$msg = '<em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em>';
         $log->send(0, 'donjon', "finwir tué, mais PAS de pop d'adénaïos");
 			}
 			break;
 
 	    case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
 	    {
-	      echo "<li>Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em></li>";
+	      $msg = "Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em>";
 	      $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
 	      $db->query($requete);
 	      $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
@@ -340,7 +341,7 @@ class map_monstre extends entnj_incarn
 				$requete = "INSERT INTO map_monstre VALUES(NULL,123,44,293,5800,"
           .(time() + 2678400).")";
 				$db->query($requete);
-				echo '<li><strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong></li>';
+				$msg = '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
         $log->send(0, 'donjon', "plus de draconides, ouverture du portail");
 			}
       else
@@ -363,7 +364,7 @@ class map_monstre extends entnj_incarn
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
-			echo '<li><strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong></li>';
+			$msg = '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
       $log->send(0, 'donjon', "roi gob I tué, pop du roi gob II");
 			break;
 
@@ -373,7 +374,7 @@ class map_monstre extends entnj_incarn
 		case 177:
 		case 178:
       $duree = $this->id_monstre == 162 ? 8 : 1;
-			echo '<li><strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong></li>';
+			$msg = '<strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong>';
 			print_reload_area('deplacement.php?deplacement=centre', 'centre');
 			ouvrePorteMaraudeurGeolier($this->x, $duree);
 			break;
@@ -388,7 +389,7 @@ class map_monstre extends entnj_incarn
 					$membre->unlock_achiev('brutus');
 				}
 			}
-			echo '<li>L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...</li>';
+			$msg = 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
 			break;
 
     // Monstres tutoriels
@@ -409,6 +410,7 @@ class map_monstre extends entnj_incarn
 		default:
 			// Rien à faire
 		}
+		return $msg;
 	}
 
   /// Cherche dans la bdd s'il y a une action spéciale à effectuer lors de la mort d'un mosntre de donjon et l'effectue si besoin

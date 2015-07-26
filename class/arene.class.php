@@ -306,7 +306,6 @@ class arene extends table
         }
         $step = round($step / 2);
         $decal += $step;
-        //echo "step is $step, decal is $decal \n";
         $tdsso = date_sso($heure_reelle + $decal);
       }
       

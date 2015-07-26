@@ -79,7 +79,6 @@ class messagerie
 			break;
 		}
 		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message, titre FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
-		//echo $requete;
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))

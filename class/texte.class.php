@@ -209,18 +209,12 @@ class texte
     //Validation de la quête
     if(preg_match('`\[quete(:[[:alnum:]]+)?]`i', $texte, $regs))
     {
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
     	quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
-      if( $regs[1] == ':silencieux' )
-        echo '</span>';
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
     if(preg_match('`\[quetegroupe(:[[:alnum:]]+)?]`i', $texte))
     {
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
@@ -229,8 +223,6 @@ class texte
       }
       else
         quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
     	$texte = preg_replace('`\[quetegroupe(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Prise d'une quête

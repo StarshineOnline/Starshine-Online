@@ -885,7 +885,6 @@ class bonus_pinceau extends effect
 		$bonus_potentiel = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
-			echo $this->effet;
 			$bonus_potentiel += $this->effet;
 		if ($bonus_potentiel > 0)
 			$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.

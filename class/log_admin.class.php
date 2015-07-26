@@ -75,7 +75,7 @@ class log_admin_db
 	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
 	* @return none
 	*/
-	function sauver($force = false, $debug = false)
+	function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
@@ -95,7 +95,6 @@ class log_admin_db
 				$requete = 'UPDATE log_admin SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE id = '.$this->id;
-				if($debug) echo $requete.';';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
@@ -105,7 +104,6 @@ class log_admin_db
 			$requete = 'INSERT INTO log_admin (id_joueur, type, message, date) VALUES(';
 			$requete .= ''.$this->id_joueur.', "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->message).'", NOW())';
 			if($debug) echo $requete.';';
-			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}

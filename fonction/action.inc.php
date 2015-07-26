@@ -159,7 +159,6 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 		  // On regarde si le personnage est glacé
 			$rand = rand(1, 100);
 			$cible = 20 + (($joueur->etat['glacer']['effet'] - 1) * 10);
-			//echo $cible.' chance de glacer / 100. Résultat : '.$rand.'<br />';
 			if($rand < $cible)
 			{
 				$attaque->get_interface()->special('cg', $joueur->get_nom());
@@ -278,9 +277,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
                 }
 								$valeur = true;
 						}
-						//echo $param.' '.$operateur.' '.$valeur.'<br />';
 						// Vérification de la condition
-            //echo 'test : '.$param.' '.$operateur.' '.$valeur.'<br/>';
 						switch($operateur)
 						{
 							case '>' :
@@ -418,7 +415,6 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 									$action = true;
 								}
 							}
-							//else { echo "mana inssufisant : $mp_need vs ".$joueur->get_reserve(); }
 						}
 						else
 						{
@@ -480,17 +476,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
         $attaque->applique_effet('anticipation', $chance_reussite);
 				
 				// On détermine si l'action est anticipée
-				/*$rand = rand(0, 100);
-				echo '
-					<div id="debug'.$debugs.'" class="debug">
-						Probabilité de réussir l\'anticipation : '.(100 - $chance_reussite).'%<br />
-						Le résultat doit être supérieur à <b>'.$chance_reussite.'</b> pour anticipation.<br />
-						Résultat : <b> '.$rand.'</b><br />
-					</div>';
-				$debugs++;*/
-				// Echec
-				if(/*$rand > $chance_reussite*/!comp_sort::test_de(100, $chance_reussite) ) 
-				{
+				if(!comp_sort::test_de(100, $chance_reussite) ) 
+				{ // Echec
 					$attaque->get_interface()->anticipe($ennemi->get_nom());
 					$attaque->add_log_combat('a');
 					return '';

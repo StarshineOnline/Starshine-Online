@@ -426,6 +426,7 @@ class sort_debuff extends sort_jeu
           {
             if($cible->is_buff('orage_magnetique', true))
             {
+            $interf->add( new interf_txt($cible->get_nom().' est déjà sous cet effet.<br />') );
               echo $cible->get_nom().' est déjà sous cet effet.<br />';
             }
             else
@@ -521,9 +522,6 @@ class sort_vie_pourcent extends sort_jeu
       $db->query($requete);
     }
 
-    if($groupe) $groupe_href = '&amp;groupe=yes';
-    else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-    echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
     return $action;
   }
 }
@@ -569,13 +567,14 @@ class sort_vie extends sort_jeu
           }
           $i = 0;
           $keys = array_keys($de_degat_sort2);
+          $dbg = '';
           while($i < count($de_degat_sort2))
           {
-            if ($i > 0) echo ' + ';
-            echo $de_degat_sort2[$keys[$i]].'D'.$keys[$i];
+            if ($i > 0) $dbg += ' + ';
+            $dbg += $de_degat_sort2[$keys[$i]].'D'.$keys[$i];
             $i++;
           }
-          echo '<br />';
+          interf_debug::enregistre($dbg);
           $soin = 0;
           $i = 0;
           while($i < count($de_degat_sort))
@@ -636,8 +635,6 @@ class sort_vie extends sort_jeu
       }
       $db->query($requete);
     }
-    if($groupe) $groupe_href = '&amp;groupe=yes'; else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-    echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
     return $action;
   }
 }
@@ -685,7 +682,7 @@ class sort_balance extends sort_jeu
 
 class sort_body_to_mind extends sort_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort
@@ -704,7 +701,6 @@ class sort_body_to_mind extends sort_jeu
       interf_base::add_courr( new interf_txt('Vous utilisez '.$sorthp.' HP pour convertir en '.$sortmp.' MP<br />') );
       $perso->set_hp($perso->get_hp() - $sorthp);
       $perso->sauver();
-      echo '<a href="sort.php?ID='.$_GET['ID'].$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
       return $sortmp > 0;
     }
     else
@@ -736,7 +732,7 @@ class sort_teleport extends sort_jeu
         $cible->sauver();
         interf_base::add_courr( new interf_txt($cible->get_nom().' a été téléporté dans votre capitale.<br />') );
       }
-      echo '<img src="image/pixel.gif" onLoad="envoiInfo(\'deplacement.php\', \'centre\');" />';
+      /// @todo raffraichissement image
       return true;
     }
     else
@@ -837,7 +833,7 @@ class sort_guerison extends sort_jeu
 
 class sort_esprit_sacrifie extends sort_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort
@@ -882,14 +878,13 @@ class sort_esprit_sacrifie extends sort_jeu
 			interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de lancer de lancer le sort. Vous n&apos;avez aucun buff.<br/>') );
     $type_cible = $cible->get_race()=='neutre'?'monstre':'perso';
     $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-    echo "<a href=\"\" onclick=\"return envoiInfo('sort.php?ID=".$_GET['ID']."', 'information')\">Utiliser de nouveau cette compétence.</a>";
     return $action;
   }
 }
 
 class sort_transfert_energie extends sort_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort
@@ -934,10 +929,6 @@ class sort_transfert_energie extends sort_jeu
     }
     if ($action)
     {
-      if($groupe) $groupe_href = '&amp;groupe=yes';
-      else $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.'" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
-
       if($groupe)
       {
         $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'rbuff', '".$perso->get_nom()."', 'groupe', NOW(), '".$this->get_nom()."', ".$gain_total.", ".$perso->get_x().", ".$perso->get_y().")";
@@ -955,7 +946,7 @@ class sort_transfert_energie extends sort_jeu
 
 class sort_liberation extends sort_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation du sort
 	 * @param $perso   Personnage lançant le sort
@@ -991,7 +982,7 @@ class sort_liberation extends sort_jeu
         $manque = $cible_perso->get_hp_maximum() - $cible_perso->get_hp();
         if ($manque < 1)
         {
-          echo $cible->get_nom().' a toute sa vie.<br />';
+        	interf_base::add_courr( new interf_txt($cible->get_nom().' a toute sa vie.<br />') );
           continue;
         }
         $requete = "DELETE FROM buff WHERE id=".
@@ -1021,12 +1012,6 @@ class sort_liberation extends sort_jeu
     }
     if ($action)
     {
-      if($groupe)
-				$groupe_href = '&amp;groupe=yes';
-      else
-				$groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
-      echo '<a href="sort.php?ID='.$_GET['ID'].$groupe_href.$lanceur_url.
-    '" onclick="return envoiInfo(this.href, \'information\')">Utiliser de nouveau ce sort</a>';
       if($groupe)
       {
         $requete = "INSERT INTO journal(id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(".$perso->get_id().", 'gsoin', '".$perso->get_nom()."', 'groupe', NOW(), ".$gain_total.", 0, ".$perso->get_x().", ".$perso->get_y().")";

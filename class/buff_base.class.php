@@ -109,7 +109,6 @@ class buff_base extends buff_batiment_def
  {
 	global $db, $G_erreur;
 	$lancement = true;
-	//echo $db->num_rows;
 	if( !$ancien )
 	{
 		// La cible n'a pas le sort d'encore lancé

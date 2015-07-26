@@ -73,7 +73,7 @@ class classe_requis_db
 	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
 	* @return none
 	*/
-	function sauver($force = false, $debug = false)
+	function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
@@ -93,7 +93,6 @@ class classe_requis_db
 				$requete = 'UPDATE classe_requis SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE id = '.$this->id;
-				if($debug) echo $requete;
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
@@ -102,7 +101,6 @@ class classe_requis_db
 		{
 			$requete = 'INSERT INTO classe_requis (id_classe, competence, requis) VALUES(';
 			$requete .= ''.$this->id_classe.', "'.mysql_escape_string($this->competence).'", "'.mysql_escape_string($this->requis).'")';
-			if($debug) echo $requete;
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();

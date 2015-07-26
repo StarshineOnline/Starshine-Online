@@ -39,7 +39,7 @@ abstract class interf_liste_achat extends interf_cont
 				$lien = new interf_bal_smpl('a', $e->get_nom(), 'elt_'.$this::type.'_'.$e->get_id());
 				$this->tbl->nouv_cell( $lien );
 				$url = $url_base.'action=infos&id='.$e->get_id();
-				$lien->set_attribut('onclick', 'chargerPopover(\'elt_'.$this::type.'_'.$e->get_id().'\', \'info_elt_'.$this::type.'_'.$e->get_id().'\', \'right\', \''.$url.'\', \''.$e->get_nom().'\');');
+				$lien->set_attribut('onclick', 'chargerPopover(\'elt_'.$this::type.'_'.$e->get_id().'\', \'info_elt_'.$this::type.'_'.$e->get_id().'\', \'right\', \''.$url.'\', \''.addslashes($e->get_nom()).'\');');
 			}
 			else
 				$this->tbl->nouv_cell( $e->get_nom() );

@@ -1048,7 +1048,7 @@ class entite extends placable
 		$this->degat_moins = 0;
   }
   /// Action effectuées à la fin d'un combat
-  function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  function fin_combat(&$perso, $degats=null) { }
   /// Actions effectuées à la fin d'un combat pour l'attaquant
   function fin_attaque(&$perso, $cout_pa) {}
   /// Action effectuées à la fin d'un combat pour le défenseur
@@ -1476,8 +1476,6 @@ class entite extends placable
 		}
 		return $objet;
 	}
-	/// Affiche un "dump" de l'objet
-	function dump() { echo '<pre>'; var_dump($this); echo '</pre>'; }
 	// @}
 
 	/**

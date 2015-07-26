@@ -271,7 +271,7 @@ class comp_preparation_camp extends comp_jeu
 
 class comp_repos_interieur extends comp_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -284,15 +284,12 @@ class comp_repos_interieur extends comp_jeu
 		}
 		else
 		{
-			//echo '$joueur->get_buff(\'repos_interieur\', \'effet\') => '.$joueur->get_buff('repos_interieur', 'effet').'<br />';
 			if($perso->is_buff('repos_interieur')) $effet = $perso->get_buff('repos_interieur', 'effet') + 1;
 			else $effet = 1;
-			//echo '$effet => '.$effet.'<br />';
 			if(lance_buff('repos_interieur', $perso->get_id(), $effet, 0, (60 * 60 * 24), $this->get_nom(), $this->formate_description($this->get_description().'<br /> Utilisation '.$effet.' / 10'), 'perso', 1, 0, 0, 0))
 			{
 				interf_base::add_courr( new interf_txt('Le buff a été lancé<br />') );
 				$perso->set_pa($perso->get_pa() + 2);
-				echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		    return true;
 			}
 		}
@@ -302,6 +299,7 @@ class comp_repos_interieur extends comp_jeu
 
 class comp_esprit_libre extends comp_jeu
 {
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -345,7 +343,6 @@ class comp_esprit_libre extends comp_jeu
 		  $buff[0]->supprimer();
 		  $action = true;
     }
-		echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		return $action;
   }
 }

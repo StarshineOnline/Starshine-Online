@@ -76,7 +76,7 @@ class entite_cap extends entite
 			$type = $this->royaume->supprime_ressources($pertes);
       if( $type )
       {
-  			echo '<h6>L\'attaque détruit '.$pertes.' unités de '.$Gtrad[$type].' au royaume '.$Gtrad[$this->royaume->get_race()].'</h6><br />';
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'L\'attaque détruit '.$pertes.' unités de '.$Gtrad[$type].' au royaume '.$Gtrad[$this->royaume->get_race()]); 
   			$suppr_hp = false;
       }
 		}
@@ -93,7 +93,7 @@ class entite_cap extends entite
 				//On attaque la construction $rand du tableau
 				$construction_ville = new construction_ville($this->royaume->constructions_ville[$rand]['id']);
 				$return = $construction_ville->suppr_hp($degats);
-				echo '<h6>Attaque d\'un batiment en ville</h6>';
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'Attaque d\'un batiment en ville'); 
 				//On a downgrade un batiment, on gagne des points de victoire
 				if($return > 0)
 				{
@@ -101,12 +101,12 @@ class entite_cap extends entite
           $mult = $royaume_attaquant->get_mult_victoire($this->royaume);
 					$royaume_attaquant->add_point_victoire( ceil($return*$mult) );
 					$royaume_attaquant->sauver();
-					echo '<h6>Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.</h6><br />';
+					interf_alerte::enregistre(interf_alerte::msg_succes, 'Une construction a été détruite ! Votre royaume gagne '.$return .' points de victoire.'); 
 				}
 			}
 			else
 			{
-				echo '<h6>Le coeur même de la ville est attaqué</h6>';
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'Le coeur même de la ville est attaqué'); 
 				$this->royaume->set_capitale_hp($this->get_hp());
 				//Si la capitale n'a plus de vie, on met le royaume en raz
 				if($this->royaume->get_capitale_hp() < 0)

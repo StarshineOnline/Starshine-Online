@@ -3186,19 +3186,19 @@ class perso extends entite
 				}
 				else
 				{
-					echo '<h5>L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures.</h5>';
+					interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures'); 
 					return false;
 				}
 			}
 			else
 			{
-				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars !');
 				return false;
 			}
 		}
 		else
 		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
 			return false;
 		}
 	}
@@ -3217,14 +3217,10 @@ class perso extends entite
 				$pet->sauver();
 			}
 			else
-			{
-				echo '<h5>Vous ne pouvez pas prendre plus de créature avec vous.</h5>';
-			}
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas prendre plus de créature avec vous.');
 		}
 		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-		}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
 	}
   /// Renvoie les HP redonnés à la créature par un soin
 	function soin_pet()
@@ -3774,18 +3770,19 @@ class perso extends entite
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment)
   {
+  	global $G_no_ambiance_kill_message;
     $msg_xp = $perso->fin_combat_pvp($this, false);
     $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
 		if ( $this->est_mort() ) {
 			if (!$G_no_ambiance_kill_message) {
-				echo '<li class="ambiance_kill_message">';
+				$txt = '';
 				if ($this->get_level() < $perso->get_level() - 9)
-					echo 'A vaincre sans péril on triomphe sans gloire.<br />';
+					$txt = 'A vaincre sans péril on triomphe sans gloire.';
 				elseif ($this->get_level() > $perso->get_level() + 9)
-					echo 'Félicitation, tu es venu à bout de '.$this->get_nom().'.<br />';
+					$txt = 'Félicitation, tu es venu à bout de '.$this->get_nom().'.';
 				elseif ($this->get_level() >= $perso->get_level() - 9 AND $this->get_level() <= $perso->get_level() + 9)
-					echo 'Tu as tué '.$this->get_nom().'.<br />';
-				echo '</li>';
+					$txt = 'Tu as tué '.$this->get_nom().'.';
+				interf_base::add_courr( new interf_bal_smpl('p', $txt, false, 'ambiance_kill_message') );
 			}
 		}
     return $msg_xp;

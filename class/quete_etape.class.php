@@ -363,7 +363,6 @@ class quete_etape extends quete
 				break;
 			case 'r':  // recette d'alchimie
 				$requete = "SELECT id FROM perso_recette WHERE id_recette = ".$gains." AND id_perso = ".$perso->get_id();
-				//echo $requete;
 				$req_r = $db->query($requete);
 				if($db->num_rows == 0)
 				{
