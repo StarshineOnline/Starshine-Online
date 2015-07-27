@@ -262,11 +262,10 @@ class sort_jeu extends sort
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible   Cible du sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db, $G_erreur;
-    $action = false;
-    $cibles = $this->get_liste_cibles($cible, $groupe);
+    $action = false;$cibles = $this->get_liste_cibles($cible, $groupe);
     foreach($cibles as $cible)
 		{
 			//Mis en place du buff
@@ -457,7 +456,7 @@ class sort_vie_pourcent extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
@@ -473,10 +472,10 @@ class sort_vie_pourcent extends sort_jeu
       
       //gestion des points de crime
       if ($type_cible == 'joueur')
-	  {
-		  $crime = new crime();
-		  $crime->crime_soin($perso, $cible, $type_cible);
-	  }
+		  {
+			  $crime = new crime();
+			  $crime->crime_soin($perso, $cible, $type_cible);
+		  }
 	  
       $action = true;
       interf_base::add_courr( new interf_txt('Vous soignez '.$cible->get_nom().' de '.$soin.' HP<br />') );
@@ -535,13 +534,13 @@ class sort_vie extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
     $soin_total = 0;
     $cibles = $this->get_liste_cibles($cible, $groupe);
-    foreach($cibles as $cible)
+  	foreach($cibles as $cible)
     {
       if($cible->get_hp() > 0)
       {
@@ -647,7 +646,7 @@ class sort_balance extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     $nbr_membre = 0;
     $total_pourcent = 0;
@@ -688,7 +687,7 @@ class sort_body_to_mind extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     if($perso->get_hp() > $this->get_effet())
     {
@@ -719,7 +718,7 @@ class sort_teleport extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $Trace;
     if($perso->get_hp() > 0)
@@ -751,7 +750,7 @@ class sort_repos_sage extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cibles  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     //On vérifie qu'il a pas déjà le debuff
     if(!$perso->is_buff('repos_sage', true))
@@ -778,7 +777,7 @@ class sort_guerison extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $cibles = $this->get_liste_cibles($cible, $groupe);
@@ -839,7 +838,7 @@ class sort_esprit_sacrifie extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
@@ -890,7 +889,7 @@ class sort_transfert_energie extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
@@ -952,7 +951,7 @@ class sort_liberation extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible  Cibles su sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
@@ -1035,7 +1034,7 @@ class sort_rez extends sort_jeu
 	 * @param $perso   Personnage lançant le sort
 	 * @param $cible   Cible du sort
 	 */
-  function lance(&$perso, &$cible, $groupe=false, $lanceur_url='', $type_cible='')
+  function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db;
     $action = false;
