@@ -267,6 +267,7 @@ if( array_key_exists('action', $_GET) )
         $achiev->sauver();
       }*/
     }
+    interf_debug::aff_enregistres($cadre);
     $liens = $cadre->add( new interf_bal_cont('div', false, 'btn-group') );
     if( $comp_sort::propose_relance )
     {

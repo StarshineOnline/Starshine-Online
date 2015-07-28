@@ -77,7 +77,7 @@ class objet extends objet_equip
 	}
 
   /// Renvoie les mp nécessaires pour utiliser l'objet.
-	function is_mp()
+	function get_mp()
 	{
 		return $this->mp;
 	}
@@ -337,13 +337,14 @@ class objet extends objet_equip
         $modif_perso = true;
 			break;
     case 'globe_tp':
-			$W_case = convertd_in_pos($joueur->get_x(), $joueur->get_y());
+			$W_case = convertd_in_pos($perso->get_x(), $perso->get_y());
 			//Calcul de la distance entre le point où est le joueur et sa ville natale
-			$distance = $perso->calcule_distance($Trace[$joueur->get_race()]['spawn_x'], $Trace[$joueur->get_race()]['spawn_y']); 
+			$distance = $perso->calcule_distance($Trace[$perso->get_race()]['spawn_x'], $Trace[$perso->get_race()]['spawn_y']); 
 			if($this->effet >= $distance)
 			{
-				if(check_utilisation_objet($perso, $objet))
+				if($perso->get_pa() >= $this->get_pa() && $perso->get_mp() >= $this->get_mp())
 				{
+					$perso->supprime_objet($this->get_texte_id(), 1);
 					//Téléportation du joueur
           $princ->add( new interf_txt('Vous utilisez un '.$row['nom']) );
           $princ->add( new interf_bal_smpl('br') );
@@ -351,13 +352,16 @@ class objet extends objet_equip
           $img->set_attribut('src', 'image/pixel.gif');
           $img->set_attribut('onLoad', 'envoiInfo(\'infoperso.php?javascript=oui\', \'perso\');');
           $princ->add( $img );
-					$requete = "UPDATE perso SET x = ".$Trace[$perso->get_race()]['spawn_x'].", y = ".$Trace[$perso->get_race()]['spawn_y'].", pa = pa - ".$row['pa'].", mp = mp - ".$row['mp']." WHERE ID = ".$joueur->get_id();
-					$db->query($requete);
+					$perso->add_pa( -$this->get_pa() );
+					$perso->add_mp( -$this->get_mp() );
+					$perso->set_x( $Trace[$perso->get_race()]['spawn_x'] );
+					$perso->set_y( $Trace[$perso->get_race()]['spawn_y'] );
+					$perso->sauver();
 				}
 			}
 			else
 			{
-        $princ->add_message('Vous êtes trop loin de la ville pour utiliser ce globe.', false);
+        interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous êtes trop loin de la ville pour utiliser ce globe.');
 			}
 		break;
 		case 'potion_buff':
