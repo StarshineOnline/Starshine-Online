@@ -200,8 +200,6 @@ class arme extends objet_equip
       $noms[] =  $complet ? 'Bonus au lancé de sort' : 'Bonus';
     if( $complet )
     {
-      if( $this->get_type() == 'arc' or $this->get_type() == 'hache' )
-        $noms[] =  'Malus d\'esquive';
       switch( $this->get_type() )
       {
       case 'hache':
