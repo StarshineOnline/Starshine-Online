@@ -210,7 +210,7 @@ class interf_barre_perso extends interf_bal_cont
 				$this->creer_jauge_mort($li, false, $membre->get_id());
 	    $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, /*false,*/ 'mp');
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
-	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+	    $dist = $this->perso->calcule_distance($membre);
 	    $place_buff = $membre->get_grade()->get_nb_buff() - $membre->get_nb_buff();
 			/// @todo gérer les coordonnées cachées
 	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
@@ -348,7 +348,7 @@ class interf_barre_perso_shine extends interf_barre_perso
 	  	$nom = $li->add( new interf_lien($membre->get_nom(), 'infoperso.php?id='.$membre->get_id(), null, $classe) );
 			$hp = $this->creer_jauge($li, 'Points de vie', $membre->get_hp(), floor($membre->get_hp_maximum()), false, 'hp');
 	    $mp = $this->creer_jauge($li, 'Points de mana', $membre->get_mp(), floor($membre->get_mp_maximum()), false, 'mp');
-	    $dist = calcul_distance(convert_in_pos($membre->get_x(), $membre->get_y()), convert_in_pos($this->perso->get_x(), $this->perso->get_y()));
+	    $dist = $this->perso->calcule_distance($membre);
 	  	if( $membre->get_hp() <= 0 )
 	  	{
 				$this->creer_jauge_mort($li, false, $membre->get_id());

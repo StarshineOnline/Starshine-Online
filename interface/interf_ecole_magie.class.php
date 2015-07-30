@@ -75,10 +75,24 @@ class interf_achat_sort extends interf_achat_compsort
 		$classe =  $requis > $this->perso->get_incantation() ? 'text-danger' : '';
 		$this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$methode = 'get_'.$elt->get_comp_assoc();
-		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() /* (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10))*/ );
+		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() * (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10)) );
 		$classe =  $requis > $this->perso->$methode() ? 'text-danger' : '';
 		$cell = $this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
 		$cell->add( new interf_img('image/icone/'.$elt->get_comp_assoc().'.png') );
+	}
+	
+	function peut_acheter($elt)
+	{
+		global $Trace;
+		if( !parent::peut_acheter($elt) )
+			return false;
+		$requis = $elt->get_incantation() * $this->perso->get_facteur_magie();
+		if( $requis > $this->perso->get_incantation() )
+			return false;
+		$methode = 'get_'.$elt->get_comp_assoc();
+		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() * (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10)) );
+		if( $requis > $this->perso->$methode() )
+			return false;
 	}
 }
 
