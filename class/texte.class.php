@@ -274,7 +274,7 @@ class texte
   
   protected function get_quete_perso($regs)
   {
-    $qp = new quete_perso(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
+    $qp = quete_perso::create(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
     if( !$qp )
     	return null;
     if( is_array($qp) )

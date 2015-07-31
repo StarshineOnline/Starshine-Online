@@ -314,7 +314,9 @@ if( $action )
 	$row = $db->read_array($req);
 	$niv_max = $row ? $row[0] : 255;
 	$options  = interf_carte::calcul_options( $perso->get_id() );
-	$carte = $interf_princ->set_carte( new interf_carte($x, $y, $options, 3, 'carte', $niv_min, $niv_max) );
+	//$carte = $interf_princ->set_carte( new interf_carte($x, $y, $options, 3, 'carte', $niv_min, $niv_max) );
+	$interf_princ->set_carte( $cont = new interf_cont() );
+	$cont->add( new interf_carte($x, $y, $options, 3, 'carte', $niv_min, $niv_max, $cont) );
 	$interf_princ->maj_perso($complet);
 	$interf_princ->maj_ville();
 }

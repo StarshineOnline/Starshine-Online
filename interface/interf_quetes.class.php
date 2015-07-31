@@ -71,6 +71,7 @@ class interf_quetes_terrain extends interf_accordeon
 			$panneau->add( $descr );
 			$abandon = $panneau->add( new interf_lien('Abandonner', $G_url->get('action', 'abandonner'), false, 'btn btn-default') );
 			$abandon->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir abandonné cette quête ?\');');
+			unset($filtre);
 			unset($descr);
 		}
 	}

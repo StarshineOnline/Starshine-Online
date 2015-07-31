@@ -60,6 +60,13 @@ case 'construit':
 		security_block(BAD_ENTRY, 'Erreur de paramètre');
 	/// @todo  vérifir que c'est bien un placement
 		
+		
+  $fin_min = $entite->get_debut_placement() + $batiment->get_temps_construction_min();
+  if( $fin_min <= time() )
+  {
+		$cadre->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'La construction ne peux plus être accélérée: il reste moins de '.transform_sec_temp($batiment->get_temps_construction_min())) );
+		break;
+	}
 	//Seconde supprimées du décompte
 	$seconde_prct = floor( ($entite->get_fin_placement() - $entite->get_debut_placement()) * sqrt($perso->get_architecture()) / 100 );
 	$secondes_max = min(round(15000 * sqrt($perso->get_architecture())), $seconde_prct);
@@ -69,7 +76,6 @@ case 'construit':
 	{
 		$secondes_max += floor($joueur->get_enchantement('forge', 'effet') / 100 * $secondes_max);
 	}
-  $fin_min = $entite->get_debut_placement() + $batiment->get_temps_construction_min();
   if( $entite->get_fin_placement() < $fin_min )
     $secondes = 0;
   else
@@ -82,8 +88,8 @@ case 'construit':
 	$fin = $entite->get_fin_placement() - $secondes;
 	if( $fin < $fin_min )
 	{
-		$secondes = $fin_min - $entite->get_fin_placement();
 		$fin = $fin_min;
+		$secondes = $fin_min - time();
 		$continue = false;
 	}
 	
