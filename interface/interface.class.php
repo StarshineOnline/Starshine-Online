@@ -161,7 +161,7 @@ abstract class interf_smpl extends interf_base
 /**
  * Classe de base pour les éléments contenant d'autres éléments
  */
-abstract class interf_cont extends interf_base
+/*abstract*/ class interf_cont extends interf_base
 {
   protected $fils = array();  ///< Tableau contenants les éléments fils.
   const cont = true;  ///< Indique si cet élément peut contenir d'autres éléments.
