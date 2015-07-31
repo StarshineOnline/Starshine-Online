@@ -110,7 +110,7 @@ class interf_echange extends interf_cont
 		else
 		{
 			/// @todo paser à l'objet
-			$autre = recupperso_essentiel($this->echange['id_j1']);
+			$autre = recupperso_essentiel($id_perso);
 			$texte = $autre['nom'].' propose';
 		}
 		$div->add( new interf_bal_smpl('span', $texte, false, 'xsmall') );

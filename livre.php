@@ -374,12 +374,16 @@ if( array_key_exists('action', $_GET) )
 		$reussie = comp_sort::test_potentiel($forge, $recette->get_difficulte());
 		if( $reussie )
 		{
-			interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !') );
-			$perso->supprime_objet($recette->get_objet());
-			$obj = objet_invent::factory( $recette->get_objet() );
-			$obj->set_modification( $recette );
-			$obj->recompose_texte();
-			$perso->prend_objet($obj->get_texte());
+			if( $perso->supprime_objet($_GET['objet']) )
+			{
+				interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_succes, 'Fabrication réussie !') );
+				$obj = objet_invent::factory( $_GET['objet'] );
+				$obj->set_modification( $recette );
+				$obj->recompose_texte();
+				$perso->prend_objet($obj->get_texte());
+			}
+			else
+				interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'objet n\'a pas été trouvé') );
 		}
 		else
 			interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…') );

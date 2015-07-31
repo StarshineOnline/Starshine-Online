@@ -586,6 +586,17 @@ abstract class objet_invent extends table
 				return '';
 		}
 	}
+	static function decomp_nombre($objet)
+	{
+		$res = explode('x', $objet);
+		if( count($res) == 1 )
+			$res[1] = 1;
+		return $res;
+	}
+	static function test_forge($objet)
+	{
+		return strstr($objet, 'f') !== false;
+	}
 }
 
 class zone_invent extends objet_invent

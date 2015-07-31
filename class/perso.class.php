@@ -1530,6 +1530,24 @@ class perso extends entite
 		}
 		else return false;
 	}
+	/// Liste les différentes versions d'un objet
+	function liste_objet($id)
+	{
+		$partie = $this->get_inventaire_slot_partie();
+		$res = array();
+		foreach($partie as $o)
+		{
+			if( strncmp($o, $id, strlen($o)) == 0 )
+			{
+				$d = objet_invent::decomp_nombre($o);
+				if( array_key_exists($d[0], $res) )
+					$res[$d[0]] += $d[1];
+				else
+					$res[$d[0]] = $d[1];				
+			}
+		}
+		return $res;
+	}
   /// Refait les piles des objets
 	function restack_objet()
 	{
@@ -1609,6 +1627,7 @@ class perso extends entite
 		$this->set_inventaire_slot(serialize($inventaire));
 		unset($this->inventaire_perso);// Nécessaire pour que la suppression des objets lors des échanges marche 
 		$this->sauver();
+		return true;
 	}
   /**
    * Ajoute un objet dans l'inventaire

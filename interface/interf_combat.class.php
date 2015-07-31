@@ -84,7 +84,7 @@ class interf_combat extends interf_bal_cont
 				$hp = $tbl->nouv_cell( new interf_jauge_bulle(null, $longueur, 100, false, 'hp', false, 'jauge_case') );
 				$hp->set_tooltip('Estimation des HP : '.$longueur.'% ± '.$fiabilite.'%');
 			}
-			else if( $type == 'joueur' || $type == 'monstre' )
+			else if( $type == 'perso' || $type == 'monstre' )
 				$tbl->nouv_cell( 'mort' );
 			else
 				$tbl->nouv_cell( 'détruit' );

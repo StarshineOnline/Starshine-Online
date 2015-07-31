@@ -34,12 +34,14 @@ class interf_livre_alchimie extends interf_accordeon
 			$recette->get_instruments();
 			$alchimie = $perso->get_alchimie();
 			$chance_reussite = pourcent_reussite($alchimie, $recette->difficulte);
-			$panneau = $this->nouv_panneau($recette->nom, 'recette_'.$row['id_recette']);
-			$div_diff = $panneau->add( new interf_bal_cont('div') );
+			/*$panneau = $this->nouv_panneau($recette->nom, 'recette_'.$row['id_recette']);
+			$div_diff = $panneau->add( new interf_bal_cont('div') );*/
+			$div_diff = new interf_bal_cont('div');
 			$div_diff->add( new interf_bal_smpl('strong', 'Difficulté : '.$recette->difficulte) );
 			$div_diff->add( new interf_bal_smpl('span', ' ('.$chance_reussite.'% de chances de réussite)', alse, 'small') );
 			// Ingrédients
-			$div_ingred = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			//$div_ingred = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			$div_ingred = new interf_bal_cont('div', false, 'liste');
 			$div_ingred->add( new interf_bal_smpl('h6', 'Ingrédients') );
 			$lst_ingred = $div_ingred->add( new interf_bal_cont('ul') );
 			$complet = true;
@@ -57,10 +59,12 @@ class interf_livre_alchimie extends interf_accordeon
 				$requete = "SELECT nom FROM objet WHERE id = ".$ingredient->id_ingredient;
 				$req_i = $db->query($requete);
 				$row_i = $db->read_row($req_i);
-				$lst_ingred->add( new interf_bal_smpl('li', $row_i[0].' X '.$ingredient->nombre, false, $classe) );
+				$nbr = $perso_ingredient[0] ? $perso_ingredient[0] : '0';
+				$lst_ingred->add( new interf_bal_smpl('li', $row_i[0].' X '.$ingredient->nombre.' ('.$nbr.')', false, $classe) );
 			}
 			// Récipients
-			$div_recip = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			//$div_recip = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			$div_recip = new interf_bal_cont('div', false, 'liste');
 			$div_recip->add( new interf_bal_smpl('h6', 'Récipients') );
 			$lst_recip = $div_recip->add( new interf_bal_cont('ul') );
 			$recip = false;
@@ -90,7 +94,8 @@ class interf_livre_alchimie extends interf_accordeon
 				$li->set_tooltip(description($row_i['description'], $row_i).' - (coute '.$row_i['pa'].' PA / '.$row_i['mp'].' MP a utiliser)', 'left');
 			}
 			// Instruments
-			$div_instr = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			//$div_instr = $panneau->add( new interf_bal_cont('div', false, 'liste') );
+			$div_instr = new interf_bal_cont('div', false, 'liste');
 			$div_instr->add( new interf_bal_smpl('h6', 'Instruments') );
 			$lst_instr = $div_instr->add( new interf_bal_cont('ul') );
 			$pa_total = 0;
@@ -108,6 +113,12 @@ class interf_livre_alchimie extends interf_accordeon
 				$star_total += $stars;
 			}
 			// Coût
+			$style = $complet && $recip ? 'success' : 'default';
+			$panneau = $this->nouv_panneau($recette->nom, 'recette_'.$row['id_recette'], false, $style);
+			$panneau->add( $div_diff );
+			$panneau->add( $div_ingred );
+			$panneau->add( $div_recip );
+			$panneau->add( $div_instr );
 			if( $perso->get_pa() > $pa_total && $complet && $recip )
 			{
 				$id = 'alch_fabr_'.$row['id_recette'];
@@ -122,6 +133,11 @@ class interf_livre_alchimie extends interf_accordeon
 				//$btns->add( new interf_bal_smpl('Fabriquer', array('class'=>'btn btn-default', 'onclick'=>'')) );
 				$btns->add( new interf_chp_form('submit', false, false, 'Fabriquer', array('class'=>'btn btn-default', 'onclick'=>'return charger_formulaire(\''.$id.'\');')) );
 			}
+			unset($panneau);
+			unset($div_diff);
+			unset($div_ingred);
+			unset($div_recip);
+			unset($div_instr);
 			unset($sel);
 		}
 	}
