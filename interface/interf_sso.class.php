@@ -46,6 +46,7 @@ class interf_sso extends interf_html
 abstract class interf_sso_int extends interf_sso
 {
   protected $menu;
+  const page = 'interface.php';
   function __construct($theme)
   {
     interf_sso::__construct($theme);
@@ -61,7 +62,7 @@ abstract class interf_sso_int extends interf_sso
     $this->javascript(static::prefixe_fichiers.'javascript/overlib/overlib.js');
     // Barre de menu
     $joueur = joueur::factory();
-    $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso') );
+    $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page) );
     $this->menu_droite();
     $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
     $this->menu_joueur($menu_joueur);

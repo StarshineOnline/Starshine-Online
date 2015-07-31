@@ -88,15 +88,16 @@ class interf_livre_forge extends interf_accordeon
 						$lien->add( new interf_bal_smpl('span', $ench, false, 'xsmall') );
 					$lien->add( new inter_txt(' ('.$n.')') );
 					$lien->set_tooltip('Modifier cet objet (10 PA)', 'left');
+					$objet = true;
 				}
 			}
 			if( !$objet )
 			{
 				$obj = objet_invent::factory($recette->get_objet());
-				$li->add( new interf_txt($obj->get_nom()) );
+				$li->add( new interf_txt($obj->get_nom().' (0)') );
 			}
-			$style = $complet ? 'success' : 'default';
-			$panneau = $this->nouv_panneau($recette->get_nom(), 'recette_'.$row['id_recette'], false, $style);
+			$style = $complet && $objet ? 'success' : 'default';
+			$panneau = $this->nouv_panneau($recette->get_nom(), 'forge_'.$row['id_recette'], false, $style);
 			$panneau->add($liste_descr);
 			$panneau->add($div_ingred);
 			$panneau->add($div_obj);

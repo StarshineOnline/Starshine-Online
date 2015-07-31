@@ -14,6 +14,7 @@ class interf_royaume extends interf_sso_int
 	protected $contenu;
 	protected $cont_gestion;
 	const prefixe_fichiers = '../';
+	const page = 'roi/index.php';
 	
   function __construct($css)
   {

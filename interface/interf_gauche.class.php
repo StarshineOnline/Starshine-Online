@@ -151,9 +151,9 @@ class interf_gauche extends interf_bal_cont
 		if( $max == 0 )
 			$angle = -177;
 		else if( $max == '%' )
-			$angle = max(round($valeur / 100 * 360) - 180, -177); 
+			$angle = max(round(min($valeur, 100) / 100 * 360) - 180, -177); 
 		else
-			$angle = max(round($valeur / $max * 360) - 180, -177); 
+			$angle = max(round(min($valeur, $max) / $max * 360) - 180, -177); 
 		if( !$this->jauge_droite )
 			$this->jauge_droite = $this->disque->add( new interf_bal_cont('div', 'jauge_droite') );
 		$jauge_droite = $this->jauge_droite->add( new interf_bal_cont('div', '', 'jauge_'.$type.' jauge-'.$style) );

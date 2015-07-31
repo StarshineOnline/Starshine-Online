@@ -42,7 +42,7 @@ class interf_bat_drap extends interf_onglets
 		$req = $db->query("SELECT COUNT(*) FROM depot_royaume, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$royaume->get_id());
 		$row = $db->read_array($req);
 		if( $row[0] > 0 )
-			$this->add_onglet('Dépôt militaire <span class="badge">'.$row[0].'</span>', $url->get('onglet', 'ads_depot'), 'ongl_depot', 'ongl_gest', $onglet=='depot');
+			$this->add_onglet('Dépôt militaire <span class="badge">'.$row[0].'</span>', $url->get('onglet', 'depot'), 'ongl_depot', 'ongl_gest', $onglet=='depot');
 		
 		$div = $this->get_onglet('ongl_'.$onglet);
 		if( !$div )
@@ -253,7 +253,7 @@ class interf_bd_depot extends interf_bd_liste
 	}
 	protected function aff_element(&$elt, &$batiment)
 	{
-		$this->tbl->nouv_cell($row['nom']);
+		$this->tbl->nouv_cell($elt['nom']);
 		$this->tbl->nouv_cell($elt['nbr_objet']);
 	}
 }
