@@ -176,7 +176,7 @@ class interf_infos_case extends interf_cont
 				{
 					if( $this->perso->nb_pet() > 0 && $this->perso->get_pet() && $this->distance <= $this->perso->get_distance_tir() )
 					{
-						$att_pet = $div->add( new interf_lien('', 'attaque.php?id_batiment='.$constr->get_id().'&amp;type=batiment&amp;table=placement&amp;pet', false, 'icone icone-chien') );
+						$att_pet = $div->add( new interf_lien('', 'attaque.php?id_batiment='.$constr->get_id().'&amp;type=batiment&amp;table=construction&amp;pet', false, 'icone icone-chien') );
 						$att_pet->set_tooltip('Attaquer avec votre créature ('.($G_PA_attaque_batiment - $reduction_pa).' PA)', 'bottom', '#information');
 					}
 					if( $this->distance <= $this->perso->get_distance_tir() )
