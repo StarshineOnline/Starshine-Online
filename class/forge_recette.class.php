@@ -326,7 +326,7 @@ class forge_recette extends table
 			$perso->add_bonus_permanents('div_pm', $this->effet_bonus);
 			break;
 		case 'enflamme': // X% de chance de subir 1 dégat chaque round
-			$perso->add_effet_permanent('attaquant', new forge_enflame($this->effet_bonus));
+			$perso->add_effet_permanent('attaquant', new forge_enflamme($this->effet_bonus));
 			break;
 		case 'rm_mag': // X% de perdre 1 RM à chaque sort lancé
 			$perso->add_effet_permanent('attaquant', new forge_rm($this->effet_bonus, 1, false));
@@ -593,8 +593,8 @@ class forge_recette extends table
 			return '+ '.$this->effet_bonus.'% au potentiel lancer et toucher magique de l\'adversaire';
 		case 'anticipation_adv':
 			return '-'.$this->effet_bonus.' au chances d\'anticiper de l\'adversaire';
-		case 'parer':
-			return 'Chances de parrer une attaque divisées par 1,'.$this->effet_bonus.'.';
+		/*case 'parer':
+			return 'Chances de parer une attaque divisées par 1,'.$this->effet_bonus.'.';*/
 		case 'pp':
 			return '- '.$this->effet_bonus.' de protection physique.';
 		case 'pm':

@@ -392,7 +392,7 @@ class forge_etourdit extends effet_forge
 	}
 }
 
-class forge_enflame extends effet_forge
+class forge_enflamme extends effet_forge
 {
   function fin_round(&$attaque )
 	{

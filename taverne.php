@@ -139,7 +139,10 @@ case 'boire':
 	$bar = $G_interf->creer_taverne_bar($R);
 	/// @todo loguer triche
 	if( $bar->ivresse && $bar->ivresse->get_effet() >= 100  )
+	{
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
 		exit;
+	}
 	// Augmentation de l'ivresse ?
 	if( !comp_sort::test_de(100, $perso->get_constitution()) )
 	{
@@ -190,6 +193,7 @@ case 'boire':
 		$bar->conversation();
 	else
 		$bar->rumeur($de);
+	interf_debug::aff_enregistres($bar);
 	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
 	exit;
 case 'mise':

@@ -3997,9 +3997,9 @@ CREATE TABLE IF NOT EXISTS `forge_recette` (
   `nom` varchar(50) NOT NULL,
   `objet` varchar(5) NOT NULL,
   `difficulte` int(11) NOT NULL,
-  `type_bonus` varchar(20) NOT NULL,
+  `type_bonus` varchar(25) NOT NULL,
   `effet_bonus` int(11) NOT NULL,
-  `type_malus` varchar(20) NOT NULL,
+  `type_malus` varchar(25) NOT NULL,
   `effet_malus` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -4086,7 +4086,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (81, "Arc de Chasse de précision", "a24", 40, "critique", 10, "malediction", 2);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (82, "Arc Composite déstabilisant", "a25", 60, "toucher_adv", 8, "toucher", 15);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (83, "Arc Composite amélioré", "a25", 60, "degats_supp", 15, "coefficient", 500);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (84, "Arc Elfique transperceur d'armure", "a26", 85, "traverser", 7, "degats_sup", 1);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (84, "Arc Elfique transperceur d'armure", "a26", 85, "traverser", 7, "degats_supp", 1);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (85, "Arc Elfique de précision", "a26", 85, "critique", 15, "anticipation", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (86, "Arc Elfique Noble déstabilisant", "a27", 130, "toucher_adv", 11, "coefficient", 1500);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (87, "Arc Elfique Noble amélioré", "a27", 130, "degats_supp", 20, "toucher", 15);
@@ -4098,35 +4098,35 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (93, "Arc de chasse composite de précision", "a70", 465, "critique", 25, "toucher", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (94, "Bouclier en bois bloque-lame", "a29", 20, "blocage", 10, "toucher", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (95, "Bouclier en bois étourdissant", "a29", 20, "coup_bouclier", 10, "blocage", 10);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (96, "Bouclier épineux", "a30", 30, "epine", 10, "coefficient", 150);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (96, "Bouclier épineux", "a30", 30, "epines", 10, "coefficient", 150);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (97, "Bouclier amélioré", "a30", 30, "reduction", 10, "blocage", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (98, "Bouclier rond bloque-lame", "a31", 40, "blocage", 20, "blocage_etourdissant", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (99, "Bouclier rond étourdissant", "a31", 40, "coup_bouclier", 20, "coefficient", 200);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (100, "Bouclier de cuivre épineux", "a32", 60, "epine", 15, "esquive", 15);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (100, "Bouclier de cuivre épineux", "a32", 60, "epines", 15, "esquive", 15);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (101, "Bouclier de cuivre amélioré", "a32", 60, "reduction", 15, "blocage", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (102, "Targe bloque-lame", "a33", 90, "blocage", 30, "coefficient", 800);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (103, "Targe étourdissant", "a33", 90, "coup_bouclier", 30, "toucher", 20);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (104, "Ecu épineux", "a34", 145, "epine", 20, "parer", 15);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (104, "Ecu épineux", "a34", 145, "epines", 20, "parer", 15);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (105, "Ecu amélioré", "a34", 145, "reduction", 20, "coefficient", 1200);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (106, "Bouclier de bronze bloque-lame", "a35", 245, "blocage", 40, "toucher", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (107, "Bouclier de bronze étourdissant", "a35", 245, "coup_bouclier", 40, "blocage", 30);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (108, "Ecu en Mithril épineux", "a77", 425, "epine", 25, "esquive", 30);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (108, "Ecu en Mithril épineux", "a77", 425, "epines", 25, "esquive", 30);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (109, "Ecu en Mithril améiloré", "a77", 425, "reduction", 25, "blocage", 40);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (110, "Baguette de sureau améliorée", "a42", 15, "lancer", 5, "blocage", 10);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (111, "Baguette de sureau de puissance", "a42", 15, "degats_supp", 5, "enflame", 10);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (111, "Baguette de sureau de puissance", "a42", 15, "degats_supp", 5, "enflamme", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (112, "Baguette de saule de mana", "a43", 30, "rm_mag", 5, "coefficient", 200);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (113, "Baguette de saule amplificatrice", "a43", 30, "mult_critique", 3, "lancer", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (114, "Baguette de sorbier améliorée", "a44", 40, "lancer", 10, "magie_etourdissante", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (115, "Baguette de sorbier de puissance", "a44", 40, "degats_supp", 10, "coefficient", 300);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (116, "Baguette de noisetier de mana", "a45", 60, "rm_mag", 10, "lancer", 15);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (117, "Baguette de noisetier amplificatrice", "a45", 60, "mult_critique", 6, "enflame", 10);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (117, "Baguette de noisetier amplificatrice", "a45", 60, "mult_critique", 6, "enflamme", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (118, "Baguette de chêne améliorée", "a46", 90, "lancer", 15, "coefficient", 1000);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (119, "Baguette de chêne de puissance", "a46", 90, "degats_supp", 15, "toucher", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (120, "Baguette de gui de mana", "a47", 140, "rm_mag", 15, "armure", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (121, "Baguette de gui amplificatrice", "a47", 140, "mult_critique", 9, "coefficient", 1500);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (122, "Baguette de quartz améliorée", "a48", 210, "lancer", 20, "critique", 25);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (123, "Baguette de quartz de puissance", "a48", 210, "degats_supp", 20, "magie_etourdissante", 10);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (124, "Baguette de topaze de mana", "a49", 330, "rm_mag", 20, "enflame", 20);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (124, "Baguette de topaze de mana", "a49", 330, "rm_mag", 20, "enflamme", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (125, "Baguette de topaze amplificatrice", "a49", 330, "mult_critique", 12, "rm_mag", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (126, "Baguette de diamant améliorée", "a78", 470, "lancer", 25, "blocage", 30);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (127, "Baguette de diamant de puissance", "a78", 470, "degats_supp", 25, "lancer", 20);
@@ -4236,7 +4236,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (231, "Gants en bronze forgé d'attaque", "p70", 345, "toucher", 15, "pp", 60);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (232, "Gants en argent d'escrime", "p88", 445, "critique_phys", 20, "mirroir_critique", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (233, "Gants en argent améliorés", "p88", 445, "pp", 40, "maladresse", 5);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (234, "Pantalon en lin d'évitement", "p5", 10, "parer", 5, "degats_sup", 5);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (234, "Pantalon en lin d'évitement", "p5", 10, "parer", 5, "degats_supp", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (235, "Pantalon en lin d'attaque", "p5", 10, "toucher", 5, "mult_critique", 3);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (236, "Pantalon en lin de bonne qualité renforcé", "p23", 110, "critique_adv", 10, "mult_critique", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (237, "Pantalon en lin de bonne qualité d'évitement", "p23", 110, "parer", 10, "toucher", 10);
@@ -4246,7 +4246,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (241, "Pantalon en laine de bonne qualité d'attaque", "p57", 310, "toucher", 15, "critique_adv", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (242, "Pantalon en chanvre renforcé", "p75", 410, "critique_adv", 20, "anticipation", 6);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (243, "Pantalon en chanvre d'évitement", "p75", 410, "parer", 20, "pp", 40);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (244, "Pantalon en peau d'évitement", "p11", 15, "parer", 5, "degats_sup", 5);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (244, "Pantalon en peau d'évitement", "p11", 15, "parer", 5, "degats_supp", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (245, "Pantalon en peau d'attaque", "p11", 15, "toucher", 5, "mult_critique", 3);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (246, "Pantalon en peau tannée renforcé", "p29", 115, "critique_adv", 10, "mult_critique", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (247, "Pantalon en peau tannée d'évitement", "p29", 115, "parer", 10, "toucher", 10);
@@ -4256,7 +4256,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (251, "Pantalon en cuir d'attaque", "p63", 315, "toucher", 15, "critique_adv", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (252, "Pantalon en cuir tanné renforcé", "p81", 415, "critique_adv", 20, "anticipation", 6);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (253, "Pantalon en cuir tanné d'évitement", "p81", 415, "parer", 20, "pp", 90);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (254, "Jambières en fer d'évitement", "p17", 20, "parer", 5, "degats_sup", 5);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (254, "Jambières en fer d'évitement", "p17", 20, "parer", 5, "degats_supp", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (255, "Jambières en fer d'attaque", "p17", 20, "toucher", 5, "mult_critique", 3);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (256, "Jambières en fer forgé renforcé", "p35", 120, "critique_adv", 10, "mult_critique", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (257, "Jambières en fer forgé d'évitement", "p35", 120, "parer", 10, "toucher", 10);
@@ -4306,7 +4306,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (301, "Ceinture en laine de bonne qualité empoisonneuse", "p55", 360, "poison", 2, "poison", 2);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (302, "Ceinture en chanvre d'absorption des domages", "p73", 19, "divise_mineur", 15, "epines", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (303, "Ceinture en chanvre de mage", "p73", 460, "lancer", 20, "magie_etourdissante", 10);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (304, "Ceinture en peau", "p7", 65, "lancer", 5, "mult_critique", 3);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (304, "Ceinture en peau de mage", "p7", 65, "lancer", 5, "mult_critique", 3);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (305, "Ceinture en peau empoisonneuse", "p7", 65, "poison", 1, "toucher_phys", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (306, "Ceinture en peau tannée d'absorption des domages", "p25", 165, "divise_mineur", 5, "parer", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (307, "Ceinture en peau tannée de mage", "p25", 165, "lancer", 10, "critique", 15);
@@ -4344,7 +4344,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (339, "Cape en velour de protection magique", "p122", 455, "pm", 30, "pp", 50);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (340, "Collier de cuivre amélioré", "p103", 30, "pm", 3, "rm", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (341, "Collier de cuivre d'absorption des domages", "p103", 30, "divise", 2, "parer", 5);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (342, "Collier de cuivre d'ornement de resistance aux sorts", "p104", 105, "resiste_debuff", 10, "duree_debuff", 25);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (342, "Collier de cuivre d'ornement de resistance aux sorts", "p104", 105, "resiste_debuff", 10, "duree_debuff_subis", 25);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (343, "Collier de cuivre d'ornement de protection physique", "p104", 105, "pp", 10, "critique_adv", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (344, "Collier en bronze amélioré", "p105", 155, "pm", 9, "critique_mag_adv", 15);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (345, "Collier en bronze d'absorption des domages", "p105", 155, "divise", 4, "toucher", 15);
@@ -4356,7 +4356,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (351, "Collier en argent d'ornement de protection physique", "p108", 355, "pp", 50, "toucher_adv", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (352, "Collier en or amélioré", "p117", 430, "pm", 40, "rm", 20);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (353, "Collier en or d'absorption des domages", "p117", 430, "divise", 8, "parer", 25);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (354, "Collier en or d'ornement de resistance aux sorts", "p118", 480, "resiste_debuff", 40, "duree_debuff", 50);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (354, "Collier en or d'ornement de resistance aux sorts", "p118", 480, "resiste_debuff", 40, "duree_debuff_subis", 50);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (355, "Collier en or d'ornement de protection physique", "p118", 480, "pp", 60, "pm", 40);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (356, "Anneau en cuivre amélioré", "p97", 5, "pm", 2, "critique_mag_adv", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (357, "Anneau en cuivre d'amplification magique", "p97", 5, "mult_critique_mag", 3, "surcharge_mag", 10);

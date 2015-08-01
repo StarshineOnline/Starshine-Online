@@ -54,9 +54,9 @@ class interf_taverne extends interf_ville_onglets
 			$honneur = $elt->get_honneur() + ceil($this->perso->get_honneur() * $elt->get_honneur_pc() / 100);
 			$hp = $elt->get_hp() + ceil($this->perso->get_hp_maximum() * $elt->get_hp_pc() / 100);
 			$mp = $elt->get_mp() + ceil($this->perso->get_mp_maximum() * $elt->get_mp_pc() / 100);
-			$max_pa = floor($perso->get_pa() / $pa);
-			$max_prix = floor($perso->get_star() / $prix);
-			$max_honneur = floor($perso->get_honneur() / $honneur);
+			$max_pa = $pa ? ($perso->get_pa() / $pa) : 0;
+			$max_prix = $prix ? floor($perso->get_star() / $prix) : 0;
+			$max_honneur = $honneur ? floor($perso->get_honneur() / $honneur) : 0;
 			$n = min($max_pa, $max_prix, $max_honneur);
 			$gains_hp = max($gains_hp, $n*$hp);
 			$gains_mp = max($gains_mp, $n*$mp);
@@ -282,16 +282,16 @@ class interf_taverne_bar extends interf_cont
 				}
 			}
 			/// @todo passer à l'objet
-			$requete = 'SELECT c.nom, x, y FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE c.nom != b.nom AND royaume = '.$id.' AND x <= 190 AND y <= 190 ORDER BY RAND()';
+			$requete = 'SELECT c.nom, x, y FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE c.nom != b.nom AND royaume = '.$this->royaume->get_id().' AND x <= 190 AND y <= 190 ORDER BY RAND()';
 			$req = $db->query($requete);
 			$trouve = false;
 			while( $row = $db->read_assoc($req) )
 			{
 				$x_min = $row['x'] - 10;
 				$x_max = $row['x'] + 10;
-				$x_min = $row['y'] - 10;
-				$x_max = $row['y'] + 10;
-				$persos = perso::create(null, null, 'RAND() LIMIT 1', false, 'x BETWWEN '.$x_min.' AND '.$x_max.' AND y BETWEEN '.$y_min.' AND '.$y_max);
+				$y_min = $row['y'] - 10;
+				$y_max = $row['y'] + 10;
+				$persos = perso::create(null, null, 'RAND() LIMIT 1', false, 'x BETWEEN '.$x_min.' AND '.$x_max.' AND y BETWEEN '.$y_min.' AND '.$y_max);
 				if( $persos )
 				{
 					$this->aff_rumeur('perso-lieu', $persos[0]->get_nom(), $row['nom']);
@@ -413,12 +413,14 @@ class interf_taverne_bar extends interf_cont
 				else if( $de <= 75 )
 					$info = 'taxe';
 				$royaume = royaume::get_royaume_rumeur($info, $plus, $class, $vrai);
-				$this->aff_rumeur('royaume-'.$info.$suf, $royaume->get_nom(), $royaume->get_capitale(), $Gtrad[$royaume->get_race()]);
+				$this->aff_rumeur('royaume-'.$info.$suf, $royaume->get_nom(), $this->royaume->get_capitale(), $Gtrad[$royaume->get_race()]);
 			}
 			else if( $de <= 85 )
 			{ // terrains les plus / moins possédés
 				$royaumes = array_keys($Trace);
+				interf_debug::dump_enreg($royaumes);
 				$race = $royaumes[rand(0, count($royaumes)-1)];
+				interf_debug::dump_enreg($race);
 				$royaume = new royaume($Trace[$race]['numrace']);
 				$plus = (bool)rand(0,1);
 				$suf = $plus ? '' : '-peu';
@@ -526,12 +528,12 @@ class interf_taverne_bar extends interf_cont
 			$de = rand(1, 100);
 			if( $de <= 20 )
 			{
-				$royaume = royaume::get_royaume_rumeur($info, $plus, $class, $vrai);
+				$royaume = royaume::get_royaume_rumeur('point_victoire_total', $plus, $class, $vrai);
 				$this->aff_rumeur('royaume-pv'.$suf, $royaume->get_nom(), $royaume->get_capitale(), $Gtrad[$royaume->get_race()]);
 			}
 			else if( $de <= 40 )
 			{
-				$royaume = royaume::get_royaume_rumeur($info, $plus, $class, $vrai);
+				$royaume = royaume::get_royaume_rumeur('case', $plus, $class, $vrai);
 				$this->aff_rumeur('royaume-case'.$suf, $royaume->get_nom(), $royaume->get_capitale(), $Gtrad[$royaume->get_race()]);
 			}
 			else
@@ -613,40 +615,40 @@ class interf_taverne_bar extends interf_cont
 				switch(rand(1, 10))
 				{
 				case 1:
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain LIKE "1;22%" AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain LIKE "1;22%" AND mm.x <= 190 AND mm.y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					$type = '-plaine';
 					break;
 				case 2:
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "2%" OR terrain LIKE "2;%") AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "2%" OR terrain LIKE "2;%") AND mm.x <= 190 AND mm.y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					$type = '-foret';
 					break;
 				case 3:
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "4%" OR terrain LIKE "4;%") AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "4%" OR terrain LIKE "4;%") AND mm.x <= 190 AND mm.y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					$type = '-desert';
 					break;
 				case 4:
 					$type = '-neige';
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "3%" OR terrain LIKE "3;%") AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "3%" OR terrain LIKE "3;%") AND mm.x <= 190 ANDmm. y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					break;
 				case 5:
 					$type = '-montagne';
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain LIKE "6;23%" AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain LIKE "6;23%" AND mm.x <= 190 AND mm.y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					break;
 				case 6:
 					$type = '-marais';
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain LIKE "7;11%" AND mm.x <= 190 AND y <= 190 AND map.info = 7 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain LIKE "7;11%" AND mm.x <= 190 AND mm.y <= 190 AND map.info = 7 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					break;
 				case 7:
 					$type = '-terre_maudite';
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain LIKE "7;11%" AND mm.x <= 190 AND y <= 190 AND map.info = 11 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain LIKE "7;11%" AND mm.x <= 190 AND mm.y <= 190 AND map.info = 11 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					break;
 				case 8:
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain != "rand" AND x <= 190 AND y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE m.terrain != "rand" AND mm.x <= 190 AND mm.y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					$type = '';
 					break;
 				case 9:
 				case 10:
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain != "rand" AND mm.x <= 190 AND y <= 190 AND map.royaume = '.$this->royaume->get_id().' GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type INNER JOIN map ON map.x = mm.x AND map.y = mm.y WHERE m.terrain != "rand" AND mm.x <= 190 AND mm.y <= 190 AND map.royaume = '.$this->royaume->get_id().' GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					$type = '-royaume';
 					break;
 				default:

@@ -383,7 +383,10 @@ if( array_key_exists('action', $_GET) )
 				$perso->prend_objet($obj->get_texte());
 			}
 			else
+			{
 				interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'objet n\'a pas été trouvé') );
+				break;
+			}
 		}
 		else
 			interf_base::set_courrent( interf_alerte::enregistre(interf_alerte::msg_erreur, 'La fabrication a échoué…') );

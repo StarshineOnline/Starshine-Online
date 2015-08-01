@@ -90,7 +90,8 @@ class interf_livre_alchimie extends interf_accordeon
 				$requete = "SELECT description, pa, mp, effet FROM objet WHERE id = ".$id_resultat['id_objet'];
 				$req_i = $db->query($requete);
 				$row_i = $db->read_assoc($req_i);
-				$li = $lst_recip->add( new interf_bal_smpl('li', $row_r[0], false, $classe) );
+				$nbr = $perso_recipient[0] ? $perso_recipient[0] : '0';
+				$li = $lst_recip->add( new interf_bal_smpl('li', $row_r[0].' ('.$nbr.')', false, $classe) );
 				$li->set_tooltip(description($row_i['description'], $row_i).' - (coute '.$row_i['pa'].' PA / '.$row_i['mp'].' MP a utiliser)', 'left');
 			}
 			// Instruments

@@ -1569,7 +1569,7 @@ class royaume
 			$requete = 'SELECT r.*, COUNT(*) as nbr FROM royaume AS r INNER JOIN construction AS c ON c.id_royaume=r.id INNER JOIN batiment AS b ON b.id = c.id_batiment WHERE r.id > 0 AND b.type = "'.$info.'" GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
 			break;
 		case 'entretien':
-			$requete = 'SELECT r.*, SUM(entr)*facteur_entretien AS entr_tot FROM (SELECT c.id_royaume, SUM(entretien) AS entr FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment=b.id GROUP BY c.id_royaume UNION ALL SELECT c.id_royaume, SUM(entretien) AS entr FROM construction_ville AS c INNER JOIN batiment_ville AS b ON c.id_batiment=b.id GROUP BY c.id_royaume) INNER JOIN royaume AS r ON r.id = id_royaume GROUP by r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			$requete = 'SELECT r.*, SUM(entr)*facteur_entretien AS entr_tot FROM (SELECT c.royaume AS id_royaume, SUM(entretien) AS entr FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment=b.id GROUP BY c.royaume UNION ALL SELECT c.id_royaume, SUM(entretien) AS entr FROM construction_ville AS c INNER JOIN batiment_ville AS b ON c.id_batiment=b.id GROUP BY c.id_royaume) AS a INNER JOIN royaume AS r ON r.id = id_royaume GROUP by r.id ORDER BY entr_tot '.$sens.' LIMIT '.$class.', 1';
 			break;
 		case 'case':
 			$requete = 'SELECT r.*, COUNT(*) AS nbr FROM map as m INNER JOIN royaume AS r ON r.id = m.royaume WHERE x <= 190 AND y <= 190 GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
