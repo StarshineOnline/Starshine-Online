@@ -106,10 +106,10 @@ class interf_universite extends interf_universite_base
 	private $col;
 	private $span_col1;
 	private $span_col2;
-	private $ids=array(	0, 0, 7, 2, 0, 9, 7, 0, 4, 2,
-										0, 4, 7, 11, 9, 11, 1, 2, 0, 4,
-										7, 11, 9, 1, 6, 8, 9, 12, 9, 8,
-										12, 6, 3, 5, 10, 8, 12, 6, 3, 5);
+	private $ids=array(	 0,  0,  7,  2,  0,  9,  7,  0,  4,  2,
+											 0,  4,  7, 11,  9, 11,  1,  2,  0,  4,
+											 7, 11,  9,  1,  6,  8, 10, 12,  10,  8,
+											12,  6,  3,  5, 10,  8, 12,  6,  3,  5);
 	function __construct(&$royaume)
 	{
 		parent::__construct($royaume);
@@ -195,13 +195,48 @@ class interf_universite extends interf_universite_base
 	}
 	protected function aff_cell($id, $rowspan=1)
 	{
+		global $db;
 		$classe = new classe($id);
 		$class = '';
 		$rang = $this->classe->get_rang();
 		$lgn = $this->ids[$this->classe->get_id()];
+		
+		// teste les conditions
+		$ok = false;
+		if( $this->col == $rang + 1 )
+		{
+			/// @todo  passer par les objets
+			$requete = "SELECT * FROM classe_requis WHERE id_classe = '".$id."'";
+			$req = $db->query($requete);
+			$ok = true;
+			while($row = $db->read_array($req))
+			{
+				/// @todo loguer triche
+				if($row['new'] == 'yes') $new[] = $row['competence'];
+				if($row['competence'] == 'classe')
+				{
+					if( $this->perso->get_classe_id() != $row['requis'] )
+					{
+						$ok = false;
+						break;
+					}
+				}
+				else
+				{
+					$get = 'get_'.$row['competence'];
+					if( (method_exists($this->perso, $get)  && $this->perso->$get(true) < $row['requis'])
+							|| (!method_exists($this->perso, $get) && $this->perso->get_competence($row['competence']) < $row['requis']) )
+					{
+						$ok = false;
+						break;
+					}
+				}
+			}
+		}
+		
 		if( $id == $this->classe->get_id() )
 			$class = 'info';
-		elseif( $this->col == $rang + 1 && in_array($id, $classes_ok) )
+		elseif( $ok )
 			$class = 'success';
 		else if( $rang == 1 )
 		{
@@ -210,6 +245,7 @@ class interf_universite extends interf_universite_base
 		}
 		else
 		{
+			//my_dump($classe->get_nom().' : '.$lgn.' VS '.$this->lgn);
 			if( $this->col == 1 )
 			{
 				if( ($lgn < 7 && $this->lgn == 0) || ($lgn >= 7 && $this->lgn == 7) )
@@ -222,12 +258,19 @@ class interf_universite extends interf_universite_base
 				else
 					$class = 'warning';
 			}
-			else if( $lgn < 6 && ($lgn & 1) && $this->lgn == $lgn - 1 )
+			else if($rang > 2 && $this->col == 2 && $lgn < 6 && ($lgn & 1) && $this->lgn == $lgn - 1 )
 			{
+				$class = 'active';
+			}
+			else if( $lgn < 6 && ($this->lgn & 1) && $this->lgn == $lgn + 1 )
+			{
+				//my_dump($classe->get_nom().' : '.$rang.' VS '.$this->col);
 				if( $rang == 2 && $this->col > 2 )
 					$class = 'warning';
 				else if( $rang > 2 && $this->col == 2 )
 					$class = 'active';
+				elseif( $this->col > $rang )
+					$class = 'danger';
 			}
 			else if( $this->col > $rang )
 				$class = 'danger';

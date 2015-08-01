@@ -143,6 +143,12 @@ case 'boire':
 		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
 		exit;
 	}
+	if( $perso->get_pa() < 1 )
+	{
+		$bar->add( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Vous n\'avez pas assez de stars !') );
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $alerte) );
+		break;
+	}
 	// Augmentation de l'ivresse ?
 	if( !comp_sort::test_de(100, $perso->get_constitution()) )
 	{
@@ -210,6 +216,12 @@ case 'jouer':
 		$_SESSION['score_adv'] = 0;
 		$_SESSION['passe'] = 0;
 	}
+	if( $perso->get_pa() < 1 )
+	{
+		$alerte = new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous n\'avez pas assez de stars !');
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $alerte) );
+		break;
+	}
 	// calcul de deux valeurs aléatoires suivant une loi gaussienne (centré en 0 et d'écart-type 1)
 	$u = rand(0, 1000) / 1000;
 	$v = rand(0, 1000) / 1000;
@@ -217,6 +229,7 @@ case 'jouer':
 	$y = sqrt(-log($u)) * sin(2*pi()*$v);
 	$_SESSION['passe']++;
 	$perso->add_pa(-1);
+	$aptitude = null;
 	switch($_GET['jeu'])
 	{
 	case 'distance':
@@ -232,10 +245,7 @@ case 'jouer':
 				$perso->add_star( $_SESSION['mise'] );
 		}
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('distance', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_distance($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'distance';
 		break;
 	case 'melee':
 		$x = sqrt(200 * $x + $perso->get_melee()) / 30;
@@ -244,10 +254,7 @@ case 'jouer':
 		if( $_SESSION['score'] > 1 )
 			$perso->add_star( $_SESSION['mise']*2 );
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('melee', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_melee($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'melee';
 		break;
 	case 'esquive':
 		$score = (200 * $x + $perso->get_distance()) > 500 ? 1 : 0;
@@ -255,12 +262,9 @@ case 'jouer':
 		$_SESSION['score'] += $score;
 		$_SESSION['score_adv'] += $score_adv;
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('esquive', $perso, 4);
-    if ($augmentation[1] == 1)
-      $perso->set_esquive($augmentation[0]);
+    $aptitude = 'esquive';
     if( $_SESSION['score'] > $_SESSION['score_adv'] )
 			$perso->add_star( $_SESSION['mise']*2 );
-    $perso->sauver();
 		break;
 	case 'blocage':
 		$score = (200 * $x + $perso->get_distance()) > 300 ? 1 : 0;
@@ -268,12 +272,9 @@ case 'jouer':
 		$_SESSION['score'] += $score;//date
 		$_SESSION['score_adv'] += $score_adv;
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('blocage', $perso, 4);
-    if ($augmentation[1] == 1)
-      $perso->set_blocage($augmentation[0]);
+    $aptitude = 'blocage';
     if( $_SESSION['score'] > $_SESSION['score_adv'] )
 			$perso->add_star( $_SESSION['mise']*2 );
-    $perso->sauver();
 		break;
 	case 'dressage':
 		$score = note( 200 * $x + $perso->get_distance() );
@@ -288,10 +289,7 @@ case 'jouer':
 				$perso->add_star( $_SESSION['mise'] );
 		}
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('dressage', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_dressage($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'dressage';
     break;
 	case 'incantation':
 		$x = sqrt(200 * $x + $perso->get_incantation()) / 30;
@@ -300,10 +298,7 @@ case 'jouer':
 		if( $_SESSION['score'] > 1 )
 			$perso->add_star( $_SESSION['mise']*2 );
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('incantation', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_incantation($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'incantation';
 		break;
 	case 'sort_element':
 		$score = note( 200 * $x + $perso->get_sort_element() );
@@ -318,10 +313,7 @@ case 'jouer':
 				$perso->add_star( $_SESSION['mise'] );
 		}
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('sort_element', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_sort_element($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'sort_element';
     break;
 	case 'sort_vie':
 		$x = 200 * $x + $perso->get_sort_vie();
@@ -339,10 +331,7 @@ case 'jouer':
 				$perso->add_star( $_SESSION['mise'] );
 		}
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('sort_vie', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_sort_vie($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'sort_vie';
     break;
 	case 'sort_mort':
 		$x = 200 * $x + $perso->get_sort_vie();
@@ -360,16 +349,23 @@ case 'jouer':
 				$perso->add_star( $_SESSION['mise'] );
 		}
     //Augmentation de l'aptitude
-		$augmentation = augmentation_competence('sort_mort', $perso, 7);
-    if ($augmentation[1] == 1)
-      $perso->set_sort_mort($augmentation[0]);
-    $perso->sauver();
+    $aptitude = 'sort_mort';
     break;
 	}
 	$perso->sauver();
 	$interf_princ->maj_perso();
 	$G_url->add('jeu', $_GET['jeu']);
 	$jeux = $G_interf->creer_taverne_jeux($_GET['jeu'], false, $score, $score_adv);
+	if( $aptitude )
+	{
+		$augmentation = augmentation_competence($aptitude, $perso, 7);
+    if ($augmentation[1] == 1)
+    {
+			$set = 'set_'.$aptitude;
+      $perso->$set($augmentation[0]);
+    	$perso->sauver();
+		}
+	}
 	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
 	exit;
 case 'jeux':
