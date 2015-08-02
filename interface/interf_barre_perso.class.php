@@ -15,6 +15,7 @@ class interf_barre_perso extends interf_bal_cont
   function __construct()
   {
     $this->perso = joueur::get_perso();
+    $this->perso->check_perso( $this->perso->get_id_joueur() == joueur::factory()->get_id() );
     interf_bal_cont::__construct('div', 'perso_contenu');
     // Panneau de gauche
     $this->creer_infos_vie();

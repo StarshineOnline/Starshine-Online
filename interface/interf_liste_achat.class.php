@@ -72,7 +72,7 @@ abstract class interf_liste_achat extends interf_cont
 	protected function aff_titres_col() {}
 	protected function aff_cont_col(&$elt) {}
 	protected function peut_acheter(&$elt)
-	{	
+	{
 		return $this->perso->get_star() >= $elt->get_prix();
 	}
 }
@@ -86,7 +86,9 @@ abstract class interf_achat_compsort extends interf_liste_achat
 		if( $elt->est_connu($this->perso) )
 			return null;
 		else
+		{
 			return $elt->verif_prerequis($this->perso) && parent::peut_acheter($elt);
+		}
 	}
 }
 

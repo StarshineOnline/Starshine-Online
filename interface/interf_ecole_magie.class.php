@@ -84,8 +84,9 @@ class interf_achat_sort extends interf_achat_compsort
 	function peut_acheter($elt)
 	{
 		global $Trace;
-		if( !parent::peut_acheter($elt) )
-			return false;
+		$achat = parent::peut_acheter($elt);
+		if( !$achat )
+			return $achat;
 		$requis = $elt->get_incantation() * $this->perso->get_facteur_magie();
 		if( $requis > $this->perso->get_incantation() )
 			return false;
@@ -93,6 +94,7 @@ class interf_achat_sort extends interf_achat_compsort
 		$requis = round( $elt->get_comp_requis() * $this->perso->get_facteur_magie() * (1 - (($Trace[$this->perso->get_race()]['affinite_'.$elt->get_comp_assoc()] - 5) / 10)) );
 		if( $requis > $this->perso->$methode() )
 			return false;
+		return true;
 	}
 }
 
@@ -104,7 +106,7 @@ class interf_achat_sort_jeu extends interf_achat_sort
 	{
 		if( !$niveau )
 			$niveau =  $this->recherche_batiment($royaume, 'ecole_magie');
-		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.$niveau.' AND requis < 999');
+		$sorts = sort_jeu::create(null, null, 'incantation ASC', false, 'lvl_batiment <='.($niveau?$niveau:'0').' AND requis < 999');
 		parent::__construct($royaume, 'tbl_sort_jeu', $sorts, $nbr_alertes);
 	}
 	function aff_titres_col()

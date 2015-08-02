@@ -275,8 +275,9 @@ class attaque
 		}
 		
 		// Affichage de la fin du combat
-		$this->interf->aff_fin($this->attaquant, $this->defenseur, $degat_attaque, $degat_defense, $longueur, $fiabilite, $type, true);
+		$this->attaquant->fin_attaque($this->perso, $this->defenseur, $pa_attaque);
 		$msg_xp .= $this->defenseur->fin_defense($this->perso, $R, $pet, $degat_attaque, $defenseur_en_defense);
+		$this->interf->aff_fin($this->attaquant, $this->defenseur, $degat_attaque, $degat_defense, $longueur, $fiabilite, $type, true);
 		if( $msg_xp )
 			$this->interf->aff_messages_fin($msg_xp);
 		
@@ -303,8 +304,6 @@ class attaque
 			$achiev->set_compteur($achiev->get_compteur() + $this->defenseur->get_compteur_critique());
 			$achiev->sauver();
 		}
-		
-		$this->attaquant->fin_attaque($this->perso, $this->defenseur, $pa_attaque);
 	}
   /// Méthode gérant une passe
   function gere_passe($attaquant)

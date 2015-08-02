@@ -123,9 +123,9 @@ case 'lancer_groupe':
 case 'lancer':
 	$buff = $_GET['buff'];
 	if( $buff[0] == 's' || $buff[0] == 'S' )
-		$sortcomp = new sort_jeu( substr($buff, 1) );
+		$sortcomp = sort_jeu::factory( substr($buff, 1) );
 	else if( $buff[0] == 'c' )
-		$sortcomp = new comp_jeu( substr($buff, 1) );
+		$sortcomp = comp_jeu::factory( substr($buff, 1) );
 	// On vérifie que c'est connu par la créature
 	$pet = new pet($_GET['id']);
 	$monstre = $pet->get_def();

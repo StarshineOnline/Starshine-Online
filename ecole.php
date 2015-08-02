@@ -46,6 +46,7 @@ if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
 	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
 	
 $type = $_GET['type'];
+$ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
 
 switch( $action )
 {
@@ -85,7 +86,7 @@ case 'achat':
     	$interf_princ->maj_perso();
 		}
 	}
-	$type = substr($type, 0, 4);
+	//$type = substr($type, 0, 4);
 	break;
 case 'magie':
 	$cout_app = 500;
@@ -126,19 +127,31 @@ case 'sort':
 	$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, 'sort_jeu') );
 	break;
 case 'sort_jeu':
-	$interf_princ->add( $G_interf->creer_achat_sort_jeu($R) );
+	if( $ajax == 2 )
+		$interf_princ->add( $G_interf->creer_achat_sort_jeu($R) );
+	else
+		$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, $type) );
 	break;
 case 'sort_combat':
-	$interf_princ->add( $G_interf->creer_achat_sort_combat($R) );
+	if( $ajax == 2 )
+		$interf_princ->add( $G_interf->creer_achat_sort_combat($R) );
+	else
+		$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, $type) );
 	break;
 case 'comp':
 	$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, 'comp_jeu') );
 	break;
 case 'comp_jeu':
-	$interf_princ->add( $G_interf->creer_achat_comp_jeu($R) );
+	if( $ajax == 2 )
+		$interf_princ->add( $G_interf->creer_achat_comp_jeu($R) );
+	else
+		$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, $type) );
 	break;
 case 'comp_combat':
-	$interf_princ->add( $G_interf->creer_achat_comp_combat($R) );
+	if( $ajax == 2 )
+		$interf_princ->add( $G_interf->creer_achat_comp_combat($R) );
+	else
+		$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, $type) );
 	break;
 case 'magie':
 	$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, 'magie') );

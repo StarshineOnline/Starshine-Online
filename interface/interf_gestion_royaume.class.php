@@ -74,7 +74,7 @@ class interf_gestion_royaume extends interf_cont
 	}
 	protected function aff_journal()
 	{
-		$this->tbl = $this->add( new interf_data_tbl('journal_royaume', '') );
+		$this->tbl = $this->add( new interf_data_tbl('journal_royaume', '', true, false) );
 		$this->tbl->nouv_cell('Date');
 		$this->tbl->nouv_cell('Acteur');
 		$this->tbl->nouv_cell('Action');
@@ -84,14 +84,18 @@ class interf_gestion_royaume extends interf_cont
 		$entrees = journal_royaume::create('id_royaume', $this->royaume->get_id(), 'id DESC');
 		if( $entrees )
 		{
-			foreach($entree as $e)
+			foreach($entrees as $e)
 			{
-				$this->tbl->nouv_ligne();
-				$this->tbl->nouv_cell( $e->get_time() );
-				$this->tbl->nouv_cell( $e->get_actif() );
-				$this->tbl->nouv_cell( $this->get_texte_journal($e) );
-				$this->tbl->nouv_cell( $e->get_x() );
-				$this->tbl->nouv_cell( $e->get_y() );
+				$action = $this->get_texte_journal($e);
+				if( $action )
+				{
+					$this->tbl->nouv_ligne();
+					$this->tbl->nouv_cell( $e->get_time() );
+					$this->tbl->nouv_cell( $e->get_actif() );
+					$this->tbl->nouv_cell( $action );
+					$this->tbl->nouv_cell( $e->get_x() );
+					$this->tbl->nouv_cell( $e->get_y() );
+				}
 			}
 		}
 	}
@@ -142,7 +146,8 @@ class interf_gestion_royaume extends interf_cont
 		case 'pose_depot':
 			return 'a déposé 1 '.$entree->get_valeur().' au dépôt';
 		default:
-			return 'Action inconnue : '.$entree->get_action();
+			log_admin::log('erreur', 'Action du journal du royaume inconnue : '.$entree->get_action());
+			return null;
 		}
 	}
 }

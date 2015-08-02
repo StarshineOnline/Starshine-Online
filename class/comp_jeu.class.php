@@ -407,7 +407,7 @@ class comp_invocation_pet extends comp_jeu
 			}
 		}
 		if ($id_pet == -1)
-			break;
+			return;
 		if ($id_pet != 0)
 		{
 			if ($perso->add_pet($id_pet))

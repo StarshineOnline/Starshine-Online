@@ -92,7 +92,7 @@ class journal_royaume extends journal
 		$perso = joueur::get_perso();
 		$id_passif = $passif ? $passif->get_id() : 0;
 		$nom_passif = $passif ? $passif->get_nom() : '';
-		self::ecrire('bourse_vente', $Trace[$perso->get_race()]['numrace'], $perso->get_id(), $perso->get_nom(), $id_passif, $nom_passif, $valeur, $valeur2, $x, $y);
+		self::ecrire($action, $Trace[$perso->get_race()]['numrace'], $perso->get_id(), $perso->get_nom(), $id_passif, $nom_passif, $valeur, $valeur2, $x, $y);
 	}
 }
 

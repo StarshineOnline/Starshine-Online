@@ -126,7 +126,7 @@ if( !$visu && $action )
 	  case 'depot':
       $objet = objet_invent::factory( $obj );
       $objet->deposer($perso, $cadre);
-			journal_royaume::ecrire_perso('pose_depot', null, $objet->get_nom(), 1);
+			journal_royaume::ecrire_perso('Petit drapeau', null, $objet->get_nom(), 1);
       break;
 	  case 'slot_1':
 	  case 'slot_2':
