@@ -54,9 +54,9 @@ class interf_hotel_vente extends interf_ville_onglets
 		$gemmes = new interf_bal_smpl('span', '', false, 'icone icone-diament');
 		$gemmes->set_tooltip('Gemmes');
 		$this->onglets->add_onglet($gemmes, 'hotel.php?type='.$type.'&categorie=gemme&ajax=2', 'tab_gemme', 'ecole_mag', $categorie=='gemme');
-		$grimmoires = new interf_bal_smpl('span', '', false, 'icone icone-livres');
-		$grimmoires->set_tooltip('Grimmoires');
-		$this->onglets->add_onglet($grimmoires, 'hotel.php?type='.$type.'&categorie=grimmoire&ajax=2', 'tab_grimmoire', 'ecole_mag', $categorie=='grimmoire');
+		$grimoires = new interf_bal_smpl('span', '', false, 'icone icone-livres');
+		$grimoires->set_tooltip('Grimoires');
+		$this->onglets->add_onglet($grimoires, 'hotel.php?type='.$type.'&categorie=grimoire&ajax=2', 'tab_grimmoire', 'ecole_mag', $categorie=='grimoire');
 		$objt_perso = new interf_bal_smpl('span', '', false, 'icone icone-inventaire2');
 		$objt_perso->set_tooltip('Mes objets');
 		$this->onglets->add_onglet($objt_perso, 'hotel.php?type='.$type.'&categorie=perso&ajax=2', 'tab_perso', 'ecole_mag', $categorie=='perso');

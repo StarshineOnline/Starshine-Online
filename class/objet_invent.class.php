@@ -577,8 +577,6 @@ abstract class objet_invent extends table
 			case 'accessoire':
 				return 'm';
 			case 'grimoire':
-				return 'g';
-			case 'grimoire':
 				return 'l';
 			case 'royaume':
 				return 'r';
