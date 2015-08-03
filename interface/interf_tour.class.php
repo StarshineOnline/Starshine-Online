@@ -44,10 +44,10 @@ class interf_tour extends interf_batiment
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
 		
 		$distance = $this->distance;
-		if($this->tour->is_buff('buff_vision'))
-			$distance += $this->get_buff('buff_vision', 'effet');
-		if($this->tour->is_buff('debuff_vision'))
-			$distance -= $this->get_buff('debuff_vision', 'effet');
+		if($buff=$this->tour->get_buff_actif('buff_vision'))
+			$distance += $buff->get_effet();
+		if($buff=$this->tour->get_buff_actif('debuff_vision'))
+			$distance -= $buff->get_effet();
 		
     /// @todo à améliorer
     $requete = 'SELECT *, GREATEST(ABS('.$this->tour->get_x().' - CAST(x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(y AS SIGNED))) as distance FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $distance).' AND '.($this->tour->get_x() + $distance).' AND y BETWEEN '.($this->tour->get_y() - $distance).' AND '.($this->tour->get_y() + $distance).' AND statut="actif" ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, level DESC';

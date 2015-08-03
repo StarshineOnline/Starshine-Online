@@ -189,6 +189,42 @@ abstract class entitenj_constr extends entnj_incarn
 	protected $buff = null;  ///< Liste des buffs actifs sur le monstre
 	/// Récupère les buffs du bâtiment
 	abstract protected function constr_buff();
+
+	/**
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = true)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buffe = false;
+
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->buff as $key => $buff)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($buff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+
+		return $buffe;
+	}
 	/**
 	 * Renvoie l'ensemble des buffs / débuffs sur le bâtiment.
 	 * @return     Tableau des buffs.
