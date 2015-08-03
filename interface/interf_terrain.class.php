@@ -193,7 +193,7 @@ class interf_coffre extends interf_cont
 			$nom .= ' x '.$obj->get_nombre();
 		$id = ($coffre?'coffre_':'invent_').$index;
 		$lien = $li->add( new interf_bal_smpl('a', $nom, $id) );
-		$lien->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'right\', \'inventaire.php?action=infos&id='.$objet.'\', \''.$nom.'\')');
+		$lien->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'right\', \'inventaire.php?action=infos&id='.$objet.'\', \''.addslashes($nom).'\')');
 	}
 }
 

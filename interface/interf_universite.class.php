@@ -426,7 +426,7 @@ class interf_descr_classe extends interf_universite_base
 		$li = $this->donne->add(new interf_bal_cont('li'));
 		$lien = $li->add( new interf_bal_smpl('a', $compsort->get_nom(), $id) );
 		$url = 'ecole.php?action=infos&type='.$donne->get_type().'&id='.$donne->get_competence();
-		$lien->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'info_'.$id.'\', \'right\', \''.$url.'\', \''. $compsort->get_nom().'\');');
+		$lien->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'info_'.$id.'\', \'right\', \''.$url.'\', \''.addslashes($compsort->get_nom()).'\');');
 	}
 }
 

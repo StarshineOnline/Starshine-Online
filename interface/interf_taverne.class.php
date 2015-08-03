@@ -152,11 +152,11 @@ class interf_taverne_repos extends interf_tableau//interf_liste_achat
 		if( $this->perso->get_bonus_shine(12) !== false &&  $this->perso->get_bonus_shine(12)->get_valeur() == 2)
 			$nom = $elt->get_nom_f();
 		else
-			$nom = $elt->get_nom();lo;
+			$nom = $elt->get_nom();
 		$lien = new interf_bal_smpl('a', $nom, 'elt'.$elt->get_id());
 		$this->nouv_cell( $lien );
 		$url = 'taverne.php?action=infos&type=achat&id='.$elt->get_id();
-		$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$elt->get_id().'\', \'info_elt'.$elt->get_id().'\', \'right\', \''.$url.'\', \''.$nom.'\');');
+		$lien->set_attribut('onclick', 'chargerPopover(\'elt'.$elt->get_id().'\', \'info_elt'.$elt->get_id().'\', \'right\', \''.$url.'\', \''.addslashes($nom).'\');');
 		$this->nouv_cell( new interf_bal_smpl('span', $prix, false, $stars_ok ? '' : 'text-danger') );
 		$this->nouv_cell( new interf_bal_smpl('span', $elt->get_pa(), false, $pa_ok ? '' : 'text-danger') );
 		$this->nouv_cell( $elt->get_honneur() + ceil($this->perso->get_honneur() * $elt->get_honneur_pc() / 100) );
