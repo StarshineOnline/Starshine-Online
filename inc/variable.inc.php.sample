@@ -74,6 +74,7 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 	$G_round_total = 10;
 	/// Nombre de p
 	$G_place_inventaire = 20;
+	$G_max_encombrement = 200;
 	/// Taux d'apparition des monstres. Plus le spawn rate est élevé, plus les mobs popent
 	$G_spawn_rate = 19;
 	$G_apprentissage_rate = 0.7;

@@ -606,8 +606,7 @@ class comp_combat extends comp
     if(!$transperce) $reduction = calcul_pp($PP);
 		else
 		{
-			$attaque->get_interface()->special('st');
-			//$attaque->add_log_effet_passif('&ef13~1');
+			$attaque->get_interface()->special('sv');
 			$reduction = 1;
 		}
     if ($reduction < 0) $reduction = 0; // On se soigne pas avec l'armure ^^

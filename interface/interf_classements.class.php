@@ -239,6 +239,7 @@ class interf_classement_perso_tous extends interf_pills
 			}
 			if( $cache == 2 || ($cache == 1 && $row['race']!=$race) )
 			{
+				$tbl->nouv_cell('&nbsp;');
 				$tbl->nouv_cell( 'XXX' );
 				$tbl->nouv_cell( 'X' );
 				if( $type == 'exp' )

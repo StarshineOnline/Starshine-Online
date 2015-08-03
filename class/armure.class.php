@@ -163,8 +163,8 @@ class armure extends objet_equip
     $vals = array($this->PP, $this->PM, $this->forcex);
     if( $this->modification )
     {
-    	$noms[] = $this->modification->get_descr_bonus();
-    	$noms[] = $this->modification->get_descr_malus();
+    	$vals[] = $this->modification->get_descr_bonus();
+    	$vals[] = $this->modification->get_descr_malus();
 		}
 		$vals[] = $this->prix;
     return $vals;

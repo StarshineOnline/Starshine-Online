@@ -108,7 +108,7 @@ class interf_combat extends interf_bal_cont
 		$this->fin->add( new interf_bal_smpl('div', $messages, 'messages_fin') );
 	}
 	
-	function special($type, $nom_att, $nom_def=null)
+	function special($type, $nom_att=null, $nom_def=null)
 	{
 		switch($type)
 		{

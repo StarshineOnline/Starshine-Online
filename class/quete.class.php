@@ -245,9 +245,10 @@
 				{
 				case 'q':  // une quete doit être finies avant la présente
 					if( $val[0] == '!' )
-						$ok |= in_array(mb_substr($val, 1), $perso->get_quete_fini());
+						$ok |= !in_array(mb_substr($val, 1), explode(';', $perso->get_quete_fini()));
 					else
-						$ok |= !in_array($val, $perso->get_quete_fini());
+						$ok |= in_array($val, explode(';', $perso->get_quete_fini()));
+					break;
 				case 't':  // avancement du tutoriel
 					switch($val[0])
 					{
@@ -291,6 +292,7 @@
 					default:
 						$ok |= $perso->get_level() >= $val;
 					}
+					break;
 				case 'h':  // honneur
 					switch($val[0])
 					{
@@ -306,6 +308,7 @@
 					default:
 						$ok |= $perso->get_honneur() >= $val;
 					}
+					break;
 				case 'p':  // réputation
 					switch($val[0])
 					{
@@ -321,6 +324,7 @@
 					default:
 						$ok |= $perso->get_reputation() >= $val;
 					}
+					break;
 				}
 			}
 			if( !$ok )

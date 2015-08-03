@@ -157,7 +157,10 @@ case 'magie':
 	$interf_princ->set_gauche( $G_interf->creer_ecole_magie($R, 'magie') );
 	break;
 case 'quetes':
-	$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'ecole_combat') );
+	if( $ajax == 2 )
+		$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'ecole_combat') );
+	else
+		$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, $type) );
 	break;
 }
 $interf_princ->maj_tooltips();

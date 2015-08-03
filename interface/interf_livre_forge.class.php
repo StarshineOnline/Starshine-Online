@@ -82,11 +82,11 @@ class interf_livre_forge extends interf_accordeon
 						continue;
 					$obj = objet_invent::factory($recette->get_objet());
 					$lien = $li->add( new interf_lien_cont($G_url->get( array('id'=>$recette->get_id(),'objet'=>$o) ), false, 'text-success') );
-					$lien->add( new inter_txt($obj->get_nom()) );
+					$lien->add( new interf_txt($obj->get_nom()) );
 					$ench = $obj->get_info_enchant();
 					if( $ench )
 						$lien->add( new interf_bal_smpl('span', $ench, false, 'xsmall') );
-					$lien->add( new inter_txt(' ('.$n.')') );
+					$lien->add( new interf_txt(' ('.$n.')') );
 					$lien->set_tooltip('Modifier cet objet (10 PA)', 'left');
 					$objet = true;
 				}

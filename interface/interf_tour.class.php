@@ -44,9 +44,9 @@ class interf_tour extends interf_batiment
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
 		
 		$distance = $this->distance;
-		if($this->is_buff('buff_vision'))
+		if($this->tour->is_buff('buff_vision'))
 			$distance += $this->get_buff('buff_vision', 'effet');
-		if($this->is_buff('debuff_vision'))
+		if($this->tour->is_buff('debuff_vision'))
 			$distance -= $this->get_buff('debuff_vision', 'effet');
 		
     /// @todo à améliorer

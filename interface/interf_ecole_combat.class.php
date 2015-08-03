@@ -11,6 +11,7 @@ class interf_ecole_combat extends interf_ville_onglets
 {
 	function __construct(&$royaume, $type)
 	{
+		global $G_interf;
 		parent::__construct($royaume);
 		
 		// Icone

@@ -245,8 +245,8 @@ class arme extends objet_equip
     $vals[] = $this->distance_tir;
     if( $this->modification )
     {
-    	$noms[] = $this->modification->get_descr_bonus();
-    	$noms[] = $this->modification->get_descr_malus();
+    	$vals[] = $this->modification->get_descr_bonus();
+    	$vals[] = $this->modification->get_descr_malus();
 		}
     $vals[] = $this->prix;
     return $vals;
