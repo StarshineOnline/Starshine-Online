@@ -3565,14 +3565,13 @@ class perso extends entite
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
 	{
-		$arme = $this->inventaire()->main_droite;
 		if(!isset($this->arme)) $this->get_arme();
 		if($this->arme)
 		{
-			$arme = $this->arme->distance_tir;
-			if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
-			else $bonus = 0;
-			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
+			$distance = $this->arme->distance_tir;
+			if($this->is_buff('longue_portee') && $this->arme->type == 'arc' )
+				$distance += $this->get_buff('longue_portee', 'effet');
+			return $distance + $this->get_bonus_permanents('portee');
 		}
 		return 0;
 	}

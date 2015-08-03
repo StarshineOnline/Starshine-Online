@@ -122,8 +122,16 @@ class combat
 		if ($this->combat != NULL)
 		{
 			$this->journal = $this->get_journal();
-			$attaquant = new perso(0, 0, $this->journal->get_actif());
-			$defenseur = new perso(0, 0, $this->journal->get_passif());
+			if( $this->journal->get_action() == 'defense' )
+			{
+				$attaquant = new perso(0, 0, $this->journal->get_passif());
+				$defenseur = new perso(0, 0, $this->journal->get_actif());
+			}
+			else
+			{
+				$attaquant = new perso(0, 0, $this->journal->get_actif());
+				$defenseur = new perso(0, 0, $this->journal->get_passif());
+			}
 			$logcombat = preg_replace("#r[0-9]+:#", "", $this->combat);
 			$rounds = explode(';', $logcombat);
 
