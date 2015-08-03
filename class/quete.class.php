@@ -343,7 +343,10 @@
 		$id_royaume = $royaume->get_id();
 		if($id_royaume < 10)
 			$id_royaume = '0'.$id_royaume;
-		$requete = 'SELECT quete.* FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = '.$royaume->get_id().') OR ( royaume LIKE "%'.$id_royaume.'%")) AND quete.fournisseur = "'.$fournisseur.'"'.($terrain ? ' AND quete.terrain = "'.$terrain.'"' : '').' AND quete.id NOT IN (SELECT id_quete FROM quete_perso WHERE id_perso = '.$perso->get_id().') '.$notin;
+		if( $fournisseur == "bureau_quete" )
+			$requete = 'SELECT quete.* FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((quete_royaume.id_royaume = '.$royaume->get_id().' AND quete.fournisseur = "bureau_quete") OR ( royaume LIKE "%'.$id_royaume.'%"))'.($terrain ? ' AND quete.terrain = "'.$terrain.'"' : '').' AND quete.id NOT IN (SELECT id_quete FROM quete_perso WHERE id_perso = '.$perso->get_id().') '.$notin;
+		else
+			$requete = 'SELECT quete.* FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE quete_royaume.id_royaume = '.$royaume->get_id().' AND quete.fournisseur = "'.$fournisseur.'" AND quete.id NOT IN (SELECT id_quete FROM quete_perso WHERE id_perso = '.$perso->get_id().') '.$notin;
 		$req = $db->query($requete);
 		
 		$quetes = array();

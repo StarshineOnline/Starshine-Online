@@ -248,13 +248,13 @@ class attaque
 		$augmentation = augmentation_competence('survie', $this->perso, 2);
 		if( $augmentation[1] == 1 )
 			$this->perso->set_survie($augmentation[0]);
-		if( get_class($this->attaquant) == 'pet' )
+		if( $this->attaquant->get_type() == 'pet' )
 		{
 			$augmentation = augmentation_competence('dressage', $this->perso, 0.85);
 			if($augmentation[1] == 1)
 				$this->perso->set_dressage($augmentation[0]);
 		}
-		if( get_class($this->defenseur) == 'pet' )
+		if( $this->defenseur->get_type() == 'pet' )
 		{
 			$perso_defenseur = new perso( $this->defenseur->get_id_joueur() );
 			$augmentation = augmentation_competence('dressage', $perso_defenseur, 0.85);
