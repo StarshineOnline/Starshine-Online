@@ -25,7 +25,7 @@ class interf_ecole_combat extends interf_ville_onglets
 			$this->onglets->add_onglet('Quêtes', 'ecole.php?type=quetes&ajax=2', 'tab_ecole_quetes', 'ecole_mag', $type=='quetes');
 		
 		// Filtres
-		$haut = $this->onglets->get_haut();
+		/*$haut = $this->onglets->get_haut();
 		if( $type == 'comp_jeu' )
 		{
 			$li1 = $haut->add( new interf_elt_menu(new interf_img('image/dressage.png'), 'javascript:filtre_table(\'dressage\');', false, false, 'filtre') );
@@ -37,6 +37,7 @@ class interf_ecole_combat extends interf_ville_onglets
 		$li2 = $haut->add( new interf_elt_menu(new interf_img('image/distance.png'), 'javascript:filtre_table(\'distance\');', false, false, 'filtre') );
 		$li3 = $haut->add( new interf_elt_menu(new interf_img('image/esquive.png'), 'javascript:filtre_table(\'esquive\');', false, false, 'filtre') );
 		$li4 = $haut->add( new interf_elt_menu(new interf_img('image/melee.png'), 'javascript:filtre_table(\'melee\');', false, false, 'filtre') );
+		*/
 		$n = interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_ecole_'.$type) );
 		interf_base::code_js('$(".tab-content .alert").on("closed.bs.alert", function(){ var obj = $("#tab_'.$type.' .dataTables_scrollBody"); obj.height( obj.height() + 30 ); });');
 		// Contenu

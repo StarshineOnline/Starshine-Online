@@ -19,13 +19,15 @@ class interf_hotel_vente extends interf_ville_onglets
 		$this->icone->set_tooltip('Hotel des ventes');
     // Nombre d'objets en vente
     /// @todo à améliorer
-    $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id();
+    /*$requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
 		$objet_max = 10;
 		$bonus_craft = ceil($this->perso->get_artisanat() / 5);
 		$objet_max += $bonus_craft;
-		$this->set_jauge_ext($row[0], $objet_max, 'pa', 'Vos objets en vente : ');
+		$this->set_jauge_ext($row[0], $objet_max, 'pa', 'Vos objets en vente : ');*/
+		$perso = &joueur::get_perso();
+		$this->set_jauge_ext($perso->get_encombrement(), $perso->get_max_encombrement(), 'pa', 'Utilisation de votre inventaire : ');
 		// Temps restant pour le plus vieil objet
 		$mois = 60 * 60 * 24 * 31;
 		$requete = 'SELECT time FROM hotel WHERE type = "vente" AND id_vendeur = '.$this->perso->get_id().' ORDER BY time ASC LIMIT 0, 1';
@@ -99,7 +101,7 @@ class interf_achat_hdv extends interf_liste_achat
 		{
 			$abbr = objet_invent::get_abbrev($categorie);
 			$royaumes = self::get_royaumes($royaume);
-			$requete = 'SELECT * FROM hotel WHERE type = "vente" AND race IN ('.implode($royaumes, ',').') AND SUBSTRING(objet FROM 1 FOR 1)="'.$abbr.'" AND time>'.(time() - $mois). ' AND id_vendeur != '.joueur::get_perso()->get_id();
+			$requete = 'SELECT * FROM hotel WHERE type = "vente" AND race IN ('.implode(',', $royaumes).') AND SUBSTRING(objet FROM 1 FOR 1)="'.$abbr.'" AND time>'.(time() - $mois). ' AND id_vendeur != '.joueur::get_perso()->get_id();
 		}
 		$objets = array();
 		$req = $db->query($requete);
@@ -203,7 +205,7 @@ class interf_vente_hdv extends interf_cont
 		{
 			$abbr = objet_invent::get_abbrev($categorie);
 			$royaumes = interf_achat_hdv::get_royaumes($royaume);
-			$requete = 'SELECT * FROM hotel WHERE type = "achat" AND race IN ('.implode($royaumes, ',').') AND SUBSTRING(objet FROM 1 FOR 1)="'.$abbr.'" AND time>'.(time() - $duree). ' AND id_vendeur != '.joueur::get_perso()->get_id();
+			$requete = 'SELECT * FROM hotel WHERE type = "achat" AND race IN ('.implode(',', $royaumes).') AND SUBSTRING(objet FROM 1 FOR 1)="'.$abbr.'" AND time>'.(time() - $duree). ' AND id_vendeur != '.joueur::get_perso()->get_id();
 		}
 		$req = $db->query($requete);
 		while( $res = $db->read_assoc($req) )

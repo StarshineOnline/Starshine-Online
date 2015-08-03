@@ -50,6 +50,7 @@ class interf_inventaire extends interf_cont
     $onglets_slots->add_onglet('Artisanat', self::url.'?action=sac&slot=artisanat', 'tab_artisanat', 'invent', $slot=='artisanat');
     $onglets_slots->get_onglet('tab_'.$slot)->add( new interf_invent_sac($perso, $slot, $modif) );
     interf_base::code_js( '$( "#slots" ).droppable({accept: ".equipe", activeClass: "invent_cible", hoverClass: "invent_hover", drop: drop_func});' );
+    $perso->get_accessoires();
     $onglets_slots->add( new interf_bal_smpl('span', $perso->get_encombrement().' / '.$perso->get_max_encombrement(), 'encombrement') )->set_tooltip('Encombrement');
   }
 }

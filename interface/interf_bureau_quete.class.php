@@ -112,7 +112,7 @@ class interf_bureau_quete_descr extends interf_ville
 		include_once(root.'interface/interf_quetes.class.php');
 		$div->add( new interf_descr_quete($quete, $etape) );
 		// Lien pour prendre la quête
-		$this->centre->add( new interf_lien('Prendre', $G_url->get(array('action'=>'prendre', 'id'=>$quete->get_id())), 'ville_bas') );
+		$this->centre->add( new interf_lien('Prendre', $G_url->get(array('action'=>'prendre', 'id'=>$quete->get_id(), 'origine'=>$quete->get_fournisseur())), 'ville_bas') );
 	}
 }
 					

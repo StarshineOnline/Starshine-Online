@@ -55,9 +55,24 @@ case 'description':
 	$interf_princ->maj_tooltips();
 	exit;
 case 'prendre':
-	if($perso->prend_quete($_GET['id']) )
+	if($perso->prend_quete(sSQL($_GET['id'])) )
 	{
 		/// @todo ajouter un message : 'Merci de votre aide !'
+	}
+	if(  array_key_exists('origine', $_GET) )
+	{
+		switch($_GET['origine'])
+		{
+		case 'ecole_combat':
+			$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, 'quetes') );
+			exit;
+		case 'taverne':
+			$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $G_interf->creer_tbl_quetes($R, 'taverne')) );
+			exit;
+		case 'alchimiste':
+			$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $case, 'quetes') );
+			exit;
+		}
 	}
 	break;
 case 'prendre_tout' :

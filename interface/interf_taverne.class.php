@@ -73,7 +73,10 @@ class interf_taverne extends interf_ville_onglets
 		// Onglets
 		if( !$interf )
 			$interf = $G_interf->creer_taverne_repos($royaume);
-		$onglet = substr(get_class($interf), 15);
+		if( get_class($interf) == 'interf_tbl_quetes' )
+			$onglet = 'tab_quetes';
+		else
+			$onglet = substr(get_class($interf), 15);
 		$this->onglets->add_onglet('Repos', 'taverne.php?ajax=2&type=repos', 'tab_repos', 'ecole_mag', $onglet=='repos');
 		$this->onglets->add_onglet('Bar', 'taverne.php?ajax=2&type=bar', 'tab_bar', 'ecole_mag', $onglet=='bar');
 		$this->onglets->add_onglet('Jeux', 'taverne.php?ajax=2&type=jeux', 'tab_jeux', 'ecole_mag', $onglet=='jeux');

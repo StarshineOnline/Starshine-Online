@@ -440,7 +440,7 @@ abstract class objet_invent extends table
     global $db;
     // On vérifie qu'il n'est pas déjà au maximum d'objets en vente
     /// @todo à améliorer
-    $requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$perso->get_id();
+    /*$requete = 'SELECT COUNT(*) FROM hotel WHERE type = "vente" AND id_vendeur = '.$perso->get_id();
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
 		$objet_max = 10;
@@ -449,7 +449,7 @@ abstract class objet_invent extends table
 		if($row[0] >= $objet_max)
 		{
 		   $princ->add( new interf_alerte('danger', true) )->add_message('Vous avez déjà '.$objet_max.' objets ou plus en vente.');
-		}
+		}*/
     // On vérifie que le prix est positif
     if( $prix < 0 )
     {
