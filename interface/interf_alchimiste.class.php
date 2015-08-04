@@ -12,7 +12,7 @@ class interf_alchimiste extends interf_ville_onglets
 {
 	function __construct(&$royaume, &$case, $onglet, &$elt=null)
 	{
-		global $db;
+		global $db, $G_interf;
 		parent::__construct($royaume, $case);
 		
 		// Icone
@@ -38,6 +38,9 @@ class interf_alchimiste extends interf_ville_onglets
 		// Jauges
 		$this->set_jauge_ext($nbr_rec, $nbr_rec_tot, 'avance', 'Recettes débloquées : ');
 		$this->set_jauge_int($nbr_rec_connues, $nbr_rec, 'avance', 'Recettes débloquées : ');	
+		
+		if( $type=='quetes' && quete::get_nombre_quetes(joueur::get_perso(), $royaume, 'alchimiste') == 0 )
+			$type = 'recherche';
 		
 		// Onglets
 		$this->onglets->add_onglet('Recherches', '', 'tab_recherche', 'ecole_mag', $onglet=='recherche');

@@ -33,14 +33,10 @@ $entite = entitenj_constr::factory($type, $_GET['id']);
 if( !$entite )
 	security_block(URL_MANIPULATION, 'Mauvais type');
 // Saboté ? 
-$buffs = $entite->get_buff();
-foreach($buffs as $b)
+if( $entite->get_buff_actif('sabotage') )
 {
-	if ($b->type == 'sabotage')
-	{
-		$cadre->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Ce bâtiment est saboté') );
-		exit;
-	}
+	$cadre->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Ce bâtiment est saboté') );
+	exit;
 }
 //Calcul de la distance entre le joueur et le placement
 if( $perso->calcule_distance($entite) )

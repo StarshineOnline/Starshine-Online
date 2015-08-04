@@ -18,6 +18,9 @@ class interf_ecole_combat extends interf_ville_onglets
 		$this->icone = $this->set_icone_centre('ecole-combat');
 		$niveau = $this->recherche_batiment('ecole_combat');
 		
+		if( $type=='quetes' && quete::get_nombre_quetes(joueur::get_perso(), $royaume, 'ecole_combat') == 0 )
+			$type = 'comp_jeu';
+		
 		// Onglets
 		$this->onglets->add_onglet('Hors combat', 'ecole.php?type=comp_jeu&ajax=2', 'tab_ecole_comp_jeu', 'ecole_mag', $type=='comp_jeu');
 		$this->onglets->add_onglet('Combat', 'ecole.php?type=comp_combat&ajax=2', 'tab_ecole_comp_combat', 'ecole_mag', $type=='comp_combat');

@@ -67,7 +67,8 @@ case 'prendre':
 			$interf_princ->set_gauche( $G_interf->creer_ecole_combat($R, 'quetes') );
 			exit;
 		case 'taverne':
-			$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $G_interf->creer_tbl_quetes($R, 'taverne')) );
+			$onglet = quete::get_nombre_quetes($perso, $royaume, 'taverne') ? $G_interf->creer_tbl_quetes($R, 'taverne') : null;
+			$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $onglet) );
 			exit;
 		case 'alchimiste':
 			$interf_princ->set_gauche( $G_interf->creer_alchimiste($R, $case, 'quetes') );
