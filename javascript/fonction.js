@@ -487,6 +487,15 @@ function fin_aide()
 	elt_aide_aff = null;
 }
 
+function aff_sousmenu(elt)
+{
+	if( $(elt.nextSibling.nextSibling).attr('style') != 'display:block' )
+	{
+		$('.dropdown-submenu>.dropdown-menu').removeClass('show');
+		$('.dropdown-submenu:hover>.dropdown-menu').addClass('show');
+	}
+}
+
 // anciennes fonctions (tri à faire)
 
 function envoiInfoPost(page,position)

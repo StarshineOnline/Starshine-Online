@@ -612,12 +612,13 @@ class interf_sous_menu extends interf_bal_cont
    * Constructeur
    * @param  $nom
    */
-  function __construct($nom=false, $lien=false, $id=false, $classe=false, $classe_ul=false)
+  function __construct($nom=false, $lien=false, $id=false, $classe=false, $classe_ul=false, $onmouseover=false)
   {
     parent::__construct('li', $id, $classe);
     $this->nom = $nom;
     $this->lien = $lien;
     $this->classe_ul = $classe_ul;
+    $this->onmouseover = $onmouseover;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   function debut()
@@ -626,7 +627,7 @@ class interf_sous_menu extends interf_bal_cont
     if( $this->nom )
     {
     	if( $this->lien )
-      	$this->ligne('<a tabindex="-1" href="#">'.$this->nom.'</a>');
+      	$this->ligne('<a tabindex="-1" href="#"'.($this->onmouseover?' onmouseover="'.$this->onmouseover.'"':'').'>'.$this->nom.'</a>');
     	else
       	$this->ligne('<span>'.$this->nom.'</span>');
 		}

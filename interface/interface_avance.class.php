@@ -788,7 +788,8 @@ class interf_dropdown_select extends interf_bal_cont
 	}
   function &nouv_groupe($label, $sous_groupe=false)
 	{
-		$grp = new interf_sous_menu($label, true, false, 'dropdown-submenu', 'dropdown-menu');
+		$grp = new interf_sous_menu($label, true, false, 'dropdown-submenu', 'dropdown-menu', 'aff_sousmenu(this)');
+		//$grp->get_lien()->set_attribut('onmouseover', 'aff_sousmenu()');
 		if( $sous_groupe && $this->groupe )
 		{
 			array_push($this->pile_groupes, $this->groupe);
