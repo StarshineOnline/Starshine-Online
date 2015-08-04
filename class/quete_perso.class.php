@@ -173,6 +173,7 @@ class quete_perso extends table
 	{
 		/// Quêtes du personnage
 		$quetes_perso = quete_perso::create('id_perso', $perso->get_id());
+		$msg = '';
 		foreach($quetes_perso as $qp)
 		{
 			// Avancements
@@ -272,14 +273,14 @@ class quete_perso extends table
 								{
 									$membre = $row['pid'] == $perso->get_id() ? $perso : new perso($row['pid']);
 									$qpm = new quete_perso($row);
-									$etape->fin($membre, $option == ':silencieux');
+									$msg .= $etape->fin($membre, $option == ':silencieux');
 									$qpm->perso = &$membre;
 									$suiv = $qpm->fin($option);
 								}
 							}
 							else
 							{
-								$etape->fin($perso, $option == ':silencieux');
+								$msg .= $etape->fin($perso, $option == ':silencieux');
 								$qp->perso = &$perso;
 								$suiv = $qp->fin($option);
 							}
@@ -305,7 +306,7 @@ class quete_perso extends table
 						}
 						break;
 					case 'individuel':
-						$etape->fin($perso, $option == ':silencieux');
+						$msg .= $etape->fin($perso, $option == ':silencieux');
 						$qp->perso = &$perso;
 						$qp->fin($option);
 					}
@@ -314,6 +315,7 @@ class quete_perso extends table
 					$qp->sauver();
 			}
 		}
+		return $msg; 
 	}
 	protected function fin($option)
 	{

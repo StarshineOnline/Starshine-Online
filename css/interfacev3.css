@@ -71,7 +71,7 @@ a:hover, a:focus
 #mort {float: left; width: 50%;}
 #mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px;margin:8px;}*/
 
-/*-- Correction bootstrap --------------------------------------------------*/
+/*-- Correction bootstrap & datatables --------------------------------------------------*/
 
 #barre_menu
 {
@@ -164,6 +164,13 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 .dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
 .dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
 .dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button
+{
+	padding: 0;
+	margin: 0;
+	border: none !important;
+}
 
 /*-- Basics elements --------------------------------------------------*/
 /*#global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }

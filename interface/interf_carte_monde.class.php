@@ -79,7 +79,7 @@ class interf_carte_monde extends interf_bal_cont
 		if( $this->options )
 		{
 			$this->ajout_filtre('barbares', '-.7 .7 .5 0 0');
-			$this->ajout_filtre('corrompus', '5 3 1 0 0', '.4 0');
+			$this->ajout_filtre('corrompus', '5 3 1 0 0', '.4 0', .5, true);
 			$this->ajout_filtre('edb', '-2 2 -1 0 0');
 			$this->ajout_filtre('mv', '4 1 5 0 0', '0 .4 0');
 			$this->ajout_filtre('trolls', '1 -2 -2 0 0');
@@ -241,7 +241,7 @@ class interf_carte_monde extends interf_bal_cont
 		$lien = $this->options->add( new interf_bal_smpl('a', $nom, 'opt_'.$id, 'list-group-item') );
 		$lien->set_attribut('onclick', 'return carte_royaume(\''.$id.'\');');
 	}
-	protected function ajout_filtre($id, $matrice, $table='0 .4', $rouge=.5)
+	protected function ajout_filtre($id, $matrice, $table='0 .4', $rouge=.5, $funcr=false)
 	{
 		/// @bug reste noir au lieu de rouge pour les corrompus
 		$filtre = $this->svg->add( new interf_bal_cont('filter', 'filtre_'.$id) );
@@ -254,6 +254,12 @@ class interf_carte_monde extends interf_bal_cont
 			$funca = $transfer->add( new interf_bal_smpl('fefunca') );
 			$funca->set_attribut('type', 'discrete');
 			$funca->set_attribut('tableValues', $table);
+			if( $funcr )
+			{
+				$funcr = $transfer->add( new interf_bal_smpl('fefuncr') );
+				$funcr->set_attribut('type', 'discrete');
+				$funcr->set_attribut('tableValues', $table);
+			}
 		}
 	}
 }

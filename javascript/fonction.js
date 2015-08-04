@@ -4,8 +4,9 @@
 function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();
-  $("[data-toggle='tooltip']").tooltip('hide');
-  $("[data-toggle='popover']").tooltip('hide');
+  /*$("[data-toggle='tooltip']").tooltip('hide');
+  $("[data-toggle='popover']").tooltip('hide');*/
+	$(".popover").remove();
   var maj_tooltip = false;
   $(data).find('section').each( function()
   {
@@ -667,7 +668,8 @@ function chargerPopover(elt, id, pos, url, titre)
     e.data('bs.popover').options.content = d;
     e.popover('show');
   });
-  document.getElementById(elt).onclick = "";
+  e.attr('onclick', '');
+  e.attr('data-toggle', 'popover');
 }
 
 function getWait()

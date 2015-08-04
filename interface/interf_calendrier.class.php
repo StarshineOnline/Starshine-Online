@@ -11,7 +11,7 @@ class interf_calendrier extends interf_tableau
 		parent::__construct('calendrier', 'table table-striped table-condensed');
 		$this->nouv_cell('Moment');
 		$this->nouv_cell('Date');
-		$this->nouv_cell('Durée');
+		$this->nouv_cell('Dans');
 		
 	  $moments = array("Matin", "Journee", "Soir", "Nuit");
 	  $durees = array(4, 6, 4, 10);

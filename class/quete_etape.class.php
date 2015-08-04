@@ -392,12 +392,6 @@ class quete_etape extends quete
 			}
 		}
 		/// @todo gains du groupe
-		// Texte
-		if( !$cache )
-			interf_alerte::enregistre(interf_alerte::msg_succes, $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.');
-		// Mis dans le journal
-		$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", 'f_quete', '".$perso->get_nom()."', '', NOW(), '".addslashes($nom)."', 0, 0, 0)";
-		$db->query($requete);
 		// On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies
 		$quete_fini = explode(';', $perso->get_quete_fini());
 		if(!in_array($id_quete, $quete_fini))
@@ -406,6 +400,15 @@ class quete_etape extends quete
 			$perso->set_quete_fini(implode(';', $quete_fini));
 		}
 		$perso->sauver();
+		// Texte
+		if( !$cache )
+		{
+			// Mis dans le journal
+			$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", 'f_quete', '".$perso->get_nom()."', '', NOW(), '".addslashes($nom)."', 0, 0, 0)";
+			$db->query($requete);
+			return $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.</br>';
+		}
+		return '';
 	}
 	function gain_groupe(&$perso)
 	{

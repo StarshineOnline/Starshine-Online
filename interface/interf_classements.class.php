@@ -185,8 +185,8 @@ class interf_classement_perso_tous extends interf_pills
 		$this->add_elt('Magie élémentaire', $G_url->get('type', 'sort_element'), $type=='sort_element', 'Magie');
 		$this->add_elt('Nécromancie', $G_url->get('type', 'sort_mort'), $type=='sort_mort', 'Magie');
 		$this->add_elt('Magie de la vie', $G_url->get('type', 'sort_vie'), $type=='sort_vie', 'Magie');
-		$this->add_elt('Dressage', $G_url->get('type', 'esquive'), $type=='dressage');
-		$this->add_elt('Survie', $G_url->get('type', 'esquive'), $type=='survie');
+		$this->add_elt('Dressage', $G_url->get('type', 'dressage'), $type=='dressage');
+		$this->add_elt('Survie', $G_url->get('type', 'survie'), $type=='survie');
 		$this->add_elt('Artisanat', $G_url->get('type', 'artisanat'), $type=='artisanat');
 		
 		switch($type)

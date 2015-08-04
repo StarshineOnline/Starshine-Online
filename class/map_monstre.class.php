@@ -566,7 +566,7 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-		$msg_xp = '';
+		$msg_xp = $quetes = '';
 	
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
@@ -752,13 +752,15 @@ class map_monstre extends entnj_incarn
 				//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
 				if($this->get_hp() <= 0)
 				{
-					if($membre->get_id() == $perso->get_id()) quete_perso::verif_action('M'.$this->get_type(), $membre, 's');
-					else quete_perso::verif_action('M'.$this->get_type(), $membre, 'g');
+					if($membre->get_id() == $perso->get_id())
+						$quetes .= quete_perso::verif_action('M'.$this->get_type(), $membre, 's');
+					else
+						$quetes .= quete_perso::verif_action('M'.$this->get_type(), $membre, 'g');
 				}
 				$membre->sauver();
 			}
 		}
-		return $msg_xp.$objets;
+		return $msg_xp.$objets.$quetes;
 	}
 
 	function dernieres_paroles() {
