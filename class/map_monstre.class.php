@@ -711,12 +711,14 @@ class map_monstre extends entnj_incarn
 					if($objet[0] == 'q')
 					{
 						$check = false;
-						$liste_quete = $perso->get_liste_quete();
-						$count_quete = count($liste_quete);
-						foreach($liste_quete as $q)
+						$liste_quete = quete_perso::create('id_perso', $perso->get_id());
+						if( $liste_quete )
 						{
-							if($q->get_id_quete() == $share[1])
-								$check = true;
+							foreach($liste_quete as $q)
+							{
+								if($q->get_id_quete() == $share[1])
+									$check = true;
+							}
 						}
 						if($check) $tirage = 1;
 						else $tirage = 2;

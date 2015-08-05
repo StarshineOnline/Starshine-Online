@@ -956,6 +956,7 @@ class comp_combat_dissim extends comp_combat_etat
     $attaque->add_log_combat('c'.$this->get_id());
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
+    $attaque->get_interface()->competence($this->get_type(), $actif->get_nom(), $this->get_nom());
     $bonus = 1;
 		if ($actif->get_type() == 'joueur')
 		{ // à déplacer
