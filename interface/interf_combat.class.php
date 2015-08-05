@@ -49,7 +49,7 @@ class interf_combat extends interf_bal_cont
 			$liens = $res->add( new interf_bal_cont('div', 'liens_combat') );
 			if( $defenseur->get_hp() > 0 )
 			{
-				$att = $liens->add( new interf_lien('', $G_url->get(), false, 'icone icone-attaque') );
+				$att = $liens->add( new interf_lien('', $G_url->get(), false, 'icone icone-attaque', false, 'icone icone-charger') );
 				$att->set_tooltip('Attaquer à nouveau');
 			}
 			$case = convert_in_pos($defenseur->get_x(), $defenseur->get_y());

@@ -2020,9 +2020,14 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	color: black;
 }
 
-#liens_combat a:first-child
+/*#liens_combat a:first-child
 {
 	border-bottom: 1px solid #FFF;
+}*/
+
+#liens_combat a:nth-child(2)
+{
+	border-top: 1px solid #FFF;
 }
 
 #messages_fin
@@ -4165,7 +4170,8 @@ body.aide-active
 
 
 
-#icone-sso.icone-charger, #icone-sso.icone-charger2, #icone-sso.icone-charger3, #icone-sso.icone-charger4
+/*#icone-sso.icone-charger, #icone-sso.icone-charger2, #icone-sso.icone-charger3, #icone-sso.icone-charger4*/
+.icone-charger
 {
   animation-name:charger_rot;
   animation-duration:1.76s;
