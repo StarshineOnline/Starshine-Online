@@ -55,31 +55,31 @@ function aff_erreur(contenu, donnees, icone/*='bug'*/)
 {
 	if( icone == undefined )
 		icone = 'bug';
-		var cont = document.getElementById('contenu_jeu');
-		var alerte = document.createElement('div');
-		alerte.className = 'alert alert-danger alert-dismissable';
-		cont.insertBefore(alerte, cont.firstChild);
-		alerte.style = 'margin-top: 5px;'
-		var btn = document.createElement('button');
-		btn.className = 'close';
-		btn.setAttribute('aria-hidden', 'true');
-		btn.setAttribute('data-dismiss', 'alert');
-		btn.type = 'button';
-		btn.innerHTML = '&times;';
-		alerte.appendChild(btn);
-		var ico = document.createElement('a');
-		ico.className = 'icone icone-'+icone;
-		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
-		ico.style = 'margin-right: 5px;'
-		alerte.appendChild(ico);
-		var txt = document.createElement('span');
-		txt.innerHTML = contenu;
-		alerte.appendChild(txt);
-		var recept = document.createElement('div');
-		recept.innerHTML = donnees;
-		recept.id = 'erreur_recu';
-		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
-		alerte.appendChild(recept);
+	var cont = document.getElementById('contenu_jeu');
+	var alerte = document.createElement('div');
+	alerte.className = 'alert alert-danger alert-dismissable';
+	cont.insertBefore(alerte, cont.firstChild);
+	alerte.style = 'margin-top: 5px;'
+	var btn = document.createElement('button');
+	btn.className = 'close';
+	btn.setAttribute('aria-hidden', 'true');
+	btn.setAttribute('data-dismiss', 'alert');
+	btn.type = 'button';
+	btn.innerHTML = '&times;';
+	alerte.appendChild(btn);
+	var ico = document.createElement('a');
+	ico.className = 'icone icone-'+icone;
+	ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
+	ico.style = 'margin-right: 5px;'
+	alerte.appendChild(ico);
+	var txt = document.createElement('span');
+	txt.innerHTML = contenu;
+	alerte.appendChild(txt);
+	var recept = document.createElement('div');
+	recept.innerHTML = donnees;
+	recept.id = 'erreur_recu';
+	recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
+	alerte.appendChild(recept);
 }
 
 function charger(page)
@@ -856,12 +856,6 @@ function show_debug_log()
 
 function clear_debug_log() { $('#debug_log').text(''); $('#popup_content').text(''); }
 
-function remplir(destination, valeur, source)
-{
-	$('#'+destination).val(valeur);
-	$('#'+source).hide();
-}
-
 function findPos(obj)
 {
 	var curleft = obj.offsetLeft || 0;
@@ -874,7 +868,7 @@ function findPos(obj)
 	return {x:curleft,y:curtop};
 }
 
-function suggestion(valeur, cible, origine)
+function suggestion(valeur, cible, origine, race)
 {
 	if(valeur.length == 0)
 	{
@@ -882,19 +876,28 @@ function suggestion(valeur, cible, origine)
 	}
 	else
 	{
-		$.post("poste_pseudo.php", {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+""}, 
+		if( race == undefined )
+			var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+""};
+		else
+			var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+"", race: race};
+		$.post("poste_pseudo.php", param, 
 		function(data)
 		{
      	 	if(data.length >0) 
-        	{
+        {
         		var tmp = document.getElementById(cible);
 	        	tmp.innerHTML = data;
-				$('#'+cible).show();
-			}
-        });
-		pos = findPos(document.getElementById(origine));
-		$('#'+cible).css({top: (pos.y + 20) + "px", left: pos.x + "px"});
+					$('#'+cible).show();
+					$('#'+cible).children('ul').show();
+				}
+    });
 	}
+}
+
+function remplir(destination, valeur, source)
+{
+	$('#'+destination).val(valeur);
+	$('#'+source).hide();
 }
 
 var Sound = {

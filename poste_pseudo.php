@@ -21,14 +21,14 @@ include_once(root.'fonction/security.inc.php');
         $queryString = sSQL($_POST['queryString']);
         if(strlen($queryString) >0) 
         {
-
-	        $requeteSQL = $db->query("SELECT nom FROM perso WHERE nom LIKE '$queryString%' LIMIT 10");
+        	$race = array_key_exists('race', $_POST) ? ' AND race = "'.$_POST['race'].'"' : '';
+	        $requeteSQL = $db->query("SELECT nom FROM perso WHERE nom LIKE '$queryString%' ".$race." LIMIT 10");
     	    if($db->num_rows($requeteSQL) > 0) 
     	    {
     	    	
-    	    	echo '<ul>';
+    	    	echo '<ul class="dropdown-menu">';
 	            while ($result = $db->read_object($requeteSQL))
-    	            echo '<li onclick="remplir(\''.$_POST['origine'].'\', \''.$result->nom.'\', \''.$_POST['cible'].'\');">'.$result->nom.'</li>';
+    	            echo '<li><a onclick="remplir(\''.$_POST['origine'].'\', \''.$result->nom.'\', \''.$_POST['cible'].'\');">'.$result->nom.'</a></li>';
     	        echo '</ul>';
         	} 
     	} 

@@ -229,9 +229,13 @@ class interf_candidature extends interf_vie_royaume_base
 		$type->add_option('nomination', 'nomination', $val_type=='nomination');
 		// Ministres
 		$min_eco = $form->add_champ_bs('text', 'ministre_economie', null, $val_min_eco, 'Ministre de l\'économie', false, 'ministre_economie');
-		$min_eco->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion_mil\', this.id)');
+		$min_eco->set_attribut('autocomplete', 'off');
+		$min_eco->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion_eco\', this.id, \''. $this->perso->get_race().'\')');
+		$form->add( new interf_bal_cont('div', 'suggestion_eco', 'dropdown') );
 		$min_mil = $form->add_champ_bs('text', 'ministre_militaire', null, $val_min_mil, 'Ministre militaire', false, 'ministre_militaire');
-		$min_mil->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion_eco\', this.id)');
+		$min_mil->set_attribut('autocomplete', 'off');
+		$min_mil->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion_mil\', this.id, \''. $this->perso->get_race().'\')');
+		$form->add( new interf_bal_cont('div', 'suggestion_mil', 'dropdown') );
 		// Programme
 		$div_prog = $form->add( new interf_bal_cont('div') );
 		$div_prog->add( new interf_bal_smpl('label', 'Programme électoral') );

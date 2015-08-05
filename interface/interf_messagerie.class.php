@@ -212,14 +212,15 @@ class interf_nouveau_message extends interf_form
 			if( $id )
 			{
 				$perso = new perso($id);
-				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', $perso->get_nom(), false, 'form-control') );
-				//$dest->set_attribut('disabled', 'disabled');
+				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', $perso->get_nom(), 'destinataire', 'form-control') );
+				$dest->set_attribut('readonly', 'readonly');
 			}
 			else
 			{
-				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', false, false, 'form-control') );
+				$dest = $div_dest->add( new interf_chp_form('text', 'destinataire', 'Destinataire', false, 'destinataire', 'form-control') );
+				$dest->set_attribut('autocomplete', 'off');
 				$dest->set_attribut('onkeyup', 'javascript:suggestion(this.value, \'suggestion\', this.id);');
-				$div_dest->add( new interf_bal_cont('div', 'suggestion') );
+				$div_dest->add( new interf_bal_cont('div', 'suggestion', 'dropdown') );
 			}
 		}
 		else if( $id )
