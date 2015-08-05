@@ -21,16 +21,22 @@ class buff_actif extends effect
 		$pass = array();
     $passives = array_merge($pass, self::$esquive_buff);
     $passives = array_merge($pass, self::$esquive_magique_buff);
-    foreach ($actif->get_buff() as $type => $buff) {
-      if (in_array($type, $actives)) {
-				$effects[] = new buff_actif($type, $buff, 'actif');
-      }
-    }
-    foreach ($passif->get_buff() as $type => $buff) {
-      if (in_array($type, $passives)) {
-				$effects[] = new buff_actif($type , $buff, 'passif');
-      }
-    }
+    if( $actif->get_buff() )
+    {
+	    foreach ($actif->get_buff() as $type => $buff)
+			{
+	      if (in_array($type, $actives))
+					$effects[] = new buff_actif($type, $buff, 'actif');
+	    }
+		}
+		if( $passif->get_buff() )
+		{
+	    foreach ($passif->get_buff() as $type => $buff)
+			{
+	      if (in_array($type, $passives))
+					$effects[] = new buff_actif($type , $buff, 'passif');
+	    }
+		}
 	}
 
 	var $type;

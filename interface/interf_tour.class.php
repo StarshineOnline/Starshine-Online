@@ -135,7 +135,7 @@ class interf_tour extends interf_batiment
 		}
 	
 		// Bâtiments construits
-		$requete = 'SELECT c.id, c.nom, c.x, c.y, c.hp, b.nom as nom_bat, b.image, b.type, b.hp AS hp_max, r.race, d.'.$this->perso->get_race().' AS diplo, GREATEST(ABS('.$this->tour->get_x().' - c.x), ABS('.$this->tour->get_y().' - c.y)) as distance FROM	construction c INNER JOIN batiment b ON b.id = c.id_batiment INNER JOIN royaume r ON r.id = c.royaume INNER JOIN diplomatie AS d ON r.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, b.type, b.nom';
+		$requete = 'SELECT c.id, c.nom, c.x, c.y, c.hp, b.nom as nom_bat, b.image, b.type, b.hp AS hp_max, r.race, d.'.$this->perso->get_race().' AS diplo, GREATEST(ABS('.$this->tour->get_x().' - CAST(c.x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(c.y AS SIGNED))) as distance FROM	construction c INNER JOIN batiment b ON b.id = c.id_batiment INNER JOIN royaume r ON r.id = c.royaume INNER JOIN diplomatie AS d ON r.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $this->distance).' AND '.($this->tour->get_x() + $this->distance).' AND y BETWEEN '.($this->tour->get_y() - $this->distance).' AND '.($this->tour->get_y() + $this->distance).' ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, b.type, b.nom';
     $req = $db->query($requete);
     while($row = $db->read_assoc($req))
 		{

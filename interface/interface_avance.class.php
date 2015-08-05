@@ -490,7 +490,12 @@ class interf_lien extends interf_bal_smpl
 	{
 		parent::__construct('a', $texte, $id, $classe);
 		$this->set_attribut('href', $cible);
-		$pre = $classe_click ? 'this.className=\''.$classe_click.'\';this.onclick=null;' : '';
+		if( $classe_click === true )
+			$pre = 'this.className=\'icone icone-charger\';this.onclick=null;';
+		else if( $classe_click )
+			$pre = 'this.className=\''.$classe_click.'\';this.onclick=null;';
+		else
+			$pre = '';
 		if( $verif )
 			$this->set_attribut('onclick', $pre.'return verif_charger(this.href, \''.$verif.'\');');
 		else
@@ -541,7 +546,7 @@ class interf_jauge_bulle extends interf_bal_cont
 		if( $nom )
     	$this->set_tooltip($nom.'&nbsp;: '.$valeur.' / '.$maximum, 'bottom', '#contenu');
     $barre = $this->add( new interf_bal_cont('div', null, 'bulle jauge-'.$type) );
-    $pourcent = round($valeur / $maximum * 100, 0).'%';
+    $pourcent = $maximum ? round($valeur / $maximum * 100, 0).'%' : '0%';
     $barre->set_attribut('style', 'height:'.$pourcent);
     if( $grand )
     {

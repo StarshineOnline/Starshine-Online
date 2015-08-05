@@ -102,7 +102,7 @@ class interf_classement_royaumes extends interf_pills
 			$tbl->nouv_cell( $i );
 			$tbl->nouv_cell( $Gtrad[$row['race']] );
 			$tbl->nouv_cell( number_format($row['tot'], 0, ',', ' ') );
-			$tbl->nouv_cell( number_format(($row['tot'] / $tbl->pop[$row['race']]), 0, ',', ' ') );
+			$tbl->nouv_cell( $tbl->pop[$row['race']] ? number_format($row['tot'] / $tbl->pop[$row['race']], 0, ',', ' ') : '0' );
 			$i++;
 		}
 	}

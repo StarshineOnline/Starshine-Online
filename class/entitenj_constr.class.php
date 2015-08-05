@@ -241,7 +241,7 @@ abstract class entitenj_constr extends entnj_incarn
 	function get_buff_actif($type)
 	{
 		global $db;
-		if( $this->buff == null )
+		if( $this->buff != null )
 		{
 			if( array_key_exists($type, $this->buff) )
 			{
@@ -259,7 +259,7 @@ abstract class entitenj_constr extends entnj_incarn
 		}
 		else
 		{
-			$requete = 'SELECT b.* FROM buff_batiment AS b LEFT JOIN perso AS p ON b.id_perso = p.id WHERE b.id_'.get_class().'='.$this->id.' AND b.type="'.$type.'" AND (b.id_perso=0 OR (p.x BETWEEN '.($this->x-10).' AND '.($this->x+10).' AND p.y BETWEEN '.($this->y-10).' AND '.($this->y+10).')) ORDER BY effet DESC, effet2 DESC LIMIT 0, 1';
+			$requete = 'SELECT b.* FROM buff_batiment AS b LEFT JOIN perso AS p ON b.id_perso = p.id WHERE b.id_'.$this->get_table().'='.$this->id.' AND b.type="'.$type.'" AND (b.id_perso=0 OR (CAST(p.x AS SIGNED) BETWEEN '.($this->x-10).' AND '.($this->x+10).' AND CAST(p.y AS SIGNED) BETWEEN '.($this->y-10).' AND '.($this->y+10).')) ORDER BY effet DESC, effet2 DESC LIMIT 0, 1';
 			$req = $db->query($requete);
 			$row = $db->read_assoc($req);
 			return $row ? new buff_batiment($row) : null;
