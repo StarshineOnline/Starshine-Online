@@ -146,7 +146,7 @@ CREATE TABLE IF NOT EXISTS `quete_etape` (
   `id_quete` int(10) NOT NULL,
   `etape` int(10) NOT NULL DEFAULT '1',
   `variante` int(11) DEFAULT '0',
-  `titre` varchar(50) NOT NULL,
+  `nom` varchar(50) NOT NULL,
   `description` text NOT NULL,
   `niveau` int(10) NOT NULL DEFAULT '1',
   `objectif` text NOT NULL,

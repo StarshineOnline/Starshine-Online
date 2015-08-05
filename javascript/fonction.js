@@ -4,8 +4,7 @@
 function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();
-  /*$("[data-toggle='tooltip']").tooltip('hide');
-  $("[data-toggle='popover']").tooltip('hide');*/
+	$(".tooltip").remove();
 	$(".popover").remove();
   var maj_tooltip = false;
   $(data).find('section').each( function()

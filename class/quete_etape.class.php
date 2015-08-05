@@ -8,12 +8,12 @@
  * Classe représentant les etapes des quetes
  */
 
-class quete_etape extends quete
+class quete_etape extends table
 {
-	protected $id;  ///< id de la étape.
 	protected $id_quete;  ///< id de la quete.
 	protected $id_etape;  ///< id de l'étape
 	protected $variante;  
+	protected $nom;  
 	protected $description;  ///< description
 	protected $niveau;  ///< Niveu de l'étape
 	protected $objectif;  ///< objectif de l'étape
@@ -28,7 +28,7 @@ class quete_etape extends quete
 	/**
 	* Constructeur
 	*/
-	function __construct($id ='', $id_quete='', $etape='', $variante='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='', $gain_groupe ='', $init='')
+	function __construct($id ='', $id_quete='', $etape='', $variante='', $nom='', $description='', $niveau= 1 , $objectif='', $collaboration='', $requis='', $gain_perso='', $gain_groupe ='', $gain_groupe ='', $init='')
 	{
 		
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
@@ -42,6 +42,7 @@ class quete_etape extends quete
 			$this->id_quete = $id_quete;
 			$this->etape = $etape;
 			$this->variante = $variante;
+			$this->nom = $nom;
 			$this->description = $description;
 			$this->niveau = $niveau;
 			$this->objectif = $objectif;
@@ -65,6 +66,7 @@ class quete_etape extends quete
 		$this->id_quete = $vals['id_quete'];
 		$this->etape = $vals['etape'];
 		$this->variante = $vals['variante'];
+		$this->nom = $vals['nom'];
 		$this->description = $vals['description'];
 		$this->niveau = $vals['niveau'];
 		$this->objectif = $vals['objectif'];
@@ -126,6 +128,19 @@ class quete_etape extends quete
 	{
 		$this->variante = $variante;
 		$this->champs_modif[] = 'variante';
+	}
+	
+	// Renvoie le nom de l'étape
+	function get_nom()
+	{
+		return $this->nom;
+	}
+	
+	/// Modifie le nom de l'étape
+	function set_nom($nom)
+	{
+		$this->nom = $nom;
+		$this->champs_modif[] = 'nom';
 	}
 	
 	// Renvoie le requis de l'objet

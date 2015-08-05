@@ -313,6 +313,8 @@ abstract class entitenj_constr extends entnj_incarn
 			royaume::supprime_bourg( $this->get_royaume() );
 		}
 		//On retrouve les points de victoire
+		if(!$perso)
+			$perso = joueur::get_perso();
 		$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
     $mult = $royaume->get_mult_victoire( new royaume($this->get_royaume()) );
 		$royaume->add_point_victoire( ceil($this->get_point_victoire() * $mult) );
