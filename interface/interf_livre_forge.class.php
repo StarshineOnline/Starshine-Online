@@ -96,7 +96,10 @@ class interf_livre_forge extends interf_accordeon
 				$obj = objet_invent::factory($recette->get_objet());
 				$li->add( new interf_txt($obj->get_nom().' (0)') );
 			}
-			$style = $complet && $objet ? 'success' : 'default';
+			if( $complet )
+				$style = $objet ? 'success' : 'warning';
+			else
+				$style = 'default';
 			$panneau = $this->nouv_panneau($recette->get_nom(), 'forge_'.$row['id_recette'], false, $style);
 			$panneau->add($liste_descr);
 			$panneau->add($div_ingred);

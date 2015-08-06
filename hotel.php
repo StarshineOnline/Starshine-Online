@@ -207,10 +207,10 @@ case 'suppr':
 		switch($type)
 		{
 		case 'vente':
-			if($joueur->prend_objet($objObjetHotel->objet))
+			if($perso->prend_objet($res['objet']))
 			{
 				$db->query('DELETE FROM hotel WHERE id = '.$_GET["id"]);
-				$db->query('INSERT INTO journal VALUES(NULL, '.$joueur->get_id().', "recup", "", "", NOW(), "'.sSQL(nom_objet($res['objet'])).'", 0, 0, 0)');
+				$db->query('INSERT INTO journal VALUES(NULL, '.$perso->get_id().', "recup", "", "", NOW(), "'.sSQL(nom_objet($res['objet'])).'", 0, 0, 0)');
 				interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous avez bien récupéré votre objet.');
 			}
 			else /// @todo à améliorer

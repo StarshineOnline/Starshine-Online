@@ -1537,7 +1537,7 @@ class perso extends entite
 		$res = array();
 		foreach($partie as $o)
 		{
-			if( strncmp($o, $id, strlen($o)) == 0 )
+			if( objet_invent::get_princ($o) == $id )
 			{
 				$d = objet_invent::decomp_nombre($o);
 				if( array_key_exists($d[0], $res) )
@@ -1588,7 +1588,7 @@ class perso extends entite
    * @param  $id_objet    Id de l'objet.
    * @param  $nombre      Nombre d'objet à supprimer, s'il peut être empiler.
    */  
-	function supprime_objet($id_objet, $nombre)
+	function supprime_objet($id_objet, $nombre=1)
 	{
 		global $db;
 		$i = $nombre;

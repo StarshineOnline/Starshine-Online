@@ -595,6 +595,11 @@ abstract class objet_invent extends table
 	{
 		return strstr($objet, 'f') !== false;
 	}
+	static function get_princ($objet)
+	{
+		$d = preg_split('/[xsef]/', $objet);
+		return $d[0];
+	}
 }
 
 class zone_invent extends objet_invent

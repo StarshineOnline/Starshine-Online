@@ -114,7 +114,10 @@ class interf_livre_alchimie extends interf_accordeon
 				$star_total += $stars;
 			}
 			// Coût
-			$style = $complet && $recip ? 'success' : 'default';
+			if( $complet )
+				$style = $recip ? 'success' : 'warning';
+			else
+				$style = 'default';
 			$panneau = $this->nouv_panneau($recette->nom, 'recette_'.$row['id_recette'], false, $style);
 			$panneau->add( $div_diff );
 			$panneau->add( $div_ingred );

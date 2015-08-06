@@ -61,6 +61,11 @@ class quete_perso extends table
 		return array('id_perso'=>'i', 'id_quete'=>'i', 'id_etape'=>'i', 'avancement'=>'s');
 	}
 	
+	/// Modifie l'étape
+	function get_id_quete()
+	{
+		return $this->id_quete;
+	}
 	/// Renvoie la quete corespondante
 	function &get_quete()
 	{

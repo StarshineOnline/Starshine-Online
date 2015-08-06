@@ -327,7 +327,7 @@ class interf_combat extends interf_bal_cont
 		$this->passe->add( new interf_bal_smpl('p', 'COUP CRITIQUE !', false, 'coupcritique') );
 	}
 	
-	function tentative($type, $resultat, $nom_perso, $nom_sort)
+	function tentative($type, $resultat, $nom_perso, $nom_sort=null)
 	{
 		switch($type)
 		{

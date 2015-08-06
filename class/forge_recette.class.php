@@ -445,7 +445,7 @@ class forge_recette extends table
 		case 'enchainement':
 			return '+'.$this->effet_bonus.'% au potentiel toucher et critique après une attaque réussie';
 		case 'vampirisme':
-			return (10+10*$this->effet_bonus).'% de gagner '.$this->effet_bonus.' PV sur une attaque réussie';
+			return (10+10*$this->effet_bonus).'% de chances de gagner '.$this->effet_bonus.' PV sur une attaque réussie';
 		case 'saignement':
 			return $this->effet_bonus.'% de chance d\'infliger 1 dégat à la fin de chaque round jusqu\'à la fin du combat après un critique.';
 		case 'mult_critique':
@@ -479,7 +479,7 @@ class forge_recette extends table
 		case 'mult_critique_mag':
 			return '+'.$this->effet_bonus.'% au multiplicateur critique magique';
 		case 'empoisonner':
-			return '+'.$this->effet_bonus.'% au chances d\'empoisonner';
+			return '+'.$this->effet_bonus.'% aux chances d\'empoisonner';
 		case 'anticipation':
 			return '-'.$this->effet_bonus.' chances de se faire anticiper';
 		case 'critique_adv':
@@ -546,7 +546,7 @@ class forge_recette extends table
 		case 'anticipation':
 			return '+'.$this->effet_malus.' au chances de se faire anticiper';
 		case 'mult_critique':
-			return '- '.$this->effet_malus.'% au multiplicateur';
+			return '- '.$this->effet_malus.'% au multiplicateur de critique';
 		case 'retour':
 			return (10+5*$this->effet_malus).'% de chance de subir '.$this->effet_malus.' lors d\'une attaque réussie';
 		case 'malediction':
@@ -584,7 +584,7 @@ class forge_recette extends table
 		case 'critique_mag':
 			return '-'.$this->effet_malus.'% aux chances de critique magique';
 		case 'mult_critique_adv':
-			return '+ '.$this->effet_malus.'% au multiplicateur critique de l\'adversaire';
+			return '+ '.$this->effet_malus.'% au multiplicateur de critique de l\'adversaire';
 		case 'toucher_phys':
 			return '-'.$this->effet_malus.'% au potentiel toucher physique';
 		case 'degats_etourdissants':
