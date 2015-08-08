@@ -448,8 +448,7 @@ class objet extends objet_equip
 		case 'objet_quete' :
 			if($this->id == 27)
 			{ /// @todo mettre en base
-				?>
-Journal du mage Demtros - Unité aigle -<br /> < Le journal est en très
+$txt = "Journal du mage Demtros - Unité aigle -<br /> < Le journal est en très
 mauvais état, certaines pages sont déchirées, ou rendues illisibles par
 l'humidité et des taches de sang ><br /> <br /> 12 Dulfandal : Nous
 approchons enfin de la cité de Myriandre. Je ne peux expliquer le
@@ -479,8 +478,9 @@ nous nous déplaçons les épées sorties et près au combat, l'ennemi peut
 surgir de n'importe ou. Je n'arrive pas a démêler la trame du sort,
 trop puissant pour moi ... ( taches de sang )<br /> Il faut que
 j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ),
-un nécromancien ( la suite est déchirée ).<br />
-				<?php
+un nécromancien ( la suite est déchirée ).<br />";
+				$dlg = $princ->set_dialogue( new interf_dialogBS($this->nom, true) );
+				$dlg->add( new interf_bal_smp($txt) );
 			}
 		break;
     }

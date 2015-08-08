@@ -703,9 +703,10 @@ function loot_item(&$joueur, &$groupe, $item)
 	$db->query($requete);
 	if ($item[0] != 'r')
 	{
-		$gagnant->restack_objet();
+		//$gagnant->restack_objet();
 		if($type_obj == 'quete')
 		{
+			interf_debug::enregistre('loot item quete : '.$id_objet);
 			quete_perso::verif_action('L'.$id_objet, $gagnant, 's');
 			$gagnant->prend_objet($item);
 		}
