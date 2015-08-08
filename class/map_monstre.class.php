@@ -716,7 +716,7 @@ class map_monstre extends entnj_incarn
 						{
 							foreach($liste_quete as $q)
 							{
-								if($q->get_id_quete() == $share[1])
+								if($q->get_id_etape() == $share[1])
 									$check = true;
 							}
 						}

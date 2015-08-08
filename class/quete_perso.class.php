@@ -75,6 +75,11 @@ class quete_perso extends table
 	}
 	
 	/// Modifie l'étape
+	function get_id_etape()
+	{
+		return $this->id_etape;
+	}
+	/// Modifie l'étape
 	function set_id_etape($valeur)
 	{
 		$this->id_etape = $valeur;

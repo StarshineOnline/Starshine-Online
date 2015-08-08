@@ -345,3 +345,4 @@ UPDATE `pnj` SET `texte` = '(gratte gratte) = (bonjour)\r\n\r\n[ISQUETE:88-e5-v2
 -- monstres liées au quêtes
 UPDATE `monstre` SET `quete` = '97' WHERE `monstre`.`id` = 208;
 UPDATE `monstre` SET `quete` = '98' WHERE `monstre`.`id` = 209;
+UPDATE `monstre` SET `drops` = 'q27-79' WHERE `monstre`.`id` = 57;

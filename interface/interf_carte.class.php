@@ -367,13 +367,18 @@ class interf_carte extends interf_tableau
     }
     
     // sons d'ambiance
-    if( $options & self::act_sons )
+    if( $parent_calques && $options & self::act_sons )
     {
     	$son = $db->query_get_object("select type from map_sound_zone where x1 <= $x and $x <= x2 and y1 <= $y and $y <= y2");
-    	self::code_js('setAmbianceAudio("'.$son->type.'");');
+    	if( $son )
+    	{
+		  	$audio = $parent_calques->add( new interf_bal_cont('audio', 'son_ambiance') );
+		  	$audio->set_attribut('autoplay', 'autoplay');
+		  	$audio->set_attribut('loop', 'loop');
+		  	$audio->add( new interf_bal_smpl('source', null, array('src'=>'image/son/'.$son->type.'.ogg', 'type'=>'audio/ogg') ) );
+		  	$audio->add( new interf_bal_smpl('source', null, array('src'=>'image/son/'.$son->type.'.mp3', 'type'=>'audio/mpeg') ) );
+			}
 		}
-		else
-			self::code_js('setAmbianceAudio();');
 	}
 
   protected function afficher_batiments($cond_bat, $royaumes=false)
@@ -603,7 +608,7 @@ class interf_carte extends interf_tableau
 				$options |=  $row['valeur'];
 				break;
 			case 'no_sound':
-				if( $row['valeur'] == 0)
+				if( $row['valeur'] == 1)
 					$options ^=  self::act_sons;
 				break;
 			}
