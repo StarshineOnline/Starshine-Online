@@ -189,8 +189,8 @@ class interf_carte extends interf_tableau
 					{
 			    	$image = $this->doss_prefixe.'image/interface/calque-atmosphere-'.$row['type'].'.png';
 			    	$c_atm = $parent_calques->add( new interf_bal_smpl('div', false, false, 'calque') );
-			    	$dx = ($this->x_min - $row['x1'])*60;
-			    	$dy = ($this->y_min - $row['y1'])*60;
+			    	$dx = -($this->x_min - $row['x1'])*60;
+			    	$dy = -($this->y_min - $row['y1'])*60;
 			    	$larg = (min($row['x2'], $this->x_max) - $this->x_min + 1) * 60;
 			    	$haut = (min($row['y2'], $this->y_max) - $this->y_min + 1) * 60;
 			    	$c_atm->set_attribut('style', 'background-image: url('.$image.'); background-repeat: repeat;background-position: '.$dx.'px '.$dy.'px; width:'.$larg.'px; height: '.$haut.'px;');
@@ -199,7 +199,6 @@ class interf_carte extends interf_tableau
 			}
 		}
 
-		
     // Éléments à afficher
     if( $options & self::aff_restreint )
     {
