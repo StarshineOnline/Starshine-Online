@@ -202,7 +202,11 @@ class interf_info_perso extends interf_cont
 		}
 		// position
 		/// @todo gérer les coordonnées cachées
-	  $txt = 'Position : '.$pj->get_x().' / '.$pj->get_y().' - '.'distance : '.$distance;
+	  // Nysin ?
+		if( 75 <= $pj->get_x() && $pj->get_x() <= 100 && 288 <= $pj->get_y() && $pj->get_y() <= 305 )
+    	$txt = 'Position : * / * - distance : '.$distance;
+		else
+    	$txt = 'Position : '.$pj->get_x().' / '.$pj->get_y().' - distance : '.$distance;
 	  $div2->add( new interf_bal_smpl('span', $txt, 'pos_pj') );
 		// buffs
 	  $buffs = $div2->add( new interf_bal_cont('div',  'buffs_pj') );

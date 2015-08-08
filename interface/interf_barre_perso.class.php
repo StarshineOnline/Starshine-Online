@@ -213,8 +213,11 @@ class interf_barre_perso extends interf_bal_cont
 	    $pos = $li->add( new interf_bal_cont('div', null, 'membre_lieu') );
 	    $dist = $this->perso->calcule_distance($membre);
 	    $place_buff = $membre->get_grade()->get_nb_buff() - $membre->get_nb_buff();
-			/// @todo gérer les coordonnées cachées
-	    $pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
+			// Nysin
+			if( 75 <= $membre->get_x() && $membre->get_x() <= 100 && 288 <= $membre->get_y() && $membre->get_y() <= 305 )
+	    	$pos->add( new interf_bal_smpl('span', 'Pos. : * / *', null, 'membre_pos') );
+			else
+	    	$pos->add( new interf_bal_smpl('span', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), null, 'membre_pos') );
 	    $pos->add( new interf_txt(' - ') );
 	    if( $dist <= 7 )
 	    {
@@ -377,8 +380,11 @@ class interf_barre_perso_shine extends interf_barre_perso
 	    	else
 	    		$tooltip = 'Ce personnage n\'est pas à portée et ne peut plus recevoir de buffs.';
 			}
-			/// @todo gérer les coordonnées cachées
-	    $pos = $li->add( new interf_bal_smpl('div', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), false, 'membre_lieu'.($dist>7?' trop_loin':'')) );
+			// Nysin ?
+			if( 75 <= $membre->get_x() && $membre->get_x() <= 100 && 288 <= $membre->get_y() && $membre->get_y() <= 305 )
+	    	$pos->add( new interf_bal_smpl('span', 'Pos. : * / *', null, 'membre_pos') );
+			else
+	    	$pos = $li->add( new interf_bal_smpl('div', 'Pos. : '.$membre->get_x().' / '.$membre->get_y(), false, 'membre_lieu') );
 	    $pos = $li->add( new interf_bal_smpl('div', 'Dist. : '.$dist, false, 'membre_dist text-'.$classe) )->set_tooltip($tooltip, 'left');
 	    $buffs = $li->add( new interf_bal_cont('div', null, 'membre_buffs') );
 	    $buffs->add( new interf_liste_buff($membre, false) );

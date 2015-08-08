@@ -91,8 +91,9 @@ class interf_carte extends interf_tableau
 		{
 			$this->y_min -= $this->y_max - $G_max_y;
 			$this->y_max = $G_max_y;
-		}		
+		}
 
+		// Nysin
 		$cache = 75 <= $x && $x <= 100 && 288 <= $y && $y <= 305;
 		// Bord haut
 		$this->nouv_cell('&nbsp;', 'carte_bord_haut_gauche');
@@ -164,8 +165,6 @@ class interf_carte extends interf_tableau
 	    $div->set_attribut('style', 'background-image: url(\''.$img.'\');');
 		}
 
-    
-    /// @todo calque atmosphere
     if( $parent_calques )
     {
 	    if( $y > 190 ) // Calque donjon
