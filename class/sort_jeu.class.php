@@ -720,7 +720,7 @@ class sort_teleport extends sort_jeu
 	 */
   function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
-    global $Trace;
+    global $Trace, $interf_princ;
     if($perso->get_hp() > 0)
     {
       $cibles = $this->get_liste_cibles($cible, $groupe);
@@ -732,6 +732,7 @@ class sort_teleport extends sort_jeu
         interf_base::add_courr( new interf_txt($cible->get_nom().' a été téléporté dans votre capitale.<br />') );
       }
       /// @todo raffraichissement image
+      $interf_princ->recharger_interface();
       return true;
     }
     else

@@ -278,7 +278,7 @@ class objet extends objet_equip
 
   function utiliser(&$perso, &$princ)
   {
-  	global $Trace;
+  	global $Trace, $interf_princ;
     if( $perso->get_hp() <= 0 )
     {
       $princ->add( new interf_alerte('danger', true) )->add_message('Vous êtes mort !');
@@ -479,7 +479,7 @@ surgir de n'importe ou. Je n'arrive pas a démêler la trame du sort,
 trop puissant pour moi ... ( taches de sang )<br /> Il faut que
 j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ),
 un nécromancien ( la suite est déchirée ).<br />";
-				$dlg = $princ->set_dialogue( new interf_dialogBS($this->nom, true) );
+				$dlg = $interf_princ->set_dialogue( new interf_dialogBS($this->nom, true) );
 				$dlg->add( new interf_bal_smp($txt) );
 			}
 		break;
