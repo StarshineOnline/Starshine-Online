@@ -16,7 +16,7 @@ if( isset($_SESSION['pseudo']) )
 	$estUnUtilisateur = true;
 }
 
-if(!$possedeUnPerso && !$estUnUtilisateur && !array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
+if(!$site && !$possedeUnPerso && !$estUnUtilisateur && !array_key_exists('log', $_POST) && strpos($_SERVER['SCRIPT_NAME'], '/index.php') === false) // === car 0 == false
 {
 	$s = strpos($_SERVER['SCRIPT_NAME'], '/index.php');
 	header("X-strpos: $s");

@@ -876,4 +876,33 @@ class interf_pills extends interf_bal_cont
     return $this->contenu;
   }
 }
+
+class interf_menu_div extends interf_bal_cont
+{
+  protected $nom;  ///< Nom du sous-menu.
+  protected $classe_div;  ///< Classe de la balise ul
+  /**
+   * Constructeur
+   * @param  $nom
+   */
+  function __construct($nom=false, $id=false, $classe=false, $classe_div=false)
+  {
+    parent::__construct('li', $id, $classe);
+    $this->nom = $nom;
+    $this->classe_div = $classe_div;
+  }
+  /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
+  function debut()
+  {
+    $this->ouvre($this->creer_balise());
+    $this->ligne('<a tabindex="-1" href="#" class="dropdown-toggle" data-toggle="dropdown">'.$this->nom.'<b class="caret"></b></a>');
+    $this->ouvre('div class="dropdown-menu '.$this->classe_div.'"');
+  }
+  /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
+  function fin()
+  {
+    $this->ferme('div');
+    $this->ferme('li');
+  }
+}
 ?>

@@ -13,9 +13,7 @@ class interf_accueil extends interf_cont
 		// Vote SSO
 		$msg_sso = $this->add( new interf_bal_cont('p', null, 'accueil') );
 		$msg_sso->add( new interf_txt('N\'oubliez pas de ') );
-		$lien_vote = $msg_sso->add( new interf_bal_smpl('a', 'voter pour SSO') );
-		$lien_vote->set_attribut('href', 'vote_dons.php');
-		$lien_vote->set_attribut('onclick', 'return charger(this.ref);');
+		$msg_sso->add( new interf_lien('voter pour SSO', 'vote_dons.php') );
 		$msg_sso->add( new interf_txt(' !') );
 		
 		// Élections

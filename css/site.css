@@ -1,8 +1,85 @@
 html { height: 100%; }
-body 								{ margin:0; padding:0; color:#222; background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat 50% 0; min-height:700px; height: 100%; position:relative; }
-img 								{ border:0; }
-a 									{ color:#E2D1AA; }
-a:hover								{color:#CCF2FF;}
+body
+{
+	margin:0;
+	padding:0;
+	color:#222;
+	background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat right 40px;
+	min-height:750px;
+	height: 100%;
+	position:relative;
+}
+
+img { border:0; }
+/*a { color:#E2D1AA; }
+a:hover {color:#CCF2FF;}*/
+
+#barre_menu .container
+{
+	width: 100%;
+}
+
+main
+{
+	position:relative;
+	margin: 15px 400px 0 15px;
+	font:12px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
+	border: 1px white solid;
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius: 10px;
+	padding: 5px;
+	color: #E2D1AA;
+	text-align: justify;
+	height: 100%;
+	height: calc( 100% - 200px );
+}
+
+#contenu
+{
+	position:relative;
+	width: 100%;
+	height: 100%;
+	overflow: auto;
+	padding: 5px;
+}
+
+.logo
+{
+	background:url(./../image/site/logosso.png) no-repeat;
+	height:116px;
+	width:311px;
+	/*margin-left:100px;*/
+	margin: auto;
+	display:block;
+}
+
+#nouvelles
+{
+	border-top: 1px white solid;
+}
+
+#pub
+{
+	position:absolute;
+	height: 100px;
+	width: 800px;
+	bottom: 25px;
+	border: none;
+}
+
+#partenaires
+{
+	color: white;
+	position: absolute;
+	bottom: 2px;
+	left: 5px;
+}
+
+a 
+{
+	color: #DBB55E;
+}
+
 /*-- Placement ----------------------------------------------------------*/
 
 #accueil 							{ width:1024px; margin:auto; font:12px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif; }
@@ -81,14 +158,13 @@ padding-top:19px;
 position:absolute;
 top:529px;
 width:483px; }
-.logo 								{ background:url(./../image/site/logosso.png) no-repeat; height:116px; width:311px; margin-left:100px; display:block; }
 #presentation_box span.logo 		{ padding-bottom: 10px; }
 #menu 								{ min-height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(./../image/v2/bouton_fond.png) repeat-x; }
 #menu_details 						{ width:1000px; margin:auto; }
 #menu_details .menu 				{ width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-right:1px solid #CCC; }
 #menu_details .menu:hover 			{ background:transparent url(./../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
 #contenu_back 						{ background:transparent url(./../image/v2/bg_site.png) repeat-x; margin:0; padding:0; overflow:auto; height:700px; }
-#contenu 							{ width:1000px; margin:auto; height:700px; }
+
 #news 								{ width:830px; float:left; }
 #news h2 							{ background-color:#CCC; margin:0; padding:0; font-size:13px; text-align:center; margin-top:5px; -moz-border-radius:5px;-webkit-border-radius:5px; border-radius: 5px; }
 #news h2 a 							{ color:#000; text-decoration:none; }
@@ -202,11 +278,3 @@ width:483px; }
 .elfebois_mage:hover		{background:transparent url('./../image/site/elfebois_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 .elfebois_mage:active		{background:transparent url('./../image/site/elfebois_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 
-
-#partenaires
-{
-	color: white;
-	position: absolute;
-	bottom: 5px;
-	left: 5px;
-}

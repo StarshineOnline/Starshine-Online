@@ -593,7 +593,7 @@ class texte
   
   static function parse_url($texte)
   {  
-  	return preg_replace('`((?:https?|ftp)://S+)(s|z)`', '<a href="$1">$1</a>',$url);
+  	return preg_replace('`((?:https?|ftp)://S+)(s|z)`', '<a href="$1">$1</a>',$texte);
 	}
 }
 ?>

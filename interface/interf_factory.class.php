@@ -68,6 +68,42 @@ class interf_factory
 		}
   }
   /**
+   * interface de l'index
+   */
+  function creer_index()
+  {
+    $ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
+    switch($ajax)
+    {
+    case 1:
+    	include_once(root.'interface/interf_jeu.class.php');
+  		return new interf_jeu_ajax();
+    default:
+    	include_once(root.'interface/interf_index.class.php');
+    	return new interf_index($this->css);
+		}
+  }
+  function creer_index_infos()
+  {
+    include_once(root.'interface/interf_index.class.php');
+    return new interf_index_infos();
+	}
+  function creer_index_captures()
+  {
+    include_once(root.'interface/interf_index.class.php');
+    return new interf_index_captures();
+	}
+  function creer_index_compte()
+  {
+    include_once(root.'interface/interf_index.class.php');
+    return new interf_index_compte();
+	}
+  function creer_index_perso()
+  {
+    include_once(root.'interface/interf_index.class.php');
+    return new interf_index_perso();
+	}
+  /**
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit
    * @param $titre  titre du panneau.
    */

@@ -58,22 +58,7 @@ class interf_jeu extends interf_sso_int
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
     
-    // Piwik
-    if( !isset($G_no_piwik) || $G_no_piwik != true )
-    {
-    	self::code_js('var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.starshine-online.com/piwik/" : "http://www.starshine-online.com/piwik/");');
-    	self::code_js('document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));');
-    	self::code_js('try {');
-    	self::code_js('var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);');
-    	self::code_js('piwikTracker.trackPageView();');
-    	self::code_js('piwikTracker.enableLinkTracking();');
-    	self::code_js('} catch( err ) {}');
-    	$noscript = $this->add( new interf_bal_cont('noscript') );
-    	$img_piwik = $noscript->add( new interf_img('http://www.starshine-online.com/piwik/piwik.php?idsite=1') );
-    	$img_piwik->set_attribut('style', 'border:0');
-		}
-    
-    $this->code_js('maj_tooltips();');
+    $this->aff_fin();
   }
   function set_gauche($fils=null)
   {
@@ -163,7 +148,7 @@ class interf_jeu_ajax extends interf_princ_ob
 {
 	function __construct()
 	{
-		if( !joueur::get_perso() )
+		if( !joueur::get_perso() && strpos($_SERVER['SCRIPT_NAME'], '/'.interf_index::page) === false )
 		{
 			$this->recharger_interface('index.php');
 			exit;
@@ -273,6 +258,12 @@ class interf_jeu_ajax extends interf_princ_ob
 	function set_gestion($fils)
 	{
     $cont = $this->add( new interf_bal_cont('section', 'gestion_royaume') );
+		$fils->add_js();
+    return $cont->add($fils);
+	}
+	function set_contenu($fils)
+	{
+    $cont = $this->add( new interf_bal_cont('section', 'contenu') );
 		$fils->add_js();
     return $cont->add($fils);
 	}

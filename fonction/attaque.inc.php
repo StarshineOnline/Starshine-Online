@@ -707,7 +707,9 @@ function loot_item(&$joueur, &$groupe, $item)
 		if($type_obj == 'quete')
 		{
 			interf_debug::enregistre('loot item quete : '.$id_objet);
-			quete_perso::verif_action('L'.$id_objet, $gagnant, 's');
+			$txt = quete_perso::verif_action('L'.$id_objet, $gagnant, 's');
+			if( $txt )
+				$msg .= $txt.'<br/>';
 			$gagnant->prend_objet($item);
 		}
 		else

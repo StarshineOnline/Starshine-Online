@@ -7,8 +7,9 @@
 /**
  * Classe de base pour l'interface principale de SSO
  */
-class interf_sso extends interf_html
+abstract class interf_sso extends interf_html
 {
+  protected $menu;
 	const prefixe_fichiers = '';
   function __construct($theme)
   {
@@ -22,6 +23,7 @@ class interf_sso extends interf_html
     $this->css(static::prefixe_fichiers.'css/bootstrap.css');
     $this->css(static::prefixe_fichiers.'css/bootstrap-'.$theme.'.css');
     $this->css(static::prefixe_fichiers.'css/icones.css');
+    $this->css(static::prefixe_fichiers.'css/commun.css');
     $this->css(static::prefixe_fichiers.'css/jquery.dataTables.css');
     $this->css(static::prefixe_fichiers.'css/dataTables.bootstrap.css');
     // javascript
@@ -36,34 +38,12 @@ class interf_sso extends interf_html
     $this->javascript(static::prefixe_fichiers.'javascript/fonction.js');
     // icone de favori
     $this->link('icon', 'image/png', 'image/favicon.png');
-  }
-}
-
-/**
- * Classe de base pour pages internes
- * Concerne toutes les pages une fois connecté
- */
-abstract class interf_sso_int extends interf_sso
-{
-  protected $menu;
-  const page = 'interface.php';
-  function __construct($theme)
-  {
-    interf_sso::__construct($theme);
-    // feuilles de style
-    $this->css(static::prefixe_fichiers.'css/texture.css');
-    $this->css(static::prefixe_fichiers.'css/texture_low.css');
-    $this->css(static::prefixe_fichiers.'css/interfacev3.css');
-    $this->css(static::prefixe_fichiers.'css/interface-'.$theme.'.css');
-    // javascript
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hoverIntent.minified.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.cluetip.min.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/atooltip.min.jquery.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/overlib/overlib.js');
-    // Barre de menu
-    $joueur = joueur::factory();
+    
     $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page) );
-    $this->menu_droite();
+  }
+  function aff_menu_joueur()
+  {
+    $joueur = joueur::factory();
     $menu_joueur = $this->menu->add_elt(new interf_nav_deroul($joueur->get_pseudo()), false);
     $this->menu_joueur($menu_joueur);
     $menu_joueur->add( new interf_elt_menu('Options', static::prefixe_fichiers.'option.php', 'return charger(this.href);') );
@@ -81,8 +61,54 @@ abstract class interf_sso_int extends interf_sso
     }
     $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
     $menu_joueur->add( new interf_elt_menu('Déconnecter', '#', 'if(confirm(\'Voulez vous déconnecter ?\')) { document.location.href=\''.static::prefixe_fichiers.'index.php?deco=ok\'; };') );
+	}
+  protected function menu_joueur($menu_joueur) {}
+  protected function aff_fin($idsite=1)
+  {
+    global $G_no_piwik;
+    // Piwik
+    if( !isset($G_no_piwik) || $G_no_piwik != true )
+    {
+    	self::code_js('var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.starshine-online.com/piwik/" : "http://www.starshine-online.com/piwik/");');
+    	self::code_js('document.write(unescape("%3Cscript src=\'" + pkBaseURL + "piwik.js\' type=\'text/javascript\'%3E%3C/script%3E"));');
+    	self::code_js('try {');
+    	self::code_js('var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);');
+    	self::code_js('piwikTracker.trackPageView();');
+    	self::code_js('piwikTracker.enableLinkTracking();');
+    	self::code_js('} catch( err ) {}');
+    	$noscript = $this->add( new interf_bal_cont('noscript') );
+    	$img_piwik = $noscript->add( new interf_img('http://www.starshine-online.com/piwik/piwik.php?idsite='.$idsite) );
+    	$img_piwik->set_attribut('style', 'border:0');
+		}
+    
+    $this->code_js('maj_tooltips();');
+	}
+}
+
+/**
+ * Classe de base pour pages internes
+ * Concerne toutes les pages une fois connecté
+ */
+abstract class interf_sso_int extends interf_sso
+{
+  const page = 'interface.php';
+  function __construct($theme)
+  {
+    interf_sso::__construct($theme);
+    // feuilles de style
+    $this->css(static::prefixe_fichiers.'css/texture.css');
+    $this->css(static::prefixe_fichiers.'css/texture_low.css');
+    $this->css(static::prefixe_fichiers.'css/interfacev3.css');
+    $this->css(static::prefixe_fichiers.'css/interface-'.$theme.'.css');
+    // javascript
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hoverIntent.minified.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.cluetip.min.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/atooltip.min.jquery.js');
+    //$this->javascript(static::prefixe_fichiers.'javascript/overlib/overlib.js');
+    // Barre de menu
+    $this->menu_droite();
+    $this->aff_menu_joueur();
   }
   abstract protected function menu_droite();
-  abstract protected function menu_joueur($menu_joueur);
 }
 ?>

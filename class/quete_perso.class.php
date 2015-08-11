@@ -195,9 +195,10 @@ class quete_perso extends table
 				$valeur = explode(':', $avanc);
 				switch($avanc[0])
 				{
+				case 'L': // trouver un objet
+					interf_debug('Trouver objet : "'.$valeur[0].'" VS "'.$type_cible.'"');
 				case 'M':  // tuer des monstres
 				case 'J': // tuer des perso selon la diplomatie
-				case 'L': // trouver un objet
 				case 'O': // rapporter un objet
 					$ok = $valeur[0] == $type_cible;
 					$max = null;

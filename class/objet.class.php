@@ -480,7 +480,7 @@ trop puissant pour moi ... ( taches de sang )<br /> Il faut que
 j'écrive ( taches de sang ) sachent ce qui se passe ( taches de sang ),
 un nécromancien ( la suite est déchirée ).<br />";
 				$dlg = $interf_princ->set_dialogue( new interf_dialogBS($this->nom, true) );
-				$dlg->add( new interf_bal_smp($txt) );
+				$dlg->add( new interf_txt($txt) );
 			}
 		break;
     }

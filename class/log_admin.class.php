@@ -324,7 +324,7 @@ class log_admin extends log_admin_db {
       }
       $res .= ') - '.$bt['file'].' : '.$bt['line'];
     }
-    return $res.' ['.$_SERVER['REQUEST_UR'].')';
+    return $res.' ['.$_SERVER['REQUEST_URI'].')';
   }
 
 	static function display_all($where = false, $limit = false, $table = false)

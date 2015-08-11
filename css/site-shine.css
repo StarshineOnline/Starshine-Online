@@ -1,0 +1,40 @@
+/* Thème StarSky - nuit */
+
+a:hover, a:focus
+{
+  color: #EC971F;
+}
+
+#barre_menu
+{
+	/*background: rgba(15, 5, 107, 0.5);*/
+	background: url('../image/v2/bouton_fond.png') repeat-x;
+	background-size: 100% 40px;
+	border-color: #0F056B;
+}
+
+#barre_menu a
+{
+	/*color: white;*/
+	color: #22427C;
+}
+
+#navbar>ul>li>a:hover, #navbar>ul>li>a:focus, #navbar>ul>li>a:active
+{
+	/*color: #E7CF98;*/
+	/*#menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }*/
+	color: #2F2F4F!important;
+	background: url(../image/v2/bouton_hover.png);
+	background-size: 100% 40px;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	/*color: #333;*/
+	color: #22427C;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	color: #262626;
+}

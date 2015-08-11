@@ -1,0 +1,33 @@
+/* Thème StarSky - nuit */
+
+
+a:hover, a:focus
+{
+  color: #EC971F;
+}
+
+#barre_menu
+{
+	background: rgba(8, 3, 54, 0.5);
+	border-color: #1A1A21;
+}
+
+#barre_menu a
+{
+	color: white;
+}
+
+#barre_menu a:hover, #barre_menu a:focus
+{
+	color: #E7CF98;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	color: #333;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	color: #262626;
+}

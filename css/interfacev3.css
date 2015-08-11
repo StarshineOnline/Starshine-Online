@@ -12,6 +12,11 @@ body
 	font:13px "Helvetica Neue", Helvetica, Arial, Geneva, sans-serif;
 }
 
+#barre_menu .container
+{
+	width: 1000px;
+}
+
 a
 {
   color: #333;
@@ -24,160 +29,12 @@ a:hover, a:focus
 
 #conteneur { width:985px; margin:auto; min-height:100%; }
 #centre { margin-top:3px; margin-left:7px; float:left; height:100%; z-index:3; }
-#information a/*, #information a:hover,.visu a,.visu a:hover*/ { text-decoration:none; }
+#information a { text-decoration:none; }
 #perso, #royaume { margin:0; padding:0;border-left:1px solid;border-bottom: 1px solid; border-right:1px solid;border-radius: 0px 0px 4px 4px; }
 #perso { height:120px; }
 #contenu_jeu { margin:0 auto; width:100%; position:relative; }
-/*#conteneur_back { z-index:2; width:1000px; margin:0 auto;  min-height:120%; }
-#contenu_back { margin:0; padding:0; */
 #contenu { width:1000px; margin:auto; min-height:700px; }
 #perso_contenu { margin:auto; min-height:110px; padding:5px;position: relative; }
-/*#top { display:block; width:1000px; margin:0 auto; z-index:5; }
-#bas { clear:both; width:1000px; margin:0 auto; text-align:center; font-size:9px; }
-#information fieldset { background:rgba(255,255,255,0.5);box-shadow:0 2px 3px -1px #AEB1B8;border-color: #CACACA #CACACA;
-    border-style: solid solid none;
-    border-width: 1px 1px medium; }
-
-#information fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
-#perso_menu { margin-left:94px; margin-top:-15px; }
-#perso_menu ul { margin:0; padding:0; list-style-type:none; height:17px; text-align:center; position:relative; }
-#perso_menu ul li { padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(../image/v2/box_accueil2.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
-#perso_menu .menu { float:left; }
-#perso_menu .menu2 { float:left;margin-top: -3px; }
-#perso_menu .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; font-style:normal; font-weight:bold; }
-#popup { margin-left:130px; position:absolute; top:60px; z-index:99!important; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; background:transparent url(../image/v2/box_accueil.png) repeat scroll 0 0; color:#EEE; }
-#popup a { color:#EEE; }
-#popup_menu { cursor:move; background:transparent url(../image/v2/bouton_fond.png) repeat-x scroll 0 0; }
-#popup_content { padding:5px; text-align:justify; width:98%; }
-#popup_marge { min-height:470px; margin:auto; width:800px; }
-.fermer { background:transparent url(../image/interface/rouge.png) no-repeat top left; display:block; height:16px; width:16px; cursor:pointer!important; }
-#mask { background-image:url(../image/v2/overlay.png); height:100%; left:0; position:absolute; top:0; width:100%; z-index:9999999; }
-#header { background-color:#c6d9f5; min-height:120px; margin:0; padding:0; }
-#header_logo { width:1000px; margin:auto; background:transparent url(../image/v2/site_haut.png) no-repeat left; min-height:120px; }
-#header_logo ul { margin:0; padding:0; list-style-type:none; height:20px; text-align:center; top:101px; position:relative; }
-#header_logo ul li { padding-left:5px; padding-right:5px; cursor:pointer; width:100px; background:transparent url(../image/v2/contenu_fond.png); border-left:1px solid #777; border-right:1px solid #777; border-top:1px solid #777; margin-left:5px; margin-right:5px; font-style:italic; -moz-border-radius-topleft:12px; -moz-border-radius-topright:12px; -webkit-border-top-right-radius:12px; -webkit-border-top-left-radius:12px; border-top-left-radius: 12px; border-top-right-radius: 12px;}
-#header_logo .menu { float:left; }
-#header_logo .select { background:transparent url(../image/v2/bouton_selected.png) repeat-x; border-bottom:1px solid transparent; font-style:normal; font-weight:bold; }
-#menu { height:20px; border-bottom:1px solid #888; border-top:1px solid #888; margin:0; padding:0; background:transparent url(../image/v2/bouton_fond.png) repeat-x; }
-#menu a { color:#222; text-decoration:none; }
-#menu_date { float:left; height:20px; margin-left:9px; width:91px; line-height:20px; font-size:.9em; }
-#menu_date img { height:15px; padding-right:8px; vertical-align:middle; }
-#meteo {display : none; z-index : 999999999; width : 300px;}
-#menu_details { font-size:12px; float:left; margin-top:2px; }
-#menu_details .menu { width:120px; display:block; float:left; cursor:pointer; text-align:center; border-left:1px solid #CCC; border-rightr:1px solid #CCC; }
-#menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }
-#menu_deco { float:right; cursor:pointer; margin-right:9px; line-height:20px; font-size:.9em; }
-#news { width:830px; float:left; }
-#mort {float: left; width: 50%;}
-#mort fieldset { -moz-border-radius: 10px;-moz-border-radius: 10px; border-radius: 10px;margin:8px;}*/
-
-/*-- Correction bootstrap & datatables --------------------------------------------------*/
-
-#barre_menu
-{
-	border-radius : 0px;
-	border-top: none;
-	border-left: none;
-	border-right: none;
-	margin-bottom: 0px;
-	min-height: 30px;
-}
-
-#barre_menu a
-{
-	padding: 5px 10px;
-	line-height: 30px;
-}
-
-#barre_menu .container
-{
-	width: 1000px;
-	padding: 0px;
-}
-
-#barre_menu .navbar-brand
-{
-	font-size: 30px;
-  margin-left: -5px;
-  height: auto;
-}
-
-#navbar
-{
-	padding-left: 0px;
-}
-
-.popover-content tr
-{
-	font-size: 14px;
-}
-
-.popover-content th
-{
-	padding-right: 20px;
-}
-
-table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
-{
-	padding: 1px;
-  border: none;
-}
-
-.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th
-{
-    background-color: rgba(255, 255, 255, .3);
-}
-
-.table-striped > tbody > tr:nth-child(2n+1) > td.danger
-{
-    background-color: #F5EBEB;
-}
-
-.table-striped > tbody > tr:nth-child(2n+1) > td.success
-{
-    background-color: #E9F2E5;
-}
-
-.btn.icone
-{
-	line-height: 1.42857;
-}
-
-.pager
-{
-	margin-bottom: 0px;
-}
-
-.modal-body .table-striped > tbody > tr:nth-child(2n+1) > td
-{
-	background-color: rgba(0, 0, 0, 0.1);
-}
-
-.modal-body .table-striped > tbody > tr.info > td
-{
-	background-color: #D9EDF7;
-}
-
-.dropdown-submenu{position:relative;}
-.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
-.dropdown-submenu:hover>.dropdown-menu, .dropdown-submenu>.dropdown-menu.show{display:block;}
-.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
-.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
-.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
-
-.dataTables_wrapper .dataTables_paginate .paginate_button
-{
-	padding: 0;
-	margin: 0;
-	border: none !important;
-}
-
-/*-- Basics elements --------------------------------------------------*/
-/*#global { position:relative; margin:0 auto; width:960px; height:100%; border:1px solid red; }
-.spacer { clear:both!important; float:none!important; border:none!important; height:1px!important; line-height:1px!important; font-size:1px!important; padding:0!important; margin:0 0 -1px!important; visibility:hidden!important; */
-
-/*-- Menu Jeu ---------------------------------------------------------*/
-/*#menu_jeu { float:left; margin:0 -5px 0 0; width:32px; }*/
 
 /*-- Infos perso ------------------------------------------------------*/
 #infos_perso
@@ -1267,18 +1124,12 @@ ul.info_bulle { text-align:left; }
 
 /* Information de la case */
 
-/*#info_case
-{
-	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
-  border: 1px solid #777777;
-  border-radius: 4px 4px 4px 4px;
-}*/
 .info_case
 {
   border-radius: 4px 4px 4px 4px;
 	overflow: hidden;
 	margin-bottom: 5px;
-  /*padding: 2px;*/
+	
 }
 
 #descr_case, .info_case.placement, .info_case.construction
@@ -1608,10 +1459,6 @@ li.info_case div.jauge_case
 }
 
 /*-- Ville ------------------------------------------------------------*/
-/*.ville_message { width:100%; text-align:center; }
-.message_rouge { font-weight:bold; color:red; }
-.message_vert { font-weight:bold; color:green; }
-.quartier	{float:left;width:200px;margin:2px;padding:2px;}*/
 #ville
 {
 	height: 417px;
@@ -1653,151 +1500,6 @@ li.info_case div.jauge_case
 	position: absolute;
 }
 
-/* ... */
-/*
-#carte fieldset { border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; background:transparent url(../image/v2/box_accueil2.png); margin-top:4px; }
-#carte fieldset legend { background:transparent url(../image/v2/bouton_fond.png); border-radius: 10px; -moz-border-radius:10px; -webkit-border-radius:10px; padding-left:10px; padding-right:10px; font-weight:bold; }
-#carte a,.visu a { color:#444; text-decoration:none; }
-#carte a:hover,.visu a:hover { color:#888; text-decoration:none; }
-
-#carte ul { list-style:none; padding:0; margin:0; }
-#map_bord_haut2 li { float:left; width:60px; height:inherit; line-height:20px; color:white; text-align:center; }
-#map_bord_haut_gauche { width:20px!important; height:inherit; }
-#map_bord_haut_gauche2 { width:25px!important; height:inherit; }
-#map_bord_haut_gauche:hover { background-position:top; }
-#map_bord_haut_gauche:active { background-position:bottom; }
-#bord_haut_x { color:black!important; font-weight:bold; }
-#bord_haut_y { color:black!important; font-weight:bold; }
-.div_map { background: none repeat scroll 0 0 rgba(255, 255, 255, 0.2);
-    border: 1px solid #777777;
-    border-radius: 4px 4px 4px 4px; position:relative;}
-.map { height:60px; padding-bottom:0; }
-.mapl { height:20px; padding-bottom:0; }
-
-
-.option_map li{-moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #FBFBFB;
-    background-image: linear-gradient(#FFFFFF, #FFFFFF 25%, #EBEBEB);
-    background-repeat: no-repeat;
-    border-color: #CCCCCC #CCCCCC #BBBBBB;
-    border-image: none;
-    border-radius: 0 0 0 0;
-    border-style: solid;
-    border-width: 1px;
-    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
-    color: #333333;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 11px;
-    line-height: 16px;
-    padding: 4px 10px;
-    text-align: center;}
-
-
-.map li,.mapl li { float:left; width:60px; height:inherit; cursor:pointer; }
-.map_bord_gauche { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; cursor:default!important; }
-.map_bord_gauche2 { width:20px!important; color:white; line-height:60px; text-align:center; padding-bottom:0; }
-.map_contenu { width:56px; height:56px; margin:2px; background:transparent url(image/pixel.gif) center no-repeat; }
-.low_resolution { width:20px!important; height:20px!important; font-size:.8em; line-height:20px!important; }*/
-
-/*-- Weather ----------------------------------------------------------*/
-/*#moment_jour { position:absolute; top:0; left:0; z-index:-1; width:960px; height:140px; background:transparent url(image/weather/matin5.jpg) bottom center no-repeat; }*/
-
-
-/*-- Hotel des ventes -------------------------------------------------*/
-/*#hotel_liste_type ul { width:100%; }
-#hotel_liste_type li { display:inline; cursor:pointer; font-size:.9em; }
-#hotel_liste { width:100%; text-align:left; font-variant:normal; }
-#hotel_liste .li1 { cursor:default; float:left; font-weight:normal; text-align:center!important; line-height:14pt; }
-#hotel_liste .li2 { cursor:default; float:left; font-weight:normal; text-align:center!important; background-color:#ADC2F5; line-height:14pt; }
-#hotel_liste .entete { cursor:pointer; font-size:10pt!important; font-weight:bold; background-image:none!important; }
-#hotel_liste .nom { float:left; width:165px; text-align:left!important; clear:both; }
-#hotel_liste .temps { float:left; width:75px; text-align:right!important; font-size:7.5pt; }
-#hotel_liste .prix { float:left; width:75px; text-align:right!important; background-image:url(../image/stars_16.png); background-position:right; background-repeat:no-repeat; padding-right:18px; }
-#hotel_liste .achat { cursor:pointer; float:left; width:60px; text-align:right!important; }
-#hotel_liste .achat:hover { color:#63A4EB; }
-#hotel_liste .achat:active { color:#A062EC; }
-.slot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/vert.png) center left no-repeat; text-align:center; line-height:15px; color:black; font-size:6pt; }
-.noslot { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/noir.png) center left no-repeat; }
-.enchantement { float:right; margin-top:0; width:11px; height:16px; background:transparent url(../image/groupes/bleu.png) center left no-repeat; }*/
-
-/***************************************************
-  Vrac
- ***************************************************/
-/*#loading { background:#E7CF98 url(./../image/ajax-loader-bar.gif) no-repeat scroll left center; height:25px; margin-left:393px; position:absolute; top:0; width:220px; -moz-border-radius-bottomleft:10px; -moz-border-radius-bottomright:10px; -webkit-border-bottom-right-radius:10px; -webkit-border-bottom-left-radius:10px; border-bottom-left-radius: 10px; border-bottom-right-radius: 10px; z-index:1; }
-#messagerie_menu { text-align:center; }
-#messagerie_menu span { padding:2px; margin:2px; cursor:pointer!important; }
-.message_prev { background:transparent url(./../image/interface/previous_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:left; }
-.message_prev:hover { background-position:bottom!important; }
-.message_next { background:transparent url(./../image/interface/next_20.png) no-repeat scroll top; height:20px; width:20px; display:block; float:right; }
-.message_next:hover { background-position:bottom!important; }
-.bulle_message {min-height: 25px;	float:left;width:419px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message.png') 20 8 20 8;}
-.bulle_message_me {	border-width: 16px 8px 8px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;-moz-border-image: url('./../image/interface/bulle_message_me.png') 16 8 8 8;}
-.bulle_message_new {min-height: 25px;	float:left;width:419px;margin-top:-3px;border-width: 20px 8px 20px 8px;	-webkit-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;-moz-border-image: url('./../image/interface/bulle_message_new.png') 20 8 20 8;}
-.haut_bulle_gauche{background:transparent url(./../image/interface/bulle_message_haut.png) no-repeat scroll top;display:block;float:left;height:16px;margin-left:21px;margin-top:9px;width:21px;margin-right:7px;}
-.haut_bulle_droite{background:transparent url(./../image/interface/bulle_message_haut_droite.png) no-repeat scroll top;display:block;float:right;height:16px;margin-left:7px;margin-top:9px;width:21px;margin-right:21px;}
-
-.pages {text-align: center;line-height:19px;margin-left:185px;}
-.pagination {background-color: #eee;-moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
-#conteneur_test { height:100%; width:100%; z-index:99999; cursor:wait; position:absolute; }
-.infoperso { vertical-align:top; float:left; padding:2px; margin:2px; height:75px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; border:1px solid #555555; vertical-align:top; }
-
-
-#diplo { background-color:#CCC; }
-#diplo ul li { clear:both; }
-#diplo ul li span { float:left; display:block; width:50px; height:50px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
-.diplo_0 { background-color:; }
-.diplo_1 { background-color:; }
-.diplo_2 { background-color:; }
-.diplo_3 { background-color:; }
-.diplo_4 { background-color:; }
-.diplo_5 { background-color:; }
-.diplo_6 { background-color:; }
-.diplo_7 { background-color:; }
-.diplo_8 { background-color:; }
-.diplo_9 { background-color:; }
-.diplo_10 { background-color:; }
-textarea#css, textarea#description { width: 500px; height:150px; }*/
-
-/***************************************************
-  Info Perso
- ***************************************************/
-/*#inventaire_slot { font-size:11px; background-image:url(../image/interface/1.png); -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }
-#inventaire_slot ul li { height:20px; clear:both; padding:2px; }
-#inventaire_slot .inventaire_span { float:left; display:block; }
-#bestiaire { clear:both; }
-#bestiaire ul li { height:41px; line-height:35px; text-align:center; background:transparent url(../image/v2/box_accueil2.png) repeat scroll 0 0; -moz-border-radius:15px; -webkit-border-radius:15px; border-radius: 15px; margin:1px; }
-#bestiaire ul li:hover { background:transparent url(../image/interface/1.png) center; }
-#bestiaire ul li span { display:block; float:left; margin:1px; height:40px; }
-#bestiaire ul li img { height:30px; }
-#messagerie_onglet a {border : 1px solid #CCC;background:#EEE3B5;display:block;padding-left:3px;float:left;width:90px;height:20px;line-height: 20px;text-indent: 5px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px;}
-#messagerie_onglet a:hover {background-color: #E6CD93;}
-#messagerie_liste { margin-left:-17px; }
-#messagerie_liste table { width:417px; }
-#messagerie_liste ul li { float:left;cursor: pointer; }
-#messagerie_liste .head {border-bottom:1px dashed #EEEEEE;}
-#messagerie_liste .head:hover {background:none !important;cursor:default !important;}
-#messagerie_liste ul li:hover { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
-#messagerie_liste .t1 {background:#B4CFEF; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; margin-left:-17px;}
-#messagerie_liste .titre { float:left; display:inline; width:145px; }
-#messagerie_liste .msg { float:left; display:inline; width:35px; text-align: right;padding-right:5px;}
-#messagerie_liste .par { float:left; display:inline; width:90px; }
-#messagerie_liste .date { float:right; display:table; width:120px; }
-#combat_cartouche { clear:both; background-color:#DDDDDD; padding:9px; -moz-border-radius:12px; -webkit-border-radius:12px; border-radius: 12px; min-height:70px; }
-.infoperso td { font-size:10px; margin:0; padding:0; }
-.roseeticone { float:left; padding:4px; margin:5px; }
-#carte0 h4 { padding:0; margin:3px; border-bottom:1px solid #E7CF98; clear:both; }
-#carte .titre_info { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 10px; -moz-border-radius-topright:10px; -webkit-border-top-right-radius:10px; border-top-right-radius: 10px; clear:both; }
-
-#carte h2 { padding-left:25px; color:#000; line-height:25px; font-size:1.4em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; text-align:center; margin-top:5px; margin-bottom:8px; padding:0; background-color:#D8AB41; }
-
-
-.windows_right {}
-h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:10px; margin-bottom:5px; padding-left:10px; background-color:#91AEF2; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; }
-*/
 
 /***************************************************
   Script de combat
@@ -1906,18 +1608,6 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 }
 
 
-/*#liste_script li {height : 22px; line-height : 20px; clear : both;}
-#liste_script li:hover {background-color : #b0c0e0;}
-.nom_script {float : left; width : 270px; padding-left : 18px; cursor : pointer;}
-.nom_script:hover {background:transparent url(./../image/edit.png) no-repeat scroll left center;}
-.options {padding-left : 8px;}
-.edit { background:transparent url(./../image/edit.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.copy { background:transparent url(./../image/copy.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.shield { background:transparent url(./../image/shield.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.attaque { background:transparent url(./../image/sword.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left;}
-.space { height:16px; width:16px; display:block; float:left;}
-.hover {cursor : pointer;}*/
-
 
 /***************************************************
   Combats
@@ -1983,7 +1673,6 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 
 #resultat_combat
 {
-	/*padding: 2px;*/
 	position: relative;
 	height: 74px;
 }
@@ -2020,11 +1709,6 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 	color: black;
 }
 
-/*#liens_combat a:first-child
-{
-	border-bottom: 1px solid #FFF;
-}*/
-
 #liens_combat a:nth-child(2)
 {
 	border-top: 1px solid #FFF;
@@ -2054,12 +1738,6 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
   Messagerie
  ***************************************************/
 
-/*#messagerie tr:hover
-{
-	background-color: rgba(255, 255, 255, 0.5);
-	color: black;
-	cursor: pointer;
-}*/
 
 #messagerie tr>:last-child
 {
@@ -2291,50 +1969,9 @@ h3.old { border-top:1px solid; border-bottom:1px solid; border-color:#888; margi
 }
 
 
-/*div.message_complet { clear:both; width:100%; }
-div.message_action { float:right; font-size:.8em; }
-div.spacer { clear:both; }
-.messagerie { margin-top:0; margin-bottom:0; font-variant:normal; font-weight:normal; background-color:#E7CF98; padding:0 6px 3px; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; float:left; }
-.fav_on { background:transparent url(./../image/messagerie_fav_on.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
-.fav_off { background:transparent url(./../image/messagerie_fav_off.png) no-repeat scroll left center; height:14px; width:16px; display:block; float:left; }
-.del { background:transparent url(./../image/messagerie_del.png) no-repeat scroll top; height:16px; width:16px; display:table-cell;}
-.del:hover { background-position:bottom!important; }
-.masq { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:table-cell; padding-right:0px;}
-.masq:hover { background-position:bottom!important; }
-.msg_cache { background:transparent url(./../image/messagerie_cacher.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
-.msg_voir { background:transparent url(./../image/messagerie_voir.png) no-repeat scroll top; height:16px; width:16px; display:block; float:left; }
-h3.messagerie span.auteur { position:absolute; left:0; font-weight:bold; font-size:11px; display:block; width:114px; text-align:center; text-transform:capitalize; }
-h3.messagerie span.titre { position:absolute; left:114px; color:#828387; font-weight:normal; }
-.messagerie span.date { font-style:italic; font-size:.7em; }*/
-/*h4 { margin:0; padding:0; }
-h5 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#DF3F00; margin:0; padding-left:10px; }
-h6 { color:#000; font-size:1em; border-top:1px solid; border-bottom:1px solid; border-color:#888; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; background-color:#6EB027; margin:0; padding-left:10px; }*/
 img { border:0 none; padding:0; margin:0; }
 dl,dt,dd,ul,li { margin:0; padding:0; list-style-type:none; }
 ol.tuto,ol.tuto li { list-style-type:decimal; }
-/*.rose_a { margin:0; padding:0; width:0; cursor:pointer; font-size:0; }
-.rose_a:hover { margin:0; padding:0; cursor:pointer; font-size:0; }
-.rose_tr { font-size:0; margin:0; padding:0; height:20px; }
-.rose_tr td { font-size:0; margin:0; padding:0; }
-.rose_div { height:25px; }
-.brillant { padding-top:8px; text-align:center; background-image:url(../image/forum_h2.gif); height:23px; }
-.information_case { padding:8px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:9px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
-.information_case0 h4 { width:30%; background-color:#D8AB41; border-top:1px solid; border-bottom:1px solid; border-color:#888; text-align:center; margin:0 auto; margin-bottom:10px; }
-.avatar { float:right; }
-.jsinformation_case { display:none; z-index:100; position:absolute; top:250px; right:150px; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:250px; padding:5px; }
-.combat { padding:2px; border-left:2px solid #999; margin:2px 2px 2px 10px; font-size:12px; }
-.combat:hover { background-image:url(../image/interface/1.png); }*/
-/*echange { padding:2px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:2px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
-.perso { padding:2px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:2px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;}
-.groupe { padding:2px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; border:2px solid; margin:2px; border-color:#FFF; -moz-border-radius:13px; -webkit-border-radius:13px; border-radius: 13px;} */
-/*#liste_quete { border-left:2px solid; border-color:#FFF; padding-left:9px; padding-bottom:10px; overflow:auto; height:500px; background-color:#91AEF2; width:95%; margin:0 auto; }
-.quete_description { height:315px; padding-top:10px; padding:5px; color:#333; font-family:"Trebuchet MS", Times, serif; background:#BACCF7; border:2px solid; border-color:#FFF; -moz-border-radius:7px; -webkit-border-radius:7px; border-radius: 7px;}
-.description_quete { overflow:auto; height:280px; }
-.inventaire { background-color:#D4DAE2; margin:9px; }
-#carte h2 { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
-#carte h2 a { color:#000000; font-family:"Trebuchet MS",Times,serif; font-size:15px; font-variant:small-caps; text-decoration:none; }
-.carte_bas { background:#000; height:5px; }
-#deplacement0 h4 { text-align:center; background-color:#D4DAE2; border:1px solid; border-color:#888; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; margin-bottom:5px; font-family:"Trebuchet MS",Times,serif; }*/
 
 /***************************************************
   Header Menu
@@ -2350,17 +1987,6 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 	color : #ff00c0;
 }
 
-/*.rose { width:50px; height:50px; border:0; margin:0; padding:0; }
-.decor { width:60px; height:60px; margin:0; padding:0; text-align:center; }
-.decor-edit { width:20px; height:20px; margin:0; padding:0; text-align:center; }
-.infobox { display:none; z-index:2; position:absolute; top:100px; left:0; background-color:#ffffff; border:1px solid #000000; font-size:12px; width:300px; padding:5px; }
-.tabnoir { background:url(../image/bord_map.png); color:#FFF; }
-.baseJumpbox { width:250px; height:500px; }
-select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff; margin-bottom:3pt; border:2px solid #735225; padding:2px; margin:5px; }
-.baseRow1 { background-color:#fff4cc; padding-left:2px; }
-.baseRow2 { background-color:#ffeeaa; padding-left:2px; }
-.heure { text-align:center; background-color:#D4DAE2; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; padding:5px; border:1px solid #FFF; }
-.inventaireville { width:33%; font-size:.8em; text-align:center; vertical-align:top; -moz-border-radius:9px; -webkit-border-radius:9px; border-radius: 9px; color:#222; border:1px solid #FFF; }*/
 
 
 /***************************************************
@@ -2430,8 +2056,6 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 .invent_cible
 {
   border: 2px solid #D8AB41;
-  /*width:144px;
-  height:49px;*/
 }
 
 .invent_hover
@@ -2452,14 +2076,6 @@ select.baseJumpbox optgroup { width:200px; color:black; background-color:#ffffff
 	font-style: italic;
 }
 
-/***************************************************
-  Map
- ***************************************************/
-/*.jsmap { text-align:left; display:none; z-index:100; position:absolute; top:250px; right:150px; background-image:url(../image/interface/1.png); border:1px solid #000000; font-size:12px; width:150px; padding:5px; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
-.bord_carte_haut_gauche { border-top:2px solid #888; border-left:2px solid #888; background:#D8AB41; -moz-border-radius-topleft:9px; -webkit-border-top-left-radius:9px; border-top-left-radius: 9px; background:transparent url(../image/royaume_icone.png) center; }
-.bord_carte_haut { text-align:center; border-top:2px solid #888; border-bottom:1px solid #888; background:#D8AB41; }
-.bord_carte_gauche { border-left:2px solid #888; border-right:1px solid #888; width:20px; text-align:center; background:#D8AB41; }
-*/
 /***************************************************
   Ville
  ***************************************************/
@@ -3029,122 +2645,7 @@ input#ville_bas
 {
 	overflow-y: auto;
 }
- 
-/*ul.ville li { margin-bottom:3px; }
-ul.ville li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
-.ville_titre a { font-family:"Trebuchet MS", Times, serif; text-decoration:none; font-variant:small-caps; font-size:15px; color:#000; }
-.ville_test { vertical-align:top; color:#000; padding:5px; }
-.ville_test a { color:#222; font-size:14px; text-decoration:none; }
-.ville_haut { color:#000; background-image:url(../image/forum_h2.gif); padding:3px; font-size:1.1em; font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold; text-align:center; height:25px; margin-left:-2px; margin-right:-2px; margin-top:-2px; }
-table.marchand,table.inventaire { font-size:.9em; margin:2px; text-align:center; font-weight:normal; width:98%; font-family:Arial; font-variant:normal; }
-.texte_normal { font-size:.9em; margin:2px; font-weight:normal; width:100%; font-family:Arial; font-variant:normal; }
-tr.header { font-weight:bold; text-align:center; }
-tr.element td,table.marchand tr.header td { padding:3px; }
-table.inventaire tr.element td,table.inventaire tr.header td { font-size:.9em; }
-#boutique	{text-align: center;font-size: 9pt;}
-#boutique li 		{clear:both;height:25px;line-height: 25px;}
-#boutique li:hover  { background:transparent url(../image/interface/1.png) center; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px;}
-#boutique .head {font-size:7pt;border-bottom:1px dashed #EEEEEE;font-weight: bold;}
-#boutique .head:hover {background:none !important;cursor:default !important;}
-#boutique .image 	{float:left;width:9%;height:26px;}
-#boutique .nom 		{float:left;width:35%;}
-#boutique .type 	{float:left;width:9%;}
-#boutique .mains 	{float:left;width:9%;}
-#boutique .degats 	{float:left;width:9%;}
-#boutique .coef 	{float:left;width:9%;}
-#boutique .coef_type 	{float:left;width:9%;}
-#boutique .stars 	{float:left;width:10%;}
-#boutique .achat 	{float:left;width:9%;}
-#boutique .pp 		{float:left;width:10%;}
-#boutique .pm 		{float:left;width:9%;}
-#boutique .force 	{float:left;width:9%;}
-#boutique .nom_hotel 		{float:left;width:44%;}
-#boutique .time 		{float:left;width:35%;}
-#boutique .prix_hotel 	{float:left;width:10%;}
 
-.ville_mortvivant 		{background:transparent url(../image/ville/fondmv1.jpg) center !important;height:397px;width:419px;}
-.ville_barbare 			{background:transparent url(../image/ville/villebarbarebiseau.png) center !important;height:397px;width:419px;}
-.ville_elfebois 		{background:transparent url(../image/ville/villeEDBbiseau.png) center !important;height:397px;width:419px;}
-.ville_elfehaut 		{background:transparent url(../image/ville/villeHEbiseau.png) center !important;height:397px;width:419px;}
-.ville_humain 			{background:transparent url(../image/ville/villehumainbiseau.png) center !important;height:397px;width:419px;}
-.ville_humainnoir 		{background:transparent url(../image/ville/villecorrbiseau.png) center !important;height:397px;width:419px;}
-.ville_nain 			{background:transparent url(../image/ville/villenainbiseau.png) center !important;height:397px;width:419px;}
-.ville_orc 				{background:transparent url(../image/ville/villeorcbiseau.png) center !important;height:397px;width:419px;}
-.ville_scavenger 		{background:transparent url(../image/ville/villescavbiseau.png) center !important;height:397px;width:419px;}
-.ville_troll 			{background:transparent url(../image/ville/villetrollbiseau.png) center !important;height:397px;width:419px;}
-.ville_vampire 			{background:transparent url(../image/ville/villevampirebiseau.png) center !important;height:397px;width:419px;}
-
-
-.quartier_marchand		{background:transparent url(../image/ville/cadrebiseauQM.png) center;padding:6px;margin-left:16px;margin-top:35px;width:138px;height:121px;float:left;}
-.quartier_marchand_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQM.png) top;display:block;height:34px;width:139px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:11px;color:#463300;}
-.quartier_marchand li {cursor: pointer; background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
-.quartier_marchand li:hover {background: #FFF;}
-
-
-.quartier_royal			{background:transparent url(../image/ville/cadrebiseauQR.png) center;padding:6px;margin-top:19px;margin-left:93px;width:132px;height:138px;float:left;}
-.quartier_royal_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreQR.png) top;display:block;height:34px;width:134px;margin-left:0px;margin-top:-2px;line-height:32px;text-indent:20px;color:#463300;}
-.quartier_royal li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
-.quartier_royal li:hover {background: #FFF;}
-
-.quartier_haut			{background:transparent url(../image/ville/cadrebiseauHQ.png) center;padding:6px;margin-top:59px;margin-left:23px;width:116px;height:107px;float:left;}
-.quartier_haut_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreHQ.png) top;display:block;height:34px;width:114px;margin-left:0px;margin-top:-3px;line-height:35px;text-indent:13px;color:#463300;}
-.quartier_haut li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
-.quartier_haut li:hover {background: #FFF;}
-
-
-.quartier_bas			{background:transparent url(../image/ville/cadrebiseauBQ.png) center;padding:6px;margin-top:45px;margin-left:103px;width:132px;height:135px;float:left;}
-.quartier_bas_titre {font-size:14px;font-variant:small-caps; font-family:"Trebuchet MS", Times, serif; font-weight:bold;background:transparent url(../image/ville/cadretitreBQ.png) top;display:block;height:34px;width:106px;margin-left:12px;margin-top:-8px;line-height:38px;text-indent:13px;color:#463300;}
-.quartier_bas li {cursor: pointer;background: #bfccdd;border : 1px solid #8d7845;-moz-border-radius: 6px;-webkit-border-radius:6px; border-radius: 6px;font-size:11px;height:14px;margin:2px;text-align:center;color: #3a3a4f;}
-.quartier_bas li:hover {background: #FFF;}
-
-.trcolor2 { background-color:#B4CFEF;border-radius : 5px;-moz-border-radius: 5px;-webkit-border-radius:5px; }*/
-
-/*#perso_envoi {width : 200px; padding : 0; margin : 0;}
-#suggestion {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black, z-index: 100;}
-#suggestion ul li {cursor : pointer;}
-#suggestion ul li:hover {background-color:#B4CFEF;}
-#suggestion_mil {display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
-#suggestion_mil ul li {cursor : pointer;}
-#suggestion_mil ul li:hover {background-color:#B4CFEF;}
-#suggestion_eco{display : none; width : 200px;	position: absolute; background-color : white; border : 1px solid black}
-#suggestion_eco ul li {cursor : pointer;}
-#suggestion_eco ul li:hover {background-color:#B4CFEF;}*/
-
-/*#hdv { background: center transparent url(../image/ville/auction_hammer_gavel.png) no-repeat }
-#marchand { background: center transparent url(../image/ville/money.png) no-repeat }*/
-
-/***************************************************
-  Gestion Royaume
- ***************************************************/
-/*#gestion-royaume { vertical-align:top; padding:5px; font-family:"Trebuchet MS", Times, serif; background-color:#BACCF7; font-weight:bold; }
-#gestion-royaume h4 { border-top:1px solid; border-bottom:1px solid; border-color:#888; margin-top:3px; margin-bottom:2px; padding-left:15px; background-color:#d8ab41; font-family:"Trebuchet MS", Times, serif; font-variant:small-caps; font-size:1em; color:black; }
-ul.gestion-royaume { margin-left:25px; }
-ul.gestion-royaume li { list-style-type:disc; margin-bottom:3px; color:#444444; }
-ul.gestion-royaume li:hover { font-weight:bold; text-decoration:none; background-color:#91AEF2; }
-ul.gestion-royaume li a { color:#444444; }*/
-
-/***************************************************
-  Hotel des ventes
- **************************************************/
-/*ul.onglet-hotel { }
-ul.onglet-hotel li { display:inline; }*/
-
-/***************************************************
-  Element de droite
- ***************************************************/
-/*#editcarte { width:100%; }
-.selecteur { float:left; }
-.mapedit { float:left; }*/
-
-/***************************************************
-  Tableau
- ***************************************************/
-/*.trcolor3 { font-weight:bold; color:#999; font-style:italic; }
-.trcolor5 { font-weight:bold; color:#999; font-style:italic; background-color:#FFF; }
-.trstat { vertical-align:top; border:2px solid; border-color:#555; -moz-border-radius:10px; -webkit-border-radius:10px; border-radius: 10px; background-color:#91AEF2; padding:4px; }
-.achat_over { color:red; }
-.boite_royaume { float:left; height:60px; width:60px; }
-.marque_royaume { width:55px; height:55px; }*/
 
 /***************************************************
   Journal des Actions
@@ -3223,8 +2724,6 @@ text-align: right;
 .jmort { color:#333333; }
 .jquete { color:orange; }
 .jloot { color:#CC33CC; }
-.small { font-style:italic; font-size:.9em; }
-.xsmall { font-style:italic; font-size:.8em; }
 
 /***************************************************
   Fiche de personnage
@@ -3257,19 +2756,6 @@ text-align: right;
 	overflow-y: auto;
 }
 
-
-/***************************************************
-  Rose des vents
- ***************************************************/
-/*.admin { width:600px; }
-.info_joueur { color:#6633ff; font-weight:bold; }
-.info_monstre { color:#cc3300; font-weight:bold; }
-.admin tr td { vertical-align:top; }
-.admin tr td ul li { margin:0; }
-.adminListing { margin-top:10px; margin-bottom:10px; border-top:0; border-right:0; }
-.adminListing tr td { border-top:1px solid #8d8db3; border-right:1px solid #8d8db3; text-align:center; padding-right:5px; }
-.adminListing tr td a { text-decoration:none; }
-tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }*/
 
 /**********************************
  Messagerie 
@@ -3390,21 +2876,8 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }*/
 	font-size:14px;
 }
 
-/*#livre_physique_icone1 {width: 40px; position: relative; top:122px; left:40px;}
-#livre_physique_icone2 {width: 40px; position: relative; top:22px; left:20px;}
-#livre_physique_icone3{width: 40px; position: relative; top:25px; left:4px;}
-#livre_physique_icone4{width: 40px; position: relative; top:28px; left:18px;}
-
-#livre_magique_icone1 {width: 40px; position: relative; top:66px; left:18px;}
-#livre_magique_icone2 {width: 40px; position: relative; top:74px; left:4px;}
-#livre_magique_icone3{width: 40px; position: relative; top:79px; left:17px;}
-#livre_magique_icone4{width: 40px; position: relative; top:92px; left:12px;}*/
-#livre_corps ul {/*margin-left:85px;margin-right:65px;*/}
 #livre_corps li
 {
-	/*display: block;
-	height: 36px;*/
-	/*padding-top:10px;*/
 	border-radius:5px;
 	font-size:12px;
 	overflow: hidden;
@@ -3414,7 +2887,6 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }*/
 {
 	display: block;
 	height: 36px;
-	/*padding-top:10px;*/
 	padding-right:5px;
 	font-size:12px;
 	overflow: hidden;
@@ -3465,7 +2937,6 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }*/
 {
 	margin: 2px;
 	margin-top: 3px;
-	/*margin-left: 40px;*/
 	display: block;
 }
 
