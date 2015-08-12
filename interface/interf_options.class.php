@@ -14,9 +14,11 @@ class interf_options extends interf_onglets
 		global $G_url;
 		parent::__construct('ongl_options', 'options');
 		$url = $G_url->copie('ajax', 2);
-		$this->add_onglet('Personnage', $url->get('categorie', 'perso'), 'ongl_perso', 'invent', $categorie=='perso');
+		if( joueur::get_perso() )
+			$this->add_onglet('Personnage', $url->get('categorie', 'perso'), 'ongl_perso', 'invent', $categorie=='perso');
 		$this->add_onglet('Compte joueur', $url->get('categorie', 'joueur'), 'ongl_joueur', 'invent', $categorie=='joueur');
-		$this->add_onglet('Affichage', $url->get('categorie', 'affichage'), 'ongl_affichage', 'invent', $categorie=='affichage');
+		if( joueur::get_perso() )
+			$this->add_onglet('Affichage', $url->get('categorie', 'affichage'), 'ongl_affichage', 'invent', $categorie=='affichage');
 		
 		$G_url->add('categorie', $categorie);
 		switch($categorie)

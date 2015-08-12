@@ -106,3 +106,190 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 
 .small { font-style:italic; font-size:.9em; }
 .xsmall { font-style:italic; font-size:.8em; }
+
+
+/*********************************
+ Dialogue
+**********************************/
+
+.modal-dialog .invent
+{
+	border-color: #DDD;
+	width: 100%;
+}
+
+
+/*********************************
+ Diplomatie
+**********************************/
+
+#dlg_diplo
+{
+	width: 950px;
+}
+
+#diplomatie
+{
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+/*********************************
+ bestiaire
+**********************************/
+
+#dlg_bestiaire
+{
+	width: 750px;
+}
+
+#bestiaire table.dataTable
+{
+	margin-top: 0 !important;
+}
+
+#bestiaire img
+{
+	max-height: 32px;
+}
+
+
+/*********************************
+ Histoire de starshine
+**********************************/
+
+#dlg_rp
+{
+	width: 900px;
+}
+
+#liste_rp
+{
+	float: left;
+	width: 150px;
+}
+
+#texte_rp
+{
+	margin-left: 155px;
+}
+
+#rp_fin
+{
+	clear: both;
+}
+
+
+/*********************************
+ Statistiques
+**********************************/
+
+#dlg_stats
+{
+	width: 800px;
+}
+
+#statistiques
+{
+	text-align: center;
+}
+
+
+/*********************************
+ Classements
+**********************************/
+
+#dlg_class
+{
+	width: 900px;
+}
+
+.classement ul
+{
+	position: absolute;
+	margin: 2px;
+	width: 110px;
+}
+
+.classement > div
+{
+	margin-left: 121px;
+	width: 730px;
+}
+
+.classement table.dataTable
+{
+	padding: 0;
+}
+
+#class_royaumes
+{
+	min-height: 310px;
+}
+
+#class_groupes
+{
+	min-height: 350px;
+}
+
+#class_perso_tous, #class_perso_race
+{
+	min-height: 495px;
+}
+
+#tbl_groupes + .row, #tbl_perso_tous + .row, #tbl_perso_race + .row
+{
+	margin-bottom: 30px;
+}
+
+.classement .col-xs-6
+{
+	float: none;
+	padding-right: 25px;
+}
+
+.classement .dataTables_filter
+{
+	position: absolute;
+	right: -365px;
+}
+
+#tbl_perso_race th td:nth-child(2), #tbl_perso_race tr td:nth-child(2), #tbl_perso_tous th td:nth-child(2), #tbl_perso_tous tr td:nth-child(2)
+{
+	width: 20px;
+}
+
+/*********************************
+ Options
+**********************************/
+
+#options .input-group, #options .invent>div
+{
+	margin: 5px;
+}
+
+#options .invent>div:nth-child(n+2)
+{
+	margin-top: 30px;
+}
+
+/*********************************
+ Votes & dons
+**********************************/
+
+#dlg_votes_dons
+{
+	width: 700px;
+}
+
+#votes_dons p
+{
+	margin: 5px;
+}
+
+#votes_dons ul
+{
+	text-align: center;
+}

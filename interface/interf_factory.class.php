@@ -67,6 +67,13 @@ class interf_factory
     	return new interf_jeu($this->css);
 		}
   }
+  function creer_princ()
+  {
+		if( joueur::get_perso() )
+			return $this->creer_jeu();
+		else
+			return $this->creer_index();
+	}
   /**
    * interface de l'index
    */
@@ -77,7 +84,10 @@ class interf_factory
     {
     case 1:
     	include_once(root.'interface/interf_jeu.class.php');
-  		return new interf_jeu_ajax();
+  		return new interf_jeu_ajax(false);
+    case 2:
+    	include_once(root.'interface/interf_jeu.class.php');
+  		return new interf_jeu_tab();
     default:
     	include_once(root.'interface/interf_index.class.php');
     	return new interf_index($this->css);
@@ -98,10 +108,15 @@ class interf_factory
     include_once(root.'interface/interf_index.class.php');
     return new interf_index_compte();
 	}
-  function creer_index_perso()
+  function creer_index_perso($infos=null)
   {
     include_once(root.'interface/interf_index.class.php');
-    return new interf_index_perso();
+    return new interf_index_perso($infos);
+	}
+  function creer_index_infos_perso($race, $classe)
+  {
+    include_once(root.'interface/interf_index.class.php');
+    return new interf_index_infos_perso($race, $classe);
 	}
   /**
    * Renvoie la bonne instance de la classe pour afficher quelque chose dans le panneau droit

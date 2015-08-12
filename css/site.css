@@ -5,7 +5,7 @@ body
 	padding:0;
 	color:#222;
 	background:#000 url(./../image/site/essai_intro_sso_20sept09g.jpg) no-repeat right 40px;
-	min-height:750px;
+	/*min-height:750px;*/
 	height: 100%;
 	position:relative;
 }
@@ -32,6 +32,16 @@ main
 	text-align: justify;
 	height: 100%;
 	height: calc( 100% - 200px );
+}
+
+main.plein
+{
+	height: calc( 100% - 85px );
+}
+
+#modal, #modal a
+{
+	color: black;
 }
 
 #contenu
@@ -79,6 +89,145 @@ a
 {
 	color: #DBB55E;
 }
+
+#lien_jeu
+{
+	font-weight: bold;
+}
+
+#connexion
+{
+	margin: 5px;
+	width: 300px;
+}
+
+#connexion>div
+{
+	margin-left:0;
+	margin-right:0;
+}
+
+#contenu>div>.row
+{
+	margin: 0;
+}
+
+/*-- Création perso ----------------------------------------------------------*/
+
+#races
+{
+	background-color: rgba(255, 255, 255, 0.3);
+	border-radius: 10px;
+}
+
+.race
+{
+	margin: 10px;
+	float: left;
+}
+
+.barbare_guerrier 	{background:transparent url('./../image/personnage/barbare/barbare_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.barbare_guerrier:hover 	{background:transparent url('./../image/site/barbare_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_guerrier:active 	{background:transparent url('./../image/site/barbare_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.barbare_mage		{background:transparent url('./../image/personnage/barbare/barbare_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_mage:hover		{background:transparent url('./../image/site/barbare_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.barbare_mage:active		{background:transparent url('./../image/site/barbare_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.humainnoir_guerrier 	{background:transparent url('./../image/personnage/humainnoir/humainnoir_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.humainnoir_guerrier:hover 	{background:transparent url('./../image/site/humainnoir_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_guerrier:active 	{background:transparent url('./../image/site/humainnoir_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.humainnoir_mage		{background:transparent url('./../image/personnage/humainnoir/humainnoir_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_mage:hover		{background:transparent url('./../image/site/humainnoir_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humainnoir_mage:active		{background:transparent url('./../image/site/humainnoir_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfehaut_guerrier 	{background:transparent url('./../image/personnage/elfehaut/elfehaut_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.elfehaut_guerrier:hover 	{background:transparent url('./../image/site/elfehaut_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_guerrier:active 	{background:transparent url('./../image/site/elfehaut_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfehaut_mage		{background:transparent url('./../image/personnage/elfehaut/elfehaut_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_mage:hover		{background:transparent url('./../image/site/elfehaut_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfehaut_mage:active		{background:transparent url('./../image/site/elfehaut_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.troll_guerrier 	{background:transparent url('./../image/personnage/troll/troll_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.troll_guerrier:hover 	{background:transparent url('./../image/site/troll_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_guerrier:active 	{background:transparent url('./../image/site/troll_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.troll_mage		{background:transparent url('./../image/personnage/troll/troll_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_mage:hover		{background:transparent url('./../image/site/troll_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.troll_mage:active		{background:transparent url('./../image/site/troll_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.humain_guerrier 	{background:transparent url('./../image/personnage/humain/humain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.humain_guerrier:hover 	{background:transparent url('./../image/site/humain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_guerrier:active 	{background:transparent url('./../image/site/humain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.humain_mage		{background:transparent url('./../image/personnage/humain/humain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_mage:hover		{background:transparent url('./../image/site/humain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.humain_mage:active		{background:transparent url('./../image/site/humain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.mortvivant_guerrier 	{background:transparent url('./../image/personnage/mortvivant/mortvivant_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.mortvivant_guerrier:hover 	{background:transparent url('./../image/site/mortvivant_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_guerrier:active 	{background:transparent url('./../image/site/mortvivant_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.mortvivant_mage		{background:transparent url('./../image/personnage/mortvivant/mortvivant_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_mage:hover		{background:transparent url('./../image/site/mortvivant_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.mortvivant_mage:active		{background:transparent url('./../image/site/mortvivant_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.orc_guerrier 	{background:transparent url('./../image/personnage/orc/orc_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.orc_guerrier:hover 	{background:transparent url('./../image/site/orc_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_guerrier:active 	{background:transparent url('./../image/site/orc_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.orc_mage		{background:transparent url('./../image/personnage/orc/orc_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_mage:hover		{background:transparent url('./../image/site/orc_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.orc_mage:active		{background:transparent url('./../image/site/orc_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.scavenger_guerrier 	{background:transparent url('./../image/personnage/scavenger/scavenger_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.scavenger_guerrier:hover 	{background:transparent url('./../image/site/scavenger_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_guerrier:active 	{background:transparent url('./../image/site/scavenger_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.scavenger_mage		{background:transparent url('./../image/personnage/scavenger/scavenger_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_mage:hover		{background:transparent url('./../image/site/scavenger_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.scavenger_mage:active		{background:transparent url('./../image/site/scavenger_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.vampire_guerrier 	{background:transparent url('./../image/personnage/vampire/vampire_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.vampire_guerrier:hover 	{background:transparent url('./../image/site/vampire_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_guerrier:active 	{background:transparent url('./../image/site/vampire_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.vampire_mage		{background:transparent url('./../image/personnage/vampire/vampire_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_mage:hover		{background:transparent url('./../image/site/vampire_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.vampire_mage:active		{background:transparent url('./../image/site/vampire_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.nain_guerrier 	{background:transparent url('./../image/personnage/nain/nain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.nain_guerrier:hover 	{background:transparent url('./../image/site/nain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_guerrier:active 	{background:transparent url('./../image/site/nain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.nain_mage		{background:transparent url('./../image/personnage/nain/nain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_mage:hover		{background:transparent url('./../image/site/nain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.nain_mage:active		{background:transparent url('./../image/site/nain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfebois_guerrier 	{background:transparent url('./../image/personnage/elfebois/elfebois_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
+.elfebois_guerrier:hover 	{background:transparent url('./../image/site/elfebois_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_guerrier:active 	{background:transparent url('./../image/site/elfebois_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+.elfebois_mage		{background:transparent url('./../image/personnage/elfebois/elfebois_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_mage:hover		{background:transparent url('./../image/site/elfebois_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+.elfebois_mage:active		{background:transparent url('./../image/site/elfebois_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
+
+#description, #propagande
+{
+	border: 1px #E2D1AA solid;
+	border-radius: 10px;
+	padding: 2px;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+#infos_perso h3
+{
+	margin: 5px;
+}
+
 
 /*-- Placement ----------------------------------------------------------*/
 
@@ -188,93 +337,4 @@ width:483px; }
 .perso_espacement					{ width: 17px; float: left; height: 1px;display:block;}
 
 /*-- Perso ----------------------------------------------------------*/
-
-
-.barbare_guerrier 	{background:transparent url('./../image/personnage/barbare/barbare_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.barbare_guerrier:hover 	{background:transparent url('./../image/site/barbare_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.barbare_guerrier:active 	{background:transparent url('./../image/site/barbare_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.barbare_mage		{background:transparent url('./../image/personnage/barbare/barbare_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.barbare_mage:hover		{background:transparent url('./../image/site/barbare_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.barbare_mage:active		{background:transparent url('./../image/site/barbare_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.humainnoir_guerrier 	{background:transparent url('./../image/personnage/humainnoir/humainnoir_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.humainnoir_guerrier:hover 	{background:transparent url('./../image/site/humainnoir_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humainnoir_guerrier:active 	{background:transparent url('./../image/site/humainnoir_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.humainnoir_mage		{background:transparent url('./../image/personnage/humainnoir/humainnoir_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humainnoir_mage:hover		{background:transparent url('./../image/site/humainnoir_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humainnoir_mage:active		{background:transparent url('./../image/site/humainnoir_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.elfehaut_guerrier 	{background:transparent url('./../image/personnage/elfehaut/elfehaut_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.elfehaut_guerrier:hover 	{background:transparent url('./../image/site/elfehaut_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfehaut_guerrier:active 	{background:transparent url('./../image/site/elfehaut_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.elfehaut_mage		{background:transparent url('./../image/personnage/elfehaut/elfehaut_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfehaut_mage:hover		{background:transparent url('./../image/site/elfehaut_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfehaut_mage:active		{background:transparent url('./../image/site/elfehaut_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.troll_guerrier 	{background:transparent url('./../image/personnage/troll/troll_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.troll_guerrier:hover 	{background:transparent url('./../image/site/troll_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.troll_guerrier:active 	{background:transparent url('./../image/site/troll_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.troll_mage		{background:transparent url('./../image/personnage/troll/troll_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.troll_mage:hover		{background:transparent url('./../image/site/troll_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.troll_mage:active		{background:transparent url('./../image/site/troll_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.humain_guerrier 	{background:transparent url('./../image/personnage/humain/humain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.humain_guerrier:hover 	{background:transparent url('./../image/site/humain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humain_guerrier:active 	{background:transparent url('./../image/site/humain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.humain_mage		{background:transparent url('./../image/personnage/humain/humain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humain_mage:hover		{background:transparent url('./../image/site/humain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.humain_mage:active		{background:transparent url('./../image/site/humain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.mortvivant_guerrier 	{background:transparent url('./../image/personnage/mortvivant/mortvivant_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.mortvivant_guerrier:hover 	{background:transparent url('./../image/site/mortvivant_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.mortvivant_guerrier:active 	{background:transparent url('./../image/site/mortvivant_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.mortvivant_mage		{background:transparent url('./../image/personnage/mortvivant/mortvivant_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.mortvivant_mage:hover		{background:transparent url('./../image/site/mortvivant_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.mortvivant_mage:active		{background:transparent url('./../image/site/mortvivant_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.orc_guerrier 	{background:transparent url('./../image/personnage/orc/orc_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.orc_guerrier:hover 	{background:transparent url('./../image/site/orc_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.orc_guerrier:active 	{background:transparent url('./../image/site/orc_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.orc_mage		{background:transparent url('./../image/personnage/orc/orc_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.orc_mage:hover		{background:transparent url('./../image/site/orc_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.orc_mage:active		{background:transparent url('./../image/site/orc_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.scavenger_guerrier 	{background:transparent url('./../image/personnage/scavenger/scavenger_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.scavenger_guerrier:hover 	{background:transparent url('./../image/site/scavenger_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.scavenger_guerrier:active 	{background:transparent url('./../image/site/scavenger_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.scavenger_mage		{background:transparent url('./../image/personnage/scavenger/scavenger_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.scavenger_mage:hover		{background:transparent url('./../image/site/scavenger_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.scavenger_mage:active		{background:transparent url('./../image/site/scavenger_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.vampire_guerrier 	{background:transparent url('./../image/personnage/vampire/vampire_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.vampire_guerrier:hover 	{background:transparent url('./../image/site/vampire_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.vampire_guerrier:active 	{background:transparent url('./../image/site/vampire_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.vampire_mage		{background:transparent url('./../image/personnage/vampire/vampire_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.vampire_mage:hover		{background:transparent url('./../image/site/vampire_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.vampire_mage:active		{background:transparent url('./../image/site/vampire_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.nain_guerrier 	{background:transparent url('./../image/personnage/nain/nain_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.nain_guerrier:hover 	{background:transparent url('./../image/site/nain_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.nain_guerrier:active 	{background:transparent url('./../image/site/nain_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.nain_mage		{background:transparent url('./../image/personnage/nain/nain_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.nain_mage:hover		{background:transparent url('./../image/site/nain_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.nain_mage:active		{background:transparent url('./../image/site/nain_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.elfebois_guerrier 	{background:transparent url('./../image/personnage/elfebois/elfebois_guerrier.png') no-repeat center center;width:43px;height:40px;display:block;float:left;cursor:pointer;}
-.elfebois_guerrier:hover 	{background:transparent url('./../image/site/elfebois_guerrier_hover.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfebois_guerrier:active 	{background:transparent url('./../image/site/elfebois_guerrier_active.png') no-repeat center center;width:43px;height:43px;display:block;float:left;cursor:pointer;}
-
-.elfebois_mage		{background:transparent url('./../image/personnage/elfebois/elfebois_mage.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfebois_mage:hover		{background:transparent url('./../image/site/elfebois_mage_hover.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
-.elfebois_mage:active		{background:transparent url('./../image/site/elfebois_mage_active.png') no-repeat center center; width:43px;height:43px;display:block;float:left;cursor:pointer;}
 

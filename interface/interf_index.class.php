@@ -20,14 +20,20 @@ class interf_index extends interf_sso
     $this->menu->add_elt( new interf_elt_menu('Captures d\'écran', self::page.'?page=captures', 'return charger(this.href);') );
     //$this->menu->add_elt( new interf_elt_menu('Charte', self::page.'page=charte', 'return charger(this.href);') );
     $autres = $this->menu->add_elt( new interf_nav_deroul('Autres') );
-    /*$autres->add_elt( new interf_elt_menu('Diplomatie', self::page.'?page=', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Cartes', self::page.'?page=', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Bestiaire', self::page.'?page=', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Histoire de Starshine', self::page.'?page=', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Statistiques', self::page.'?page=', 'return charger(this.href);') );
-    $autres->add( new interf_elt_menu('Classement', self::page.'?page=', 'return charger(this.href);') );*/
+    $autres->add( new interf_elt_menu('Histoire de Starshine', 'background.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Bestiaire', 'liste_monstre.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Statistiques', 'stats2.php?graph=carte_royaume.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Classement', 'classement.php', 'return charger(this.href);') );
+    $autres->add( new interf_elt_menu('Diplomatie', 'diplomatie.php', 'return charger(this.href);') );
+    //$autres->add( new interf_elt_menu('Cartes', 'carte.php', 'return charger(this.href);') );
     
     
+    if( $joueur )
+    {
+	    $nbr_perso = count( perso::create('id_joueur', $joueur->get_id()) );
+	    if( $nbr_perso )
+    		$this->menu->add_elt(new interf_elt_menu('Jeu', 'http://www.starshine-online.com/', false, 'lien_jeu'), false);
+		}
     $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
     if( $joueur )
@@ -36,24 +42,47 @@ class interf_index extends interf_sso
 	    $forum->get_lien()->add( new interf_bal_smpl('span', $nbr_posts ? $nbr_posts : '', 'nbr_posts', 'badge') );
 	    /// @todo à améliorer
 	    //$persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) || $joueur->get_droits() & joueur::droit_pnj;
-	    if( count( perso::create('id_joueur', $joueur->get_id()) ) == 0 )
-    		$this->menu->add_elt(new interf_elt_menu('Créer un personnage', self::page.'?page=creer_perso'), false);
+	    if( $nbr_perso < $G_nbr_max_persos || joueur::factory()->get_droits() & joueur::droit_staf )
+    		$this->menu->add_elt(new interf_elt_menu('Créer un personnage', self::page.'?page=creer_perso', 'return charger(this.href);'), false);
     	$this->aff_menu_joueur();
 		}
 		else
 		{
-    	$this->menu->add_elt(new interf_elt_menu('Créer un compte', self::page.'?page=creer_compte'), false);
-    	$this->menu->add_elt(new interf_menu_div('Connexion'), false);
+    	$this->menu->add_elt(new interf_elt_menu('Créer un compte', self::page.'?page=creer_compte', 'return charger(this.href);'), false);
+    	$connex = $this->menu->add_elt(new interf_menu_div('Connexion'), false);
+    	$form = $connex->add( new interf_form(self::page, 'connexion', 'post', 'form-horizontal') );
+    	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
+    	$nom = $div_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
+			$nom->set_attribut('placeholder', 'identifiant');
+			$nom->set_attribut('tabindex', '1');
+    	$div_mdp = $form->add( new interf_bal_cont('div', false, 'form-group') );
+    	$mdp = $div_mdp->add( new interf_chp_form('password', 'password', false, false, false, 'form-control') );
+			$mdp->set_attribut('placeholder', 'mot de passe');
+			$mdp->set_attribut('tabindex', '2');
+    	$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
+    	$div_auto2 = $div_auto->add( new interf_bal_cont('div', false, 'checkbox') );
+    	$auto = $div_auto2->add( new interf_chp_form('checkbox', 'auto_login') );
+			$auto->set_attribut('tabindex', '3');
+			$div_auto2->add( new interf_bal_smpl('label', 'Connexion automatique') );
+    	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+    	$btn = $div_btn->add( new interf_chp_form('submit', false, false, 'Connexion', false, 'btn btn-default') );
+			$btn->set_attribut('tabindex', '4');
+			$form->add( new interf_chp_form('hidden', 'log') );
+			$script = $connex->add( new interf_bal_smpl('script', '') );
+			$script->set_attribut('type', 'text/javascript');
+			$script->set_attribut('src', 'javascript/emp/emp-min.js');
+			self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
 		}
 		
-		$main = $this->add( new interf_bal_cont('main') );
+		$a_pub = file_exists(root.'pub.php');
+		$main = $this->add( new interf_bal_cont('main', false, $a_pub?false:'plein') );
 		$this->contenu = $main->add( new interf_bal_cont('section', 'contenu') );
 		
 		// pub
-	  //if( file_exists(root.'pub.php') )
+	  if( $a_pub )
 	  {
 	  	$pub = $this->add( new interf_bal_smpl('iframe', '', 'pub') );
-	  	//$pub->set_attribut('src', 'pub.php');
+	  	$pub->set_attribut('src', 'pub.php');
 	  	$pub->set_attribut('scrolling', 'no');
 		}
 		// erreur de connexion
@@ -85,6 +114,28 @@ class interf_index extends interf_sso
 	function set_contenu($fils)
 	{
 		return $this->contenu->add( $fils );
+	}
+	
+	function add_section($id, $fils)
+	{
+		global $G_interf;
+		switch($id)
+		{
+		case 'infos_perso':
+			$this->set_contenu( $G_interf->creer_index_perso($fils) );
+		default:
+			log_admin::log('erreur', 'Section inconnue : '.$id);
+			return null;
+		}
+	}
+	
+  function affiche($tab = 0)
+	{
+		global $G_interf;
+		// On remplie les parties gauche et droites si elles sont vides
+		if( !$this->contenu->get_fils() )
+			$this->contenu->add( $G_interf->creer_index_infos() );
+		parent::affiche($tab);
 	}
 }
 
@@ -155,17 +206,167 @@ class interf_index_captures extends interf_bal_cont
 	}
 }
 
-class interf_index_compte extends interf_cont
+class interf_index_compte extends interf_bal_cont
 {
 	function __construct()
 	{
+		global $G_url;
+		parent::__construct('div', false, 'container-fluid');
+		$div_row0 = $this->add( new interf_bal_cont('div', false, 'row') );
+		$div_row0->add( new interf_bal_smpl('h3', 'Création du compte joueur', false, 'row') );
+		interf_alerte::aff_enregistres($div_row0);
+		$div_row1 = $this->add( new interf_bal_cont('div', false, 'row') );
+		$div_form = $div_row1->add( new interf_bal_cont('div', false, 'col-md-8') );
+  	$form = $div_form->add( new interf_form($G_url->get('action', 'creer_joueur'), 'creer_compte', 'post', 'form-horizontal') );
+  	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_nom->add( new interf_bal_smpl('label', 'Quel sera votre nom&nbsp;?', false, 'col-sm-4 control-label') );
+  	$div_in_nom = $div_nom->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+  	$nom = $div_in_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
+		$nom->set_attribut('placeholder', 'nom');
+		$nom->set_attribut('tabindex', '5');
+  	$div_mdp1 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_mdp1->add( new interf_bal_smpl('label', 'Indiquer un mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+  	$div_in_mdp1 = $div_mdp1->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+  	$mdp1 = $div_in_mdp1->add( new interf_chp_form('password', 'password', false, false, false, 'form-control') );
+		$mdp1->set_attribut('placeholder', 'mot de passe');
+		$mdp1->set_attribut('tabindex', '6');
+  	$div_mdp2 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_mdp2->add( new interf_bal_smpl('label', 'Confirmer votre mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+  	$div_in_mdp2 = $div_mdp2->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+  	$mdp2 = $div_in_mdp2->add( new interf_chp_form('password', 'password2', false, false, false, 'form-control') );
+		$mdp2->set_attribut('placeholder', 'mot de passe');
+		$mdp2->set_attribut('tabindex', '7');
+  	$div_email = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_email->add( new interf_bal_smpl('label', 'Indiquer un email&nbsp;:', false, 'col-sm-4 control-label') );
+  	$div_in_email = $div_email->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+  	$email = $div_in_email->add( new interf_chp_form('email', 'email', false, false, false, 'form-control') );
+		$email->set_attribut('placeholder', 'email');
+		$email->set_attribut('tabindex', '8');
+		$div_in_email->add( new interf_bal_smpl('span', '(facultatif, mais indispensable en cas de perte mot de passe)', false, 'small') );
+  	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_in_btn = $div_btn->add(new interf_bal_cont('div', false, 'col-sm-offset-4 col-sm-8')  );
+  	$btn = $div_in_btn->add( new interf_chp_form('submit', false, false, 'Créer', false, 'btn btn-default') );
+		$btn->set_attribut('tabindex', '9');
+		
+		$div_regles = $div_row1->add( new interf_bal_cont('div', false, 'col-md-4') );
+		$txt = 'Ce compte vous identifie en tant que joueur et est différent de votre personnage, vous le garderez pour les différentes parties, y compris lorsque vous changez de personnage.
+        <ul>
+          <li>Il est unique : il est interdit de posséder plusieurs compte joueur. Tout changement sans accord des administrateurs sera considérés comme du mutlicompte (si vous voulez changer de personnage, il vous suffit de le supprimer pour pouvoir en créer un nouveau).</li>
+          <li>Il est personnel : il est interdit de prêter ou donner un compte joueur à quelqu\'un d\'autre.</li>
+        </ul>
+        Tout non respect des règles pourra entrainer un bannissement temporaire ou définitif du compte.';
+		$div_regles->add( new interf_bal_smpl('span', $txt) );
+		$this->add( new interf_bal_smpl('div', 'NB : Vous pourrez donner à votre personnage le même nom que celui utilisé pour votre compte.', false, 'row') );
 	}
 }
 
-class interf_index_perso extends interf_cont
+class interf_index_perso extends interf_bal_cont
 {
-	function __construct()
+	function __construct($infos=null)
 	{
+		global $db, $Gtrad, $G_url;
+		parent::__construct('div', false, 'container-fluid');
+		$div_row0 = $this->add( new interf_bal_cont('div', false, 'row') );
+		$div_row0->add( new interf_bal_smpl('h3', 'Création du pesonnage', false, 'row') );
+		interf_alerte::aff_enregistres($div_row0);
+		$div_row1 = $this->add( new interf_bal_cont('div', false, 'row') );
+		$div_form = $div_row1->add( new interf_bal_cont('div', false, 'col-md-6') );
+  	$form = $div_form->add( new interf_form($G_url->get('action', 'creer_perso'), 'creer_perso', 'post') );
+  	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$div_nom->add( new interf_bal_smpl('label', 'Quel sera votre nom&nbsp;?', false, 'control-label') );
+  	$nom = $div_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
+		$nom->set_attribut('placeholder', 'nom');
+		$nom->set_attribut('tabindex', '5');
+		$div_nom->add( new interf_bal_smpl('span', '(peut etre identique au nom de votre compte joueur)', false, 'small') );
+  	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+  	$btn = $div_btn->add( new interf_chp_form('submit', false, false, 'Créer', false, 'btn btn-default') );
+		$btn->set_attribut('tabindex', '6');
+		$form->add( new interf_chp_form('hidden', 'race', false, false, 'race') );
+		$form->add( new interf_chp_form('hidden', 'classe', false, false, 'classe') );
+		$div_races = $div_row1->add( new interf_bal_cont('div', 'races', 'col-md-6') );
+		/// @todo passer à l'objet
+		$requete = 'SELECT race FROM royaume WHERE race != "" ORDER BY star_nouveau_joueur DESC, race ASC';
+		$req = $db->query($requete);
+		$i=0;
+		while($row = $db->read_object($req))
+		{
+			$div = $div_races->add( new interf_bal_cont('div', $row->race, 'race') );
+			$guerrier = $div->add( new interf_lien('', $G_url->get( array('page'=>'infos_perso', 'race'=>$row->race, 'classe'=>'combattant') ), $row->race.'_guerrier', $row->race.'_guerrier') );
+			$guerrier->set_tooltip($Gtrad[$row->race].' Combattant');
+			$mage = $div->add( new interf_lien('', $G_url->get( array('page'=>'infos_perso', 'race'=>$row->race, 'classe'=>'magicien') ), $row->race.'_mage', $row->race.'_mage') );
+			$mage->set_tooltip($Gtrad[$row->race].' Magicien');
+		}
+		$inf = $this->add( new interf_bal_cont('div', 'infos_perso', 'row') );
+		/*$div_row2->add( new interf_bal_cont('div', 'description', 'col-md-6') );
+		$div_row2->add( new interf_bal_cont('div', 'propagande', 'col-md-6') );*/
+		if($infos)
+			$inf->add($infos);
+		$texte = 'Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l\'aide de jeu</a>, pour mieux choisir votre personnage.<br />
+  			N\'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
+  			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
+  			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>';
+		$this->add( new interf_bal_smpl('div', $texte, false, 'row') );
+	}
+}
+
+class interf_index_infos_perso extends interf_cont
+{
+	function __construct($race, $classe)
+	{
+		global $Gtrad, $Trace, $db;
+		
+		if ($classe == 'combattant')
+		{
+			$Trace[$race]['vie']++;
+			$Trace[$race]['force']++;
+			$Trace[$race]['dexterite']++;
+		}
+		else
+		{
+			$Trace[$race]['puissance']++;
+			$Trace[$race]['volonte']++;	
+			$Trace[$race]['energie']++;
+		}
+		
+		$div_descr = $this->add( new interf_bal_cont('div', false, 'col-md-6') );
+		$descr = $div_descr->add( new interf_bal_cont('div', 'description') );
+		$descr->add( new interf_bal_smpl('h3', $Gtrad[$race].' - '.$classe) );
+		$descr->add( new interf_bal_smpl('strong', 'Stars au début du jeu : ') );
+		/// @todo passer à l'objet
+		$requete = "SELECT star_nouveau_joueur FROM royaume WHERE ID = ".$Trace[$race]['numrace'];
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$descr->add( new interf_bal_smpl('span', $row[0], 'stars') );
+		$descr->add( new interf_bal_smpl('br') );
+		$descr->add( new interf_bal_smpl('strong', 'Passif : ') );
+		$descr->add( new interf_bal_smpl('span', $Trace[$race]['passif'], 'passif') );
+		$descr->add( new interf_bal_smpl('br') );
+		$descr->add( new interf_bal_smpl('strong', 'Caractéristiques :') );
+		$dl = $descr->add( new interf_descr() );
+		$dl->nouv_elt('Constitution', $Trace[$race]['vie'], 'Caractérise vos points de vie.');
+		$dl->nouv_elt('Force', $Trace[$race]['force'], 'Augmente vos dégâts physiques, permet de porter de plus grosses armes ou armures.');
+		$dl->nouv_elt('Dextérité', $Trace[$race]['dexterite'], 'Augmente vos chances de toucher, d\'esquiver et de porter des coups critiques.');
+		$dl->nouv_elt('Puissance', $Trace[$race]['puissance'], 'Augmente vos dégâts magiques.');
+		$dl->nouv_elt('Volonté', $Trace[$race]['volonte'], 'Augmente vos chances de lancer un sort, d\'esquiver un sort, ou de toucher une cible avec un sort.');
+		$dl->nouv_elt('Énergie', $Trace[$race]['energie'], 'Caractérise vos points de mana.');
+		$descr->add( new interf_bal_smpl('strong', 'Affinités magiques :') );
+		$dl2 = $descr->add( new interf_descr() );
+		$dl2->nouv_elt('Magie de la Vie', $Gtrad['affinite'.$Trace[$race]['affinite_sort_vie']]);
+		$dl2->nouv_elt('Magie de la Mort', $Gtrad['affinite'.$Trace[$race]['affinite_sort_mort']]);
+		$dl2->nouv_elt('Magie Élémentaire', $Gtrad['affinite'.$Trace[$race]['affinite_sort_element']]);
+		
+		$div_propa = $this->add( new interf_bal_cont('div', false, 'col-md-6') );
+		$propa = $div_propa->add( new interf_bal_cont('div', 'propagande') );
+		$propa->add( new interf_bal_smpl('h3', 'Propagande royale') );
+		/// @todo passer à l'objet
+		$requete = "SELECT propagande FROM motk WHERE id_royaume = ".$Trace[$race]['numrace'];
+		$req = $db->query($requete);
+		$row = $db->read_row($req);
+		$texte = new texte($row[0], texte::msg_propagande);
+		$propa->add( new interf_bal_smpl('p', $texte->parse()) );
+		
+		self::code_js('$("#race").attr("value", "'.$race.'");');
+		self::code_js('$("#classe").attr("value", "'.$classe.'");');
 	}
 }
 

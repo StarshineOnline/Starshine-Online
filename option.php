@@ -4,9 +4,17 @@ if (file_exists('root.php'))
 
 include_once(root.'inc/fp.php');
 
-$categorie = array_key_exists('categorie', $_GET) ? $_GET['categorie'] : 'perso';
+if( array_key_exists('categorie', $_GET) )
+	$categorie = $_GET['categorie'];
+else if( joueur::get_perso() )
+	$categorie = 'perso';
+else
+	$categorie = 'joueur';
+			
+
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
-$interf_princ = $G_interf->creer_jeu();
+
+$interf_princ = $G_interf->creer_princ();
   
 
 switch($action)

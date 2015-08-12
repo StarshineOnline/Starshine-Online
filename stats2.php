@@ -4,7 +4,7 @@ if (file_exists('root.php'))
   
 include_once(root.'inc/fp.php');
 
-$interf_princ = $G_interf->creer_jeu();
+$interf_princ = $G_interf->creer_princ();
   
 $stat = array_key_exists('stat', $_GET) ? $_GET['stat'] : 'stat_lvl';
 

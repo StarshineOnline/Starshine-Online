@@ -210,7 +210,7 @@ class joueur extends table
 
 	/// "Sale" le mot de passe
 	function sel($mdp)
-	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à salter
+	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à sel
     return sha1($this->login.'!$'.$mdp);
   }
   

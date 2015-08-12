@@ -978,7 +978,7 @@ class interf_descr extends interf_bal_cont
 	{
 		parent::__construct('dl', $id, $classe);
 	}
-	function nouv_elt($terme, $def=false)
+	function nouv_elt($terme, $def=false, $tooltip=false)
 	{
 		if( is_object($terme) )
 		{
@@ -986,7 +986,9 @@ class interf_descr extends interf_bal_cont
 			$dt->add( $terme );
 		}
 		else
-			$this->add( new interf_bal_smpl('dt', $terme) );
+			$dt = $this->add( new interf_bal_smpl('dt', $terme) );
+		if( $tooltip )
+			$dt->set_tooltip($tooltip);
 		if( $def )
 		{
 			if( is_object($def) )
@@ -1064,6 +1066,10 @@ class url
 		else if( $nom )
 			$copie->add($nom, $valeur);
 		return $copie;
+	}
+	function get_base()
+	{
+		return $this->base;
 	}
 }
 ?>

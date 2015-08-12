@@ -146,9 +146,9 @@ class interf_jeu extends interf_sso_int
 
 class interf_jeu_ajax extends interf_princ_ob
 {
-	function __construct()
+	function __construct($recharge=true)
 	{
-		if( !joueur::get_perso() && strpos($_SERVER['SCRIPT_NAME'], '/'.interf_index::page) === false )
+		if( !joueur::get_perso() && strpos($_SERVER['SCRIPT_NAME'], '/'.interf_index::page) === false && $recharge )
 		{
 			$this->recharger_interface('index.php');
 			exit;

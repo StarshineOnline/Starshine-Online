@@ -887,7 +887,7 @@ class interf_menu_div extends interf_bal_cont
    */
   function __construct($nom=false, $id=false, $classe=false, $classe_div=false)
   {
-    parent::__construct('li', $id, $classe);
+    parent::__construct('li', $id, 'dropdown '.$classe);
     $this->nom = $nom;
     $this->classe_div = $classe_div;
   }

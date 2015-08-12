@@ -196,7 +196,7 @@ class quete_perso extends table
 				switch($avanc[0])
 				{
 				case 'L': // trouver un objet
-					interf_debug('Trouver objet : "'.$valeur[0].'" VS "'.$type_cible.'"');
+					interf_debug::enregistre('Trouver objet : "'.$valeur[0].'" VS "'.$type_cible.'"');
 				case 'M':  // tuer des monstres
 				case 'J': // tuer des perso selon la diplomatie
 				case 'O': // rapporter un objet
