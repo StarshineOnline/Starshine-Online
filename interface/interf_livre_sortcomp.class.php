@@ -132,7 +132,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 	        	$grp = $e->add( new interf_lien_cont($lien, false, 'icone') );
 	        	$grp->add( new interf_bal_smpl('div', '', false, 'icone-groupe'));
 	        	$grp->set_tooltip('Lancer sur '.$Gtrad['cible_ex'.comp_sort::cible_groupe]);
-	        	$grp->add( new interf_bal_smpl('span', ceil($elt->get_mp()*1.5).' MP', false, 'xsmall'));
+	        	$grp->add( new interf_bal_smpl('span', ceil($cout_mp*1.5).' MP', false, 'xsmall'));
 					}
 				}
 				if( $cond )

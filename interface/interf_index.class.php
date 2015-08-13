@@ -3,11 +3,11 @@ include_once(root.'fonction/forum.inc.php');
 
 class interf_index extends interf_sso
 {
-  const page = 'index2.php';
+  const page = 'index.php';
   protected $contenu;
 	function __construct($theme)
 	{
-		global $estConnexionReussie, $erreur_login;
+		global $estConnexionReussie, $erreur_login, $G_url;
 		parent::__construct($theme);
     $this->css(static::prefixe_fichiers.'css/site.css');
     $this->css(static::prefixe_fichiers.'css/site-'.$theme.'.css');
@@ -32,7 +32,7 @@ class interf_index extends interf_sso
     {
 	    $nbr_perso = count( perso::create('id_joueur', $joueur->get_id()) );
 	    if( $nbr_perso )
-    		$this->menu->add_elt(new interf_elt_menu('Jeu', 'http://www.starshine-online.com/', false, 'lien_jeu'), false);
+    		$this->menu->add_elt(new interf_elt_menu('Jeu', 'interface.php', false, 'lien_jeu'), false);
 		}
     $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
     $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
@@ -71,11 +71,13 @@ class interf_index extends interf_sso
 			$script = $connex->add( new interf_bal_smpl('script', '') );
 			$script->set_attribut('type', 'text/javascript');
 			$script->set_attribut('src', 'javascript/emp/emp-min.js');
+			$liens = $connex->add( new interf_bal_cont('div', 'liens_connexion') );
+			$liens->add( new interf_lien('Mot de passe oublié ?', self::page.'?page=oubli_mdp') );
 			self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
 		}
 		
 		$a_pub = file_exists(root.'pub.php');
-		$main = $this->add( new interf_bal_cont('main', false, $a_pub?false:'plein') );
+		$main = $this->add( new interf_bal_cont('main', 'princ', $a_pub?false:'plein') );
 		$this->contenu = $main->add( new interf_bal_cont('section', 'contenu') );
 		
 		// pub
@@ -270,7 +272,7 @@ class interf_index_perso extends interf_bal_cont
 		$div_row0->add( new interf_bal_smpl('h3', 'Création du pesonnage', false, 'row') );
 		interf_alerte::aff_enregistres($div_row0);
 		$div_row1 = $this->add( new interf_bal_cont('div', false, 'row') );
-		$div_form = $div_row1->add( new interf_bal_cont('div', false, 'col-md-6') );
+		$div_form = $div_row1->add( new interf_bal_cont('div', false, 'col-sm-6') );
   	$form = $div_form->add( new interf_form($G_url->get('action', 'creer_perso'), 'creer_perso', 'post') );
   	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
   	$div_nom->add( new interf_bal_smpl('label', 'Quel sera votre nom&nbsp;?', false, 'control-label') );
@@ -283,7 +285,7 @@ class interf_index_perso extends interf_bal_cont
 		$btn->set_attribut('tabindex', '6');
 		$form->add( new interf_chp_form('hidden', 'race', false, false, 'race') );
 		$form->add( new interf_chp_form('hidden', 'classe', false, false, 'classe') );
-		$div_races = $div_row1->add( new interf_bal_cont('div', 'races', 'col-md-6') );
+		$div_races = $div_row1->add( new interf_bal_cont('div', 'races', 'col-sm-6') );
 		/// @todo passer à l'objet
 		$requete = 'SELECT race FROM royaume WHERE race != "" ORDER BY star_nouveau_joueur DESC, race ASC';
 		$req = $db->query($requete);
@@ -328,7 +330,7 @@ class interf_index_infos_perso extends interf_cont
 			$Trace[$race]['energie']++;
 		}
 		
-		$div_descr = $this->add( new interf_bal_cont('div', false, 'col-md-6') );
+		$div_descr = $this->add( new interf_bal_cont('div', false, 'col-sm-6') );
 		$descr = $div_descr->add( new interf_bal_cont('div', 'description') );
 		$descr->add( new interf_bal_smpl('h3', $Gtrad[$race].' - '.$classe) );
 		$descr->add( new interf_bal_smpl('strong', 'Stars au début du jeu : ') );
@@ -355,7 +357,7 @@ class interf_index_infos_perso extends interf_cont
 		$dl2->nouv_elt('Magie de la Mort', $Gtrad['affinite'.$Trace[$race]['affinite_sort_mort']]);
 		$dl2->nouv_elt('Magie Élémentaire', $Gtrad['affinite'.$Trace[$race]['affinite_sort_element']]);
 		
-		$div_propa = $this->add( new interf_bal_cont('div', false, 'col-md-6') );
+		$div_propa = $this->add( new interf_bal_cont('div', false, 'col-sm-6') );
 		$propa = $div_propa->add( new interf_bal_cont('div', 'propagande') );
 		$propa->add( new interf_bal_smpl('h3', 'Propagande royale') );
 		/// @todo passer à l'objet

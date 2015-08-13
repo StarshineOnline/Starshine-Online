@@ -323,11 +323,11 @@ class interf_navbar extends interf_bal_cont
     $header = $cont->add( new interf_bal_cont('div', null, 'navbar-header') );
     $collapse = $header->add( new interf_bal_cont('button', null, 'navbar-toggle') );
     $collapse->set_attribut('data-toggle', 'collapse');
-    $collapse->set_attribut('data-target', 'navbar');
+    $collapse->set_attribut('data-target', '#navbar');
     $collapse->add( new interf_bal_smpl('span', 'Afficher / cacher menu', null, 'sr-only') );
-    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
-    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
-    $collapse->add( new interf_bal_smpl('span', null, null, 'icon-bar') );
+    $collapse->add( new interf_bal_smpl('span', '', null, 'icon-bar') );
+    $collapse->add( new interf_bal_smpl('span', '', null, 'icon-bar') );
+    $collapse->add( new interf_bal_smpl('span', '', null, 'icon-bar') );
     if( $titre !== null )
       $header->add( new interf_bal_smpl('a', $titre, $id_titre, 'navbar-brand '.$class_titre) )->set_attribut('href', $lien_titre);
     $this->menu = $cont->add( new interf_bal_cont('div', 'navbar', 'collapse navbar-collapse') );

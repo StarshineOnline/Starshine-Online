@@ -87,11 +87,11 @@ class interf_accueil extends interf_cont
 			foreach($nouv_annonces as $a)
 			{
 				$div = new interf_bal_cont('div', null, 'message_monde');
-				$div->add( new interf_bal_smpl('h5', $a->get_date(), false, 'date') );
+				$div->add( new interf_bal_smpl('span', $a->get_date(), false, 'small') );
 				$div->add( new interf_bal_smpl('p', texte::parse_url($a->get_message())) );
 				$annonces['contenu'][] = $div;
 			}
-			$nouveaux[] = &$infos;
+			$nouveaux[] = &$annonces;
 		}
 		else if( $ancienne = annonce::derniere() )
 		{

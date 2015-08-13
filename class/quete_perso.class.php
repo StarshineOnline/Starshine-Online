@@ -138,9 +138,10 @@ class quete_perso extends table
 			/// @todo passer à l'objet
 			switch($obj[0])
 			{
-			case 'M':  // tuer des monstres
-			case 'J': // tuer des perso selon la diplomatie
 			case 'L': // trouver un objet
+					interf_debug::enregistre('Vérifier trouver objet : '.$avancement[$obj[0].$valeur[0]].' VS '.$valeur[1]);
+			case 'J': // tuer des perso selon la diplomatie
+			case 'M':  // tuer des monstres
 			case 'O': // rapporter un objet
 				if( $avancement[$obj[0].$valeur[0]] < $valeur[1] )
 					return false;
@@ -235,6 +236,7 @@ class quete_perso extends table
 							}
 						}
 					}
+					interf_debug::enregistre('Maximum ('.$avanc[0].') : '.$max);
 					// On regarde si on atteint le maximum du compteur
 					if( $valeur[1] < $max )
 					{
@@ -270,6 +272,7 @@ class quete_perso extends table
 						$etape->gain_groupe($perso);
 						$etape->gain_royaume($perso);
 					}
+					interf_debug::enregistre('Fin de quête ('.$qp->get_quete()->get_type().')');
 					switch( $qp->get_quete()->get_type() )
 					{
 					case 'royaume':
@@ -335,6 +338,7 @@ class quete_perso extends table
 		$nbr = $this->get_quete()->get_nombre_etape();
 		if( $etape < $nbr )
 		{
+			interf_debug::enregistre('Etape suivante ('.$etape.' / '.$nbr.')');
 			if( $option && is_numeric($option) )
 				$nouv = quete_etape(array('id_quete', 'etape', 'variante'), array($this->id_quete, $etape+1, $option));
 			else
