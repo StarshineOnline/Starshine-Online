@@ -378,7 +378,7 @@ abstract class objet_invent extends table
   /// Indique si l'objet est slotable
   function est_slotable() { return false; }
 
-  /// Indique si l'objet est slotable
+  /// Indique si l'objet est enchassable
   function est_enchassable() { return false; }
 
   /// Indique si l'objet est modifiable par la forge

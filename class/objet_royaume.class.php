@@ -360,7 +360,7 @@ class objet_royaume extends objet_invent
 				return false;
 			}
 			$def = $this->get_objet();
-			$buff = $def->lance($id_constr, $id_plac, $perso->get_id());
+			$batiment = $def->lance($id_constr, $id_plac, $perso->get_id());
 		}
 		else
 		{ 

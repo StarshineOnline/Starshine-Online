@@ -119,7 +119,7 @@ class interf_invent_equip extends interf_tableau
           $desequip = false;
           $obj = new zone_invent($loc.$suffixe, $objet === 'lock', $perso);
     		}
-        $td->add( new interf_objet_invent($obj, $desequip?'equipe':'', 'drop_'.$loc.$suffixe) );
+        $td->add( new interf_objet_invent($obj, $desequip?'equipe':'', 'drop_'.$loc.$suffixe, true) );
         if( $desequip )
           interf_base::code_js( '$( "#drop_'.$loc.$suffixe.'" ).draggable({ helper: "original", tolerance: "touch", revert: "invalid" });' );
       }
@@ -218,7 +218,7 @@ class interf_invent_sac extends interf_cont
  */
 class interf_objet_invent extends interf_bal_cont
 {
-  function __construct($objet, $drags, $id=false)
+  function __construct($objet, $drags, $id=false, $equip=false)
   {
     global $Gtrad, $id_elt_ajax, $db;
     interf_bal_cont::__construct('div', $id, ($objet?'inventaire2 ':' ').$drags);
@@ -263,7 +263,7 @@ class interf_objet_invent extends interf_bal_cont
       $this->add( new interf_bal_smpl('span', $infos, false, 'infos') );
     }
     if( $objet->est_identifie() && $drags )
-      $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'\', \''.addslashes($objet->get_nom()).'\')');
+      $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'&equip='.($equip?substr($id, 5):'0').'\', \''.addslashes($objet->get_nom()).'\')');
   }
 }
 
@@ -276,8 +276,9 @@ class interf_infos_objet extends interf_infos_popover
    * Constructeur
    * @param $objet    objet sous forme textuelle
    */
-  function __construct($objet)
+  function __construct($objet, $equipe)
   {
+  	global $G_url;
     $obj = objet_invent::factory($objet);
     parent::__construct($obj->get_noms_infos(), $obj->get_valeurs_infos());
     /*$tbl = $this->add( new interf_tableau() );
@@ -290,6 +291,75 @@ class interf_infos_objet extends interf_infos_popover
       $tbl->nouv_cell($noms[$i], null, null, true);
       $tbl->nouv_cell($vals[$i]);
     }*/
+    $liens = $this->add( new interf_bal_cont('div', false, 'actions_objet') );
+    if( $equipe )
+    {
+    	$url = $G_url->get( array('action'=>'desequip','zone'=>$equipe) );
+    	$desequiper = $liens->add( new interf_lien_cont($url) );
+    	$desequiper->add( new interf_bal_smpl('span', '', false, 'icone icone-inventaire') );
+    	$desequiper->add( new interf_bal_smpl('span', 'enlève') );
+	    $desequiper->set_tooltip('Déséquipe l\'objet');
+		}
+    /*else if( !$obj->est_identifie() )
+    {
+    	$identifier = $liens->add( new interf_lien_cont( );
+    	$identifier->add( new interf_bal_smpl('span', '', false, 'icone icone-loupe') );
+    	$identifier->add( new interf_bal_smpl('span', 'identifier') );
+	    $identifier->set_tooltip('Identifier l\'objet (1 PA et consomme un matériel d\'identification)');
+		}*/
+		else
+		{
+	    if( $obj->est_utilisable() )
+	    {
+	    	$utilise = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'utiliser','objet'=>$obj->get_texte()) ) ) );
+	    	$utilise->add( new interf_bal_smpl('span', '', false, 'icone icone-ok') );
+	    	$utilise->add( new interf_bal_smpl('span', 'utiliser') );
+	    	$utilise->set_tooltip('Utiliser l\'objet (coût variable)');
+			}
+			else if( is_subclass_of($obj, 'objet_equip') )
+			{
+	    	$equiper = $liens->add( new interf_lien_cont( $G_url->get( array('action'=>$obj->get_emplacement(),'objet'=>$obj->get_texte()) ) ) );
+	    	$equiper->add( new interf_bal_smpl('span', '', false, 'icone icone-ok') );
+	    	$equiper->add( new interf_bal_smpl('span', 'équiper') );
+	    	$equiper->set_tooltip('Équiper l\'objet');
+			}
+			$perso = &joueur::get_perso();
+	    if( is_ville($perso->get_x(), $perso->get_y()) == 1 )
+	    {
+	    	if( get_class($obj) == 'objet_royaume' )
+				{
+		    	$depot = $liens->add( new interf_lien_cont( $G_url->get( array('action'=>'depot','objet'=>$obj->get_texte()) ) ) );
+		    	$depot->add( new interf_bal_smpl('span', '', false, 'icone icone-chateau') );
+		    	$depot->add( new interf_bal_smpl('span', 'Dépôt') );
+		    	$depot->set_tooltip('Déposer au quartier général');
+				}
+				else
+	    	{
+		    	$marchand = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'vente','objets'=>$obj->get_texte()) ) ) );
+		    	$marchand->add( new interf_bal_smpl('span', '', false, 'icone icone-argent2') );
+		    	$marchand->add( new interf_bal_smpl('span', 'vendre') );
+		    	$marchand->set_tooltip('Vendre au marchand');
+		    	$hotel = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'hotel_vente','objet'=>$obj->get_texte()) ) ) );
+		    	$hotel->add( new interf_bal_smpl('span', '', false, 'icone icone-encheres') );
+		    	$hotel->add( new interf_bal_smpl('span', 'hôtel') );
+		    	$hotel->set_tooltip('Vendre à l\'hôtel des ventes');
+				}
+			}
+	    if( $obj->est_slotable() )
+	    {
+	    	$slot = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'slot','objet'=>$obj->get_texte()) ) ) );
+	    	$slot->add( new interf_bal_smpl('span', '', false, 'icone icone-forge') );
+	    	$slot->add( new interf_bal_smpl('span', 'slotter') );
+	    	$slot->set_tooltip('Mettre un slot sur l\'objet (10 PA)');
+			}
+			else if( $obj->est_enchassable() )
+	    {
+	    	$enchas = $liens->add( new interf_lien_cont( $G_url->get( array('action'=>'gemme','objet'=>$obj->get_texte()) ) ) );
+	    	$enchas->add( new interf_bal_smpl('span', '', false, 'icone icone-forge') );
+	    	$enchas->add( new interf_bal_smpl('span', 'gemme') );
+	    	$enchas->set_tooltip('Effectuer un enchassement de gemme avec cet objet (20 PA)');
+			}
+		}
   }
 }
 

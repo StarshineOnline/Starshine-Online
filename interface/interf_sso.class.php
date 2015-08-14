@@ -43,7 +43,7 @@ abstract class interf_sso extends interf_html
     
     $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page) );
     
-    if( $this::change_url )
+    if( $this::change_url && array_key_exists('action', $_GET) )
 			interf_base::code_js('history.replaceState(null, "Starshine Online", "'.$G_url->get_base().'");');
   }
   function aff_menu_joueur()

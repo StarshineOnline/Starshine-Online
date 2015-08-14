@@ -65,11 +65,8 @@ class interf_info_perso extends interf_cont
 				}
 				// échange
 				$diplo_ok = $diplo == 127 || $dilo <= 5 || $bonus[5] || $bonus_soi[5];
-				$star_ok = ($bonus[1] && $bonus_soi[3]) || ($bonus[3] && $bonus_soi[1]);
-				$obj_ok = ($bonus[2] && $bonus_soi[4]) || ($bonus[4] && $bonus_soi[2]);
-				/*my_dump($diplo_ok);
-				my_dump($star_ok);
-				my_dump($obj_ok);*/
+				$star_ok = (isset($bonus[1]) && isset($bonus_soi[3])) || (isset($bonus[3]) && isset($bonus_soi[1]));
+				$obj_ok = (isset($bonus[2]) && isset($bonus_soi[4])) || (isset($bonus[4]) && isset($bonus_soi[2]));
 				if( $diplo_ok && ($star_ok || $obj_ok) )
 				{
 					$ech = $div->add( new interf_lien('', 'echange.php?action=creer&perso='.$pj->get_id(), false, 'icone icone-echange') );

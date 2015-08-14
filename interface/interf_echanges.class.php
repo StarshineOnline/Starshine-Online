@@ -65,7 +65,7 @@ class interf_echange extends interf_cont
 			case 'creation':
 				if( $perso_action &&  $this->echange['id_j1'] == $this->perso->get_id()  )
 				{
-					$this->aff_choix();
+					$this->aff_choix( $this->echange['id_j2'] );
 				}
 				break;
 			case 'proposition':
@@ -73,7 +73,7 @@ class interf_echange extends interf_cont
 				if( $perso_action )
 				{
 					if( $this->echange['id_j2'] == $this->perso->get_id() )
-						$this->aff_choix();
+						$this->aff_choix( $this->echange['id_j1'] );
 					else
 						$this->aff_annuler();
 				}
@@ -99,7 +99,7 @@ class interf_echange extends interf_cont
 		{
 			$this->echange = null;
 			$G_url->add('perso', $perso_action);
-			$this->aff_choix();
+			$this->aff_choix($perso_action);
 		}
 	}
 	function aff_liste($id_div, $id_perso)
@@ -130,21 +130,34 @@ class interf_echange extends interf_cont
 			}
 		}
 	}
-	protected function aff_choix()
+	protected function aff_choix($id_autre)
 	{
 		global $G_url;
 		$script = $this->add( new interf_bal_smpl('script', '') );
 		$script->set_attribut('type', 'text/javascript');
 		$script->set_attribut('src', 'javascript/echanges.js');
 		$this->add( new interf_bal_smpl('h4', 'Vous proposez') );
+		$bonus_soi = recup_bonus( $this->perso->get_id() );
+		$bonus_autre = recup_bonus( $id_autre );
+		if( !isset($bonus_soi[3]) )
+			$this->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'Vous n\'avez pas le bonus shine pour donner des stars.') );
+		if( !isset($bonus_autre[1]) )
+			$this->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'L\'autre n\'a pas le bonus shine pour recevoir des stars.') );
+		if( !isset($bonus_soi[4]) )
+			$this->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'Vous n\'avez pas le bonus shine pour donner des objets.') );
+		if( !isset($bonus_autre[2]) )
+			$this->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'L\'autre n\'a pas le bonus shine pour recevoir des objets.') );
 		$form = $this->add( new interf_form($G_url->get('action', 'modifier'), 'echange') );
 		$val = $this->echange ? $this->echange['star'][$this->perso->get_id()]['objet'] : '0';
 		if( !$val )
 			$val = '0';
-		$stars = $form->add_champ_bs('number', 'stars', null, $val, null, 'stars');
-		$stars->set_attribut('min', 0);
-		$stars->set_attribut('max', $this->perso->get_star());
-		$stars->set_attribut('step', 1);
+		if( isset($bonus_autre[1]) && isset($bonus_soi[3]) )
+		{
+			$stars = $form->add_champ_bs('number', 'stars', null, $val, null, 'stars');
+			$stars->set_attribut('min', 0);
+			$stars->set_attribut('max', $this->perso->get_star());
+			$stars->set_attribut('step', 1);
+		}
 		$_SESSION['objets'] = array();
 		// Liste des objets de l'inventaire
 		$objets = array();
@@ -188,24 +201,27 @@ class interf_echange extends interf_cont
 			$i++;
 		}
 		// Nouvel objet
-		$div = $form->add( new interf_bal_cont('div', null, 'input-group') );
-    $div->add( new interf_bal_smpl('span', 'Ajouter un objet', null, 'input-group-addon') );
-    $sel = $div->add( new interf_select_form(/*'nouv_obj'*/false, false, 'nouv_obj', 'form-control') );
-    foreach($objets as $o=>$n)
-    {
-    	$nom = $o[0] == 'h' ? 'Objet non indentifié' : nom_objet($o);
-    	$opt = $sel->add_option($nom, $i);
-    	//$opt->set_attribut('data-nom', $nom);
-    	$opt->set_attribut('data-nbr', $n);
-    	$_SESSION['objets'][$i] = $o;
-    	$i++;
+		if( isset($bonus_autre[2]) && isset($bonus_soi[4]) )
+		{
+			$div = $form->add( new interf_bal_cont('div', null, 'input-group') );
+	    $div->add( new interf_bal_smpl('span', 'Ajouter un objet', null, 'input-group-addon') );
+	    $sel = $div->add( new interf_select_form(/*'nouv_obj'*/false, false, 'nouv_obj', 'form-control') );
+	    foreach($objets as $o=>$n)
+	    {
+	    	$nom = $o[0] == 'h' ? 'Objet non indentifié' : nom_objet($o);
+	    	$opt = $sel->add_option($nom, $i);
+	    	//$opt->set_attribut('data-nom', $nom);
+	    	$opt->set_attribut('data-nbr', $n);
+	    	$_SESSION['objets'][$i] = $o;
+	    	$i++;
+			}
+	    /*$div->add( new interf_bal_smpl('span', 'X', null, 'input-group-addon') );
+	    $chp_nbr = $div->add( new interf_chp_form('number', 'nbr_'.$i, false, $o[1], false, 'form-control') );*/
+	    $span = $div->add( new interf_bal_cont('span', null, 'input-group-btn') );
+	    $btn = $span->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-plus') );
+	    $btn->set_attribut('onclick', 'return ajout_objet_echg();');
+	    $btn->set_tooltip('Ajouter cet objet à l\'échange');
 		}
-    /*$div->add( new interf_bal_smpl('span', 'X', null, 'input-group-addon') );
-    $chp_nbr = $div->add( new interf_chp_form('number', 'nbr_'.$i, false, $o[1], false, 'form-control') );*/
-    $span = $div->add( new interf_bal_cont('span', null, 'input-group-btn') );
-    $btn = $span->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-plus') );
-    $btn->set_attribut('onclick', 'return ajout_objet_echg();');
-    $btn->set_tooltip('Ajouter cet objet à l\'échange');
     // Boutons
     $div_btns = $form->add( new interf_bal_cont('div', false, 'btn-group') );
     if( $this->echange )

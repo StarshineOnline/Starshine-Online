@@ -1997,7 +1997,6 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 .inventaire2
 {
   width:146px;
-  height:51px;
   margin: 2px;
   padding: 2px;
   font-size:11px;
@@ -2008,6 +2007,16 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
   color:#222;
 	overflow: hidden;
 	text-overflow: ellipsis;
+}
+
+#invent .inventaire2
+{
+  height:51px;
+}
+
+#slots .inventaire2
+{
+  min-height:51px;
 }
 
 .inventaire2>img
@@ -2074,6 +2083,31 @@ ol.tuto,ol.tuto li { list-style-type:decimal; }
 	top: 13px;
 	right: 10px;
 	font-style: italic;
+}
+
+.actions_objet
+{
+	margin-top: 5px;
+}
+
+.actions_objet a
+{
+	display: inline-block;
+	height: 45px;
+	width: 45px;
+	border: 1px solid lightgrey;
+	text-align: center;
+	border-radius: 5px;
+}
+
+.actions_objet a:hover, .actions_objet a:focus
+{
+	background: lightgrey;
+}
+
+.actions_objet a>span.icone
+{
+	font-size: 28px
 }
 
 /***************************************************
