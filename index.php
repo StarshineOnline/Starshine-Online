@@ -237,6 +237,94 @@ case 'creer_perso':
 	$texte->add( new interf_bal_smpl('p', '<em>Pour accéder au jeu cliquer sur "jeu" dans la barre de navigation en haut de la page.</em>') );
 	$texte->add( new interf_bal_smpl('p', 'Bon jeu !') );*/
 	exit;
+case 'oubli_mdp':
+	/// @todo passer à l'objet
+	$nom = $_POST['nom'];
+	$requete = 'SELECT * FROM joueur WHERE login = "'.$nom.'" OR pseudo = "'.$nom.'"';
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	if( $row )
+		$joueur = new joueur( $row );
+	else
+	{
+		$requete = 'SELECT id_joueur FROM perso WHERE nom = "'.$nom.'"';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		if( $row )
+			$joueur = new joueur( $row[0] );
+		else
+		{
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Identifiant inconnu !');
+			$page = 'oubli_mdp';
+			break;
+		}
+	}
+	if( !$joueur->get_email() )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas défini d\'e-mail. Impossible de réinitialiser le mot de passe !');
+		$page = 'oubli_mdp';
+		break;
+	}
+	/// @todo passer à l'objet
+	$requete = 'SELECT valeur FROM variable WHERE nom = "reinit mdp"';
+	$req = $db->query($requete);
+	$row = $db->read_array($req);
+	if( $row )
+		$sel = $row[0];
+	else
+	{
+		$sel = rand();
+		$db->query('INSERT INTO variable VALUES ("reinit mdp", "'.$sel.'")');
+	}
+	$date = time();
+	$cle = md5($sel.$joueur->get_mdp().$date);
+	$lien = $G_url->get( array('page'=>'reinit_mdp', 'date'=>$date, 'cle'=>$cle, 'login'=>$joueur->get_login()) );
+	$sujet = 'Starshine Online - réinitialisation du mot de passe';
+	$message = '<html><head><title>'.$sujet.'</title></head><body>Bonjour,<p>Vous recevez cet e-mail car vous demandé la réinitialisation de votre mot de passe sur le site <a href="'.root_url.'">Starshine Online</a>.</p><p>Pour effectuer cette réinitialisation, veuillez cliquer <a href="'.root_url.$lien.'">sur ce lien</a>. Ce lien ne sera valable que 48h.</p><p>Si vous n\'avez pas demandé la réinitialisation de votre mot de passe, merci de contacter un admininstrateur.';
+	$headers  = 'MIME-Version: 1.0'."\r\n";
+  $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
+	$headers .= 'From: bot@starshine-online.com';
+	mail($joueur->get_email(), $sujet, $message, $headers);
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'L\'e-mail a été envoyé.');
+	$page = 'oubli_mdp';
+	break;
+case 'reinit_mdp';
+	$date = $_POST['date'];
+	if( $date + 3600 * 48 < time() )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Lien de réinitialisation périmé, veuillez recommencer.');
+		$page = 'oubli_mdp';
+		break;
+	}
+	$requete = 'SELECT valeur FROM variable WHERE nom = "reinit mdp"';
+	$req = $db->query($requete);
+	$row = $db->read_array($req);
+	if( md5($row[0].$joueur->get_mdp().$date) != $_POST['cle'] )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Lien invalide, veuillez recommencer.');
+		$page = 'oubli_mdp';
+		break;
+	}
+  $mdp = $_POST['password'];
+  $mdp2 = $_POST['password2'];
+	if( $mdp != $mdp2 )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les mots de passes sont différents.');
+		$page = 'oubli_mdp';
+		break;
+	}
+	$joueur = joueur::create('login', $_POST['login']);
+	if( !$joueur )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Identifiant inconnu.');
+		$page = 'oubli_mdp';
+		break;
+	}
+  $joueur[0]->set_mdp( md5($mdp) );
+  $joueur[0]->set_mdp_forum( sha1($mdp) );
+  $joueur[0]->set_mdp_jabber( md5($mdp) );
+  $joueur[0]->sauver();
+	break;
 }
 
 $interf_princ = $G_interf->creer_index();
@@ -260,6 +348,7 @@ case 'infos_perso':
 	break;
 case 'oubli_mdp':
 	$dlg = $interf_princ->set_dialogue( new interf_dialogBS('Oubli de mot de passe', true) );
+	interf_alerte::aff_enregistres($dlg);
 	$dlg->add( new interf_bal_smpl('p', 'Un lien vous sera envoyé par e-mail pour réinitialiser votre mot de passe.') );
 	$form = $dlg->add( new interf_form('index.php?action=oubli_mdp', 'oubli_mdp', 'post', 'form-horizontal') );
 	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
@@ -270,6 +359,30 @@ case 'oubli_mdp':
 	$div_in_btn = $div_btn->add(new interf_bal_cont('div', false, 'col-sm-offset-4 col-sm-8')  );
 	$btn = $div_in_btn->add( new interf_chp_form('submit', false, false, 'Envoyer', false, 'btn btn-default') );
 	$btn->set_attribut('tabindex', '9');
+	break;
+case 'reinit_mdp';
+	$princ = $interf_princ->set_contenu( new interf_bal_cont('div', 'reinit_mdp') );
+	$princ->add( new interf_bal_smpl('h4', 'Réinitialisation du mot de passe') );
+  $form = $princ->add( new interf_form(self::page, 'connexion', 'post', 'form-horizontal') );
+	$div_mdp1 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_mdp1->add( new interf_bal_smpl('label', 'Indiquer un mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+	$div_in_mdp1 = $div_mdp1->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+	$mdp1 = $div_in_mdp1->add( new interf_chp_form('password', 'password', false, false, false, 'form-control') );
+	$mdp1->set_attribut('placeholder', 'mot de passe');
+	$mdp1->set_attribut('tabindex', '5');
+	$div_mdp2 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_mdp2->add( new interf_bal_smpl('label', 'Confirmer votre mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+	$div_in_mdp2 = $div_mdp2->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+	$mdp2 = $div_in_mdp2->add( new interf_chp_form('password', 'password2', false, false, false, 'form-control') );
+	$mdp2->set_attribut('placeholder', 'mot de passe');
+	$mdp2->set_attribut('tabindex', '6');
+	$form->add( new interf_chp_form('hidden', 'date', false, $_GET['date']) );
+	$form->add( new interf_chp_form('hidden', 'cle', false, $_GET['cle']) );
+	$form->add( new interf_chp_form('hidden', 'login', false, $_GET['login']) );
+	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_in_btn = $div_btn->add(new interf_bal_cont('div', false, 'col-sm-offset-4 col-sm-8')  );
+	$btn = $div_in_btn->add( new interf_chp_form('submit', false, false, 'Réinitialiser', false, 'btn btn-default') );
+	$btn->set_attribut('tabindex', '7');
 	break;
 }
 

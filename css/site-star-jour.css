@@ -31,3 +31,8 @@ a:hover, a:focus
 {
 	color: #262626;
 }
+
+#nouvelles
+{
+	border-top: 1px white solid;
+}

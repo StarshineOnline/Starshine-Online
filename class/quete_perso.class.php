@@ -220,6 +220,7 @@ class quete_perso extends table
 					// On récupère l'étape correspondante
 					$etape = $qp->get_etape();
 					// On vérifie la collaboration
+					interf_debug::enregistre('Collaboration : '.$etape->get_collaboration().' & '.$mode);
 					if( ($etape->get_collaboration() == "aucune" && $mode == "s") || ($etape->get_collaboration() == "royaume" && $mode != "r") )
 						break;
 					// on regarde la valeur à atteindre

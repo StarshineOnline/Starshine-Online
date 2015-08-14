@@ -94,3 +94,8 @@ main::after
 	right: 40px;
 	content: "";
 }
+
+#nouvelles
+{
+	border-top: 1px #E2D1AA solid;
+}

@@ -22,6 +22,18 @@ class interf_info_perso extends interf_cont
 		$div = $infos_pj->add( new interf_bal_cont('div') );
 		
 		// Actions
+		$bonus = recup_bonus($pj->get_id());
+		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
+		if( $this->perso->get_id() != $pj->get_id() )
+		{
+			$bonus_soi = recup_bonus($this->perso->get_id());
+			$diplo = $royaume->get_diplo( $pj->get_race() );
+		}
+		else
+		{
+			$bonus_soi = $bonus;
+			$diplo = 127;
+		}
 		if( $actions )
 		{
 			if( $this->perso->get_id() != $pj->get_id() )
@@ -52,8 +64,17 @@ class interf_info_perso extends interf_cont
 					}
 				}
 				// échange
-				$msg = $div->add( new interf_lien('', 'echange.php?action=creer&perso='.$pj->get_id(), false, 'icone icone-echange') );
-				$msg->set_tooltip('Initier un échange', 'bottom', '#information');
+				$diplo_ok = $diplo == 127 || $dilo <= 5 || $bonus[5] || $bonus_soi[5];
+				$star_ok = ($bonus[1] && $bonus_soi[3]) || ($bonus[3] && $bonus_soi[1]);
+				$obj_ok = ($bonus[2] && $bonus_soi[4]) || ($bonus[4] && $bonus_soi[2]);
+				/*my_dump($diplo_ok);
+				my_dump($star_ok);
+				my_dump($obj_ok);*/
+				if( $diplo_ok && ($star_ok || $obj_ok) )
+				{
+					$ech = $div->add( new interf_lien('', 'echange.php?action=creer&perso='.$pj->get_id(), false, 'icone icone-echange') );
+					$ech->set_tooltip('Initier un échange', 'bottom', '#information');
+				}
 				// message
 				$msg = $div->add( new interf_lien('', 'messagerie.php?action=nouveau&type=perso&id='.$pj->get_id(), false, 'icone icone-message') );
 				$msg->set_tooltip('Envoyer un message', 'bottom', '#information');
@@ -91,7 +112,6 @@ class interf_info_perso extends interf_cont
 		}
 		
 		// bonus
-		$bonus = recup_bonus($pj->get_id());
 		$bonus_total = recup_bonus_total($pj->get_id());
 		// image
 		$img = 'image/personnage/'.$this->pj->get_race().'/'.$this->pj->get_race().'_'.$Tclasse[$this->pj->get_classe()]['type'].'.png';
@@ -99,8 +119,8 @@ class interf_info_perso extends interf_cont
 		// diplomatie
 		if( $this->perso->get_id() != $pj->get_id() )
 		{
-			$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
-			$diplo = $royaume->get_diplo( $pj->get_race() );
+			//$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
+			//$diplo = $royaume->get_diplo( $pj->get_race() );
 			$facteur_honneur = max($diplo * 0.2 - 0.8, 0);
 			$diplo = 'diplo'.$diplo;
 			$diplo_txt = $Gtrad[$diplo];

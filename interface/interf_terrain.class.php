@@ -127,7 +127,7 @@ class interf_terrain extends interf_ville_onglets
 			{
 				/// @todo faire dépendre le max 
 				$div_ch->add( new interf_bal_smpl('h4', 'Nouveau chantier :') );
-				$form = $div_ch->add( new interf_form('terrrain?action=chantier', 'nouv_chantier') );
+				$form = $div_ch->add( new interf_form('terrrain.php?action=chantier', 'nouv_chantier') );
 				$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
 				$div_sel->add( new interf_bal_smpl('span', 'Construire', false, 'input-group-addon') );
 				$sel = $div_sel->add( new interf_select_form('batiment', false, false, 'form-control') );
