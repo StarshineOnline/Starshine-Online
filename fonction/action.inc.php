@@ -294,7 +294,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 								$array_valeurs = get_array_condition($valeur);
 								foreach ($array_valeurs as $la_valeur)
 								{
-									if(array_key_exists($la_valeur, $param))
+									if($param && array_key_exists($la_valeur, $param))
 									{
 										$valid = false;
 										break;

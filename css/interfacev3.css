@@ -2833,10 +2833,10 @@ text-align: right;
 	min-height: 88px;
 }
  
-#livre {width: 450px; border-collapse:collapse;}
-#livre_corps{min-height:200px; background: url(../image/interface/livres/parchemin_fond.png) repeat-y;}
-#livre_bas{height:55px; background: url(../image/interface/livres/parchemin_bas.png) no-repeat;}
-#livre_haut
+.livre {width: 450px; border-collapse:collapse;}
+.livre_corps{min-height:200px; background: url(../image/interface/livres/parchemin_fond.png) repeat-y;}
+.livre_bas{height:55px; background: url(../image/interface/livres/parchemin_bas.png) no-repeat;}
+.livre_haut
 {
 	height:70px;
 	background: url(../image/interface/livres/parchemin_haut.png) no-repeat;
@@ -2844,20 +2844,28 @@ text-align: right;
 	padding:0px;
 	padding-top:20px;
 }
-#livre_gauche
+.livre_gauche
 {
 	float: left;
 	position: absolute;
 	width: 85px;
 	min-height: 300px;
 }
-.livre_competences
+#livre_competences
 {
 	background: url(../image/interface/livres/ficellegauche_physique.png) no-repeat;
 }
-.livre_sorts
+#livre_competences_combat
+{
+	background: url(../image/interface/livres/ficellegauche_physique_combat.png) no-repeat;
+}
+#livre_sorts
 {
 	background: url(../image/interface/livres/ficellegauche_magique.png) no-repeat;
+}
+#livre_sorts_combat
+{
+	background: url(../image/interface/livres/ficellegauche_magique_combat.png) no-repeat;
 }
 
 .livre_categorie
@@ -2873,35 +2881,35 @@ text-align: right;
 	height: 40px;
 }
 
-#livre_sort_element {top:65px; left:19px;}
-#livre_sort_mort {top:73px; left:3px;}
-#livre_sort_vie{top:79px; left:17px;}
-.livre_sorts #livre_favoris {top:92px; left:12px;}
+.livre_sort_element {top:65px; left:19px;}
+.livre_sort_mort {top:73px; left:3px;}
+.livre_sort_vie{top:79px; left:17px;}
+#livre_sorts .livre_favoris {top:92px; left:12px;}
 
-#livre_distance {top:65px; left:20px;}
-#livre_esquive {top:72px; left:4px;}
-#livre_blocage {top:43px; left:40px;}
-#livre_dressage {top:43px; left:40px; background: url(../image/dressage.png) no-repeat; }
-#livre_melee {top:38px; left:18px;}
-.livre_competences #livre_favoris {top:50px; left:13px;}
+.livre_distance {top:65px; left:20px;}
+.livre_esquive {top:72px; left:4px;}
+.livre_blocage {top:43px; left:40px;}
+.livre_dressage {top:43px; left:40px; background: url(../image/dressage.png) no-repeat; }
+.livre_melee {top:38px; left:18px;}
+#livre_competences .livre_favoris {top:50px; left:13px;}
 
-#livre_sort_element:hover { background: url(../image/icone/sort_elementhover.png) no-repeat; }
-#livre_sort_mort:hover { background: url(../image/icone/sort_morthover.png) no-repeat; }
-#livre_sort_vie:hover { background: url(../image/icone/sort_viehover.png) no-repeat; }
-#livre_favoris:hover { background: url(../image/icone/favorishover.png) no-repeat; }
-#livre_distance:hover { background: url(../image/icone/distancehover.png) no-repeat; }
-#livre_esquive:hover { background: url(../image/icone/esquivehover.png) no-repeat; }
-#livre_blocage:hover { background: url(../image/icone/blocagehover.png) no-repeat; }
-#livre_melee:hover { background: url(../image/icone/meleehover.png) no-repeat; }
-#livre_dressage:hover { background: url(../image/icone/dressagehover.png) no-repeat; }
+.livre_sort_element:hover { background: url(../image/icone/sort_elementhover.png) no-repeat; }
+.livre_sort_mort:hover { background: url(../image/icone/sort_morthover.png) no-repeat; }
+.livre_sort_vie:hover { background: url(../image/icone/sort_viehover.png) no-repeat; }
+.livre_favoris:hover { background: url(../image/icone/favorishover.png) no-repeat; }
+.livre_distance:hover { background: url(../image/icone/distancehover.png) no-repeat; }
+.livre_esquive:hover { background: url(../image/icone/esquivehover.png) no-repeat; }
+.livre_blocage:hover { background: url(../image/icone/blocagehover.png) no-repeat; }
+.livre_melee:hover { background: url(../image/icone/meleehover.png) no-repeat; }
+.livre_dressage:hover { background: url(../image/icone/dressagehover.png) no-repeat; }
 
-#livre_corps
+.livre_corps
 {
 	padding-left: 85px;
 	padding-right: 65px;
 }
 
-#livre_corps h6
+.livre_corps h6
 {
 	font-weight: bold;
 	margin-top: 0;
@@ -2910,14 +2918,14 @@ text-align: right;
 	font-size:14px;
 }
 
-#livre_corps li
+.livre_corps li
 {
 	border-radius:5px;
 	font-size:12px;
 	overflow: hidden;
 }
 
-#livre_corps li a
+.livre_corps li a
 {
 	display: block;
 	height: 36px;
@@ -2926,13 +2934,13 @@ text-align: right;
 	overflow: hidden;
 }
 
-#livre_corps li a:hover
+.livre_corps li a:hover
 {
 	background: rgba(0,110,210,0.2);
 	color: black;
 }
 
-#livre_corps li a.icone
+.livre_corps li a.icone
 {
 	float: right;
 	min-width: 36px;
@@ -2941,25 +2949,25 @@ text-align: right;
 	border-left: 1px dotted rgba(255,255,255,0.5);
 }
 
-#livre_corps li a.icone span.xsmall
+.livre_corps li a.icone span.xsmall
 {
 	font-size:10px;
 	text-align: center;
 }
 
-#livre_corps .icone-groupe
+.livre_corps .icone-groupe
 {
 	font-size:20px;
 	text-align: center;
 }
 
 
-#livre_corps li:nth-last-of-type(n+2)
+.livre_corps li:nth-last-of-type(n+2)
 {
 	margin-bottom: 5px;
 }
 
-#livre_corps li img
+.livre_corps li img
 {
 	height: 32px;
 	float: left;

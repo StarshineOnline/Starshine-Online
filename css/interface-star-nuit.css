@@ -204,3 +204,7 @@ a#debug_droit
 {
 	border-color: grey;
 }
+
+.livre_corps{background: url(../image/interface/livres/parchemin_fond_gris.png) repeat-y;}
+.livre_bas{ background: url(../image/interface/livres/parchemin_bas_gris.png) no-repeat;}
+.livre_haut{ background: url(../image/interface/livres/parchemin_haut_gris.png) no-repeat; }

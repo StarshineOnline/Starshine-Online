@@ -18,7 +18,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 	function __construct($type, &$cible, $categorie, $actions)
 	{
 		global $Gtrad, $db;
-		parent::__construct('div', 'livre');
+		parent::__construct('div', false, 'livre');
 		$this->perso = &joueur::get_perso();
 		$this->type = $type;
 		$this->cible = &$cible;
@@ -28,12 +28,12 @@ class interf_livre_sortcomp extends interf_bal_cont
 		$this->aff_categories($categorie);
 		
 		// Haut du livre
-		$haut = $this->add( new interf_bal_cont('div', 'livre_haut') );
+		$haut = $this->add( new interf_bal_cont('div', false, 'livre_haut') );
 		if( $type == 'sort_jeu' )
 			$haut->add( new interf_bal_smpl('h3', 'Cible : '.$cible->get_nom()) );
 			
 		// Corps du live
-		$corps = $this->add( new interf_bal_cont('div', 'livre_corps') );
+		$corps = $this->add( new interf_bal_cont('div', false, 'livre_corps') );
 		switch( $type )
 		{
 		case 'sort_jeu':
@@ -232,7 +232,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 		}
 		
 		// Bas du livre
-		$this->add( new interf_bal_cont('div', 'livre_bas') );
+		$this->add( new interf_bal_cont('div', false, 'livre_bas') );
 	}
 	
 	protected function aff_categories($categorie)
@@ -241,18 +241,19 @@ class interf_livre_sortcomp extends interf_bal_cont
 		switch( $this->type )
 		{
 		case 'sort_jeu':
+			$gauche = $this->add( new interf_bal_cont('div', 'livre_sorts', 'livre_gauche') );
+			$categories = array('sort_element', 'sort_mort', 'sort_vie', 'favoris');
+			break;
 		case 'sort_combat':
-			$gauche = $this->add( new interf_bal_cont('div', 'livre_gauche', 'livre_sorts') );
+			$gauche = $this->add( new interf_bal_cont('div', 'livre_sorts_combat', 'livre_gauche') );
 			$categories = array('sort_element', 'sort_mort', 'sort_vie');
-			if( $this->type == 'sort_jeu' )
-				$categories[] = 'favoris';
 			break;
 		case 'comp_jeu':
-			$gauche = $this->add( new interf_bal_cont('div', 'livre_gauche', 'livre_competences') );
+			$gauche = $this->add( new interf_bal_cont('div', 'livre_competences', 'livre_gauche') );
 			$categories = array('distance', 'esquive', 'dressage', 'melee', 'favoris');
 			break;
 		case 'comp_combat':
-			$gauche = $this->add( new interf_bal_cont('div', 'livre_gauche', 'livre_competences') );
+			$gauche = $this->add( new interf_bal_cont('div', 'livre_competences_combat', 'livre_gauche') );
 			$categories = array('distance', 'esquive', 'blocage', 'melee');
 			break;
 		}
@@ -261,7 +262,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 		foreach($categories as $cat)
 		{
 			$url = 'livre.php?action=afficher&type='.$this->type.'&categorie='.$cat.'&cible='.$this->cible->get_id().'&type_cible='.$this->cible->get_type();
-			$elt = $menu->add( new interf_elt_menu('&nbsp;', $url, 'return charger(this.href);', 'livre_'.$cat, 'livre_categorie') );
+			$elt = $menu->add( new interf_elt_menu('&nbsp;', $url, 'return charger(this.href);', false, 'livre_categorie livre_'.$cat) );
 			$elt->set_tooltip($Gtrad[$cat], 'right', '#livre');
 		}
 	}

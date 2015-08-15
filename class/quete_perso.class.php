@@ -341,9 +341,9 @@ class quete_perso extends table
 		{
 			interf_debug::enregistre('Etape suivante ('.$etape.' / '.$nbr.')');
 			if( $option && is_numeric($option) )
-				$nouv = quete_etape(array('id_quete', 'etape', 'variante'), array($this->id_quete, $etape+1, $option));
+				$nouv = quete_etape::create(array('id_quete', 'etape', 'variante'), array($this->id_quete, $etape+1, $option));
 			else
-				$nouv = quete_etape(array('id_quete','etape'), array($this->id_quete, $etape+1));
+				$nouv = quete_etape::create(array('id_quete','etape'), array($this->id_quete, $etape+1));
 			switch( count($nouv) )
 			{
 			case 0:
