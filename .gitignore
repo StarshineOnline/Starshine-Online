@@ -3,6 +3,7 @@ connect_forum.php
 connect_log.php
 image
 inc/variable.inc.php
+jabber.php
 root.php
 mysql.sh
 sql/dumpstatic.sql

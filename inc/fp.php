@@ -91,6 +91,8 @@ include_once(root.'interface/interf_factory.class.php');
 $G_interf = interf_factory::factory();
 $G_url = new url($_SERVER['SCRIPT_NAME']);
 
+if( file_exists(root.'jabber.php') )
+	include_once(root.'jabber.php');
 
 function fin_script()
 {

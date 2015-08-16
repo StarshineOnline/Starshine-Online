@@ -953,6 +953,10 @@ class interf_factory
   {
   	return new interf_drapeaux($royaume, $mag_factor, $mleft, $mtop);
 	}
+	function creer_jabber($nom)
+	{
+		return new interf_jabber($nom);
+	}
 }
 
 class interf_factory_shine extends interf_factory

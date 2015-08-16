@@ -148,16 +148,18 @@ class interf_echange extends interf_cont
 		if( !isset($bonus_autre[2]) )
 			$this->add( new interf_alerte(interf_alerte::msg_avertis, true, false, 'L\'autre n\'a pas le bonus shine pour recevoir des objets.') );
 		$form = $this->add( new interf_form($G_url->get('action', 'modifier'), 'echange') );
-		$val = $this->echange ? $this->echange['star'][$this->perso->get_id()]['objet'] : '0';
-		if( !$val )
-			$val = '0';
 		if( isset($bonus_autre[1]) && isset($bonus_soi[3]) )
 		{
+			$val = $this->echange ? $this->echange['star'][$this->perso->get_id()]['objet'] : '0';
+			if( !$val )
+				$val = '0';
 			$stars = $form->add_champ_bs('number', 'stars', null, $val, null, 'stars');
 			$stars->set_attribut('min', 0);
 			$stars->set_attribut('max', $this->perso->get_star());
 			$stars->set_attribut('step', 1);
 		}
+		else
+			$form->add_champ_bs('hidden', 'stars', null, '0');
 		$_SESSION['objets'] = array();
 		// Liste des objets de l'inventaire
 		$objets = array();

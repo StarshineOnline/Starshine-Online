@@ -56,6 +56,14 @@ if( $action && $lieu && $perso->get_hp()>0 )
 			journal_royaume::ecrire_perso('suppr_batiment', $constr->get_def(), $constr->get_nom(), $constr->get_id(), $constr->get_x(), $constr->get_y());
 		}
 		break;
+	case 'suppr_constr':
+		$constr = new placement($_GET['id']);
+		if( !$constr->get_buff('assiege') )
+		{
+			$constr->supprimer();
+			journal_royaume::ecrire_perso('suppr_batiment', $constr->get_def(), $constr->get_nom(), $constr->get_id(), $constr->get_x(), $constr->get_y());
+		}
+		break;
 	case 'suppr_bourg':
 		$bourg = new bourg($_GET['id']);
 		if( !$bourg->get_buff('assiege') )

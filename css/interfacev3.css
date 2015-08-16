@@ -3650,3 +3650,32 @@ body.aide-active
   0%{background-color:#000000}
   100%{background-color:#FFFFFF}
 }
+
+/*-- jabber --------------------------------------------------*/
+#jabber
+{
+	margin: 20px;
+	border: 1px solid grey;
+	border-collapse: collapse;
+}
+
+#jabber_haut
+{
+	padding: 0;
+	border-bottom: 1px solid grey;
+}
+
+#jabber_haut h4
+{
+	display: inline-block;
+	border-right: 1px solid grey;
+	padding: 5px;
+	margin: 0;
+}
+
+#jabber_debug
+{
+	border-top: 1px solid grey;
+	max-height: 200px;
+	overflow: auto;
+}

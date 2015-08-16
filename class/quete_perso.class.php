@@ -23,20 +23,12 @@ class quete_perso extends table
 			$this->id_perso = $id_perso;
 			$idq = $this->id_quete = is_object($id_quete) ? $id_quete->get_id() : $id_quete;
 			if( $id_etape )
-				$etape = new quete_etape($id_etape);
+				$this->etape = new quete_etape($id_etape);
 			else
-				$etape = quete_etape::create(array('id_quete', 'etape'), array($idq, 1))[0];
+				$this->etape = quete_etape::create(array('id_quete', 'etape'), array($idq, 1))[0];
 			$this->id_etape = $etape ? $etape->get_id() : 0;
 			if( is_object($id_quete) )
-			{
-				$objectifs = $etape ? explode(';', $etape->get_objectif()) : array();
-				for($i=0; $i<count($objectifs); $i++)
-				{
-					$obj = explode(':', $objectifs[$i]);
-					$objectifs[$i] = $obj[0].':0';
-				}
-				$this->avancement = implode(';', $objectifs);
-			}
+				$this->init_avancement();
 			else
 				$this->avancement = $avancement;
 		}
@@ -59,6 +51,17 @@ class quete_perso extends table
 	protected function get_champs()
 	{
 		return array('id_perso'=>'i', 'id_quete'=>'i', 'id_etape'=>'i', 'avancement'=>'s');
+	}
+	
+	protected function init_avancement()
+	{
+		$objectifs = $this->etape ? explode(';', $this->etape->get_objectif()) : array();
+		for($i=0; $i<count($objectifs); $i++)
+		{
+			$obj = explode(':', $objectifs[$i]);
+			$objectifs[$i] = $obj[0].':0';
+		}
+		$this->avancement = implode(';', $objectifs);
 	}
 	
 	/// Modifie l'étape
@@ -365,6 +368,8 @@ class quete_perso extends table
 			}
 			$nouv->initialiser();
 			$this->set_id_etape( $nouv->get_id() );
+			$this->etape = &$nouv;
+			$this->init_avancement();
 			$this->sauver();
 			return $nouv->get_id();
 		}

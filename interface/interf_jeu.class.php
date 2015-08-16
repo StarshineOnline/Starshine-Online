@@ -18,7 +18,7 @@ class interf_jeu extends interf_sso_int
 
   function __construct($css)
   {
-  	global $db, $G_no_piwik, $G_interf;
+  	global $db, $G_no_piwik, $G_interf, $jabber;
     interf_sso_int::__construct($css);
     $perso = joueur::get_perso();
     $msg = $this->menu->add_elt( new interf_elt_menu('Messages', 'messagerie.php', 'return charger(this.href);') );
@@ -57,6 +57,9 @@ class interf_jeu extends interf_sso_int
     $cont_jeu = $this->contenu->add( new interf_bal_cont('main', 'contenu_jeu') );
     $this->gauche = $cont_jeu->add( new interf_bal_cont('section', 'deplacement') );
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
+    
+    if( isset($jabber) && $jabber )
+    	interf_jabber::creer_jabber(str_replace(' ', '_', $perso->get_nom()), $this);
     
     $this->aff_fin();
   }

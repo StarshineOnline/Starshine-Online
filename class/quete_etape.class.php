@@ -421,7 +421,7 @@ class quete_etape extends table
 			// Mis dans le journal
 			$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", 'f_quete', '".$perso->get_nom()."', '', NOW(), '".addslashes($nom)."', 0, 0, 0)";
 			$db->query($requete);
-			return $perso->get_nom().' finit la quête "'.$nom.'", et gagne '.implode(', ',$texte).'.</br>';
+			return $perso->get_nom().' finit la quête "'.$nom.($texte ? '", et gagne '.implode(', ',$texte) : '"').'.</br>';
 		}
 		return '';
 	}

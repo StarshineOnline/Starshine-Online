@@ -100,6 +100,7 @@ abstract class interf_sso_int extends interf_sso
   function __construct($theme)
   {
     interf_sso::__construct($theme);
+    $this->set_attribut('ng:app', 'ssoApp');
     // feuilles de style
     $this->css(static::prefixe_fichiers.'css/texture.css');
     $this->css(static::prefixe_fichiers.'css/texture_low.css');
@@ -110,6 +111,7 @@ abstract class interf_sso_int extends interf_sso
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.cluetip.min.js');
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/atooltip.min.jquery.js');
     //$this->javascript(static::prefixe_fichiers.'javascript/overlib/overlib.js');
+    $this->javascript('https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js');
     // Barre de menu
     $this->menu_droite();
     $this->aff_menu_joueur();

@@ -148,11 +148,12 @@ class interf_descr_quete extends interf_cont
 				break;
 			case 'O': // rapporter un objet
 				$objet = objet::factory($valeur[0]);
-				$texte = 'Rapporter '.$valeur[1].' '.$objet->get_nom();
+				$nbr = $valeur[1] ? $valeur[1] : 1;
+				$texte = 'Rapporter '.$nbr.' '.$objet->get_nom();
 				if($quete_perso)
-					$texte .= ' : '.$avancement[$obj[0].$valeur[0]].' / '.$valeur[1];
+					$texte .= ' : '.$avancement[$obj[0].$valeur[0]].' / '.$nbr;
 				$liste_obj->add( new interf_bal_smpl('li', $texte) );
-				$this->nbr_obj_total += $valeur[1];
+				$this->nbr_obj_total += $nbr;
 				break;
 			case 'X': // texte
 				$liste_obj->add( new interf_bal_smpl('li', $type) );

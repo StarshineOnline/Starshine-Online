@@ -484,6 +484,7 @@ class interf_html extends interf_princ_ob
   private $entete = array();  ///< contenu de l'en-tête sous forme de tableau de lignes.
   private $encodage;  /// Encodage de la page
   private $xhtml;  /// version du langage XHTML utilisé ou false si ce n'est pas du XHTML
+  private $attributs = array();  /// attributs de la balise html
   
   /**
    * Constructeur
@@ -537,6 +538,15 @@ class interf_html extends interf_princ_ob
   {
     $this->entete[] ='<link rel="'.$rel.'"  type="'.$type.'"  href="'.$href.'"/>';
   }
+  /**
+   * Définit la valeur d'un attribut.
+   * @param  $nom   nom de l'attribut.
+   * @param  $val   valeur de l'attribut.
+   */
+  function set_attribut($nom, $val)
+  {
+    $this->attributs[$nom] = $val;
+  }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
   {
@@ -545,7 +555,7 @@ class interf_html extends interf_princ_ob
       $this->ligne('<?xml version="'.$this->xhtml.'"" encoding="'.$this->encodage.'"?'.'>');
       $this->ligne('<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">');
     }
-    $this->ouvre('html');
+    $this->ouvre('html'.$this->texte_attributs($this->attributs));
     $this->ouvre('head');
     $this->balise('title', $this->titre);
     $this->ligne('<meta charset="'.$this->encodage.'"/>');
@@ -1004,6 +1014,16 @@ class interf_descr extends interf_bal_cont
 		return $dd;
 	}
 } 
+
+class interf_script extends interf_bal_smpl
+{
+	function __construct($src)
+	{
+		parent::__construct('script', '');
+		$this->set_attribut('type', 'text/javascript');
+		$this->set_attribut('src', $src);
+	}
+}
 
 class interf_js extends interf_smpl
 {
