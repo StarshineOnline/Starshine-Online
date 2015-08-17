@@ -1015,7 +1015,7 @@ class interf_descr extends interf_bal_cont
 	}
 } 
 
-class interf_script extends interf_bal_smpl
+class interf_js_script extends interf_bal_smpl
 {
 	function __construct($src)
 	{

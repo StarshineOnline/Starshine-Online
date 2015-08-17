@@ -132,6 +132,12 @@ class joueur extends table
 		return $this->mdp;
 	}
 
+  /// Renvoie le mot de passe crypté pour jabber
+	function get_jabber_mdp()
+	{
+		return sha1($this->login.$this->mdp);
+	}
+
   /**
    * Modifie le mot de passe
    * @param $mdp  hash du nouveau mdp

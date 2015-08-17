@@ -70,7 +70,7 @@ class interf_achat_sort extends interf_achat_compsort
 	function aff_cont_col(&$elt)
 	{
 		global $Trace;
-		$this->tbl->nouv_cell( $elt->get_mp() );
+		$this->tbl->nouv_cell( $elt->get_mp_final($this->perso) );
 		$requis = $elt->get_incantation() * $this->perso->get_facteur_magie();
 		$classe =  $requis > $this->perso->get_incantation() ? 'text-danger' : '';
 		$this->tbl->nouv_cell( new interf_bal_smpl('span', $requis, false, $classe) );
