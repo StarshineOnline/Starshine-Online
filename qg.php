@@ -87,8 +87,7 @@ case 'prendre':
 	        $i++;
 	      }
 	      $perso->sauver();
-	      $nom = $row['nom'] ;
-				journal_royaume::ecrire_perso('prend_depot', null, $nom, $nombre);
+				journal_royaume::ecrire_perso('prend_depot', null, $row['nom'], $nombre);
 	      if($nombre > 1)
 				{
 					/// @todo à améliorer 

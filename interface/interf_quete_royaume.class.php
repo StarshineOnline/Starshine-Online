@@ -129,6 +129,7 @@ class interf_infos_quete extends interf_dialogBS
 					default:
 						$req[] = '≥ '.mb_substr($val, 1);
 					}
+					break;
 				case 'h':  // honneur
 					$txt = 'Honneur ';
 					switch($val[0])
@@ -145,6 +146,7 @@ class interf_infos_quete extends interf_dialogBS
 					default:
 						$req[] = '≥ '.mb_substr($val, 1);
 					}
+					break;
 				case 'p':  // réputation
 					$txt = 'Réputation : ';
 					switch($val[0])
@@ -161,6 +163,7 @@ class interf_infos_quete extends interf_dialogBS
 					default:
 						$req[] = '≥ '.mb_substr($val, 1);
 					}
+					break;
 				}
 			}
 			$liste_requis->add( new interf_bal_smpl('li', $txt.implode(' ou ', $req)) );
@@ -176,7 +179,7 @@ class interf_infos_quete extends interf_dialogBS
 		$this->add( new interf_descr_quete($quete, $etape) );
 		
 		// Boutons
-		$this->ajout_btn('Fermer' , 'ferme');
+		$this->ajout_btn('Fermer' , 'fermer');
 		/// @todo passer à l'objet
 		$requete = 'SELECT COUNT(*) FROM quete_royaume WHERE id_royaume = '.$royaume->get_id().' AND id_quete = '.$quete->get_id();
 		$req = $db->query($requete);

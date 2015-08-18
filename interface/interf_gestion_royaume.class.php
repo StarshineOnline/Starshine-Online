@@ -74,7 +74,7 @@ class interf_gestion_royaume extends interf_cont
 	}
 	protected function aff_journal()
 	{
-		$this->tbl = $this->add( new interf_data_tbl('journal_royaume', '', true, false) );
+		$this->tbl = $this->add( new interf_data_tbl('journal_royaume', '', true, false, false, '-') );
 		$this->tbl->nouv_cell('Date');
 		$this->tbl->nouv_cell('Acteur');
 		$this->tbl->nouv_cell('Action');

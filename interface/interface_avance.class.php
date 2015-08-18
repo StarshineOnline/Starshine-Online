@@ -41,10 +41,10 @@ class interf_onglets extends interf_bal_cont
   function add_onglet($nom, $adresse, $id, $classe='', $selection=false, $menu=false)
   {
     $classe .= ' tab-pane';
-    if( $selection )
-      $classe .= ' active';
+    /*if( $selection )
+      $classe .= ' active';*/
     //$li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
-    $li = new interf_elt_menu($nom, '#'.$id, 'charge_tab(this, \''.$id.'\');');
+    $li = new interf_elt_menu($nom, '#'.$id, $adresse ? 'charge_tab(this, \''.$id.'\');' : false);
     if( $menu )
     {
     	if( array_key_exists($menu, $this->menus) )
@@ -70,13 +70,26 @@ class interf_onglets extends interf_bal_cont
       $classe .= ' active';
     }
     $lien->set_attribut('data-toggle', 'tab');
-    $lien->set_attribut('data-url', $adresse);
+    if($adresse)
+    	$lien->set_attribut('data-url', $adresse);
     /*if( !$selection )
       $this->divs[] = $id;*/
-    $div =  $this->contenu->add( new interf_bal_cont('div', $id, $classe) );
+    $div = $this->contenu->add( new interf_bal_cont('div', $id, $classe) );
     $this->divs[$id] = &$div;
     return $div;
   }
+  
+  function &add_repeat($repeat, $nom, $id, $classe=false)
+  {
+    $classe .= ' tab-pane';
+  	$li = $this->haut->add( new interf_elt_menu($nom, '#'.$id, false) );
+  	$li->set_attribut('ng:repeat', $repeat);
+    $lien = $li->get_lien();
+    $lien->set_attribut('data-toggle', 'tab');
+    $div = $this->contenu->add( new interf_bal_cont('div', $id, $classe) );
+  	$div->set_attribut('ng:repeat', $repeat);
+    return $div;
+	}
 
   /**
    * Renvoie un element div pour le contenu d'un onglet
@@ -594,7 +607,7 @@ class interf_data_tbl extends interf_tableau
     {
     	if( $ordre == '-' )
     		$options[] = '"order":[[0, "desc"]]';
-    	if( $ordre >= 0 )
+    	else if( $ordre >= 0 )
     		$options[] = '"order":[['.$ordre.', "asc"]]';
 			else
     		$options[] = '"order":[['.(-$ordre).', "desc"]]';

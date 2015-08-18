@@ -11,10 +11,8 @@ abstract class interf_sso extends interf_html
 {
   protected $menu;
 	const prefixe_fichiers = '';
-	const change_url = true;
   function __construct($theme)
   {
-  	global $G_url;
     interf_html::__construct("Starshine Online", 'utf-8', false);
     // Méta-informations
     $this->meta('language', 'fr');
@@ -42,9 +40,6 @@ abstract class interf_sso extends interf_html
     $this->link('icon', 'image/png', 'image/favicon.png');
     
     $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page) );
-    
-    if( $this::change_url && array_key_exists('action', $_GET) )
-			interf_base::code_js('history.replaceState(null, "Starshine Online", "'.$G_url->get_base().'");');
   }
   function aff_menu_joueur()
   {
@@ -87,6 +82,11 @@ abstract class interf_sso extends interf_html
 		}
     
     $this->code_js('maj_tooltips();');
+	}
+	static function change_url()
+	{
+  	global $G_url;
+		interf_base::code_js('history.replaceState(null, "Starshine Online", "'.$G_url->get_base().'");');
 	}
 }
 
