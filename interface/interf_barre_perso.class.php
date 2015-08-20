@@ -65,10 +65,20 @@ class interf_barre_perso extends interf_bal_cont
     $stars->set_tooltip('Votre argent&nbsp;: '.$this->perso->get_star().' stars', 'bottom');
     // attaque
     /// @todo passer à l'objet
-    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
-    $att = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : 'pas de script', 'perso_attaque', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
+    if( $this->perso->get_action_a() )
+    {
+	    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_a();
+	    $req = $db->query($requete);
+	    $row = $db->read_array($req);
+	    $nom_script = $row[0];
+	    $texte_script = ' − Votre script d\'attaque&nbsp;: '.$nom_script;
+		}
+		else
+		{
+	    $nom_script = 'pas de script';
+	    $texte_script = ' − Vous n\'avez pas de script d\'attaque';
+		}
+    $att = $this->infos_perso->add( new interf_bal_smpl('div', $nom_script, 'perso_attaque', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
     $arme = $this->perso->get_arme();
     if( $arme )
     {
@@ -78,12 +88,22 @@ class interf_barre_perso extends interf_bal_cont
 		}
 		else
 			$nom_arme = 'aucune';
-    $att->set_tooltip('Votre arme&nbsp;: '.$nom_arme.($row['nom'] ? ' − Votre script d\'attaque&nbsp;: '.$row['nom'] : ' − Vous n\'avez pas de script d\'attaque'), 'bottom');
+    $att->set_tooltip('Votre arme&nbsp;: '.$nom_arme.$texte_script, 'bottom');
     // défense
-    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
-    $req = $db->query($requete);
-    $row = $db->read_assoc($req);
-    $def = $this->infos_perso->add( new interf_bal_smpl('div', $row['nom'] ? $row['nom'] : 'pas de script', 'perso_defense', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
+    if( $this->perso->get_action_d() )
+    {
+	    $requete = 'SELECT nom FROM action_perso WHERE id = '.$this->perso->get_action_d();
+	    $req = $db->query($requete);
+	    $row = $db->read_array($req);
+	    $nom_script = $row[0];
+	    $texte_script = ' − Votre scriptde défense&nbsp;: '.$nom_script;
+		}
+		else
+		{
+	    $nom_script = 'pas de script';
+	    $texte_script = ' − Vous n\'avez pas de script de défense';
+		}
+    $def = $this->infos_perso->add( new interf_bal_smpl('div', $nom_script, 'perso_defense', 'perso_script'.($row['nom'] ? '' : ' sans_script')) );
     $bouclier = $this->perso->get_bouclier();
     if( $bouclier )
     {
@@ -93,7 +113,7 @@ class interf_barre_perso extends interf_bal_cont
 		}
 		else
 			$nom_bouclier = 'aucun';
-    $def->set_tooltip('Votre bouclier&nbsp;: '.$nom_bouclier.($row['nom'] ? ' − Votre script de défense&nbsp;: '.$row['nom'] : ' − Vous n\'avez pas de script de défense'), 'bottom');
+    $def->set_tooltip('Votre bouclier&nbsp;: '.$nom_bouclier.$texte_script, 'bottom');
     // créature dressée
     $creature = $this->perso->get_pet();
     if( $creature )

@@ -84,10 +84,12 @@ class interf_onglets extends interf_bal_cont
     $classe .= ' tab-pane';
   	$li = $this->haut->add( new interf_elt_menu($nom, '#'.$id, false) );
   	$li->set_attribut('ng:repeat', $repeat);
+  	$li->set_attribut('ng:class', '$first ? \'active\' : \'\'');
     $lien = $li->get_lien();
     $lien->set_attribut('data-toggle', 'tab');
     $div = $this->contenu->add( new interf_bal_cont('div', $id, $classe) );
   	$div->set_attribut('ng:repeat', $repeat);
+  	$div->set_attribut('ng:class', '$first ? \'active\' : \'\'');
     return $div;
 	}
 
@@ -678,6 +680,7 @@ class interf_editeur extends interf_bal_cont
 {
 	protected $btn_grp;
 	protected $contenu;
+	protected $btn_envoi = null;
 	const ind_exp = 0x1;
 	const liste = 0x2;
 	const indent = 0x4;
@@ -748,13 +751,15 @@ class interf_editeur extends interf_bal_cont
 		if( $url )
 		{
 			$btn_grp = $barre->add( new interf_bal_cont('div', false, 'btn-group editeur-droite') );
-			$btn = $btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-message') );
-			$btn->set_attribut('onclick', 'envoie_texte(\''.$url.'\', \''.$id_editeur.'\');');
-			$btn->set_tooltip('Envoyer');
+			$this->btn_envoi = $btn_grp->add( new interf_bal_smpl('button', '', false, 'btn btn-default icone icone-message') );
+			if( $url !== true )
+				$this->btn_envoi->set_attribut('onclick', 'envoie_texte(\''.$url.'\', \''.$id_editeur.'\');');
+			$this->btn_envoi->set_tooltip('Envoyer');
 		}
 		// Zone de texte
 		$this->contenu = $this->add( new interf_bal_cont('div', $id_editeur, 'editeur-texte') );
-		self::code_js('$("#'.$id_editeur.'").wysiwyg();');
+		if( strpos($id_editeur, '{') === false )
+			self::code_js('$("#'.$id_editeur.'").wysiwyg();');
 	}
 	function add_boutton($icone, $action, $info)
 	{
@@ -766,6 +771,10 @@ class interf_editeur extends interf_bal_cont
 	function set_texte($texte)
 	{
 			$this->contenu->add( new interf_txt($texte) );
+	}
+	function &get_btn_envoi()
+	{
+		return $this->btn_envoi;
 	}
 }
 

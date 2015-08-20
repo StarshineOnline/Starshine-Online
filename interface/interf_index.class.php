@@ -73,7 +73,7 @@ class interf_index extends interf_sso
 			$script->set_attribut('src', 'javascript/emp/emp-min.js');
 			$liens = $connex->add( new interf_bal_cont('div', 'liens_connexion') );
 			$liens->add( new interf_lien('Mot de passe oublié ?', self::page.'?page=oubli_mdp') );
-			self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
+			//self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
 		}
 		
 		$a_pub = file_exists(root.'pub.php');

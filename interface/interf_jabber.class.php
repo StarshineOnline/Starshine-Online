@@ -1,32 +1,118 @@
 <?php
 class interf_jabber extends interf_bal_cont
 {
-	function __construct($nom)
+	function __construct($nom, $salons)
 	{
 		global $jabber;
-		parent::__construct('div', 'jabber');
+		parent::__construct('div', 'jabber', 'ng-cloak');
 		$this->set_attribut('ng:controller', 'ssoJabber');
-		self::code_js('var sso_jabber = {nom:"'.$nom.'", mdp:"'.joueur::factory()->get_mdp().'", serveur:"'.$jabber['serveur'].'", ressource:"'.$jabber['ressource'].'"};');
+		$json = 'nom:"'.$nom.'", mdp:"'.joueur::factory()->get_jabber_mdp().'", serveur:"'.$jabber['serveur'].'", ressource:"'.$jabber['ressource'].'", domaine_salons:"'.$jabber['salons'].'"';
+		$json_salons = array();
+		foreach($salons as $c=>$s)
+		{
+				$json_salons[] = '{nom:"'.$s['nom'].'", id:"'.$c.'", auto:'.($s['auto']?'true':'false').'}';
+		}
+		$json .= ', salons:['.implode(',', $json_salons).']';
+		self::code_js('var sso_jabber = {'.$json.'};');
+		// Haut
 		$haut = $this->add( new interf_bal_cont('div', 'jabber_haut') );
+		$haut_droite = $haut->add( new interf_bal_cont('ul', 'jabber_haut_droite', 'nav navbar-nav navbar-right') );
+		$options = $haut_droite->add( new interf_menu_div('Options') );
+		$form = $options->add( new interf_bal_cont('div', 'jabber_options', 'form-horizontal') );
+		$div_style = $form->add( new interf_bal_cont('div', false, 'form-group') );
+		$ctrl_style = $div_style->add( new interf_chp_form('checkbox') );
+		$div_style->add( new interf_bal_smpl('label', 'Texte riche') );
+		$form->add( new interf_bal_smpl('strong', 'Connexions automatique') );
+		$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
+		$div_auto->set_attribut('ng:repeat', 'salon in jabber.salons');
+		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox') );
+		$div_auto->add( new interf_bal_smpl('label', '{{salon.nom}}') );
+		$aff_dbg = $haut_droite->add( new interf_elt_menu('', '') );
+		$aff_dbg->get_lien()->set_attribut('class', 'icone icone-debug');
+		$aff_dbg->get_lien()->set_attribut('ng:click', 'jabber.aff_debug = !jabber.aff_debug;');
 		$haut->add( new interf_bal_smpl('h4', 'Discussion') );
-		$haut->add( new interf_bal_smpl('span', '<strong>Statut :</strong> {{statut}}') );	
-		$erreur = $this->add( new interf_alerte(interf_alerte::msg_erreur, false, 'jabber_erreur', '{{erreur}}') );
-		$erreur->set_attribut('ng:show', 'erreur');
+		$haut->add( new interf_bal_smpl('span', '<strong>Statut :</strong> {{jabber.statut}}') );
+		// erreur
+		$erreur = $this->add( new interf_alerte(interf_alerte::msg_erreur, false, 'jabber_erreur', '{{jabber.erreur}}') );
+		$erreur->set_attribut('ng:show', 'jabber.erreur');
+		// discussion
+		$discussions = $this->add( new interf_onglets('jabber_salons', 'jabber_discussions') );
+		$discussions->set_attribut('ng:show', 'jabber.connecte');
+		$div_disc = $discussions->add_repeat('salon in jabber.salons', '{{salon.nom}}', 'jabber_salon_{{salon.id}}');
+		$div_switch = $div_disc->add( new interf_bal_cont('div') );
+		$div_switch->set_attribut('ng:switch', 'salon.statut');
+		$div_nc = $div_switch->add( new interf_bal_cont('div', false, 'jabber_vide') );
+		$div_nc->set_attribut('ng:switch-when', '0');
+		$div_nc->add( new interf_bal_smpl('button', 'Entrer', false, 'btn btn-default') );
+		$div_cc = $div_switch->add( new interf_bal_cont('div', false, 'jabber_vide') );
+		$div_cc->set_attribut('ng:switch-when', '1');
+		$div_cc->set_attribut('ng:click', 'entrer_salon($index);');
+		$div_cc->add( new interf_bal_smpl('span', '', false, 'icone icone-charger') );
+		$div_cc->add( new interf_bal_smpl('em', 'Connexion en cours') );
+		$div_cc = $div_switch->add( new interf_bal_cont('div', false, 'container-fluid jabber_salon') );
+		$div_cc->set_attribut('ng:switch-when', '2');
+		$div_g = $div_cc->add( new interf_bal_cont('div', false, 'col-sm-10') );
+		$div_d = $div_g->add( new interf_bal_cont('div', false, 'jabber_discussion') );
+		$msg = $div_d->add( new interf_bal_cont('p') );
+		$msg->set_attribut('ng:repeat', 'msg in salon.messages');
+		$msg->set_attribut('ng:class', 'msg.classe');
+		$msg->add( new interf_bal_smpl('strong', '[{{msg.date}}] {{msg.auteur}} : ', false, 'jabber_msg_info') );
+		$msg->add( new interf_bal_smpl('span', '') )->set_attribut('ng:bind-html', 'msg.texte | html');
+		$div_e = $div_g->add( new interf_bal_cont('div', false, 'jabber_salon_envoi') );
+		$envoi = $div_e->add( new interf_editeur('jabber_envoi_{{salon.id}}', true, false, 'editeur') );
+		$envoi->get_btn_envoi()->set_attribut('ng:click', 'envoi_salon($index);');
+		$envoi->set_attribut('sso:jabber-envoi', '{{salon.id}}');
+		$div_p = $div_cc->add( new interf_bal_cont('div', false, 'col-sm-2 jabber_participants') );
+		$liste = $div_p->add( new interf_bal_cont('ul') );
+		$part = $liste->add( new interf_bal_cont('li', '{{part.nom}}') );
+		$part->set_attribut('ng:repeat', 'part in salon.participants | orderBy: part.ordre');
+		$icone = $part->add( new interf_bal_smpl('span', '{{part.ordre}}', false, 'jabber_info_part icone') );
+		$icone->set_attribut('ng:show', 'part.icone');
+		$icone->set_attribut('ng:class', 'part.icone');
+		$quitter = $part->add( new interf_bal_smpl('a', '', false, 'jabber_quitter icone icone-croix') );
+		$quitter->set_attribut('ng:hide', 'part.ordre');
+		$quitter->set_attribut('ng:click', 'quitter_salon(salon.index);');
+		$quitter->set_tooltip('Quitter ce salon');
+		$part->add( new interf_bal_smpl('span', '{{part.nom}}', false, 'jabber_nom') );
+		// debogage
 		$debug = $this->add( new interf_bal_cont('div', 'jabber_debug') );
+		$debug->set_attribut('ng:show', 'jabber.aff_debug');
 		$debug_haut = $debug->add( new interf_bal_cont('div', 'jabber_dbg_haut', 'form-inline') );
-		$debug_haut->add( new interf_bal_smpl('h6', 'Débug') );
 		$form = $debug_haut->add( new interf_bal_cont('div', 'jabber_dbg_niv', 'form-group') );
-		$ctrl_niv = $form->add( new interf_chp_form('number', false, 'Niveau minimal de debug', '0', false, 'form-control') );
-		$msg = $debug->add( new interf_bal_smpl('p', '[{{dbg.niveau}}] {{dbg.message}}') );
-		$msg->set_attribut('ng:repeat', 'dbg in debug');
+		//$ctrl_niv = $form->add( new interf_chp_form('number', false, 'Niveau minimal de debug', '0', false, 'form-control') );
+		$ctrl_niv = $form->add( new interf_select_form(false, 'Niveau d\'affichage', false, 'form-control') );
+		$ctrl_niv->add_option('Debug', '0', true);
+		$ctrl_niv->add_option('Infos', 1);
+		$ctrl_niv->add_option('Alertes', 2);
+		$ctrl_niv->add_option('Erreurs', 3);
+		$ctrl_niv->add_option('Erreurs fatales', 4);
+		$ctrl_niv->set_attribut('ng:model', 'jabber.dbg_niv_min');
+		//$ctrl_niv->set_attribut('convert-to-number', '');
+		//$ctrl_niv->set_attribut('min', '0');
+		$debug_haut->add( new interf_bal_smpl('h5', 'Débogage') );
+		$debug_log = $debug->add( new interf_bal_cont('div', 'jabber_dbg_log') );
+		$msg = $debug_log->add( new interf_bal_smpl('p', '{{dbg.message}}') );
+		$msg->set_attribut('ng:repeat', 'dbg in jabber.debug | filter:jabber.dbg_niv_min:dbgSupeq()');
+		//$msg->set_attribut('ng:repeat', 'dbg in debug');
+		$msg->set_attribut('ng:class', 'dbg.classe');
+		
+		//self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
 	}
-	static function creer_jabber($nom, &$parent)
+	static function creer_jabber($nom, &$parent, $salons)
 	{
 		global $G_interf;
 		$parent->add( new interf_js() );
-		$parent->add( new interf_script('javascript/jsjac/JSJaC.js') );
-		$parent->add( new interf_script('javascript/jabber.js') );
-    $parent->add( $G_interf->creer_jabber($nom) );
+		//$parent->add( new interf_js_script('javascript/jsjac/JSJaC.js') );
+		$parent->add( new interf_js_script(root_url.'javascript/strophe/strophe.js') );
+		$parent->add( new interf_js_script(root_url.'javascript/strophe/strophe.muc.js') );
+		$parent->add( new interf_js_script(root_url.'javascript/jabber.js') );
+    $parent->add( $G_interf->creer_jabber($nom, $salons) );
+	}
+	static function get_salons_perso(/*&$perso*/)
+	{
+		$salons = array();
+		$salons['sso'] = array('nom'=>'Général', 'auto'=>true);
+		return $salons;
 	}
 }
 ?>

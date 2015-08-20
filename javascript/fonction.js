@@ -309,10 +309,13 @@ function creer_element(tag, id, classe, pere, contenu, before)
     elt.className = classe;
   if( contenu )
     elt.innerHTML = contenu;
-  if( before )
-    pere.insertBefore(elt, before)
-  else
-    pere.appendChild(elt);
+  if( pere )
+  {
+	  if( before )
+	    pere.insertBefore(elt, before)
+	  else
+	    pere.appendChild(elt);
+	}
   return elt;
 }
 
@@ -844,6 +847,7 @@ $(function () {
 				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});
 		
+		$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});
 		init_bbcode();
 });
 

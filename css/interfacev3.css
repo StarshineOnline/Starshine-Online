@@ -3655,27 +3655,225 @@ body.aide-active
 #jabber
 {
 	margin: 20px;
-	border: 1px solid grey;
+	border: 1px solid #DDD;
 	border-collapse: collapse;
+	border-radius: 10px;
+	overflow: hidden;
 }
 
 #jabber_haut
 {
 	padding: 0;
-	border-bottom: 1px solid grey;
+	border-bottom: 1px solid #DDD;
+	background: rgba(255, 255, 255, 0.3);
+	height: 30px;
 }
 
 #jabber_haut h4
 {
 	display: inline-block;
-	border-right: 1px solid grey;
+	border-right: 1px solid #DDD;
 	padding: 5px;
 	margin: 0;
+	background: rgba(255, 255, 255, 0.3);
+}
+
+#jabber_haut_droite a
+{
+	display: inline-block;
+	padding: 5px;
+	color: black;
+	height: 29px;
+}
+
+#jabber_haut_droite a.icone
+{
+	font-size: 16px;
+}
+
+#jabber_haut_droite a:hover, #jabber_haut_droite a:focus
+{
+	text-decoration: none;
+	background: rgba(255, 255, 255, 0.5);
+}
+
+#jabber_options
+{
+	width: 200px;
+	margin-left: 25px;
 }
 
 #jabber_debug
 {
-	border-top: 1px solid grey;
-	max-height: 200px;
+	border-top: 1px solid #DDD;
+}
+
+#jabber_dbg_haut
+{
+	border-bottom: 1px solid #AAA;
+	height: 40px;
+	background: rgba(255, 255, 255, 0.2);
+	padding-top: 10px;
+}
+
+#jabber_dbg_niv
+{
+	float: right;
+	margin-top: -8px;
+	margin-right: 2px;
+}
+
+#jabber_debug h5
+{
+	font-weight: bold;
+	margin-left: 10px;
+	font-style: italic;
+	margin-top: 0;
+}
+
+#jabber_dbg_niv input
+{
+	width: 100px;
+}
+
+#jabber_erreur
+{
+	margin: 5px;
+}
+
+#jabber_dbg_log
+{
+	max-height: 300px;
 	overflow: auto;
+}
+
+#jabber .input
+{
+	color: black;
+}
+
+#jabber .output
+{
+	color: black;
+	font-style: italic;
+}
+
+#jabber .log
+{
+	color: green;
+}
+
+.text-debug
+{
+	color: 
+}
+
+#jabber .fatal
+{
+	font-weight: bold;
+}
+
+#jabber_salons
+{
+	padding-left: 5px;
+}
+
+#jabber_discussions
+{
+	padding-top: 5px;
+}
+
+.jabber_vide
+{
+	text-align: center;
+	vertical-align: middle;
+	padding: 10px;
+}
+
+.msg_serveur
+{
+	font-style: italic;
+}
+
+.jabber_salon.container-fluid, .jabber_salon>div
+{
+	padding:0;
+}
+
+.jabber_discussion
+{
+	height: 400px;
+	overflow: auto;
+	padding: 5px;
+}
+
+.jabber_participants
+{
+	border-left: 1px solid #ddd;
+	overflow: auto;
+	height: 544px;
+}
+
+.jabber_salon_envoi
+{
+	border-top: 1px solid #DDD;
+	padding: 1px;
+}
+
+.jabber_salon_envoi .editeur
+{
+	width: calc(100% - 4px);
+}
+
+.jabber_salon_envoi .editeur-texte
+{
+	height: 100px;
+}
+
+.jabber_info_part
+{
+	float: left;
+}
+
+.jabber_quitter
+{
+	float: right;
+}
+
+.jabber_participants li
+{
+	width: 100%;
+	min-height: 25px;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+	padding: 3px;
+}
+
+
+.jabber_nom
+{
+	display: inline-block;
+}
+
+.jabber_nom::first-letter
+{
+	text-transform: uppercase;
+}
+
+.jabber_participants li:hover
+{
+	background: rgba(255, 255, 255, 0.3);
+}
+
+.jabber_participants li a
+{
+  display: block;
+  width: 25px;
+  text-align: center;
+  height: 25px;
+  font-size: 20px;
+}
+
+.jabber_participants li a:hover
+{
+	text-decoration: none;
 }
