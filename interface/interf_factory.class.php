@@ -953,9 +953,9 @@ class interf_factory
   {
   	return new interf_drapeaux($royaume, $mag_factor, $mleft, $mtop);
 	}
-	function creer_jabber($nom, $salons)
+	function creer_jabber($nom, $options)
 	{
-		return new interf_jabber($nom, $salons);
+		return new interf_jabber($nom, $options);
 	}
 }
 

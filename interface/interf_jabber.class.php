@@ -1,18 +1,44 @@
 <?php
 class interf_jabber extends interf_bal_cont
 {
-	function __construct($nom, $salons)
+	function __construct($nom, $options)
 	{
 		global $jabber;
 		parent::__construct('div', 'jabber', 'ng-cloak');
 		$this->set_attribut('ng:controller', 'ssoJabber');
 		$json = 'nom:"'.$nom.'", mdp:"'.joueur::factory()->get_jabber_mdp().'", serveur:"'.$jabber['serveur'].'", ressource:"'.$jabber['ressource'].'", domaine_salons:"'.$jabber['salons'].'"';
-		$json_salons = array();
-		foreach($salons as $c=>$s)
+		foreach($options as $c=>$o)
 		{
-				$json_salons[] = '{nom:"'.$s['nom'].'", id:"'.$c.'", auto:'.($s['auto']?'true':'false').'}';
+			if( $c == 'salons' )
+			{
+				$json_salons = array();
+				foreach($o as $s=>$i)
+				{
+					$json_salons[] = '{nom:"'.$i['nom'].'", id:"'.$s.'", auto:'.($i['auto']?'true':'false').', config:'.($i['config']?'true':'false').'}';
+				}
+				$json .= ', salons:['.implode(',', $json_salons).']';
+			}
+			else
+			{
+				$json .= ', '.$c.':';
+				if($o === true)
+					$json .= 'true';
+				else if($o === false)
+					$json .= 'false';
+				else if($o === null)
+					$json .= 'null';
+				else if(is_string($o))
+					$json .= '"'.$o.'"';
+				else
+					$json .= $o;
+			}
 		}
-		$json .= ', salons:['.implode(',', $json_salons).']';
+		if( !in_array('style', $options) )
+			$json .= ', style:true';
+		if( !in_array('audio', $options) )
+			$json .= ', audio:true';
+		if( !in_array('salons', $options) )
+			$json .= ', salons:[{nom:"Général", id:"sso", auto:false}]';
 		self::code_js('var sso_jabber = {'.$json.'};');
 		// Haut
 		$haut = $this->add( new interf_bal_cont('div', 'jabber_haut') );
@@ -21,11 +47,17 @@ class interf_jabber extends interf_bal_cont
 		$form = $options->add( new interf_bal_cont('div', 'jabber_options', 'form-horizontal') );
 		$div_style = $form->add( new interf_bal_cont('div', false, 'form-group') );
 		$ctrl_style = $div_style->add( new interf_chp_form('checkbox') );
+		$ctrl_style->set_attribut('ng:model', 'jabber.style');
 		$div_style->add( new interf_bal_smpl('label', 'Texte riche') );
+		$div_audio = $form->add( new interf_bal_cont('div', false, 'form-group') );
+		$ctrl_audio = $div_audio->add( new interf_chp_form('checkbox') );
+		$ctrl_audio->set_attribut('ng:model', 'jabber.audio');
+		$div_audio->add( new interf_bal_smpl('label', 'Audio') );
 		$form->add( new interf_bal_smpl('strong', 'Connexions automatique') );
 		$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_auto->set_attribut('ng:repeat', 'salon in jabber.salons');
 		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox') );
+		$ctrl_auto->set_attribut('ng:model', 'salon.auto');
 		$div_auto->add( new interf_bal_smpl('label', '{{salon.nom}}') );
 		$aff_dbg = $haut_droite->add( new interf_elt_menu('', '') );
 		$aff_dbg->get_lien()->set_attribut('class', 'icone icone-debug');
@@ -43,10 +75,10 @@ class interf_jabber extends interf_bal_cont
 		$div_switch->set_attribut('ng:switch', 'salon.statut');
 		$div_nc = $div_switch->add( new interf_bal_cont('div', false, 'jabber_vide') );
 		$div_nc->set_attribut('ng:switch-when', '0');
-		$div_nc->add( new interf_bal_smpl('button', 'Entrer', false, 'btn btn-default') );
+		$btn = $div_nc->add( new interf_bal_smpl('button', 'Entrer', false, 'btn btn-default') );
+		$btn->set_attribut('ng:click', 'entrer_salon($index);');
 		$div_cc = $div_switch->add( new interf_bal_cont('div', false, 'jabber_vide') );
 		$div_cc->set_attribut('ng:switch-when', '1');
-		$div_cc->set_attribut('ng:click', 'entrer_salon($index);');
 		$div_cc->add( new interf_bal_smpl('span', '', false, 'icone icone-charger') );
 		$div_cc->add( new interf_bal_smpl('em', 'Connexion en cours') );
 		$div_cc = $div_switch->add( new interf_bal_cont('div', false, 'container-fluid jabber_salon') );
@@ -65,7 +97,7 @@ class interf_jabber extends interf_bal_cont
 		$div_p = $div_cc->add( new interf_bal_cont('div', false, 'col-sm-2 jabber_participants') );
 		$liste = $div_p->add( new interf_bal_cont('ul') );
 		$part = $liste->add( new interf_bal_cont('li', '{{part.nom}}') );
-		$part->set_attribut('ng:repeat', 'part in salon.participants | orderBy: part.ordre');
+		$part->set_attribut('ng:repeat', 'part in salon.participants | orderBy:\'ordre\'');
 		$icone = $part->add( new interf_bal_smpl('span', '{{part.ordre}}', false, 'jabber_info_part icone') );
 		$icone->set_attribut('ng:show', 'part.icone');
 		$icone->set_attribut('ng:class', 'part.icone');
@@ -96,6 +128,20 @@ class interf_jabber extends interf_bal_cont
 		//$msg->set_attribut('ng:repeat', 'dbg in debug');
 		$msg->set_attribut('ng:class', 'dbg.classe');
 		
+		// Audio
+		$audio_msg = $this->add( new interf_bal_cont('audio', 'jabber_son_msg') );
+		$audio_msg->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/message.ogg', 'type'=>'audio/ogg') ) );
+		$audio_msg->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/message.mp3', 'type'=>'audio/mpeg') ) );
+		$audio_envoi = $this->add( new interf_bal_cont('audio', 'jabber_son_envoi') );
+		$audio_envoi->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/envoi.ogg', 'type'=>'audio/ogg') ) );
+		$audio_envoi->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/envoi.mp3', 'type'=>'audio/mpeg') ) );
+		$audio_entre = $this->add( new interf_bal_cont('audio', 'jabber_son_entre') );
+		$audio_entre->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/entrant.ogg', 'type'=>'audio/ogg') ) );
+		$audio_entre->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/entrant.mp3', 'type'=>'audio/mpeg') ) );
+		$audio_sort = $this->add( new interf_bal_cont('audio', 'jabber_son_sort') );
+		$audio_sort->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/parti.ogg', 'type'=>'audio/ogg') ) );
+		$audio_sort->add( new interf_bal_smpl('source', null, array('src'=>root_url.'audio/parti.mp3', 'type'=>'audio/mpeg') ) );
+		
 		//self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
 	}
 	static function creer_jabber($nom, &$parent, $salons)
@@ -108,10 +154,15 @@ class interf_jabber extends interf_bal_cont
 		$parent->add( new interf_js_script(root_url.'javascript/jabber.js') );
     $parent->add( $G_interf->creer_jabber($nom, $salons) );
 	}
-	static function get_salons_perso(/*&$perso*/)
+	static function get_options_perso(&$perso)
 	{
-		$salons = array();
-		$salons['sso'] = array('nom'=>'Général', 'auto'=>true);
+		$options = array('salons'=>array());
+		//$options['style'] = ;
+		//$options['audio'] = ;
+		$options['salons']['groupe_175'] = array('nom'=>'Groupe', 'auto'=>true, 'config'=>false);
+		$options['salons']['orc'] = array('nom'=>'Royaume', 'auto'=>true, 'config'=>true);
+		$options['salons']['sso'] = array('nom'=>'Général', 'auto'=>false, 'config'=>true);
+		$options['salons']['salledesventes'] = array('nom'=>'Ventes', 'auto'=>false, 'config'=>true);
 		return $salons;
 	}
 }

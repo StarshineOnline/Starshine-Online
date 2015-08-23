@@ -18,7 +18,9 @@ ssoApp.directive("ssoJabberEnvoi", function()
 
 ssoApp.controller('ssoJabber', ['$scope', function($scope)
 {
-	$scope.jabber = {erreur:"", debug:[], statut:"", dbg_niv_min:"0", connecte:false, style:true, aff_debug:true};
+	$scope.jabber = {erreur:"", debug:[], statut:"", dbg_niv_min:"0", connecte:false, aff_debug:false};
+	$scope.jabber.style = sso_jabber.style;
+	$scope.jabber.audio = sso_jabber.audio;
 	$scope.jabber.salons = sso_jabber.salons;
 	for(var i=0; i<$scope.jabber.salons.length; i++)
 	{
@@ -118,7 +120,7 @@ ssoApp.controller('ssoJabber', ['$scope', function($scope)
 				part.ordre = 3;
 				break;
 			default:
-				part.ordre = 2;
+				part.ordre = 4;
 			}
 		}
 		else
@@ -143,17 +145,61 @@ ssoApp.controller('ssoJabber', ['$scope', function($scope)
 		
 		var id_salon = '#jabber_salon_'+$scope.jabber.salons[i].id;
 		var connecte = false;
+		var audio = false;
+		var salon = this.room;
+		
+		function joue_son(id)
+		{
+			if( $scope.jabber.audio && audio )
+			{
+				document.getElementById(id).play();
+				audio = false;
+				window.setTimeout(function()
+				{
+					audio = true;
+				}, 2000);
+			}
+		}
+		
+		function handle_config(stanza, room)
+		{
+		}
+		
+		function handle_err_config(stanza, room)
+		{
+			$scope.jabber.erreur = "Erreur de configuration du salon";
+		}
+		
 		function handle_message(stanza, room)
 		{
 	    $scope.$apply(function()
 			{
 				var msg = parse_msg(stanza, $(id_salon).find(".jabber_discussion"));
 				if( msg )
+				{
+					if( msg.auteur == sso_jabber.nom )
+					{
+						msg.classe += " jabber_soi";
+						joue_son("jabber_son_msg");
+					}
+					else
+					{
+						joue_son("jabber_son_envoi");
+					}
 					$scope.jabber.salons[i].messages.push(msg);
+				}
 		    if( !connecte )
 		    {
 		    	connecte = true;
 					$scope.jabber.salons[i].statut = 2;
+					if( !$scope.jabber.salons[i].config )
+					{
+						//connection.muc.configure(salon, handle_config, handle_err_config);
+					}
+					window.setTimeout(function()
+					{
+						audio = true;
+					}, 5000);
 				}
 			});
 			return true;
@@ -167,9 +213,15 @@ ssoApp.controller('ssoJabber', ['$scope', function($scope)
 				if( part )
 				{
 					if( part.type == "unavailable" )
+					{
 						delete  $scope.jabber.salons[i].participants[part.nom];
+						joue_son("jabber_son_sort");
+					}
 					else
+					{
 						$scope.jabber.salons[i].participants[part.nom] = part;
+						joue_son("jabber_son_entre");
+					}
 				}
 			});
 			return true;
@@ -186,11 +238,11 @@ ssoApp.controller('ssoJabber', ['$scope', function($scope)
 		
 		this.entrer = function()
 		{
-			var room = this.room;
+			//var room = this.room;
 			setTimeout(function()
 			{
 				var ext = creer_element("priority", null, null, null, "10");
-				connection.muc.join(room, sso_jabber.nom, handle_message, handle_pres, handle_roster, null, null, null);
+				connection.muc.join(salon, sso_jabber.nom, handle_message, handle_pres, handle_roster, null, null, null);
 				//connection.muc.queryOccupants(room, null, null);
 			}, 0);
 			$scope.jabber.salons[this.index].statut = 1;

@@ -3877,3 +3877,8 @@ body.aide-active
 {
 	text-decoration: none;
 }
+
+.jabber_soi .jabber_msg_info
+{
+	color: #428bca;
+}
