@@ -194,6 +194,7 @@ class interf_barre_perso extends interf_bal_cont
 			{
 				if($this->perso->get_id() != $membre->get_id())
 				{
+					$membre->check_perso(false);
 					$this->creer_infos_membre($liste, $membre, $groupe, $nombre_joueur_groupe);
 					$nombre_joueur_groupe++;
 				}

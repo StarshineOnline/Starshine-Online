@@ -1,4 +1,3 @@
-var ssoApp = angular.module('ssoApp',[]);
 
 ssoApp.filter('html', function($sce)
 {

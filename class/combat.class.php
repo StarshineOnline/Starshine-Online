@@ -231,7 +231,7 @@ class combat
 			{
 				$interf->sort($sort->get_type(), $actif->get_nom(), $sort->get_nom());
 				if($attaque[3] == "!")
-					$interf->critique();
+					$interf->critique(true);
 				$interf->degats($attaque[5], $actif->get_nom(), $sort->get_nom());
 			}
 			break;

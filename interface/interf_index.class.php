@@ -61,7 +61,7 @@ class interf_index extends interf_sso
 			$mdp->set_attribut('tabindex', '2');
     	$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
     	$div_auto2 = $div_auto->add( new interf_bal_cont('div', false, 'checkbox') );
-    	$auto = $div_auto2->add( new interf_chp_form('checkbox', 'auto_login') );
+    	$auto = $div_auto2->add( new interf_chp_form('checkbox', 'auto_login', false, 'Ok') );
 			$auto->set_attribut('tabindex', '3');
 			$div_auto2->add( new interf_bal_smpl('label', 'Connexion automatique') );
     	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );

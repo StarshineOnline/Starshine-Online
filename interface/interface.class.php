@@ -485,6 +485,7 @@ class interf_html extends interf_princ_ob
   private $encodage;  /// Encodage de la page
   private $xhtml;  /// version du langage XHTML utilisé ou false si ce n'est pas du XHTML
   private $attributs = array();  /// attributs de la balise html
+  private $attributs_body = array();  /// attributs de la balise body
   
   /**
    * Constructeur
@@ -539,13 +540,22 @@ class interf_html extends interf_princ_ob
     $this->entete[] ='<link rel="'.$rel.'"  type="'.$type.'"  href="'.$href.'"/>';
   }
   /**
-   * Définit la valeur d'un attribut.
+   * Définit la valeur d'un attribut de la balise html.
    * @param  $nom   nom de l'attribut.
    * @param  $val   valeur de l'attribut.
    */
   function set_attribut($nom, $val)
   {
     $this->attributs[$nom] = $val;
+  }
+  /**
+   * Définit la valeur d'un attribut de la balise body.
+   * @param  $nom   nom de l'attribut.
+   * @param  $val   valeur de l'attribut.
+   */
+  function set_attribut_body($nom, $val)
+  {
+    $this->attributs_body[$nom] = $val;
   }
   /// Affiche le début de l'élément, i.e. la partie située avant les éléments fils.
   protected function debut()
@@ -564,7 +574,7 @@ class interf_html extends interf_princ_ob
       $this->ligne($lgn);
     }
     $this->ferme('head');
-    $this->ouvre('body');
+    $this->ouvre('body'.$this->texte_attributs($this->attributs_body));
   }
   /// Affiche la fin de l'élément, i.e. la partie située après les éléments fils.
   protected function fin()

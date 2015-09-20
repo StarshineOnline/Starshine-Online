@@ -322,9 +322,9 @@ class interf_combat extends interf_bal_cont
 		$this->passe->add( new interf_bal_smpl('p', $nom.' bloque le coup et absorbe '.$degat_bloque.' dégâts', false, 'manque') );
 	}
 	
-	function critique()
+	function critique($sort=false)
 	{
-		$this->passe->add( new interf_bal_smpl('p', 'COUP CRITIQUE !', false, 'coupcritique') );
+		$this->passe->add( new interf_bal_smpl('p', ($sort?'Sort':'Coup').' critique !', false, 'coupcritique') );
 	}
 	
 	function tentative($type, $resultat, $nom_perso, $nom_sort=null)

@@ -74,7 +74,7 @@ class annonce extends table
 		global $G_sujet_infos, $G_prefixe_forum;
 		$auteur = array_key_exists('id_joueur', $_SESSION) ? $_SESSION['id_joueur'] : 0;
 		$date = date('Y-m-d G:i:s');
-		$info = new infos($message, $date, $auteur);
+		$info = new annonce($message, $date, $auteur);
 		$info->sauver();
 		if( $forum && isset($G_sujet_infos) && $G_sujet_infos )
 		{

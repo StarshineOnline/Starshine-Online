@@ -792,7 +792,7 @@ a#depl_bas_droite
 
 #information
 {
-	position: absolute;
+	/*position: absolute;*/
 	min-height: 496px;
 	width:480px;
 	z-index:1;
@@ -801,6 +801,8 @@ a#depl_bas_droite
 	margin-top : 15px;
 	border-radius: 10px;
 	padding: 10px 4px 10px 4px;
+	float: right;
+	margin-bottom: 5px;
 }
 
 #information h2
@@ -1725,7 +1727,7 @@ li.info_case div.jauge_case
 	font-style: italic;
 	color:#428BCA;
 }
-.coupcritique { font-weight:bold; }
+.coupcritique { font-weight:bold; text-transform: capitalize; }
 .degat { color:#A94442; }
 .manque { color:#31708F; } /*#428BCA*/
 .augcomp { color:#ff791c; font-weight:bold; display: block; } /*#8A6D3B*/
@@ -3659,6 +3661,8 @@ body.aide-active
 	border-collapse: collapse;
 	border-radius: 10px;
 	overflow: hidden;
+	clear: both;
+	margin-top: 5px;
 }
 
 #jabber_haut

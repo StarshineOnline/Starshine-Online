@@ -51,10 +51,11 @@ abstract class interf_sso extends interf_html
     $menu_joueur->add( new interf_elt_menu('Votes & dons', static::prefixe_fichiers.'vote_dons.php', 'return charger(this.href);') );
     $admin = $joueur->get_droits() & joueur::droit_interf_admin;
     $persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) || $joueur->get_droits() & joueur::droit_pnj;
-    if( $admin || $persos )
+    //if( $admin || $persos )
     {
       $menu_joueur->add( new interf_bal_smpl('li', null, null, 'divider') );
-      if( $persos )
+      $menu_joueur->add( new interf_elt_menu('Page d\'accueil', root_url.'index.php') );
+			if( $persos )
         $menu_joueur->add( new interf_elt_menu('Changer de perso', static::prefixe_fichiers.'changer_perso.php', 'return charger(this.href);') );
       if( $admin )
         $menu_joueur->add( new interf_elt_menu('Administration', static::prefixe_fichiers.'./admin/') );
@@ -101,6 +102,7 @@ abstract class interf_sso_int extends interf_sso
   {
     interf_sso::__construct($theme);
     $this->set_attribut('ng:app', 'ssoApp');
+    //$this->set_attribut_body('ng:controller', 'ssoPrinc');
     // feuilles de style
     $this->css(static::prefixe_fichiers.'css/texture.css');
     $this->css(static::prefixe_fichiers.'css/texture_low.css');
@@ -112,9 +114,11 @@ abstract class interf_sso_int extends interf_sso
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/atooltip.min.jquery.js');
     //$this->javascript(static::prefixe_fichiers.'javascript/overlib/overlib.js');
     $this->javascript('https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/app.js');
     // Barre de menu
     $this->menu_droite();
     $this->aff_menu_joueur();
+    
   }
   abstract protected function menu_droite();
 }

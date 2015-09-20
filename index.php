@@ -19,7 +19,7 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 switch($action)
 {
 case 'creer_joueur':
-	interf_soo::change_url();
+	interf_sso::change_url();
 	$pseudo = $_POST['nom'];
   $mdp = $_POST['password'];
   $mdp2 = $_POST['password2'];

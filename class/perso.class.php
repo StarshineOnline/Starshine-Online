@@ -2095,8 +2095,9 @@ class perso extends entite
 		{
 			$this->get_armure();
 		}
-		if(!$base) return $this->pm;
-		else return $this->pm_base;
+		/*if(!$base) return $this->pm;
+		else return $this->pm_base;*/
+		return entite::get_pm($base);
 	}
 
 	function get_pm_para()
@@ -2119,8 +2120,9 @@ class perso extends entite
 		{
 			$this->get_armure();
 		}
-		if(!$base) return $this->pp;
-		else return $this->pp_base;
+		/*if(!$base) return $this->pp;
+		else return $this->pp_base;*/
+		return entite::get_pp($base);
 	}
 	
 	/**
