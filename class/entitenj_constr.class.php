@@ -233,6 +233,7 @@ abstract class entitenj_constr extends entnj_incarn
 	{
 		if( $this->buff == null )
 			$this->constr_buff();
+		return $this->buff;
 	}
 	/**
 	 * Renvoie un buff / débuff actif (i.e. le lanceur est proche)sur le bâtiment d'un type précis.
@@ -285,7 +286,8 @@ abstract class entitenj_constr extends entnj_incarn
   /// Supprime les buffs périmés actifs sur le monstre
 	static function check_buff()
 	{
-		$req = $db->query("delete from buff_batiment where date_fin <= ".time());
+		global $db;
+		$req = $db->query("delete from buff_batiment where fin <= ".time());
 	}
 	// @}
 	

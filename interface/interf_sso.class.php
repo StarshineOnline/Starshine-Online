@@ -11,6 +11,7 @@ abstract class interf_sso extends interf_html
 {
   protected $menu;
 	const prefixe_fichiers = '';
+  const droite_prem = false;
   function __construct($theme)
   {
     interf_html::__construct("Starshine Online", 'utf-8', false);
@@ -39,7 +40,7 @@ abstract class interf_sso extends interf_html
     // icone de favori
     $this->link('icon', 'image/png', 'image/favicon.png');
     
-    $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page) );
+    $this->menu = $this->add( new interf_navbar('', 'barre_menu', 'navbar-inverse', 'icone-sso', 'icone icone-sso', root_url.$this::page, $this::droite_prem) );
   }
   function aff_menu_joueur()
   {

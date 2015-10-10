@@ -527,7 +527,7 @@ a:hover, a:focus
 	position: absolute;
 	bottom: 1px;
 	right: -1px;
-	min-height: 444px;
+	/*min-*/height: 444px;
 	width: 446px;
 	border-left: 1px solid;
 	border-top: 1px solid;
@@ -825,8 +825,8 @@ a#depl_bas_droite
 a#debug_droit
 {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 20px;
+  right: 10px;
   font-size: 30px;
 }
 
@@ -1235,6 +1235,11 @@ ul.info_bulle { text-align:left; }
 	font-size: 11px;
 }
 
+.info_case ul
+{
+	padding:2px;
+}
+
 div.jauge_case
 {
 	position: relative;
@@ -1345,9 +1350,15 @@ li.info_case div.jauge_case
 
 /* Tours */
 
+#tour
+{
+	overflow: auto;
+	height: 417px;
+}
+
 #depl_centre .liste_case
 {
-	width: 216px;
+	width: /*216px*/213px;
 }
 
 #depl_centre #liste_gauche

@@ -83,7 +83,7 @@ case 'creer_joueur':
 	$page = 'creer_perso';
 	break;
 case 'creer_perso':
-	interf_soo::change_url();
+	interf_sso::change_url();
 	$pseudo = $_POST['nom'];
   $race = $_POST['race'];
   $classe = $_POST['classe'];

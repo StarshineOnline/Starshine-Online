@@ -21,6 +21,7 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 $ads = new construction(sSQL($_GET['id_construction']));
+$ads->check_buff();
 
 $distance = $perso->calcule_distance($ads->get_x(), $ads->get_y());
 

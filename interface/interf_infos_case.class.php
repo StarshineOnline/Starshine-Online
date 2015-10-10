@@ -164,6 +164,7 @@ class interf_infos_case extends interf_cont
 		$constructions = construction::create(array('x', 'y'), array($this->case->get_x(), $this->case->get_y()));
 		foreach($constructions as $constr)
 		{
+			$constr->check_buff();
 			$bat = $constr->get_def();
 			$royaume = new royaume(  $constr->get_royaume() );
 			
@@ -223,8 +224,8 @@ class interf_infos_case extends interf_cont
 			$nom->add( new interf_txt(' − ') );
 			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, $diplo) );
 			$nom->set_tooltip($bat->get_nom().' − '.$Gtrad[$diplo], 'bottom');
-			$div->add( new interf_liste_buff($constr, false) );
-			$div->add( new interf_liste_buff($constr, true) );
+			$div2->add( new interf_liste_buff($constr, false) );
+			$div2->add( new interf_liste_buff($constr, true) );
 		}
 	}
 	
