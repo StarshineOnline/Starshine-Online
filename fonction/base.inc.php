@@ -3650,3 +3650,19 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
 	}
 	else return 0;
  }
+
+function ref_niveau()
+{
+	global $G_date_debut, $G_tps_avanc;
+	$tps = (time() - $G_date_debut) / (24*3600);
+	if( $tps <= $G_tps_avanc[0] )
+		return 4 * $tps / $G_tps_avanc[0];
+	else if( $tps <= $G_tps_avanc[1] )
+		return 4 + 5 * ($tps - $G_tps_avanc[0]) / ($G_tps_avanc[1] - $G_tps_avanc[0]);
+	else if( $tps <= $G_tps_avanc[2] )
+		return 9 + 5 * ($tps - $G_tps_avanc[1]) / ($G_tps_avanc[2] - $G_tps_avanc[1]);
+	else if( $tps <= $G_tps_avanc[3] )
+		return 14 + 6 * ($tps - $G_tps_avanc[2]) / ($G_tps_avanc[3] - $G_tps_avanc[2]);
+	else
+		return 20;
+}

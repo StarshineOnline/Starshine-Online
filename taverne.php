@@ -174,8 +174,7 @@ case 'boire':
 	$ivresse = $bar->ivresse ? $bar->ivresse->get_effet() : 0;
 	if( $de <= 5 )
 	{ // indice
-		/// @todo faire indices
-		$bar->conversation();
+		$bar->indice();
 	}
 	else if( $de <= 10 - $ivresse )
 	{ // quête

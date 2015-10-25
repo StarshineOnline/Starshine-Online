@@ -162,6 +162,16 @@ class interf_descr_quete extends interf_cont
 				$coords = convert_in_coord($type);
 				$liste_obj->add( new interf_bal_smpl('li', 'Aller en X='.$coords['x'].' - Y='.$coords['y']) );
 				break;
+			case 'B':  // détruire des bâtiments
+				$requete = "SELECT nom FROM batiment WHERE id = ". $valeur[0];
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				$texte = 'Détruire '.$valeur[1].' '.$row['nom'];
+				if($quete_perso)
+					$texte .= ' : '.$avancement[$obj[0].$valeur[0]].' / '.$valeur[1];
+				$liste_obj->add( new interf_bal_smpl('li', $texte) );
+				$this->nbr_obj_total += $valeur[1];
+				break;
 			}
 		}
 		if( $liste_obj->get_fils() )

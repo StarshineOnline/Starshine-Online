@@ -26,7 +26,7 @@ class quete_perso extends table
 				$this->etape = new quete_etape($id_etape);
 			else
 				$this->etape = quete_etape::create(array('id_quete', 'etape'), array($idq, 1))[0];
-			$this->id_etape = $etape ? $etape->get_id() : 0;
+			$this->id_etape = $this->etape ? $this->etape->get_id() : 0;
 			if( is_object($id_quete) )
 				$this->init_avancement();
 			else
@@ -204,6 +204,7 @@ class quete_perso extends table
 				case 'M':  // tuer des monstres
 				case 'J': // tuer des perso selon la diplomatie
 				case 'O': // rapporter un objet
+				case 'B': // détruire un bâtiment
 					$ok = $valeur[0] == $type_cible;
 					$max = null;
 					break;
@@ -285,15 +286,18 @@ class quete_perso extends table
 						{
 							if( $perso->get_groupe() )
 							{
-								$requete = 'SELECT qp.*, p.id AS pid FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$this->id_quete;
+								$requete = 'SELECT qp.*, p.id AS pid, p.race FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$this->id_quete;
 								$req = $db->query($requete);
 								while( $row = $db->read_assoc($req) )
 								{
-									$membre = $row['pid'] == $perso->get_id() ? $perso : new perso($row['pid']);
-									$qpm = new quete_perso($row);
-									$msg .= $etape->fin($membre, $option == ':silencieux');
-									$qpm->perso = &$membre;
-									$suiv = $qpm->fin($option);
+									if( $qp->get_quete()->get_type() == 'groupe' || $row['race'] == $perso->get_race() )
+									{
+										$membre = $row['pid'] == $perso->get_id() ? $perso : new perso($row['pid']);
+										$qpm = new quete_perso($row);
+										$msg .= $etape->fin($membre, $option == ':silencieux');
+										$qpm->perso = &$membre;
+										$suiv = $qpm->fin($option);
+									}
 								}
 							}
 							else
@@ -319,6 +323,8 @@ class quete_perso extends table
 									/// @todo mettre une ligne dans le journal
 									$requete = 'DELETE FROM quete_perso WHERE id_quete = '.$this->id_quete;
 									$req = $db->query($requete);
+									// et on ne la proposeplus
+									$db->query('UPDATE variable SET valeur = "" WHERE nom = "quete_royaume"');
 								}
 							}
 						}

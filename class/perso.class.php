@@ -3333,31 +3333,34 @@ class perso extends entite
   /// Ajoute une quête à la liste des quêtes que possède le personnage.
 	function prend_quete($id_quete)
 	{
+		global $db;
 		$quete = new quete($id_quete);
 		// quêtes prises pour tout le groupe en même temps
-		$etape = 1;
+		$num_etape = 1;
+		$etape = null;
 		switch( $quete->get_type() )
 		{
 		case 'royaume':
 			/// @todo passer à l'objet
-			$requete = 'SELECT id_etape, qe.id FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.race ="'.$this->race.'" AND qp.id_quete = '.$quete->get_id().' ORDER ON qe.etape DESC LIMIT 1';
+			$requete = 'SELECT id_etape, qe.id FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.race ="'.$this->race.'" AND qp.id_quete = '.$quete->get_id().' ORDER BY qe.etape DESC LIMIT 1';
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 			if( $row )
-					$etape = $row[0];
+					$num_etape = $row[0];
 		case 'groupe':
-			if( $groupe=$this->get_groupe() )
+			$id_groupe = $this->get_groupe();
+			if( $id_groupe )
 			{
-				$groupe = new groupe($groupe);
+				$groupe = new groupe($id_groupe);
 				/// @todo passer à l'objet
-				$requete = 'SELECT id_etape FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.groupe = '.$this->groupe.' AND qp.id_quete = '.$quete->get_id().' ORDER ON qe.etape DESC LIMIT 1';
+				$requete = 'SELECT id_etape FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.groupe = '.$this->groupe.' AND qp.id_quete = '.$quete->get_id().' ORDER BY qe.etape DESC LIMIT 1';
 				$req = $db->query($requete);
 				$row = $db->read_array($req);
 				if( $row )
 					$etape = max($row[0], $etape);
 				
-				$etape = quete_etape::create(array('id_quete', 'etape'), array($quete->get_id(), $etape))[0];
-				foreach($groupe->membre_joueur as $membre)
+				$etape = quete_etape::create(array('id_quete', 'etape'), array($quete->get_id(), $num_etape))[0];
+				foreach($groupe->get_membre_joueur() as $membre)
 				{
 					if( $membre->get_id() == $this->id )
 						continue;
@@ -3380,8 +3383,14 @@ class perso extends entite
 		// On vérifie que la quête peut être prise
 		if( $quete->a_requis($this) )
 		{
-			$qp = new quete_perso($this->id, $quete);
+			if( $etape )
+				$qp = new quete_perso($this->id, $quete, $etape->get_id());
+			else
+				$qp = new quete_perso($this->id, $quete);
 			$qp->sauver();
+			if( !$etape )
+				$etape = $qp->get_etape();
+			$etape->initialiser();
 			return true;
 		}
 		/// @todo loguer triche
@@ -4359,7 +4368,7 @@ class perso extends entite
 			$requete = 'SELECT nom FROM groupe ORDER BY RAND() LIMIT 1';
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
-			return new $row[0];
+			return $row[0];
 		}
 		$de = rand(1, 55);
 		$val = 10;

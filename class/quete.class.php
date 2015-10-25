@@ -373,4 +373,22 @@
 		$row = $db->read_array($req);
 		return $row[0];
 	}
+	static function get_quete_royaume()
+	{
+		global $db;
+		$req = $db->query('SELECT valeur FROM variable WHERE nom = "quete_royaume"');
+		$row = $db->read_array($req);
+		if( $row[0] )
+			return new quete( $row[0] );
+		else
+			return null;
+	}
+	static function nouv_quete_royaume($niveau)
+	{
+		global $db;
+		$requete = 'SELECT q.id FROM quete AS q INNER JOIN quete_etape AS e ON e.id_quete=q.id WHERE q.type = "royaume" AND e.etape = 1 AND e.niveau = '.$niveau.' ORDER BY RAND() LIMIT 1';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row ? $row[0] : false;
+	}
 }

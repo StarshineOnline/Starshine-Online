@@ -54,6 +54,9 @@ include_once('journalier2-encheres.php');
 // Grades
 include_once('journalier2-grades.php');
 
+// Quêtes
+include_once('journalier2-quetes.php');
+
 echo "Done\n";
 
 ?>
