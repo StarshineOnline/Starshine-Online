@@ -144,6 +144,13 @@ function vente(id, obj)
   calcul_total();
 }
 
+function vente_popover(id, obj)
+{
+	$(".popover").remove();
+	vente(id, obj);
+  return false;
+}
+
 function calcul_prix(index)
 {
   var elt = document.getElementById("vente_"+index);

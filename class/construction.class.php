@@ -161,7 +161,7 @@ class construction extends entitenj_constr
 		$recharg = $this->get_batiment()->get_bonus('rechargement');
 		//$date_tir = $this->get_rechargement() - $reduc;
 		$retard = time() - $this->get_rechargement();
-		// On remt à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de ratrapage)
+		// On remet à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de rattrapage)
 		if( $retard > 86400 )
 		{
 			$reduc = 0;

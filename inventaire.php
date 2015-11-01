@@ -19,7 +19,7 @@ $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
 // Infos sur un objet
 if( $action == 'infos' )
 {
-  $G_interf->creer_infos_objet($_GET['id'], $_GET['equip']);
+  $G_interf->creer_infos_objet($_GET['id'], $_GET['equip'], $_GET['elt']);
   exit;
 }
 

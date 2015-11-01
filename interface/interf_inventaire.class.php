@@ -262,8 +262,8 @@ class interf_objet_invent extends interf_bal_cont
       //$this->add( new interf_txt($infos) );
       $this->add( new interf_bal_smpl('span', $infos, false, 'infos') );
     }
-    if( $objet->est_identifie() && $drags )
-      $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'&equip='.($equip?substr($id, 5):'0').'\', \''.addslashes($objet->get_nom()).'\')');
+    if( $objet->est_identifie()/* && $drags*/ )
+      $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'&equip='.($equip?substr($id, 5):'0').'&elt='.$id.'\', \''.addslashes($objet->get_nom()).'\')');
   }
 }
 
@@ -276,7 +276,7 @@ class interf_infos_objet extends interf_infos_popover
    * Constructeur
    * @param $objet    objet sous forme textuelle
    */
-  function __construct($objet, $equipe)
+  function __construct($objet, $equipe, $elt)
   {
   	global $G_url;
     $obj = objet_invent::factory($objet);
@@ -335,11 +335,13 @@ class interf_infos_objet extends interf_infos_popover
 				}
 				else
 	    	{
-		    	$marchand = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'vente','objets'=>$obj->get_texte()) ) ) );
+		    	//$marchand = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'vente','objets'=>$obj->get_texte()) ) ) );
+		    	$marchand = $liens->add( new interf_bal_cont('a') );
+		    	$marchand->set_attribut('onclick',  '$(\'.popover\').remove(); return vente(\''.$elt.'\', \''.$obj->get_texte_id().'\');');
 		    	$marchand->add( new interf_bal_smpl('span', '', false, 'icone icone-argent2') );
 		    	$marchand->add( new interf_bal_smpl('span', 'vendre') );
 		    	$marchand->set_tooltip('Vendre au marchand');
-		    	$hotel = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'hotel_vente','objet'=>$obj->get_texte()) ) ) );
+		    	$hotel = $liens->add( new interf_lien_cont($G_url->get( array('action'=>'hotel_vente','objet'=>$obj->get_texte_id(),'nombre'=>$obj->get_nombre()) ) ) );
 		    	$hotel->add( new interf_bal_smpl('span', '', false, 'icone icone-encheres') );
 		    	$hotel->add( new interf_bal_smpl('span', 'hôtel') );
 		    	$hotel->set_tooltip('Vendre à l\'hôtel des ventes');
@@ -383,12 +385,12 @@ class interf_vente_hotel extends interf_dialogBS
 		$bonus_craft = ceil($perso->get_artisanat() / 5);
 		$objet_max += $bonus_craft;
 
-    if( $row[0] >= $objet_max )
+    /*if( $row[0] >= $objet_max )
     {
       $this->add( new interf_alerte('danger', false) )->add_message('Vous avez déjà '.$objet_max.' objets ou plus en vente.');
       $this->ajout_btn('Ok', 'fermer', 'danger');
       return;
-    }
+    }*/
     $this->ajout_btn('Annuler', 'fermer');
     $btn = $this->ajout_btn('Vendre', '$(\'#modal\').modal(\'hide\');return charger_formulaire(\'vente_hdv\');', 'primary');
 

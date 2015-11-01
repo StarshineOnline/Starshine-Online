@@ -1227,6 +1227,7 @@ ul.info_bulle { text-align:left; }
 .info_case > a > span.icone
 {
 	font-size: 25px;
+	display: block;
 }
 
 .info_case > a > span.xsmall
