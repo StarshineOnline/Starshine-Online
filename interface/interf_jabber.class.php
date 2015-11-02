@@ -20,12 +20,14 @@ class interf_jabber extends interf_bal_cont
 		$options = $haut_droite->add( new interf_menu_div('Options') );
 		$form = $options->add( new interf_bal_cont('div', 'jabber_options', 'form-horizontal') );
 		$div_style = $form->add( new interf_bal_cont('div', false, 'form-group') );
-		$ctrl_style = $div_style->add( new interf_chp_form('checkbox') );
+		$ctrl_style = $div_style->add( new interf_chp_form('checkbox', 'riche') );
+		$ctrl_style->set_attribut('onclick', 'jabber_option(this);');
 		$div_style->add( new interf_bal_smpl('label', 'Texte riche') );
 		$form->add( new interf_bal_smpl('strong', 'Connexions automatique') );
 		$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_auto->set_attribut('ng:repeat', 'salon in jabber.salons');
-		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox') );
+		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox', '{{salon.nom}}') );
+		$ctrl_auto->set_attribut('onclick', 'jabber_option(this);');
 		$div_auto->add( new interf_bal_smpl('label', '{{salon.nom}}') );
 		$aff_dbg = $haut_droite->add( new interf_elt_menu('', '') );
 		$aff_dbg->get_lien()->set_attribut('class', 'icone icone-debug');
