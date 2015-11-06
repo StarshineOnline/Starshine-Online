@@ -5,6 +5,7 @@ class interf_index extends interf_sso
 {
   const page = 'index.php';
   protected $contenu;
+  const droite_prem = true;
 	function __construct($theme)
 	{
 		global $estConnexionReussie, $erreur_login, $G_url;
@@ -34,8 +35,6 @@ class interf_index extends interf_sso
 	    if( $nbr_perso )
     		$this->menu->add_elt(new interf_elt_menu('Jeu', 'interface.php', false, 'lien_jeu'), false);
 		}
-    $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
-    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
     if( $joueur )
     {
 	    $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
@@ -48,11 +47,10 @@ class interf_index extends interf_sso
 		}
 		else
 		{
-    	$this->menu->add_elt(new interf_elt_menu('Créer un compte', self::page.'?page=creer_compte', 'return charger(this.href);'), false);
-    	$connex = $this->menu->add_elt(new interf_menu_div('Connexion'), false);
+    	$connex = $this->menu->add_elt(new interf_menu_div('Connexion', 'menu_connexion', 'navbar-right min-exp'), false);
     	$form = $connex->add( new interf_form(self::page, 'connexion', 'post', 'form-horizontal') );
     	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
-    	$nom = $div_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
+    	$nom = $div_nom->add( new interf_chp_form('text', 'nom', false, false, 'connex_nom', 'form-control') );
 			$nom->set_attribut('placeholder', 'identifiant');
 			$nom->set_attribut('tabindex', '1');
     	$div_mdp = $form->add( new interf_bal_cont('div', false, 'form-group') );
@@ -61,10 +59,10 @@ class interf_index extends interf_sso
 			$mdp->set_attribut('tabindex', '2');
     	$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
     	$div_auto2 = $div_auto->add( new interf_bal_cont('div', false, 'checkbox') );
-    	$auto = $div_auto2->add( new interf_chp_form('checkbox', 'auto_login') );
+    	$auto = $div_auto2->add( new interf_chp_form('checkbox', 'auto_login', false, 'Ok') );
 			$auto->set_attribut('tabindex', '3');
 			$div_auto2->add( new interf_bal_smpl('label', 'Connexion automatique') );
-    	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+    	$div_btn = $form->add( new interf_bal_cont('div', 'btn-connex', 'form-group') );
     	$btn = $div_btn->add( new interf_chp_form('submit', false, false, 'Connexion', false, 'btn btn-default') );
 			$btn->set_attribut('tabindex', '4');
 			$form->add( new interf_chp_form('hidden', 'log') );
@@ -72,9 +70,21 @@ class interf_index extends interf_sso
 			$script->set_attribut('type', 'text/javascript');
 			$script->set_attribut('src', 'javascript/emp/emp-min.js');
 			$liens = $connex->add( new interf_bal_cont('div', 'liens_connexion') );
-			$liens->add( new interf_lien('Mot de passe oublié ?', self::page.'?page=oubli_mdp') );
+			$liens->add( new interf_lien('Mot de passe oublié&nbsp;?', self::page.'?page=oubli_mdp') );
+			$div_autres = $connex->add( new interf_bal_cont('div', 'connex-autres', 'btn-group') );
+			$btn_autres = $div_autres->add( new interf_bal_smpl('button', 'Autres <span class="caret"></span>', false, 'btn btn-default dropdown-toggle') );
+			$btn_autres->set_attribut('type', 'button');
+			$btn_autres->set_attribut('data-toggle', 'dropdown');
+			$btn_autres->set_attribut('aria-haspopup', 'true');
+			$btn_autres->set_attribut('aria-expanded', 'false');
+			$ul_autres = $div_autres->add( new interf_bal_cont('ul', false, 'dropdown-menu') );
+			$ul_autres->add( new interf_elt_menu('Mot de passe oublié&nbsp;?', self::page.'?page=creer_perso', 'return charger(this.href);') );
 			//self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
+    	$this->menu->add_elt(new interf_elt_menu('Créer un compte', self::page.'?page=creer_compte', 'return charger(this.href);', false, 'navbar-right'), false);
+    	self::code_js('document.getElementById("connex_nom").focus();');
 		}
+    $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
+    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
 		
 		$a_pub = file_exists(root.'pub.php');
 		$main = $this->add( new interf_bal_cont('main', 'princ', $a_pub?false:'plein') );
@@ -90,7 +100,7 @@ class interf_index extends interf_sso
 		// erreur de connexion
 		if( $estConnexionReussie === false )
 		{
-			$dlg = set_dialogue( new interf_dialogBS('Erreur', true) );
+			$dlg = $this->set_dialogue( new interf_dialogBS('Erreur', true) );
 			$dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, $erreur_login) );
 			$dlg->ajout_btn('Ok', 'ferme');
 		}

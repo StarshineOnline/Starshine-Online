@@ -1,4 +1,8 @@
-var ssoApp = angular.module('ssoApp',[]);
+function jabber_option(ctrl)
+{
+	var val = ctrl.checked ? "1" : "0";
+	return charger("option.php?action=jabber&option="+ctrl.name+"&valeur="+val);
+}
 
 ssoApp.filter('html', function($sce)
 {

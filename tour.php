@@ -21,6 +21,7 @@ $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
 
 $tour = new construction(sSQL($_GET['id_construction']));
+$tour->check_buff();
 
 if($perso->get_x() == $tour->get_x() && $perso->get_y() == $tour->get_y() && $perso->get_race() == $R->get_race())
 {

@@ -8,11 +8,12 @@
  * Classe gérant les objets alchimiques, ingrédients, de quêtes, et autrs objets divers.
  * Correspond à la table du même nom dans la bdd.
  */
-class objet extends objet_equip
+class objet extends objet_invent
 {
 	protected $stack;  ///< nombre d'exmplaires qu'on peut mettre dans un emplacement de l'inventaire.
 	protected $utilisable;  ///< indique si l'objet est utilisable.
 	protected $description;  ///< description de l'objet.
+	protected $effet;  ///< Valeur de l'effet de l'objet
 	protected $pa;  ///< pa nécessaires pour utiliser l'objet.
 	protected $mp;  ///< mp nécessaires pour utiliser l'objet.
   private $nombre;  ///< nombre d'exmplaires disponibles.
@@ -62,6 +63,19 @@ class objet extends objet_equip
 	{
 		$this->utilisable = $utilisable ? 'y' : 'n';
 		$this->champs_modif[] = 'utilisable';
+	}
+
+
+	/// Retourne la valeur de l'effet de l'objet
+	function get_effet()
+	{
+		return $this->effet;
+	}
+	/// Modifie la valeur de l'effet de l'objet
+	function set_effet($effet)
+	{
+		$this->effet = $effet;
+		$this->champs_modif[] = 'effet';
 	}
 
   /// Renvoie les pa nécessaires pour utiliser l'objet.
@@ -140,10 +154,11 @@ class objet extends objet_equip
 	*/
 	protected function init_tab($vals)
 	{
-		objet_equip::init_tab($vals);
+		parent::init_tab($vals);
 		$this->stack = $vals['stack'];
 		$this->utilisable = $vals['utilisable'];
 		$this->description = $vals['description'];
+		$this->effet = $vals['effet'];
 		$this->pa = $vals['pa'];
 		$this->mp = $vals['mp'];
 	}
@@ -155,6 +170,7 @@ class objet extends objet_equip
     $tbl['stack']='i';
     $tbl['utilisable']='s';
     $tbl['description']='s';
+    $tbl['effet']='i';
     $tbl['pa']='i';
     $tbl['mp']='i';
 		return $tbl;

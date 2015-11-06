@@ -161,7 +161,7 @@ class construction extends entitenj_constr
 		$recharg = $this->get_batiment()->get_bonus('rechargement');
 		//$date_tir = $this->get_rechargement() - $reduc;
 		$retard = time() - $this->get_rechargement();
-		// On remt à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de ratrapage)
+		// On remet à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de rattrapage)
 		if( $retard > 86400 )
 		{
 			$reduc = 0;
@@ -218,5 +218,33 @@ class construction extends entitenj_constr
   	global $Trace;
     return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_'.($royaume ? $Trace['liste'][$royaume] : '04').'.png';
   }
+  
+  static function get_nom_proche($obj, $exclu=false)
+  {
+  	global $db;
+  	$requete = 'SELECT nom FROM construction WHERE royaume > 0 AND type IN ("tour", "bourg", "fort")';
+  	if( $exclu )
+  		$requete .= ' AND id != '.$exclu;
+  	$requete .= ' ORDER BY GREATEST(ABS(CAST(x AS SIGNED) - '.$obj->get_x().'), ABS(CAST(y AS SIGNED) - '.$obj->get_y().')) LIMIT 1';
+  	$req = $db->query($requete);
+  	$row = $db->read_array($req);
+  	if( $row )
+  		return $row[0];
+  	return '';
+	}
+  
+  static function get_nom_aleatoire($exclu=false)
+  {
+  	global $db;
+  	$requete = 'SELECT nom FROM construction WHERE royaume > 0 AND type IN ("tour", "bourg", "fort")';
+  	if( $exclu )
+  		$requete .= ' AND id != '.$exclu;
+  	$requete .= ' ORDER BY RAND() LIMIT 1';
+  	$req = $db->query($requete);
+  	$row = $db->read_array($req);
+  	if( $row )
+  		return $row[0];
+  	return '';
+	}
 }
 ?>

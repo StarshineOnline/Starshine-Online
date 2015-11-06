@@ -29,7 +29,8 @@ class interf_liste_buff extends interf_bal_cont
 					{
           	$li->set_attribut('data-suppr', $buff->get_id());
           	$li->set_attribut('ondblclick', 'suppr_buff(this);');
-					}       
+					}
+          $li->set_attribut('onclick', 'event.stopPropagation();return false;');
           $this->creer_buff_duree($li, $buff);
 				}
 			}

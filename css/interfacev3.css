@@ -527,7 +527,7 @@ a:hover, a:focus
 	position: absolute;
 	bottom: 1px;
 	right: -1px;
-	min-height: 444px;
+	/*min-*/height: 444px;
 	width: 446px;
 	border-left: 1px solid;
 	border-top: 1px solid;
@@ -792,7 +792,7 @@ a#depl_bas_droite
 
 #information
 {
-	position: absolute;
+	/*position: absolute;*/
 	min-height: 496px;
 	width:480px;
 	z-index:1;
@@ -801,6 +801,8 @@ a#depl_bas_droite
 	margin-top : 15px;
 	border-radius: 10px;
 	padding: 10px 4px 10px 4px;
+	float: right;
+	margin-bottom: 5px;
 }
 
 #information h2
@@ -823,8 +825,8 @@ a#depl_bas_droite
 a#debug_droit
 {
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 20px;
+  right: 10px;
   font-size: 30px;
 }
 
@@ -1225,12 +1227,18 @@ ul.info_bulle { text-align:left; }
 .info_case > a > span.icone
 {
 	font-size: 25px;
+	display: block;
 }
 
 .info_case > a > span.xsmall
 {
   padding-bottom: 2px;
 	font-size: 11px;
+}
+
+.info_case ul
+{
+	padding:2px;
 }
 
 div.jauge_case
@@ -1343,9 +1351,15 @@ li.info_case div.jauge_case
 
 /* Tours */
 
+#tour
+{
+	overflow: auto;
+	height: 417px;
+}
+
 #depl_centre .liste_case
 {
-	width: 216px;
+	width: /*216px*/213px;
 }
 
 #depl_centre #liste_gauche
@@ -1725,7 +1739,7 @@ li.info_case div.jauge_case
 	font-style: italic;
 	color:#428BCA;
 }
-.coupcritique { font-weight:bold; }
+.coupcritique { font-weight:bold; text-transform: capitalize; }
 .degat { color:#A94442; }
 .manque { color:#31708F; } /*#428BCA*/
 .augcomp { color:#ff791c; font-weight:bold; display: block; } /*#8A6D3B*/
@@ -3659,6 +3673,8 @@ body.aide-active
 	border-collapse: collapse;
 	border-radius: 10px;
 	overflow: hidden;
+	clear: both;
+	margin-top: 5px;
 }
 
 #jabber_haut

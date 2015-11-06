@@ -209,7 +209,7 @@ class interf_taverne_bar extends interf_cont
 			else if( $de <= 55 )
 				$this->aff_rumeur('perso-incantation', perso::get_perso_rumeur('incantation', $vrai));
 			else if( $de <= 60 )
-				$this->aff_rumeur('perso-element', perso::get_perso_rumeur('sort_elemet', $vrai));
+				$this->aff_rumeur('perso-element', perso::get_perso_rumeur('sort_element', $vrai));
 			else if( $de <= 65 )
 				$this->aff_rumeur('perso-vie', perso::get_perso_rumeur('sort_vie', $vrai));
 			else if( $de <= 70 )
@@ -494,7 +494,7 @@ class interf_taverne_bar extends interf_cont
 			$suf = $plus ? '' : '-peu';
 			$de = rand(1, 100);
 			if( $de <= 5 )
-				$this->aff_rumeur('groupe-honneur', perso::get_groupe_rumeur(onneur));
+				$this->aff_rumeur('groupe-honneur', perso::get_groupe_rumeur('honneur', $plus, $vrai));
 			else if( $de <= 10 )
 				$this->aff_rumeur('groupe-reputation', perso::get_groupe_rumeur('reputation', $plus, $vrai));
 			else if( $de <= 20 )
@@ -631,7 +631,7 @@ class interf_taverne_bar extends interf_cont
 					break;
 				case 4:
 					$type = '-neige';
-					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "3%" OR terrain LIKE "3;%") AND mm.x <= 190 ANDmm. y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
+					$requete = 'SELECT m.nom, COUNT(*) AS nbr FROM monstre As m INNER JOIN map_monstre AS mm ON m.id = mm.type WHERE (terrain LIKE "3%" OR terrain LIKE "3;%") AND mm.x <= 190 AND mm. y <= 190 GROUP BY m.id ORDER BY nbr'.$sens.' LIMIT '.$class.', 1';
 					break;
 				case 5:
 					$type = '-montagne';
@@ -678,11 +678,11 @@ class interf_taverne_bar extends interf_cont
 		if( !$row )
 		{
 			log_admin::log('erreur', 'Pas de rumeur trouvé pour '.$type);
-			$requete = 'SELECT texte FROM rumeurs WHERE type = "'.$type.'" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
+			$requete = 'SELECT texte FROM rumeurs WHERE type = "conversation" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 		}
-		$texte = new texte( str_replace(array('%nom%', '%lieu%', '%race%', '%nom2%', '%lieu2%', '%race2%', '%diplo%'), array($nom, $lieu, $race, $nom2, $lieu2, $race2, $diplo), $row[0]), texte::descr_quetes);
+		$texte = new texte( str_replace(array('%nom%', '%lieu%', '%race%', '%nom2%', '%lieu2%', '%race2%', '%diplo%'), array($nom, $lieu, $race, $nom2, $lieu2, $race2, $diplo), $row[0]), texte::rumeurs);
 		$div->add( new interf_bal_smpl('span', $texte->parse()) );
 	}
 	function conversation()
@@ -694,7 +694,7 @@ class interf_taverne_bar extends interf_cont
 		$div = $this->add( new interf_bal_cont('div', false, 'rumeurs') );
 		$div->add( new interf_bal_smpl('p', 'Une personne vous aborde :', false, 'descr_rp') );
 		$etape = quete_etape::create(array('id_quete', 'etape', 'variante'), array($quete->get_id(), 1, 0))[0];
-		$texte = new texte($etape->get_description(), texte::descr_quetes);
+		$texte = new texte($etape->get_description(), texte::rumeurs);
 		$div->add( new interf_bal_smpl('p', $texte->parse()) );
 		$div->add( new interf_bal_smpl('p', 'Vous obtenez la quête '.$quete->get_titre(), false, 'xsmall') );
 	}
@@ -705,7 +705,8 @@ class interf_taverne_bar extends interf_cont
 		$div = $this->add( new interf_bal_cont('div', 'rumeurs') );
 		$div->add( new interf_bal_smpl('p', 'Tout en buvant, vous écoutez les conversations autour de vous :', false, 'descr_rp') );
 		/// @todo passer à l'objet
-		$requete = 'SELECT r.texte FROM rumeurs AS r INNER JOIN quete_etape AS e ON e.id = r.etape_quete WHERE type = "indice" AND royaumes & '.$royaume.' AND e.id_perso = '.$perso->get_id().' ORDER BY RAND() LIMIT 1';
+		$royaume = 1 << $this->royaume->get_id();
+		$requete = 'SELECT r.texte FROM rumeurs AS r INNER JOIN quete_perso AS q ON q.id_etape = r.etape_quete WHERE type = "indice" AND royaumes & '.$royaume.' AND q.id_perso = '.$perso->get_id().' ORDER BY RAND() LIMIT 1';
 		$req = $db->query($requete);
 		$row = $db->read_array($req);
 		if( !$row )
@@ -716,11 +717,13 @@ class interf_taverne_bar extends interf_cont
 		}
 		if( !$row )
 		{
-			$requete = 'SELECT texte FROM rumeurs WHERE type = "'.$type.'" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
+			$requete = 'SELECT texte FROM rumeurs WHERE type = "conversation" AND royaumes & '.$royaume.' ORDER BY RAND() LIMIT 1';
 			$req = $db->query($requete);
 			$row = $db->read_array($req);
 		}
-		$texte = new texte($row[0], texte::descr_quetes);
+		$texte = new texte($row[0], texte::rumeurs);
+		$ivresse = $bar->ivresse ? $bar->ivresse->get_effet() : 0;
+		$texte->set_indice_vrai( comp_sort::test_de(100, 10 + $ivresse / 2) );
 		$div->add( new interf_bal_smpl('span', $texte->parse()) );
 	}
 	function gain_ivresse()

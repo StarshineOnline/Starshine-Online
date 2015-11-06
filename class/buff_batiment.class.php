@@ -85,7 +85,7 @@ class buff_batiment extends buff_base
 		}
 		else
 		{
-      buff_base::__construct($id, $type, $effet, $duree);
+      buff_base::__construct($id, $type, $effet, $effet2, $duree, $fin, $nom, $description, $debuff);
 			$this->id_placement = $id_placement;
 			$this->id_construction = $id_construction;
 			$this->id_perso = $id_perso;

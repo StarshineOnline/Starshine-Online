@@ -1,6 +1,5 @@
 // -*- tab-width: 2 -*-
 
-
 function affiche_ajax(data, status, jqXHR)
 {
 	aff_ico_sso();

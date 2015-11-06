@@ -73,13 +73,13 @@ else
 	$menu[$i]['url'] = 'edit_constr.php';
 	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;
 
-	$menu[$i]['nom'] = 'Création de quête';
+	/*$menu[$i]['nom'] = 'Création de quête';
 	$menu[$i]['url'] = 'create_quete.php';
 	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;
 
 	$menu[$i]['nom'] = 'Édition de quête';
 	$menu[$i]['url'] = 'edit_quete.php';
-	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;
+	$menu[$i++]['acces'] = joueur::droit_anim | joueur::droit_concept;*/
 
 	$menu[$i]['nom'] = 'Création d\'un monstre';
 	$menu[$i]['url'] = 'create_monstre.php';

@@ -331,7 +331,7 @@ class interf_navbar extends interf_bal_cont
   protected $gauche;
   protected $droite = null;
 
-  function __construct($titre=null, $id=null, $classe=null, $id_titre=null, $class_titre=null, $lien_titre='#')
+  function __construct($titre=null, $id=null, $classe=null, $id_titre=null, $class_titre=null, $lien_titre='#', $droite_prem=false)
   {
     interf_bal_cont::__construct('nav', $id, 'navbar '.$classe);
     $cont = /*$this->*/parent::add( new interf_bal_cont('div', null, 'container') );
@@ -346,7 +346,9 @@ class interf_navbar extends interf_bal_cont
     if( $titre !== null )
       $header->add( new interf_bal_smpl('a', $titre, $id_titre, 'navbar-brand '.$class_titre) )->set_attribut('href', $lien_titre);
     $this->menu = $cont->add( new interf_bal_cont('div', 'navbar', 'collapse navbar-collapse') );
-    $this->gauche = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav') );
+    if( $droite_prem )
+			$this->droite = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav navbar-right') );
+		$this->gauche = $this->menu->add( new interf_bal_cont('ul', null, 'nav navbar-nav') );
   }
 
   function &add_elt($elt, $gauche=true)
@@ -368,9 +370,9 @@ class interf_navbar extends interf_bal_cont
 class interf_nav_deroul extends interf_elt_menu
 {
   protected $liste;
-  function __construct($nom, $id=null)
+  function __construct($nom, $id=null, $classe='')
   {
-    interf_elt_menu::__construct($nom.'<b class="caret"></b>', '#', false, $id, 'dropdown');
+    interf_elt_menu::__construct($nom.'<b class="caret"></b>', '#', false, $id, 'dropdown '.$classe);
     $this->lien->set_attribut('class', 'dropdown-toggle');
     $this->lien->set_attribut('data-toggle', 'dropdown');
     $this->liste = interf_cont::add( new interf_bal_cont('ul', null, 'dropdown-menu') );

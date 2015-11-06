@@ -11,6 +11,7 @@ class interf_tour extends interf_batiment
 	protected $distance;
 	protected $perso;
 	protected $tour;
+	protected $div;
 	
 	function __construct(&$tour)
 	{
@@ -19,6 +20,10 @@ class interf_tour extends interf_batiment
 		$this->perso = &joueur::get_perso();
 		$batiment = $tour->get_def();
 		$this->distance = $batiment->get_bonus('batiment_vue');
+		if($buff=$this->tour->get_buff_actif('buff_vision'))
+			$this->distance += $buff->get_effet();
+		if($buff=$this->tour->get_buff_actif('debuff_vision'))
+			$this->distance -= $buff->get_effet();
 		
 		// Icone et titre
 		//$this->set_img_centre($tour->get_image(), 'tour.php?id_construction='.$tour->get_id(), $batiment->get_nom());
@@ -29,6 +34,7 @@ class interf_tour extends interf_batiment
 		$this->set_jauge_int($this->distance, 12, 'avance', 'Distance de vue : ');
 		
 		$this->centre->add( new interf_bal_smpl('p', 'Position - X : '.$tour->get_x().' - Y : '.$tour->get_y()) );
+		$this->div = $this->centre->add( new interf_bal_cont('div', 'tour') );
 		$this->aff_persos();
 		$this->aff_batiments();
 	}
@@ -37,18 +43,13 @@ class interf_tour extends interf_batiment
 	function aff_persos()
 	{
 		global $Gtrad, $Trace, $Tclasse, $db;
-		$div = $this->centre->add( new interf_bal_cont('div', 'liste_gauche', 'liste_case') );
+		$div = $this->div->add( new interf_bal_cont('div', 'liste_gauche', 'liste_case') );
 		$div->add( new interf_bal_smpl('span', 'Personnages', false, 'xsmall') );
 		$lst = $div->add( new interf_bal_cont('ul') );
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
 		
 		$distance = $this->distance;
-		if($buff=$this->tour->get_buff_actif('buff_vision'))
-			$distance += $buff->get_effet();
-		if($buff=$this->tour->get_buff_actif('debuff_vision'))
-			$distance -= $buff->get_effet();
-		
     /// @todo à améliorer
     $requete = 'SELECT *, GREATEST(ABS('.$this->tour->get_x().' - CAST(x AS SIGNED)), ABS('.$this->tour->get_y().' - CAST(y AS SIGNED))) as distance FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x BETWEEN '.($this->tour->get_x() - $distance).' AND '.($this->tour->get_x() + $distance).' AND y BETWEEN '.($this->tour->get_y() - $distance).' AND '.($this->tour->get_y() + $distance).' AND statut="actif" ORDER BY distance ASC, d.'.$this->perso->get_race().' DESC, level DESC';
     $req = $db->query($requete);
@@ -110,7 +111,7 @@ class interf_tour extends interf_batiment
 	function aff_batiments()
 	{
 		global $db, $Gtrad;
-		$div = $this->centre->add( new interf_bal_cont('div', 'liste_droite', 'liste_case') );
+		$div = $this->div->add( new interf_bal_cont('div', 'liste_droite', 'liste_case') );
 		$div->add( new interf_bal_smpl('span', 'Bâtiments', false, 'xsmall') );
 		$lst = $div->add( new interf_bal_cont('ul') );
 		

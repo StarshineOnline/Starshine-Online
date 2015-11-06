@@ -491,7 +491,7 @@ class sort_combat extends sort
   	if($this->test_de(10000, $actif_chance_critique))
   	{
    	  $actif->set_compteur_critique();
-   	  $attaque->get_interface()->critique();
+   	  $attaque->get_interface()->critique(true);
       $attaque->add_log_combat('!');
     	//Les dégâts des critiques sont diminués par la puissance
     	$puissance = 1 + ($passif->get_puissance() * $passif->get_puissance() / 1000);

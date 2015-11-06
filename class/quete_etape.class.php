@@ -11,7 +11,7 @@
 class quete_etape extends table
 {
 	protected $id_quete;  ///< id de la quete.
-	protected $id_etape;  ///< id de l'étape
+	protected $etape;  ///< numéro de l'étape
 	protected $variante;  
 	protected $nom;  
 	protected $description;  ///< description
@@ -406,7 +406,6 @@ class quete_etape extends table
 				break;
 			}
 		}
-		/// @todo gains du groupe
 		// On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies
 		$quete_fini = explode(';', $perso->get_quete_fini());
 		if(!in_array($id_quete, $quete_fini))
@@ -538,7 +537,7 @@ class quete_etape extends table
 					// choix de la case
 					$where = ' WHERE 1'.$this->cond_terrain($cond, $perso);
 					$requete = 'SELECT x, y FROM map '.$where.' ORDER BY RAND() LIMIT 1';
-					$req = $db->query();
+					$req = $db->query($requete);
 					$row = $db->read_assoc($req);
 					if( !$row )
 						return false;
@@ -551,7 +550,7 @@ class quete_etape extends table
 					else
 					{
 						$bat = new batiment($param[0]);
-						$constr = new constuction(0, $param[0], $row['x'], $row['y'], 0, $bat->get_hp(), $bat->get_nom());
+						$constr = new construction(0, $param[0], $row['x'], $row['y'], 0, $bat->get_hp(), $bat->get_nom());
 						$constr->sauver();
 					}
 				}

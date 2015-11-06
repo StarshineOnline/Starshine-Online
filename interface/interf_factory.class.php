@@ -504,10 +504,10 @@ class interf_factory
    * Renvoie la bonne instance de la classe pour afficher les informations sur un objet (dans un popover)
    * @param $objet    objet sous forme textuelle
    */
-  function creer_infos_objet($objet, $equipe)
+  function creer_infos_objet($objet, $equipe, $elt)
   {
     include_once(root.'interface/interf_inventaire.class.php');
-    return new interf_infos_objet($objet, $equipe);
+    return new interf_infos_objet($objet, $equipe, $elt);
   }
   /*
    */

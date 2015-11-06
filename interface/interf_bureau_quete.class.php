@@ -61,7 +61,7 @@ class interf_tbl_quetes extends interf_data_tbl
 	protected $perso;
 	function __construct(&$royaume, $type, $fournisseur='bureau_quete')
 	{
-		global $db;
+		//global $db;
 		parent::__construct('tbl_'.$type, '', false, false, $fournisseur=='bureau_quete'?358:383 );
 		$this->perso = &joueur::get_perso();
 		
@@ -69,9 +69,25 @@ class interf_tbl_quetes extends interf_data_tbl
 		$this->nouv_cell('Type de quete');
 		$this->nouv_cell('Repetable');
 		
+		// Quêtes de royaume
+		if( $type == 'autre' )
+		{
+			$quete_r = quete::get_quete_royaume();
+			if( $quete_r )
+			{
+				$qp = quete_perso::create(array('id_perso', 'id_quete'), array($this->perso->get_id(), $quete_r->get_id()));
+				if( !$qp )
+				{
+					$this->nouv_ligne();
+					$this->nouv_cell(new interf_lien($quete_r->get_nom(), 'bureau_quete.php?action=description&id='.$quete_r->get_id()));
+					$this->nouv_cell($quete_r->get_type());
+					$this->nouv_cell($quete_r->get_repetable());
+				}
+			}
+		}
 		$quetes = quete::get_quetes_dispos($this->perso, $royaume, $fournisseur, $type);
 		foreach($quetes as $quete)
-		{				
+		{
 			$this->nouv_ligne();
 			$this->nouv_cell(new interf_lien($quete->get_nom(), 'bureau_quete.php?action=description&id='.$quete->get_id()));
 			$this->nouv_cell($quete->get_type());

@@ -100,7 +100,27 @@ table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
 	border: none !important;
 }
 
-
+@media (max-width: 767px)
+{
+	.navbar-collapse
+	{
+		max-height: 100%;
+	}
+	.dropdown.min-exp>a.dropdown-toggle
+	{
+		display:none;
+	}
+	.dropdown.min-exp>.dropdown-menu
+	{
+		display: block;
+		background: transparent;
+		position: static;
+	}
+	.dropdown-menu, .dropdown-menu a, .dropdown-menu #liens_connexion > a
+	{
+		color: white !important;
+	}
+}
 
 /*-- Divers --------------------------------------------------*/
 

@@ -15,6 +15,7 @@ class texte
   protected $case;  ///< Case pour les lien de retour à celle-ci
   protected $perso;   ///< Personnage actif pour les balsises basées sur celui-ci
   protected $id;  ///<  id de l'objet d'où vient le texte.
+  protected $indice_vrai = true;  ///< Indique si l'indice est vrai  
   const plrs_txt = 0x1;  ///< Il y a plusieurs textes possibles, séparés par 5 '*'.
   const bbcode = 0x2;   ///< bbcode.
   const grade = 0x4;   ///< balises sélectionnant ce qui doit être affiché en fonction du grade.
@@ -25,6 +26,7 @@ class texte
   const perso = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction du personnage.
   const actions = 0x100;   ///< balises effectuant certaines actions.
   const tuto = 0x200;   ///< balises liées au tutoriel.
+  const indices = 0x400;  ///< balises d'indices.
 
   const messagerie = 0x42;   ///< textes de la messagerie
   const msg_monde = 0x86;   ///< message du monde
@@ -36,6 +38,7 @@ class texte
   const tutoriel = 0x3b8;   ///< textes des tutoriels
   const batailles = 0x42;   ///< textes des batailles
   const descr_quetes = 0x86;   ///< textes des quêtes
+  const rumeurs = 0x48e;  ///< textes des rumeurs
   
   /**
    * Constructeur
@@ -50,7 +53,7 @@ class texte
   }
   
   /**
-   * Défini les options pour les liens
+   * Définit les options pour les liens
    * @param  $url     URL pour les liens s'il y a plusieurs parties au texte.
    * @param  $liste   true si les liens doivent être dans des listes.
    */
@@ -61,16 +64,22 @@ class texte
     $this->case = $case;
   }
   
-  /// Défini le personnage actif
+  /// Définit le personnage actif
   function set_perso(&$perso)
   {
     $this->perso = &$perso;
   }
 
-  /// Défini l'id de l'objet d'où vient le texte.
+  /// Définit l'id de l'objet d'où vient le texte.
   function set_id_objet($id)
   {
     $this->id = $id;
+  }
+
+  /// Définit si l'indice est vrai
+  function set_indice_vrai($indice_vrai)
+  {
+    $this->indice_vrai = $indice_vrai;
   }
   
   /**
@@ -110,6 +119,8 @@ class texte
       $texte = $this->parse_actions($texte);
     if( $this->options & self::tuto )
       $texte = $this->parse_tuto($texte);
+    if( $this->options & self::indices )
+    	$texte = $this->parse_indices($texte);
       
     return $texte;//preg_replace('`\[[/]?(.*)\]`','', $texte);
   }
@@ -589,6 +600,195 @@ class texte
       return $this->parse_perso($texte);
     else
       return $texte;
+  }
+
+  /// Fonction formattant les balises d'indice.
+  protected function parse_indices($texte)
+  {
+  	global $GTrad;
+    if( preg_match('`\[pos-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de postion pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[pos-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$nom = construction::get_nom_proche($monstre[0]);
+			}
+			else
+				$nom = construction::get_nom_aleatoire();
+      $texte = str_ireplace('[pos-monstre:'.$regs[1].']', 'près de '.$nom, $texte);
+    }
+    if( preg_match('`\[roy-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[roy-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($monstre->get_pos());
+	    	$id_royaume = $case->get_royaume();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$ids_royaumes = array(1, 2, 3, 4, 6, 7, 8, 9, 10 ,11);
+				$i = rand(0, 10);
+				$id_royaume = $ids_royaumes[$i];
+			}
+			/// @todo utiliser la bdd
+			switch( $id_royaume )
+			{
+			case 0:
+				$nom = 'en terrain neutre';
+				break;
+			case 4:
+				$nom = 'dans le royaume barbare';
+				break;
+			case 9:
+				$nom = 'dans l\'empire Vorsh';
+				break;
+			default:
+				$roy = new royaume( $id_royaume );
+				$nom = 'en '.$roy->get_nom();
+			}
+      $texte = str_ireplace('[roy-monstre:'.$regs[1].']', $nom, $texte);
+    }
+    if( preg_match('`\[terr-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de terrain pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[terr-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($monstre->get_pos());
+				$info = $case->get_info();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$terrains = array(1, 2, 3, 4, 6, 7, 8, 11);
+				$i = rand(0, count($terrains)-1);
+				$info = $terrains[$i];
+			}
+			$type = type_terrain( $info );
+			switch( $type[0] )
+			{
+			case 'glace':
+				$nom = 'sur une banquise';
+				break;
+			case 'desert':
+			case 'marais':
+				$nom = 'dans un '.strtolower($type[1]);
+				break;
+			default:
+				$nom = 'en '.strtolower($type[1]);
+			}
+      $texte = str_ireplace('[terr-monstre:'.$regs[1].']', $nom, $texte);
+    }
+    // bâtiment
+    if( preg_match('`\[pos-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de postion pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[pos-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+    		$nom = construction::get_nom_proche($constr[0]);
+			}
+			else
+				$nom = construction::get_nom_aleatoire();
+      $texte = str_ireplace('[pos-constr:'.$regs[1].']', 'près de '.$nom, $texte);
+    }
+    if( preg_match('`\[roy-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$constr )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[roy-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($constr->get_pos());
+				$id_royaume = $case->get_royaume();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$ids_royaumes = array(1, 2, 3, 4, 6, 7, 8, 9, 10 ,11);
+				$i = rand(0, 10);
+				$id_royaume = $ids_royaumes[$i];
+			}
+			/// @todo utiliser la bdd
+			switch( $id_royaume )
+			{
+			case 0:
+				$nom = 'en terrain neutre';
+				break;
+			case 4:
+				$nom = 'dans le royaume barbare';
+				break;
+			case 9:
+				$nom = 'dans l\'empire Vorsh';
+				break;
+			default:
+				$roy = new royaume( $id_royaume );
+				$nom = 'en '.$roy->get_nom();
+			}
+      $texte = str_ireplace('[roy-constr:'.$regs[1].']', $nom, $texte);
+    }
+    if( preg_match('`\[terr-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$constr )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[terr-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($constr->get_pos());
+	    	$info = $case->get_info();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$terrains = array(1, 2, 3, 4, 6, 7, 8, 11);
+				$i = rand(0, count($terrains)-1);
+				$info = $terrains[$i];
+			}
+			$type = type_terrain( $info );
+			switch( $type[0] )
+			{
+			case 'glace':
+				$nom = 'sur une banquise';
+				break;
+			case 'route':
+				$nom = 'sur une route';
+				break;
+			case 'desert':
+			case 'marais':
+				$nom = 'dans un '.strtolower($type[1]);
+				break;
+			default:
+				$nom = 'en '.strtolower($type[1]);
+			}
+      $texte = str_ireplace('[terr-constr:'.$regs[1].']', $nom, $texte);
+    }
+    return $texte;
   }
   
   static function parse_url($texte)

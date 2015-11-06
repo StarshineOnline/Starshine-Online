@@ -528,19 +528,22 @@ class entite extends placable
 		return $this->bouclier() ? 'bouclier' : '';
 	}
 	/// Renvoie la PP
-	function get_pp()
+	function get_pp($base = false)
 	{
 		$pp = $this->pp;
-		if($this->is_buff('buff_bouclier'))
-			$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
-		if($this->is_buff('buff_forteresse'))
-			$pp = round($pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
-		if($this->is_buff('buff_cri_protecteur'))
-			$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
-		if($this->is_buff('debuff_pp'))
-			$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
-		if($this->is_buff('potion_pierre'))
-			$pp = round($pp * (1 + ($this->get_buff('potion_pierre', 'effet') / 100)));
+		if( !$base )
+		{
+			if($this->is_buff('buff_bouclier'))
+				$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+				$pp = round($pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
+			if($this->is_buff('buff_cri_protecteur'))
+				$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($this->is_buff('debuff_pp'))
+				$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
+			if($this->is_buff('potion_pierre'))
+				$pp = round($pp * (1 + ($this->get_buff('potion_pierre', 'effet') / 100)));
+		}
 		return $pp;
 	}
 	/// Modifie la PP
@@ -549,17 +552,20 @@ class entite extends placable
 		$this->pp = $valeur;
 	}
 	/// Renvoie la PM
-	function get_pm()
+	function get_pm($base = false)
 	{
 		$pm = $this->pm;
-		if($this->is_buff('buff_barriere'))
-			$pm = round($pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
-		if($this->is_buff('buff_forteresse'))
-			$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
-		if($this->is_buff('debuff_desespoir'))
-			$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
-		if($this->is_buff('potion_pm'))
-			$pm = round($pm * (1 + ($this->get_buff('potion_pm', 'effet') / 100)));
+		if( !$base )
+		{
+			if($this->is_buff('buff_barriere'))
+				$pm = round($pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+				$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
+			if($this->is_buff('debuff_desespoir'))
+				$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			if($this->is_buff('potion_pm'))
+				$pm = round($pm * (1 + ($this->get_buff('potion_pm', 'effet') / 100)));
+		}
 		return $pm;
 	}
 	//renvoi la PM pour resister a paralysie

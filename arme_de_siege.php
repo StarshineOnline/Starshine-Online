@@ -15,12 +15,14 @@ $interf_princ->verif_mort($perso);
 
 
 
-$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
+/*$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
-$R = new royaume($W_row['royaume']);
+$R = new royaume($W_row['royaume']);*/
 
 $ads = new construction(sSQL($_GET['id_construction']));
+$ads->check_buff();
+$R = new royaume( $ads->get_royaume() );
 
 $distance = $perso->calcule_distance($ads->get_x(), $ads->get_y());
 
