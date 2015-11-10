@@ -97,8 +97,8 @@ class interf_fiche_perso_carac extends interf_cont
 			$regen_mp = $G_pourcent_regen_mp * $perso->get_mp_maximum();
 			if($perso->is_buff('preparation_camp'))
 			{
-				$nbr_bonus = floor( ($this->get_buff('preparation_camp', 'fin') - time()) / $tps_regen );
-				$bonus = 1 + $this->get_buff('preparation_camp', 'effet') / 100;
+				$nbr_bonus = floor( ($perso->get_buff('preparation_camp', 'fin') - time()) / $tps_regen );
+				$bonus = 1 + $perso->get_buff('preparation_camp', 'effet') / 100;
 			}
 			else
 				$nbr_bonus = $bonus = 0;
