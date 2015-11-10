@@ -59,7 +59,10 @@ class interf_jeu extends interf_sso_int
     $this->droite = $cont_jeu->add( new interf_bal_cont('section', 'information') );
     
     if( isset($jabber) && $jabber )
-    	interf_jabber::creer_jabber(str_replace(' ', '_', $perso->get_nom()), $this);
+    {
+    	$options = interf_jabber::get_options_perso($perso);
+    	interf_jabber::creer_jabber(normalise_nom($perso->get_nom()), $this, $options);
+		}
     
     $this->aff_fin();
   }

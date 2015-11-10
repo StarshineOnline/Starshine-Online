@@ -19,7 +19,7 @@ switch($action)
 {
 case 'jabber':
 	/// @todo passer à l'objet
-	$requete = 'REPLACE INTO options(id_perso, nom, valeur) VALUES('.$_SESSION['ID'].', "jabber_'.$_GET['option'].'", '.$_GET['valeur'].')';
+	$requete = 'REPLACE INTO options(id_perso, nom, valeur) VALUES('.$_SESSION['ID'].', "'.$_GET['option'].'", '.$_GET['valeur'].')';
 	$db->query($requete);
 	exit;
 }

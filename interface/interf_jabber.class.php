@@ -14,7 +14,7 @@ class interf_jabber extends interf_bal_cont
 				$json_salons = array();
 				foreach($o as $s=>$i)
 				{
-					$json_salons[] = '{nom:"'.$i['nom'].'", id:"'.$s.'", auto:'.($i['auto']?'true':'false').', config:'.($i['config']?'true':'false').'}';
+					$json_salons[] = '{nom:"'.$i['nom'].'", id:"'.$s.'", auto:'.($i['auto']?'true':'false').', option:"'.$i['option'].'"}';
 				}
 				$json .= ', salons:['.implode(',', $json_salons).']';
 			}
@@ -46,18 +46,21 @@ class interf_jabber extends interf_bal_cont
 		$options = $haut_droite->add( new interf_menu_div('Options') );
 		$form = $options->add( new interf_bal_cont('div', 'jabber_options', 'form-horizontal') );
 		$div_style = $form->add( new interf_bal_cont('div', false, 'form-group') );
-		$ctrl_style = $div_style->add( new interf_chp_form('checkbox') );
+		$ctrl_style = $div_style->add( new interf_chp_form('checkbox', 'jabber_style') );
+		$ctrl_style->set_attribut('onclick', 'jabber_option(this);');
 		$ctrl_style->set_attribut('ng:model', 'jabber.style');
 		$div_style->add( new interf_bal_smpl('label', 'Texte riche') );
 		$div_audio = $form->add( new interf_bal_cont('div', false, 'form-group') );
-		$ctrl_audio = $div_audio->add( new interf_chp_form('checkbox') );
+		$ctrl_audio = $div_audio->add( new interf_chp_form('checkbox', 'jabber_audio') );
 		$ctrl_audio->set_attribut('ng:model', 'jabber.audio');
+		$ctrl_audio->set_attribut('onclick', 'jabber_option(this);');
 		$div_audio->add( new interf_bal_smpl('label', 'Audio') );
 		$form->add( new interf_bal_smpl('strong', 'Connexions automatique') );
 		$div_auto = $form->add( new interf_bal_cont('div', false, 'form-group') );
 		$div_auto->set_attribut('ng:repeat', 'salon in jabber.salons');
-		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox') );
+		$ctrl_auto = $div_auto->add( new interf_chp_form('checkbox', '{{salon.option}}') );
 		$ctrl_auto->set_attribut('ng:model', 'salon.auto');
+		$ctrl_auto->set_attribut('onclick', 'jabber_option(this);');
 		$div_auto->add( new interf_bal_smpl('label', '{{salon.nom}}') );
 		$aff_dbg = $haut_droite->add( new interf_elt_menu('', '') );
 		$aff_dbg->get_lien()->set_attribut('class', 'icone icone-debug');
@@ -156,14 +159,50 @@ class interf_jabber extends interf_bal_cont
 	}
 	static function get_options_perso(&$perso)
 	{
+  	global $db;
+		$groupe = 'groupe_'.$perso->get_groupe();
+		$race = $perso->get_race();
 		$options = array('salons'=>array());
-		//$options['style'] = ;
-		//$options['audio'] = ;
-		$options['salons']['groupe_175'] = array('nom'=>'Groupe', 'auto'=>true, 'config'=>false);
-		$options['salons']['orc'] = array('nom'=>'Royaume', 'auto'=>true, 'config'=>true);
-		$options['salons']['sso'] = array('nom'=>'Général', 'auto'=>false, 'config'=>true);
-		$options['salons']['salledesventes'] = array('nom'=>'Ventes', 'auto'=>false, 'config'=>true);
-		return $salons;
+		$options['style'] = true;
+		$options['audio'] = true;
+		$options['salons'][$groupe] = array('nom'=>'Groupe', 'auto'=>true, 'option'=>'jabber_groupe');
+		$options['salons'][$race] = array('nom'=>'Royaume', 'auto'=>true, 'option'=>'jabber_race');
+		$options['salons']['sso'] = array('nom'=>'Général', 'auto'=>false, 'option'=>'jabber_sso');
+		$options['salons']['salledesventes'] = array('nom'=>'Ventes', 'auto'=>false, 'option'=>'jabber_ventes');
+  	///@todo passer à l'objet
+		$requete = 'select nom, valeur from options where id_perso = '.$perso->get_id().' and nom in ("jabber_style", "jabber_audio", "jabber_groupe", "jabber_race", "jabber_sso", "jabber_ventes")';
+		$req = $db->query($requete);
+		while( $row = $db->read_assoc($req) )
+		{
+			switch($row['nom'])
+			{
+			case 'jabber_style':
+				if( $row['valeur'] == 0 )
+					$options['style'] = false;
+				break;
+			case 'jabber_audio':
+				if( $row['valeur'] == 0 )
+					$options['audio'] = false;
+				break;
+			case 'jabber_groupe':
+				if( $row['valeur'] == 0)
+					$options['salons'][$groupe]['auto'] = false;
+				break;
+			case 'jabber_audio':
+				if( $row['valeur'] == 0)
+					$options['salons'][$race]['auto'] = false;
+				break;
+			case 'jabber_sso':
+				if( $row['valeur'] == 1)
+					$options['salons']['sso']['auto'] = true;
+				break;
+			case 'jabber_ventes':
+				if( $row['valeur'] == 1)
+					$options['salons']['salledesventes']['auto'] = true;
+				break;
+			}
+		}
+		return $options;
 	}
 }
 ?>

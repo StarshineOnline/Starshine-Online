@@ -37,12 +37,17 @@ class interf_index extends interf_sso
 		}
     if( $joueur )
     {
-	    $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
-	    $forum->get_lien()->add( new interf_bal_smpl('span', $nbr_posts ? $nbr_posts : '', 'nbr_posts', 'badge') );
+	    $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
+	    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
+	    if( joueur::get_perso() )
+	    {
+		    $nbr_posts = get_nbr_posts_forum(joueur::get_perso());
+		    $forum->get_lien()->add( new interf_bal_smpl('span', $nbr_posts ? $nbr_posts : '', 'nbr_posts', 'badge') );
+			}
 	    /// @todo à améliorer
 	    //$persos = (array_key_exists('nbr_perso', $_SESSION) && $_SESSION['nbr_perso'] > 1) || $joueur->get_droits() & joueur::droit_pnj;
 	    if( $nbr_perso < $G_nbr_max_persos || joueur::factory()->get_droits() & joueur::droit_staf )
-    		$this->menu->add_elt(new interf_elt_menu('Créer un personnage', self::page.'?page=creer_perso', 'return charger(this.href);'), false);
+    		$this->menu->add_elt(new interf_elt_menu('Créer un personnage', self::page.'?page=creer_perso', 'return charger(this.href);'/*, null, 'navbar-right'*/), false);
     	$this->aff_menu_joueur();
 		}
 		else
@@ -82,9 +87,9 @@ class interf_index extends interf_sso
 			//self::code_js('$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});');
     	$this->menu->add_elt(new interf_elt_menu('Créer un compte', self::page.'?page=creer_compte', 'return charger(this.href);', false, 'navbar-right'), false);
     	self::code_js('document.getElementById("connex_nom").focus();');
+	    $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
+	    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
 		}
-    $this->menu->add_elt(new interf_elt_menu('Aide', 'http://wiki.starshine-online.com/'), false);
-    $forum = $this->menu->add_elt(new interf_elt_menu('Forum', 'http://forum.starshine-online.com/'), false);
 		
 		$a_pub = file_exists(root.'pub.php');
 		$main = $this->add( new interf_bal_cont('main', 'princ', $a_pub?false:'plein') );
