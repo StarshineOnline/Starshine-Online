@@ -902,22 +902,6 @@ p.accueil a
 	color: black;
 }
 
-/*-- Overlib ----------------------------------------------------------*/
-/*.overlib, #cluetip { background:transparent url(../image/interface/1.png) center; border:1px solid #000000; -moz-border-radius:5px; -webkit-border-radius:5px; border-radius: 5px; min-width:250px; z-index:100 !important;}
-.overlib ul, #cluetip ul { clear:both; position:relative; }
-.overlib_titres { text-align:center; font-weight:bold; color:black; }
-.overlib_batiments span { font-weight:bold; color:black; }
-.overlib_joueurs span { font-weight:bold; color:#6633FF; }
-.overlib_monstres span { font-weight:bold; color:#CC3300; }
-.overlib_infos { clear:both; font-size:7pt; font-style:italic; color:black; margin-top:10px; text-align:center; }
-.overlib_img_objet { position:absolute; left:-5px; top:-2px; width:50px; height:55px; background-position:center center; background-repeat:no-repeat; }
-.overlib_nom_objet { float:right; width:200px; font-style:italic; }
-.overlib_desc_objet { float:right; width:200px; }
-.overlib_desc_objet span { float:left; width:75px; }
-#cluetip {padding : 5px;}
-#cluetip a {color : #444; text-decoration : none;}
-#cluetip a:hover {color : #888;}*/
-
 /*-- Carte --------------------------------------------------------------*/
 
 #carte

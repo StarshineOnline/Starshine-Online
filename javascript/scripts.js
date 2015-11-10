@@ -17,7 +17,6 @@ $(function()
 			return;
     }   		          	          
   });
-  alert('ok');
 });
 
 function change_script_nombre(elt, url)

@@ -107,7 +107,7 @@ abstract class interf_sso_int extends interf_sso
     // feuilles de style
     $this->css(static::prefixe_fichiers.'css/texture.css');
     $this->css(static::prefixe_fichiers.'css/texture_low.css');
-    $this->css(static::prefixe_fichiers.'css/interfacev3.css');
+    $this->css(static::prefixe_fichiers.'css/interface.css');
     $this->css(static::prefixe_fichiers.'css/interface-'.$theme.'.css');
     // javascript
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hoverIntent.minified.js');
