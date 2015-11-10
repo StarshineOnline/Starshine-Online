@@ -3936,7 +3936,7 @@ class perso extends entite
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id = $id['ID'];
+			$this->id = $id['id'];
 			$this->mort = $id['mort'];
 			$this->nom = $id['nom'];
 			$this->password = $id['password'];
