@@ -297,7 +297,7 @@ class interf_descr_quete extends interf_cont
 				$gains = explode('*', $gains);
 				$nbr = count($gains) > 1 ? $gains[1] : 1;
 				$obj = new objet_royaume($gains[0]);
-				$liste_recomp->add( new interf_bal_smpl('li', $nbr.' '.$obj->nom().' pour le royaume.') );
+				$liste_recomp->add( new interf_bal_smpl('li', $nbr.' '.$obj->get_nom().' pour le royaume.') );
 				break;
 			// 'x', 'X' -> on cache
 			}
