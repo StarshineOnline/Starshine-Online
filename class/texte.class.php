@@ -131,7 +131,7 @@ class texte
     global $db;
     $trouve = false;
     // on regarde les quêtes du personnage
-    $quetes_actives = array();
+    /*$quetes_actives = array();
     if($this->perso->get_quete() != '')
     {
     	foreach(unserialize($this->perso->get_quete()) as $quete)
@@ -159,7 +159,7 @@ class texte
     			$i++;
     		}
     	}
-    }
+    }*/
     // quêtes finies
     $quete_fini = explode(';', $this->perso->get_quete_fini());
     while( preg_match('`\[quete_finie:([0-9]*)(-e[0-9]*)?\](.*)\[/quete_finie:(\g1)(\g2)?\]`i', $texte, $regs) )

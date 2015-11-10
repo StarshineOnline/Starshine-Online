@@ -4152,7 +4152,7 @@ INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, 
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (147, "Chapeau en lin de bonne qualité anti-étourdissement", "p22", 160, "resiste_etourdit", 15, "toucher", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (148, "Chapeau en laine amélioré", "p40", 260, "pp", 5, "toucher", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (149, "Chapeau en laine de précision magique", "p40", 260, "critique_mag", 20, "pp", 10);
-INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (150, "Chapeau en laine de bonne qualité anti-étourdissement", "p59", 360, "resiste_etourdit", 20 "enflamme", 10);
+INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (150, "Chapeau en laine de bonne qualité anti-étourdissement", "p59", 360, "resiste_etourdit", 20, "enflamme", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (151, "Chapeau en laine de bonne qualité amélioré", "p59", 360, "pp", 10, "critique_adv", 5);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (152, "Chapeau en chanvre de précision magique", "p77", 460, "critique_mag", 30, "enflamme", 10);
 INSERT INTO forge_recette (id, nom, objet, difficulte, type_bonus, effet_bonus, type_malus, effet_malus) VALUES (153, "Chapeau en chanvre amélioré", "p77", 460, "pp", 20, "parer", 15);

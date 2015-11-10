@@ -288,23 +288,28 @@ class interf_infos_case extends interf_cont
 				$diplo_txt = $Gtrad[$diplo_classe];
 				if($diplo == 127)
 				{
-					$amende = recup_amende( $pj->get_id() );
-					if($amende)
+					if( $pj->get_id() )
 					{
-						switch($amende['statut'])
+						$amende = recup_amende( $pj->get_id() );
+						if($amende)
 						{
-						case 'bandit' :
-							$diplo = 5;
-							$diplo_txt = 'Bandit';
-							$diplo_classe = 'diplo5';
-							break;
-						case 'criminel' :
-							$diplo = 10;
-							$diplo_txt = 'Criminel';
-							$diplo_classe = 'diplo10';
-							break;
+							switch($amende['statut'])
+							{
+							case 'bandit' :
+								$diplo = 5;
+								$diplo_txt = 'Bandit';
+								$diplo_classe = 'diplo5';
+								break;
+							case 'criminel' :
+								$diplo = 10;
+								$diplo_txt = 'Criminel';
+								$diplo_classe = 'diplo10';
+								break;
+							}
 						}
 					}
+					else
+						log_admin::log('erreur', 'erreur id pj info case : "'.$pj->get_id().'" - "'.$pj->get_nom().'"');
 				}
 				$facteur_honneur = $diplo == 127 ? 0 : max($diplo * 0.2 - 0.8, 0);
 				if( $pj->est_mort() )

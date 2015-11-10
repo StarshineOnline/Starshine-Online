@@ -24,7 +24,7 @@ while( $row = $db->read_assoc($req) )
 	$requete = 'UPDATE perso SET encombrement = '.$encombrement.' WHERE id = '.$row['id'];
 	$db->query($requete);
 	// quêtes
-	$quetes = unserialize($row['inventaire_slot']);
+	$quetes = unserialize($row['quete']);
 	foreach($quetes as $q)
 	{
 		$id = $q['id_quete'];
@@ -66,7 +66,7 @@ while( $row = $db->read_assoc($req) )
 			$obj[] = $o->cible.':'.($o->nombre?$o->nombre:'0');
 		}
 		$objectif = implode(';', $obj);
-		$requete = "INSERT INTO quete_perso (id_perso, id_quete, id_etape, avancement) VALUES (".$row['id']."$id, $etape, '$objectif')";
+		$requete = "INSERT INTO quete_perso (id_perso, id_quete, id_etape, avancement) VALUES (".$row['id'].", $id, $etape, '$objectif')";
 		$db->query($requete);
 	}
 }
