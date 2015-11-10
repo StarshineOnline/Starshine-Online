@@ -1,237 +1,409 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/**
+* @file taverne.php
+* Taverne
+*/
 if (file_exists('root.php'))
   include_once('root.php');
 
-//Inclusion du haut du document html
-include_once(root.'haut_ajax.php');
+include_once(root.'inc/fp.php');
 
-$joueur = new perso($_SESSION['ID']);
-$joueur->check_perso();
-
-//Vérifie si le perso est mort
-verif_mort($joueur, 1);
-
-$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
-$W_req = $db->query($W_requete);
-$W_row = $db->read_assoc($W_req);
-
-$case = new map_case(array('x' => $joueur->get_x(), 'y' => $joueur->get_y()));
-if(!$case->is_ville(true, 'taverne', $royaume)) exit();
-
-
-$R = new royaume($royaume);
-
-if ($R->is_raz() && $W_row['type'] == 1 && $joueur->get_x() <= 190 && $joueur->get_y() <= 190)
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+if( $action == 'infos' )
 {
-	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
-	exit (0);
+	$service = new taverne($_GET['id']);
+	///@todo passer par $G_interf
+  new interf_infos_popover($service->get_noms_infos(), $service->get_valeurs_infos());
+  exit;
 }
 
-$R->get_diplo($joueur->get_race());
-?>
-<fieldset><legend><?php if(verif_ville($joueur->get_x(), $joueur->get_y())) return_ville( '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">'.$R->get_nom().'</a> > ', $joueur->get_pos()); ?> <?php echo '<a href="taverne.php?poscase='.$W_case.'" onclick="return envoiInfo(this.href,\'carte\')">';?> Taverne </a></legend>
-		<?php include_once(root.'ville_bas.php');?>	
-		<div class="ville_test">
-		<span class="texte_normal">
-		Bien le bonjour ami voyageur !<br />
-		<?php
+$interf_princ = $G_interf->creer_jeu();
+//Vérifie si le perso est mort
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
+
+// Royaume
+///@todo à améliorer
+$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
+$W_req = $db->query($W_requete);
+$W_row = $db->read_assoc($W_req);
+$R = new royaume($W_row['royaume']);
+
+// On vérifie qu'on est bien sur une ville
+/// @todo logguer triche
+$case = new map_case(array('x' => $perso->get_x(), 'y' => $perso->get_y()));
+if( !$case->is_ville(true, 'taverne') )
+	exit();
+
+// On vérifie la diplomatie
+/// @todo logguer triche
+if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+	exit;
+
+// Ville rasée
+/// @todo logguer triche
+if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
+	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
+{
+	switch( $_GET['type'] )
+	{
+	case 'repos':
+		$interf_princ->add( $G_interf->creer_taverne($R, $case) );
+		exit;
+	case 'quetes':
+		$interf_princ->add( $G_interf->creer_tbl_quetes($R, 'taverne') );
+		exit;
+	case 'bar':
+		$interf_princ->add( $G_interf->creer_taverne_bar($R) );
+		exit;
+	case 'jeux':
+		$interf_princ->add( $G_interf->creer_taverne_jeux($R) );
+		exit;
+	}
+}
+
+switch($action)
+{
+case 'achat':
+	/// TODO : à vérifier
+	$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id'], SSQL_INTEGER);
+	$req_taverne = $db->query($requete);
+	$row_taverne = $db->read_array($req_taverne);
+	$taxe = ceil($row_taverne['star'] * $R->get_taxe_diplo($perso->get_race()) / 100);
+	$cout = $row_taverne['star'] + $taxe;
+	if ($perso->get_star() >= $cout)
+	{
+		if($perso->get_pa() >= $row_taverne['pa'])
+		{
+			$valid = true;
+			$bloque_regen = false;
+			if($row_taverne['pute'] == 1)
+			{
+				$debuff = false;
+				$buff = false;
+				$honneur_need = $row_taverne['honneur'] + (($row_taverne['honneur_pc'] * $perso->get_honneur()) / 100);
+				if($perso->get_honneur() >= $honneur_need)
+				{
+					$perso->set_honneur($perso->get_honneur() - $honneur_need);
+				}
+				else $perso->set_honneur(0);
+			
+        $texte .= pute_effets($perso, $honneur_need);
+      }
+			if($valid)
+			{
+				$perso->set_star($perso->get_star() - $cout);
+				$perso->set_pa($perso->get_pa() - $row_taverne['pa']);
+				if(!$bloque_regen)
+				{
+					$perso->set_hp($perso->get_hp() + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $perso->get_hp_maximum() / 100));
+					if ($perso->get_hp() > $perso->get_hp_maximum()) $perso->set_hp(floor($perso->get_hp_maximum()));
+					$perso->set_mp($perso->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $perso->get_mp_maximum() / 100));
+					if ($perso->get_mp() > $perso->get_mp_maximum()) $perso->set_mp(floor($perso->get_mp_maximum()));
+				}
+				$perso->sauver();
+				//Récupération de la taxe
+				if($taxe > 0)
+				{
+					$R->add_star_taxe($taxe, 'taverne');
+					$R->sauver();
+				}
+				/// @todo séparer le texte & vérifier les dépassement en hauteur
+				interf_alerte::enregistre(interf_alerte::msg_succes, 'La taverne vous remercie de votre achat !<br />'.$texte);
+				$interf_princ->maj_perso();
+				
+				if($row_taverne['pa'] == 12 AND $row_taverne['pute'] == 0) // Equivaut à "c'est un repas"
+				{
+					// Augmentation du compteur de l'achievement
+					$achiev = $perso->get_compteur('stars_en_repas');
+					$achiev->set_compteur($achiev->get_compteur() + $cout);
+					$achiev->sauver();
+					
+					// Augmentation du compteur de l'achievement
+					$achiev = $perso->get_compteur('nbr_repas');
+					$achiev->set_compteur($achiev->get_compteur() + 1);
+					$achiev->sauver();
+				}
+			}
+		}
+		else
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de PA');
+	}
+	else
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de Stars');
+	break;
+case 'boire':
+	$bar = $G_interf->creer_taverne_bar($R);
+	/// @todo loguer triche
+	if( $bar->ivresse && $bar->ivresse->get_effet() >= 100  )
+	{
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
+		exit;
+	}
+	if( $perso->get_pa() < 1 )
+	{
+		$bar->add( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Vous n\'avez pas assez de stars !') );
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $alerte) );
+		break;
+	}
+	// Augmentation de l'ivresse ?
+	if( !comp_sort::test_de(100, $perso->get_constitution()) )
+	{
+		$duree = 6 * 3600;
+		if( $bar->ivresse )
+		{
+			$bar->ivresse->set_effet( $bar->ivresse->get_effet() + 1 );
+			$bar->ivresse->set_fin( time() + $duree );
+			$bar->ivresse->set_description('Vous avez '.$bar->ivresse->get_effet().'% de risques de vous tromper d\'action.');
+		}
+		else
+			$bar->ivresse = new buff(0, $perso->get_id(), 'ivresse', 1, 0, $duree, time()+$duree, 'Ivresse', 'Vous avez 1% de risques de vous tromper d\'action.', 1);
+		// ($id = 0, $id_perso=0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0, $supprimable=0)
+		$bar->ivresse->sauver();
+		$bar->gain_ivresse();
+	}
+	$perso->add_pa(-1);
+	$perso->add_star(-1);
+	$perso->sauver();
+	$interf_princ->maj_perso();
+	// quêtes / rumeurs
+	$de = rand(1, 100);
+	$ivresse = $bar->ivresse ? $bar->ivresse->get_effet() : 0;
+	if( $de <= 5 )
+	{ // indice
+		$bar->indice();
+	}
+	else if( $de <= 10 - $ivresse )
+	{ // quête
+		$quetes = quete::get_quetes_dispos($this->perso, $R, 'bar');
+		$n = count($quetes);
+		$ok = false;
+	 	shuffle($quetes);
+	 	for($i=0; $i<$n; $i++)
+	 	{
+	 		if( !$perso->prend_quete($quetes[$i]->get_id()) )
+	 		{
+	 			$bar->quete( $quetes[$i] );
+	 			$ok = true;
+	 			break;
+			}
+		}
+		if( !$ok )
+			$bar->conversation();
+	}
+	else if( $de <= 20 )
+		$bar->conversation();
+	else
+		$bar->rumeur($de);
+	interf_debug::aff_enregistres($bar);
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $bar) );
+	exit;
+case 'mise':
+	$G_url->add('jeu', $_GET['jeu']);
+	$jeux = $G_interf->creer_taverne_jeux($_GET['jeu'], true);
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
+case 'jouer':
+	if( array_key_exists('mise', $_GET) )
+	{
+		$_SESSION['mise'] = $_GET['mise'];
+		$perso->add_star( -$_GET['mise'] );
+		$_SESSION['score'] = 0;
+		$_SESSION['score_adv'] = 0;
+		$_SESSION['passe'] = 0;
+	}
+	if( $perso->get_pa() < 1 )
+	{
+		$alerte = new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous n\'avez pas assez de stars !');
+		$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $alerte) );
+		break;
+	}
+	// calcul de deux valeurs aléatoires suivant une loi gaussienne (centré en 0 et d'écart-type 1)
+	$u = rand(0, 1000) / 1000;
+	$v = rand(0, 1000) / 1000;
+	$x = sqrt(-log($u)) * cos(2*pi()*$v);
+	$y = sqrt(-log($u)) * sin(2*pi()*$v);
+	$_SESSION['passe']++;
+	$perso->add_pa(-1);
+	$aptitude = null;
+	switch($_GET['jeu'])
+	{
+	case 'distance':
+		$score = score_flechettes( 200 * $x + $perso->get_distance() );
+		$score_adv = score_flechettes( 300 * $y + 500 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['passe'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+    //Augmentation de l'aptitude
+    $aptitude = 'distance';
+		break;
+	case 'melee':
+		$x = sqrt(200 * $x + $perso->get_melee()) / 30;
+		$y = sqrt(300 * $y + 500) / 30;
+		$_SESSION['score'] += $x - $y;
+		if( $_SESSION['score'] > 1 )
+			$perso->add_star( $_SESSION['mise']*2 );
+    //Augmentation de l'aptitude
+    $aptitude = 'melee';
+		break;
+	case 'esquive':
+		$score = (200 * $x + $perso->get_distance()) > 500 ? 1 : 0;
+		$score_adv = (300 * $y + 500) > 500 ? 1 : 0;
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+    //Augmentation de l'aptitude
+    $aptitude = 'esquive';
+    if( $_SESSION['score'] > $_SESSION['score_adv'] )
+			$perso->add_star( $_SESSION['mise']*2 );
+		break;
+	case 'blocage':
+		$score = (200 * $x + $perso->get_distance()) > 300 ? 1 : 0;
+		$score_adv = (300 * $y + 400) > 300 ? 1 : 0;
+		$_SESSION['score'] += $score;//date
+		$_SESSION['score_adv'] += $score_adv;
+    //Augmentation de l'aptitude
+    $aptitude = 'blocage';
+    if( $_SESSION['score'] > $_SESSION['score_adv'] )
+			$perso->add_star( $_SESSION['mise']*2 );
+		break;
+	case 'dressage':
+		$score = note( 200 * $x + $perso->get_distance() );
+		$score_adv = note( 300 * $y + 350 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['score_adv'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+    //Augmentation de l'aptitude
+    $aptitude = 'dressage';
+    break;
+	case 'incantation':
+		$x = sqrt(200 * $x + $perso->get_incantation()) / 30;
+		$y = sqrt(300 * $y + 500) / 30;
+		$_SESSION['score'] += $x - $y;
+		if( $_SESSION['score'] > 1 )
+			$perso->add_star( $_SESSION['mise']*2 );
+    //Augmentation de l'aptitude
+    $aptitude = 'incantation';
+		break;
+	case 'sort_element':
+		$score = note( 200 * $x + $perso->get_sort_element() );
+		$score_adv = note( 300 * $y + 400 );
+		$_SESSION['score'] += $score;
+		$_SESSION['score_adv'] += $score_adv;
+		if( $_SESSION['passe'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+    //Augmentation de l'aptitude
+    $aptitude = 'sort_element';
+    break;
+	case 'sort_vie':
+		$x = 200 * $x + $perso->get_sort_vie();
+		$y = 300 * $y + 400;
+		$score = $x - $y > 0;
+		if( $score )
+			$_SESSION['score']++;
+		else
+			$_SESSION['score_adv']++;
+		if( $_SESSION['passe'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+    //Augmentation de l'aptitude
+    $aptitude = 'sort_vie';
+    break;
+	case 'sort_mort':
+		$x = 200 * $x + $perso->get_sort_vie();
+		$y = 300 * $y + 400;
+		$score = $x - $y > 0;
+		if( $score )
+			$_SESSION['score']++;
+		else
+			$_SESSION['score_adv']++;
+		if( $_SESSION['passe'] == 5 )
+		{
+			if( $_SESSION['score'] > $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise']*2 );
+			else if( $_SESSION['score'] == $_SESSION['score_adv'] )
+				$perso->add_star( $_SESSION['mise'] );
+		}
+    //Augmentation de l'aptitude
+    $aptitude = 'sort_mort';
+    break;
+	}
+	$perso->sauver();
+	$interf_princ->maj_perso();
+	$G_url->add('jeu', $_GET['jeu']);
+	$jeux = $G_interf->creer_taverne_jeux($_GET['jeu'], false, $score, $score_adv);
+	if( $aptitude )
+	{
+		$augmentation = augmentation_competence($aptitude, $perso, 7);
+    if ($augmentation[1] == 1)
+    {
+			$set = 'set_'.$aptitude;
+      $perso->$set($augmentation[0]);
+    	$perso->sauver();
+		}
+	}
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
+case 'jeux':
+	$jeux = $G_interf->creer_taverne_jeux();
+	$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case, $jeux) );
+	exit;
+}
+$interf_princ->set_gauche( $G_interf->creer_taverne($R, $case) );
+
+function score_flechettes($tir)
+{
+	if( $tir >= 800 )
+		return 50;
+	else if( $tir >= 550 )
+		return 30;
+	else if( $tir >= 300 )
+		return 25;
+	else if( $tir >= 100 )
+		return 15;
+	else if( $tir >= 10 )
+		return 10;
+	else
+		return 0;
+}
+
+function note($jet)
+{
+	return max(min(ceil($jet / 100), 10), 1);
+}
+
+
+		/*Bien le bonjour ami voyageur !<br />
 		//Affichage des quêtes
-		if($R->get_nom() != 'Neutre') $return = affiche_quetes('taverne', $joueur);
+		if($R->get_nom() != 'Neutre') $return = affiche_quetes('taverne', $perso);
 		if($return[1] > 0 AND !array_key_exists('fort', $_GET))
 		{
 			echo 'Voici quelques petits services que j\'ai à vous proposer :';
 			echo $return[0];
 		}
-		?></span></div><br /><?php
-if ($joueur->get_race() == $R->get_race() ||
-		$R->get_diplo($joueur->get_race()) <= 6)
-{
-	if(isset($_GET['action']))
-	{
-		switch ($_GET['action'])
-		{
-			//Achat
-			case 'achat' :
-				$requete = "SELECT * FROM taverne WHERE id = ".sSQL($_GET['id'], SSQL_INTEGER);
-				$req_taverne = $db->query($requete);
-				$row_taverne = $db->read_array($req_taverne);
-				$taxe = ceil($row_taverne['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
-				$cout = $row_taverne['star'] + $taxe;
-				if ($joueur->get_star() >= $cout)
-				{
-					if($joueur->get_pa() >= $row_taverne['pa'])
-					{
-						$valid = true;
-						$bloque_regen = false;
-						if($row_taverne['pute'] == 1)
-						{
-							$debuff = false;
-							$buff = false;
-							$honneur_need = $row_taverne['honneur'] + (($row_taverne['honneur_pc'] * $joueur->get_honneur()) / 100);
-							if($joueur->get_honneur() >= $honneur_need)
-							{
-								$joueur->set_honneur($joueur->get_honneur() - $honneur_need);
-							}
-							else $joueur->set_honneur(0);
-						
-              $texte .= pute_effets($joueur, $honneur_need);
+		*/
 	
-            }
-						if($valid)
-						{
-							$joueur->set_star($joueur->get_star() - $cout);
-							$joueur->set_pa($joueur->get_pa() - $row_taverne['pa']);
-							if(!$bloque_regen)
-							{
-								$joueur->set_hp($joueur->get_hp() + $row_taverne['hp'] + floor($row_taverne['hp_pc'] * $joueur->get_hp_maximum() / 100));
-								if ($joueur->get_hp() > $joueur->get_hp_maximum()) $joueur->set_hp(floor($joueur->get_hp_maximum()));
-								$joueur->set_mp($joueur->get_mp() + $row_taverne['mp'] + floor($row_taverne['mp_pc'] * $joueur->get_mp_maximum() / 100));
-								if ($joueur->get_mp() > $joueur->get_mp_maximum()) $joueur->set_mp(floor($joueur->get_mp_maximum()));
-							}
-							$joueur->sauver();
-							//Récupération de la taxe
-							if($taxe > 0)
-							{
-								$R->set_star($R->get_star() + $taxe);
-								$R->sauver();
-								$requete = "UPDATE argent_royaume SET taverne = taverne + ".$taxe." WHERE race = '".$R->get_race()."'";
-								$db->query($requete);
-							}
-							echo '<h6>La taverne vous remercie de votre achat !<br />'.$texte.'</h6>';
-							
-							if($row_taverne['pa'] == 12 AND $row_taverne['pute'] == 0) // Equivaut à "c'est un repas"
-							{
-								// Augmentation du compteur de l'achievement
-								$achiev = $joueur->get_compteur('stars_en_repas');
-								$achiev->set_compteur($achiev->get_compteur() + $cout);
-								$achiev->sauver();
-								
-								// Augmentation du compteur de l'achievement
-								$achiev = $joueur->get_compteur('nbr_repas');
-								$achiev->set_compteur($achiev->get_compteur() + 1);
-								$achiev->sauver();
-							}
-						}
-					}
-					else
-					{
-						echo '<h5>Vous n\'avez pas assez de PA</h5>';
-					}
-				}
-				else
-				{
-					echo '<h5>Vous n\'avez pas assez de Stars</h5>';
-				}
-			break;
-		}
-	}
-	
-	//Affichage de la taverne
-
-	?>
-
-	<div class="ville_test">
-	<table class="marchand" cellspacing="0px">
-	<tr class="header trcolor2">
-		<td>
-			Nom
-		</td>
-		<td>
-			Stars
-		</td>
-		<td>
-			Cout en PA
-		</td>
-		<td>
-			Cout en Honneur
-		</td>
-		<td>
-			HP gagné
-		</td>
-		<td>
-			MP gagné
-		</td>
-		<td>
-			Achat
-		</td>
-	</tr>
-		
-		<?php
-		
-		$color = 1;
-		$requete = "SELECT * FROM taverne";
-		$req = $db->query($requete);
-		$champ = 'nom';
-		if($joueur->get_bonus_shine(12) !== false)
-		{
-			if($joueur->get_bonus_shine(12)->get_valeur() == 2)
-				$champ = 'nom_f';
-		}
-		while($row = $db->read_array($req))
-		{
-			if ($row['requis'] != '')
-			{ // Vérifier les conditions
-				$cond = explode(';', $row['requis']);
-				foreach ($cond as $tcond)
-				{
-					$ctype = substr($tcond, 0, 1);
-					$cval = substr($tcond, 1);
-					$cok = true;
-					switch ($ctype)
-					{
-					case 'q': // quete
-						$q = explode(';', $joueur->get_quete_fini());
-						$cok = in_array($cval, $q);
-						break;
-					default:
-						$cok = false;
-						break;
-					}
-					if (!$cok)
-						break; // un requis pas matché : on s'arrête
-				}
-				if (!$cok) // un requis pas matché : on ignore la ligne
-					continue;
-			}
-
-			$taxe = ceil($row['star'] * $R->get_taxe_diplo($joueur->get_race()) / 100);
-			$cout = $row['star'] + $taxe;
-			if(array_key_exists('fort', $_GET)) $fort = '&amp;fort=ok'; else $fort = '';
-		?>
-		<tr class="element trcolor<?php echo $color; ?>">
-			<td>
-				<?php echo $row[$champ]; ?>
-			</td>
-			<td>
-				<?php echo $cout; ?>
-			</td>
-			<td>
-				<?php echo $row['pa']; ?>
-			</td>
-			<td onmouseover="<?php echo make_overlib('Vous perdrez '.$row['honneur'].' + '.$row['honneur_pc'].'% points d\'honneur'); ?>" onmouseout="nd();">
-				<?php echo ($row['honneur'] + ceil($joueur->get_honneur() * $row['honneur_pc'] / 100)); ?>
-			</td>
-			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['hp'].' + '.$row['hp_pc'].'% HP'); ?>" onmouseout="nd();">
-				<?php echo ($row['hp'] + ceil($joueur->get_hp_maximum() * $row['hp_pc'] / 100)); ?>
-			</td>
-			<td onmouseover="<?php echo make_overlib('Vous regagnerez '.$row['mp'].' + '.$row['mp_pc'].'% MP'); ?>" onmouseout="nd();">
-				<?php echo ($row['mp'] + ceil($joueur->get_mp_maximum() * $row['mp_pc'] / 100)); ?>
-			</td>
-			<td>
-				<a href="taverne.php?action=achat&amp;id=<?php echo $row['ID'].$fort; ?>" onclick="return envoiInfo(this.href, 'carte')"><span class="achat">Achat</span></a>
-			</td>
-		</tr>
-		<?php
-			if($color == 1) $color = 2; else $color = 1;
-		}
-		
-		?>
-		
-		</table>
-		</div>
-</fieldset>
-
-<?php
-}
-refresh_perso();
 ?>

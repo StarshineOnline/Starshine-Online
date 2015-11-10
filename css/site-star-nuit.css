@@ -1,0 +1,15 @@
+/* Thème StarSky - nuit */
+a:hover, a:focus
+{
+  color: #666;
+}
+
+#barre_menu
+{
+	background: rgba(0, 0, 0, 0.5);
+}
+
+#nouvelles
+{
+	border-top: 1px white solid;
+}

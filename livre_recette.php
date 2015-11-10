@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -71,12 +72,12 @@ if(array_key_exists('action', $_GET))
 						if($joueur->get_race() == 'scavenger') 
 							$alchimie = round($alchimie * 1.45);
 
-						if($joueur->get_accessoire() !== false)
+						/*if($joueur->get_accessoire() !== false)
 						{
 							$accessoire = $joueur->get_accessoire();
 							if($accessoire->type == 'fabrication')
 								$alchimie = round($alchimie * (1 + ($accessoire->effet / 100)));
-						}
+						}*/
 						
 						$player = rand(0, $alchimie);
 						$thing = rand(0, $recette->difficulte);

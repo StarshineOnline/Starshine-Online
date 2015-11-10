@@ -4,15 +4,25 @@ if (file_exists('../root.php'))
 ?><?php
 class coffre extends terrain_construction
 {
+	protected $encombrement;
+	
+	function get_encombrement()
+	{
+		return $this->encombrement;
+	}
+	
 	function get_coffre_inventaire()
 	{
 		global $db;
 		$this->coffre_inventaire = array();
 		$requete = "SELECT id, id_coffre, objet, nombre FROM terrain_coffre WHERE id_coffre = ".$this->id;
 		$req = $db->query($requete);
+		$this->encombrement = 0;
 		while($row = $db->read_assoc($req))
 		{
-			$this->coffre_inventaire[] = new terrain_coffre($row);
+			$tc = new terrain_coffre($row);
+			$this->coffre_inventaire[] = $tc;
+			$this->encombrement += $tc->encombrement;
 		}
 		return $this->coffre_inventaire;
 	}
@@ -33,32 +43,23 @@ class coffre extends terrain_construction
 	function depose_objet($objet)
 	{
 		global $db;
-		if($objet['sans_stack'] != '')
+		$stack = false;
+		$recherche = $objet->get_stack() > 1 ? $this->recherche_objet($objet->get_texte_id()) : null;
+		if(!$recherche || $recherche->nombre >= $objet->get_stack())
 		{
-			$stack = false;
-			if($objet['categorie'] == 'o')
-			{
-				$recherche = $this->recherche_objet($objet['id']);
-				$requete = "SELECT stack FROM objet WHERE id = ".$objet['id_objet'];
-				$req = $db->query($requete);
-				$row = $db->read_row($req);
-				$stack = intval($row[0]);
-			}
-			if(!$recherche OR !$stack OR $recherche->nombre >= $stack)
-			{
-				//Ajout de l'item
-				$terrain_coffre = new terrain_coffre();
-				$terrain_coffre->id_coffre = $this->id;
-				$terrain_coffre->objet = $objet['sans_stack'];
-				$terrain_coffre->nombre = 1;
-				$terrain_coffre->sauver();
-			}
-			else
-			{
-				//Sinon on met à jour
-				$recherche->nombre++;
-				$recherche->sauver();
-			}
+			//Ajout de l'item
+			$terrain_coffre = new terrain_coffre();
+			$terrain_coffre->id_coffre = $this->id;
+			$terrain_coffre->objet = $objet->get_texte_id();
+			$terrain_coffre->nombre = 1;
+			$terrain_coffre->encombrement = $objet->get_encombrement();
+			$terrain_coffre->sauver();
+		}
+		else
+		{
+			//Sinon on met à jour
+			$recherche->nombre++;
+			$recherche->sauver();
 		}
 	}
 }

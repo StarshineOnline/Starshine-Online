@@ -1,4 +1,5 @@
 <?php // -*- mode: php; tab-width:2 -*-
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -33,7 +34,7 @@ if ($joueur->get_race() != $R->get_race() &&
 	exit (0);
 }
 
-$princ = $interf->creer_princ_droit('');
+$princ = $G_interf->creer_princ_droit('');
 
 ?>
 

@@ -4,10 +4,10 @@ if (file_exists('../root.php'))
 
 /**
  * @file attaque.inc.php
- *
+ * @deprecated
  */
 include_once(root.$root.'class/competence.class.php');
-include_once(root.$root.'class/gemmes.class.php');
+include_once(root.$root.'class/gemme.class.php');
 
 /**
  * Ca serait bien si dans cette fonction on se limitait à appliquer les effets,
@@ -568,6 +568,7 @@ function loot_item(&$joueur, &$groupe, $item)
 {
 	global $db;
 	$type_obj = '';
+	$msg = '';
 	//Nom de l'objet
 	switch($item[0])
 	{
@@ -642,8 +643,11 @@ function loot_item(&$joueur, &$groupe, $item)
 		$row = $db->read_row($req);
 		$objet_nom = 'Grimoire : '.$row[0];
 		break;
+	default:
+		log_admin::log('erreur', 'Type de loot inconnu : '.$item);
 	}
-	echo '<li>Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !</li>';
+	
+	$msg .= 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" ! ';
 	//Si le joueur a un groupe
 	if ($joueur->get_groupe() > 0 AND $type_obj != 'quete')
 	{
@@ -652,14 +656,14 @@ function loot_item(&$joueur, &$groupe, $item)
 		{
 			//Aléatoire
 		case 'r' :
-			echo '<li>Répartition des objets aléatoire.</li>';
+			$msg .= 'Répartition des objets aléatoire';
 			$chance = count($groupe->membre);
 			$aleat = rand(1, $chance);
 			$gagnant = new perso($groupe->membre[($aleat - 1)]->get_id_joueur());
 			break;
 			//Par tour
 		case 't' :
-			echo '<li>Répartition des objets par tour.</li>';
+			$msg .= 'Répartition des objets par tour';
 			$gagnant = new perso($groupe->get_prochain_loot());
 			//Changement du prochain loot
 			$j_g = $groupe->trouve_position_joueur($groupe->get_prochain_loot());
@@ -677,16 +681,16 @@ function loot_item(&$joueur, &$groupe, $item)
 			break;
 			//Leader
 		case 'l' :
-			echo '<li>Répartition des objets au leader.</li>';
+			$msg .= 'Répartition des objets au leader';
 			$gagnant = new perso($groupe->get_id_leader());
 			break;
 			//Celui qui trouve garde
 		case 'k' :
-			echo '<li>Répartition des objets, celui qui trouve garde.</li>';
+			$msg .= 'Répartition des objets, celui qui trouve garde';
 			$gagnant = new perso($joueur->get_id());
 			break;
 		}
-		echo '<li>'.$gagnant->get_nom().' reçoit "'.$objet_nom.'"</li>';
+		$msg .=  ' : '.$gagnant->get_nom().' reçoit "'.$objet_nom.'".<br/>';
 	}
 	else
 	{
@@ -699,10 +703,13 @@ function loot_item(&$joueur, &$groupe, $item)
 	$db->query($requete);
 	if ($item[0] != 'r')
 	{
-		$gagnant->restack_objet();
+		//$gagnant->restack_objet();
 		if($type_obj == 'quete')
 		{
-			verif_action('L'.$id_objet, $gagnant, 's');
+			interf_debug::enregistre('loot item quete : '.$id_objet);
+			$txt = quete_perso::verif_action('L'.$id_objet, $gagnant, 's');
+			if( $txt )
+				$msg .= $txt.'<br/>';
 			$gagnant->prend_objet($item);
 		}
 		else
@@ -713,5 +720,6 @@ function loot_item(&$joueur, &$groupe, $item)
 	else
 	{
 		prend_recette($item, $gagnant);
-	}						
+	}
+	return $msg;					
 }

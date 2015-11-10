@@ -8,7 +8,7 @@ if (file_exists('../root.php'))
  */
 
 /**
- * @name Sorts et compétences
+ * @name Aptitudes, sorts et compétences
  * Traduction des types de magie, sorts et compétences.
  * @{  
  */
@@ -69,8 +69,9 @@ $Gtrad['coyotte'] = 'Coyote';
  * Traduction des emplacements des armes, armures e accessoires.
  * @{  
  */
-$Gtrad['main_droite'] = 'Arme droite';
-$Gtrad['main_gauche'] = 'Arme gauche';
+$Gtrad['main_droite'] = 'Main droite';
+$Gtrad['main_gauche'] = 'Main gauche';
+$Gtrad['main_droite;main_gauche'] = 'Deux mains';
 $Gtrad['tete'] = 'Tête';
 $Gtrad['torse'] = 'Torse';
 $Gtrad['main'] = 'Main';
@@ -80,12 +81,24 @@ $Gtrad['chaussure'] = 'Chaussure';
 $Gtrad['cou'] = 'Cou';
 $Gtrad['dos'] = 'Dos';
 $Gtrad['doigt'] = 'Doigt';
-$Gtrad['accessoire'] = 'Accessoire';
+$Gtrad['grand_accessoire'] = 'Grand accessoire';
+$Gtrad['moyen_accessoire'] = 'Moyen accessoire';
+$Gtrad['petit_accessoire'] = 'Petit accessoire';
 $Gtrad['selle'] = 'Selle';
 $Gtrad['arme_pet'] = 'Arme';
 $Gtrad['cou_pet'] = 'Cou';
 $Gtrad['dos_pet'] = 'Dos';
 $Gtrad['torse_pet'] = 'Torse';
+$Gtrad['pattes'] = 'Pattes';
+$Gtrad['slot_1'] = 'Slot niveau 1';
+$Gtrad['slot_2'] = 'Slot niveau 2';
+$Gtrad['slot_3'] = 'Slot niveau 3';
+$Gtrad['vendre_marchand'] = 'Vendre au marchand';
+$Gtrad['hotel_vente'] = 'Hotel des ventes';
+$Gtrad['depot'] = 'Dépôt';
+$Gtrad['utiliser'] = 'Utiliser';
+$Gtrad['identifier'] = 'Identifier';
+$Gtrad['enchasser'] = 'Enchâsser / récupérer une gemme';
 //@}
 
 
@@ -99,6 +112,41 @@ $Gtrad['hache'] = 'hache';
 $Gtrad['dague'] = 'dague';
 $Gtrad['arc'] = 'arc';
 $Gtrad['baton'] = 'bâton';
+$Gtrad['bouclier'] = 'bouclier';
+//@}
+
+
+/**
+ * @name Bonus des objets des créatures
+ * Traduction des types d'arme.
+ * @{
+ */
+$Gtrad['pp'] = 'PP';
+$Gtrad['pm'] = 'PM';
+$Gtrad['distance_tir'] = 'Distance d\'attaque';
+$Gtrad['degats_epee'] = 'dégâts';
+$Gtrad['degats_dague'] = 'dégâts';
+$Gtrad['degats_hache'] = 'dégâts';
+$Gtrad['degats_arc'] = 'dégâts';
+$Gtrad['lancer'] = 'Lancement de sort';
+$Gtrad['rm'] = 'RM';
+$Gtrad['antipation'] = 'Chances d\'anticipation';
+$Gtrad['hp'] = 'HP';
+$Gtrad['mp'] = 'MP';
+//@}
+
+
+/**
+ * @name Caractéristiques
+ * Traduction des coaractéristiques.
+ * @{  
+ */
+$Gtrad['constitution'] = 'Constitution';
+$Gtrad['force'] = 'Force';
+$Gtrad['dexterite'] = 'Dexterité';
+$Gtrad['puissance'] = 'Puissance';
+$Gtrad['volonte'] = 'Volonté';
+$Gtrad['energie'] = 'Énergie';
 //@}
 
 
@@ -188,6 +236,46 @@ $Gtrad['affinite7'] = 'Superbe';
 
 
 /**
+ * @name Cibles
+ * Traduction des cibles.
+ * @{  
+ */
+$Gtrad['cible1'] = 'personnel';
+$Gtrad['cible2'] = 'un personnage';
+$Gtrad['cible3'] = 'votre groupe';
+$Gtrad['cible4'] = 'un autre personnage';
+$Gtrad['cible5'] = 'un autre groupe';
+$Gtrad['cible6'] = 'les personnages sur votre case';
+$Gtrad['cible7'] = 'les bâtiments sur votre case';
+$Gtrad['cible8'] = 'les personnages autour de vous';
+$Gtrad['cible_ex1'] = 'vous';
+$Gtrad['cible_ex2'] = '';
+$Gtrad['cible_ex3'] = 'votre groupe';
+$Gtrad['cible_ex4'] = '';
+$Gtrad['cible_ex5'] = 'le groupe de ';
+$Gtrad['cible_ex6'] = 'les personnages de votre cases';
+$Gtrad['cible_ex7'] = 'les bâtiments sur votre case';
+$Gtrad['cible_ex8'] = 'les personnages autour de vous';
+//@}
+
+
+/**
+ * @name Objets royaume
+ * Traduction des objets liés au royaume.
+ * @{
+ */
+$Gtrad['arme_de_siege'] = 'Armes de siège';
+$Gtrad['bourg'] = 'Bourgades';
+$Gtrad['drapeau'] = 'Drapeaux';
+$Gtrad['fort'] = 'Forts';
+$Gtrad['mur'] = 'Murs';
+$Gtrad['tour'] = 'Tours';
+$Gtrad['buff'] = 'Buff';
+$Gtrad['debuff'] = 'Débuff';
+//@}
+
+
+/**
  * @name Ressources
  * Traduction des ressources.
  * @{
@@ -199,6 +287,26 @@ $Gtrad['sable'] = 'Sable';
 $Gtrad['food'] = 'Nourriture';
 $Gtrad['charbon'] = 'Charbon';
 $Gtrad['essence'] = 'Essence Magique';
+$Gtrad['star'] = 'Stars';
+//@}
+
+
+/**
+ * @name Bâtiments internes & quêtes
+ * Traduction des types de bâtiments interne & fournisseurs de quête.
+ * @{
+ */
+$Gtrad['bureau_quete'] = 'Bureau des quêtes';
+$Gtrad['ecole_combat'] = 'École de combat';
+$Gtrad['taverne'] = 'Taverne';
+$Gtrad['alchimiste'] = 'Alchimiste';
+$Gtrad['université'] = 'Université';
+$Gtrad['special'] = 'Spécial';
+$Gtrad['ecole_magie'] = 'École de magie';
+$Gtrad['forge'] = 'Forge';
+$Gtrad['armurerie'] = 'Armurerie';
+$Gtrad['enchanteur'] = 'Enchanteur';
+$Gtrad['dresseur'] = 'Dresseur';
 //@}
 
 

@@ -158,6 +158,18 @@ class royaume
 	private $fin_raz_capitale;
 	private $facteur_entretien;  ///< facteur d'entretien
 	private $conso_food;  ///< Consommation de nourriture
+	private $rang;  ///< Rang du royaume
+	
+	/// Renvoie le rang
+	function get_rang()
+	{
+    return $this->rang;
+  }
+	function set_rang($rang)
+	{
+		$this->rang = $rang;
+		$this->champs_modif[] = 'rang';
+	}
 	
 	/// Renvoie le facteur d'entretien
 	function get_facteur_entretien()
@@ -220,11 +232,7 @@ class royaume
     global $db, $conso_food_tot, $cases_tot;
     if( !isset($conso_food_tot) )
     {
-      // nombre de cases totales
-      $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
-      $res = $db->query($requete);
-      $row = $db->read_array($res);
-      $cases_tot = $row['tot'];
+      $cases_tot = $this->get_nbr_cases();
       // Consommation totale
       $requete = 'SELECT SUM(food) AS food FROM royaume WHERE id > 0';
       $res = $db->query($requete);
@@ -260,6 +268,16 @@ class royaume
     $this->set_conso_food( $this->get_conso_food() + $diff);
     echo ' - nouvelle conso='.$this->get_conso_food()."\n";
   }
+  /// Renvoie le nombre de case contrôlées
+  function get_nbr_cases()
+  {
+    global $db;
+    // nombre de cases totales
+    $requete = 'SELECT COUNT(*) AS tot FROM map WHERE royaume > 0 AND x <= 190 AND y <= 190';
+    $res = $db->query($requete);
+    $row = $db->read_array($res);
+    return $row['tot'];
+	}
 
   /**
    * Renvoie la distance minimale entre deux bourgs
@@ -268,7 +286,7 @@ class royaume
    */
   function get_dist_bourgs($diff = false)
   {
-    return ceil(pow($this->get_facteur_entretien(), .9) * 7);
+    return 7;//ceil(pow($this->get_facteur_entretien(), .9) * 7);
   }
 
   /// Renvoie la distance minimale entre un bourg et une capitale
@@ -284,10 +302,10 @@ class royaume
    */
   function get_dist_forts($diff = false)
   {
-    if( $diff )
+    //if( $diff )
       return 4;
-    else
-      return ceil(pow($this->get_facteur_entretien(), .9) * 4);
+    /*else
+      return ceil(pow($this->get_facteur_entretien(), .9) * 4);*/
   }
 
   /// Renvoie la distance minimale entre un fort et une capitale
@@ -330,17 +348,17 @@ class royaume
 	* @param int(10) $conso_food attribut
 	* @return none
 	*/
-	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $point_victoire = '', $point_victoire_total = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '', $roi = '', $ministre_economie = '', $ministre_militaire = '', $capitale_hp = '', $fin_raz_capitale = '', $facteur_entretien=1, $conso_food =0)
+	function __construct($id = 0, $taxe_time = 0, $race = '', $nom = '', $capitale = '', $star = '', $point_victoire = '', $point_victoire_total = '', $star_nouveau_joueur = '', $taxe = '', $diplo_time = '', $honneur_candidat = '', $bourg = '', $pierre = '', $bois = '', $eau = '', $sable = '', $charbon = '', $essence = '', $food = '', $alchimie = '', $roi = '', $ministre_economie = '', $ministre_militaire = '', $capitale_hp = '', $fin_raz_capitale = '', $facteur_entretien=1, $conso_food =0, $rang=1)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food FROM royaume WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, rang, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food FROM royaume WHERE id = ".$id);
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->point_victoire, $this->point_victoire_total, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie, $this->roi, $this->ministre_economie, $this->ministre_militaire, $this->capitale_hp, $this->fin_raz_capitale, $this->facteur_entretien, $this->conso_food) = $db->read_array($requeteSQL);
+				list($this->taxe_time, $this->race, $this->nom, $this->capitale, $this->star, $this->point_victoire, $this->point_victoire_total, $this->star_nouveau_joueur, $this->taxe, $this->diplo_time, $this->honneur_candidat, $this->bourg, $this->pierre, $this->bois, $this->eau, $this->sable, $this->charbon, $this->essence, $this->food, $this->alchimie, $this->rang, $this->roi, $this->ministre_economie, $this->ministre_militaire, $this->capitale_hp, $this->fin_raz_capitale, $this->facteur_entretien, $this->conso_food) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -368,6 +386,7 @@ class royaume
 			$this->essence = $id['essence'];
 			$this->food = $id['food'];
 			$this->alchimie = $id['alchimie'];
+			$this->rang = $id['rang'];
 			$this->roi = $id['roi'];
 			$this->ministre_economie = $id['ministre_economie'];
 			$this->ministre_militaire = $id['ministre_militaire'];
@@ -398,6 +417,7 @@ class royaume
 			$this->essence = $essence;
 			$this->food = $food;
 			$this->alchimie = $alchimie;
+			$this->rang = $rang;
 			$this->roi = $roi;
 			$this->ministre_economie = $ministre_economie;
 			$this->ministre_militaire = $ministre_militaire;
@@ -441,8 +461,8 @@ class royaume
 		}
 		else
 		{
-			$requete = 'INSERT INTO royaume (taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food) VALUES(';
-			$requete .= ''.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->point_victoire).'", "'.mysql_escape_string($this->point_victoire_total).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->roi).'", "'.mysql_escape_string($this->ministre_economie).'", "'.mysql_escape_string($this->ministre_militaire).'", "'.mysql_escape_string($this->capitale_hp).'", "'.mysql_escape_string($this->fin_raz_capitale).'", '.$this->facteur_entretien.','.$this->conso_food.')';
+			$requete = 'INSERT INTO royaume (taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, rang, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food) VALUES(';
+			$requete .= ''.$this->taxe_time.', "'.mysql_escape_string($this->race).'", "'.mysql_escape_string($this->nom).'", "'.mysql_escape_string($this->capitale).'", "'.mysql_escape_string($this->star).'", "'.mysql_escape_string($this->point_victoire).'", "'.mysql_escape_string($this->point_victoire_total).'", "'.mysql_escape_string($this->star_nouveau_joueur).'", "'.mysql_escape_string($this->taxe).'", "'.mysql_escape_string($this->diplo_time).'", "'.mysql_escape_string($this->honneur_candidat).'", "'.mysql_escape_string($this->bourg).'", "'.mysql_escape_string($this->pierre).'", "'.mysql_escape_string($this->bois).'", "'.mysql_escape_string($this->eau).'", "'.mysql_escape_string($this->sable).'", "'.mysql_escape_string($this->charbon).'", "'.mysql_escape_string($this->essence).'", "'.mysql_escape_string($this->food).'", "'.mysql_escape_string($this->alchimie).'", "'.mysql_escape_string($this->rang).'", "'.mysql_escape_string($this->roi).'", "'.mysql_escape_string($this->ministre_economie).'", "'.mysql_escape_string($this->ministre_militaire).'", "'.mysql_escape_string($this->capitale_hp).'", "'.mysql_escape_string($this->fin_raz_capitale).'", '.$this->facteur_entretien.','.$this->conso_food.')';
 			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
@@ -502,7 +522,7 @@ class royaume
 				$where = ' 1 ';
 			}
 		}
-
+	
 		$requete = "SELECT id, taxe_time, race, nom, capitale, star, point_victoire, point_victoire_total, star_nouveau_joueur, taxe, diplo_time, honneur_candidat, bourg, pierre, bois, eau, sable, charbon, essence, food, alchimie, roi, ministre_economie, ministre_militaire, capitale_hp, fin_raz_capitale, facteur_entretien, conso_food FROM royaume WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
@@ -1279,6 +1299,7 @@ class royaume
                                     // actifs suivant le niveau moyen
     return $ref_ta;
   }
+  ///@todo à centraliser
   const duree_actif = 172800;//3600 * 24 * 2
 
 	function add_point_victoire($nombre)
@@ -1299,6 +1320,51 @@ class royaume
 		global $db;
 		$requete = "UPDATE argent_royaume SET armurerie = armurerie + ".$valeur." WHERE race = '".$this->race."'";
 		$db->query($requete);
+	}
+	
+	function add_star_taxe($taxe, $source=null)
+	{
+		global $db;
+		$this->set_star( $this->star + $taxe );
+		switch($source)
+		{
+		case 'arme':
+			$champ = 'forgeron';
+			break;
+		case 'armure':
+			$champ = 'armurerie';
+			break;
+		case 'accessoire':
+			$champ = 'enchanteur';
+			break;
+		case 'sort_jeu':
+		case 'sort_combat':
+			$champ = 'ecole_magie';
+			break;
+		case 'comp_jeu':
+		case 'comp_combat':
+			$champ = 'ecole_combat';
+			break;
+		case 'teleport':
+			$champ = 'teleport';
+			break;
+		case 'taverne':
+			$champ = 'taverne';
+			break;
+		case 'dressage':
+		case 'alchimiste':
+			$champ = 'magasin';
+			break;
+		case 'ecurie':
+		case 'terrain':
+		default:
+			$champ = false;		
+		}
+		if( $champ )
+		{
+			$requete = 'UPDATE argent_royaume SET '.$champ.' = '.$champ.' + '.$taxe.' WHERE race = "'.$this->race.'"';
+			$db->query($requete);
+		}
 	}
 
 	function total_ressources()
@@ -1426,5 +1492,96 @@ class royaume
   {
     return (100 + $roy_def->get_point_victoire_total()) / (100 + $this->get_point_victoire_total());
   }
+  
+	function get_niveau_batiment($type)
+	{
+		global $db;
+		switch($type)
+		{
+		case 'comp':
+		case 'comp_combat':
+		case 'comp_jeu':
+			$batiment = 'ecole_combat';
+			break;
+		case 'sort':
+		case 'sort_combat':
+		case 'sort_jeu':
+			$batiment = 'ecole_magie';
+			break;
+		case 'arme':
+			$batiment = 'forgeron';
+			break;
+		case 'armure':
+			$batiment = 'armurerie';
+			break;
+		case 'accessoire':
+			$batiment = 'enchanteur';
+			break;
+		case 'dressage':
+			$batiment = 'dresseur';
+			break;
+		}
+		///@todo à améliorer
+		$requete = 'SELECT level, statut, c.hp, b.hp AS hp_max, nom FROM construction_ville AS c LEFT JOIN batiment_ville AS b ON c.id_batiment = b.id WHERE b.type = "'.$batiment.'" AND c.id_royaume = '.$this->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		// Si le batiment est inactif, on le met au niveau 1
+		return $row['statut'] == 'inactif' ? 1 : $row['level'];
+	}
+	function get_entretien()
+	{
+		global $db;
+		/// @todo passer à l'objet.
+		// Bâtiments internes
+		$requete = "SELECT SUM(entretien) FROM construction_ville RIGHT JOIN batiment_ville ON construction_ville.id_batiment = batiment_ville.id WHERE construction_ville.statut = 'actif' AND id_royaume = ".$this->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$entretien = $row[0];
+		// Bâtiments externes
+		$requete = "SELECT SUM(entretien) FROM batiment RIGHT JOIN construction ON construction.id_batiment = batiment.id WHERE royaume = ".$this->get_id()." AND x <= 190 AND y <= 190 ORDER BY entretien DESC";
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		$entretien += $row[0];
+		
+		return $entretien * $this->facteur_entretien;
+	}
+	
+	static function get_royaume_rumeur($info, $plus, $class, $vrai)
+	{
+		global $db;
+		if( !$vrai )
+		{
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return new royaume($row);
+		}
+		$sens = $plus ? ' DESC' : ' ASC';
+		switch($info)
+		{
+		case 'batint':
+			$requete = 'SELECT r.*, SUM(level) as niv FROM royaume AS r INNER JOIN construction_ville AS c ON c.id_royaume=r.id INNER JOIN batiment_ville AS b ON b.id = c.id_batiment WHERE r.id > 0 GROUP BY r.id ORDER BY niv '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'bourg':
+		case 'mine':
+		case 'fort':
+		case 'tour':
+		case 'mur':
+		case 'arme_de_siege':
+			$requete = 'SELECT r.*, COUNT(*) as nbr FROM royaume AS r INNER JOIN construction AS c ON c.id_royaume=r.id INNER JOIN batiment AS b ON b.id = c.id_batiment WHERE r.id > 0 AND b.type = "'.$info.'" GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'entretien':
+			$requete = 'SELECT r.*, SUM(entr)*facteur_entretien AS entr_tot FROM (SELECT c.royaume AS id_royaume, SUM(entretien) AS entr FROM construction AS c INNER JOIN batiment AS b ON c.id_batiment=b.id GROUP BY c.royaume UNION ALL SELECT c.id_royaume, SUM(entretien) AS entr FROM construction_ville AS c INNER JOIN batiment_ville AS b ON c.id_batiment=b.id GROUP BY c.id_royaume) AS a INNER JOIN royaume AS r ON r.id = id_royaume GROUP by r.id ORDER BY entr_tot '.$sens.' LIMIT '.$class.', 1';
+			break;
+		case 'case':
+			$requete = 'SELECT r.*, COUNT(*) AS nbr FROM map as m INNER JOIN royaume AS r ON r.id = m.royaume WHERE x <= 190 AND y <= 190 GROUP BY r.id ORDER BY nbr '.$sens.' LIMIT '.$class.', 1';
+			break;
+		default:
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY '.$info.$sens.' LIMIT '.$class.', 1';
+		}
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return new royaume($row);
+	}
 }
 ?>

@@ -75,7 +75,7 @@ class log_admin_db
 	* @param bool $force force la mis à jour de tous les attributs de l'objet si true, sinon uniquement ceux qui ont été modifiés
 	* @return none
 	*/
-	function sauver($force = false, $debug = false)
+	function sauver($force = false)
 	{
 		global $db;
 		if( $this->id > 0 )
@@ -95,7 +95,6 @@ class log_admin_db
 				$requete = 'UPDATE log_admin SET ';
 				$requete .= $champs;
 				$requete .= ' WHERE id = '.$this->id;
-				if($debug) echo $requete.';';
 				$db->query($requete);
 				$this->champs_modif = array();
 			}
@@ -105,7 +104,6 @@ class log_admin_db
 			$requete = 'INSERT INTO log_admin (id_joueur, type, message, date) VALUES(';
 			$requete .= ''.$this->id_joueur.', "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->message).'", NOW())';
 			if($debug) echo $requete.';';
-			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
@@ -326,7 +324,7 @@ class log_admin extends log_admin_db {
       }
       $res .= ') - '.$bt['file'].' : '.$bt['line'];
     }
-    return $res;
+    return $res.' ['.$_SERVER['REQUEST_URI'].')';
   }
 
 	static function display_all($where = false, $limit = false, $table = false)
@@ -348,7 +346,7 @@ class log_admin extends log_admin_db {
 		{
 			while($row = $db->read_assoc($req))
 			{
-				// TODO: fonctions diverses ...
+				// @todo fonctions diverses ...
 				if ($row['nom'] == null) $row['nom'] = '<em>'.$row['type'].'</em>';
 				if ($table)
 					$out .= "<tr id=\"id$row[id]\"><td><small>$row[date]</small></td><td>$row[nom]</td><td>$row[type]</td><td>$row[message]</td></tr>";

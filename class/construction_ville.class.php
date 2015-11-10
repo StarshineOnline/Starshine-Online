@@ -36,6 +36,7 @@ class construction_ville
     * @var int(10)
     */
 	private $hp;
+	protected $date;
 
 	
 	/**
@@ -49,7 +50,7 @@ class construction_ville
 	* @param int(10) hp attribut
 	* @return none
 	*/
-	function __construct($id = 0, $id_royaume = 0, $id_batiment = 0, $statut = 0, $dette = 0, $hp = 0)
+	function __construct($id = 0, $id_royaume = 0, $id_batiment = 0, $statut = 0, $dette = 0, $hp = 0, $date=0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
@@ -72,6 +73,7 @@ class construction_ville
 			$this->statut = $id['statut'];
 			$this->dette = $id['dette'];
 			$this->hp = $id['hp'];
+			$this->date = $id['date'];
 			}
 		else
 		{
@@ -81,6 +83,7 @@ class construction_ville
 			$this->dette = $dette;
 			$this->hp = $hp;
 			$this->id = $id;
+			$this->date = $date;
 		}
 	}
 
@@ -404,5 +407,15 @@ class construction_ville
     }
     return $this->level;
   }
+  
+	function get_date()
+	{
+		return $this->date;
+	}
+	function set_date($date)
+	{
+		$this->date = $date;
+		$this->champs_modif[] = 'date';
+	}
 }
 ?>

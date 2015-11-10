@@ -313,8 +313,6 @@ class pet extends map_monstre
 					{
 						$gemme = new gemme_enchassee($partie_d['enchantement']);
 						$this->register_gemme_enchantement($gemme);
-						//my_dump($this->enchantement);
-						//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
 			}
@@ -323,16 +321,6 @@ class pet extends map_monstre
 			$this->pp_base = $this->pp;
 			$this->pm_base = $this->pm;
 
-			//Buffs
-			if($joueur->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_bouclier', 'effet') / 100)));
-			if($joueur->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($joueur->get_buff('buff_barriere', 'effet') / 100)));
-			if($joueur->is_buff('buff_forteresse'))
-			{
-				$this->pp = round($this->pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
-			}
-			if($joueur->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($joueur->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($joueur->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($joueur->get_buff('debuff_desespoir', 'effet')) / 100)));
 			//Maladie suppr_defense
 			if($joueur->is_buff('suppr_defense')) $this->pp = 0;
 		}
@@ -401,23 +389,6 @@ class pet extends map_monstre
 				$requete = "SELECT * FROM objet_pet WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
 				$this->arme_pet = $db->read_object($req);
-				/*if ($arme_d['enchantement'] != null)
-				 {
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-					$this->arme_pet->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-					}
-					if ($this->arme_pet->effet)
-					{
-					$effets = split(';', $this->arme_pet->effet);
-					foreach ($effets as $effet)
-					{
-					$d_effet = split('-', $effet);
-					$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme_pet);
-					}
-					}*/
 			}
 			else $this->arme_pet = false;
 		}
@@ -429,7 +400,7 @@ class pet extends map_monstre
 	 * La plupart du temps on s'en fiche, de la main, on veut les degats
 	 * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
 	 */
-	function get_arme_degat($main = false)
+	function get_arme_degat($main = false, $adversaire=null)
 	{
 		$degats = 0;
 		if ($main == false || $main == 'droite')
@@ -513,7 +484,7 @@ class pet extends map_monstre
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
 	{
-		global $db;
+		/*global $db;
 		$distance = 0;
 		$joueur = new perso($this->get_id_joueur());
 		$arme = $joueur->inventaire_pet()->arme_pet;
@@ -530,7 +501,9 @@ class pet extends map_monstre
 			$row = $db->read_row($req);
 			$distance += $row[0];
 		}
-		return $distance;
+		return $distance;*/
+		$perso = new perso($this->get_id_joueur());
+		return $perso->get_distance_pet();
 	}
 	
   /**
@@ -592,10 +565,10 @@ class pet extends map_monstre
 	{
 		if ($this->level == 0)
 		{ // pets invoqués : level perso
-			global $joueur;
-			if ($this->id_joueur == $joueur->get_id())
+			$perso = joueur::get_perso();
+			if ($this->id_joueur == $perso->get_id())
 			{
-				$this->level = $joueur->get_level();
+				$this->level = $perso->get_level();
 			}
 			else
 			{

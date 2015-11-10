@@ -279,13 +279,14 @@ class map_monstre extends entnj_incarn
 		global $db;
     global $G_no_ambiance_kill_message;
     $log = new log_admin();
+    $msg = '';
 		switch ($this->id_monstre)
 		{
 		case 64: //Si c'est Devorsis on fait pop le fossoyeur
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '65','3','212','4800',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<li><strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong></li>';
+			$msg = '<strong>Rha, tu me détruis aujourdhui mais le fossoyeur saura saisir ton âme... tu es déja mort !</strong>';
       $log->send(0, 'donjon', "devoris tué, pop du fossoyeur");
 			break;
 			
@@ -293,12 +294,12 @@ class map_monstre extends entnj_incarn
 			$requete = "INSERT INTO map_monstre VALUES(NULL, '75','24','209','8000',"
         .(time() + 2678400).")";
 			$db->query($requete);
-			echo '<li><strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong><li/>';
+			$msg = '<strong>Tu ne fait que retarder l\'inévitable, Le maître saura te faire payer ton insolence !</strong>';
       $log->send(0, 'donjon', "fossoyeur tué, pop de finwir");
 			break;
 			
 		case 75: //Si c'est Finrwirr on fait pop le gros monstre
-			echo '<li><strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong></li>';
+			$msg = '<strong>Aaaargh VAINCU, JE SUIS VAINCU, comment est ce possible !!! Maître !! Maître venez à moi, vengez votre plus fidèle serviteur !!!</strong>';
       $req = $db->query("select decor from map where x = 20 and y = 227");
       $row = $db->read_assoc($req);
 			if ($row['decor'] == 1601) // Si le gros monstre n'a pas ete vaincu, le passage vers le portail est encore un mur
@@ -313,14 +314,14 @@ class map_monstre extends entnj_incarn
 			}
 			else
 			{
-				echo '<li><em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em></li>';
+				$msg = '<em>Seul le silence répond à cet appel, Adenaïos le nécromant a déjà été vaincu ...</em>';
         $log->send(0, 'donjon', "finwir tué, mais PAS de pop d'adénaïos");
 			}
 			break;
 
 	    case 116: // Si c'est le gros monstre, on ouvre le chemin vers le portail
 	    {
-	      echo "<li>Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em></li>";
+	      $msg = "Maitre Aâzgruth reprend mon âme, ahhharghh, vous ne savez rien de ce qui vous attends... <em>Le squelette du nécromant se brise sous vos yeux. Une silhouette noir s'en dégage pendant quelque secondes avant d'être subitement avalée par le mur situé en face de vous ... qui eclate comme un miroir.</em>";
 	      $requete = "update map set decor = 1539, info = 15 where y = 227 and (x = 20 or x = 21)";
 	      $db->query($requete);
 	      $requete = "update map set decor = 1676 where y = 226 and (x = 20 or x = 21)";
@@ -340,7 +341,7 @@ class map_monstre extends entnj_incarn
 				$requete = "INSERT INTO map_monstre VALUES(NULL,123,44,293,5800,"
           .(time() + 2678400).")";
 				$db->query($requete);
-				echo '<li><strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong></li>';
+				$msg = '<strong>Un bruit de mécanisme eveille votre attention, mais il vous est impossible de savoir d\'où provient ce son.</strong>';
         $log->send(0, 'donjon', "plus de draconides, ouverture du portail");
 			}
       else
@@ -363,7 +364,7 @@ class map_monstre extends entnj_incarn
 		case 123: //Le roi des gobs fait pop le second roi des gobs
 			$requete = "INSERT INTO map_monstre select NULL, id, 17, 292, hp, ".(time() + 2678400)." from monstre where lib = 'roi_goblin_2' limit 1";
 			$db->query($requete);
-			echo '<li><strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong></li>';
+			$msg = '<strong>Le roi gobelin Ziwek Rustog pousse un cri d\'une frénésie grotesque, se mettant à lancer tout un tas de babioles aux les quatre coins de la pièce. Vous regardez les objets voler tout autour de vous, tentant de les éviter ou les laissant ricocher sur vos armures. Cela devient presque un jeu. Vous reprenez peu à peu vos esprits, revenant vers le roi narquois, et vous comprenez que ce dernier vous a ensorcelé et s\'est carapaté. Devant vous, vous apercevez un petit passage avec des traces fraîches.</strong>';
       $log->send(0, 'donjon', "roi gob I tué, pop du roi gob II");
 			break;
 
@@ -373,7 +374,7 @@ class map_monstre extends entnj_incarn
 		case 177:
 		case 178:
       $duree = $this->id_monstre == 162 ? 8 : 1;
-			echo '<li><strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong></li>';
+			$msg = '<strong>Sur le corps du geôlier, vous trouvez la clef de la porte et l\'ouvrez. La clef tombe en poussière après usage.</strong>';
 			print_reload_area('deplacement.php?deplacement=centre', 'centre');
 			ouvrePorteMaraudeurGeolier($this->x, $duree);
 			break;
@@ -388,7 +389,7 @@ class map_monstre extends entnj_incarn
 					$membre->unlock_achiev('brutus');
 				}
 			}
-			echo '<li>L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...</li>';
+			$msg = 'L\'éternel adolescent vous toise d\'un regard espiègle tandisque dans un flash aveuglant, vous êtes projeté en arrière. Non loin de vous, sur le mur, une étrange surface brillante que vous aviez déjà remarqué, attire à ce moment votre attention pour des raisons qui vous échappe. Cesar fait vrombir son fauteuil d\'un coup sec. Des gerbes de flamme, de sang et de salives sont projetés par l\'engin avant que Cesar ne disparaisse dans le mur. Les reflets mystérieux continuent à agiter la surface miroitante mais rien n\'y fait, en la touchant, elle reste d\'une opacité à toute épreuve. Peut être n\'est-elle réservée qu\'à un genre de personne bien particulier. Un type qui sortirait de la norme sous quelques handicapes, ou quelques forces démoniaques...';
 			break;
 
     // Monstres tutoriels
@@ -409,6 +410,7 @@ class map_monstre extends entnj_incarn
 		default:
 			// Rien à faire
 		}
+		return $msg;
 	}
 
   /// Cherche dans la bdd s'il y a une action spéciale à effectuer lors de la mort d'un mosntre de donjon et l'effectue si besoin
@@ -420,7 +422,6 @@ class map_monstre extends entnj_incarn
 		if ($db->num_rows($req_d))
 		{
 			$row = $db->read_assoc($req);
-			my_dump($row);
 			// On va vérifier les prérequis
 			$prerequis = true;
 			if ($row['condition_sql'] !== null)
@@ -565,8 +566,8 @@ class map_monstre extends entnj_incarn
 		$gains_xp = false;
 		$gains_drop = false;
 		$gains_star = false;
-		
-		
+		$msg_xp = $quetes = '';
+	
 		//Le défenseur est mort !
 		if ($this->get_hp() <= 0)
 		{
@@ -582,11 +583,11 @@ class map_monstre extends entnj_incarn
 			$gains_star = true;
 
 			// On gere les monstres de donjon
-			$this->kill_monstre_de_donjon($perso);
+			$der_parole = $this->kill_monstre_de_donjon($perso);
 
 			// On gere les monstres normaux
-			if (!$this->dernieres_paroles())
-				$this->message_kill_rp($perso);
+			$der_parole .= $this->dernieres_paroles();
+			$msg_xp .= $der_parole ? $der_parole : $this->message_kill_rp($perso);
 
 			// Augmentation du compteur de l'achievement
 			$achiev = $perso->get_compteur('kill_monstres');
@@ -604,7 +605,7 @@ class map_monstre extends entnj_incarn
 			//Intimidation du nain dans le tuto vorsh
   		if ($this->id_monstre == 204)
   		{
-  			$msg_xp = "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
+  			$msg_xp .= "Ce nain a compris le message, il n'est pas nécessaire de le tabasser plus<br/>";
   		}
   		$coeff = 0.5;
 			//Différence de level
@@ -613,9 +614,7 @@ class map_monstre extends entnj_incarn
 			$coeff = 1 - ($diff_level * 0.02);
 			if ($coeff != 1)
 			{
-				echo 'Vous perdez '.
-					($perso->get_honneur() - $perso->get_honneur() * $coeff).
-					' honneur en mourant.<br />';
+				$msg_xp .= 'Vous perdez '.($perso->get_honneur() - $perso->get_honneur() * $coeff).' honneur en mourant.<br />';
 				$perso->set_honneur($perso->get_honneur() * $coeff);
 			}
 			$perso->set_mort($perso->get_mort() + 1);
@@ -627,7 +626,7 @@ class map_monstre extends entnj_incarn
 				$gain_hp = floor($perso->get_hp_max() * 0.1);
 				$this->set_hp($this->get_hp() + $gain_hp);
 				$this->sauver();
-				echo 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
+				$msg_xp .= 'Dévorsis regagne '.$gain_hp.' HP en vous tuant.<br />';
 			}
 
 			// achievement
@@ -691,6 +690,7 @@ class map_monstre extends entnj_incarn
 			$this->check_boss_loot($perso, $perso->get_groupe() ? $groupe : null);
 
 			//Drop d'un objet ?
+			$objets = '';
 			$drops = explode(';', $drop);
 			if($drops[0] != '')
 			{
@@ -703,28 +703,31 @@ class map_monstre extends entnj_incarn
 					$taux = ceil($share[1] / $G_drop_rate);
 					if($perso->get_race() == 'humain') $taux = $taux / 1.3;
 					if($perso->is_buff('fouille_gibier')) $taux = $taux / (1 + ($perso->get_buff('fouille_gibier', 'effet') / 100));
+					if( ($objet[0] == 'o' || substr($objet, 0, 2) == "ho") && $perso->is_buff('potion_trouvaille') )
+						 $taux /= 1 + $perso->get_buff('potion_trouvaille', 'effet') / 100;
 					if ($taux < 2) $taux = 2; // Comme ca, pas de 100%
 					$tirage = rand(1, floor($taux));
 					//Si c'est un objet de quête :
 					if($objet[0] == 'q')
 					{
 						$check = false;
-						$i_quete = 0;
-						$liste_quete = $perso->get_liste_quete();
-						$count_quete = count($liste_quete);
-						while(!$check AND $i_quete < $count_quete)
+						$liste_quete = quete_perso::create('id_perso', $perso->get_id());
+						if( $liste_quete )
 						{
-							if($liste_quete[$i_quete]['id_quete'] == $share[1])
-								$check = true;
-							$i_quete++;
+							foreach($liste_quete as $q)
+							{
+								if($q->get_id_etape() == $share[1])
+									$check = true;
+							}
 						}
 						if($check) $tirage = 1;
 						else $tirage = 2;
 					}
 					if($tirage == 1)
-						loot_item($perso, $groupe, $objet);
+						$objets .= loot_item($perso, $groupe, $objet);
 					$i++;
 				}
+				//$perso->restack_objet();
 			}
 		}
 
@@ -751,13 +754,15 @@ class map_monstre extends entnj_incarn
 				//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
 				if($this->get_hp() <= 0)
 				{
-					if($membre->get_id() == $perso->get_id()) verif_action('M'.$this->get_type(), $membre, 's');
-					else verif_action('M'.$this->get_type(), $membre, 'g');
+					if($membre->get_id() == $perso->get_id())
+						$quetes .= quete_perso::verif_action('M'.$this->get_type(), $membre, 's');
+					else
+						$quetes .= quete_perso::verif_action('M'.$this->get_type(), $membre, 'g');
 				}
 				$membre->sauver();
 			}
 		}
-		return $msg_xp;
+		return $msg_xp.$objets.$quetes;
 	}
 
 	function dernieres_paroles() {
@@ -766,10 +771,8 @@ class map_monstre extends entnj_incarn
 		$sql = "select t.quote from ($subsql) t order by t.rnd desc limit 1";
 		$rarete = floor(rand(1, 100));
 		$stmt = $db->param_query($sql, array($this->id_monstre, $rarete), 'ii');
-		if ($result = $db->stmt_read_object($stmt)) {
-			echo '<li class="dernieres_paroles">'.$result->quote.'</li>';
-			return true;
-		}
+		if ($result = $db->stmt_read_object($stmt))
+			return '<span class="dernieres_paroles">'.$result->quote.'</span>';
 		return false;
 	}
 
@@ -777,14 +780,13 @@ class map_monstre extends entnj_incarn
 		global $G_no_ambiance_kill_message;
 		if ($G_no_ambiance_kill_message)
 			return;
-		echo '<li class="ambiance_kill_message">';
 		if ($this->get_level() < $perso->get_level() - 5)
-			echo 'Les tripes arrachées, '.$this->get_nom().' meurt dignement.';
+			$texte = 'Les tripes arrachées, '.$this->get_nom().' meurt dignement.';
 		elseif ($this->get_level() > $perso->get_level() + 5)
-			echo 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$this->get_nom().' rendait l\'âme.';
+			$texte = 'Tandis que le flot rouge de sa vie finissait de s\'écouler, '.$this->get_nom().' rendait l\'âme.';
 		elseif ($this->get_level() >= $perso->get_level() - 5 AND $this->get_level() <= $perso->get_level() + 5)
-			echo 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$this->get_nom().'.';
-		echo '</li>';
+			$texte = 'Un air ahuri flotte encore sur sa gueule puissante, vous avez tué '.$this->get_nom().'.';
+		return '<li class="ambiance_kill_message">'.$texte.'</li>';
 	}
 
   /// Renvoie le coût en PA pour attaquer l'entité

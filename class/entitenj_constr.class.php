@@ -186,17 +186,85 @@ abstract class entitenj_constr extends entnj_incarn
    * Données et méthodes ayant trait aux buffs et débuffs actifs sur le monstre.
    */
   // @{
-	private $buff = null;  ///< Liste des buffs actifs sur le monstre
+	protected $buff = null;  ///< Liste des buffs actifs sur le monstre
+	/// Récupère les buffs du bâtiment
+	abstract protected function constr_buff();
+
 	/**
-	 * Renvoie l'ensemble des buffs / débuffs actif sur le bâtiment.
+	 * Permet de savoir si le joueur est sous le buff nom
+	 * @param $nom le nom du buff
+	 * @param $type si le nom est le type du buff
+	 * @return true si le perso est sous le buff false sinon.
+ 	*/
+	function is_buff($nom = '', $type = true)
+	{
+		if(!isset($this->buff)) $this->get_buff();
+		$buffe = false;
+
+		if(is_array($this->buff))
+		{
+			if(!empty($nom))
+			{
+				foreach($this->buff as $key => $buff)
+				{
+					if($type)
+					{
+						if($key == $nom) $buffe = true;
+					}
+					else if($buff->get_nom() ==  $nom)
+					{
+						$buffe = true;
+					}
+				}
+			}
+			else
+				$buffe = (count($this->buff) > 0);
+		}
+		else
+			$buffe = false;
+
+		return $buffe;
+	}
+	/**
+	 * Renvoie l'ensemble des buffs / débuffs sur le bâtiment.
 	 * @return     Tableau des buffs.
 	 */
 	function get_buff($nom = false, $champ = false, $type = true)
 	{
-		if ($this->buff == null) {
-			$this->buff = self::get_construction_buff($this->id);
-		}
+		if( $this->buff == null )
+			$this->constr_buff();
 		return $this->buff;
+	}
+	/**
+	 * Renvoie un buff / débuff actif (i.e. le lanceur est proche)sur le bâtiment d'un type précis.
+	 * @return     Buff ou null s'il n'y en pas.
+	 */
+	function get_buff_actif($type)
+	{
+		global $db;
+		if( $this->buff != null )
+		{
+			if( array_key_exists($type, $this->buff) )
+			{
+				$buff = $this->buff[$type];
+				if( $buff->get_id_perso() )
+				{
+					$perso = new perso($buff->get_id_perso());
+					return $this->calcule_distance($perso) <= 10 ? $buff : null;
+				}
+				else
+					return $buff;
+			}
+			else
+				return null;
+		}
+		else
+		{
+			$requete = 'SELECT b.* FROM buff_batiment AS b LEFT JOIN perso AS p ON b.id_perso = p.id WHERE b.id_'.$this->get_table().'='.$this->id.' AND b.type="'.$type.'" AND (b.id_perso=0 OR (CAST(p.x AS SIGNED) BETWEEN '.($this->x-10).' AND '.($this->x+10).' AND CAST(p.y AS SIGNED) BETWEEN '.($this->y-10).' AND '.($this->y+10).')) ORDER BY effet DESC, effet2 DESC LIMIT 0, 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return $row ? new buff_batiment($row) : null;
+		}
 	}
 	/**
 	 * Renvoie l'ensemble des buffs / débuffs actif sur un bâtiment.
@@ -218,9 +286,23 @@ abstract class entitenj_constr extends entnj_incarn
   /// Supprime les buffs périmés actifs sur le monstre
 	static function check_buff()
 	{
-		$req = $db->query("delete from buff_batiment where date_fin <= ".time());
+		global $db;
+		$req = $db->query("delete from buff_batiment where fin <= ".time());
 	}
 	// @}
+	
+	static function factory($type, $id)
+	{
+		switch($type)
+		{
+		case 'construction':
+			return new construction($id);
+		case 'placement':
+			return new placement($id);
+		default:
+			return null;
+		}
+	}
 	
 	/// Indique que l'entité est morte
 	function mort(&$perso)
@@ -233,6 +315,8 @@ abstract class entitenj_constr extends entnj_incarn
 			royaume::supprime_bourg( $this->get_royaume() );
 		}
 		//On retrouve les points de victoire
+		if(!$perso)
+			$perso = joueur::get_perso();
 		$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
     $mult = $royaume->get_mult_victoire( new royaume($this->get_royaume()) );
 		$royaume->add_point_victoire( ceil($this->get_point_victoire() * $mult) );
@@ -245,7 +329,10 @@ abstract class entitenj_constr extends entnj_incarn
   {
     global $G_PA_attaque_batiment;
     if( $perso->is_buff('convalescence') )
+    {
+    	interf_alerte::enregistre(interf_alerte::msg_avertis, 'Le coût en PA est doublé à cause de votre convalescence.');
       return $G_PA_attaque_batiment*2;
+		}
     else
       return $G_PA_attaque_batiment;
   }
@@ -261,7 +348,7 @@ abstract class entitenj_constr extends entnj_incarn
    * @var  $diff_roy  True si on cherche un bâtiment d'un royaume différent, false c'est du même royaume
    * @var  $liste     True si on renvoie la liste s'il y a des bâtiments, sinon renvoie le nombre de bâtiments
    */
-  function batiments_proche($x, $y, $type, $distance, $royaume=null, $diff_roy=false, $liste=false)
+  static function batiments_proche($x, $y, $type, $distance, $royaume=null, $diff_roy=false, $liste=false)
   {
     global $db, $G_max_x, $G_max_y;
     if( $royaume )

@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 ?><?php
@@ -87,7 +88,7 @@ if(array_key_exists('affiche_bataille', $_GET))
 }
 else
 {
-	/*//Si c'est le chef de groupe
+	/*Si c'est le chef de groupe
 	if($groupe['id_leader'] == $joueur->get_id())
 	{*/
 		$bataille_royaume = new bataille_royaume($Trace[$leader->get_race()]['numrace']);

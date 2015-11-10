@@ -381,13 +381,11 @@ class map_case
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			//echo time().' > '.$row['fin_placement'];
 			//Si c'est un drapeau, on transforme le royaume
 			if($row['type'] == 'drapeau')
 			{
 				//Mis à jour de la carte
 				$requete = "UPDATE map SET royaume = ".$row['royaume']." WHERE x = ".$row['x']." and y = ".$row['y'];
-				//echo $requete;
 				$db->query($requete);
 				//Suppression du drapeau
 				$requete = "DELETE FROM placement WHERE id = ".$row['id'];
@@ -431,7 +429,7 @@ class map_case
 		{
 			if($bourg)
 			{
-				if(!$bourg) /// TODO: ????
+				if(!$bourg) /// @todo ????
 				{
 					$construction = construction::create(array('x', 'y', 'type'), array($this->get_x(), $this->get_y(), 'bourg'));
 					if(!$bonus && count($construction) > 0) return true;

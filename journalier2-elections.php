@@ -326,7 +326,8 @@ if( count($elections) )
     }
   }
   // Création de l'annonce
-  creer_annonce("Élections pour le mois ".creer_cdn(nom_mois()), $msg_elec);
+  $id_sujet = creer_annonce("Élections pour le mois ".creer_cdn(nom_mois()), $msg_elec);
+  annonce::envoyer('Élections pour le mois '.creer_cdn(nom_mois()).' '.date('Y').' : http://forum.starshine-online.com/viewtopic.php?pid='.$id_sujet, false);
 }
 
 ?>

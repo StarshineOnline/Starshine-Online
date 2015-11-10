@@ -108,7 +108,7 @@ abstract class entnj_incarn extends placable
 	 * La plupart du temps on s'en fiche, de la main, on veut les degats
 	 * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
 	 */
-	function get_arme_degat($main = false) { return 0; }
+	function get_arme_degat($main = false, $adversaire=null) { return 0; }
 	/// Indique que l'entité est morte
 	function mort(&$perso)
 	{

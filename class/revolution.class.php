@@ -52,7 +52,7 @@ class revolution
 			$this->id_royaume = $id['id_royaume'];
 			$this->date = $id['date'];
 			$this->id_perso = $id['id_perso'];
-			}
+		}
 		else
 		{
 			$this->id_royaume = $id_royaume;
@@ -154,7 +154,7 @@ class revolution
 			}
 		}
 
-		$requete = "SELECT id, id_royaume, date FROM revolution WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT id, id_royaume, date, id_perso FROM revolution WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -275,15 +275,29 @@ class revolution
 		return revolution::create($champ, $valeur, 'id DESC');
 	}
 
-	static function is_mois_revolution($id_royaume)
+	static function is_mois_revolution($id_royaume, $id_perso=false)
 	{
+		global $db;
 		$revolution = revolution::get_prochain_revolution($id_royaume);
 		if(!empty($revolution))
 		{
 			$rev = $revolution[0];
 			$explode_date = explode('-', $rev->get_date());
 		  $date_ref = mktime(0, 0, 0, date("m")+1 , date("d"), date("Y"));
-			if($explode_date[0] == date('Y', $date_ref) && $explode_date[1] == date('m', $date_ref)) return true;
+			if($explode_date[0] == date('Y', $date_ref) && $explode_date[1] == date('m', $date_ref))
+			{
+				if( $id_perso == $rev->get_id_perso() )
+					return true;
+				else if( $id_perso )
+				{
+					/// @todo passer à l'objet
+					$requete = 'SELECT COUNT(*) FROM vote_revolution WHERE id_revolution = '.$rev->get_id();
+					$req = $db->query($requete);
+					return $db->read_array($req)[0] > 1;
+				}
+				else
+					return true;
+			}
 			else return false;
 		}
 		else

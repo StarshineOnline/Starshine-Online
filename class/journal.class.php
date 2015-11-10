@@ -1,16 +1,16 @@
 <?php
-class journal
+class journal extends table
 {
-	private $id;
-	private $id_perso;
-	private $action;
-	private $actif;
-	private $passif;
-	private $time;
-	private $valeur;
-	private $valeur2;
-	private $x;
-	private $y;
+	protected $id;
+	protected $id_perso;
+	protected $action;
+	protected $actif;
+	protected $passif;
+	protected $time;
+	protected $valeur;
+	protected $valeur2;
+	protected $x;
+	protected $y;
 	
 	/**	
 		*	Constructeur permettant la création d'un combat
@@ -20,32 +20,12 @@ class journal
 		*		-journal($id) qui va chercher le journal dont l'id est $id
 		*		-journal($array) qui associe les champs de $array à l'objet.
 	**/
-	function __construct($id = 0, $id_perso = 0, $action = '', $actif = '', $passif = '', $time = '', $valeur = 0, $valeur2 = 0, $x = 0, $y = 0)
+	function __construct($id_perso = 0, $action = '', $actif = '', $passif = '', $time = '', $valeur = '', $valeur2 = 0, $x = 0, $y = 0)
 	{
-		global $db;
-		if( (func_num_args() == 1) && is_numeric($id) )
+		//Verification du nombre et du type d'argument pour construire l'objet adequat.
+		if( func_num_args() == 1 )
 		{
-			$requete = $db->query('SELECT id, id_perso, action, actif, passif, time, valeur, valeur2, x, y FROM journal WHERE id = '.$id);
-			if( $db->num_rows($requete) > 0 )
-			{
-				list($this->id, $this->id_perso, $this->action, $this->actif, $this->passif, $this->time, $this->valeur, $this->valeur2, $this->x, $this->y) = $db->read_row($requete);
-			}
-			else
-				$this->__construct();
-			$this->id = $id;
-		}
-		elseif( (func_num_args() == 1) && is_array($id) )
-		{
-			$this->id = $id['id'];
-			$this->id_perso = $id['id_perso'];
-			$this->action = $id['action'];
-			$this->actif = $id['actif'];
-			$this->passif = $id['passif'];
-			$this->time = $id['time'];
-			$this->valeur = $id['valeur'];
-			$this->valeur2 = $id['valeur2'];
-			$this->x = $id['x'];
-			$this->y = $id['y'];
+			$this->charger($id_perso);
 		}
 		else
 		{
@@ -59,51 +39,31 @@ class journal
 			$this->valeur2 = $valeur2;
 			$this->x = $x;
 			$this->y = $y;
-		}		
-	}
-	
-	function sauver()
-	{
-		global $db;
-		if( $this->id > 0 )
-		{
-      $requete = 'UPDATE journal SET id_perso=?, action=?, actif=?, passif=?, time=?, valeur=?, valeur2=?, x=?, y=?) WHERE id=?';
-      $db->param_query($requete,
-                       array($this->id_perso, $this->action, $this->actif,
-                             $this->passif, $this->time, $this->valeur,
-                             $this->valeur2, $this->x, $this->y, $this->id),
-                       'issssssiii');
-		}
-		else
-		{
-      $requete = 'INSERT INTO journal (id_perso, action, actif, passif, time, valeur, valeur2, x, y) VALUES(?,?,?,?,?,?,?,?,?)';
-      $params = array($this->id_perso, $this->action, $this->actif,
-                      $this->passif, $this->time, $this->valeur,
-                      $this->valeur2, $this->x, $this->y);
-      $db->param_query($requete, $params, 'isssssiii');
-			//Récuperation du dernier ID inséré.
-			list($this->id) = $db->last_insert_id();
 		}
 	}
 	
-	function supprimer()
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
 	{
-		global $db;
-		if( $this->id > 0 )
-		{
-			$requete = 'DELETE FROM journal WHERE id = '.$this->id;
-			$db->query($requete);
-		}
+		table::init_tab($vals);
+		$this->id_perso = $vals['id_perso'];
+		$this->action = $vals['action'];
+		$this->actif = $vals['actif'];
+		$this->passif = $vals['passif'];
+		$this->time = $vals['time'];
+		$this->valeur = $vals['valeur'];
+		$this->valeur2 = $vals['valeur2'];
+		$this->x = $vals['x'];
+		$this->y = $vals['y'];
 	}
 	
-	function __toString()
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
 	{
-		return $this->id.', '.$this->id_perso.', '.$this->action.', '.$this->actif.', '.$this->passif.', '.$this->time.', '.$this->valeur.', '.$this->valeur2.', '.$this->x.', '.$this->y;
-	}
-	
-	function get_id()
-	{
-		return $this->id;
+		return array('id_perso'=>'i', 'action'=>'s', 'actif'=>'s', 'passif'=>'s', 'time'=>'s', 'valeur'=>'s', 'valeur2'=>'i', 'x'=>'i', 'y'=>'i');
 	}
 	
 	function get_id_perso()
@@ -211,5 +171,14 @@ class journal
     else
       return false;
   }
+  
+  static function get_nombre_recents(&$perso)
+	{
+		global $db;
+		$requete = 'SELECT COUNT(*) FROM journal WHERE action IN ("defense", "mort", "loot", "f_quete", "pet_leave", "rp", "attaque", "tue") AND time > "'.date('Y-m-d G:i:s', $perso->get_dernier_connexion()).'" AND id_perso = '.$perso->get_id();
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row[0];
+	} 
 }
 ?>

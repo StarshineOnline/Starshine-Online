@@ -52,6 +52,14 @@ class messagerie
 		return $return;		
 	}
 	
+	// Renvoie le nombre totalt de message non lu à partir de l'id du personnage
+	static function get_non_lu_total($id)
+	{
+		$messagerie = new messagerie($id);
+		$nb_mess = $messagerie->get_non_lu();
+		return $nb_mess['total'];
+	}
+	
 	//Récupération de tous les threads pour ce perso
 	function get_threads($type = 'groupe', $tri_date = 'ASC', $liste_message = false, $nombre_message = 'all')
 	{
@@ -71,7 +79,6 @@ class messagerie
 			break;
 		}
 		$requete = "SELECT id_thread, id_groupe, id_dest, id_auteur, important, dernier_message, titre FROM messagerie_thread WHERE ".$where." ORDER BY important DESC, dernier_message DESC, id_thread DESC";
-		//echo $requete;
 		$req = $db->query($requete);
 		$i = 0;
 		while($row = $db->read_assoc($req))
@@ -251,6 +258,7 @@ class messagerie
 			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe, $type_echange);
 			$etat_objet->sauver();
 		}
+		return $id_thread;
 	}
 }
 ?>

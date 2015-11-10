@@ -1,0 +1,351 @@
+
+
+/*-- Correction bootstrap & datatables --------------------------------------------------*/
+
+#barre_menu
+{
+	border-radius : 0px;
+	border-top: none;
+	border-left: none;
+	border-right: none;
+	margin-bottom: 0px;
+	min-height: 30px;
+}
+
+#barre_menu a
+{
+	padding: 5px 10px;
+	line-height: 30px;
+}
+
+#barre_menu .container
+{
+	padding: 0px;
+}
+
+#barre_menu .navbar-brand
+{
+	font-size: 30px;
+  margin-left: -5px;
+  height: auto;
+}
+
+#navbar
+{
+	padding-left: 25px;
+}
+
+.popover-content tr
+{
+	font-size: 14px;
+}
+
+.popover-content th
+{
+	padding-right: 20px;
+}
+
+table.table-striped>tbody>tr>th, table.table-striped>tbody>tr>td
+{
+	padding: 1px;
+  border: none;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th
+{
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td.danger
+{
+    background-color: #F5EBEB;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td.success
+{
+    background-color: #E9F2E5;
+}
+
+.btn.icone
+{
+	line-height: 1.42857;
+}
+
+.pager
+{
+	margin-bottom: 0px;
+}
+
+.modal-body .table-striped > tbody > tr:nth-child(2n+1) > td
+{
+	background-color: rgba(0, 0, 0, 0.1);
+}
+
+.modal-body .table-striped > tbody > tr.info > td
+{
+	background-color: #D9EDF7;
+}
+
+.dropdown-submenu{position:relative;}
+.dropdown-submenu>.dropdown-menu{top:0;left:100%;margin-top:-6px;margin-left:-1px;-webkit-border-radius:0 6px 6px 6px;-moz-border-radius:0 6px 6px 6px;border-radius:0 6px 6px 6px;}
+.dropdown-submenu:hover>.dropdown-menu, .dropdown-submenu>.dropdown-menu.show{display:block;}
+.dropdown-submenu>a:after{display:block;content:" ";float:right;width:0;height:0;border-color:transparent;border-style:solid;border-width:5px 0 5px 5px;border-left-color:#cccccc;margin-top:5px;margin-right:-10px;}
+.dropdown-submenu:hover>a:after{border-left-color:#ffffff;}
+.dropdown-submenu.pull-left{float:none;}.dropdown-submenu.pull-left>.dropdown-menu{left:-100%;margin-left:10px;-webkit-border-radius:6px 0 6px 6px;-moz-border-radius:6px 0 6px 6px;border-radius:6px 0 6px 6px;}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button
+{
+	padding: 0 !important;
+	margin: 0 !important;
+	border: none !important;
+}
+
+@media (max-width: 767px)
+{
+	.navbar-collapse
+	{
+		max-height: 100%;
+	}
+	.dropdown.min-exp>a.dropdown-toggle
+	{
+		display:none;
+	}
+	.dropdown.min-exp>.dropdown-menu
+	{
+		display: block;
+		background: transparent;
+		position: static;
+	}
+	.dropdown-menu, .dropdown-menu a, .dropdown-menu #liens_connexion > a
+	{
+		color: white !important;
+	}
+}
+
+/*-- Divers --------------------------------------------------*/
+
+.small { font-style:italic; font-size:.9em; }
+.xsmall { font-style:italic; font-size:.8em; }
+
+.icone-charger
+{
+  animation-name:charger_rot;
+  animation-duration:1.76s;
+  animation-iteration-count:infinite;
+  -webkit-animation-name:charger_rot;
+  -webkit-animation-duration:1.76s;
+  -webkit-animation-iteration-count:infinite;
+  -webkit-animation-direction:linear;
+}
+
+@keyframes charger_rot
+{
+  0%{transform: rotate(0deg);}
+  12.5%{transform: rotate(45deg);}
+  25%{transform: rotate(90deg);}
+  37.5%{transform: rotate(135deg);}
+  50%{transform: rotate(180deg);}
+  62.5%{transform: rotate(225deg);}
+  75%{transform: rotate(270deg);}
+  87.5%{transform: rotate(315deg);}
+  100%{transform: rotate(360deg);}
+}
+
+@-webkit-keyframes charger_rot
+{
+  0%{-webkit-transform: rotate(0deg);}
+  12.5%{-webkit-transform: rotate(45deg);}
+  25%{-webkit-transform: rotate(90deg);}
+  37.5%{-webkit-transform: rotate(135deg);}
+  50%{-webkit-transform: rotate(180deg);}
+  62.5%{-webkit-transform: rotate(225deg);}
+  75%{-webkit-transform: rotate(270deg);}
+  87.5%{-webkit-transform: rotate(315deg);}
+  100%{-webkit-transform: rotate(360deg);}
+}
+
+/*********************************
+ Dialogue
+**********************************/
+
+.modal-dialog .invent
+{
+	border-color: #DDD;
+	width: 100%;
+}
+
+
+/*********************************
+ Diplomatie
+**********************************/
+
+#dlg_diplo
+{
+	width: 950px;
+}
+
+#diplomatie
+{
+	font-size: 13px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+
+/*********************************
+ bestiaire
+**********************************/
+
+#dlg_bestiaire
+{
+	width: 750px;
+}
+
+#bestiaire table.dataTable
+{
+	margin-top: 0 !important;
+}
+
+#bestiaire img
+{
+	max-height: 32px;
+}
+
+
+/*********************************
+ Histoire de starshine
+**********************************/
+
+#dlg_rp
+{
+	width: 900px;
+}
+
+#liste_rp
+{
+	float: left;
+	width: 150px;
+}
+
+#texte_rp
+{
+	margin-left: 155px;
+}
+
+#rp_fin
+{
+	clear: both;
+}
+
+
+/*********************************
+ Statistiques
+**********************************/
+
+#dlg_stats
+{
+	width: 800px;
+}
+
+#statistiques
+{
+	text-align: center;
+}
+
+
+/*********************************
+ Classements
+**********************************/
+
+#dlg_class
+{
+	width: 900px;
+}
+
+.classement ul
+{
+	position: absolute;
+	margin: 2px;
+	width: 110px;
+}
+
+.classement > div
+{
+	margin-left: 121px;
+	width: 730px;
+}
+
+.classement table.dataTable
+{
+	padding: 0;
+}
+
+#class_royaumes
+{
+	min-height: 310px;
+}
+
+#class_groupes
+{
+	min-height: 350px;
+}
+
+#class_perso_tous, #class_perso_race
+{
+	min-height: 495px;
+}
+
+#tbl_groupes + .row, #tbl_perso_tous + .row, #tbl_perso_race + .row
+{
+	margin-bottom: 30px;
+}
+
+.classement .col-xs-6
+{
+	float: none;
+	padding-right: 25px;
+}
+
+.classement .dataTables_filter
+{
+	position: absolute;
+	right: -365px;
+}
+
+#tbl_perso_race th td:nth-child(2), #tbl_perso_race tr td:nth-child(2), #tbl_perso_tous th td:nth-child(2), #tbl_perso_tous tr td:nth-child(2)
+{
+	width: 20px;
+}
+
+/*********************************
+ Options
+**********************************/
+
+#options .input-group, #options .invent>div
+{
+	margin: 5px;
+}
+
+#options .invent>div:nth-child(n+2)
+{
+	margin-top: 30px;
+}
+
+/*********************************
+ Votes & dons
+**********************************/
+
+#dlg_votes_dons
+{
+	width: 700px;
+}
+
+#votes_dons p
+{
+	margin: 5px;
+}
+
+#votes_dons ul
+{
+	text-align: center;
+}

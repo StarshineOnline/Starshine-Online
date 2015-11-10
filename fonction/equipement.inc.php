@@ -45,8 +45,11 @@ function decompose_objet($objet)
 		$objet_dec['id'] = $decomp[0];
 		$objet_dec['enchantement'] = $decomp[1];
 		$decomp = explode('s', $objet_dec['id']);
-		$objet_dec['id'] = $decomp[0];
+		$objet_dec['id_mod'] = $decomp[0];
 		$objet_dec['slot'] = $decomp[1];
+		$decomp = explode('f', $objet_dec['id_mod']);
+		$objet_dec['id'] = $decomp[0];
+		$objet_dec['mod'] = $decomp[1];
 		$objet_dec['identifier'] = true;
 		if($objet_dec['id'][0] != 'h')
 		{
@@ -182,7 +185,7 @@ function recompose_objet($objet)
 	return $objet_rec;
 }
 
-function nom_objet($id_objet)
+function nom_objet($id_objet, $nbr=false)
 {
 	global $db;
 	$objet = decompose_objet($id_objet);
@@ -218,7 +221,10 @@ function nom_objet($id_objet)
 	$requete = "SELECT nom FROM ".$table." WHERE id = ".$objet['id_objet'];
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
-	return $row[0];
+	$nom = $row[0];
+	if( $nbr && $objet['stack'] > 1 )
+		$nom .= ' x '.$objet['stack'];
+	return $nom;
 }
 
 function description_objet($id_objet)
@@ -633,7 +639,7 @@ function recup_tout_echange_perso($joueur_id, $tri = 'id_echange DESC')
 {
 	global $db;
 	$echanges = array();
-	$requete = "SELECT id_echange, statut, id_j1, id_j2 FROM echange WHERE (id_j1 = ".$joueur_id." OR id_j2 = ".$joueur_id.") AND statut <> 'annule' ORDER BY ".$tri;
+	$requete = "SELECT id_echange, statut, id_j1, id_j2, date_debut FROM echange WHERE (id_j1 = ".$joueur_id." OR id_j2 = ".$joueur_id.") AND statut <> 'annule' ORDER BY ".$tri;
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -647,7 +653,7 @@ function recup_tout_echange_perso_ranger($joueur_id, $tri = 'id_echange DESC')
 {
 	global $db;
 	$echanges = array();
-	$requete = "SELECT id_echange, statut, id_j1, id_j2 FROM echange WHERE (id_j1 = ".$joueur_id." OR id_j2 = ".$joueur_id.") AND statut <> 'annule' ORDER BY ".$tri;
+	$requete = "SELECT id_echange, statut, id_j1, id_j2, date_debut FROM echange WHERE (id_j1 = ".$joueur_id." OR id_j2 = ".$joueur_id.") AND statut <> 'annule' ORDER BY ".$tri;
 	$req = $db->query($requete);
 	while($row = $db->read_assoc($req))
 	{
@@ -708,7 +714,8 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 	{
 		foreach($echange['objet'] as $objet)
 		{
-			if($objet['id_j'] == $id_joueur) $echange_objets[$objet['objet']]++;
+			$o = explode('x', $objet['objet']);
+			if($objet['id_j'] == $id_joueur) $echange_objets[$o[0]] += count($o) ? $o[1] : 1;
 		}
 	}
 	if($joueur->get_inventaire_slot() != '')
@@ -746,7 +753,7 @@ function verif_echange_joueur($id_echange, $id_joueur, $id_objet = 0, $type_obje
 		}
 		else $check = false;
 	}
-	elseif(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']) && $joueur['star'] < intval($echange['star'][$id_joueur]['id_objet'])) $check = false;
+	elseif(array_key_exists('star', $echange) && array_key_exists($id_joueur, $echange['star']) && $joueur->get_star() < intval($echange['star'][$id_joueur]['id_objet'])) $check = false;
 	return $check;
 }
 
@@ -808,6 +815,7 @@ function verif_echange_both_royaume($id_echange, $id_r1, $id_r2)
 	else return false;
 }
 
+/// @todo vérifier si elle est encore utilisée
 function check_utilisation_objet($joueur, $objet)
 {
 	global $db;

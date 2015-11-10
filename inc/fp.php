@@ -79,13 +79,20 @@ include_once(root.$root.'fonction/print.inc.php');
 function __autoload($class_name)
 {
 	global $root;
-	$file = root.'class/'.$class_name.'.class.php';
+	if( substr_compare($class_name, 'interf', 0, 6) == 0 )
+		$file = root.'interface/'.$class_name.'.class.php';
+	else
+		$file = root.'class/'.$class_name.'.class.php';
 	require_once($file);
 }
 
 // Fabrique de l'interface
-$interf = interf_factory::factory();
+include_once(root.'interface/interf_factory.class.php');
+$G_interf = interf_factory::factory();
+$G_url = new url($_SERVER['SCRIPT_NAME']);
 
+if( file_exists(root.'jabber.php') )
+	include_once(root.'jabber.php');
 
 function fin_script()
 {
@@ -96,10 +103,9 @@ function fin_script()
     $msg = $err['message'].' (fichier : '.$err['file'].', ligne : '.$err['line'].', url : '.$_SERVER['REQUEST_URI'].')';
     if( !count(log_admin::create(array('type', 'message'),array('bug', $msg))) )
     {
-  		$log = new log_admin();
-  		$log->send($idPerso, 'bug', $msg, true);
+  		log_admin::log('bug', $msg);
     }
-    echo '<h5>Une erreur a causé l\'arrêt du script. L\'erreur a été enregistrée et pourra être consultée par les développeurs.</h5>';
+    echo '<main><section id="erreur">Une erreur a causé l\'arrêt du script. L\'erreur a été enregistrée et pourra être consultée par les développeurs.</section></main>';
   }
 }
 

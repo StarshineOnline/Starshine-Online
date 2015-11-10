@@ -161,7 +161,7 @@ class event_partie extends table
    * Renvoie le nom de la table.
    * Doit être redéfinie à cause des classes filles
    */
-  protected function get_table()
+  static function get_table()
   {
     return 'event_partie';
   }
@@ -525,7 +525,7 @@ class event_partie_dte_rte extends event_partie
         $row = $db->read_assoc($req);
         $dernier[$row['heure']] = $id;
       }
-      // TODO: calcul des points
+      // @todo calcul des points
     }
     // Détermination du gagnant et éventuellement du second
     switch( $this->event->get_victoire_match() )

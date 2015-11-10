@@ -138,7 +138,7 @@ Class achievement_compteur
 					$achievement->set_id_perso($this->id_perso);
 					$achievement->set_id_achiev($achiev->get_id());
 					$achievement->sauver();
-					echo $joueur->get_nom().' debloque l\'achievement "'.$achiev->get_nom().'" !<br />';
+					interf_alerte::enregistre(interf_alerte::msg_info, $joueur->get_nom().' debloque l\'achievement "'.$achiev->get_nom().'" !');
 				}
 			}
 		}

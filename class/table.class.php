@@ -14,7 +14,7 @@ abstract class table
 		return 'id';
 	}
 	/// Renvoie le nom de la table (par défaut le nom de la classe)
-	protected function get_table()
+	static function get_table()
 	{
 		return get_called_class();
 	}
@@ -79,10 +79,21 @@ abstract class table
 		{
 			if( $force || count($this->champs_modif) > 0 )
 			{
-				if($force) $champs = $this->get_liste_update();
+				$liste = $this->get_champs();
+				$champs = array();
+				$params = array();
+				$types = '';
+				if($force)
+				{
+					foreach($liste as $champ=>$type)
+					{
+						$params[] = $this->get_champ($champ);
+						$champs[] = $champ.' = ?';
+						$types .= $type;
+					}
+				}
 				else
 				{
-					$champs = '';
 					foreach($this->champs_modif as $champ)
 					{
 						$val = $this->get_champ($champ);
@@ -91,18 +102,34 @@ abstract class table
 						else
 							$val = '"'.mysql_escape_string($val).'"';
 						$champs[] .= $champ.' = '.$val;
+						$params[] = $this->get_champ($champ);
+						$champs[] = $champ.' = ?';
+						$types .= $liste[$champ];
 					}
-					$champs = implode(', ', $champs);
 				}
+				$champs = implode(', ', $champs);
 				$requete = 'UPDATE '.$this->get_table().' SET '.$champs.' WHERE '.$this->get_champ_id().' = "'.$this->id.'"';
-				$db->query($requete);
+				$db->param_query($requete, $params, $types);
 				$this->champs_modif = array();
 			}
 		}
 		else
 		{
-			$requete = 'INSERT INTO '.$this->get_table().' ('.$this->get_liste_champs().') VALUES('.$this->get_valeurs_insert().')';
-			$db->query($requete);
+			$liste = $this->get_champs();
+			$params = array();
+			$vals = array();
+			$types .= '';
+			foreach($liste as $champ=>$type)
+			{
+				$params[] = $this->get_champ($champ) !== null ? $this->get_champ($champ) : 'NULL';
+				$types .= $type;
+				$vals[] = '?';
+			}
+			//$champs = $liste[0];
+			$champs = implode(', ', array_keys($liste));
+			$vals = implode(', ', $vals);
+			$requete = 'INSERT INTO '.$this->get_table().' ('.$champs.') VALUES('.$vals.')';
+			$db->param_query($requete, $params, $types);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}
@@ -114,12 +141,23 @@ abstract class table
 		return $this->{$champ};
 	}
   
+	/// Renvoie la liste des champs sous forme de tableau associatif nom=>type pour une insertion dans la base
+	/*abstract*/ protected function get_champs()
+	{// implentation provisoire
+		$champs = array();
+		$liste = explode(',', $this->get_liste_champs());
+		foreach($liste as $champ)
+		{
+			$champs[trim($champ)] = 's';
+		}
+		return $champs;
+	}
 	/// Renvoie la liste des champs pour une insertion dans la base
-	abstract protected function get_liste_champs();
+	protected function get_liste_champs() {}
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
-	abstract protected function get_valeurs_insert();
+	protected function get_valeurs_insert() {}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
-	abstract protected function get_liste_update();
+	protected function get_liste_update() {}
 	
 	/// Supprime l'élément de la base de donnée
 	function supprimer()
@@ -170,7 +208,7 @@ abstract class table
 			}
 		}
 
-		$requete = 'SELECT '.static::get_champ_id().', '.static::get_liste_champs().' FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
+		$requete = 'SELECT * FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -187,14 +225,16 @@ abstract class table
 	}
 
 	/**
-	 * Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
-	 * @param string      $classe     Classe des objets à créer
-	 * @param string      $table      Table ou chercher
-	 * @param string      $cond       Condition (+ éventuellement tri)
-	 * @param bool|string $keys       Si false, stockage en tableau classique, si string
-	 *                                stockage avec sous tableau en fonction du champ $keys
-	 * @return array     Liste d'objets
-	 */
+	* Crée un tableau d'objets respectant certains critères pour n'importe qu'elle table
+	* @param string      $classe     Classe des objets à créer
+	* @param string      $table      Table ou chercher
+	* @param string      $cond       Condition (+ éventuellement tri)
+	* @param bool|string $keys       Si false, stockage en tableau classique, si string
+	*                                stockage avec sous tableau en fonction du champ $keys
+	* @return array     Liste d'objets
+	* 
+	* @@todo supprimer ?		
+	*/
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{
 		global $db;
@@ -215,6 +255,48 @@ abstract class table
 		}
 		else
 			$return = array();
+	}
+	
+	static function get_valeurs($champs, $cond, $rangement=true)
+	{
+		global $db;
+		if( is_array($champs) )
+			$champs = implode(',', $champs);
+		if( is_string($rangement) )
+			$ordre = ' ORDER BY '.$rangement;
+		else
+		{
+			$ordre= '';
+			if( is_array($rangement) )
+				$champs .= ', CONCAT_WS("|",'.implode(',', $rangement).') AS get_valeurs_cle';
+		}
+		
+		
+		$requete = 'SELECT '.$champs.' FROM '.static::get_table().' WHERE '.$cond.$ordre;
+		$req = $db->query($requete);
+		if($db->num_rows($req) > 0)
+		{
+			if( $rangement === false )
+				return $db->read_object($req);
+			else if( is_array($rangement) )
+			{
+				$liste = array();
+				while( $row = $db->read_assoc($req) )
+				{
+					$liste[ $row['get_valeurs_cle'] ] = $row;
+				}
+			}
+			else
+			{
+				$liste = array();
+				while( $row = $db->read_assoc($req) )
+				{
+					$liste[] = $row;
+				}
+			}
+			return $liste;
+		}
+		return null;
 	}
 	
 	/// Affiche l'objet sous forme de string

@@ -1,8 +1,9 @@
 <?php
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 
-if(array_key_exists('javascript', $_GET)) include_once(root.'inc/fp.php');
+include_once(root.'inc/fp.php');
 include_once(root.'fonction/messagerie.inc.php');
 $joueur = new perso($_SESSION['ID']);
 
@@ -115,7 +116,23 @@ else
 			$type_thread = 'echange';
 		break;
 	}
-
+	?>
+	<script>
+	function showMsg(idmes, type)
+	{
+		 $.ajax({
+			   type: "GET",
+			   url: "messagerie_ajax.php",
+			   data: "id_thread="+idmes,
+			   success: function(data) {
+				    //alert(data);
+				    $('#messagerie_liste .<?php echo $type_thread; ?>').empty();
+				    $('#messagerie_liste .<?php echo $type_thread; ?>').append(data);
+			   }
+			 });
+	}
+	</script>
+	<?php 
 	if($affiche_threads)
 	{
 		echo "<div id='messagerie_liste'>";
@@ -125,22 +142,14 @@ else
 		
 		//Affichage des messages
 		?>
-		<ul>
-			<li class='head'>
-			<span class='titre'>
-				Titre
-			</span>
-			<span class='msg'>
-				Msg
-			</span>
-			<span class='par'>
-				Interlocuteur
-			</span>
-			<span class='date'>
-				Date
-				<a href="thread_modif.php?lu_all=1" onclick="if(confirm('Etes vous sur de vouloir marquer tous les messages commu lus ?')) return envoiInfo(this.href, 'information'); else return false;" title="Lire"><span class="msg_voir" style="float: right;"></span></a>
-			</span>
-			</li>
+		<table border=0 class='<?php echo $type_thread; ?>'>
+		<tr class='head'>
+		<th class='titre'>Titre</th>
+		<th class='msg'>Msg</th>
+		<th class='par'>Interlocuteur</th>
+		<th class='date'>Date <a href="thread_modif.php?lu_all=1" onclick="if(confirm('Etes vous sur de vouloir marquer tous les messages commu lus ?')) return envoiInfo(this.href, 'information'); else return false;" title="Lire"><span class="msg_voir" style="float: right;"></span> </a>
+		</th>
+		</tr>
 
 		<?php
 		$message_total_total = 0;
@@ -184,9 +193,12 @@ else
 					$options .= '<a href="thread_modif.php?id_thread='.$thread->id_thread.'&suppr=1" onclick="if(confirm(\'Si vous supprimez ce message, tous les messages à l\\\'intérieur seront supprimés !\')) return envoiInfo(this.href, \'thread_'.$thread->id_thread.'\'); else return false;" title="Supprimer"><span class="del" style="float : right;"></span></a>';
 				}
 				?>
-				<li <?php if($thread_non_lu>0) {echo "style='font-weight: bold;' ";} ?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>">
-					<span class='titre' onclick="envoiInfo('messagerie.php?id_thread=<?php echo $thread->id_thread; ?>', 'information');">
-
+				<tr <?php if($thread_non_lu>0) 
+				{
+					echo "style='font-weight: bold;' ";
+				} 
+				?> id="thread_<?php echo $thread->id_thread; ?>" class="<?php echo $class;?>">
+				<td class="titre" style="cursor:pointer;" onclick="showMsg('<?php echo $thread->id_thread; ?>');">
 				<?php
 				//Si le titre est trop long je le coupe pour que ça casse pas ma mise en page qui déchire ta soeur en deux
 				$titre = htmlspecialchars(stripslashes($thread->titre));
@@ -195,36 +207,28 @@ else
 					$thread->get_messages(1, 'ASC');
 					$titre = htmlspecialchars(stripslashes($thread->messages[0]->titre));
 				}
-				if(strlen($titre)>=27) 
+				if(strlen($titre)>=27)
 				{
 					$titre = mb_substr($titre,0,27) . "...";
 				}
-	
-				?>
-				<?php echo $titre; ?>
-				<?php echo $texte_thread_non_lu; ?>
-
-					</span>
-					<span class='msg'>
-					<?php echo $message_total; ?>
-					</span>
-					<span class='par'>
-						<?php
-						echo $nom_interlocuteur;
-						?>
-					</span>
-					<span class='date'>
-						<?php echo $date; ?>
-						<?php echo $options; ?>
-					</span>
-					</li>
-				
+				?> <?php echo $titre; ?> <?php echo $texte_thread_non_lu; ?>
+				</td>
+				<td class='msg'><?php echo $message_total; ?></td>
+				<td class='par'><?php echo $nom_interlocuteur; ?></td>
+				<td class='date'><?php echo "<span style='display:table-cell;'>".$date."</span>"; ?> <?php echo $options; ?></td>
+				</tr>
 				<?php
-				if ($class=='t1'){$class='t2';}else{$class='t1';}
+				if ($class=='t1')
+				{
+					$class='t2';
+				}else
+				{
+					$class='t1';
+				}
 			}
 		}
 		?>
-		</ul>
+		</table>
 		<?php
 		if($type_thread == 'perso' AND $message_total_total >= 500)
 		{
@@ -232,7 +236,7 @@ else
 			$achiev = $joueur->get_compteur('messages');
 			$achiev->set_compteur($message_total_total);
 			$achiev->sauver();
-			
+				
 		}
 	}
 }

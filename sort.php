@@ -1,4 +1,5 @@
 <?php // -*- mode: php -*-
+/// @deprecated
 if (file_exists('root.php'))
 include_once('root.php');
 
@@ -237,7 +238,7 @@ elseif($type_lanceur == 'joueur')
   }
   $i = 0;
   $type = '';
-  $magies = array('favoris');
+  $magies = array();
   $magie = '';
   $requete = "SELECT * FROM sort_jeu GROUP BY comp_assoc";
   $req = $db->query($requete);
@@ -249,14 +250,25 @@ elseif($type_lanceur == 'joueur')
       $magies[] = $row['comp_assoc'];
     }
   }
+  array_push($magies,'favoris');
+?>
+<div id="livre">
+	<div id="livre_gauche_magique">
+<?php
   $groupe_href = '&amp;type='.$type_cible.'&amp;id_'.$type_cible.'='.$cible->get_id();
+  $k=1;
   foreach($magies as $magie)
   {
-    echo '<a href="sort.php?tri='.$magie.$groupe_href.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" style="vertical-align : middle;" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/icone_'.$magie.'.png\'" /></a> ';
+    echo '<div id="livre_magique_icone'.$k.'"><a href="sort.php?tri='.$magie.$groupe_href.'" onclick="return envoiInfo(this.href, \'information\');"><img src="image/icone_'.$magie.'.png" alt="'.$Gtrad[$magie].'" title="'.$Gtrad[$magie].'" style="vertical-align : middle;" onmouseover="this.src = \'image/icone/'.$magie.'hover.png\'" onmouseout="this.src = \'image/icone_'.$magie.'.png\'" /></a></div>';
+	$k++;
   }
-  echo 'Cible : '.$cible->get_nom();
+	?>
+	</div>
+	<div id="livre_haut"><h3><?php echo 'Cible : '.$cible->get_nom(); ?></h3></div>
+	<div id="livre_corps">
+		<ul>
+<?php
   $where = '';
-
   if(array_key_exists('tri', $_GET))
   $where = 'comp_assoc = \''.$_GET['tri'].'\'';
   else
@@ -269,7 +281,7 @@ elseif($type_lanceur == 'joueur')
   $sorts = sort_jeu::create('', '', 'comp_assoc ASC, type ASC', false, ''.$where);
   //$req = $db->query($requete);
   $magie = '';
-  echo '<table width="97%" class="information_case">';
+
   foreach($sorts as $sort)
   {
     if ($sort->get_special() == false)
@@ -289,15 +301,13 @@ elseif($type_lanceur == 'joueur')
     {
       $magie = $sort->get_comp_assoc();
       $type = '';
-      echo '<tr><td colspan="6"><h3>'.$Gtrad[$magie].'</h3></td></tr>';
+      echo '<li style="height:3px !important; background: none !important; margin-top:0px !important;"><strong>'.$Gtrad[$magie].'</strong><span style="float:right;position:relative;left:12px;bottom:22px"><img src="image/interface/livres/ficelletitre.png" /></span></li>';
     }
     if(in_array($sort->get_id(), explode(';',$joueur->get_sort_jeu())))
     {
       $image = image_sort($sort->get_type());
       $incanta = $sort->get_incantation();
-      echo '
-			<div style="z-index: 3;">
-				<tr>';
+      echo '<li>';
       //On ne peut uniquement faire que les sorts qui nous target ou target tous le groupe
       $affiche = false;
       if($type_cible == 'joueur')
@@ -339,31 +349,33 @@ elseif($type_lanceur == 'joueur')
         $color = 'black';
       }
       ?>
-<td style="width: 36px;"><?php echo $image; ?>
-</td>
-<td><span style="<?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($sort->get_description(), $sort).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();">
-		<strong><?php echo $sort->get_nom(); ?> </strong> </span>
-</td>
-      <?php
-      echo '
-			<td>
-				<span class="xsmall"> '.$sortpa.' PA 
-			</td>
-			<td>
-				'.$sortmp.' MP
-			</td> 
-			<td>';
-      if($sort->get_cible() == 2 && $sort_groupe)
-      if($joueur->is_competence('sort_groupe')|| $joueur->is_competence('sort_groupe_'.$sort->get_comp_assoc())) echo ' <span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">(groupe - '.ceil($sortmp * 1.5).' MP)</span>';
+<span style="float:left; position:relative; right:7px; bottom:7px;"><?php echo $image; ?></span>
+<span style="float:left; width:130px; <?php echo $cursor; ?>; text-decoration : none; color : <?php echo $color; ?>;" onclick="<?php echo $href; ?>; return nd();" onmouseover="return <?php echo make_overlib(description($sort->get_description(), $sort).'<br/><span class=&quot;xmall&quot;>Incantation : '.$incanta.'</span>'); ?>" onmouseout="return nd();">
+	<strong><?php echo $sort->get_nom(); ?></strong> 
+</span>
+<span style="width:100px; float: right; padding-right:5px;"><?php echo $sortpa; ?>PA <?php echo $sortmp; ?>MP
 
-      if($_GET['tri'] == 'favoris') echo ' <td><a href="sort.php?action=delfavoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/croix_quitte.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a></td>';
-      else echo ' <td><a href="sort.php?action=favoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/favoris.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a></td>';
-      echo '</tr></div>';
+<?php
+      if($sort->get_cible() == 2 && $sort_groupe)
+      if($joueur->is_competence('sort_groupe')|| $joueur->is_competence('sort_groupe_'.$sort->get_comp_assoc())) echo '<span style="'.$cursor.'text-decoration : none; color : '.$color.';" onclick="'.$href2.'">G: '.ceil($sortmp * 1.5).'MP</span>';
+	  
+	  echo '</span>';
+	  echo '<span style="position:relative;bottom:39px;left:122px;">';
+      if($_GET['tri'] == 'favoris') echo '<a href="sort.php?action=delfavoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/livres/ficellefavori.png" alt="Supprimer des favoris" title="Supprimer des favoris" /></a>';
+      else echo '<a href="sort.php?action=favoris&amp;id='.$sort->get_id().'" onclick="return envoiInfo(this.href, \'information\')"><img src="image/interface/livres/ficellefavori.png" alt="Favoris" title="Ajouter aux sorts favoris" /></a>';
+      echo '</span>';
+	  
+	  echo '</li>';
       $i++;
     }
 
   }
-  echo '</table>';
+?>
+  </ul>
+	</div>
+	<div id="livre_bat"></div>
+</div>
+<?php
 }
 
 ?>

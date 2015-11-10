@@ -8,7 +8,7 @@
  * Classe comp
  * Classe comp servant de base aux compétences de combat et hors combat
  */
-class comp extends comp_sort
+abstract class comp extends comp_sort
 {
 	/**
 	 * @name Informations générales.
@@ -95,5 +95,26 @@ class comp extends comp_sort
 		return comp_sort::get_liste_update().', arme_requis = "'.mysql_escape_string($this->arme_requis).'"';
 	}
 	// @}
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function verif_prerequis(&$perso, $txt_action=false)
+  {
+  	global $Gtrad;
+  	$aptitude = $this->get_comp_assoc();
+  	$methode = 'get_'.$aptitude;
+  	$prerequis = $this->get_comp_requis();
+  	if( $perso->$methode() >= $prerequis )
+  		return true;
+  	if( $txt_action !== false )
+  	{
+  		if( $txt_action && $txt_action !== true )
+  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude].' pour '.$txt_action.' cette compétence.');
+  		else
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$prerequis.' en '.$Gtrad[$aptitude]);
+		}
+  	return false;
+	}
 }
 ?>

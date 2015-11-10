@@ -1,176 +1,126 @@
 <?php // -*- tab-width:2; mode: php -*- 
+/**
+* @file qg.php
+* Quartier général
+*/
 if (file_exists('root.php'))
   include_once('root.php');
 
-
-//Inclusion du haut du document html
 include_once(root.'inc/fp.php');
 
-$joueur = new perso($_SESSION['ID']);
-$joueur->check_perso();
-
+$interf_princ = $G_interf->creer_jeu();
 //Vérifie si le perso est mort
-verif_mort($joueur, 1);
+$perso = joueur::get_perso();
+$perso->check_perso();
+$interf_princ->verif_mort($perso);
 
-$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$joueur->get_x().' and y = '.$joueur->get_y();
+// Royaume
+///@todo à améliorer
+$W_requete = 'SELECT royaume, type FROM map WHERE x = '.$perso->get_x().' and y = '.$perso->get_y();
 $W_req = $db->query($W_requete);
 $W_row = $db->read_assoc($W_req);
 $R = new royaume($W_row['royaume']);
-$R->get_diplo($joueur->get_race());
-if ($R->is_raz())
+
+// On vérifie qu'on est bien sur une ville
+/// @todo logguer triche
+if($W_row['type'] != 1)
+	exit;
+
+// On vérifie la diplomatie
+/// @todo logguer triche
+if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+	exit;
+
+// Ville rasée
+/// @todo logguer triche
+if ($R->is_raz() && $perso->get_x() <= 190 && $perso->get_y() <= 190)
+	exit; //echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : false;
+switch($action)
 {
-	echo "<h5>Impossible de commercer dans une ville mise à sac</h5>";
-	exit (0);
-}
-echo "<fieldset>";
-if($W_row['type'] == 1)
-{
-  ?>
-  <legend><?php echo '<a href="ville.php" onclick="return envoiInfo(this.href, \'centre\')">';?><?php echo $R->get_nom();?></a> > <?php echo '<a href="qg.php" onclick="return envoiInfo(this.href, \'carte\')">';?> Quartier Général </a></legend>
-<?php include_once(root.'ville_bas.php');?>	
-	<div class="ville_test">
-<?php
-  if (array_key_exists('direction', $_GET))
+case 'prendre':
+  if ($perso->is_buff('debuff_rvr'))
   {
-    ?>
-	    <div style="text-align : center;"><a href="qg.php?direction=depot" onclick="return envoiInfo(this.href, 'carte')">Dépôt militaire</a>
-	    </div>
-	    <?php
-    switch($_GET['direction'])
-    {
-      case 'prendre':
-      if ($joueur->is_buff('debuff_rvr'))
-      {
-        echo '<h5>RvR impossible pendant la trêve</h5>';
-        break;
-      }
-      if(array_key_exists('nbr', $_GET)) $nombre = $_GET['nbr'];
-      else $nombre = 1;
-      if($nombre > 0)
-      {
-        $i = 0;
-        if ($nombre > ($G_place_inventaire - count($joueur->get_inventaire_slot_partie())))
-        {
-          $reste = $G_place_inventaire - count($joueur->get_inventaire_slot_partie()) ;
-          if($reste != 0)
-          {
-             echo '<h5>Il ne vous reste que '.$reste.' places dans votre inventaire</h5>' ;
-          }
-          else
-          {
-             echo '<h5>Plus de place dans votre inventaire<br/></h5>';
-          }
-        }
-        else
-        {
-          while($i < $nombre)
-          {
-            if(!array_key_exists('id', $_GET))
-            {
-              $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet = '".sSQL($_GET['id_objet'])."' AND objet_royaume.grade <= grade.rang  AND grade.id = ".$joueur->get_rang_royaume();
-            }
-            else
-            {
-              $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id as id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id = ".sSQL($_GET['id'])." AND grade.id = ".$joueur->get_rang_royaume()." AND objet_royaume.grade <= grade.rang AND depot_royaume.id_objet = objet_royaume.id";
-            }
-            $req = $db->query($requete);
-            $row = $db->read_array($req);
-            if($db->num_rows > 0)
-            {
-              $requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
-              if($db->query($requete2))
-              {
-                if($joueur->prend_objet('r'.$_GET['id_objet']))
-                {
-                  
-                }
-              }
-              else
-              {
-                echo $G_erreur;
-              }
-            }
-            $i++;
-          }
-          $joueur->sauver();
-          $nom = $row['nom'] ;
-          if($nombre > 1)
+  	interf_alerte::enregistre(interf_alerte::msg_erreur, 'RvR impossible pendant la trêve.');
+    break;
+  }
+  foreach( $_GET as $cle=>$nombre )
+  {
+	  if( substr($cle, 0, 3) == 'nbr' && $nombre > 0)
 	  {
-              $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
-              if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
-              {
-                  echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien prises au dépôt du royaume</h6><br />';
-              }
-              else
-              {
-                  echo '<h6>'.$nombre.' '.$tab[$row['nom']].' bien pris au dépôt du royaume</h6><br />';
-              }
-                                               
-          }
-          else
-          {
-              if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
-              {
-                  echo '<h6>'.$nombre.' '.$row['nom'].' bien prise au dépôt du royaume</h6><br />';
-              }
-              else
-              {
-                  echo '<h6>'.$nombre.' '.$row['nom'].' bien pris au dépôt du royaume</h6><br />';
-              }
-          }
-        }
-      }
-      break;
-      case 'depot' :
-   
-    $requete = "SELECT o.nom, o.type, d.id_objet, d.id AS id_depot, COUNT(*) AS nbr_objet FROM depot_royaume as d, objet_royaume as o, grade as g WHERE d.id_objet = o.id AND g.id = ".$joueur->get_rang_royaume()." AND o.grade <= g.rang AND id_royaume = ".$R->get_id()." GROUP BY d.id_objet ORDER BY o.type, o.nom ASC";
-    $type = "";
-    ?>
-    <table>
-    <?php
-        $req = $db->query($requete);
-        while($row = $db->read_assoc($req))
-        {
-            if($type <> $row['type'])
-            {
-                $type = $row['type'];
-                $tab = array("arme_de_siege"=>"Armes de siège","bourg"=>"Bourgades", "drapeau"=>"Drapeaux", "fort"=>"Forts", "mur"=>"Murs", "tour"=>"Tours") ; 
-                echo "<tr><td colspan=2 align=center><b>";
-                echo "<br />";
-                echo $tab[$type] ;
-                echo "</b></td></tr>";
-            }
-            ?>
-                <tr>
-                    <td>
-                     <?php echo $row['nom']; ?> : <?php echo $row['nbr_objet']; ?>
-                    </td>
-                    <td>
-                    <input type="text" id="nbr<?php echo $row['id_objet']; ?>" value="0" />
-                     <a href="" onclick="return envoiInfo('qg.php?direction=prendre&amp;id_objet=<?php echo $row['id_objet']; ?>&amp;nbr=' + document.getElementById('nbr<?php echo $row['id_objet']; ?>').value, 'carte')">Prendre</a>
-                    </td>
-                </tr>
-                <?php
-        }
-   
-    ?>
-   
-    </table>
-                <?php
-      break;
-    }
-  }
-  else
-  {
-    ?>
-    <ul class="ville">
-    <li>
-        <a href="qg.php?direction=depot" onclick="return envoiInfo(this.href, 'carte')">Dépôt militaire</a>
-    </li>
-    </ul>
-    </div>
-    <?php
-  }
+	  	$id_objet = substr($cle, 3);
+	  	$objet = new objet_royaume($id_objet);
+	    $i = 0;
+	    $reste = $perso->get_max_encombrement() - $perso->get_encombrement();
+	    if ( $objet->get_encombrement() * $nombre > $reste  )
+	    {
+	      if($reste != 0)
+	      {
+	  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il ne vous reste que '.$reste.' places dans votre inventaire.');
+	      }
+	      else
+	      {
+	  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Plus de place dans votre inventaire.');
+	      }
+	    }
+	    else
+	    {
+	      while($i < $nombre)
+	      {
+	      	/// @todo passer par des objets
+	        $requete = "SELECT objet_royaume.nom, depot_royaume.*, depot_royaume.id AS id_depot FROM depot_royaume, grade, objet_royaume WHERE depot_royaume.id_objet = objet_royaume.id AND id_royaume = ".$R->get_id()." AND id_objet = '".sSQL($id_objet)."' AND objet_royaume.grade <= grade.rang  AND grade.id = ".$perso->get_rang_royaume();
+	        $req = $db->query($requete);
+	        $row = $db->read_array($req);
+	        if($db->num_rows > 0)
+	        {
+	          if($perso->prend_objet('r'.$id_objet))
+	          {
+	          	$requete2 = "DELETE FROM depot_royaume WHERE id = ".$row['id_depot'];
+	            $db->query($requete2);
+	          }
+	          else
+	          {
+	  					interf_alerte::enregistre(interf_alerte::msg_erreur, $G_erreur);
+	          }
+	        }
+	        $i++;
+	      }
+	      $perso->sauver();
+				journal_royaume::ecrire_perso('prend_depot', null, $row['nom'], $nombre);
+	      if($nombre > 1)
+				{
+					/// @todo à améliorer 
+	          $tab = array("Drapeau"=>"Drapeaux","Poste avancé"=>"Postes avancés", "Fortin"=>"Fortins", "Fort"=>"Forts", "Forteresse"=>"Forteresses", "Tour de guet"=>"Tours de guet", "Tour de garde"=>"Tours de garde", "Tour de mages"=>"Tours de mages", "Tour d archers"=>"Tours d'archers", "Bourgade"=>"Bourgades", "Palissade"=>"Palissades", "Mur"=>"Murs", "Muraille"=>"Murailles", "Grande muraille"=>"Grandes murailles", "Bélier"=>"Béliers", "Catapulte"=>"Catapultes", "Trébuchet"=>"Trébuchets", "Baliste"=>"Balistes", "Grand drapeau"=>"Grands drapeaux", "Étendard"=>"Étendards", "Grand étendard"=>"Grands étendards", "Petit drapeau"=>"Petits drapeaux") ; 
+	          if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+	          {
+	  					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$row['nom']].' bien prises au dépôt du royaume.');
+	          }
+	          else
+	          {
+	  					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$tab[$row['nom']].' bien pris au dépôt du royaume.');
+	          }
+	                                           
+	      }
+	      else
+	      {
+	          if( in_array($row['nom'], array('Forteresse', 'Tour de guet', 'Tour de garde', 'Tour de mages', 'Tour d archers', 'Bourgade', 'Palissade', 'Muraille', 'Grande muraille', 'Catapulte', 'Baliste')) )
+	          {
+	  					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$row['nom'].' bien prise au dépôt du royaume.');
+	          }
+	          else
+	          {
+	  					interf_alerte::enregistre(interf_alerte::msg_succes, $nombre.' '.$row['nom'].' bien pris au dépôt du royaume.');
+	          }
+	      }
+	    }
+	  }
+	}
+  break;
 }
-echo "</fieldset>";
+$interf_princ->set_gauche( $G_interf->creer_qg($R) );
+	
+	
+	
+
 ?>

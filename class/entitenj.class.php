@@ -35,6 +35,7 @@ class entitenj extends entite
     }
 		$this->hp = $incarn->get_hp();
 		$this->hp_max = $def->get_hp();
+		$this->reserve = $def->get_reserve();
 		$this->rm_restant = $def->get_reserve();
 		$this->pa = 0;
 		$this->nom = $incarn->get_nom() ? $incarn->get_nom() : $def->get_nom();

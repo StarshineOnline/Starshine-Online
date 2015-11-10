@@ -18,7 +18,7 @@ class comp_jeu extends comp
 	protected $pa;   ///< Coût en PA de la compétence
 	
 	/// Renvoie le coût de la comptétence
-	function get_pa(&$joueur = null)
+	function get_pa(&$perso = null)
 	{
 		return $this->pa;
 	}
@@ -28,7 +28,66 @@ class comp_jeu extends comp
 		$this->pa = $pa;
 		$this->champs_modif[] = 'pa';
 	}
+	function get_image()
+	{
+		return 'image/buff/'.$this->type.'.png';
+	}
+
+  /// Renvoie la portée du sort
+	function get_portee()
+	{
+		return 7;
+	}
 	// @}
+	
+	/**
+	 * Méthode renvoyant les noms des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_noms_infos($complet=true)
+  {
+  	global $Gtrad;
+    if($complet)
+    {/// @todo à utiliser
+      return array('Description', 'PA', 'MP', 'Effet', $Gtrad[$this->comp_requis], 'Cible', 'Durée'/*, 'Prix HT (en magasin)'*/);
+    }
+    else ///@todo à faire (et à utiliser pour la liste d'achat)
+      return array(/*'Stars'*/);
+  }
+
+	/**
+	 * Méthode renvoyant les valeurs des informations sur l'objet
+	 * @param  $complet  true si on doit renvoyer toutes les informations.
+	 */
+	public function get_valeurs_infos($complet=true)
+  {
+  	global $Gtrad;
+    $vals = array($this->get_description(true), $this->pa, $this->mp, $this->effet, $this->comp_requis, $Gtrad['cible'.$this->cible], 
+		$this->duree ? transform_min_temp($this->duree) : 'instantané'/*, $this->prix*/);
+    return $vals;
+  }
+	
+  /**
+   * Vérifie si un personnage connait le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function est_connu(&$perso, $erreur=false)
+  {
+  	if( in_array($this->get_id(),  explode(';', $perso->get_comp_jeu())) )
+  		return true;
+  	if( $erreur )
+  		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne connaissez pas cette compétence !');
+  	return false;
+	}
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  function verif_prerequis(&$perso, $txt_action=false)
+  {
+  	$res = parent::verif_prerequis($perso, $txt_action);
+  	return $res && $this->verif_requis($perso->get_comp_jeu(), 'cette compétence', $txt_action);
+	}
 
 	/**
 	 * @name Accès à la base de données
@@ -143,7 +202,7 @@ class comp_jeu extends comp
 			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), 'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				$action = true;
-				echo $cible->get_nom().' a bien reçu le buff<br />';
+				interf_base::add_courr( new interf_txt($cible->get_nom().' a bien reçu le buff<br />') );
 				//Insertion du buff dans le journal du receveur
 				if( count($cibles)>1 && $cible->get_id() != $perso->get_id() )
 				{
@@ -153,8 +212,10 @@ class comp_jeu extends comp
 			}
 			else
 			{
-				if($G_erreur == 'puissant') echo $cibles.' bénéficie d\'un buff plus puissant<br />';
-				else echo $cible->get_nom().' a trop de buffs.<br />';
+				if($G_erreur == 'puissant')
+					interf_base::add_courr( new interf_txt($cibles.' bénéficie d\'un buff plus puissant<br />') );
+				else
+					interf_base::add_courr( new interf_txt($cible->get_nom().' a trop de buffs.<br />') );
 			}
 		}
 		if (substr_count($this->get_type(), "buff_cri"))
@@ -191,15 +252,17 @@ class comp_preparation_camp extends comp_jeu
 			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), time(), $this->get_duree(), $this->get_nom(), $this->get_description(true), 'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				$action = true;
-				echo $cible->get_nom().' a bien reçu le buff<br />';
+				interf_base::add_courr( new interf_txt($cible->get_nom().' a bien reçu le buff<br />') );
 				//Insertion du buff dans le journal du receveur
 				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
 				$db->query($requete);
 			}
 			else
 			{
-				if($G_erreur == 'puissant') echo $cibles.' bénéficie d\'un buff plus puissant<br />';
-				else echo $cible->get_nom().' a trop de buffs.<br />';
+				if($G_erreur == 'puissant')
+					interf_base::add_courr( new interf_txt($cibles.' bénéficie d\'un buff plus puissant<br />') );
+				else
+					interf_base::add_courr( new interf_txt($cible->get_nom().' a trop de buffs.<br />') );
 			}
 		}
 		return $action;
@@ -208,7 +271,7 @@ class comp_preparation_camp extends comp_jeu
 
 class comp_repos_interieur extends comp_jeu
 {
-
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -217,19 +280,16 @@ class comp_repos_interieur extends comp_jeu
   {
 		if($perso->is_buff('repos_interieur') AND $perso->get_buff('repos_interieur', 'effet') >= 10)
 		{
-			echo 'Vous avez trop utilisé repos intérieur pour le moment !';
+			interf_base::add_courr( new interf_txt('Vous avez trop utilisé repos intérieur pour le moment !') );
 		}
 		else
 		{
-			//echo '$joueur->get_buff(\'repos_interieur\', \'effet\') => '.$joueur->get_buff('repos_interieur', 'effet').'<br />';
 			if($perso->is_buff('repos_interieur')) $effet = $perso->get_buff('repos_interieur', 'effet') + 1;
 			else $effet = 1;
-			//echo '$effet => '.$effet.'<br />';
 			if(lance_buff('repos_interieur', $perso->get_id(), $effet, 0, (60 * 60 * 24), $this->get_nom(), $this->formate_description($this->get_description().'<br /> Utilisation '.$effet.' / 10'), 'perso', 1, 0, 0, 0))
 			{
-				echo 'Le buff a été envoyé<br />';
+				interf_base::add_courr( new interf_txt('Le buff a été lancé<br />') );
 				$perso->set_pa($perso->get_pa() + 2);
-				echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		    return true;
 			}
 		}
@@ -239,6 +299,7 @@ class comp_repos_interieur extends comp_jeu
 
 class comp_esprit_libre extends comp_jeu
 {
+	const propose_relance = true;
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -258,18 +319,16 @@ class comp_esprit_libre extends comp_jeu
       }
       
     if(count($debuff_tab) > 0)
-    {
-		$id_debuff = $debuff_tab[rand(0, count($debuff_tab)-1)];
-	}
-	$buff = buff::create('id', $id_debuff);
-	
-	$debuff = sort_jeu::create('nom', $buff[0]->get_nom());
-	
-	// On recherche si le sort a un antécédent
+			$id_debuff = $debuff_tab[rand(0, count($debuff_tab)-1)];
+		$buff = buff::create('id', $id_debuff);
+		
+		$debuff = sort_jeu::create('nom', $buff[0]->get_nom());
+		
+		// On recherche si le sort a un antécédent
     $nouv = $debuff[0]->get_obj_requis();
     $action= false;
     //Si il a un antécédent on le modifie
-	if( $nouv )
+		if( $nouv )
     {
 		  $buff[0]->set_nom( $nouv->get_nom() );
 		  $buff[0]->set_effet( $nouv->get_effet() );
@@ -281,10 +340,9 @@ class comp_esprit_libre extends comp_jeu
     else //sinon on le supprime
     {
       $perso->supprime_buff( $buff[0]->get_type() );
-	  $buff[0]->supprimer();
-	  $action = true;
+		  $buff[0]->supprimer();
+		  $action = true;
     }
-		echo '<a href="competence_jeu.php?ID='.$this->get_id().'" onclick="return envoiInfo(this.href, \'information\')">Utilisez a nouveau cette compétence</a>';
 		return $action;
   }
 }
@@ -302,7 +360,6 @@ class comp_longue_portee extends comp_jeu
 
 class comp_invocation_pet extends comp_jeu
 {
-
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -310,7 +367,7 @@ class comp_invocation_pet extends comp_jeu
   function lance($perso)
   {
     global $db;
-	$perso->check_materiel();
+		$perso->check_materiel();
 		$id_pet = 0;
 		switch (strtolower($perso->get_classe()))
 		{
@@ -344,29 +401,29 @@ class comp_invocation_pet extends comp_jeu
 		{
 			if ($cur_pet->get_monstre()->get_level() == 0)
 			{
-				echo "<h5>Vous avez déjà un compagnon invoqué</h5>";
+				interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous avez déjà un compagnon invoqué') );
 				$id_pet = -1;
 				break;
 			}
 		}
 		if ($id_pet == -1)
-			break;
+			return;
 		if ($id_pet != 0)
 		{
 			if ($perso->add_pet($id_pet))
 			{
-				echo "$pet bien invoqué";
+				interf_base::add_courr( new interf_txt($pet.' bien invoqué') );
 				return true;
 			}
 			else
 			{
-				echo "<h5>Impossible d'ajouter le pet: trop de pets</h5>";
+				interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible d\'ajouter le pet: trop de pets') );
 				return false;
 			}
 		}
 		else
 		{
-			echo "<h5>Impossible de trouver un monstre à invoquer</h5>";
+			interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Impossible de trouver un monstre à invoquer') );
 			return false;
 		}
   }
@@ -374,7 +431,6 @@ class comp_invocation_pet extends comp_jeu
 
 class comp_sabotage extends comp_jeu
 {
-
 	/**
 	 * Méthode gérant l'utilisation de la compétence
 	 * @param $perso   Personnage lançant la coméptence
@@ -405,16 +461,16 @@ class comp_sabotage extends comp_jeu
 				$b->id.", $date_fin, ".$this->get_duree().", 'sabotage', 1) ".
 				'ON DUPLICATE KEY UPDATE date_fin = VALUES(date_fin)';
 			$req = $db->query($sql3);
-			if ($req) {
-					echo "Bâtiment saboté.<br/>";
-					return true;
-			} else {
-				echo "<h5>Erreur SQL ???</h5>";
+			if ($req)
+			{
+				interf_base::add_courr( new interf_alerte(interf_alerte::msg_succes, false, false, 'Bâtiment saboté.') );
+				return true;
 			}
+			else
+				interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Erreur SQL ???') );
 		}
-		else {
-			echo "<h5>Pas de cible sur la case</h5>";
-		}
+		else
+			interf_base::add_courr( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Pas de cible sur la case') );
 		return false;
   }
 }

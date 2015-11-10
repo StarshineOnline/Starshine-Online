@@ -12,6 +12,12 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 	$G_revision = 124;
 
   $G_mailto = 'masterob1@free.fr';
+  
+  $G_date_debut = 1357254000;
+  $G_tps_avanc = array(60,365,700,1000);
+
+	/// Nombre maximal de perosnnage par joueur
+	$G_nbr_max_persos = 1;
 
 	$G_ligne = 1000;
 	$G_colonne = 1000;
@@ -71,6 +77,7 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 	$G_round_total = 10;
 	/// Nombre de p
 	$G_place_inventaire = 20;
+	$G_max_encombrement = 200;
 	/// Taux d'apparition des monstres. Plus le spawn rate est élevé, plus les mobs popent
 	$G_spawn_rate = 19;
 	$G_apprentissage_rate = 0.7;
@@ -224,6 +231,8 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
 				 
   /// id d'utilisateur du forum à utiliser pour les posts automatiques
   $G_id_forum = 2;
+  /// id du poste du forum pour les informations (0 pour désactiver)
+  $G_sujet_infos = 0;
 
   /// utiliser les calques
   $G_use_atmosphere = true;

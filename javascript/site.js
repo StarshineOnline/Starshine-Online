@@ -64,7 +64,7 @@ function validation_perso()
 		$('#creation_box').load('./site_accueil_creation.php?type=perso&race='+perso[0]+'&classe='+perso[1]+'&pseudo='+encodeURIComponent($('#creat_nom').val()));
 		$('#personnage').hide();
 	}
-}
+}ù
 
 function validation_joueur()
 {

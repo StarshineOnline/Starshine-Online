@@ -24,7 +24,7 @@ class crime
 			{
 				$points = $G_crime_soin[$row[0]];
 				$perso->set_crime($perso->get_crime() + $points);
-				echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 			}
 		}
 	}
@@ -48,7 +48,7 @@ class crime
 			{
 				$points = $G_crime_sort[$row[0]];
 				$perso->set_crime($perso->get_crime() + $points);
-				echo '<h5>Vous buffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous buffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 			}
 		}
 	}	
@@ -73,7 +73,7 @@ class crime
 			{
 				$points = $G_crime_rez[$row[0]];
 				$perso->set_crime($perso->get_crime() + $points);
-				echo '<h5>Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous soignez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 			}
 		}
 	}
@@ -98,7 +98,7 @@ class crime
 			{
 				$points = $G_crime_sort[$row[0]];
 				$perso->set_crime($perso->get_crime() + $points);
-				echo '<h5>Vous debuffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous debuffez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 			}
 		}
 	}
@@ -153,13 +153,13 @@ class crime
 				{
 					$points = ($G_crime_kill[$row[0]] / 4);
 					$perso->set_crime($perso->get_crime() + $points);
-					echo '<h5>Vous attaquez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+					interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous attaquez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 				}
 				else if (!$pascrime && $cible->get_hp() < 0)
 				{
 					$points = ($G_crime_kill[$row[0]]);
 					$perso->set_crime($perso->get_crime() + $points);
-					echo '<h5>Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+					interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous tuez un joueur en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 				}
 			}
 		}
@@ -193,7 +193,7 @@ class crime
 			{
 				$points = ceil(( $G_crime_batiment[$row[0]] / $facteur ));
 				$perso->set_crime($perso->get_crime() + $points);
-				echo '<h5>Vous attaquez un batiment en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_warning, 'Vous attaquez un batiment en '.$Gtrad['diplo'.$row[0]].', vous recevez '.$points.' point(s) de crime'); 
 			}
 		}
 		

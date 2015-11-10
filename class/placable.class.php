@@ -91,6 +91,22 @@ abstract class placable extends table
 		return convert_in_pos($this->x, $this->y);
 	}
 	
+	/**
+	 * Renvoie la distance avec un autre objet ou des coordonnées
+	 * @param  $x		Coordonnée x ou objet	 
+	 * @param  $y		Coordonée y
+	 * @return 		distance	 	 
+	 */	 
+	function calcule_distance($x, $y=null)
+	{
+		if( is_object($x) )
+		{
+			$y = $x->get_y();
+			$x = $x->get_x();
+		}
+		return max(abs($this->x - $x), abs($this->y - $y));
+	}
+	
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{

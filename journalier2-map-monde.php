@@ -31,16 +31,16 @@ function do_map($file, $fog = true) {
 		or die ("Impossible d'initialiser la bibliothèque GD");
 	$background_color = imagecolorallocate ($im, 255, 255, 255);
 
-	$color1 = imagecolorallocate($im, 0x66, 0xdd, 0x66);  ///< couleur de la plaine
-	$color2 = imagecolorallocate($im, 0x00, 0x99, 0x00);  ///< couleur de la forêt
-	$color3 = imagecolorallocate($im, 0xff, 0xff, 0x00);  ///< couleur du désert
-	$color4 = imagecolorallocate($im, 0xff, 0xff, 0xff);  ///< couleur de la banquise
-	$color5 = imagecolorallocate($im, 0x00, 0x00, 0xff);  ///< couleur de l'eau
-	$color6 = imagecolorallocate($im, 0xcc, 0xcc, 0xcc);  ///< couleur de la route
-	$color7 = imagecolorallocate($im, 0xaa, 0xaa, 0xaa);  ///< couleur des capitales
-	$color8 = imagecolorallocate($im, 0x5d, 0x43, 0x00);  ///< couleur de la montagne
-	$color9 = imagecolorallocate($im, 0x00, 0x00, 0x00);  ///< couleur des marais
-	$color11 = imagecolorallocate($im, 0x41, 0x35, 0x3e); ///< couleur de la terre maudite
+	$color1 = imagecolorallocate($im, 0x9a, 0xcd, 0x32);  ///< couleur de la plaine
+	$color2 = imagecolorallocate($im, 0x00, 0x80, 0x00);  ///< couleur de la forêt
+	$color3 = imagecolorallocate($im, 0xf0, 0xe6, 0x8c);  ///< couleur du désert
+	$color4 = imagecolorallocate($im, 0xe0, 0xff, 0xff);  ///< couleur de la banquise
+	$color5 = imagecolorallocate($im, 0x46, 0x82, 0xb4);  ///< couleur de l'eau
+	$color6 = imagecolorallocate($im, 0xd3, 0xd3, 0xd3);  ///< couleur de la route
+	$color7 = imagecolorallocate($im, 0x70, 0x80, 0x90);  ///< couleur des capitales
+	$color8 = imagecolorallocate($im, 0xa0, 0x52, 0x2d);  ///< couleur de la montagne
+	$color9 = imagecolorallocate($im, 0xda, 0xA5, 0x20);  ///< couleur des marais
+	$color11 = imagecolorallocate($im, 0x69, 0x69, 0x69); ///< couleur de la terre maudite
 	$colorHidden = imagecolorallocate($im, 0xe2, 0xd4, 0x9e); ///< couleur case masquée
 	$show_info[0] = $color1;
 	$show_info[1] = $color1;

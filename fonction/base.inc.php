@@ -480,7 +480,7 @@ function ressource_terrain($terrain)
  * 
  * @return numéro du type de terrain si la case appartient à un royaume false sinon.
  */
-function is_ville($x, $y = false)
+function is_ville($x, $y = false, $acces=false)
 {
 	if($y == false)
 	{
@@ -492,8 +492,20 @@ function is_ville($x, $y = false)
 	$requete = "SELECT type, royaume FROM map WHERE x = $x and y = $y";
 	$req = $db->query($requete);
 	$row = $db->read_row($req);
-	if($row[1] != 0) return $row[0];
-	else return false;
+	if($row[1] != 0)
+	{
+		if( $acces )
+		{
+			// On vérifie que la diplomatie permet l'accès
+			$R = new royaume($row[1]);
+			$perso = joueur::get_perso();
+			if( $R->get_diplo($perso->get_race()) != 127 && $R->get_diplo($perso->get_race()) >= 7 )
+				return false;
+		}
+		return $row[0];
+	}
+	else
+		return false;
 }
 
 /**
@@ -1561,7 +1573,7 @@ function diff_sort($difficulte, $joueur, $type, $sortpa, $sortmp)
 	return $total;
 }
 
-function augmentation_competences($liste_augmentations, $joueur)
+function augmentation_competences($liste_augmentations, &$joueur)
 {
   /*echo 'augmentation_competences :';
   print_r($liste_augmentations);*/
@@ -1609,7 +1621,7 @@ function merge_augmentations($a1, $a2)
  * @return  [0]     Nouvelle valeur de la compétence.
  * @return  [1]     1 s'il y a augmentation, 0 sinon.
  */ 
-function augmentation_competence($competence, $joueur, $difficulte)
+function augmentation_competence($competence, &$joueur, $difficulte)
 {
 	global $db, $Tmaxcomp, $G_apprentissage_rate, $debugs;
 	$R_retour = array('melee', false);
@@ -1629,15 +1641,13 @@ function augmentation_competence($competence, $joueur, $difficulte)
 		{
 			$max = $Tmaxcomp[$competence];
 		}
-		echo '
-		<div id="debug'.$debugs.'" class="debug" style="color : #ff00c0;">
-		<br />Valeur maximale en '.$competence.' : '.$max.'<br />';
+		$dbg = interf_debug::enregistre('Valeur maximale en '.$competence.' : '.$max, 'dbg_apt');
 		// On se base sur le joueur et non le perso, sinon on perds les montees
 		// des rounds precedents vu qu'on ne sauve qu'a la fin
 		$val_competence = $joueur->get_comp($competence, true);
 
-		echo 'Valeur actuelle en '.$competence.' : '.$val_competence.'<br />
-		Difficulté : '.$difficulte.'<br />';
+		$dbg->add_message('Valeur actuelle en '.$competence.' : '.$val_competence);
+		$dbg->add_message('Difficulté : '.$difficulte);
 		// Si la compétence n'a pas atteint sa valeur maximale, on effectue le jet d'amélioration
 		if($val_competence < $max)
 		{
@@ -1649,11 +1659,11 @@ function augmentation_competence($competence, $joueur, $difficulte)
 			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
 			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
 			$R_retour[1] = false;
-			echo 'Chances : <br />';
-			echo 'Jet d\'un dé à : '.$reussite.' faces.<br />';
-			echo 'Le résultat doit être inférieur à <b>'.round($chance,0).'</b> <br />
-				   soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence.'<br />';
-			echo 'Résultat : <b>'.$numero.'</b><br />';
+			$dbg->add_message('Chances : ');
+			$dbg->add_message('Jet d\'un dé à : '.$reussite.' faces.<br />');
+			$dbg->add_message('Le résultat doit être inférieur à <b>'.round($chance,0).'</b>');
+			$dbg->add_message('soit '.round($chance * 100 / $reussite,2).'% de chance de gagner un point en '.$competence);
+			$dbg->add_message('Résultat : <b>'.$numero.'</b>');
 			//Si le numero est inférieur a chance, alors la compétence augmente d'un
 			if($numero < $chance)
 			{
@@ -1664,12 +1674,8 @@ function augmentation_competence($competence, $joueur, $difficulte)
 				$R_retour[1] = true;
 			}
 			else
-			{
-				echo 'La compétence n\'augmente pas.<br />';
-			}
+				$dbg->add_message('La compétence n\'augmente pas');
 		}
-		echo '</div>';
-		$debugs++;
 		if ($R_retour[1] == true/* && $perso->get_id() == $_SESSION['ID'] */)
 			print_montee_comp($perso->get_nom(), $R_retour[0], $competence);
 	}
@@ -2010,6 +2016,7 @@ function description($texte, $objet)
  * 
  * @param  $texte     Texte à afficher dans le lien.
  * @param  $poscase   Position du personnage.   
+ * @deprecated 
  */ 
 function return_ville($texte, $poscase)
 {
@@ -2025,6 +2032,7 @@ function return_ville($texte, $poscase)
 * @access public
 * @param string $texte, int $poscase
 * @return null
+* @deprecated
 */
 function return_gestion_royaume($texte, $poscase)
 {
@@ -2111,6 +2119,7 @@ function lance_buff($type, $id, $effet, $effet2, $duree, $nom, $description, $ty
  * @param  $var                         Choix de rez (1 : page de rez, 2 : capitale, 3 : sort, 4 : fort )
  * @param  $duree_debuff                Durée du mal de rez
  * @param  $multiplicateur_mouvement    Multiplicateur de mouvement du mal de rez.
+ * @deprecated 
  */
 function verif_mort($pourcent, $var, $duree_debuff=0, $multiplicateur_mouvement=0)
 {
@@ -2149,11 +2158,10 @@ function genere_image_pa($joueur)
  */
 function genere_image_buff_duree($buff)
 {//-- Barre durée restante du buff
-	$ratio_buff_duree = floor(10 * (($buff->get_fin() - time()) / ($buff->get_duree())));
-	if($ratio_buff_duree > 10) 	{ $ratio_buff_duree = 10; };
-	if($ratio_buff_duree < 0) 	{ $ratio_buff_duree = 0; };
-	$barre_buff_duree = "image/barre/buff_duree".$ratio_buff_duree.".png";
-	return "<img src='".$barre_buff_duree."' class='buff_duree_restante' alt='duree buff' />";
+	$ratio_buff_duree = floor(100 * (($buff->get_fin() - time()) / ($buff->get_duree())));
+	return " <div class='progress progress-danger' style='height:3px;margin-top:1px;'><div class='bar' style='width: ".($ratio_buff_duree)."%;'></div></div>";
+
+	//return "<img src='".$barre_buff_duree."' class='buff_duree_restante' alt='duree buff' />";
 }
 
 /**
@@ -2505,133 +2513,133 @@ function image_sort($type)
 	{
 		case 'vie' :
 		case 'vie_pourcent' :
-			return '<img src="image/sort/sort_soins1.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/sort/sort_soins1.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_critique' :
-			return '<img src="image/buff/buff_critique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_critique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_bouclier' :
-			return '<img src="image/buff/buff_bouclier.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_bouclier.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_evasion' :
-			return '<img src="image/buff/buff_evasion.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_evasion.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_inspiration' :
-			return '<img src="image/buff/buff_inspiration.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_inspiration.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_force' :
-			return '<img src="image/buff/buff_force.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_force.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_barriere' :
-			return '<img src="image/buff/buff_barriere.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_barriere.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_colere' :
-			return '<img src="image/buff/buff_colere.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_colere.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_meditation' :
-			return '<img src="image/buff/buff_meditation.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_meditation.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_surpuissance' :
-			return '<img src="image/buff/buff_surpuissance.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_surpuissance.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_concentration' :
-			return '<img src="image/buff/buff_concentration.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_concentration.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_furie_magique' :
-			return '<img src="image/buff/buff_furie_magique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_furie_magique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_rapidite' :
-			return '<img src="image/buff/buff_rapidite.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_rapidite.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_rage_vampirique' :
-			return '<img src="image/buff/buff_rage_vampirique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_rage_vampirique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_bouclier_sacre' :
-			return '<img src="image/buff/buff_bouclier_sacre.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_bouclier_sacre.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_armure_glace' :
-			return '<img src="image/buff/buff_armure_glace.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_armure_glace.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_epine' :
-			return '<img src="image/buff/buff_epine.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_epine.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'buff_sacrifice' :
-			return '<img src="image/buff/buff_sacrifice.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/buff_sacrifice.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_aveuglement' :
-			return '<img src="image/buff/debuff_aveuglement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_aveuglement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_desespoir' :
-			return '<img src="image/buff/debuff_desespoir.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_desespoir.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_ralentissement' :
-			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_enracinement' :
-			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'engloutissement' :
-			return '<img src="image/buff/engloutissement.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/engloutissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'deluge' :
-			return '<img src="image/buff/deluge.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/deluge.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'blizzard' :
-			return '<img src="image/buff/blizzard.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/blizzard.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'orage_magnetique' :
-			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/orage_magnetique.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'balance' :
-			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/balance.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_eau' :
-			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_eau.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_feu' :
-			return '<img src="image/buff/bouclier_feu.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_feu.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bouclier_terre' :
-			return '<img src="image/buff/bouclier_terre.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bouclier_terre.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'rez' :
-			return '<img src="image/buff/rez.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/rez.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'teleport' :
-			return '<img src="image/buff/teleport.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/teleport.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'body_to_mind' :
-			return '<img src="image/buff/body_to_mind.jpg" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/body_to_mind.jpg" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'repos_sage' :
-			return '<img src="image/buff/repos_sage.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/repos_sage.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'bulle_sanctuaire' :
-			return '<img src="image/buff/bulle_sanctuaire.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/bulle_sanctuaire.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'guerison' :
-			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/guerison.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_mollesse' :
-			return '<img src="image/buff/maladie_mollesse.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_mollesse.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_degenerescence' :
-			return '<img src="image/buff/maladie_degenerescence.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_degenerescence.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'maladie_amorphe' :
-			return '<img src="image/buff/maladie_amorphe.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/maladie_amorphe.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'souffrance_extenuante' :
-			return '<img src="image/buff/souffrance_extenuante.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/souffrance_extenuante.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'esprit_sacrifie' :
-			return '<img src="image/buff/esprit_sacrifie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/esprit_sacrifie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'lente_agonie' :
-			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/lente_agonie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'transfert_energie' :
-			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" />';
+			return '<img src="image/buff/transfert_energie.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 	}
 }
@@ -2661,6 +2669,7 @@ function pourcent_reussite($base, $difficulte)
  * Renvoie le code HTML permettant le rafraichissement des informations sur le personnage.
  * 
  * @return    Code HTML.
+ * @deprecated 
  */   
 function refresh_perso()
 {
@@ -2674,6 +2683,7 @@ function refresh_perso()
  * @param  $joueur    Tableau associatif décrivant le joueur.
  * 
  * @return    Code HTML décrivant la ligne.  
+ * @depreacted 
  */
 function affiche_condition($action, $joueur, $check_pet)
 {
@@ -2803,6 +2813,7 @@ function affiche_condition($action, $joueur, $check_pet)
  * @param  $joueur    Tableau associatif décrivant le joueur.
  * 
  * @return    Code HTML décrivant la ligne.  
+ * @deprecated 
  */
 function affiche_condition_session($action, $joueur, $check_pet)
 {
@@ -2951,6 +2962,7 @@ function verif_batiment($x, $y, $r)
  *  de balises <pre>
  *  
  * @param  $v   Variable dont ont veut afficher les informations.  
+ * @depreacted 
  */
 function aff_var($v)
 {
@@ -3154,6 +3166,7 @@ function list_construction_visu($joueur, $distance)
 	return $ret;
 }
 
+/// @depreacted
 function corrige_bonus_ignorables($attaquant, $defenseur, $mode, &$args, &$args_def)
 {
 	if($mode == 'attaquant') $mode_def = 'defenseur'; else $mode_def = 'attaquant';
@@ -3222,20 +3235,20 @@ function is_nobuild_type($type)
 
 function pose_drapeau_roi($x, $y)
 {
-	global $joueur;
 	global $db;
 	global $Trace;
 	global $G_max_x, $G_max_y;
+	$perso = joueur::get_perso();
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
-	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
+	if ($perso->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
-	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+	if (!verif_ville($perso->get_x(), $perso->get_y())) {
 		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
 		return false;
 	}
 
-	$race = $Trace[$joueur->get_race()]['numrace'];
+	$race = $Trace[$perso->get_race()]['numrace'];
 
 	$req = $db->query("select 1 from map where royaume = $race and ((x = $x + 1 and y = $y) or (x = $x - 1 and y = $y) or (x = $x and y = $y + 1) or (x = $x and y = $y - 1))");
 	if ($db->num_rows($req) < 1) security_block(URL_MANIPULATION); // Pas de case adjacente
@@ -3259,7 +3272,7 @@ function pose_drapeau_roi($x, $y)
 
 	$drapeau_id = $row['bid'];
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit 1");
-	$distance = abs($Trace[$joueur->get_race()]['spawn_x'] - $x) + abs($Trace[$joueur->get_race()]['spawn_y'] - $y);
+	$distance = abs($Trace[$perso->get_race()]['spawn_x'] - $x) + abs($Trace[$perso->get_race()]['spawn_y'] - $y);
 	$time = time() + ($row['temps_construction'] * $distance);
 	$requete = "
 		INSERT INTO placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
@@ -3270,19 +3283,19 @@ function pose_drapeau_roi($x, $y)
 
 function pose_drapeau_roi_all()
 {
-	global $joueur;
 	global $db;
 	global $Trace;
 	global $G_max_x, $G_max_y;
+	$perso = joueur::get_perso();
 
 	if ($x > $G_max_x || $x < 0 || $y > $G_max_y || $y < 0) security_block(URL_MANIPULATION); // Case invalide
-	if ($joueur->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
+	if ($perso->get_rang_royaume() != 6) security_block(URL_MANIPULATION); // Pas roi
 
-	if (!verif_ville($joueur->get_x(), $joueur->get_y())) {
+	if (!verif_ville($perso->get_x(), $perso->get_y())) {
 		echo "<h5>Vous n'êtes pas à la capitale !</h5>";
 		return false;
 	}
-	$race = $Trace[$joueur->get_race()]['numrace'];
+	$race = $Trace[$perso->get_race()]['numrace'];
 
 	
 	$req = $db->query("
@@ -3306,7 +3319,7 @@ function pose_drapeau_roi_all()
 	$nb = min($nb_cases, $nb_drapeaux);
 	$req = $db->query("delete from depot_royaume where id_objet = $row[oid] and id_royaume = $race limit $nb");
 	$time = time();
-	$expr_distance = '(abs('.$Trace[$joueur->get_race()]['spawn_x'].' - x) + abs('.$Trace[$joueur->get_race()]['spawn_y'].' - y))';
+	$expr_distance = '(abs('.$Trace[$perso->get_race()]['spawn_x'].' - x) + abs('.$Trace[$perso->get_race()]['spawn_y'].' - y))';
 	$req = $db->query("
 		INSERT into placement (type, x, y, royaume, debut_placement, fin_placement, id_batiment, hp, nom, rez)
 		SELECT 'drapeau', x, y, $race, $time, $time + ($row[temps_construction] * $expr_distance), $row[bid], 1, '".$db->escape($row['bnom'])."', 0
@@ -3321,7 +3334,7 @@ function make_tmp_adj_tables($roy_id)
 
 	$db->query("drop table if exists tmp_royaume, tmp_adj, tmp_adj_lib");
 	// On va utiliser des tables temporaires car la requete kifaitout prends ~30 s à s'effectuer
-	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id";
+	$req1 = "create temporary table tmp_royaume as select x,y from map where royaume = $roy_id and x <= 190 and y <= 190";
 	$db->query($req1); // on prends le royaume
 	$req15 = "alter table tmp_royaume ADD INDEX (x), ADD INDEX (y), ADD INDEX (x, y)";
 	$db->query($req15); // on crée des index pour éviter de faire des requêtes de 2 minutes 40 qui bouffent 98% du CPU
@@ -3637,3 +3650,29 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
 	}
 	else return 0;
  }
+
+function ref_niveau()
+{
+	global $G_date_debut, $G_tps_avanc;
+	$tps = (time() - $G_date_debut) / (24*3600);
+	if( $tps <= $G_tps_avanc[0] )
+		return 4 * $tps / $G_tps_avanc[0];
+	else if( $tps <= $G_tps_avanc[1] )
+		return 4 + 5 * ($tps - $G_tps_avanc[0]) / ($G_tps_avanc[1] - $G_tps_avanc[0]);
+	else if( $tps <= $G_tps_avanc[2] )
+		return 9 + 5 * ($tps - $G_tps_avanc[1]) / ($G_tps_avanc[2] - $G_tps_avanc[1]);
+	else if( $tps <= $G_tps_avanc[3] )
+		return 14 + 6 * ($tps - $G_tps_avanc[2]) / ($G_tps_avanc[3] - $G_tps_avanc[2]);
+	else
+		return 20;
+}
+
+function remplace_accents($string)
+{
+  return str_replace( array('à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string);
+}
+
+function normalise_nom($string)
+{
+  return strtolower( remplace_accents( str_replace(' ', '_', $string) ) );
+}

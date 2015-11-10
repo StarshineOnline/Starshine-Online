@@ -269,9 +269,11 @@ function affiche_construction_visu($joueur, $W_row, $position="")
 
 function print_montee_comp($nom, $valeur, $comp) {
 	global $Gtrad;
-	echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
+	//echo "&nbsp;&nbsp;<span class=\"augcomp\"><strong>$nom</strong> est maintenant à $valeur en $Gtrad[$comp]</span><br />";
+	interf_base::add_courr( new interf_bal_smpl('span', '<strong>'.$nom.'</strong> est maintenant à '.$valeur.' en '.$Gtrad[$comp], false, 'augcomp') );
 }
 
+/// @deprecated
 function print_debug($msg) {
 	global $debugs;
   if (!isset($debugs))
@@ -293,6 +295,7 @@ function my_log($log)
 		fwrite($logfile, print_r($log, true));
 }
 
+/// @deprecated
 function print_dataTables($fields, $data, $id = null)
 {
 	if ($id == null) $id = 'datatable'.rand();
@@ -308,6 +311,7 @@ function print_dataTables($fields, $data, $id = null)
 	print_js_onload('$("#'.$id.'").dataTable({ "sPaginationType": "full_numbers" });');
 }
 
+/// @deprecated
 function print_reload_area($url, $area)
 {
 	echo '<script type="text/javascript">envoiInfo(\''.
@@ -394,12 +398,12 @@ function print_batiment_buff($buffs)
 
 function check_son_ambiance()
 {
-	global $joueur;
 	global $db;
-	if ($joueur->get_option('no_sound'))
+	$perso = joueur::get_perso();
+	if ($perso->get_option('no_sound'))
 		return;
-	$x = $joueur->get_x();
-	$y = $joueur->get_y();
+	$x = $perso->get_x();
+	$y = $perso->get_y();
 	$son = $db->query_get_object("select type from map_sound_zone where x1 <= $x and $x <= x2 and y1 <= $y and $y <= y2");
 	if ($son) {
 		print_js_onload("setAmbianceAudio('$son->type');");

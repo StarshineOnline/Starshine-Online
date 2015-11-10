@@ -153,8 +153,6 @@ class messagerie_thread
 		if($id_joueur != '') $and_joueur = ' AND messagerie_etat.id_dest = '.$id_joueur;
 		else $and_joueur = '';
 		$count = 0;
-		//$requete = "SELECT id_message FROM messagerie_message WHERE id_thread = ".$this->id_thread.$and_joueur;
-		//echo $requete;
 		//Permet de trouver aussi les messages de groupe
 		$requete = "SELECT id_message_etat as total FROM messagerie_etat " .
 				"LEFT JOIN messagerie_message ON messagerie_message.id_message = messagerie_etat.id_message " .

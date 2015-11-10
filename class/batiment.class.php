@@ -26,6 +26,7 @@ class batiment extends entitenj_def
 	protected $temps_construction_min;///< Temps de construction minimal du bâtiment.
 	protected $image;  ///< Image du bâtiment.
 	protected $point_victoire;  ///< Points de victoire gagnés lors de la destruction du bâtiment.
+	protected $quete;  ///< id de l'étape de la quête liée au bâtiment
 
 	/// Renvoie le coût d'achat en stars du bâtiment
 	function get_cout()
@@ -146,10 +147,11 @@ class batiment extends entitenj_def
 		if($resolution != 'high') $image = $root."image/batiment_low/";
 		else $image = $root."image/batiment/";
 
-		if(file_exists($image.$this->image."_04.png")) 		{ $image .= $this->image."_04.png"; }
+		/*if(file_exists($image.$this->image."_04.png")) 		{ $image .= $this->image."_04.png"; }
 		elseif(file_exists($image.$this->image."_04.gif")) 	{ $image .= $this->image."_04.gif"; }
 		else 														{ $image = ""; } //-- Si aucun des fichiers n'existe autant rien mettre...
-		return $image;
+		return $image;*/
+		return $image.$this->image.'_04.png';
 	}
 	/// Modifie l'image du bâtiment
 	function set_image($image)
@@ -168,6 +170,11 @@ class batiment extends entitenj_def
 	{
 		$this->point_victoire = $point_victoire;
 		$this->champs_modif[] = 'point_victoire';
+	}
+	
+	function get_quete()
+	{
+		return $this->quete;
 	}
 	
 	/**
@@ -240,7 +247,7 @@ class batiment extends entitenj_def
 	 * @param  $image                 	Image du bâtiment.
 	 * @param  $point_victoire        	Points de victoire gagnés lors de la destruction du bâtiment.
 	 */
-	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '',$temps_construction_min = '', $image = '', $point_victoire = '')
+	function __construct($id = 0, $nom = '', $description = '', $type = '', $cout = '', $entretien = '', $cond1 = '', $cond2 = '', $hp = '', $PP = '', $PM = '', $carac = '', $upgrade = '', $augmentation_pa = '', $temps_construction = '',$temps_construction_min = '', $image = '', $point_victoire = '', $quete = 0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -260,6 +267,8 @@ class batiment extends entitenj_def
 			$this->temps_construction = $temps_construction;
 			$this->temps_construction_min = $temps_construction_min;
 			$this->image = $image;
+			$this->point_victoire = $point_victoire;
+			$this->quete = $quete;
 		}
 	}
 
@@ -281,22 +290,23 @@ class batiment extends entitenj_def
 		$this->temps_construction_min = $vals['temps_construction_min'];
 		$this->image = $vals['image'];
 		$this->point_victoire = $vals['point_victoire'];
+		$this->quete = $vals['quete'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction,temps_construction_min, image, point_victoire';
+    return entitenj_def::get_liste_champs().', cout, entretien, cond1, cond2, carac, upgrade, augmentation_pa, temps_construction,temps_construction_min, image, point_victoire, quete';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->temps_construction_min.', '.$this->image.', '.$this->point_victoire;
+		return entitenj_def::get_valeurs_insert().', '.$this->cout.', '.$this->entretien.', '.$this->cond1.', '.$this->cond2.', '.$this->carac.', '.$this->upgrade.', '.$this->augmentation_pa.', '.$this->temps_construction.', '.$this->temps_construction_min.', '.$this->image.', '.$this->point_victoire.', '.$this->quete;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', temps_construction_min = '.$this->temps_construction_min.', image = '.$this->image.', point_victoire = '.$this->point_victoire;
+		return entitenj_def::get_liste_update().', cout = '.$this->cout.', entretien = '.$this->entretien.', cond1 = '.$this->cond1.', cond2 = '.$this->cond2.', carac = '.$this->carac.', upgrade = '.$this->upgrade.', augmentation_pa = '.$this->augmentation_pa.', temps_construction = '.$this->temps_construction.', temps_construction_min = '.$this->temps_construction_min.', image = '.$this->image.', point_victoire = '.$this->point_victoire.', quete = '.$this->quete;
 	}
 	// @}
 
@@ -335,8 +345,8 @@ class batiment extends entitenj_def
 			return false;
 	}
   /**
-   * Renvoie les informations sur un bonus donné ou false s'il n'est aps accessible
-   * Si $bonus vaut null, alors tous les bonus sotn renvoyés comme pour get_boni()
+   * Renvoie les informations sur un bonus donné ou false s'il n'est pas accessible
+   * Si $bonus vaut null, alors tous les bonus sont renvoyés comme pour get_boni()
    */
 	function get_bonus($bonus)
 	{
@@ -477,12 +487,16 @@ class batiment extends entitenj_def
 	function get_arme_degat($perso=null, $adversaire=null)
   {
     if( $adversaire != null && $adversaire->get_type_def() == 'arme_de_siege')
+    {
       $degats = $this->get_bonus('degats_siege');
+		}
     else
+    {
       $degats = $this->get_bonus('degats_bat');
+		}
     if( $degats === false )
       return 0;
-    elseif( $perso != null && $perso->get_race() == 'barbare' )
+    else if( $perso != null && $perso->get_race() == 'barbare' )
       return ceil($degats * 1.1);
     else
       return $degats;

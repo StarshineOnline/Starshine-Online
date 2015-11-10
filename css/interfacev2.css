@@ -584,6 +584,48 @@ tr.tabMonstre td { border:1px solid grey; text-align:center; padding:2px; }
 	margin-left : 40px;
 }
 
+/***************************************************
+  Livres
+ ***************************************************/
+#livre {width: 450px; border-collapse:collapse;}
+#livre_corps{min-height:200px; background: url(../image/interface/livres/parchemin_fond.png) repeat-y;}
+#livre_bat{height:55px; background: url(../image/interface/livres/parchemin_bat.png) no-repeat;}
+#livre_haut
+{
+	height:70px;
+	background: url(../image/interface/livres/parchemin_haut.png) no-repeat;
+	text-align:center;
+	padding:0px;
+	padding-top:20px;
+}
+#livre_gauche_physique
+{
+	float: left; 
+	position: absolute; 
+	width: 85px; 
+	min-height: 300px; 
+	background: url(../image/interface/livres/ficellegauche_physique.png) no-repeat;
+}
+#livre_physique_icone1 {width: 40px; position: relative; top:122px; left:40px;}
+#livre_physique_icone2 {width: 40px; position: relative; top:22px; left:20px;}
+#livre_physique_icone3{width: 40px; position: relative; top:25px; left:4px;}
+#livre_physique_icone4{width: 40px; position: relative; top:28px; left:18px;}
+#livre_gauche_magique
+{
+	float: left; 
+	position: absolute; 
+	width: 85px; 
+	min-height: 300px; 
+	background: url(../image/interface/livres/ficellegauche_magique.png) no-repeat;
+}
+
+#livre_magique_icone1 {width: 40px; position: relative; top:66px; left:18px;}
+#livre_magique_icone2 {width: 40px; position: relative; top:74px; left:4px;}
+#livre_magique_icone3{width: 40px; position: relative; top:79px; left:17px;}
+#livre_magique_icone4{width: 40px; position: relative; top:92px; left:12px;}
+#livre ul {margin-left:85px;margin-right:65px;}
+#livre li {height:25px; background: rgba(0,110,210,0.1); margin-top: 16px; padding-top:10px; padding-left:10px; padding-right:5px; border-radius:5px; font-size:10px;}
+
 /*********************************
  JQuery
 **********************************/

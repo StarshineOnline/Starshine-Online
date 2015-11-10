@@ -8,30 +8,14 @@
  * Classe buff_base
  * Classe buff_base servant de base aux buffs sur les personnages et les monstres
  */
-class buff_base extends comp_sort_buff
+class buff_base extends buff_batiment_def
 {
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
 	 */
   // @{
-	protected $effet2; ///< Effet secondaire
 	protected $fin;  ///< Date et heure de fin du buff
-	protected $description;  ///< Description du buff
-	protected $debuff; ///< 0 pour un buff,  pour un debuff
-	protected $supprimable;   ///< 1 si on peut supprimer le (de)buff, 0 sinon
-
-	/// Renvoie l'effet secondaire
-	function get_effet2()
-	{
-		return $this->effet2;
-	}
-	/// Modifie l'effet secondaire
-	function set_effet2($effet2)
-	{
-		$this->effet2 = $effet2;
-		$this->champs_modif[] = 'effet2';
-	}
 
 	/// Renvoie la date et heure de fin du buff
 	function get_fin()
@@ -44,45 +28,12 @@ class buff_base extends comp_sort_buff
 		$this->fin = $fin;
 		$this->champs_modif[] = 'fin';
 	}
-	/// Renvoie la description du buff
-	function get_description()
-	{
-		return $this->description;
-	}
-	/// Modifie la description du buff
-	function set_description($description)
-	{
-		$this->description = $description;
-		$this->champs_modif[] = 'description';
-	}
-
-	/// Renvoie si c'est un buff ou un debuff
-	function get_debuff()
-	{
-		return $this->debuff;
-	}
-	/// Modifie si c'est un buff ou un debuff
-	function set_debuff($debuff)
-	{
-		$this->debuff = $debuff;
-		$this->champs_modif[] = 'debuff';
-	}
 
 	/// Renvoie si le buff est supprimable ou non
+	/// @todo Qu'est-ce que ça vient faire là ?
 	function get_supprimable()
 	{
 		return $this->supprimable;
-	}
-	/// Indique si le buff est supprimable
-	function is_supprimable()
-	{
-		return $this->supprimable != 0;
-	}
-	/// Modifie si le buff est supprimable ou non
-	function set_supprimable($supprimable)
-	{
-		$this->supprimable = $supprimable;
-		$this->champs_modif[] = 'supprimable';
 	}
 	// @}
 
@@ -102,9 +53,8 @@ class buff_base extends comp_sort_buff
 	 * @param nom          Nom du buff
 	 * @param description  Description du buff
 	 * @param debuff       pour un buff,  pour un debuff
-	 * @param supprimable  si on peut supprimer le (de)buff, 0 sinon
 	*/
-	function __construct($id = 0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0, $supprimable=0)
+	function __construct($id = 0, $type='', $effet=0, $effet2=0, $duree=0, $fin=0, $nom='', $description='', $debuff=0)
 	{
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( func_num_args() == 1 )
@@ -113,12 +63,9 @@ class buff_base extends comp_sort_buff
 		}
 		else
 		{
-      comp_sort_buff::__construct($id, $type, $effet, $duree);
-			$this->effet2 = $effet2;
+      buff_batiment_def::__construct($id, $type, $effet, $effet2, $duree, $nom, $description, $debuff);
+      // ($id = 0, $type='', $effet=0, $effet2=0, $duree=00, $nom='', $description='', $debuff=0)
 			$this->fin = $fin;
-			$this->description = $description;
-			$this->debuff = $debuff;
-			$this->supprimable = $supprimable;
 		}
 	}
 
@@ -128,28 +75,24 @@ class buff_base extends comp_sort_buff
 	 */
   protected function init_tab($vals)
   {
-    comp_sort_buff::init_tab($vals);
-		$this->effet2 = $vals['effet2'];
+    buff_batiment_def::init_tab($vals);
 		$this->fin = $vals['fin'];
-		$this->description = $vals['description'];
-		$this->debuff = $vals['debuff'];
-		$this->supprimable = $vals['supprimable'];
   }
 
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_liste_champs()
 	{
-    return comp_sort_buff::get_liste_champs().', effet2, fin, description, debuff, supprimable';
+    return buff_batiment_def::get_liste_champs().', fin';
   }
 	/// Renvoie la liste des valeurs des champspour une insertion dans la base
 	protected function get_valeurs_insert()
 	{
-		return comp_sort_buff::get_valeurs_insert().', '.$this->effet2.', '.$this->fin.', "'.mysql_escape_string($this->description).'", '.$this->debuff.', '.$this->supprimable;
+		return buff_batiment_def::get_valeurs_insert().', '.$this->fin;
 	}
 	/// Renvoie la liste des champs et valeurs pour une mise-à-jour dans la base
 	protected function get_liste_update()
 	{
-		return comp_sort_buff::get_liste_update().', effet2 = '.$this->effet2.', fin = '.$this->fin.', description = "'.mysql_escape_string($this->description).'", debuff = '.$this->debuff.', supprimable = '.$this->supprimable;
+		return buff_batiment_def::get_liste_update().', fin = '.$this->fin;
 	}
 	// @}
 
@@ -166,7 +109,6 @@ class buff_base extends comp_sort_buff
  {
 	global $db, $G_erreur;
 	$lancement = true;
-	//echo $db->num_rows;
 	if( !$ancien )
 	{
 		// La cible n'a pas le sort d'encore lancé
@@ -200,6 +142,11 @@ class buff_base extends comp_sort_buff
 	}
 	return $lancement;
  }
+ 
+	function est_actif()
+	{
+		return true;
+	}
 }
 
 

@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('../root.php'))
   include_once('../root.php');
 
@@ -122,16 +123,7 @@ function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 	$row = $db->read_array($req);
 	if( $liste_quete === null )
 		$liste_quete = $joueur->get_liste_quete();
-	//Validation de la quête et mis à jour des quêtes du perso
-	array_splice($liste_quete, $id_quete_joueur, 1);
-	$joueur->set_quete(serialize($liste_quete));
-	//On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies
-	$quete_fini = explode(';', $joueur->get_quete_fini());
-	if(!in_array($id_quete, $quete_fini))
-	{
-		$quete_fini[] = $id_quete;
-		$joueur->set_quete_fini(implode(';', $quete_fini));
-	}
+	//Validation de la quête et mis à jour des quêtes du perso	array_splice($liste_quete, $id_quete_joueur, 1); 	$joueur->set_quete(serialize($liste_quete)); 	//On vérifie si la quête a déjà était fini, si non, on la mets dans les quêtes finies 	$quete_fini = explode(';', $joueur->get_quete_fini()); 	if(!in_array($id_quete, $quete_fini)) 	{ 		$quete_fini[] = $id_quete; 		$joueur->set_quete_fini(implode(';', $quete_fini)); 	}
 	$rewards = explode(';', $row['reward']);
 	//print_r($rewards);
 	$r = 0;
@@ -194,7 +186,7 @@ function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 		}
 		$r++;
 	}
-  // Checke les achievements de quete: TODO: les mettres en recompense (cachee) de quete
+  // Checke les achievements de quete: @todo les mettres en recompense (cachee) de quete
   foreach (array('quete_kesalys' => 93,
                  'quete_pecheur' => 91,
                  'quete_ecolo' => 94)
@@ -219,96 +211,6 @@ function fin_quete(&$joueur, $id_quete_joueur, $id_quete, &$liste_quete=null)
 	$db->query($requete);
 }
 
-function affiche_quetes($fournisseur, &$joueur)
-{
-	global $db, $R;
-	$return = array();
-	$quetes = array();
-	$liste_quete = $joueur->get_liste_quete();
-	if(is_array($liste_quete))
-	{
-		foreach($liste_quete as $quete)
-		{
-			if ($quete['id_quete']!='')
-			{
-				$quetes[] = $quete['id_quete'];
-			}
-		
-		}
-		if(count($quetes) > 0) $notin = "AND quete.id NOT IN (".implode(',', $quetes).")";
-		else $notin = '';
-	}
-	else $notin = '';
-	$where = "";
-	$id_royaume = $R->get_id();
-	if($id_royaume < 10) '0'.$id_royaume;
-	$requete = "SELECT *, quete.id as idq FROM quete LEFT JOIN quete_royaume ON quete.id = quete_royaume.id_quete WHERE ((achat = 'oui' AND quete_royaume.id_royaume = ".$R->get_id().") OR (achat = 'non' AND royaume LIKE '%".$id_royaume."%')) AND quete.fournisseur = '".$fournisseur."' AND quete.niveau_requis <= ".$joueur->get_level()." AND quete.honneur_requis <= ".$joueur->get_honneur()." ".$where." ".$notin." ORDER BY quete.lvl_joueur";
-	$req = $db->query($requete);
-	
-	$html = '';
-	$nombre_quete = 0;
-	while($row = $db->read_array($req))
-	{
-		$quete_fini = explode(';', $joueur->get_quete_fini());
-		//Si c'est une quête non répétable et que le joueur a déjà fini la quête, on affiche pas.
-		if($row['repete'] == 'n' AND in_array($row['idq'], $quete_fini))
-		{
-		}
-		//Si c'est une quête qui en nécessite une autre mais que le joueur ne l'a pas déjà faite.
-		else
-		{
-			$check = true;
-			$quete_requis = explode(';', $row['quete_requis']);
-			/*$i = 0;
-			$count = count($requis);
-			while($check AND $i < $count)*/
-			foreach($quete_requis as $requis)
-			{
-				/*if($requis[$i] != '' && !in_array($requis[$i], $quete_fini)) $check = false;
-				$i++;*/
-				//echo $requis.'<br/>';
-				if( !$requis ) continue;
-				$val = mb_substr($requis, 1);
-				if($requis[0] == 'q')
-				{
-					if( !in_array($val, $quete_fini) )
-					{
-					$check = false;
-					break;
-					}
-				}
-				else if($requis[0] == 't')
-				{
-					if( $joueur->get_tuto() != $val )
-					{
-					$check = false;
-					break;
-					}
-				}
-				else if($requis[0] == 'c')
-				{
-					$classes = explode('-', $val);
-					if( !in_array($joueur->get_classe_id(), $classes) )
-					{
-					$check = false;
-					break;
-					}
-				}
-			}
-			if($check)
-			{
-				$nombre_quete++;
-				$html .= '<li><a href="bureau_quete.php?action=description&amp;id='.$row['idq'].'" onclick="return envoiInfo(this.href, \'carte\')">'.$row['nom'].'</a> <span class="small">(Niv. '.$row['lvl_joueur'].')</span></li>';
-			}
-		}
-	}
-	if($nombre_quete > 0)
-	{
-		$return[0] =  '<ul class="ville">'.$html.'</ul>';
-	}
-	$return[1] = $nombre_quete;
-	return $return;
-}
 
 function prend_quete($id_quete, &$joueur)
 {
@@ -321,7 +223,6 @@ function prend_quete($id_quete, &$joueur)
 	$valid = true;
 	$G_erreur = '';
 	//Vérifie si le joueur n'a pas déjà pris la quête.
-	//my_dump($row);
 	if($liste_quete != '')
 	{
 		foreach($liste_quete as $quest)
@@ -370,7 +271,6 @@ function prend_quete($id_quete, &$joueur)
 	if($valid)
 	{
 		$quete = unserialize($row['objectif']);
-    //my_dump($quete);
     $liste_quete[$numero_quete] = array();
     $liste_quete[$numero_quete]['id_quete'] = $row['id'];
     $count = count($quete);
@@ -383,7 +283,6 @@ function prend_quete($id_quete, &$joueur)
 			$liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
 			$i++;
 		}
-    //my_dump($liste_quete);
 		$joueur_quete = serialize($liste_quete);
 		$requete = "UPDATE perso SET quete = '".$joueur_quete."' WHERE id = ".$joueur->get_id();
 		$req = $db->query($requete);

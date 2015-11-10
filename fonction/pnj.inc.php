@@ -16,12 +16,10 @@ function pnj_run_cache_cache(&$joueur)
     if ($req && $row = $db->read_object($req))
       $ID_QUETE = $row->id;
     foreach ($quetes as $k => &$q) {
-      if ($q['id_quete'] == $ID_QUETE) {
-        $q['objectif'][0]->nombre++;
-        $joueur->set_quete(serialize($quetes));
-        if (verif_quete($q['id_quete'], $k, $joueur))
-          fin_quete($joueur, $k, $q['id_quete']);
-        $joueur->sauver();
+      if ($q->get_id_quete() == $ID_QUETE) {
+        $q->avance(0);
+        if ( $q->verifier() )
+          $q->get_etape()->fin($joueur);
       }
     }
   }

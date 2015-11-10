@@ -14,7 +14,7 @@ class entite extends placable
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
 
 
-	protected function get_table() { return ''; }
+	static function get_table() { return ''; }
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
@@ -125,17 +125,22 @@ class entite extends placable
 	protected $volonte;    ///< Caractéristique "volonté".
 	protected $energie;    ///< Caractéristique "énergie".
 	/// Renvoie la constitution
-	function get_vie()
+	function get_vie($base = false)
+	{
+		return $this->vie;
+	}
+	/// Renvoie la constitution
+	function get_constitution($base = false)
 	{
 		return $this->vie;
 	}
 	/// Renvoie la force
-	function get_force()
+	function get_force($base = false)
 	{
 		return $this->force;
 	}
 	/// Renvoie la dextérité
-	function get_dexterite()
+	function get_dexterite($base = false)
 	{
 		return $this->dexterite;
 	}
@@ -145,12 +150,12 @@ class entite extends placable
 		$this->dexterite = max(0, $dexterite);
 	}
 	/// Renvoie la puissance
-	function get_puissance()
+	function get_puissance($base = false)
 	{
 		return $this->puissance;
 	}
 	/// Renvoie la volonté
-	function get_volonte()
+	function get_volonte($base = false)
 	{
 		return $this->volonte;
 	}
@@ -160,7 +165,7 @@ class entite extends placable
 		$this->volonte = max(0, $volonte);
 	}
 	/// Renvoie l'énergie
-	function get_energie()
+	function get_energie($base = false)
 	{
 		return $this->energie;
 	}
@@ -360,6 +365,8 @@ class entite extends placable
 	{
 		return $this->hp_max;
 	}
+  /// Ajoute des MP.
+  function add_mp($add_mp) {}
   // @}
 
   /**
@@ -447,9 +454,10 @@ class entite extends placable
 	 * Permet de savoir si le joueur est sous le buff nom
 	 * @param $nom le nom du buff
 	 * @param $type si le nom est le type du buff
+	 * @param $actif le buff doit être actif (pour les buffs de bâtiment)
 	 * @return true si le perso est sous le buff false sinon.
  	*/
-	function is_buff($nom = '', $type = true)
+	function is_buff($nom = '', $type = true, $actif = true)
 	{
 		$buffe = false;
 		if(is_array($this->buff))
@@ -464,7 +472,7 @@ class entite extends placable
 					}
 					else if($buff->get_nom() ==  $nom)
 					{
-						$buffe = true;
+						$buffe = !$actif || $buff->est_actif();
 					}
 				}
 			}
@@ -520,9 +528,23 @@ class entite extends placable
 		return $this->bouclier() ? 'bouclier' : '';
 	}
 	/// Renvoie la PP
-	function get_pp()
+	function get_pp($base = false)
 	{
-		return $this->pp;
+		$pp = $this->pp;
+		if( !$base )
+		{
+			if($this->is_buff('buff_bouclier'))
+				$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+				$pp = round($pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
+			if($this->is_buff('buff_cri_protecteur'))
+				$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
+			if($this->is_buff('debuff_pp'))
+				$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
+			if($this->is_buff('potion_pierre'))
+				$pp = round($pp * (1 + ($this->get_buff('potion_pierre', 'effet') / 100)));
+		}
+		return $pp;
 	}
 	/// Modifie la PP
 	function set_pp($valeur)
@@ -530,9 +552,21 @@ class entite extends placable
 		$this->pp = $valeur;
 	}
 	/// Renvoie la PM
-	function get_pm()
+	function get_pm($base = false)
 	{
-		return $this->pm;
+		$pm = $this->pm;
+		if( !$base )
+		{
+			if($this->is_buff('buff_barriere'))
+				$pm = round($pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
+			if($this->is_buff('buff_forteresse'))
+				$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
+			if($this->is_buff('debuff_desespoir'))
+				$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
+			if($this->is_buff('potion_pm'))
+				$pm = round($pm * (1 + ($this->get_buff('potion_pm', 'effet') / 100)));
+		}
+		return $pm;
 	}
 	//renvoi la PM pour resister a paralysie
 	function get_pm_para()
@@ -567,12 +601,12 @@ class entite extends placable
 	{
 		switch($this->type)
 		{
-			case 'joueur' :
-				//$this->dump();
+			case 'joueur':
+			case 'perso':
 				return $this->objet_ref->get_bouclier();
 				break;
-			case 'monstre' :
-			case 'pet' :
+			case 'monstre':
+			case 'pet':
         return $this->get_blocage();
 				break;
 		}
@@ -730,6 +764,12 @@ class entite extends placable
   	if(array_key_exists('b_toucher', $this->etat)) $this->potentiel_toucher /= 1 + ($this->etat['b_toucher']['effet'] / 100);
   	if(array_key_exists('coup_mortel', $this->etat)) $this->potentiel_toucher *= 1 - ($this->etat['coup_mortel']['effet'] / 100);
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_toucher /= 2;
+    if(array_key_exists('fleche_sable', $this->etat))
+      $this->potentiel_toucher /= 1 + ($this->etat['fleche_sable']['effet'] / 100);
+  	if($this->is_buff('potion_surcharge'))
+			$this->potentiel_toucher /= 1 + (($this->get_buff('potion_surcharge', 'effet')) / 100);
+  	if($this->is_buff('potion_force'))
+			$this->potentiel_toucher /= 1 + (($this->get_buff('potion_force', 'effet')) / 100);
   	//Buff précision
   	if(array_key_exists('benediction', $this->etat))	$this->potentiel_toucher *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_accuracy']) / 100);
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_toucher *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_accuracy']) / 100);
@@ -740,6 +780,8 @@ class entite extends placable
   	if($this->is_buff('buff_position') && $this->get_arme_type() == 'arc') $this->potentiel_toucher *= 1 + (($this->get_buff('buff_position', 'effet')) / 100);
   	if(array_key_exists('a_toucher', $this->etat)) $this->potentiel_toucher *= 1 + ($this->etat['a_toucher']['effet'] / 100);
   	if($this->etat['posture']['type'] == 'posture_touche') $this->potentiel_toucher *= 1 + (($this->etat['posture']['effet']) / 100);
+  	if( array_key_exists('affaiblissement', $this->etat) )
+			$this->potentiel_toucher /= 1 + $this->etat['affaiblissement']['effet'] / 100;
 
 		return $this->potentiel_toucher;
 	}
@@ -773,6 +815,7 @@ class entite extends placable
   	if($this->is_buff('buff_cri_detresse')) $this->potentiel_parer *= 1 + (($this->get_buff('buff_cri_detresse', 'effet')) / 100);
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1.5;
   	if(array_key_exists('botte_chat', $this->etat)) $this->potentiel_parer *= 1 + $this->etat['botte_chat']['effet'] / 100;
+  	if($this->is_buff('debuff_esquive')) $this->potentiel_parer /= 1 + (($this->get_buff('debuff_esquive', 'effet')) / 100);
 
   	if($this->get_race() == 'elfebois') $this->potentiel_parer *= 1.15;
 
@@ -810,6 +853,8 @@ class entite extends placable
       return $this->potentiel_critique;
 
     $this->potentiel_critique = ceil(pow($this->get_dexterite(), 1.5) * 10);
+    $this->potentiel_critique *= ( 1 + $this->get_bonus_permanents('critique')/100);
+    $this->potentiel_critique /= ( 1 + $this->get_bonus_permanents('div_pot_critique')/100);
   	//Buff du critique
   	if($this->is_buff('buff_critique', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_critique', 'effet', true)) / 100);
   	if($this->is_buff('buff_cri_rage', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_cri_rage', 'effet')) / 100);
@@ -818,6 +863,8 @@ class entite extends placable
   	if(array_key_exists('berzeker', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['berzeker']['effet'] * $G_buff['berz_critique']) / 100);
   	if(array_key_exists('coup_sournois', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['coup_sournois']['effet']) / 100);
   	if(array_key_exists('fleche_sanglante', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['fleche_sanglante']['effet']) / 100);
+  	if($this->is_buff('potion_surcharge', true))
+			$this->potentiel_critique *= 1 + (($this->get_buff('potion_surcharge', 'effet', true)) / 100);
     //Elfe des bois
 	  if($this->get_race() == 'elfebois') $this->potentiel_critique *= 1.15;
   	if(array_key_exists('coup_mortel', $this->etat) && array_key_exists('dissimulation', $this->etat))
@@ -831,6 +878,25 @@ class entite extends placable
 	function set_potentiel_critique($valeur)
 	{
 		$this->potentiel_critique = $valeur;
+	}
+	/// Renvoie le multiplicateur de critique physique
+	function get_mult_critique()
+	{
+    if( isset($this->mult_critique) && $this->mult_critique )
+      return $this->mult_critique;
+
+    $this->mult_critique = 2;
+    //$this->mult_critique *= 1 + $this->get_bonus_permanents('mult_critique') / 100;
+    $this->mult_critique /= 1 + $this->get_bonus_permanents('div_mult_critique') / 100;
+  	//Buff du critique
+  	if($this->is_buff('buff_colere', true))
+			$this->mult_critique += $this->get_buff('buff_colere', 'effet') / 100;
+		if( $this->is_competence('art_critique') )
+			$this->mult_critique +=  $this->get_competence2('art_critique')->get_valeur() / 1000;
+		$this->mult_critique += $this->get_bonus_permanents('mult_critique') / 100;
+	  if($this->get_race() == 'orc')
+			$this->mult_critique *= 1.05;
+		return $this->mult_critique;
 	}
 	/**
 	 * Calcul et renvoie le potentiel toucher physique
@@ -864,6 +930,8 @@ class entite extends placable
     if ($this->get_bonus_permanents('potentiel_magique'))
        $this->potentiel_magique += $potentiel_magique_arme * 
          (1 + $this->get_bonus_permanents('potentiel_magique') / 100);
+  	if(array_key_exists('affaiblissement', $this->etat))
+			$this->potentiel_magique /= 1 + $this->etat['affaiblissement']['effet'] / 100;
   	return $this->potentiel_magique;
 	}
 	/**
@@ -909,7 +977,8 @@ class entite extends placable
 		if($this->is_buff('batiment_pm')) $buff_batiment_barriere = 1 + (($this->get_buff('batiment_pm', 'effet') / 100)); else $buff_batiment_barriere = 1;
 		if($this->is_buff('debuff_desespoir')) $debuff_desespoir = 1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100); else 	$debuff_desespoir = 1;
 		if($this->etat['posture']['type'] == 'posture_glace') $aura_glace = 1 + (($this->etat['posture']['effet']) / 100); else $aura_glace = 1;
-		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir);
+		$malus_perm = 1 + $this->get_bonus_permanents('div_parer_magique') / 100;
+		$this->potentiel_parer_magique = round($this->get_volonte() * $pm * $aura_glace * $buff_batiment_barriere / $debuff_desespoir / $malus_perm);
   	if(array_key_exists('fleche_debilitante', $this->etat))
       $this->potentiel_parer_magique /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
     if(array_key_exists('glace', $this->etat)) $this->potentiel_parer_magique /= 1.5;
@@ -920,6 +989,36 @@ class entite extends placable
 	function set_potentiel_parer_magique($valeur)
 	{
 		$this->potentiel_parer_magique = $valeur;
+	}
+	/// Renvoie le potentiel critique magique
+	function get_potentiel_critique_magique()
+	{
+    if( isset($this->potentiel_critique_magique) && $this->potentiel_critique_magique )
+      return $this->potentiel_critique_magique;
+
+    $this->potentiel_critique_magique = $this->get_volonte() * 50;
+    $this->potentiel_critique_magique *= ( 1 + $this->get_bonus_permanents('critique_magique')/100);
+    $this->potentiel_critique_magique /= ( 1 + $this->get_bonus_permanents('div_pot_critique_magique')/100);
+  	//Buff du critique
+  	if($this->is_buff('buff_furie_magique', true))
+			$this->potentiel_critique_magique *= 1 + (($this->get_buff('buff_furie_magique', 'effet')) / 100);
+		$this->potentiel_critique_magique *= 1 + $this->get_bonus_permanents('pot_critique_magique') / 100;
+		return $this->potentiel_critique_magique;
+	}
+	/// Renvoie le multiplicateur de critique magique
+	function get_mult_critique_magique()
+	{
+    if( isset($this->mult_critique_magique) && $this->mult_critique_magique )
+      return $this->mult_critique_magique;
+
+    $this->mult_critique_magique = 2;
+    //$this->mult_critique_magique *= 1 + $this->get_bonus_permanents('mult_critique_magique') / 100;
+    $this->mult_critique_magique /= 1 + $this->get_bonus_permanents('div_mult_critique_magique') / 100;
+  	//Buff du critique
+  	if($this->is_buff('buff_furie_magique', true))
+			$this->mult_critique_magique += (($this->get_buff('buff_furie_magique', 'effet2')) / 100);
+		$this->mult_critique_magique += $this->get_bonus_permanents('mult_critique_magique') / 100;
+		return $this->mult_critique_magique;
 	}
 	/// Renvoie la compétence utilisée pour attaquer
 	function get_comp_att()
@@ -955,7 +1054,7 @@ class entite extends placable
 		$this->degat_moins = 0;
   }
   /// Action effectuées à la fin d'un combat
-  function fin_combat(&$perso, $degats=null) { echo "on fait rien ! ($this)<br/>"; }
+  function fin_combat(&$perso, $degats=null) { }
   /// Actions effectuées à la fin d'un combat pour l'attaquant
   function fin_attaque(&$perso, $cout_pa) {}
   /// Action effectuées à la fin d'un combat pour le défenseur
@@ -967,6 +1066,7 @@ class entite extends placable
     if( $perso->is_buff('cout_attaque') ) $cout = ceil($cout / $perso->get_buff('cout_attaque', 'effet'));
     if( $perso->is_buff('plus_cout_attaque') ) $cout *= $perso->get_buff('plus_cout_attaque', 'effet');
     if( $perso->is_buff('buff_rapidite') ) $cout -= $perso->get_buff('buff_rapidite', 'effet');
+    if( $perso->is_buff('potion_rapidite') ) $cout -= $perso->get_buff('potion_rapidite', 'effet');
     if( $perso->is_buff('debuff_ralentissement') ) $cout += $perso->get_buff('debuff_ralentissement', 'effet');
     if( $cout < 1 ) $cout = 1;
     return $cout;
@@ -1000,8 +1100,6 @@ class entite extends placable
 		{
 			case 'joueur' :
 				$objet->check_materiel();
-
-				//my_dump($objet->get_enchantement());
 
 				$this->id = $objet->get_id();
 				$this->action = $objet->action_do;
@@ -1299,6 +1397,7 @@ class entite extends placable
 		  $objet->objet_ref = &$src->get_def();
 		  break;
     case 'joueur' :
+    case 'perso' :
       $objet = new perso($src->get_id());
       $objet->check_specials();
 			$objet->action = $src->action_do;
@@ -1383,8 +1482,6 @@ class entite extends placable
 		}
 		return $objet;
 	}
-	/// Affiche un "dump" de l'objet
-	function dump() { echo '<pre>'; var_dump($this); echo '</pre>'; }
 	// @}
 
 	/**

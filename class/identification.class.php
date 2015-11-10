@@ -15,7 +15,6 @@ class identification
 		$mdp_ok = false;
 
 		$joueur = joueur::Chercher($nom);
-    //my_dump($joueur);
     if ($joueur)
     {
 			// Quand on se loggue en mode API, on utilise pas le mot de passe joueur, mais le sha1sum du mot de passe jeu
@@ -35,10 +34,17 @@ class identification
       $requete = 'SELECT ID, nom, race, rang_royaume, password, statut, fin_ban FROM perso WHERE id_joueur = '.$id_joueur.' AND ( statut NOT IN ("ban", "suppr") OR fin_ban < '.time().' ) ORDER BY id';
       $req = $db->query($requete);
 			$nbr_perso = $db->num_rows($req);
-      //echo "nb: $nbr_perso";
+			$prem = $row = $db->read_assoc($req);
+			while( $row )
+			{
+				if( $row['statut'] != 'hibern' || $row['fin_ban'] < time() )
+					break;
+				$row = $db->read_assoc($req);
+			}
+			if( !$row )
+				$row = $prem;
 			if( $nbr_perso )
 			{
-        $row = $db->read_assoc($req);
 				if($row['statut'] == 'hibern' AND $row['fin_ban'] >= time())
 				{
 					$erreur_login = 'Vous êtes en hibernation pour une durée de '.transform_sec_temp($row['fin_ban'] - time());

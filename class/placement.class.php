@@ -18,12 +18,6 @@ class placement extends entitenj_constr
 	protected $debut_placement; ///< Date du début de la construction
 	protected $fin_placement; ///< Date de la fin de la construction
 
-	/// Renvoie l'image du bâtiment
-	function get_image()
-	{
-		$this->get_batiment()->get_image();
-	}
-
 	/// Renvoie la date du début de la construction
 	function get_debut_placement()
 	{
@@ -67,6 +61,19 @@ class placement extends entitenj_constr
 	function get_temps_ecoule()
 	{
 		return time() - $this->debut_placement;
+	}
+	
+	/// Renvoie l'image du bâtiment
+  function get_image()
+  {
+  	$image = $this->get_batiment()->get_image();
+    if( $this->type=='drapeau' )
+    	return 'image/drapeaux/'.$image.'_'.$this->royaume.'.png';
+    else
+    {
+    	$avanc = (time() - $this->debut_placement) / ($this->fin_placement - $this->debut_placement);
+    	return 'image/batiment/'.$image.'_0'.max(ceil(3 * $avanc), 1).'.png';
+		}
 	}
 	// @}
 
@@ -162,4 +169,55 @@ class placement extends entitenj_constr
 		else
 			return 0.1 + 0.9 * $this->get_temps_ecoule() / $this->get_temps_total();
 	}
+	
+	/// Récupère les buffs du bâtiment
+	protected function constr_buff()
+	{
+		$this->buff = buff_batiment::create('id_placement', $this->id, 'id ASC', 'type', false, true);
+	}
+
+  /**
+   * Renvoie les images et positions des constructions dans une zone donnée sous forme de tableau
+   * @param  $x_min     Valeur minimale de la coordonnée x
+   * @param  $x_max    Valeur maximale de la coordonnée x
+   * @param  $y_min     Valeur minimale de la coordonnée y
+   * @param  $y_max    Valeur maximale de la coordonnée y
+   * @return    tableau contenant les positions et l'image
+   */
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true, $cond='1')
+  {
+    global $db;
+		$requete = 'SELECT x, y, b.image, b.type, p.debut_placement, p.fin_placement, b.nom, royaume FROM '.static::get_table().' AS p INNER JOIN batiment AS b ON p.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max.' AND '.$cond;
+    $req = $db->query($requete);
+    $res = array();
+    while( $row = $db->read_object($req) )
+    {
+      /*$avanc = (time() - $row->debut_placement) / ($row->fin_placement - $row->debut_placement);
+      $row->image = self::make_url_image($row->image, $row->type, $avanc, $grd_img);*/
+      $row->image = self::calc_image($row->image, $row->type, $row->debut_placement, $row->fin_placement, $row->royaume, $grd_img);
+      $res[] = $row;
+    }
+    return $res;
+  }
+  
+  static function calc_image($image, $type, $debut, $fin, $royaume, $grd_img=true)
+  {
+    if( $type=='drapeau' )
+    	return 'image/drapeaux/'.$image.'_'.$royaume.'.png';
+    else
+    {
+    	$avanc = (time() - $debut) / ($fin - $debut);
+    	return 'image/batiment'.($grd_img?'':'_low').'/'.$image.'_0'.max(ceil(3 * $avanc), 1).'.png';
+		}
+	}
+
+	/// @todo à remplacer si encore utilisée
+  protected static function make_url_image($image, $type, $avancement, $grd_img=true)
+  {
+    $doss = $type=='drapeau' ? 'drapeau' : 'batiment';
+    if(!$grd_img)
+      $doss .= '_low';
+    $avanc = max(ceil(3 * $avancement), 1);
+    return 'image/'.$doss.'/'.$image.'_0'.$avanc.'.png';
+  }
 }

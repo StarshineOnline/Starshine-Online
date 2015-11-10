@@ -8,11 +8,11 @@
  * Classe comp_sort_buff
  * Classe comp_sort servant de base aux compétences et sorts
  */
-class comp_sort extends comp_sort_buff
+abstract class comp_sort extends comp_sort_buff
 {
 	/**
 	 * @name Informations générales.
-	 * Donnée et méthode sur les inforamations "générales" : type, niveau, …
+	 * Donnée et méthode sur les informations "générales" : type, niveau, …
 	 */
   // @{
 	protected $comp_assoc; ///< Compétence associée
@@ -33,7 +33,10 @@ class comp_sort extends comp_sort_buff
 	const cible_autre = 4;  ///< Valeur de l'attribut cible si celle-ci est un autre personnage
 	const cible_autregrp = 5;  ///< Valeur de l'attribut cible si celle-ci est un autre groupe
 	const cible_case = 6;  ///< Valeur de l'attribut cible pour les débuffs sur une case
+	const cible_batiment = 7;  ///< Valeur de l'attribut cible pour les batiments sur une case
 	const cible_9cases = 8;  ///< Valeur de l'attribut cible pour les débuffs sur un carré de 3x3 cases
+	
+	const propose_relance = false;
 
   /// Renvoie la compétence associée
 	function get_comp_assoc()
@@ -144,24 +147,6 @@ class comp_sort extends comp_sort_buff
 		$this->description = $description;
 		$this->champs_modif[] = 'description';
 	}
-	/// Formate la description
-	function formate_description($texte)
-	{
-  	while(preg_match("`%([a-z0-9]*)%`i",$texte, $regs))
-  	{
-  		$get = 'get_'.$regs[1];
-  		$texte = str_replace('%'.$regs[1].'%', $this->$get(), $texte);
-  	}
-  	// Evaluation
-  	$valeur = '';
-  	while(preg_match('`@(.*)@`', $texte, $regs))
-  	{
-  		$r = $regs[1];
-  		eval("\$valeur = ".$r.";");
-  		$texte = str_replace('@'.$regs[1].'@', $valeur, $texte);
-  	}
-  	return $texte;
-  }
 
   /// Renvoie le coût en MP ou en RM
 	function get_mp()
@@ -174,6 +159,11 @@ class comp_sort extends comp_sort_buff
 		$this->mp = $mp;
 		$this->champs_modif[] = 'mp';
 	}
+  /// envoie le coût en MP en prennant en compte l'affinité
+  function get_mp_final($perso)
+  {
+  	return $this->mp;
+  }
 
   /// Renvoie le prix de la compétence ou le sort
 	function get_prix()
@@ -205,6 +195,28 @@ class comp_sort extends comp_sort_buff
 	 * Méthode gérant la lecture et l'écriture dans la base de données
 	 */
   // @{
+  /**
+   * Méthode créant un objet dérivé en fonction du type entré en paramlètre
+   * @param  type		type de l'objet à créer
+   * @param  id			id du sort ou de la compétence
+   * @return		sort ou compétence	 	  
+   */
+  static function factory_gen($type, $id)
+  {
+  	switch($type)
+  	{
+  	case 'sort_jeu':
+  		return sort_jeu::factory($id);
+  	case 'sort_combat':
+  		return sort_combat::factory($id);
+  	case 'comp_jeu':
+  		return comp_jeu::factory($id);
+  	case 'comp_combat':
+  		return comp_combat::factory($id);
+  	default:
+  		log_admin::log('bug', 'Type de sort ou compétence inconnu : '.$type, true);
+		}
+	}
 	/**
 	 * Constructeur
 	 * @param id             Id dans la base de donnée ou tableau associatif contenant les informations permettant la création de l'objet
@@ -299,6 +311,54 @@ class comp_sort extends comp_sort_buff
   {
     return $this->get_mp();
   }
+  /**
+   * Vérifie si un personnage connait le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  abstract function est_connu(&$perso, $txt_action=false);
+  /**
+   * Vérifie si un personnage a les pré-requis pour le sort ou la compétence 
+   * @param $perso   personnage concerné
+   */
+  abstract function verif_prerequis(&$perso, $txt_action=false);
+  /// vérifie les prérequis pour les sorts ou compétences déjà appris
+  protected function verif_requis($liste, $txt_type, $txt_action=false)
+  {
+  	global $Gtrad;
+  	if( !$this->requis )
+  		return true;
+  	
+    $res = true;
+    $prerequis = explode(';', $this->requis);
+		foreach ($prerequis as $requis)
+		{
+    	$regs = array();
+      if( mb_ereg('^classe:(.*)$', $requis, $regs) )
+			{
+				$perso = joueur::get_perso();
+        if( $regs[1] != mb_strtolower($perso->get_classe()) )
+				{
+					interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous devez être '.$Gtrad[$regs[1]].' pour '.$txt_action.' '.$txt_type);
+          $res = false;
+        }
+      }
+			else if( mb_ereg('^([0-9]+)$', $this->requis, $regs) )
+			{
+			  if ($regs[1] != 999 && !in_array($regs[1], explode(';', $liste)))
+				{
+			    if( $txt_action )
+			    {
+						$classe = get_class($this);
+						$requis = new $classe($regs[1]);
+			    	$texte = 'Il vous manque '.$requis->get_nom().' pour '.$txt_action.' '.$txt_type; 
+			    	interf_alerte::enregistre(interf_alerte::msg_erreur, $texte);
+					}
+			    $res = false;
+			  }
+			}
+		}
+    return $res;
+	}
 	/**
 	 * Renvoie la liste des cibles
 	 * @param cible  Cible principale telle que donnée à la méthode lancer
@@ -306,7 +366,7 @@ class comp_sort extends comp_sort_buff
 	 */
   function get_liste_cibles($cible, $groupe=true)
   {
-    print_debug("type de cible : ".$this->get_cible()."<br/>");
+		interf_debug::enregistre('type de cible : '.$this->get_cible());
     switch( $this->get_cible() )
     {
     case comp_sort::cible_groupe:
@@ -337,7 +397,8 @@ class comp_sort extends comp_sort_buff
 				foreach($groupe_cible->get_membre() as $membre)
 				{
 					// On peut agir avec les membres du groupe si ils sont a 7 ou moins de distance
-					if($membre->get_distance_pytagore($cible) <= 7)
+					$dist = $groupe === true ? 7 : $groupe;
+					if($membre->get_distance_pytagore($cible) <= $dist)
             $cibles[] = new perso($membre->get_id_joueur());
 				}
 				return $cibles;
@@ -365,10 +426,10 @@ class comp_sort extends comp_sort_buff
   {
   	$action = rand(0, $pot_action);
   	$defense = rand(0, $pot_oppos);
-  	print_debug('Potentiel attaquant : '.$pot_action.
-							'<br />Potentiel défenseur : '.$pot_oppos.
-							'<br />Résultat => Attaquant : '.$action.' | Défense '.
-							$defense.'<br />');
+		$dbg = interf_debug::enregistre();
+		$dbg->add_message( 'Potentiel attaquant : '.$pot_action );
+		$dbg->add_message( 'Potentiel défenseur : '.$pot_oppos );
+		$dbg->add_message( 'Résultat => Attaquant : '.$action.' | Défense : '.$defense );
     if( $attaque !== null )
     {
       $attaque->set_jet($action);
@@ -385,8 +446,9 @@ class comp_sort extends comp_sort_buff
   static function test_de($de, $seuil)
   {
   	$val = rand(0, $de);
-		print_debug('1d'.$de.' doit être inférieur a '.$seuil.'<br />
-		Résultat => '.$val.' doit être inférieur a '.$seuil.'<br />');
+		$dbg = interf_debug::enregistre();
+		$dbg->add_message( '1d'.$de.' doit être inférieur a '.$seuil );
+		$dbg->add_message( 'Résultat => '.$val.' doit être inférieur a '.$seuil );
     return $val < $seuil;
   }
 
@@ -463,7 +525,7 @@ class comp_sort extends comp_sort_buff
 			$dbg_msg .= 'Max : '.$des[$i].' - Dé : '.$de.'<br />';
 			$i++;
 		}
-		print_debug($dbg_msg);
+		interf_debug::enregistre($dbg_msg);
 		return $degat;
   }
 

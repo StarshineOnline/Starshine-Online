@@ -15,22 +15,30 @@ class texte
   protected $case;  ///< Case pour les lien de retour à celle-ci
   protected $perso;   ///< Personnage actif pour les balsises basées sur celui-ci
   protected $id;  ///<  id de l'objet d'où vient le texte.
+  protected $indice_vrai = true;  ///< Indique si l'indice est vrai  
   const plrs_txt = 0x1;  ///< Il y a plusieurs textes possibles, séparés par 5 '*'.
   const bbcode = 0x2;   ///< bbcode.
   const grade = 0x4;   ///< balises sélectionnant ce qui doit être affiché en fonction du grade.
   const quetes = 0x8;   ///< balises gérant les intéraction avec les quêtes.
   const navig = 0x10;   ///< balises gérant la navigation (par ex. [retour]).
   const progr_pnj = 0x20;   ///< balises permettant de mettre d'éxécuter les fonctions spéciales pour les PNJ.
-  const html = 0x40;   ///< indique qu'il faut supprimé les balises html.
+  const html = 0x40;   ///< indique qu'il faut supprimer les balises html.
   const perso = 0x80;   ///< balises sélectionnant ce qui doit être affiché en fonction du personnage.
-  const actions = 0x100;   ///< balises effetctuant certaines actions.
+  const actions = 0x100;   ///< balises effectuant certaines actions.
   const tuto = 0x200;   ///< balises liées au tutoriel.
+  const indices = 0x400;  ///< balises d'indices.
 
   const messagerie = 0x42;   ///< textes de la messagerie
-  const msg_roi = 0x4a;   ///< message du roi
+  const msg_monde = 0x86;   ///< message du monde
+  const msg_roi = 0x46;   ///< message du roi
+  const msg_roi_modif = 0x42;   ///< message du roi sans les balises non gérées par l'éditeur
+  const msg_propagande = 0x42;   ///< propagande
   const pnj = 0x3bf;   ///< textes des PNJ
   const cases = 0x3bf;   ///< textes des cases
   const tutoriel = 0x3b8;   ///< textes des tutoriels
+  const batailles = 0x42;   ///< textes des batailles
+  const descr_quetes = 0x86;   ///< textes des quêtes
+  const rumeurs = 0x48e;  ///< textes des rumeurs
   
   /**
    * Constructeur
@@ -45,7 +53,7 @@ class texte
   }
   
   /**
-   * Défini les options pour les liens
+   * Définit les options pour les liens
    * @param  $url     URL pour les liens s'il y a plusieurs parties au texte.
    * @param  $liste   true si les liens doivent être dans des listes.
    */
@@ -56,16 +64,22 @@ class texte
     $this->case = $case;
   }
   
-  /// Défini le personnage actif
+  /// Définit le personnage actif
   function set_perso(&$perso)
   {
     $this->perso = &$perso;
   }
 
-  /// Défini l'id de l'objet d'où vient le texte.
+  /// Définit l'id de l'objet d'où vient le texte.
   function set_id_objet($id)
   {
     $this->id = $id;
+  }
+
+  /// Définit si l'indice est vrai
+  function set_indice_vrai($indice_vrai)
+  {
+    $this->indice_vrai = $indice_vrai;
   }
   
   /**
@@ -76,14 +90,15 @@ class texte
   {
     if( $this->options & self::plrs_txt )
     {
-      $texte = explode('*****', nl2br($this->texte));
+      $texte = explode('*****', $this->texte);
       $texte = $texte[$index];
     }
     else
-      $texte = nl2br($this->texte);
+    	$texte = $this->texte;
     $texte = preg_replace("/(\r\n|\r|\n)/", '', $texte);
     if( $this->options & self::html )
       $texte = htmlspecialchars( stripslashes($texte) );
+    $texte = nl2br($texte);
     if( $this->options & self::bbcode )
       $texte = $this->parse_bbcode($texte);
     if( $this->options & self::plrs_txt )
@@ -104,6 +119,8 @@ class texte
       $texte = $this->parse_actions($texte);
     if( $this->options & self::tuto )
       $texte = $this->parse_tuto($texte);
+    if( $this->options & self::indices )
+    	$texte = $this->parse_indices($texte);
       
     return $texte;//preg_replace('`\[[/]?(.*)\]`','', $texte);
   }
@@ -145,13 +162,21 @@ class texte
     }
     // quêtes finies
     $quete_fini = explode(';', $this->perso->get_quete_fini());
+    while( preg_match('`\[quete_finie:([0-9]*)(-e[0-9]*)?\](.*)\[/quete_finie:(\g1)(\g2)?\]`i', $texte, $regs) )
+    {
+    	$qp = $this->get_quete_perso($regs);
+    	$debut = '[quete_finie:'.$regs[1].$regs[2].']'; 
+    	$fin = '[/'.mb_substr($debut, 1);
+    	if( in_array($regs[1], $quete_fini) || ($qp && $regs[2] && $qp->get_etape()->get_etape() > $regs[2]))
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[3], $texte);
+    	else
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
+      $trouve = true;
+		}
     if($this->perso->get_quete_fini() != '')
     {
     	foreach($quete_fini as $quetef)
     	{
-    		// Nouvelle version
-    		$texte = preg_replace('`\[quete_finie:'.$quetef.'\](.*)\[/quete_finie:'.$quetef.'\]`i', '\\1', $texte, -1, $nbr);
-        $trouve |= $nbr > 0;
     		//On affiche le lien pour la discussion
         if( $this->liste )
         {
@@ -163,63 +188,58 @@ class texte
           $debut = '';
           $fin = '';
         }
-    		$texte = preg_replace('`\[QUETEFINI'.$quetef.':([0-9]*)\](.*)\[/QUETEFINI'.$quetef.':(\g1)\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte, -1, $nbr);
+    		$texte = preg_replace('`\[QUETEFINI'.$quetef.':([0-9]*)\](.*)\[/QUETEFINI'.$quetef.':(\g1)\]`i', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return charger(this.href);">\\2</a>'.$fin, $texte, -1, $nbr);
         $trouve |= $nbr > 0;
     	}
     }
     $texte = preg_replace('`\[QUETEFINI([0-9]*):([0-9]*)\](.*)\[/QUETEFINI(\g1):\g2\]`i', '', $texte);
-    $texte = preg_replace('`\[quete_finie:([0-9]*)\](.*)\[/quete_finie:(\g1)\]`i', '', $texte);
     // quêtes non prises
-    while( preg_match('`\[non_quete:([0-9]*)\](.*)\[/non_quete:(\g1)\]`i', $texte, $regs) )
+    while( preg_match('`\[non_quete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/non_quete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$numq = $regs[1];
-    	if( in_array($numq, $quetes_actives) == false && in_array($numq, $quete_fini) == false )
-    		$texte = preg_replace('`\[non_quete:'.$numq.'\](.*)\[/non_quete:'.$numq.'\]`i', $regs[2], $texte);
+    	$qp = $this->get_quete_perso($regs);
+    	$debut = '[non_quete:'.$regs[1].$regs[2].']'; 
+    	$fin = '[/'.mb_substr($debut, 1);
+    	if( (!$qp && !in_array($regs[1], $quete_fini)) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
-    		$texte = preg_replace('`\[non_quete:'.$numq.'\](.*)\[/non_quete:'.$numq.'\]`i', '', $texte);
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
       $trouve = true;
     }
     // quête prises
-    while( preg_match('`\[ISQUETE:([0-9]*)\](.*)\[/ISQUETE:(\g1)\]`i', $texte, $regs) )
+    while( preg_match('`\[isquete:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\](.*)\[/isquete:(\g1)(\g2)?(\g3)?\]`i', $texte, $regs) )
     {
-    	$numq = $regs[1];
-    	if (in_array($numq, $quetes_actives))
-    		$texte = preg_replace('`\[ISQUETE:'.$numq.'\](.*)\[/ISQUETE:'.$numq.'\]`i', $regs[2], $texte);
+    	$qp = $this->get_quete_perso($regs);
+    	$debut = '[isquete:'.$regs[1].$regs[2].']'; 
+    	$fin = '[/'.mb_substr($debut, 1);
+    	if ($qp)
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
-    		$texte = preg_replace('`\[ISQUETE:'.$numq.'\](.*)\[/ISQUETE:'.$numq.'\]`i', '', $texte);
+    		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
     	$trouve = true;
     }
     //Validation de la quête
-    if(preg_match('`\[quete(:[[:alpha:]]+)?]`i', $texte, $regs))
+    if(preg_match('`\[quete(:[[:alnum:]]+)?]`i', $texte, $regs))
     {
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
-    	verif_action($this->id, $this->perso, 's');
-      if( $regs[1] == ':silencieux' )
-        echo '</span>';
+    	quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
     	$texte = preg_replace('`\[quete(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Validation de la quête de groupe
-    if(preg_match('`\[quetegroupe(:[[:alpha:]]+)?]`i', $texte))
+    if(preg_match('`\[quetegroupe(:[[:alnum:]]+)?]`i', $texte))
     {
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
       if ($this->perso->get_groupe() > 0)
       {
         $groupe = new groupe($this->perso->get_groupe());
         foreach($groupe->get_membre_joueur() as $pj)
-          verif_action($this->id, $pj, 'g');
+          quete_perso::verif_action($this->id, $pj, 'g', $regs[1]);
       }
       else
-        verif_action($this->id, $this->perso, 's');
-      if( $regs[1] == ':silencieux' )
-        echo '<span class="debug">';
+        quete_perso::verif_action($this->id, $this->perso, 's', $regs[1]);
     	$texte = preg_replace('`\[quetegroupe(:[[:alpha:]]+)?]`i', '', $texte);
     }
     //Prise d'une quête
     if(preg_match('`\[prendquete:([0-9]*)\]`i', $texte, $regs))
     {
-    	prend_quete($regs[1], $this->perso);
+    	$this->perso->prend_quete($regs[1]);
     	$texte = str_ireplace('[prendquete:'.$regs[1].']', '', $texte);
     }
     //Donne un item
@@ -227,7 +247,7 @@ class texte
     {
     	$this->perso->prend_objet($regs[1]);
     	$texte = str_ireplace('[donneitem:'.$regs[1].']', '', $texte);
-    	verif_action($regs[1], $this->perso, 's');
+    	quete_perso::verif_action($regs[1], $this->perso, 's');
     	//$trouve = true;
     }
     //Vends un item
@@ -243,17 +263,18 @@ class texte
     		$this->perso->prend_objet($regs[1]);
     		$this->perso->sauver();
     		$replace = 'Vous recevez un objet.<br/>';
-    		verif_action($regs[1], $this->perso, 's');
+    		quete_perso::verif_action($regs[1], $this->perso, 's');
     	}
     	$texte = str_ireplace('[vendsitem:'.$regs[1].':'.$regs[2].']', $replace, $texte);
     }
     //validation inventaire
-    if(preg_match('`\[verifinventaire:([0-9]*)\]`i', $texte, $regs))
+    if(preg_match('`\[verifinventaire:([0-9]*)(-e[0-9]*)?(-v[0-9]*)?\]`i', $texte, $regs))
     {
-    	if (verif_inventaire($regs[1], $this->perso) == false)
-    		$texte = "<h5>Tu te moques de moi, mon bonhomme ?</h5>";
+    	$qp = $this->get_quete_perso($regs);
+    	if ($qp && $qp->verif_inventaire() == false)
+    		$texte = "Tu te moques de moi, mon bonhomme ?";
     	else
-    		$texte = str_ireplace('[verifinventaire:'.$regs[1].']', '', $texte);
+    		$texte = str_ireplace($regs[0], '', $texte);
     }
     
     if( $trouve )
@@ -261,6 +282,25 @@ class texte
     else
       return $texte;
   }
+  
+  protected function get_quete_perso($regs)
+  {
+    $qp = quete_perso::create(array('id_perso', 'id_quete'), array($this->perso->get_id(), $regs[1]));
+    if( !$qp )
+    	return null;
+    if( is_array($qp) )
+    	$qp = $qp[0];
+  	if( count($regs) > 1 && $regs[2][1] == 'e' )
+  	{
+			if( $qp->get_id_etape() !=  mb_substr($regs[2], 3) )
+				return null;
+		}
+		if( count($regs) > 2 && $regs[3][1] == 'v' )
+		{
+			if( $qp->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
+				return null;
+		}
+	}
   
   /// Fonction formattant les balises gérant la navigation (par ex. [retour])
   protected function parse_navig($texte)
@@ -275,7 +315,7 @@ class texte
       $debut = '';
       $fin = '';
     }
-    return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return envoiInfo(this.href, \'information\')">Retour aux informations de la case</a>'.$fin, $texte);
+    return str_ireplace('[retour]', $debut.'<a href="informationcase.php?case='.$this->case.'" onclick="return charger(this.href);">Retour aux informations de la case</a>'.$fin, $texte);
   }
 
   /// Fonction formattant les balises permettant de naviguer entre les différentes parties d'un texte.
@@ -292,7 +332,7 @@ class texte
       $fin = '';
     }
     $texte = preg_replace('`\[/id:([0-9,]+)\]`i', '[/£id:\\1]', $texte);
-    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return envoiInfo(this.href, \'information\')">\\2</a>'.$fin, $texte);
+    return preg_replace('`\[id:([0-9]*)\]([^£]*)\[/£id:\g1\]`iu', $debut.'<a href="'.$this->url.'&amp;reponse=\\1" onclick="return charger(this.href);">\\2</a>'.$fin, $texte);
   }
   
   /// Fonction formattant les balises permettant de naviguet entre les différentes parties d'un textes.
@@ -405,6 +445,12 @@ class texte
   	$texte = preg_replace('`\[/i\]`i', '[/£i]', $texte);
   	$texte = preg_replace('#\[i\]([^£]*)\[/£i\]#i', '<i>\\1</i>', $texte, -1, $nbr);
   	$trouve |= $nbr > 0;
+  	$texte = preg_replace('`\[/u\]`i', '[/£u]', $texte);
+  	$texte = preg_replace('#\[u\]([^£]*)\[/£u\]#i', '<u>\\1</u>', $texte, -1, $nbr);
+  	$trouve |= $nbr > 0;
+  	$texte = preg_replace('`\[/s\]`i', '[/£s]', $texte);
+  	$texte = preg_replace('#\[s\]([^£]*)\[/£s\]#i', '<strike>\\1</strike>', $texte, -1, $nbr);
+  	$trouve |= $nbr > 0;
   	$texte = preg_replace('`\[/url\]`i', '[/£url]', $texte);
   	$texte = preg_replace('#\[url\]([^£]*)\[/£url\]#i', '<a href="\\1">\\1</a>', $texte);
   	$texte = preg_replace('#\[url=([^[\]]*)\]([^£]*)\[/£url\]#i', '<a href="\\1">\\2</a>', $texte, -1, $nbr);
@@ -489,7 +535,7 @@ class texte
         $this->perso->set_y( $regs[2] );
         $this->perso->sauver();
       }
-      $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">envoiInfo("deplacement.php?deplacement=centre", "centre");</script>', $texte);
+      $texte = str_ireplace('[tp:'.$regs[1].'-'.$regs[2].']', '<script type="text/javascript">charger("deplacement.php?deplacement=centre");</script>', $texte);
     }
     return $texte;
   }
@@ -498,6 +544,17 @@ class texte
   protected function parse_tuto($texte)
   {
     $trouve = false;
+    if( preg_match('`\[aide:([a-z_-]*)\](.*)\[/aide:(\g1)\]`i', $texte, $regs) )
+    {
+      //interf_base::code_js('aide("'.$regs[1].'");');
+      //$texte = str_ireplace('[aide:'.$regs[1].']', '<script type="text/javascript">aide("'.$regs[1].'");</script>', $texte);
+      $texte = preg_replace('`\[aide:([a-z_-]*)\](.*)\[/aide:(\g1)\]`i', '<a onclick="aide(\''.$regs[1].'\');">'.$regs[2].'</a>', $texte);
+    }
+    else if( preg_match('`\[aide:([a-z_-]*)\]`i', $texte, $regs) )
+    {
+      //interf_base::code_js('aide("'.$regs[1].'");');
+      $texte = str_ireplace('[aide:'.$regs[1].']', '<script type="text/javascript">aide("'.$regs[1].'");</script>', $texte);
+    }
     if( preg_match('`\[tuto:([0-9+]+)\]`i', $texte, $regs) )
     {
       if( $regs[1] == '+' )
@@ -544,5 +601,199 @@ class texte
     else
       return $texte;
   }
+
+  /// Fonction formattant les balises d'indice.
+  protected function parse_indices($texte)
+  {
+  	global $GTrad;
+    if( preg_match('`\[pos-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de postion pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[pos-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$nom = construction::get_nom_proche($monstre[0]);
+			}
+			else
+				$nom = construction::get_nom_aleatoire();
+      $texte = str_ireplace('[pos-monstre:'.$regs[1].']', 'près de '.$nom, $texte);
+    }
+    if( preg_match('`\[roy-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[roy-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($monstre->get_pos());
+	    	$id_royaume = $case->get_royaume();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$ids_royaumes = array(1, 2, 3, 4, 6, 7, 8, 9, 10 ,11);
+				$i = rand(0, 10);
+				$id_royaume = $ids_royaumes[$i];
+			}
+			/// @todo utiliser la bdd
+			switch( $id_royaume )
+			{
+			case 0:
+				$nom = 'en terrain neutre';
+				break;
+			case 4:
+				$nom = 'dans le royaume barbare';
+				break;
+			case 9:
+				$nom = 'dans l\'empire Vorsh';
+				break;
+			default:
+				$roy = new royaume( $id_royaume );
+				$nom = 'en '.$roy->get_nom();
+			}
+      $texte = str_ireplace('[roy-monstre:'.$regs[1].']', $nom, $texte);
+    }
+    if( preg_match('`\[terr-monstre:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$monstre = monstre::create('type', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de terrain pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[terr-monstre:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($monstre->get_pos());
+				$info = $case->get_info();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$terrains = array(1, 2, 3, 4, 6, 7, 8, 11);
+				$i = rand(0, count($terrains)-1);
+				$info = $terrains[$i];
+			}
+			$type = type_terrain( $info );
+			switch( $type[0] )
+			{
+			case 'glace':
+				$nom = 'sur une banquise';
+				break;
+			case 'desert':
+			case 'marais':
+				$nom = 'dans un '.strtolower($type[1]);
+				break;
+			default:
+				$nom = 'en '.strtolower($type[1]);
+			}
+      $texte = str_ireplace('[terr-monstre:'.$regs[1].']', $nom, $texte);
+    }
+    // bâtiment
+    if( preg_match('`\[pos-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$monstre )
+	    	{
+	    		log_admin::log('erreur', 'Indice de postion pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[pos-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+    		$nom = construction::get_nom_proche($constr[0]);
+			}
+			else
+				$nom = construction::get_nom_aleatoire();
+      $texte = str_ireplace('[pos-constr:'.$regs[1].']', 'près de '.$nom, $texte);
+    }
+    if( preg_match('`\[roy-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$constr )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[roy-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($constr->get_pos());
+				$id_royaume = $case->get_royaume();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$ids_royaumes = array(1, 2, 3, 4, 6, 7, 8, 9, 10 ,11);
+				$i = rand(0, 10);
+				$id_royaume = $ids_royaumes[$i];
+			}
+			/// @todo utiliser la bdd
+			switch( $id_royaume )
+			{
+			case 0:
+				$nom = 'en terrain neutre';
+				break;
+			case 4:
+				$nom = 'dans le royaume barbare';
+				break;
+			case 9:
+				$nom = 'dans l\'empire Vorsh';
+				break;
+			default:
+				$roy = new royaume( $id_royaume );
+				$nom = 'en '.$roy->get_nom();
+			}
+      $texte = str_ireplace('[roy-constr:'.$regs[1].']', $nom, $texte);
+    }
+    if( preg_match('`\[terr-constr:([0-9]+)\]`i', $texte, $regs) )
+    {
+    	if( $this->indice_vrai )
+    	{
+	    	$constr = construction::create('id_batiment', $regs[1]);
+	    	if( !$constr )
+	    	{
+	    		log_admin::log('erreur', 'Indice de royaume pour monstre inéxistant : '.$regs[1]);
+	      	$texte = str_ireplace('[terr-constr:'.$regs[1].']', 'nul part', $texte);
+				}
+	    	$case = new map_case($constr->get_pos());
+	    	$info = $case->get_info();
+			}
+			else
+			{
+				/// @todo à améliorer
+				$terrains = array(1, 2, 3, 4, 6, 7, 8, 11);
+				$i = rand(0, count($terrains)-1);
+				$info = $terrains[$i];
+			}
+			$type = type_terrain( $info );
+			switch( $type[0] )
+			{
+			case 'glace':
+				$nom = 'sur une banquise';
+				break;
+			case 'route':
+				$nom = 'sur une route';
+				break;
+			case 'desert':
+			case 'marais':
+				$nom = 'dans un '.strtolower($type[1]);
+				break;
+			default:
+				$nom = 'en '.strtolower($type[1]);
+			}
+      $texte = str_ireplace('[terr-constr:'.$regs[1].']', $nom, $texte);
+    }
+    return $texte;
+  }
+  
+  static function parse_url($texte)
+  {  
+  	return preg_replace('`((?:https?|ftp)://S+)(s|z)`', '<a href="$1">$1</a>',$texte);
+	}
 }
 ?>

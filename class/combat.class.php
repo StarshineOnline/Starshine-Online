@@ -17,6 +17,7 @@
 	cs = silence
 	cc = caché
 	ef = effet
+	sv = tir vise
 */
 
 class combat
@@ -115,383 +116,143 @@ class combat
 		return new journal($this->id_journal);
 	}
 	
-	function afficher_combat()
+	function &afficher_combat(&$interf_princ)
 	{
-	global $db;
+		global $db, $G_interf, $G_url;
 		if ($this->combat != NULL)
 		{
-			$attaquant = new perso($this->attaquant);
-			$defenseur = new perso($this->defenseur);
+			$this->journal = $this->get_journal();
+			if( $this->journal->get_action() == 'defense' )
+			{
+				$attaquant = new perso(0, 0, $this->journal->get_passif());
+				$defenseur = new perso(0, 0, $this->journal->get_actif());
+			}
+			else
+			{
+				$attaquant = new perso(0, 0, $this->journal->get_actif());
+				$defenseur = new perso(0, 0, $this->journal->get_passif());
+			}
 			$logcombat = preg_replace("#r[0-9]+:#", "", $this->combat);
 			$rounds = explode(';', $logcombat);
-			unset($combat);
+
+			$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Combat VS '.$defenseur->get_nom()) );
+    	$interf = $cadre->add( $G_interf->creer_combat() );
 			for($i = 0; $i < count($rounds); $i++)
 			{
+				$interf->nouveau_round($i+1);
+				
 				$each_attaque = explode(',', $rounds[$i] );
-				$combat[$i+1]['attaquant'] = $each_attaque[0];
-				$combat[$i+1]['defenseur'] = $each_attaque[1];
-				$combat[$i+1]['effects_attaquant'] = $each_attaque[2];
-				$combat[$i+1]['effects_defenseur'] = $each_attaque[3];
-			}
-
-			echo '<fieldset>
-			<legend>Combat VS '.$defenseur->get_nom().' </legend>';
-			$round = 1;
-			while($round < (count($combat)+1))
-			{
-				if ($mode == 'attaquant') $mode = 'defenseur';
-				else ($mode = 'attaquant');
+				$attaque = $each_attaque[0];
+				$defense = $each_attaque[1];
+				$effets_attaquant = $each_attaque[2];
+				$effets_defenseur = $each_attaque[3];
 				
-				if($mode == 'attaquant')
-				{
-					echo '
-					<table style="width : 100%;">
-						<tr>
-							<td style="vertical-align : top; width : 20%;">
-								<h3 style="margin-top : 3px;">Round '.$round.'</h3>
-							</td>
-							<td>';
-				}
-				echo '<div class="combat">';
-				
-				preg_match("#([a-z])([0-9a-z]*)(!)?(~([0-9aelm]+))?#i", $combat[$round][$mode], $attaque);
-				/*
-				$attaque[1] => c // Si c'est une compétence, un sort ...
-				$attaque[2] => 0 // l'id de la compétence ou du sort
-				$attaque[3] => ! // critiques
-				$attaque[5] => e // les degats ou esquive
-				*/
-				if($attaque[1] == "c") // Une compétence
-				{
-						if($attaque[2] != 0 AND is_numeric($attaque[2]))
-						{
-							$requete = "SELECT * FROM comp_combat WHERE id = ".$attaque[2];
-							$req = $db->query($requete);
-							$row = $db->read_assoc($req);
-							
-							switch($row['type'])
-							{
-								case 'tir_precis' :
-								case 'oeil_faucon' :
-								case 'coup_puissant' :
-								case 'coup_violent' :
-								case 'coup_mortel' :
-								case 'coup_sournois' :
-								case 'attaque_vicieuse' :
-								case 'tir_puissant' :
-								case 'fleche_magnetique' :
-								case 'fleche_sable' :
-								case 'fleche_rapide' :
-								case 'fleche_sanglante' :
-								case 'frappe_derniere_chance' :
-								case 'feinte' :
-								case 'attaque_cote' :
-								case 'attaque_brutale' :
-								case 'attaque_rapide' :
-								case 'fleche_enflammee' :
-								case 'botte_ours' :
-								case 'botte_aigle' :
-								case 'botte_tigre' :
-								case 'botte_rhinoceros' :
-								case 'botte_tortue' :
-								case 'botte_scolopendre' :
-								case 'botte_chien' :
-								case 'botte_chat' :
-								case 'botte_scorpion' :
-								case 'botte_crabe' :
-								case 'fleche_barbelee' :
-								case 'fleche_debilitante' :
-								case 'fleche_poison' :
-								case 'fleche_etourdissante' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> utilise '.$row['nom'].'<br />';
-								break;
-								case 'berzeker' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> passe en mode '.$row['nom'].' !<br />';
-								break;
-								case 'tir_vise' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> se concentre pour viser !<br />';
-								break;
-								case 'coup_bouclier' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> donne un coup de bouclier !<br />';
-								break;
-								case 'slam' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> utilises SLAM !<br />';
-								break;
-								case 'posture_critique' :
-								case 'posture_esquive' :
-								case 'posture_defense' :
-								case 'posture_degat' :
-								case 'posture_transperce' :
-								case 'posture_paralyse' :
-								case 'posture_touche' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> se met en '.$row['nom'].' !<br />';
-								break;
-								case 'dissimulation' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> tente de se dissimuler...';
-								break;
-								case 'bouclier_protecteur' :
-									echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> intensifie sa protection magique grace à son bouclier !<br />';
-								break;
-								default:
-								break;
-							}
-						}
-						elseif($attaque[2] == "p")
-							echo '<strong>'.${$mode}->get_nom().'</strong> est paralysé<br />';
-						elseif($attaque[2] == "e")
-							echo '<strong>'.${$mode}->get_nom().'</strong> est étourdi<br />';
-						elseif($attaque[2] == "g")
-							echo ${$mode}->get_nom().' est glacé<br />';
-						elseif($attaque[2] == "c")
-						{
-							if ($mode == 'attaquant')
-								echo $defenseur->get_nom().' est caché, '.$attaquant->get_nom().' ne peut pas attaquer<br />';
-							else
-								echo $attaquant->get_nom().' est caché, '.$defenseur->get_nom().' ne peut pas attaquer<br />';
-						}
-						elseif(substr($attaque[2],0,1) == "s")
-							echo ${$mode}->get_nom().' est sous silence<br />';
-						
-						if($attaque[3] == "!")
-							echo '&nbsp;&nbsp;<span class="coupcritique">COUP CRITIQUE !</span><br />';
-						if($attaque[5] == "e") // Si c'est une esquive
-							echo "&nbsp;&nbsp;<span class=\"manque\"><strong>".${$mode}->get_nom()."</strong> manque la cible</span><br />";
-						elseif($attaque[5] != NULL)
-							echo "&nbsp;&nbsp;<span class=\"degat\"><strong>".${$mode}->get_nom()."</strong> inflige ".$attaque[5]." dégâts</span><br />";
-
-				}
-				elseif($attaque[1] == "s") // Un sort
-				{
-					$requete = "SELECT * FROM sort_combat WHERE id = ".$attaque[2];
-					$req = $db->query($requete);
-					$row = $db->read_assoc($req);
-					
-					if($attaque[5] == "m") // Si c'est une esquive
-					{
-						echo "&nbsp;&nbsp;<span class=\"manque\"><strong>".${$mode}->get_nom()."</strong> manque la cible avec ".$row['nom']."</span><br />";
-					}
-					elseif($attaque[5] == "l") // Si c'est un sort raté
-					{
-						echo '&nbsp;&nbsp;<span class="manque">'.${$mode}->get_nom().' rate le lancement de '.$row['nom'].'</span><br />';
-					}
-					else
-					{
-						if($attaque[3] == "!")
-							echo '&nbsp;&nbsp;<span class="coupcritique">SORT CRITIQUE !</span><br />';
-							
-							switch($row['type'])
-							{
-							case 'degat_feu' :
-							case 'degat_nature' :
-							case 'degat_mort' :
-							case 'degat_froid' :
-							case 'degat_vent' :
-							case 'degat_terre' :
-							case 'lapidation' :
-							case 'globe_foudre' :
-							case 'putrefaction' :
-							case 'brisement_os' :
-							case 'sphere_glace' :
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
-							break;
-							case 'embrasement' :
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
-							break;
-							case 'sacrifice_morbide' :
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> se suicide et inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
-							break;
-							case 'pacte_sang' :
-								if($attaque[5] > 0)
-								{
-									echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
-								}
-							break;
-							case 'drain_vie' :
-								$drain = round($attaque[5] * 0.3);
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
-								Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
-							break;
-							case 'vortex_vie' :
-								$drain = round($attaque[5] * 0.4);
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
-								Et gagne <strong>'.$drain.'</strong> hp grâce au drain</span><br />';
-							break;
-							case 'vortex_mana' :
-								$drain = round($attaque[5] * 0.2);
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'<br />
-								Et gagne <strong>'.$drain.'</strong> RM grâce au drain</span><br />';
-							break;
-							case 'brulure_mana' :
-								$brule_mana = $row['effet'];
-								echo '&nbsp;&nbsp;<span class="degat"><strong>'.${$mode}->get_nom().'</strong> retire '.$brule_mana.' réserve de mana et inflige <strong>'.$attaque[5].'</strong> dégâts avec '.$row['nom'].'</span><br />';
-							break;
-							case 'appel_tenebre' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'.<br />';
-							break;
-							case 'appel_foret' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'.<br />';
-							break;
-							case 'benediction' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'paralysie' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'silence' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'lien_sylvestre' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'poison' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'jet_acide' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> lance le sort jet d\'acide<br />';
-							break;
-							case 'recuperation' :
-								echo '&nbsp;&nbsp;<strong>'.${$mode}->get_nom().'</strong> se lance le sort '.$row['nom'].'<br />';
-							break;
-							case 'aura_feu' :
-								echo '&nbsp;&nbsp;Une enveloppe de feu entoure <strong>'.${$mode}->get_nom().'</strong> !<br />';
-							break;
-							case 'aura_glace' :
-								echo '&nbsp;&nbsp;Une enveloppe de glace entoure <strong>'.${$mode}->get_nom().'</strong> !<br />';
-							break;
-							case 'aura_vent' :
-								echo '&nbsp;&nbsp;Des tourbillons d\'air entourent <strong>'.${$mode}->get_nom().'</strong> !<br />';
-							break;
-							case 'aura_pierre' :
-								echo '&nbsp;&nbsp;De solides pierres volent autour de <strong>'.${$mode}->get_nom().'</strong> !<br />';
-							break;
-						}
-					}
-				}
-				elseif($attaque[1] == "a" AND $mode == 'attaquant')
-					echo $defenseur->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
-				elseif($attaque[1] == "a" AND $mode == 'defenseur')
-					echo $attaquant->get_nom().' anticipe l\'attaque, et elle échoue !<br />';
-				elseif ($attaque[1] == 'n')
-					echo ${$mode}->get_nom().' s\'approche<br />';
-
-				// On gère les effets
-				if($mode == 'defenseur')
-				{
-					preg_match_all("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_defenseur'], $effects_d);
-					for($i=0;$i<count($effects_d[0]);$i++)
-					{
-					/*
-					$effects_d[1][$i] => 7 // id de l'effet
-					$effects_d[2][$i] => 4 // valeur des degats 
-					*/
-						//Perte de HP par le poison
-						if($effects_d[1][$i] == "1")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par le poison</span><br />';
-						//Perte de HP par hémorragie
-						if($effects_d[1][$i] == "2")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par hémorragie</span><br />';
-						//Perte de HP par embrasement
-						if($effects_d[1][$i] == "3")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par embrasement</span><br />';
-						//Perte de HP par acide
-						if($effects_d[1][$i] == "4")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par acide</span><br />';
-						//Perte de HP par lien sylvestre
-						if($effects_d[1][$i] == "5")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' perd '.$effects_d[2][$i].' HP par le lien sylvestre</span><br />';
-						//Récupération
-						if($effects_d[1][$i] == "6")
-							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2][$i].' HP par récupération</span><br />';
-						// Fleche Debilisante
-						if($effects_d[1][$i] == "7")
-							echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
-						// Rage vampirique
-						if($effects_d[1][$i] == "8")
-							if($effects_d[2][$i] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$defenseur->get_nom().' gagne '.$effects_d[2][$i].' HP par la rage vampirique</span><br />';
-						// Armure d'epine
-						if($effects_d[1][$i] == "9")
-							if($effects_d[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' renvoie '.$effects_d[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
-						//Pacte de sang
-						if($effects_d[1][$i] == "10")
-							echo '&nbsp;&nbsp;<span class="degat">'.$defenseur->get_nom().' sacrifie '.$effects_d[2][$i].' hp</span><br />';
-					}
-				}
-				else
-				{
-					preg_match_all("#&ef([0-9]+)~([0-9]+)#i", $combat[$round]['effects_attaquant'], $effects_a);
-					for($i=0;$i<count($effects_a[0]);$i++)
-					{
-						if($effects_a[1][$i] == "1")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par le poison</span><br />';
-						if($effects_a[1][$i] == "2")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par hémorragie</span><br />';
-						if($effects_a[1][$i] == "3")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par embrasement</span><br />';
-						if($effects_a[1][$i] == "4")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par acide</span><br />';
-						if($effects_a[1][$i] == "5")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' perd '.$effects_a[2][$i].' HP par le lien sylvestre</span><br />';
-						if($effects_a[1][$i] == "6")
-							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2][$i].' HP par récupération</span><br />';
-						if($effects_a[1][$i] == "7")
-							echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' est sous l\'effet de Flêche Débilisante</span><br />';
-						if($effects_a[1][$i] == "8")
-							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="soin">'.$attaquant->get_nom().' gagne '.$effects_a[2][$i].' HP par la rage vampirique</span><br />';
-						if($effects_a[1][$i] == "9")
-							if($effects_a[2][$i] > 0) echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' renvoie '.$effects_a[2][$i].' dégâts grâce à l\'Armure en épine</span><br />';
-						if($effects_a[1][$i] == "10")
-							echo '&nbsp;&nbsp;<span class="degat">'.$attaquant->get_nom().' sacrifie '.$effects_a[2][$i].' hp</span><br />';
-
-					}
-				}
-					
-				echo '</div>';
-				
-				if($mode == 'defenseur')
-				{
-				$round++;
-				?>
-						</td>
-					</tr>
-				</table>
-				<?php
-				}
+				$interf->nouvelle_passe($mode);
+				$this->aff_passe($interf, $attaquant, $defenseur, $attaque, $effets_attaquant, true);
+				$interf->nouvelle_passe($mode);
+				$this->aff_passe($interf, $defenseur, $attaquant, $defense, $effets_defenseur, false);
 			}
 			
-			if($mode == 'attaquant')
-			{
-			?>
-					</td>
-				</tr>
-			</table>
-			<?php
-			}
 			$journal = $this->get_journal();
+			
+			$interf->aff_fin($attaquant, $defenseur, $journal->get_valeur(), $journal->get_valeur2(), null, null, 'perso', false);
+			
 			$suivant = $journal->get_suivant('action = "attaque" OR action = "defense"');
 			$precedent = $journal->get_precedent('action = "attaque" OR action = "defense"');
-			?>
-	<div id="combat_resume">
-	<strong>Résumé</strong><br />
-	<span style="float:left; width: 200px;">Dégâts infligés par l'attaquant</span><span><?php echo $journal->get_valeur(); ?></span><br />
-	<span style="float:left; width: 200px;">Dégâts infligés par le défenseur</span><span><?php echo $journal->get_valeur2(); ?></span><br /><br />
-			<?php
-			if($suivant) 
-				echo '<a href="journal_combat.php?id='.$suivant->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Suivant</a> - ';
-			else 
-				echo 'Suivant - ';
-			if($precedent) 
-				echo '<a href="journal_combat.php?id='.$precedent->get_id().'" onclick="return envoiInfo(this.href, \'information\');">Précédent</a>';
-			else 
-				echo 'Précédent';
-			?>
-	</div>
-			<?php
+			$pagination = $cadre->add( new interf_bal_cont('ul', false, 'pager') );
+			if($precedent)
+			{
+				$url = $G_url->get('id', 	$precedent->get_id());
+				$onclick = 'return charger(this.href);';
+				$classe = '';
+			}
+			else
+			{
+				$url = '#';
+				$onclick = false;
+				$classe = ' disabled';
+			}
+			$pagination->add( new interf_elt_menu('&larr; Précédent', $url, $onclick, false, 'previous'.$classe) );
+			if($suivant)
+			{
+				$url = $G_url->get('id', 	$suivant->get_id());
+				$onclick = 'return charger(this.href);';
+				$classe = '';
+			}
+			else
+			{
+				$url = '#';
+				$onclick = false;
+				$classe = ' disabled';
+			}
+			$pagination->add( new interf_elt_menu('Suivant &rarr;', $url, $onclick, false, 'next'.$classe) );
 			
-			return true;
+			return $cadre;
 		}
 		else
 			return false;
+	}
+	
+	function aff_passe(&$interf, &$actif, &$passif, $action, $effets, $attaquant)
+	{
+		preg_match("#([a-z])([0-9a-z]*)(!)?(~([0-9aelm]+))?#i", $action, $attaque);
+		/*
+		$attaque[1] => c // Si c'est une compétence, un sort ...
+		$attaque[2] => 0 // l'id de la compétence ou du sort
+		$attaque[3] => ! // critiques
+		$attaque[5] => e // les degats ou esquive
+		*/
+		switch( $attaque[1] )
+		{
+		case 'c': // Une compétence
+			if($attaque[2] != 0 AND is_numeric($attaque[2]))
+			{
+				$comp = new comp_combat($attaque[2]);
+				$interf->competence($comp->get_type(), $actif->get_nom(), $comp->get_nom());
+			}
+			else
+				$interf->special('c'.$attaque[2], $actif->get_nom(), $passif->get_nom());
 			
+			if($attaque[3] == "!")
+				$interf->critique();
+			if($attaque[5] == "e") // Si c'est une esquive
+				$interf->manque($actif->get_nom());
+			else if($attaque[5] != NULL)
+				$interf->degats($attaque[5], $actif->get_nom());
+			break;
+		case 's': // Un sort
+			$sort = new sort_combat($attaque[2]);
+			
+			if($attaque[5] == "m") // Si c'est une esquive
+				$interf->manque($actif->get_nom(), $sort->get_nom());
+			else if($attaque[5] == "l") // Si c'est un sort raté
+				$interf->rate($actif->get_nom(), $sort->get_nom());
+			else
+			{
+				$interf->sort($sort->get_type(), $actif->get_nom(), $sort->get_nom());
+				if($attaque[3] == "!")
+					$interf->critique(true);
+				$interf->degats($attaque[5], $actif->get_nom(), $sort->get_nom());
+			}
+			break;
+		case 'a':
+			$interf->anticipe( $passif->get_nom() );
+			break;
+		case 'n':
+			$interf->approche($actif);
+			break;
+		}
+
+		// On gère les effets
+		preg_match_all("#&ef([0-9]+)~([0-9]+)#i", $effets, $effects_d);
+		for($i=0;$i<count($effets_d[0]);$i++)
+		{
+			/*
+			$effects_d[1][$i] => 7 // id de l'effet
+			$effects_d[2][$i] => 4 // valeur des degats 
+			*/
+			$interf->effet($effets_d[1][$i], $effets_d[2][$i], $actif->get_nom(), $passif->get_nom());
+		}
 	}
 }
 ?>

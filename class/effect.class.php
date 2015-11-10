@@ -53,18 +53,8 @@ class effect
   /**
    *  Affiche le message de dégâts correspondant à l'effet
    *  
-   * @param  $aMessage    Message à afficher.        
-   */  
-	function hit($aMessage, $br = true) {
-		echo "<span class=\"degat\">&nbsp;&nbsp;$aMessage";
-    if ($br) { echo '<br />'; }
-    echo '</span>';
-	}
-
-  /**
-   *  Affiche le message de dégâts correspondant à l'effet
-   *  
-   * @param  $aMessage    Message à afficher.        
+   * @param  $aMessage    Message à afficher.
+   * @depreaceted	     
    */  
 	function heal($aMessage, $br = true) {
 		echo "<span class=\"soin\">&nbsp;&nbsp;$aMessage";
@@ -75,7 +65,8 @@ class effect
   /**
    *  Affiche le message d'informations correspondant à l'effet
    *  
-   * @param  $aMessage    Message à afficher.        
+   * @param  $aMessage    Message à afficher.    
+   * @depreaceted    
    */  
 	function notice($aMessage, $br = true) {
 		echo "<span class=\"small\">&nbsp;&nbsp;$aMessage";
@@ -89,11 +80,12 @@ class effect
    * @param  $aMessage    Message à afficher.        
    */  
 	function debug($aMessage, $br = true) {
-		global $debugs;
+		interf_debug::enregistre($aMessage);
+		/*global $debugs;
 		echo "<div class=\"debug\" id=\"debug${debugs}\">$aMessage";
     if ($br) { echo '<br />'; }
     echo '</div>';
-		$debugs++;
+		$debugs++;*/
 	}
 
   /**
@@ -216,7 +208,13 @@ class effect
    *
    * @return    MP requis
    */
-  function calcul_mp(&$attaque) { return $mp; }
+  function calcul_mp(&$attaque) {  }
+  /**
+   * Modifie l'anticipation
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function anticipation(&$attaque) {  }
   /**
    * Modifie le potentiel toucher magique
    * 
@@ -376,6 +374,24 @@ class effect
    * @param  $passif    Personnage passif lors de l'action.
    * @param  $degats    Dégâts infligés.           
    */ 
+  function calcul_critique_magique(&$attaque) {  }
+  /**
+   * Modifie le multiplicateur de dégâts en cas ce coup critique
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $mult      Multiplicateur de dégâts avant modification.
+   * 
+   * @return    Multiplicateur de dégâts après modification.              
+   */ 
+  function calcul_mult_critique_magique(&$attaque) {  }
+  /**
+   * Applique les effets ayant lieu lorsque les dégâts ont lieu
+   * 
+   * @param  $actif     Personnage actif lors de l'action.
+   * @param  $passif    Personnage passif lors de l'action.
+   * @param  $degats    Dégâts infligés.           
+   */ 
   function inflige_degats(&$attaque) {  }
   /**
    * Applique les effets ayant lieu lorsque les dégâts magiques ont lieu
@@ -386,6 +402,36 @@ class effect
    * @param  $degats    Dégâts infligés.           
    */ 
   function inflige_degats_magiques(&$attaque) { }
+  /**
+   * Applique les effets ayant lieu lorsqu'un critique est infilge
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function inflige_critique(&$attaque) {  }
+  /**
+   * Applique les effets ayant lieu lorsqu'un critique magique est infilge
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function inflige_critique_magique(&$attaque) {  }
+  /**
+   * Applique les effets ayant lieu lorsque l'attaque est ratée
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function rate(&$attaque) { }
+  /**
+   * Modification du potentiel pour étourdir avec un bouclier
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function coup_bouclier(&$attaque) { }
+  /**
+   * Modification du potentiel pour résister aux étourdissement
+   * 
+   * @param  $attaque		Objet contenant les paramètres du combat
+   */
+  function resite_etourdissement(&$attaque) { }
   /**
    * Action a effectuer en fin de round
    * 
@@ -446,10 +492,6 @@ class perte_hp extends etat
 	{
     return get_called_class();
   }
-	static function get_nom()
-	{
-    return get_called_class();
-  }
 	static function factory(&$effects, &$actif, &$passif, $acteur = '')
   {
 		if (array_key_exists(self::get_etat(), $actif->etat))
@@ -465,8 +507,8 @@ class perte_hp extends etat
     $actif = $attaque->get_actif();
 		$perte_hp = $this->effet;
 		$actif->set_hp($actif->get_hp() - $perte_hp);
-		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par '.$this->get_nom());
-		$attaque->add_log_effet_actif('&'.static::type_log.'~'.$perte_hp);
+		$attaque->get_interface()->effet(static::type_log, $perte_hp, $actif->get_nom());
+		$attaque->add_log_effet_actif('&ef'.static::type_log.'~'.$perte_hp);
 	}
 }
 
@@ -475,6 +517,7 @@ class perte_hp extends etat
  */
 class empoisonne extends effect {
 	var $vigueur;
+  const type_log = 1;
 
   function __construct($aVigueur) {
     parent::__construct('poison');
@@ -489,7 +532,8 @@ class empoisonne extends effect {
   function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
-		$this->hit($actif->get_nom().' perd '.$this->vigueur.' HP à cause du poison');
+		$attaque->get_interface()->effet(static::type_log, $this->vigueur, $actif->get_nom());
+		$attaque->add_log_effet_actif('&ef1~'.$this->vigueur);
 		$actif->set_hp($actif->get_hp() - $this->vigueur);
 		
 		$attaque->add_log_effet_actif("&ef1~".$this->vigueur);
@@ -529,7 +573,7 @@ class poison extends effect
 			$perte_hp = $perte_hp * $actif->etat['putrefaction']['effet'];
 			
 		$actif->set_hp($actif->get_hp() - $perte_hp);
-		$this->hit($actif->get_nom().' perd '.$perte_hp. ' HP par le poison');
+		$attaque->get_interface()->effet(1, $perte_hp, $actif->get_nom());
 		$attaque->add_log_effet_actif("&ef1~".$perte_hp);
 	}
 }
@@ -554,8 +598,7 @@ class poison_lent extends effect {
   function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
-		$this->hit($actif->get_nom().' perd '.$this->vigueur.
-							 ' HP à cause du poison');
+		$attaque->get_interface()->effet(1, $this->vigueur, $actif->get_nom());
 		$actif->add_hp(-$this->vigueur);
 		if ($actif->etat['poison_lent']['duree'] < 1)
 			unset($actif->etat['poison_lent']);
@@ -567,7 +610,7 @@ class poison_lent extends effect {
  */
 class hemorragie extends perte_hp
 {
-  const type_log = 'ef2';
+  const type_log = 2;
 }
 
 /**
@@ -575,11 +618,7 @@ class hemorragie extends perte_hp
  */
 class embraser extends perte_hp
 {
-  const type_log = 'ef3';
-	static function get_nom()
-	{
-    return 'embrasement';
-  }
+  const type_log = 3;
 }
 
 /**
@@ -587,7 +626,7 @@ class embraser extends perte_hp
  */
 class acide extends perte_hp
 {
-  const type_log = 'ef4';
+  const type_log = 4;
 }
 
 /**
@@ -595,11 +634,7 @@ class acide extends perte_hp
  */
 class lien_sylvestre extends perte_hp
 {
-  const type_log = 'ef5';
-	static function get_nom()
-	{
-    return 'le lien sylvestre';
-  }
+  const type_log = 5;
 }
 
 /**
@@ -632,11 +667,11 @@ class recuperation extends etat
 		if($effet > 0)
 		{
 			$actif->etat['recuperation']['hp_recup'] += $effet;
-			echo '&nbsp;&nbsp;<span class="soin">'.$actif->get_nom().' gagne '.$effet.' HP par récupération</span><br />';
+			$attaque->get_interface()->effet(6, $effet, $actif->get_nom());
 			$attaque->add_log_effet_actif("&ef6~".$effet);
 		}
 		else
-			print_debug($actif->get_nom().' ne peut pas gagner de HP par récupération');
+			interf_debug::enregistre($actif->get_nom().' ne peut pas gagner de HP par récupération');
   }
 }
 
@@ -790,8 +825,10 @@ class effet_vampirisme extends effect
 			$gain = 0;
 		$actif->add_hp($gain);
 		if ($gain > 0)
-			$this->heal($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
-									$this->nom, true);
+		{
+			$attaque->get_interface()->effet(30, $gain, $actif->get_nom());
+			$attaque->add_log_effet_actif('&ef30~'.$gain);
+		}
 		else
 			$this->debug($actif->get_nom().' gagne '.$gain.' HP par '.$this->pos.' '.
 									$this->nom);
@@ -848,7 +885,6 @@ class bonus_pinceau extends effect
 		$bonus_potentiel = 0;
 		for ($tmp_honneur = $actif->get_honneur() - 20000; $tmp_honneur > 0;
 				 $tmp_honneur -= 15000)
-			echo $this->effet;
 			$bonus_potentiel += $this->effet;
 		if ($bonus_potentiel > 0)
 			$this->debug($actif->get_nom().' voit son potentiel magique augmenté de '.
@@ -972,8 +1008,8 @@ class riposte_furtive extends effect
   function inflige_degats_magiques(&$attaque) {
     $actif = $attaque->get_actif();
     $inf = floor($attaque->get_degats() * $this->effet);
-    $this->hit('La riposte furtive de '.$attaque->get_passif()->get_nom().' inflige '.$inf.
-               ' dégâts à '.$actif->get_nom());
+		$attaque->get_interface()->effet(25, $inf, $actif->get_nom(), $attaque->get_passif()->get_nom());
+		$attaque->add_log_effet_actif('&ef25~'.$inf);
     $actif->add_hp($inf * -1);
   }
 }
@@ -997,8 +1033,8 @@ class carapace_incisive extends effect
 		{
       $actif = $attaque->get_actif();
 			$degat = 2 * $attaque->get_degats();
-			$this->hit('La carapace incisve de '.$attaque->get_passif->get_nom().' inflige '.$degat.
-								 ' dégâts à '.$actif->get_nom());
+			$attaque->get_interface()->effet(26, $degat, $actif->get_nom(), $attaque->get_passif()->get_nom());
+			$attaque->add_log_effet_actif('&ef26~'.$inf);
 			$actif->add_hp($degat * -1);
 		}
 		else $this->debug('La carapace incisive n\'agit pas');
@@ -1019,9 +1055,9 @@ class arc_tung extends effect
 	function inflige_degats(&$attaque) {
     $actif = $attaque->get_actif();
 		$degat = ceil(-0.2 * $attaque->get_degats);
-		echo $degat;
 		$actif->add_hp($degat);
-		$this->hit('L\'arc Tung de '.$actif->get_nom().' lui fait perdre des points de vie !');	
+		$attaque->get_interface()->effet(27, $degat, $actif->get_nom());
+		$attaque->add_log_effet_actif('&ef27~'.$degat);
   }
 }
 
@@ -1037,12 +1073,10 @@ class mirroir_eclatant extends effect
 	}
 	
 	function applique_bloquage(&$attaque) {
-		$degat = $this->effet * $attaque->get_degats();
-		$this->hit('Votre bouclier inflige '.ceil($degat).
-               ' dégâts à '.$attaque->get_actif()->get_nom());
-		$actif->add_hp(ceil($degat) * -1);
-		$this->hit('Votre bouclier bloque '.ceil($degat).
-               ' dégâts');
+		$degat = ceil($this->effet * $attaque->get_degats());
+		$actif->add_hp( -$degat );
+		$attaque->get_interface()->effet(28, $degat, $attaque->get_actif()->get_nom());
+		$attaque->add_log_effet_actif('&ef28~'.$degat);
     $attaque->set_degats( $degat*(1-$this->effet/100) );
 	}
 }
@@ -1061,8 +1095,8 @@ class anneau_resistance extends effect
   function calcul_degats_magiques(&$attaque) {
     if (get_class($attaque->get_passif()) == 'perso' && $attaque->get_actif()->get_race() == $this->effet) {
       $reduction = min(2, $degats);
-			$this->hit('L\'anneau de resistance de '.$attaque->get_passif()->get_nom().
-                 ' reduit les degats de '.$reduction);
+			$attaque->get_interface()->effet(29, $reduction, '', $attaque->get_passif()->get_nom());
+			$attaque->add_log_effet_actif('&ef29~'.$reduction);
       $attaque->add_degats(-$reduction);
     }
   }
@@ -1101,6 +1135,80 @@ class bouclier_pensee extends effect
 
 	function calcul_bloquage_reduction(&$attaque) {
     $attaque->set_degats_bloques( ceil($attaque->get_passif()->get_volonte()/2) );
+	}
+}
+
+
+/**
+ * Chances de toucher des sorts de feu
+ * Ajouter lancer ? 
+ */
+class chances_feu extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='chances_feu')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_attaque_magique(&$attaque)
+	{
+		switch( $attaque->get_type_degats() )
+		{
+		case 'degat_feu':
+		case 'embrasement':
+      $attaque->valeur *= 1 + $this->effet / 100;
+      break;
+		}
+	}
+}
+
+
+/**
+ * Dégâts des sorts de feu
+ */
+class degats_feu extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='degats_feu')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_bonus_degats_magiques(&$attaque)
+	{
+		switch( $attaque->get_type_degats() )
+		{
+		case 'degat_feu':
+		case 'embrasement':
+      $attaque->add_degats($this->effet);
+      break;
+		}
+	}
+}
+
+
+/**
+ * Réduction du blocage
+ */
+class reduction_blocage extends effect
+{
+	private $effet;
+
+	function __construct($effet, $nom='reduction_blocage')
+	{
+		parent::__construct($aNom);
+    $this->effet = $effet;
+  }
+
+  function calcul_bloquage_reduction(&$attaque)
+	{
+		if( comp_sort::test_de(100, $this->effet) )
+			$attaque->add_degats_bloques(-1);
 	}
 }
 

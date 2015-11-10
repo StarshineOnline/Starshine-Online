@@ -59,11 +59,11 @@ class construction extends entitenj_constr
 	{
 		return $this->date_construction;
 	}
-
+	
 	/// Renvoie l'image du bâtiment
-	function get_image()
-	{
-		return $this->get_batiment()->get_image();
+  function get_image()
+  {
+  	return $this->make_url_image($this->get_batiment()->get_image());
 	}
 	// @}
 
@@ -133,7 +133,7 @@ class construction extends entitenj_constr
 	}
 	
 	/// Renvoie le nom de la table (par défaut le nom de la classe)
-	protected function get_table()
+	static function get_table()
 	{
 		return 'construction';
 	}
@@ -143,7 +143,10 @@ class construction extends entitenj_constr
 	{
 		global $G_PA_attaque_batiment;
 		if( $perso->is_buff('convalescence') )
+		{
+    	interf_alerte::enregistre(interf_alerte::msg_avertis, 'Le coût en PA passe à '.$G_PA_attaque_batiment.' à cause de votre convalescence.');
 			return $G_PA_attaque_batiment;
+		}
 		else
 			return 0;
 	}
@@ -158,7 +161,7 @@ class construction extends entitenj_constr
 		$recharg = $this->get_batiment()->get_bonus('rechargement');
 		//$date_tir = $this->get_rechargement() - $reduc;
 		$retard = time() - $this->get_rechargement();
-		// On remt à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de ratrapage)
+		// On remet à zéro si le dernier tir date de plus de 24h (on considère qu'il n'y avait pas de combat avant donc pas de rattrapage)
 		if( $retard > 86400 )
 		{
 			$reduc = 0;
@@ -180,6 +183,68 @@ class construction extends entitenj_constr
 		}
 		$this->set_rechargement( time() + $recharg - $reduc );
 		$this->sauver();
+	}
+	
+	/// Récupère les buffs du bâtiment
+	protected function constr_buff()
+	{
+		$this->buff = buff_batiment::create('id_construction', $this->id, 'id ASC', 'type', false, true);
+	}
+
+  /**
+   * Renvoie les images et positions des constructions dans une zone donnée sous forme de tableau
+   * @param  $x_min     Valeur minimale de la coordonnée x
+   * @param  $x_max    Valeur maximale de la coordonnée x
+   * @param  $y_min     Valeur minimale de la coordonnée y
+   * @param  $y_max    Valeur maximale de la coordonnée y
+   * @return    tableau contenant les positions et l'image
+   */
+  static function get_images_zone($x_min, $x_max, $y_min, $y_max, $grd_img=true, $cond='1', $royaume=false)
+  {
+    global $db;
+		$requete = 'SELECT x, y, b.image, b.nom, royaume, c.type, b.quete FROM '.static::get_table().' AS c INNER JOIN batiment AS b ON c.id_batiment = b.id WHERE x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max.' AND '.$cond;
+    $req = $db->query($requete);
+    $res = array();
+    while( $row = $db->read_object($req) )
+    {
+      $row->image = self::make_url_image($row->image, $grd_img, ($royaume && $row->type == 'arme_de_siege') ? $row->royaume : false);
+      $res[] = $row;
+    }
+    return $res;
+  }
+
+  static function make_url_image($image, $grd_img=true, $royaume=false)
+  {
+  	global $Trace;
+    return 'image/batiment'.($grd_img ? '' : '_low').'/'.$image.'_'.($royaume ? $Trace['liste'][$royaume] : '04').'.png';
+  }
+  
+  static function get_nom_proche($obj, $exclu=false)
+  {
+  	global $db;
+  	$requete = 'SELECT nom FROM construction WHERE royaume > 0 AND type IN ("tour", "bourg", "fort")';
+  	if( $exclu )
+  		$requete .= ' AND id != '.$exclu;
+  	$requete .= ' ORDER BY GREATEST(ABS(CAST(x AS SIGNED) - '.$obj->get_x().'), ABS(CAST(y AS SIGNED) - '.$obj->get_y().')) LIMIT 1';
+  	$req = $db->query($requete);
+  	$row = $db->read_array($req);
+  	if( $row )
+  		return $row[0];
+  	return '';
+	}
+  
+  static function get_nom_aleatoire($exclu=false)
+  {
+  	global $db;
+  	$requete = 'SELECT nom FROM construction WHERE royaume > 0 AND type IN ("tour", "bourg", "fort")';
+  	if( $exclu )
+  		$requete .= ' AND id != '.$exclu;
+  	$requete .= ' ORDER BY RAND() LIMIT 1';
+  	$req = $db->query($requete);
+  	$row = $db->read_array($req);
+  	if( $row )
+  		return $row[0];
+  	return '';
 	}
 }
 ?>

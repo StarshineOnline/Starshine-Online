@@ -2,324 +2,402 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
+include_once(root.'inc/fp.php');
 $site = true;
+$interf_obj = true;
 include_once(root.'haut.php');
 
 
-?>
+if( array_key_exists('page', $_GET) )
+	$page = $_GET['page'];
+else if( !joueur::factory() || joueur::get_perso() )
+	$page = 'infos';
+else
+	$page = 'creer_perso';
 
-<div id="popup_erreur" style='display:none;'>
-	<div id="popup_erreur_menu"><span class='fermer' title='Fermer le popup' onclick="fermePopUpErreur(); return false;">&nbsp;</span></div>
-	<div id="popup_erreur_marge">
-		<div id="popup_erreur_content">tagada</div>
-	</div>
-</div>
-<div id='accueil'>
-<?PHP
-if( $estConnexionReussie === false )
-   echo '<div id="dialog" title="Erreur">'.$erreur_login.'</div><script type="text/javascript">$("#dialog").dialog();</script>';
-  if( file_exists(root.'pub.php') )
-  	echo '<iframe style="position:absolute; height: 100px; width: 800px; bottom: 50px; border: none;" src="pub.php" scrolling="no"></iframe>';
-?>
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+switch($action)
+{
+case 'creer_joueur':
+	interf_sso::change_url();
+	$pseudo = $_POST['nom'];
+  $mdp = $_POST['password'];
+  $mdp2 = $_POST['password2'];
+  $email = $_POST['email'];
+	//Verification sécuritaire
+	if( !$pseudo )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saissi de nom.');
+		$page = 'creer_compte';
+		break;
+	}
+	if(!check_secu($pseudo))
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les caractères spéciaux ne sont pas autorisés.');
+		$page = 'creer_compte';
+		break;
+	}
+	if( !$mdp )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saissi de mot de passe.');
+		$page = 'creer_compte';
+		break;
+	}
+	if( $mdp != $mdp2 )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les mots de passes sont différents.');
+		$page = 'creer_compte';
+		break;
+	}
+  if( $email )
+  {
+  	/// @todo passer à l'objet
+    $requete = 'SELECT id FROM joueur WHERE email LIKE "'.$email.'"';
+    $req = $db->query($requete);
+    if( $db->num_rows($req) )
+    {
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous avez déjà un compte joueur, il est interdit d\'en avoir plusieurs ou d\'en changer sans l\'accord des administraeurs.<br/>\nSi vous voulez changer de personnage, supprimez l\'ancien (en allant dans les options).');
+			$page = 'creer_compte';
+			break;
+    }
+  }
+	$login = pseudo_to_login($pseudo);
+	if( check_existing_account($pseudo, true, true, true) or check_existing_account($login, true, true, true) )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Nom déjà utilisé.');
+		$page = 'creer_compte';
+		break;
+  }
+  $joueur = new joueur(0, $login, '', $pseudo, joueur::droit_jouer, $email, sha1($mdp));
+  $joueur->set_mdp( md5($mdp) );
+  $joueur->set_mdp_forum( sha1($mdp) );
+  $joueur->set_mdp_jabber( md5($mdp) );
+  $joueur->sauver();
+  $identification = new identification();
+  if( $identification->connexion($login, md5($mdp), false) !== 0 )
+  {
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur inconnue, veuiller contacter un admin.');
+		$page = 'creer_compte';
+		break;
+	}
+	$page = 'creer_perso';
+	break;
+case 'creer_perso':
+	interf_sso::change_url();
+	$pseudo = $_POST['nom'];
+  $race = $_POST['race'];
+  $classe = $_POST['classe'];
+  
+	//Config punbb groups
+	$punbb['elfebois'] = 6;
+	$punbb['orc'] = 12;
+	$punbb['nain'] = 11;
+	$punbb['troll'] = 14;
+	$punbb['humain'] = 8;
+	$punbb['vampire'] = 15;
+	$punbb['elfehaut'] = 7;
+	$punbb['humainnoir'] = 9;
+	$punbb['scavenger'] = 13;
+	$punbb['barbare'] = 5;
+	$punbb['mortvivant'] = 10;
+	
+	$nombre = check_existing_account($pseudo);
+	if ($nombre > 0)
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Nom déjà utilisé.');
+		$page = 'creer_perso';
+		break;
+	}
+	if (!$race)
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas chois de race et de classe !');
+		$page = 'creer_perso';
+		break;
+	}
+	include_once(root.'inc/race.inc.php');
+	include_once(root.'inc/classe.inc.php');
+	$joueur =  new joueur( $_SESSION['id_joueur'] );
+	$perso = new perso();
+	$caracteristiques = $Trace[$race];
+	if ($classe == 'combattant')
+	{
+		$caracteristiques['vie'] = $caracteristiques['vie'] + 1;
+		$caracteristiques['force'] = $caracteristiques['force'] + 1;
+		$caracteristiques['dexterite'] = $caracteristiques['dexterite'] + 1;
+		$sort_jeu = '';
+		$sort_combat = '';
+		$comp_combat = '';//'7;8';
+		$perso->set_x($Trace[$race]['spawn_tutocx']);
+		$perso->set_y($Trace[$race]['spawn_tutocy']);
+	}
+	else
+	{
+		$caracteristiques['energie'] = $caracteristiques['energie'] + 1;
+		$caracteristiques['volonte'] = $caracteristiques['volonte'] + 1;
+		$caracteristiques['puissance'] = $caracteristiques['puissance'] + 1;
+		$sort_jeu = '1';
+		$sort_combat = '1';
+		$comp_combat = '';
+		$perso->set_x($Trace[$race]['spawn_tutomx']);
+		$perso->set_y($Trace[$race]['spawn_tutomy']);
+	}
+	$royaume = new royaume($caracteristiques['numrace']);
 
-	<div id='loading_sso' style='display:none;'></div>
-	<div id='test'>
-	<div class='box'>
-		<input type='hidden' id='menu_encours' value='presentation' />
-		<div id='presentation_box'>
-					<span class='logo'>&nbsp;</span>
-			<p>
+	$perso->set_nom(trim($pseudo));
+	$perso->set_race($race);
+	$perso->set_level(1);
+	$perso->set_star($royaume->get_star_nouveau_joueur());
+	$perso->set_vie($caracteristiques['vie']);
+	$perso->set_force($caracteristiques['force']);
+	$perso->set_dexterite($caracteristiques['dexterite']);
+	$perso->set_puissance($caracteristiques['puissance']);
+	$perso->set_volonte($caracteristiques['volonte']);
+	$perso->set_energie($caracteristiques['energie']);
+	$perso->set_sort_jeu($sort_jeu);
+	$perso->set_sort_combat($sort_combat);
+	$perso->set_comp_combat($comp_combat);
+	$perso->set_rang_royaume(7);
+	// Pas oublier les bases
+	$perso->set_melee(1);
+	$perso->set_distance(1);
+	$perso->set_esquive(1);
+	$perso->set_blocage(1);
+	$perso->set_incantation(1);
+	$perso->set_identification(1);
+	$perso->set_craft(1);
+	$perso->set_alchimie(1);
+	$perso->set_architecture(1);
+	$perso->set_forge(1);
+	$perso->set_survie(1);
+	$perso->set_dressage(1);
+	$perso->set_max_pet(1);
 
-			Bienvenue dans le monde de Starshine-Online.
-Pour l'instant au stade de la bêta (c'est à dire en phase d'équilibrage et d'amélioration du monde), Starshine-Online sera un jeu de rôle massivement multijoueur (MMORPG) en tour par tour.<br />
-<br />
-Il vous permettra d'incarner un grand héros de l'univers Starshine, peuplé de nombreuses créatures et d'autres héros ennemis prêts à tout pour détruire votre peuple.<br />
-<br /><br />
-Il est recommandé d'utiliser <strong>un navigateur dernière génération (éviter les Internet Explorer)</strong> pour jouer à Starshine, nous vous conseillons <a href='http://www.mozilla-europe.org/'>Firefox</a> ou bien <a href='http://www.google.fr/chrome'>Google Chrome</a>.
-N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions sur le forum.</p>
+	if($classe == 'combattant')
+	{
+		$perso->set_sort_vie(0);
+		$perso->set_sort_element(0);
+		$perso->set_sort_mort(0);
+		$perso->set_facteur_magie(2);
+	}
+	else
+	{
+		$perso->set_sort_vie(1);
+		$perso->set_sort_element(1);
+		$perso->set_sort_mort(1);
+		$perso->set_facteur_magie(1);
+	}
+	$requete = "SELECT id FROM classe WHERE nom = '".ucwords($classe)."'";
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	$perso->set_classe($classe);
+	$perso->set_classe_id($row['id']);
+	$perso->set_hp(floor(sqrt($perso->get_vie()) * 75));
+	$perso->set_hp_max($perso->get_hp());
+	$perso->set_mp($perso->get_energie() * $G_facteur_mana);
+	$perso->set_mp_max($perso->get_mp());
+	$perso->set_regen_hp(time());
+	$perso->set_maj_mp(time());
+	$perso->set_maj_hp(time());
 
-		</div>
-		<div id='screenshot_box' style='display:none;'>
-			<script type="text/javascript">
-			$(function()
-			{
-				$('#screenshot_box a').lightBox({
-					fixedNavigation:true,
-					overlayBgColor: '#000000',
-					overlayOpacity: 0.6,
-					imageLoading: 'image/jquery-lightbox/loading.gif',
-					imageBtnClose: 'image/jquery-lightbox/btn-close.gif',
-					imageBtnPrev: 'image/jquery-lightbox/btn-prev.gif',
-					imageBtnNext: 'image/jquery-lightbox/btn-next.gif',
-					imageBlank: 'image/jquery-lightbox/blank.gif',
-					containerResizeSpeed: 350,
-					txtImage: 'Image',
-					txtOf: 'sur'
-				});
-			});
-			</script>
-			<ul>
-				<li><a href="image/screenshots/screenshot01.png" title="Le jeu"><img src="image/screenshots/mini_screenshot01.png" alt='screenshot01' /></a></li>
-				<li><a href="image/screenshots/screenshot02.png" title="Inventaire"><img src="image/screenshots/mini_screenshot02.png" alt='screenshot02' /></a></li>
-				<li><a href="image/screenshots/screenshot03.png" title="Interface du roi"><img src="image/screenshots/mini_screenshot03.png" alt='screenshot03' /></a></li>
-				<li><a href="image/screenshots/screenshot04.png" title="La boutique SSO"><img src="image/screenshots/mini_screenshot04.png" alt='screenshot04' /></a></li>
-				<li><a href="image/screenshots/screenshot05.png" title="Screenshot 5"><img src="image/screenshots/mini_screenshot05.png" alt='screenshot05' /></a></li>
-				<li><a href="image/screenshots/screenshot06.png" title=""><img src="image/screenshots/mini_screenshot06.png" alt='screenshot06' /></a></li>
-				<li><a href="image/screenshots/screenshot07.jpg" title="Version alpha"><img src="image/screenshots/mini_screenshot07.png" alt='screenshot07' /></a></li>
-				<li><a href="image/screenshots/screenshot08.jpg" title="Version 0.5"><img src="image/screenshots/mini_screenshot08.png" alt='screenshot08' /></a></li>
-				<li><a href="image/screenshots/screenshot09.png" title="Version 0.6 (en test)"><img src="image/screenshots/mini_screenshot09.png" alt='screenshot09' /></a></li>
-			</ul>
-		</div>
-		<div id='news_box' style='display:none;'>
-		<?php
-		if(!file_exists('connect_forum.php'))
-		{
-			echo "Le fichier de connexion au forum n'est pas présent sur le serveur";
-			echo "<div class='news'>
-			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			</div>";
-			echo "<div class='news'>
-			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			</div>";
-			echo "<div class='news'>
-			<h2>Qqdf qdsf qsdf  qdsf qdsf </h2>
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			qqdsfqdsf qsdf qsdf qsdf qsd f qdsf sdq f qsdf qsdf qs df qsdf qsdf q sdf qfsd qdsf sd f sqdf
-			</div>";
+	$perso->set_inventaire('O:10:"inventaire":12:{s:4:"cape";N;s:5:"mains";N;s:11:"main_droite";N;s:11:"main_gauche";N;s:5:"torse";N;s:4:"tete";N;s:8:"ceinture";N;s:6:"jambes";N;s:5:"pieds";N;s:3:"dos";N;s:5:"doigt";N;s:3:"cou";N;}');
+	$perso->set_quete('');
+	$perso->set_pa(180);
+	$perso->set_tuto(1);
+	$perso->set_date_creation(time());
 
-		}
+	$perso->set_statut('actif');
+	$perso->set_dernieraction(time());
+  $perso->set_id_joueur( $_SESSION['id_joueur'] );
+  $perso->set_password( $joueur->get_mdp_jabber() );
+
+	$perso->sauver();
+	$jid = replace_all($perso->get_nom()).'@jabber.starshine-online.com';
+	if(is_file('connect_forum.php'))
+	{
+		require_once('connect_forum.php');
+		//Création de l'utilisateur dans le forum
+		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
+		$db_forum->query($requete);	
+  }
+
+  // variables de session
+	$_SESSION['nom'] = $perso->get_nom();
+	$_SESSION['race'] = $perso->get_race();
+	$_SESSION['grade'] = $perso->get_grade();
+	$_SESSION['ID'] = $perso->get_id();
+	
+	$txt = '<p>Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'.<p>
+		<p>Vous allez commencer vos aventures dans une zone tutorielle située dans votre capitale, dans celle vous pourrez non seulement vous familiariser avec l\'interface du jeu mais aussi chasser et réaliser de petites quêtes en toute sécurité. Vous pouvez sortir de cette zone à tout moment en suivant les chemins et/ou les sorties spécifiques à l\'endroit ou vous vous trouverez. Vous pourrez alors y revenir à partir de votre capitale (aller sur une case de celle-ci, cliquez sur la case où vous êtes et sur le lien qui va bien) tant que vous aurez moins de 75 en esquive.</p>
+		<p>N\'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et à lire le message de votre roi.</p>
+		<p><em>Pour accéder au jeu cliquer sur "jeu" dans la barre de navigation en haut de la page.</em></p>
+		<p>Bon jeu !</p>';
+	$G_interf->creer_index()->set_contenu( $texte = new interf_bal_smpl('div', $txt, 'nouv_perso') );
+	/*$G_interf->creer_index()->set_contenu( $texte = new interf_bal_cont('div', 'nouv_perso') );
+	$texte->add( new interf_bal_smpl('p', 'Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'.') );
+	$texte->add( new interf_bal_smpl('p', 'Vous allez commencer vos aventures dans une zone tutorielle située dans votre capitale, dans celle vous pourrez non seulement vous familiariser avec l\'interface du jeu mais aussi chasser et réaliser de petites quêtes en toute sécurité. Vous pouvez sortir de cette zone à tout moment en suivant les chemins et/ou les sorties spécifiques à l\'endroit ou vous vous trouverez. Vous pourrez alors y revenir à partir de votre capitale (aller sur une case de celle-ci, cliquez sur la case où vous êtes et sur le lien qui va bien) tant que vous aurez moins de 75 en esquive.') );
+	$texte->add( new interf_bal_smpl('p', 'N\'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et à lire le message de votre roi.') );
+	$texte->add( new interf_bal_smpl('p', '<em>Pour accéder au jeu cliquer sur "jeu" dans la barre de navigation en haut de la page.</em>') );
+	$texte->add( new interf_bal_smpl('p', 'Bon jeu !') );*/
+	exit;
+case 'oubli_mdp':
+	/// @todo passer à l'objet
+	$nom = $_POST['nom'];
+	$requete = 'SELECT * FROM joueur WHERE login = "'.$nom.'" OR pseudo = "'.$nom.'"';
+	$req = $db->query($requete);
+	$row = $db->read_assoc($req);
+	if( $row )
+		$joueur = new joueur( $row );
+	else
+	{
+		$requete = 'SELECT id_joueur FROM perso WHERE nom = "'.$nom.'"';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		if( $row )
+			$joueur = new joueur( $row[0] );
 		else
 		{
-			require_once('connect_forum.php');
-			$requete = "SELECT id, subject, num_replies FROM punbbtopics WHERE (forum_id = 5) ORDER BY posted DESC";
-			$req = $db_forum->query($requete);
-
-			$i = 0;
-			while($row = $db_forum->read_array($req) AND $i < 5)
-			{
-				$regs = '';
-				echo '
-				<div class="news">
-					<h2><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">'.($row['subject']).'</a></h2>';
-				$requete_post = "SELECT message FROM punbbposts WHERE (topic_id = ".$row['id'].") ORDER BY id ASC";
-				$req_post = $db_forum->query($requete_post);
-				$row_post = $db_forum->read_array($req_post);
-				preg_match("`\[chapeau\]([^[]*)\[/chapeau\]`i", $row_post['message'], $regs);
-				if($regs[1] != '') $message = $regs[1];
-				else $message = $row_post['message'];
-				$message = /*utf8_encode*/(nl2br($message));
-				$message = preg_replace("`\[img\]([^[]*)\[/img\]`i", '<img src=\\1 title="\\1">', $message );
-				$message = preg_replace("`\[b\]([^[]*)\[/b\]`i", '<strong>\\1</strong>', $message );
-				$message = preg_replace("`\[i\]([^[]*)\[/i\]`i", '<i>\\1</i>', $message );
-				$message = preg_replace("`\[url\]([^[]*)\[/url\]`i", '<a href="\\1">\\1</a>', $message );
-				if(strlen($message) > 600)
-				{
-					$message = mb_substr($message, 0, 600);
-				}
-				$message .= '<br /><a href="http://forum.starshine-online.com/viewtopic.php?id='.$row['id'].'">Lire la suite</a> <span class="comms">('.$row['num_replies'].' commentaire(s))</span>
-				</div>';
-				echo $message;
-				$i++;
-
-			}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Identifiant inconnu !');
+			$page = 'oubli_mdp';
+			break;
 		}
-		?>
-		</div>
-		<div id='creation_box' style='display:none;'>
-  		<p id='creat_erreur' style='color:#FF0022; display : none;'>&nbsp;</p>
-  		<?php
-  		if( ($estUnUtilisateur && !$possedeUnPerso) or $_SESSION['droits'] & joueur::droit_staf )
-  		{
-  		?>
-  		<div style='width:165px;float:left;'>
-  			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_nom' /></span> (peut etre identique au nom de votre compte joueur)<br />
-  			<!--<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
-  			<span class='creation_text'>Confirmer votre mot de passe :</span>
-  			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
-  			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span><br />-->
-  			<span onclick="validation_perso();" id="bouton_creer"> </span>
-  		</div>
-  		<div class='perso_cadre'>
-    		<?php
-    		$RqRace = $db->query("SELECT race FROM royaume WHERE race != '' AND race != 'dragon' ORDER BY star_nouveau_joueur DESC, race ASC");
+	}
+	if( !$joueur->get_email() )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas défini d\'e-mail. Impossible de réinitialiser le mot de passe !');
+		$page = 'oubli_mdp';
+		break;
+	}
+	/// @todo passer à l'objet
+	$requete = 'SELECT valeur FROM variable WHERE nom = "reinit mdp"';
+	$req = $db->query($requete);
+	$row = $db->read_array($req);
+	if( $row )
+		$sel = $row[0];
+	else
+	{
+		$sel = rand();
+		$db->query('INSERT INTO variable VALUES ("reinit mdp", "'.$sel.'")');
+	}
+	$date = time();
+	$cle = md5($sel.$joueur->get_mdp().$date);
+	$lien = $G_url->get( array('page'=>'reinit_mdp', 'date'=>$date, 'cle'=>$cle, 'login'=>$joueur->get_login()) );
+	$sujet = 'Starshine Online - réinitialisation du mot de passe';
+	$message = '<html><head><title>'.$sujet.'</title></head><body>Bonjour,<p>Vous recevez cet e-mail car vous demandé la réinitialisation de votre mot de passe sur le site <a href="'.root_url.'">Starshine Online</a>.</p><p>Pour effectuer cette réinitialisation, veuillez cliquer <a href="'.root_url.$lien.'">sur ce lien</a>. Ce lien ne sera valable que 48h.</p><p>Si vous n\'avez pas demandé la réinitialisation de votre mot de passe, merci de contacter un admininstrateur.';
+	$headers  = 'MIME-Version: 1.0'."\r\n";
+  $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
+	$headers .= 'From: bot@starshine-online.com';
+	mail($joueur->get_email(), $sujet, $message, $headers);
+	interf_alerte::enregistre(interf_alerte::msg_succes, 'L\'e-mail a été envoyé.');
+	$page = 'oubli_mdp';
+	break;
+case 'reinit_mdp';
+	$date = $_POST['date'];
+	if( $date + 3600 * 48 < time() )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Lien de réinitialisation périmé, veuillez recommencer.');
+		$page = 'oubli_mdp';
+		break;
+	}
+	$requete = 'SELECT valeur FROM variable WHERE nom = "reinit mdp"';
+	$req = $db->query($requete);
+	$row = $db->read_array($req);
+	if( md5($row[0].$joueur->get_mdp().$date) != $_POST['cle'] )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Lien invalide, veuillez recommencer.');
+		$page = 'oubli_mdp';
+		break;
+	}
+  $mdp = $_POST['password'];
+  $mdp2 = $_POST['password2'];
+	if( $mdp != $mdp2 )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les mots de passes sont différents.');
+		$page = 'oubli_mdp';
+		break;
+	}
+	$joueur = joueur::create('login', $_POST['login']);
+	if( !$joueur )
+	{
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Identifiant inconnu.');
+		$page = 'oubli_mdp';
+		break;
+	}
+  $joueur[0]->set_mdp( md5($mdp) );
+  $joueur[0]->set_mdp_forum( sha1($mdp) );
+  $joueur[0]->set_mdp_jabber( md5($mdp) );
+  $joueur[0]->sauver();
+	break;
+}
 
-    		$i=0;
-    		while($objRace = $db->read_object($RqRace))
-    		{
-    			if ($i=='0'){echo "<p style='clear:both;'>";}
-    			echo "<span class='".$objRace->race."_guerrier' title='".$objRace->race." Combattant' id='".$objRace->race."_guerrier' onclick=\"race('".$objRace->race."','guerrier');\">&nbsp;</span>";
-    			echo "<span class='".$objRace->race."_mage' title='".$objRace->race." Magicien' id='".$objRace->race."_mage' onclick=\"race('".$objRace->race."','mage');\">&nbsp;</span>";
-    			echo "<span class='perso_espacement'>&nbsp;</span>";
-    			$i++;
-    			if ($i=='3'){echo '</p>';$i=0;}
+$interf_princ = $G_interf->creer_index();
 
-    		}
-    		echo '</p>';
-    		?>
-    		<input type='hidden' id='perso_selected_id' />
-  		</div>
-  		<div id="aide_inscription">
-  			Avant de créer un personnage, vous pouvez consulter <a href="http://wiki.starshine-online.com">l'aide de jeu</a>, pour mieux choisir votre personnage.<br />
-  			N'hésitez pas à faire le tour des races pour en voir toutes les différences, et à passer votre curseur sur les attributs (force, dextérité, etc) pour avoir des détails sur leur fonctionnement.<br />
-  			Pour un équilibrage du jeu, les peuples ayant le moins de joueurs recoivent plus de stars à la création du personnage.<br />
-  			<strong>Un compte sur le forum sera créé automatiquement avec vos informations du jeu.</strong>
-  		</div>
-  		<?php
-      }
-      else if( !$estUnUtilisateur && !$possedeUnPerso )
-      {
-  		?>
-  		<h3>Création du compte joueur</h3>
-  		<div style='width:165px;float:left;'>
-  			<span class='creation_text'>Quel sera votre nom ?</span><span class='illu'><input type="text" name="nom" id='creat_pseudo' /></span><br />
-  			<span class='creation_text'>Indiquer un mot de passe :</span><span class='illu'><input type="password" name="password" id='creat_pass' /></span><br />
-  			<span class='creation_text'>Confirmer votre mot de passe :</span>
-  			<span class='illu'><input type="password" name="password2" id='creat_pass2' /></span>
-  			<span class='creation_text'>Indiquer un email :</span><span class='illu'><input type="text" name="email" id='creat_email' /></span> (facultatif, utilisé pour retrouver le mot de passe)<br />
-  			<span onclick="validation_joueur();" id="bouton_creer"> </span>
-  		</div>
-  		<div class='joueur_cadre'>
-        Ce compte vous identifie en tant que joueur et est différent de votre personnage, vous le garderez pour les différentes parties, y compris lorsque vous changez de personnage.
-        <ul>
-          <li>Il est unique : il est interdit de posséder plusieurs compte joueur. Tout changement sans accord des administrateurs sera considérés comme du mutlicompte (si vous voulez changer de personnage, il vous suffit de le supprimer pour pouvoir en créer un nouveau).</li>
-          <li>Il est personnel : il est interdit de prêter ou donner un compte joueur à quelqu'un d'autre.</li>
-        </ul>
-        Tout non respect des règles pourra entrainer un bannissement temporaire ou définitif du compte.
-      </div>
-  		<div id="aide_inscription">
-        NB : Vous pourrez donner à votre personnage le même nom que celui utilisé pour votre compte.
-  		</div>
-  		<?php
-      }
-  		?>
-		</div>
-
-	</div>
-	</div>
-
-			<?php
-			if( !$estUnUtilisateur && !$possedeUnPerso )
-			{
-			?>
-				<div id='login'>
-				<form id='login_form' action="index.php" method="post">
-				<div>
-				<input type="text" name="nom" size="10" class="login_nom" tabindex="1" />
-				<input type="password" name="password" size="10" class="login_mdp" tabindex="2" />
-				<input type="checkbox" name="auto_login" value="Ok" class="login_auto" tabindex="3"/>
-				<input type='hidden' name='log' />
-				<input type='hidden' name='header' id='browser_header' />
-				<input type='submit' class='login_connexion' onclick="$('#login_form').submit();" tabindex="4" value="" />
-				</div>
-				</form>
-				</div>
-				<script type="text/javascript">
-					var header = ":";
-					for(i=0; i<navigator.userAgent.length; i++)
-						header += String.fromCharCode( navigator.userAgent.charCodeAt(i) + 2 + i%3 );
-					document.getElementById('browser_header').value = header;
-				</script>
-				<script type="text/javascript" src="javascript/emp/emp-min.js"></script>
-			<?php
-			}
-			else
-			{
-				echo "<div id='login_ok'>";
-				if( $possedeUnPerso )
-				  echo "<a href='interface.php'>Entrez dans le monde de Starshine-Online</a> / ";
-        else
-        {
-          echo '<script type="text/javascript">menu_change("creation");</script>';
-				  echo "Vous devez créer un personnnage pour jouer / ";
-        }
-        echo "<span style='cursor:pointer;' onclick=\"if(confirm('Es tu sur de vouloir te déconnecter malheureux ?')) { document.location.href='index.php?deco=ok'; };\">Se deconnecter</span>";
-				echo "</div>";
-			}
-			?>
-	<div id='menu_accueil'>
-	<ul>
-		<li id='presentation_menu' class='selected' onclick="menu_change('presentation');"></li>
-		<li id='screenshot_menu' onclick="menu_change('screenshot');"></li>
-		<li id='news_menu' onclick="menu_change('news');"></li>
-		<li id='creation_menu' onclick="menu_change('creation');"></li>
-	</ul>
-	</div>
-
-	<div id='personnage' style='display:none'>
-
-
-	</div>
-		<div id='liens'>
-
-	 <p>Liens d'aide au jeu : <a href='http://wiki.starshine-online.com/'>Comprendre Starshine</a> <a href='http://bug.starshine-online.com/'>Signaler un Bug</a> <a href='http://forum.starshine-online.com/'>Le Forum
-	 </a></p>
-	</div>
-<?php
-if ($G_no_piwik != true)
+switch($page)
 {
+case 'infos':
+	$interf_princ->set_contenu( $G_interf->creer_index_infos() );
+	break;
+case 'captures':
+	$interf_princ->set_contenu( $G_interf->creer_index_captures() );
+	break;
+case 'creer_compte':
+	$interf_princ->set_contenu( $G_interf->creer_index_compte() );
+	break;
+case 'creer_perso':
+	$interf_princ->set_contenu( $G_interf->creer_index_perso() );
+	break;
+case 'infos_perso':
+	$interf_princ->add_section('infos_perso', $G_interf->creer_index_infos_perso($_GET['race'], $_GET['classe']));
+	break;
+case 'oubli_mdp':
+	$dlg = $interf_princ->set_dialogue( new interf_dialogBS('Oubli de mot de passe', true) );
+	interf_alerte::aff_enregistres($dlg);
+	$dlg->add( new interf_bal_smpl('p', 'Un lien vous sera envoyé par e-mail pour réinitialiser votre mot de passe.') );
+	$form = $dlg->add( new interf_form('index.php?action=oubli_mdp', 'oubli_mdp', 'post', 'form-horizontal') );
+	$div_nom = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_nom->add( new interf_bal_smpl('label', 'Nom ou login', false, 'col-sm-4 control-label') );
+	$div_in_nom = $div_nom->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+	$nom = $div_in_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
+	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_in_btn = $div_btn->add(new interf_bal_cont('div', false, 'col-sm-offset-4 col-sm-8')  );
+	$btn = $div_in_btn->add( new interf_chp_form('submit', false, false, 'Envoyer', false, 'btn btn-default') );
+	$btn->set_attribut('tabindex', '9');
+	break;
+case 'reinit_mdp';
+	$princ = $interf_princ->set_contenu( new interf_bal_cont('div', 'reinit_mdp') );
+	$princ->add( new interf_bal_smpl('h4', 'Réinitialisation du mot de passe') );
+  $form = $princ->add( new interf_form(self::page, 'connexion', 'post', 'form-horizontal') );
+	$div_mdp1 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_mdp1->add( new interf_bal_smpl('label', 'Indiquer un mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+	$div_in_mdp1 = $div_mdp1->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+	$mdp1 = $div_in_mdp1->add( new interf_chp_form('password', 'password', false, false, false, 'form-control') );
+	$mdp1->set_attribut('placeholder', 'mot de passe');
+	$mdp1->set_attribut('tabindex', '5');
+	$div_mdp2 = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_mdp2->add( new interf_bal_smpl('label', 'Confirmer votre mot de passe&nbsp;:', false, 'col-sm-4 control-label') );
+	$div_in_mdp2 = $div_mdp2->add(new interf_bal_cont('div', false, 'col-sm-8')  );
+	$mdp2 = $div_in_mdp2->add( new interf_chp_form('password', 'password2', false, false, false, 'form-control') );
+	$mdp2->set_attribut('placeholder', 'mot de passe');
+	$mdp2->set_attribut('tabindex', '6');
+	$form->add( new interf_chp_form('hidden', 'date', false, $_GET['date']) );
+	$form->add( new interf_chp_form('hidden', 'cle', false, $_GET['cle']) );
+	$form->add( new interf_chp_form('hidden', 'login', false, $_GET['login']) );
+	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
+	$div_in_btn = $div_btn->add(new interf_bal_cont('div', false, 'col-sm-offset-4 col-sm-8')  );
+	$btn = $div_in_btn->add( new interf_chp_form('submit', false, false, 'Réinitialiser', false, 'btn btn-default') );
+	$btn->set_attribut('tabindex', '7');
+	break;
+}
+
+
+function replace_accents($string)
+{
+  return str_replace( array('à','á','â','ã','ä', 'ç', 'è','é','ê','ë', 'ì','í','î','ï', 'ñ', 'ò','ó','ô','õ','ö', 'ù','ú','û','ü', 'ý','ÿ', 'À','Á','Â','Ã','Ä', 'Ç', 'È','É','Ê','Ë', 'Ì','Í','Î','Ï', 'Ñ', 'Ò','Ó','Ô','Õ','Ö', 'Ù','Ú','Û','Ü', 'Ý'), array('a','a','a','a','a', 'c', 'e','e','e','e', 'i','i','i','i', 'n', 'o','o','o','o','o', 'u','u','u','u', 'y','y', 'A','A','A','A','A', 'C', 'E','E','E','E', 'I','I','I','I', 'N', 'O','O','O','O','O', 'U','U','U','U', 'Y'), $string);
+}
+
+function replace_all($string)
+{
+  $string = str_replace(' ', '_', $string);
+  return replace_accents($string);
+  //return strtolower(replace_accents($string));
+}
 ?>
-	<!-- Piwik -->
-<script type="text/javascript">
-var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.starshine-online.com/piwik/" : "http://www.starshine-online.com/piwik/");
-document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
-piwikTracker.trackPageView();
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src="http://www.starshine-online.com/piwik/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
-<!-- End Piwik Tag -->
-<?php } /* G_no_piwik */ ?>
-<div id="partenaires">
-<span>Partenaires :</span>
-<a href="http://www.jeux-sociaux.org/navigateur/">Jeux sur navigateur en ligne</a>
-</div>
-</body>
-</html>

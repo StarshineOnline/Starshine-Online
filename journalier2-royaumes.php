@@ -39,37 +39,37 @@ while($row = $db->read_row($req))
  * Tableau bi-dimensionnel, la première clé est la race, la deuxième un indice indexant
  * les stats à conserver :
  * <ol>
- *  <li>Population du royaume</li>
- *  <li>Stars du royaume</li>
- *  <li>Argent gagné par l'hotel de vente</li>
- *  <li>Argent gagné par la taverne</li>
- *  <li>Argent gagné par le forgeron</li>
- *  <li>Argent gagné par l'armurerie</li>
- *  <li>Argent gagné par l'alchimiste</li>
- *  <li>Argent gagné par l'enchanteur</li>
- *  <li>Argent gagné par l'école de magie</li>
- *  <li>Argent gagné par l'école de combat</li>
- *  <li>Argent gagné par la téléportation</li>
- *  <li>Argent gagné par le chasse</li>
- *  <li>Somme de l'honneur</li>
- *  <li>Somme des niveaux</li>
- *  <li>Total des coûts des bâtiments hors ville</li>
- *  <li>Nombre de cases contôlées</li>
- *  <li>Total des coûts des bâtiments de la ville</li>
- *  <li>Total des coûts des quêtes achetées</li>
- *  <li>Pierre gagnée par les terrains, mines et extracteurs</li>
- *  <li>Bois gagnée par les terrains, scieries et extracteurs</li>
- *  <li>Eau gagnée par les terrains, puits et extracteurs</li>
- *  <li>Sable gagnée par les terrains, carrière de sable et extracteurs</li>
- *  <li>Charbon gagnée par les terrains, meules et extracteurs</li>
- *  <li>Essence Magique gagnée par les terrains, puits à essence et extracteurs</li>
- *  <li>Star gagnée par les terrains et extracteurs</li>
- *  <li>Nourriture gagnée par les terrains, fermes et extracteurs</li>
- *  <li>Nombre d'habitants très actifs</li>
- *  <li>Facteur d'entretien actuel</li>
- *  <li>Facteur d'entretien théorique</li>
- *  <li>Consommation de nouriture actuelle</li>
- *  <li>Consommation de nouriture théorique</li>
+ *  <li>0 : Population du royaume</li>
+ *  <li>1 : Stars du royaume</li>
+ *  <li>2 : Argent gagné par l'hotel de vente</li>
+ *  <li>3 : Argent gagné par la taverne</li>
+ *  <li>4 : Argent gagné par le forgeron</li>
+ *  <li>5 : Argent gagné par l'armurerie</li>
+ *  <li>6 : Argent gagné par l'alchimiste</li>
+ *  <li>7 : Argent gagné par l'enchanteur</li>
+ *  <li>8 : Argent gagné par l'école de magie</li>
+ *  <li>9 : Argent gagné par l'école de combat</li>
+ *  <li>10 : Argent gagné par la téléportation</li>
+ *  <li>11 : Argent gagné par le chasse</li>
+ *  <li>12 : Somme de l'honneur</li>
+ *  <li>13 : Somme des niveaux</li>
+ *  <li>14 : Total des coûts des bâtiments hors ville</li>
+ *  <li>15 : Nombre de cases contôlées</li>
+ *  <li>16 : Total des coûts des bâtiments de la ville</li>
+ *  <li>17 : Total des coûts des quêtes achetées</li>
+ *  <li>18 : Pierre gagnée par les terrains, mines et extracteurs</li>
+ *  <li>19 : Bois gagnée par les terrains, scieries et extracteurs</li>
+ *  <li>20 : Eau gagnée par les terrains, puits et extracteurs</li>
+ *  <li>21 : Sable gagnée par les terrains, carrière de sable et extracteurs</li>
+ *  <li>22 : Charbon gagnée par les terrains, meules et extracteurs</li>
+ *  <li>23 : Essence Magique gagnée par les terrains, puits à essence et extracteurs</li>
+ *  <li>24 : Star gagnée par les terrains et extracteurs</li>
+ *  <li>25 : Nourriture gagnée par les terrains, fermes et extracteurs</li>
+ *  <li>26 : Nombre d'habitants très actifs</li>
+ *  <li>27 : Facteur d'entretien actuel</li>
+ *  <li>28 : Facteur d'entretien théorique</li>
+ *  <li>29 : Consommation de nouriture actuelle</li>
+ *  <li>30 : Consommation de nouriture théorique</li>
  * </ol>
  */
 $tableau_race = array();
@@ -106,6 +106,8 @@ $req = $db->query($requete);
 /// Calcule l'entertien courant des batiments
 foreach($royaumes as $royaume)
 {
+	if( !$royaume['id'] )
+		continue;
 	$royaume['stars'] -= $royaume['total'];
 	if($royaume['stars'] < 0)
 	{
@@ -144,6 +146,8 @@ while($row = $db->read_assoc($req))
 //Entretien !
 foreach($royaumes as $royaume)
 {
+	if( !$royaume['id'] )
+		continue;
 	$royaume['stars'] -= $royaume['total_c'];
 	if($royaume['stars'] < 0)
 	{

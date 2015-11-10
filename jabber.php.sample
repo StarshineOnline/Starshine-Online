@@ -1,0 +1,6 @@
+<?php
+	$jabber = array	(	'serveur'=>'jabber.starshine-online.com', 
+										'salons'=>'conference.jabber.starshine-online.com', 
+										'ressource'=>'SSO-jeu'
+									);
+?>

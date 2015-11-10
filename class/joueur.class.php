@@ -80,20 +80,23 @@ class joueur extends table
   }
 
   /// Factory créant un objet correspondant à l'ID du joueur connecté
-  static function factory()
+  static function &factory()
   {
     static $joueur = null;
     if( !$joueur && array_key_exists('id_joueur', $_SESSION) )
       $joueur = new joueur($_SESSION['id_joueur']);
+		if( !$joueur && array_key_exists('ID', $_SESSION) )
+			$joueur = new joueur( joueur::get_perso()->get_id_joueur() );
     return $joueur;
   }
 
   /// Méthode renvoyant le personnage actif
-  static function get_perso()
+  static function &get_perso()
   {
     static $perso = null;
     if( !$perso && array_key_exists('ID', $_SESSION) )
-      $perso = new perso($_SESSION['id_joueur']);
+      $perso = new perso($_SESSION['ID']);
+
     return $perso;
   }
 
@@ -127,6 +130,12 @@ class joueur extends table
 	function get_mdp()
 	{
 		return $this->mdp;
+	}
+
+  /// Renvoie le mot de passe crypté pour jabber
+	function get_jabber_mdp()
+	{
+		return sha1($this->login.':'.$this->mdp);
 	}
 
   /**
@@ -207,7 +216,7 @@ class joueur extends table
 
 	/// "Sale" le mot de passe
 	function sel($mdp)
-	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à salter
+	{ // ATTENTION: c'est le MD5 du mot de passe qui est passé à sel
     return sha1($this->login.'!$'.$mdp);
   }
   

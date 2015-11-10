@@ -1,0 +1,562 @@
+/* Thème StarSky - nuit */
+body
+{
+	background:url(../image/interface/mocha-bleu.png);
+}
+
+a:hover, a:focus
+{
+  color: #EC971F;
+}
+
+#barre_menu
+{
+	/*background: rgba(15, 5, 107, 0.5);*/
+	background: url('../image/v2/bouton_fond.png') repeat-x;
+	background-size: 100% 40px;
+	border-color: #0F056B;
+}
+
+#barre_menu a
+{
+	/*color: white;*/
+	color: #22427C;
+}
+
+#navbar>ul>li>a:hover, #navbar>ul>li>a:focus, #navbar>ul>li>a:active
+{
+	/*color: #E7CF98;*/
+	/*#menu_details .menu:hover { background:transparent url(../image/v2/bouton_hover.png) no-repeat left; padding-top:1px; }*/
+	color: #2F2F4F!important;
+	background: url(../image/v2/bouton_hover.png);
+	background-size: 100% 40px;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	/*color: #333;*/
+	color: #22427C;
+}
+
+#barre_menu .dropdown-menu > li > a
+{
+	color: #262626;
+}
+
+/* ----  en-tête -------*/
+
+#perso, #royaume, #depl_drapeaux
+{
+	background-color:rgba(255, 255, 255, 0.3);
+	border-color: rgba(15, 5, 107, 0.5);
+}
+
+#infos_perso, #infos_vie, #infos_royaume, #ressources
+{
+  background-color:rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(15, 5, 107, 0.3);
+}
+
+#infos_vie
+{
+	width: 150px;
+	left: 11px;
+}
+
+#nom_perso
+{
+	margin: 2px 0;
+	left: 0;
+	height: 32px;
+	width: 150px;
+	white-space: normal;
+}
+
+#infos_perso
+{
+	left: 175px;
+	margin:0;
+	width: 260px;
+	background-position: 5px 4px;
+}
+
+#perso_ph
+{
+	left: 56px;
+	width: 70px;
+}
+
+#perso_stars
+{
+	left: 60px;
+}
+
+.perso_script
+{
+	left: 130px;
+	width: 125px;
+}
+
+#perso_buffs
+{
+	left: 37px;
+}
+
+#perso_heure
+{
+	left: 457px;
+}
+
+#perso_position
+{
+  box-shadow: 0 1px 2px rgba(15, 5, 107, 0.3) inset;
+  left: 450px;
+}
+
+#perso_groupe
+{
+	left: 540px;
+	width: 448px;
+}
+
+#perso_groupe li.membre_groupe
+{
+	background:  rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(15, 5, 107, 0.3);
+  width: 220px;
+}
+
+.jauge_bulle, .jauge_groupe
+{
+	border: 1px solid rgba(15, 5, 107, 0.3);
+}
+
+.membre_hp .icone-mort
+{
+	color: rgba(15, 5, 107, 0.5);
+}
+
+/*.buff_dispo, .buff_nondispo
+{
+	color: rgba(15, 5, 107, 0.3);
+}
+
+.buff_dispo
+{
+	box-shadow:  0 1px 2px 0px rgba(15, 5, 107, 0.5) inset;
+}
+
+.buff_nondispo
+{
+	border: solid 1px rgba(15, 5, 107, 0.2);
+}*/
+
+.jauge_shine
+{
+	margin: 0;
+	background: no-repeat;
+	text-align: center;
+	color: white;
+	padding: 2px;
+	font-size: 12px;
+	height: 18px;
+}
+
+#perso_xp
+{
+	z-index: 10;
+	position: absolute;
+	top: 122px;
+	left: -14px;
+	width: 102px;
+	height: 101px;
+	pointer-events:none;
+}
+
+.groupe_activite.mort
+{
+	margin-left: 18px;
+}
+
+.membre_mort
+{
+	position: absolute;
+	left: 3px;
+	top: 5px;
+}
+
+.jauge_shine_groupe
+{
+	height: 5px;
+	width: 100px;
+	position: relative;
+	left: 2px;
+	margin: 1px;
+}
+
+.jauge_shine_groupe.mort
+{
+	left: 18px;
+}
+
+.membre_lieu
+{
+	position: absolute;
+	right: 4;
+	top: 2px;
+}
+
+.membre_dist
+{
+  position: absolute;
+  right: 4px;
+  top: 15px;
+}
+
+.groupe_activite
+{
+	border: none;
+}
+.activite_hibern { background: url("../image/groupes/clair.png"); }
+.activite_ban { background:  url("../image/groupes/rouge.png"); }
+.activite_supppr { background:  url("../image/groupes/noir.png"); }
+.activite_inactif { background: url("../image/groupes/gris.png"); }
+.activite_actif { background: url("../image/groupes/orange.png"); }
+.activite_tres_actif { background: url("../image/groupes/bleu.png"); }
+.activite_connecte { background: url("../image/groupes/vert.png"); }
+
+
+/* ----  Partie gauche -------*/
+
+#cadre_gauche, #depl_disque, #depl_disque a#depl_disque_centre, #depl_disque span#depl_disque_centre
+{
+	border-color: #0F056B;
+}
+
+#menu_panneaux a 
+{
+	padding: 4px 0;
+}
+
+#menu_panneaux a img
+{
+	width: 46px;
+}
+
+#cadre_gauche.carte
+{
+	background: rgba(3, 48, 126, 0.5);
+}
+
+#cadre_gauche.ville
+{
+	background: url('../image/v2/map.png');
+}
+
+#depl_disque a
+{
+	background-size: 31px 93px;
+	background-position:center;
+}
+
+#depl_disque a:hover { background-position:top; }
+#depl_disque a:active { background-position:bottom; }
+
+a#depl_haut_gauche
+{
+	background-image: url('./../image/rosedesvent/nordouest.png');
+}
+a#depl_haut
+{
+	background-image: url('./../image/rosedesvent/nord.png');
+}
+a#depl_haut_droite
+{
+	background-image: url('./../image/rosedesvent/nordest.png');
+}
+a#depl_gauche
+{
+	background-image: url('./../image/rosedesvent/ouest.png');
+}
+a#depl_disque_centre
+{
+	background-image: url('./../image/rosedesvent/rafraichir.png');
+	border-radius: 0;
+	border:none;
+	top: 31px;
+	left: 31px;
+	width: 29px;
+	height: 29px;
+	background-size: 29px 87px;
+}
+a#depl_droite
+{
+	background-image: url('./../image/rosedesvent/est.png');
+}
+a#depl_bas_gauche
+{
+	background-image: url('./../image/rosedesvent/sudouest.png');
+}
+a#depl_bas
+{
+	background-image: url('./../image/rosedesvent/sud.png');
+}
+a#depl_bas_droite
+{
+	background-image: url('./../image/rosedesvent/sudest.png');
+}
+
+#depl_disque, .depl_cache
+{
+	background: #E7CF98;
+}
+
+a#depl_disque_centre.icone
+{
+	background: #E7CF98;
+	top: 26px;
+	left: 26px;
+	border: 1px solid #0F056B;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;;
+}
+
+#depl_centre
+{
+	border-color: rgba(15, 5, 107, 0.5);
+}
+
+#cadre_gauche.ville #depl_centre
+{
+	background: #A8C3E2;
+}
+
+#cadre_gauche.carte #depl_centre, .bat_drap_droite.minicarte
+{
+	background: url('../image/v2/map.png');
+}
+
+#menu_panneaux a, #menu_ville_carte a, #menu_carte a, #menu_ville a, #menu_carte li:first-child a, #menu_ville li:first-child a, #depl_disque a
+{
+	border-color: rgba(15, 5, 107, 0.4);
+	color: #22427C;
+}
+
+#menu_panneaux a:hover, #menu_ville a:hover, #depl_disque a:hover, #depl_disque a:active
+{
+	/*background: rgba(255, 255, 255, 0.3);*/
+	color: #2F2F4F!important;
+}
+
+#cadre_gauche.carte #menu_carte a
+{
+  color: #E0C072;
+}
+
+#cadre_gauche.carte #menu_carte a:hover, #cadre_gauche.carte #menu_carte a:active
+{
+  color: #EC971F;
+}
+
+#menu_panneaux a, #menu_ville a
+{
+	border: none !important;
+}
+
+#menu_ville ul
+{
+	margin-top: -10px;
+}
+
+#carte
+{
+	color: #22427C;
+}
+
+#carte_bord_haut_x, #carte_bord_haut_y
+{
+	color:#2F2F4F!important;
+}
+
+#coffre
+{
+	border-right: 1px solid rgba(15, 5, 107, 0.3);
+}
+
+#coffre_invent li a:hover
+{
+	color: #EC971F;
+}
+
+/*#jauge_droite, #jauge_gauche
+{
+	top: 4px;
+	left: 5px;
+}
+
+#jauge_ext_stop
+{
+	top: 16px;
+	left: 17px;
+}
+
+#jauge_int_stop
+{
+	top: 28px;
+	left: 29px;
+}
+span#depl_disque_centre
+{
+	top: 30px;
+	left: 31px;
+}*/
+
+#ville div.panel
+{
+	width: 144px;
+	border: none;
+	padding-bottom: 5px;
+}
+
+#ville div.panel-heading
+{
+	color: #463300 !important;
+	font-weight: bold;
+	border: none;
+}
+
+#quartier_marchand 
+{
+	background: url("../image/ville/cadrebiseauQR.png") no-repeat;
+	background-size: 144px 157px;
+}
+
+#quartier_marchand > div.panel-heading
+{
+	background: url("../image/ville/cadretitreQM.png") no-repeat scroll center top transparent;
+	padding: 7px;
+}
+
+#quartier_royal 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 151px;
+}
+
+#quartier_royal > div.panel-heading
+{
+	background: url("../image/ville/cadretitreQR.png") no-repeat scroll center top transparent;
+	padding: 8px;
+}
+
+#haut_quartier 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 139px;
+}
+
+#haut_quartier > div.panel-heading
+{
+	background: url("../image/ville/cadretitreHQ.png") no-repeat scroll center top transparent;
+	padding: 10px;
+}
+
+#bas_quartier 
+{
+	background: url("../image/ville/cadrebiseauQM.png") no-repeat;
+	background-size: 144px 157px;
+}
+
+#bas_quartier > div.panel-heading
+{
+	background: url("../image/ville/cadretitreBQ.png") no-repeat scroll center top transparent;
+	padding: 11px;
+}
+
+#ville a.list-group-item
+{
+  padding: 2px 10px;
+	margin: 2px 4px;
+	background: none repeat scroll 0% 0% #BFCCDD;
+	border: 1px solid #8D7845;
+	border-radius: 6px;
+}
+
+#ville a.list-group-item:hover
+{
+	background: #FFF;
+	color: #3A3A4F;
+}
+
+/* ----  Partie droite -------*/
+
+#information
+{
+	background: rgba(255, 255, 255, 0.3);
+	border: 1px solid rgba(15, 5, 107, 0.5);
+	/*margin-top: 20px;*/
+}
+
+#information a { color:rgba(15, 5, 107, 0.7); }
+
+#information a:hover { color:#EC971F!important; }
+
+a#debug_droit
+{
+  color: rgba(15, 5, 107, 0.5);
+}
+
+.info_case, .action
+{
+	background: none repeat scroll 0 0 rgba(255, 255, 255, 0.3);
+  border: 1px solid rgba(15, 5, 107, 0.3);
+}
+
+#batiments_ville .info_case>a
+{
+  border-color: rgba(15, 5, 107, 0.3) !important;
+}
+
+#liste_gauche, #rp_pj, #rp_gauche, #rp_haut, #rp_gauche>div:nth-of-type(n+2), #rp_texte>div:nth-of-type(n+2)
+{
+	border-color: rgba(15, 5, 107, 0.5);
+}
+
+#rp_haut
+{
+	background: none repeat scroll 0px 0px rgba(15, 5, 107, 0.3);
+}
+
+#information div.panel-heading>a:hover
+{
+	color: #2F2F4F!important;
+}
+
+.action .icone-deplacer
+{
+  color: rgba(15, 5, 107, 0.7);
+}
+
+#messagerie #titre
+{
+	color: #E7CF98;
+	background-color: rgba(15, 5, 107, 0.3);
+	border-color: rgba(15, 5, 107, 0.4);
+}
+
+#messagerie #titre a.icone
+{
+	color: #E7CF98;
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+#messagerie .editeur, #messagerie .editeur .editeur-outils
+{
+	border-color: rgba(15, 5, 107, 0.3);
+}
+
+#col2
+{
+	border-color: rgba(15, 5, 107, 0.5);
+}

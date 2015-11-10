@@ -1,4 +1,5 @@
 <?php // -*- mode: php -*-
+///@deprecated
 if (file_exists('root.php')) include_once('root.php');
 
 require_once(root.'inc/fp.php');
@@ -75,12 +76,12 @@ if ($q)
 $atm_verb = $atm_val ? 'Désactiver' : 'Activer';
 $atm_all_verb = $atm_all_val ? 'Désactiver <strong>tous</strong>' : 'Activer';
 ?>
-<ul>
+<ul class='option_map'>
 <?php
 if (isset($G_use_atmosphere) && $G_use_atmosphere) { ?>
-					  <li><a href="option_map.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;"><?php echo $atm_verb; ?> les effets atmospheriques</a></li>
-					  <li><a href="option_map.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;"><?php echo $atm_all_verb; ?> les effets atmosphériques et liés à l\'heure</a></li>
+					  <li><a href="option_map.php?action=atm&amp;effet=sky&amp;val=<?php echo $atm_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">effets </a></li>
+					  <li><a href="option_map.php?action=atm&amp;effet=time&amp;val=<?php echo $atm_all_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">temps</a></li>
 <?php } ?>
-					  <li><a href="option_map.php?action=affiche_royaumes&amp;val=<?php echo $roy_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les royaumes</a></li>
-					  <li><a href="option_map.php?action=cache_monstre&amp;val=<?php echo $mons_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">Afficher / masquer les monstres</a></li>
+					  <li><a href="option_map.php?action=affiche_royaumes&amp;val=<?php echo $roy_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">royaumes</a></li>
+					  <li><a href="option_map.php?action=cache_monstre&amp;val=<?php echo $mons_val; ?>" onclick="envoiInfo(this.href, 'cluetip-inner'); deplacement('centre', 'normal', show_only); return false;">monstres</a></li>
 </ul>

@@ -362,7 +362,8 @@ class botte_crabe extends botte
 			if ( comp_sort::test_de(100, $this->effet) ) {
 				$passif->etat['desarme']['effet'] = true;
 				$passif->etat['desarme']['duree'] = $this->effet2;
-				echo "La botte désarme ".$passif->get_nom().'<br/>';
+				$attaque->get_interface()->effet(35,  $this->effet, '', $cible->get_nom());
+				$attaque->add_log_effet_actif('&ef35~'. $this->effet);
 			}
 		}
 	}
@@ -477,6 +478,7 @@ class fleche_poison extends comp_comb {
 
   function inflige_degats(&$attaque) {
     $pot_att = $attaque->get_actif()->get_force() + $this->effet;
+		$pot_att *= 1 + $attaque->get_actif()->get_bonus_permanents('resiste_debuff') / 100;
     $pot_def = $attaque->get_passif()->get_volonte();
     $de_att = rand(0, $pot_att);
     $de_deff = rand(0, $pot_def);
@@ -485,15 +487,15 @@ class fleche_poison extends comp_comb {
     if ($de_att > $de_deff) {
       $this->poison = true;
     } else {
-      $this->notice("Le poison n'agit pas");
+			$attaque->get_interface()->texte('Le poison n\'agit pas');
     }
 	}
 
   function fin_round(&$attaque) {
     $passif = $attaque->get_passif();
 		if ($this->poison) {
-      $this->hit('<strong>'.$passif->get_nom().'</strong> est empoisonné pour '.
-                 $this->duree.' tours !');
+			$attaque->get_interface()->effet(31,  $this->duree, '', $passif->get_nom());
+			$attaque->add_log_effet_actif('&ef31~'. $this->duree);
 			$passif->etat['empoisonne']['effet'] = $this->effet2;
 			$passif->etat['empoisonne']['duree'] = $this->duree;
 		}
@@ -551,7 +553,7 @@ abstract class magnetique extends effect {
 					error_log('Rand: '.$rand);
 					error_log('Actif: '.print_r($attaque->get_actif(), true));
 					error_log('Passif: '.print_r($passif, true));
-					$this->notice($this->titre.' aurait du supprimer un buff, '
+					$attaque->get_interface()->texte($this->titre.' aurait du supprimer un buff, '
 												.'mais une erreur est survenue. Pr&eacute;venez un '
 												.'administrateur. (Irulan si possible)');
 				}
@@ -624,7 +626,7 @@ class fleche_magnetique extends magnetique {
     }
     if( !$buffs )
     {
-      $this->notice($this->titre.' aurait dû agir mais le buff '.$buff->get_nom().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
+      $attaque->get_interface()->texte($this->titre.' aurait dû agir mais le buff '.$buff->get_nom().' n\'est pas reconnu. Pr&eacute;venez un administrateur.');
       return;
     }
 
@@ -668,7 +670,8 @@ class fleche_sable extends comp_comb {
     $passif = $attaque->get_passif();
     $passif->etat['fleche_sable']['effet'] = $this->effet;
     $passif->etat['fleche_sable']['duree'] = $this->duree;
-    $this->notice($passif->get_nom().' est ensablé pour '.$this->duree.' rounds');
+		$attaque->get_interface()->effet(32, $this->duree, '', $passif->get_nom());
+		$attaque->add_log_effet_actif('&ef32~'.$this->duree);
 	}
   
 }
@@ -712,9 +715,8 @@ class vol_a_la_tire extends comp_comb {
 
   function fin_round(&$attaque) {
     $vol = rand(1, $this->effet2);
-    $this->notice($attaque->get_actif()->get_nom().' vole '.$vol.' stars !');
-    /// TODO: à lier au défenseur (quand ça sera possible sans bug)
-    $obj = $attaque->get_joueur();
+    $attaque->get_interface()->texte($attaque->get_actif()->get_nom().' vole '.$vol.' stars !');
+    $obj = $attaque->get_passif()->get_objet();
     $obj->add_star($vol * -1);
     $obj->sauver();
     return $degats;

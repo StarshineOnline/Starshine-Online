@@ -1,61 +1,57 @@
 <?php
 if (file_exists('../root.php'))
   include_once('../root.php');
-?><?php
-require_once(root.'roi/haut_roi.php');
-?>
-  		<div id='boutique'>
-  		<ul>	
-  		<li class='haut' style='height:30px !important;line-height:30px !important;'>
-  			<span class='boutique_nom'>ID</span>
-			<span class='boutique_nom'>Nom</span>
-  			<span class='boutique_nom'>Leader</span>
-			<span class='boutique_nom'>Nombre</span>
-  			<span class='boutique_nom'>Partage</span>
-  			<span class='boutique_nom'>Level</span>
-  			<span class='boutique_nom'>Bataille</span>
-  		</li>
 
-<?php
-$requete = "SELECT groupe.id as groupeid, groupe_joueur.id_joueur, perso.nom, perso.race FROM groupe LEFT JOIN groupe_joueur ON groupe.id = groupe_joueur.id_groupe LEFT JOIN perso ON groupe_joueur.id_joueur = perso.ID WHERE groupe_joueur.leader = 'y' AND perso.race = '".$joueur->get_race()."'";
-$req = $db->query($requete);
-$boutique_class = 't1';
-$partages = array(array('r', 'Aléatoire'), array('t', 'Par tour'), array('l', 'Leader'), array('k', 'Trouve = Garde'));
-while($row = $db->read_assoc($req))
+//Connexion obligatoire
+$connexion = true;
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
+
+
+$perso = joueur::get_perso();
+$royaume = new royaume($Trace[$perso->get_race()]['numrace']);
+if( $perso->get_rang() != 6 && $perso->get_rang() != 1 )
 {
-	$groupe = new groupe($row['groupeid']);
-	$leader = new perso($groupe->get_id_leader());
-	$bataille_groupe = new bataille_groupe(0,0,$row['groupeid']);
-	if($bataille_groupe->is_bataille()) 
-	{
-		$bataille = new bataille($bataille_groupe->get_id_bataille());
-		$nom = $bataille->get_nom();
-	}
-	else
-		$nom = "Aucune";
-	foreach($partages as $part)
-	{
-		if($groupe->get_partage() == $part[0])
-			$partage = $part[1];
-	}
-	?>
-	<li class='<?php echo $boutique_class; ?>' id="groupe_<?php echo $groupe->get_id(); ?>" onclick="affichePopUp('infos_groupe.php?id_groupe=<?php echo $groupe->get_id(); ?>');">
-		<span class='boutique_nom'><?php echo $groupe->get_id(); ?></span>
-		<span class='boutique_nom'><?php echo $groupe->get_nom(); ?></span>
-		<span class='boutique_nom'><?php echo $leader->get_nom(); ?></span>
-		<span class='boutique_nom'><?php echo ($G_nb_joueur_groupe + 1 - $groupe->get_place_libre()).' / '.($G_nb_joueur_groupe+1); ?></span>
-		<span class='boutique_nom'><?php echo $partage; ?></span>
-		<span class='boutique_nom'><?php echo $groupe->get_level();?></span>
-		<span class='boutique_nom'><?php echo $nom;?></span>
-	</li>
-	<?php
-	if ($boutique_class == 't1'){$boutique_class = 't2';}else{$boutique_class = 't1';}
+	/// @todo logguer triche
+	exit;
 }
+
+$onglet = array_key_exists('onglet', $_GET) ? $_GET['onglet'] : 'royaume';
+$cadre = $G_interf->creer_royaume();
+
+$action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
+switch($action)
+{
+case 'infos':
+  include_once(root.'interface/interf_roi_groupe.class.php');
+	$cadre->set_dialogue( new interf_roi_groupe_info( new groupe($_GET['id']) ) );
+	if( array_key_exists('ajax', $_GET) )
+		exit;
+	break;
+}
+
+
+
+if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 2 )
+{
+		switch($onglet)
+		{
+		case 'royaume':
+			$cadre->add( $G_interf->creer_roi_groupe_roy($royaume) );
+			break;
+		case 'etrangers':
+			$cadre->add( $G_interf->creer_roi_groupe_ext($royaume) );
+			break;
+		case 'sans':
+			$cadre->add( $G_interf->creer_roi_groupe_sans($royaume) );
+			break;
+		}
+}
+else
+{
+	$cadre->set_gestion( $G_interf->creer_roi_groupe($royaume, $onglet) );
+	$cadre->maj_tooltips();
+}
+
+
 ?>
-</ul>
-</div>
-
-
-<div id="infos_groupe" style="text-align: center;">
-	Cliquez sur un groupe pour obtenir des informations
-</div>

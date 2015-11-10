@@ -3,6 +3,7 @@
  * @file perso.class.php
  * Gestion des personnages joueurs
  */
+include_once(root.'class/gemme.class.php');
  
 /**
  * Classe représentant un personnage joueur
@@ -48,7 +49,6 @@ class perso extends entite
 	{
 		return $this->tuto;
 	}
-
 	
 	/// Modifie le nom du personnage
 	function set_nom($nom)
@@ -253,9 +253,9 @@ class perso extends entite
 		if(!isset($this->grade)) {
 			$this->grade = new grade($this->rang_royaume);
 			if ($this->is_buff('buff_charisme')) $this->grade->add_bonus_buff(2);
+			if ($this->is_buff('potion_buff')) $this->grade->add_bonus_buff(2);
 			if ($this->is_buff('debuff_charisme')) 
-        $this->grade->add_bonus_buff(-1 * $this->get_buff('debuff_charisme',
-                                                          'effet'));
+        $this->grade->add_bonus_buff(-$this->get_buff('debuff_charisme', 'effet'));
 		}
 		return $this->grade;
 	}
@@ -638,6 +638,10 @@ class perso extends entite
 		else
 			return $this->vie + $this->get_bonus_permanents('vie');
 	}
+	function get_constitution($base = false)
+	{
+		return $this->get_vie($base);
+	}
 	/// Modifie la constitution
 	function set_vie($vie)
 	{
@@ -753,7 +757,12 @@ class perso extends entite
 		if ($base)
 			return $this->melee;
 		else
-			return $this->melee + $this->get_bonus_permanents('melee');
+		{
+			$melee = $this->melee + $this->get_bonus_permanents('melee');
+			$melee *= 1 + $this->get_bonus_permanents('mult_melee')/100;
+			$melee /= 1 + $this->get_bonus_permanents('div_melee')/100;
+			return round($melee);
+		}
 	}
 	/// Modifie la mêlée
 	function set_melee($melee)
@@ -767,7 +776,12 @@ class perso extends entite
 		if ($base)
 			return $this->distance;
 		else
-			return $this->distance + $this->get_bonus_permanents('distance');
+		{
+			$distance = $this->distance + $this->get_bonus_permanents('distance');
+			$distance *= 1 + $this->get_bonus_permanents('mult_distance')/100;
+			$distance /= 1 + $this->get_bonus_permanents('div_distance')/100;
+			return round($distance);
+		}
 	}
 	/// Modifie le tir à distance
 	function set_distance($distance)
@@ -781,7 +795,12 @@ class perso extends entite
 		if ($base)
 			return $this->esquive;
 		else
-			return $this->esquive + $this->get_bonus_permanents('esquive');
+		{
+			$esquive = $this->esquive + $this->get_bonus_permanents('esquive');
+			$esquive *= 1 + $this->get_bonus_permanents('mult_esquive')/100;
+			$esquive /= 1 + $this->get_bonus_permanents('div_esquive')/100;
+			return round($esquive);
+		}
 	}
 	/// Modifie l'esquive
 	function set_esquive($esquive)
@@ -795,7 +814,12 @@ class perso extends entite
 		if ($base)
 			return $this->blocage;
 		else
-			return $this->blocage + $this->get_bonus_permanents('blocage');
+		{
+			$blocage = $this->blocage + $this->get_bonus_permanents('blocage');
+			$blocage *= 1 + $this->get_bonus_permanents('mult_blocage')/100;
+			$blocage /= 1 + $this->get_bonus_permanents('div_blocage')/100;
+			return round($blocage);
+		}
 	}
 	/// Modifie le blocage
 	function set_blocage($blocage)
@@ -809,7 +833,12 @@ class perso extends entite
 		if ($base)
 			return $this->incantation;
 		else
-			return $this->incantation + $this->get_bonus_permanents('incantation');
+		{
+			$incantation = $this->incantation + $this->get_bonus_permanents('incantation');
+			$incantation *= 1 + $this->get_bonus_permanents('mult_incantation')/100;
+			$incantation /= 1 + $this->get_bonus_permanents('div_incantation')/100;
+			return round($incantation);
+		}
 	}
 	/// Modifie l'incantation
 	function set_incantation($incantation)
@@ -823,7 +852,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_vie;
 		else
-			return $this->sort_vie + $this->get_bonus_permanents('sort_vie');
+		{
+			$sort_vie = $this->sort_vie + $this->get_bonus_permanents('sort_vie');
+			$sort_vie *= 1 + $this->get_bonus_permanents('mult_sort_vie')/100;
+			$sort_vie /= 1 + $this->get_bonus_permanents('div_sort_vie')/100;
+			return round($sort_vie);
+		}
 	}
 	/// Modifie la magie de la vie
 	function set_sort_vie($sort_vie)
@@ -837,7 +871,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_element;
 		else
-			return $this->sort_element + $this->get_bonus_permanents('sort_element');
+		{
+			$sort_element = $this->sort_element + $this->get_bonus_permanents('sort_element');
+			$sort_element *= 1 + $this->get_bonus_permanents('mult_sort_element')/100;
+			$sort_element /= 1 + $this->get_bonus_permanents('div_sort_element')/100;
+			return round($sort_element);
+		}
 	}
 	/// Modifie la magie élémentaire
 	function set_sort_element($sort_element)
@@ -851,7 +890,12 @@ class perso extends entite
 		if ($base)
 			return $this->sort_mort;
 		else
-			return $this->sort_mort + $this->get_bonus_permanents('sort_mort');
+		{
+			$sort_mort = $this->sort_mort + $this->get_bonus_permanents('sort_mort');
+			$sort_mort *= 1 + $this->get_bonus_permanents('mult_sort_mort')/100;
+			$sort_mort /= 1 + $this->get_bonus_permanents('div_sort_mort')/100;
+			return round($sort_mort);
+		}
 	}
 	/// Modifie la nécromancie
 	function set_sort_mort($sort_mort)
@@ -892,10 +936,12 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->alchimie;
-		elseif ($this->get_race() == 'scavenger')
-			return $this->alchimie * 1.40 + $this->get_bonus_permanents('alchimie');
-		else
-			return $this->alchimie + $this->get_bonus_permanents('alchimie');
+		$alchimie = $this->alchimie * (1 + $this->get_bonus_permanents('alchimie') / 100);
+		if ($this->get_race() == 'scavenger')
+			$alchimie *= 1.40;
+		if($this->is_buff('globe_alchimie'))
+			$alchimie *= 1 + $this->get_buff('globe_alchimie', 'effet')/100;
+		return round($alchimie);
 	}
 	/// Modifie l'alchimie
 	function set_alchimie($alchimie)
@@ -908,10 +954,13 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->architecture;
-		elseif ($this->get_race() == 'scavenger')
-			return $this->architecture * 1.20 + $this->get_bonus_permanents('architecture');
-		else
-			return $this->architecture + $this->get_bonus_permanents('architecture');
+		if ($this->get_race() == 'scavenger')
+			$architecture * 1.20;
+		$architecture = $this->architecture;
+		$architecture *= 1 + $this->get_bonus_permanents('architecture') / 100;
+		if($this->is_buff('globe_architecture'))
+			$architecture *= 1 + $this->get_buff('globe_architecture', 'effet')/100;
+		return round($architecture);
 	}
 	/// Modifie l'architecture
 	function set_architecture($architecture)
@@ -924,10 +973,13 @@ class perso extends entite
 	{
 		if ($base)
 			return $this->forge;
-		elseif ($this->get_race() == 'scavenger')
-			return $this->forge * 1.40 + $this->get_bonus_permanents('forge');
-		else
-			return $this->forge + $this->get_bonus_permanents('forge');
+		$forge = $this->forge;
+		$forge *= 1 + $this->get_bonus_permanents('forge') / 100;
+		if ($this->get_race() == 'scavenger')
+			$forge *= 1.40;
+		if($this->is_buff('globe_forge'))
+			$forge *= 1 + $this->get_buff('globe_forge', 'effet')/100;
+		return round($forge);
 	}
 	/// Modifie la forge
 	function set_forge($forge)
@@ -962,9 +1014,9 @@ class perso extends entite
    * L'artisanat est calculé à partir des 3 compétences d'artisanat : c'est 10 
    * fois la racine carré de leur somme.
    */       
-	function get_artisanat()
+	function get_artisanat($base = false)
 	{
-		return round(sqrt(($this->architecture + $this->forge + $this->alchimie) * 10));
+		return round(sqrt(($this->get_architecture($base) + $this->get_forge($base) + $this->get_alchimie($base) + $this->get_identification($base)) * 10));
 	}
 	/**
 	 * Renvoie la compétence demandée
@@ -1112,6 +1164,7 @@ class perso extends entite
 	public $pm_para;                 ///< PM pour la resistance à para (sans les buffs avec bonus raciaux).
 	public $enchant;                 ///< plus utilisé.
 	public $armure;                  ///< true si la PP et la PM on été calculées, false sinon.
+	protected $encombrement;				 ///< encombrement total des objets portés dans l'inventaire
 	/// Renvoie les objets équipés par le personnage sous forme textuelle.
 	function get_inventaire()
 	{
@@ -1144,6 +1197,23 @@ class perso extends entite
 	{
 		$this->inventaire_slot = $inventaire_slot;
 		$this->champs_modif[] = 'inventaire_slot';
+	}
+	/// Renvoie l'encombrement total des objets portés dans l'inventaire.
+	function get_encombrement()
+	{
+		return $this->encombrement;
+	}
+	/// Modifie l'encombrement total des objets portés dans l'inventaire.
+	function set_encombrement($encombrement)
+	{
+		$this->encombrement = $encombrement;
+		$this->champs_modif[] = 'encombrement';
+	}
+	/// Renvoie l'encombrement maximal
+	function get_max_encombrement()
+	{
+		global $G_max_encombrement;
+		return $G_max_encombrement + $this->get_bonus_permanents('encombrement');
 	}
 	/**
 	 * Renvoie un objet équipé particulier.
@@ -1223,6 +1293,7 @@ class perso extends entite
 			$arme = $this->inventaire()->main_droite;
 			if($arme != '')
 			{
+				/// @todo à refaire
 				$arme_d = decompose_objet($arme);
 				$requete = "SELECT * FROM arme WHERE id = ".$arme_d['id_objet'];
 				$req = $db->query($requete);
@@ -1233,7 +1304,11 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
+				}
+				if( $arme_d['mod'] )
+				{
+					$mod = new forge_recette($arme_d['mod']);
+					$this->arme->degat += $mod->get_modif_degats();
 				}
         if ($this->arme->effet)
         {
@@ -1244,7 +1319,6 @@ class perso extends entite
 						$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
           }
         }
-        //my_dump($this->arme);
 			}
 			else $this->arme = false;
 		}
@@ -1265,13 +1339,20 @@ class perso extends entite
 				$this->arme_gauche = $db->read_object($req);
 				if($this->arme_gauche->type == 'bouclier')
 					$this->arme_gauche = false;
-				else if ($arme_d['enchantement'] != null)
+				else
 				{
-					$gemme = new gemme_enchassee($arme_d['enchantement']);
-					if ($gemme->enchantement_type == 'degat')
-						$this->arme_gauche->degat += $gemme->enchantement_effet;
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
+					if ($arme_d['enchantement'] != null)
+					{
+						$gemme = new gemme_enchassee($arme_d['enchantement']);
+						if ($gemme->enchantement_type == 'degat')
+							$this->arme_gauche->degat += $gemme->enchantement_effet;
+						$this->register_gemme_enchantement($gemme);
+					}
+					if( $arme_d['mod'] )
+					{
+						$mod = new forge_recette($arme_d['mod']);
+						$this->arme_gauche->degat += $mod->get_modif_degats();
+					}
 				}
 			}
 			else $this->arme_gauche = false;
@@ -1297,7 +1378,6 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'degat')
 						$this->arme->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
 				}
 				if ($this->arme_pet->effet)
 				{
@@ -1308,7 +1388,6 @@ class perso extends entite
 								$this->register_item_effet($d_effet[0], $d_effet[1], $this->arme);
 				  }
 				}
-				//my_dump($this->arme);
 			}
 			else $this->arme_pet = false;
 		}
@@ -1334,7 +1413,6 @@ class perso extends entite
 					if ($gemme->enchantement_type == 'bouclier')
 						$this->bouclier->degat += $gemme->enchantement_effet;
 					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
 				}
         if ($this->bouclier->effet)
         {
@@ -1350,51 +1428,38 @@ class perso extends entite
 		}
 		return $this->bouclier;
 	}
-	/// Renvoie l'accessoire. Enregistre les enchantements et les effets. 
-	function get_accessoire()
+	/// Renvoie l'accessoire. Enregistre les enchantements et les effets.
+	function get_accessoires()
 	{
-		if(!isset($this->accessoire))
+		if(!isset($this->accessoire) || !$this->accessoire)
 		{
 			global $db;
-			$accessoire = $this->inventaire()->accessoire;
-			if($accessoire != '' AND $accessoire != 'lock')
-			{
-				$acc = decompose_objet($accessoire);
-				$q = "SELECT * FROM $acc[table_categorie] WHERE id = $acc[id_objet]";
-				$req = $db->query($q);
-				$this->accessoire = $db->read_object($req);
-				if ($acc['enchantement'] != null)
-				{
-					$gemme = new gemme_enchassee($acc['enchantement']);
-					$this->register_gemme_enchantement($gemme);
-					//my_dump($this->enchantement);
-				}
-				switch ($this->accessoire->type) {
-				case 'rm':
-					$this->add_bonus_permanents('reserve', $this->accessoire->effet);
-					break;
-				case 'donjon':
-					//+300 PM + 300 PP + 50 MP + 100 HP
-					$this->add_bonus_permanents('hp_max', $this->accessoire->effet/3);
-					$this->add_bonus_permanents('mp_max', $this->accessoire->effet/6);
-					$this->pm += $this->accessoire->effet;
-					$this->pp += $this->accessoire->effet;									
-					break;
-				case 'chance_debuff':
-				case 'buff':
-				case 'fabrication':
-					$this->add_bonus_permanents($this->accessoire->type,
-																			$this->accessoire->effet);
-					break;
-				case 'pierre_precision':
-					$this->add_effet_permanent('attaquant', new pierre_precision($this->accessoire->effet, 'pierre_precision'));
-					break;
-																			
-				}
-			}
-			else $this->accessoire = false;
+			// grand accessoire 
+			$grand_accessoire = $this->inventaire()->grand_accessoire;
+			if( !$grand_accessoire )
+				$grand_accessoire = $this->inventaire()->accessoire;
+			$this->charger_accessoire( $grand_accessoire );
+			// Moyen accessoire
+			$this->charger_accessoire( $this->inventaire()->moyen_accessoire );
+			// Petits accessoires
+			$this->charger_accessoire( $this->inventaire()->petit_accessoire_1 );
+			$this->charger_accessoire( $this->inventaire()->petit_accessoire_2 );
+			$this->accessoire = true;
 		}
-		return $this->accessoire;
+	}
+	protected function charger_accessoire($accessoire)
+	{
+		if($accessoire != '' AND $accessoire != 'lock')
+		{
+			$objet = objet_invent::factory($accessoire);
+			if( $objet->get_enchantement() )
+			{
+				$gemme = new gemme_enchassee($objet->get_enchantement());
+				$this->register_gemme_enchantement($gemme);
+				//my_dump($this->enchantement);
+			}
+			$objet->agit($this);
+		}
 	}
 	// "Charge" les objets pour faire agir leur effets
   function check_materiel()
@@ -1403,7 +1468,7 @@ class perso extends entite
     $this->get_arme_gauche();
     $this->get_bouclier();
     $this->get_armure();
-    $this->get_accessoire();
+    $this->get_accessoires();
   }
   /// Renvoie le type de l'arme utilisé 
 	function get_arme_type()
@@ -1416,7 +1481,7 @@ class perso extends entite
    * La plupart du temps on s'en fiche, de la main, on veut les degats
    * @param $main   si false : cumul, si 'droite' ou 'gauche' : detail
    */
-	function get_arme_degat($main = false)
+	function get_arme_degat($main = false, $adversaire=null)
 	{
 		$degats = 0;
 		if ($main == false || $main == 'droite')
@@ -1433,7 +1498,7 @@ class perso extends entite
 	/**
 	 * Recherche un objet dans l'inventaire
 	 * @param  $id_objet   Id de l'objet.
-	 * @return   si trouvé tableau avec en première position de le nomrbe d'objet 
+	 * @return   si trouvé tableau avec en première position de le nombre d'objets
 	 *           dans la pile et en deuxième la position dans l'inventaire, false
 	 *           si non trouvé.   	 
 	 */	
@@ -1445,14 +1510,16 @@ class perso extends entite
 		//Recherche si le joueur n'a pas des objets de ce type dans son inventaire
 		$i = 0;
 		$partie = $this->get_inventaire_slot_partie();
-		while(($i < $G_place_inventaire) AND !$trouver)
+		//while(($i < $G_place_inventaire) AND !$trouver)
+		foreach($partie as $o)
 		{
-			$objet_i = decompose_objet($partie[$i]);
-			if($objet_i['sans_stack'] == $objet_d['sans_stack'])
+			$objet_i = decompose_objet($o);
+			if($objet_i['sans_stack'] == $objet_d['sans_stack'] /*&& $objet_i['stack']>= $objet_d['stack']*/)
 			{
 				$trouver = true;
+				break;
 			}
-			else $i++;
+			$i++;
 		}
 		if($trouver)
 		{
@@ -1463,36 +1530,65 @@ class perso extends entite
 		}
 		else return false;
 	}
+	/// Liste les différentes versions d'un objet
+	function liste_objet($id)
+	{
+		$partie = $this->get_inventaire_slot_partie();
+		$res = array();
+		foreach($partie as $o)
+		{
+			if( objet_invent::get_princ($o) == $id )
+			{
+				$d = objet_invent::decomp_nombre($o);
+				if( array_key_exists($d[0], $res) )
+					$res[$d[0]] += $d[1];
+				else
+					$res[$d[0]] = $d[1];				
+			}
+		}
+		return $res;
+	}
   /// Refait les piles des objets
 	function restack_objet()
 	{
-		global $G_place_inventaire;
 		$partie = $this->get_inventaire_slot_partie();
-		$i = 0;
 		$compte_stack = array();
 		$poursuite = true;
 		foreach($partie as $part)
 		{
 			$objet = decompose_objet($part);
 			if(array_key_exists($objet['sans_stack'], $compte_stack))
-				$compte_stack[$objet['sans_stack']] += $objet['stack'];
+				$compte_stack[$objet['sans_stack']] += $objet['stack'] ? $objet['stack'] : 1;
 			else
-				$compte_stack[$objet['sans_stack']] = $objet['stack'];
-			$this->supprime_objet($objet['sans_stack'], $objet['stack']);
+				$compte_stack[$objet['sans_stack']] = $objet['stack'] ? $objet['stack'] : 1;
+			//$this->supprime_objet($objet['sans_stack'], $objet['stack']);
 		}
 
+		$inventaire = array();
+		$encombrement = 0;
 		foreach($compte_stack as $objet => $valeur)
 		{
-			for($i = 0; $i < $valeur; $i++)
-				$this->prend_objet($objet);
+			$obj = objet_invent::factory($objet);
+			while($valeur > 0)
+			{
+				$n = min($valeur, max($obj->get_stack(), 1));
+				$valeur -= $n;
+				$obj->set_nombre($n);
+				$obj->recompose_texte();
+				$inventaire[] = $obj->get_texte();
+				$encombrement += $obj->get_encombrement();
+			}
 		}
+		$this->set_inventaire_slot( serialize($inventaire) );
+		$this->set_encombrement($encombrement);
+		$this->sauver();
 	}
   /**
    * Supprime un objet de l'inventaire
    * @param  $id_objet    Id de l'objet.
    * @param  $nombre      Nombre d'objet à supprimer, s'il peut être empiler.
    */  
-	function supprime_objet($id_objet, $nombre)
+	function supprime_objet($id_objet, $nombre=1)
 	{
 		global $db;
 		$i = $nombre;
@@ -1500,15 +1596,38 @@ class perso extends entite
 		while($i > 0)
 		{
 			$objet = $this->recherche_objet($id_objet);
+			$obj = objet_invent::factory($inventaire[$objet[1]]);
+			if( !$obj )
+			{
+				log_admin::log('erreur', 'Objet à supprimer non trouvé : '.$id_objet.' -> '.$objet[1].' : '.$inventaire[$objet[1]]);
+				return false;
+			}
 			//Vérification si objet "stacké"
-			//print_r($objet);
-			$stack = explode('x', $inventaire[$objet[1]]);
-			if($stack[1] > 1) $inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
-			else array_splice($inventaire, $objet[1], 1);
+			/*$stack = explode('x', $inventaire[$objet[1]]);
+			if($stack[1] > 1)
+				$inventaire[$objet[1]] = $stack[0].'x'.($stack[1] - 1);
+			else
+			{
+				array_splice($inventaire, $objet[1], 1);
+			}*/
+			$nbr = $obj->get_nombre();
+			if( $nbr > 1 )
+			{
+				$obj->set_nombre($nbr - 1);
+				$obj->recompose_texte();
+				$inventaire[$objet[1]] = $obj->get_texte();
+			}
+			else
+			{
+				array_splice($inventaire, $objet[1], 1);
+				$this->set_encombrement( $this->encombrement - $obj->get_encombrement() );
+			}
 			$i--;
 		}
 		$this->set_inventaire_slot(serialize($inventaire));
+		unset($this->inventaire_perso);// Nécessaire pour que la suppression des objets lors des échanges marche 
 		$this->sauver();
+		return true;
 	}
   /**
    * Ajoute un objet dans l'inventaire
@@ -1518,7 +1637,7 @@ class perso extends entite
 	function prend_objet($id_objet)
 	{
 		if(!isset($this->inventaire_perso)) $this->inventaire_perso = new inventaire($this->inventaire, $this->inventaire_slot);
-		if($this->inventaire_perso->prend_objet($id_objet))
+		if($this->inventaire_perso->prend_objet($id_objet, $this))
 		{
 			if(is_array($this->inventaire_perso->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso->slot_liste));
 			else $this->set_inventaire_slot($this->inventaire_perso->slot_liste);
@@ -1535,7 +1654,7 @@ class perso extends entite
 	function prend_objet_pet($id_objet)
 	{
 		if(!isset($this->inventaire_perso_pet)) $this->inventaire_perso_pet = new inventaire($this->inventaire_pet, $this->inventaire_slot);
-		if($this->inventaire_perso_pet->prend_objet($id_objet))
+		if($this->inventaire_perso_pet->prend_objet($id_objet, $this))
 		{
 			if(is_array($this->inventaire_perso_pet->slot_liste)) $this->set_inventaire_slot(serialize($this->inventaire_perso_pet->slot_liste));
 			else $this->set_inventaire_slot($this->inventaire_perso_pet->slot_liste);
@@ -1557,6 +1676,9 @@ class perso extends entite
 		if($pet) $inventaire = $this->inventaire_pet();
 		else $inventaire = $this->inventaire();
 		
+		// temporaire : transition entre anciens et nouveaux accessoires
+		if( $type == 'grand_accessoire' && !$inventaire->grand_accessoire )
+			$type = 'accessoire';
 		if($inventaire->$type !== 0 AND $inventaire->$type != '')
 		{
 			if(!$pet)
@@ -1604,11 +1726,12 @@ class perso extends entite
    * @param  $objet   Objet à équiper
    * @return       true s'il a pu être équipé, false sinon. 
    */  
-	function equip_objet($objet, $pet = false)
+	function equip_objet($objet, $pet = false, $zone=null)
 	{
 		global $db, $G_erreur;
 		$equip = false;
 		$conditions = array();
+    // @todo vérifier que l'objet est bien possédé et intégré sa supression du sac
 		if($objet_d = decompose_objet($objet))
 		{
 			//print_r($objet_d);
@@ -1674,7 +1797,7 @@ class perso extends entite
 					$row = $db->read_array($req);
 					$conditions[0]['attribut']	= 'puissance';
 					$conditions[0]['valeur']	= $row['puissance'];
-					$type = 'accessoire';
+					$type = $zone ? $zone : $row['taille'].'_accessoire';
 				break;
 			}
 
@@ -1902,6 +2025,12 @@ class perso extends entite
 						$row = $db->read_row($req);
 						$this->pp += $row[0];
 						$this->pm += $row[1];
+						if( $partie_d['mod'] )
+						{
+							$mod = new forge_recette($partie_d['mod']);
+							$this->pp += $mod->get_modif_pp();
+							$this->pm += $mod->get_modif_pm();
+						}
 						// Effets magiques
 						if ($row[2] != '')
 						{
@@ -1918,7 +2047,6 @@ class perso extends entite
 					{
 						$gemme = new gemme_enchassee($partie_d['enchantement']);
 						$this->register_gemme_enchantement($gemme);
-          //my_dump($this->enchantement);
 					//$this->enchant = enchant($partie_d['enchantement'], $this);
 					}
 				}
@@ -1942,20 +2070,14 @@ class perso extends entite
 			//Effets des enchantements
 			if (isset($this->enchantement['pourcent_pm'])) $this->pm += floor($this->pm * $this->enchantement['pourcent_pm']['effet'] / 100);
 			if (isset($this->enchantement['pourcent_pp']))	$this->pp += floor($this->pp * $this->enchantement['pourcent_pp']['effet'] / 100);
+			
+			// Malus permanents
+    	$this->pp = round($this->pp / ( 1 + $this->get_bonus_permanents('div_pp')/100) );
+    	$this->pm = round($this->pm / ( 1 + $this->get_bonus_permanents('div_pm')/100) );
 
 			//pm pour le 3eme jet de para
 			$this->pm_para = $this->pm;
 			
-			//Buffs
-			if($this->is_buff('buff_bouclier')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
-			if($this->is_buff('buff_barriere')) $this->pm = round($this->pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
-			if($this->is_buff('buff_forteresse'))
-			{
-				$this->pp = round($this->pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
-				$this->pm = round($this->pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
-			}
-			if($this->is_buff('buff_cri_protecteur')) $this->pp = round($this->pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
-			if($this->is_buff('debuff_desespoir')) $this->pm = round($this->pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
 			//Maladie suppr_defense
 			if($this->is_buff('suppr_defense')) $this->pp = 0;
 		}
@@ -1973,8 +2095,9 @@ class perso extends entite
 		{
 			$this->get_armure();
 		}
-		if(!$base) return $this->pm;
-		else return $this->pm_base;
+		/*if(!$base) return $this->pm;
+		else return $this->pm_base;*/
+		return entite::get_pm($base);
 	}
 
 	function get_pm_para()
@@ -1997,8 +2120,9 @@ class perso extends entite
 		{
 			$this->get_armure();
 		}
-		if(!$base) return $this->pp;
-		else return $this->pp_base;
+		/*if(!$base) return $this->pp;
+		else return $this->pp_base;*/
+		return entite::get_pp($base);
 	}
 	
 	/**
@@ -2010,7 +2134,7 @@ class perso extends entite
 	function register_item_effet($id, $effet, $item = null)
 	{
 		switch ($id)
-			{ // TODO: les autres, c'est quoi donc ?
+			{ // @todo les autres, c'est quoi donc ?
 			case 1:
 				$this->add_bonus_permanents('regen_hp', $effet);
 				break;
@@ -2025,10 +2149,10 @@ class perso extends entite
 				break;
 			case 9:
 				$ep = new effet_vampirisme($effet, $item->nom);
-				if ($item->type == 'hache' || $item->type == 'dague' ||
+				/*if ($item->type == 'hache' || $item->type == 'dague' ||
 						($item->type == 'epee' && preg_match('/^lame/i', $item->nom))) {
 					$ep->pos = 'sa';
-				}
+				}*/
 				$this->add_effet_permanent('attaquant', $ep);
 				break;
 			case 10:
@@ -2079,14 +2203,14 @@ class perso extends entite
 
 
   /**
-   * @name  Effes parmanents
+   * @name  Effets permanents
    * Effets modifiant les caractéristiques et les compétences. Ces effets peuvent
    * être dus aux bonus raciaux, aux objets portés…
    */
   // @{
 	private $bonus_permanents = array();           ///< liste des effets permanents.
-	private $effet_permanents_attaquant = array(); ///< inutilisé.
-	private $effet_permanents_defenseur = array(); ///< inutilisé.
+	private $effet_permanents_attaquant = array(); ///< .
+	private $effet_permanents_defenseur = array(); ///< .
 	/// renvoie un bonus permanent particulier
 	function get_bonus_permanents($bonus)
 	{
@@ -2350,7 +2474,10 @@ class perso extends entite
 	{
 		$this->hp_maximum = floor($this->get_hp_max());
 		//Famine
-		if($this->is_buff('famine')) $this->hp_maximum = $this->hp_maximum - ($this->hp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_buff('famine'))
+			$this->hp_maximum -= $this->hp_maximum * ($this->get_buff('famine', 'effet') / 100);
+		if($this->is_buff('globe_vie'))
+			$this->hp_maximum += $this->get_buff('globe_vie', 'effet');
 		return $this->hp_maximum;
 	}
 	/// Renvoie les MP maximums après bonus et malus
@@ -2358,7 +2485,10 @@ class perso extends entite
 	{
 		$this->mp_maximum = floor($this->get_mp_max());
 		//Famine
-		if($this->is_buff('famine')) $this->mp_maximum = $this->mp_maximum - ($this->mp_maximum * ($this->get_buff('famine', 'effet') / 100));
+		if($this->is_buff('famine'))
+			$this->mp_maximum -= $this->mp_maximum * ($this->get_buff('famine', 'effet') / 100);
+		if($this->is_buff('globe_mana'))
+			$this->mp_maximum += + $this->get_buff('globe_mana', 'effet');
 		return $this->mp_maximum;
 	}
 	/// Renvoie la date de la dernière action
@@ -2375,9 +2505,12 @@ class perso extends entite
   /// Ajoute des PA. S'assure que la valeur finale ne peut pas être négative
 	function add_pa($add_pa)
   {
+    global $G_PA_max;
     $this->set_pa($this->pa + $add_pa);
     if ($this->pa < 0)
       $this->pa = 0;
+    else if( $this->pa > $G_PA_max )
+      $this->pa = $G_PA_max;
   }
   /// Ajoute des HP. S'assure que la valeur finale ne peut pas être négative ni dépasser le maximum
   function add_hp($add_hp) 
@@ -2422,6 +2555,13 @@ class perso extends entite
 		
 		$modif = false;	 // Indique si le personnage a été modifié.
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
+		// Passage de niveau
+		if ($this->get_exp() > prochain_level($this->get_level()))
+		{
+			$this->set_level($this->get_level() + 1);
+			$this->set_point_sso($this->get_point_sso() + 1);
+			$this->sauver();
+		}
 		// On vérifie que le personnage est vivant
 		if($this->hp > 0)
 		{
@@ -2429,7 +2569,7 @@ class perso extends entite
 			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
-			If ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
+			if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
@@ -2474,12 +2614,12 @@ class perso extends entite
 			$temps_regen = time() - $this->get_regen_hp(); // Temps écoulé depuis la dernière régénération.
 
 			// Gemme du troll
-			if (array_key_exists('regeneration', $this->get_enchantement())) {
-				$bonus_regen = $this->get_enchantement('regeneration', 'effet') * 60;
-				if ($G_temps_regen_hp <= $bonus_regen) {
-					$bonus_regen = $G_temps_regen_hp - 3600; // 1h min de regen
-				}
-			} else $bonus_regen = 0;
+			$bonus_regen = array_key_exists('regeneration', $this->get_enchantement()) ? $this->get_enchantement('regeneration', 'effet') * 60 : 0;
+			if($this->is_buff('potion_feu"'))
+				$bonus_regen += $this->get_buff('potion_feu"', 'effet') * 60;
+			// 1h min de regen
+			if ($G_temps_regen_hp <= $bonus_regen)
+				$bonus_regen = $G_temps_regen_hp - 3600; 
 
 			if ($temps_regen > ($G_temps_regen_hp - $bonus_regen))
 			{
@@ -2513,7 +2653,7 @@ class perso extends entite
 				// Accessoires
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_hp') $bonus_accessoire = $this['accessoire']['effet']; else $bonus_accessoire = 0;
 				//if($this['accessoire']['id'] != '0' AND $this['accessoire']['type'] == 'regen_mp') $bonus_accessoire_mp = $this['accessoire']['effet']; else $bonus_accessoire_mp = 0;
-				$accessoire = $this->get_accessoire();
+				/*$accessoire = $this->get_accessoire();
 				if($accessoire != false)
 				{
 					switch($accessoire->type)
@@ -2527,26 +2667,16 @@ class perso extends entite
 						default:
 							break;
 					}
-				}
+				}*/
 				$bonus_arme = $this->get_bonus_permanents('regen_hp');
+				$bonus_add_hp = $this->get_bonus_permanents('regen_hp_add');
 				$bonus_arme_mp = $this->get_bonus_permanents('regen_mp');
 				$bonus_add_mp = $this->get_bonus_permanents('regen_mp_add');
-				// Effets magiques des objets
-				/*foreach($this['objet_effet'] as $effet)
-				{
-					switch($effet['id'])
-					{
-						case '1' :
-							$bonus_accessoire += $effet['effet'];
-						break;
-						case '10' :
-							$bonus_accessoire_mp += $effet['effet'];
-						break;
-					}
-				}*/
+				if($this->is_buff('potion_troll'))
+					$bonus_add_hp += $this->get_buff('potion_troll', 'effet');
 				// Calcul des HP et MP récupérés
-				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_accessoire + $bonus_arme);
-				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_accessoire_mp + $bonus_arme_mp + $bonus_add_mp);
+				$hp_gagne = $nb_regen * (floor($this->get_hp_maximum() * $regen_hp) + $bonus_arme + $bonus_add_hp);
+				$mp_gagne = $nb_regen * (floor($this->get_mp_maximum() * $regen_mp) + $bonus_arme_mp + $bonus_add_mp);
 				//DéBuff lente agonie
 				if($this->is_buff('lente_agonie'))
 				{
@@ -2693,6 +2823,11 @@ class perso extends entite
 		if ($this->is_buff('debuff_forme_demon')) {
 			$this->demonize();
 		}
+		// debuffs de sorcier
+		if($this->is_buff('engloutissement'))
+			$this->add_bonus_permanents('dexterite', -$this->get_buff('engloutissement', 'effet'));
+		if($this->is_buff('deluge'))
+			$this->add_bonus_permanents('volonte', -$this->get_buff('deluge', 'effet'));
 	}
 
 	function demonize() {
@@ -2902,6 +3037,23 @@ class perso extends entite
   // @{
 	private $max_pet;  ///< Nombre de créatures que le personnage peut posseder.
 
+	/// Renvoie le potentiel de dressage pour un type de monstre donné
+	function get_potentiel_dressage($type)
+	{
+		$dressage = $this->get_dressage();
+		switch($type)
+		{
+		case 'bete':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_bete') / 100;
+			break;
+		case 'humanoide':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_humanoide') / 100;
+			break;
+		case 'magique':
+			$dressage *= 1 + $this->get_bonus_permanents('dressage_magique') / 100;
+		}
+		return $dressage * 3 + $this->get_survie();
+	}
 	/// Renvoie le nombre de créatures que le personnage peut posseder.
 	function get_max_pet()
 	{
@@ -2946,7 +3098,7 @@ class perso extends entite
 	{
 		return count($this->get_ecurie_self());
 	}
-	/// Revnoie les créatures du personnage sous forme de tableau.
+	/// Renvoie les créatures du personnage sous forme de tableau.
 	function get_pets($force = false)
 	{
 		if(!isset($this->pets) OR $force) $this->pets = pet::create(array('id_joueur', 'ecurie'), array($this->id, 0), 'principale DESC');
@@ -3055,19 +3207,19 @@ class perso extends entite
 				}
 				else
 				{
-					echo '<h5>L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures.</h5>';
+					interf_alerte::enregistre(interf_alerte::msg_erreur, 'L\'écurie ne peut pas prendre plus de '.$max_ecurie.' créatures'); 
 					return false;
 				}
 			}
 			else
 			{
-				echo '<h5>Vous n\'avez pas assez de stars !</h5>';
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars !');
 				return false;
 			}
 		}
 		else
 		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
 			return false;
 		}
 	}
@@ -3086,14 +3238,10 @@ class perso extends entite
 				$pet->sauver();
 			}
 			else
-			{
-				echo '<h5>Vous ne pouvez pas prendre plus de créature avec vous.</h5>';
-			}
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous ne pouvez pas prendre plus de créature avec vous.');
 		}
 		else
-		{
-			echo '<h5>Cette créature ne vous appartient pas !</h5>';
-		}
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Cette créature ne vous appartient pas !');
 	}
   /// Renvoie les HP redonnés à la créature par un soin
 	function soin_pet()
@@ -3101,6 +3249,25 @@ class perso extends entite
 		$facteur = ($this->get_vie() + 10) / 22;
 		if($this->get_race() == 'scavenger') $facteur = $facteur * 1.2;
 		return floor(sqrt($this->get_dressage()) * 4 * $facteur);
+	}
+	/// Renvoie la distance d'attaque avec le pet
+	function get_distance_pet()
+	{
+		global $db;
+		$distance = 0;
+		/*$arme = $this->inventaire_pet()->arme_pet;
+		if($arme)
+			$distance += $this->arme_pet->distance_tir;*/
+		/// @todo à revoir
+		$laisse = decompose_objet($this->get_inventaire_partie("cou", true));
+		if($laisse['id_objet'] != '')
+		{
+			$requete = "SELECT distance_tir FROM objet_pet WHERE id = ".$laisse['id_objet'];
+			$req = $db->query($requete);
+			$row = $db->read_row($req);
+			$distance += $row[0];
+		}
+		return $distance;
 	}
   // @} 
 	
@@ -3132,6 +3299,7 @@ class perso extends entite
 	}
 	
 	/// Renvoie la liste des quêtes que possède le personnage sous forme textuelle.
+	/// @deprecated
 	function get_quete()
 	{
 		return $this->quete;
@@ -3140,10 +3308,12 @@ class perso extends entite
   /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
 	function get_liste_quete()
 	{
-		$this->liste_quete = unserialize($this->quete);
-		return $this->liste_quete;
+		/*$this->liste_quete = unserialize($this->quete);
+		return $this->liste_quete;*/
+		return quete_perso::create('id_perso', $this->id);
 	}
 	/// Modifie la liste des quêtes que possède le personnage.
+	/// @deprecated
 	function set_quete($quete)
 	{
 		$this->quete = $quete;
@@ -3161,49 +3331,81 @@ class perso extends entite
 		$this->champs_modif[] = 'quete_fini';
 	}
   /// Ajoute une quête à la liste des quêtes que possède le personnage.
-	function prend_quete($quete)
+	function prend_quete($id_quete)
 	{
 		global $db;
-		$valid = true;
-		$requete = "SELECT id, objectif FROM quete WHERE id = ".$quete;
-		$req = $db->query($requete);
-		$row = $db->read_assoc($req);
-		//Vérifie si le joueur n'a pas déjà pris la quète.
-		if($this->get_quete() != '')
+		$quete = new quete($id_quete);
+		// quêtes prises pour tout le groupe en même temps
+		$num_etape = 1;
+		$etape = null;
+		switch( $quete->get_type() )
 		{
-			foreach($this->get_liste_quete() as $quest)
+		case 'royaume':
+			/// @todo passer à l'objet
+			$requete = 'SELECT id_etape, qe.id FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.race ="'.$this->race.'" AND qp.id_quete = '.$quete->get_id().' ORDER BY qe.etape DESC LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			if( $row )
+					$num_etape = $row[0];
+		case 'groupe':
+			$id_groupe = $this->get_groupe();
+			if( $id_groupe )
 			{
-				if($quest['id_quete'] == $quete) $valid = false;
+				$groupe = new groupe($id_groupe);
+				/// @todo passer à l'objet
+				$requete = 'SELECT id_etape FROM quete_perso AS qp INNER JOIN perso AS p ON qp.id_perso = p.id INNER JOIN quete_etape AS qe ON qe.id = qp.id_etape WHERE p.groupe = '.$this->groupe.' AND qp.id_quete = '.$quete->get_id().' ORDER BY qe.etape DESC LIMIT 1';
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				if( $row )
+					$etape = max($row[0], $etape);
+				
+				$etape = quete_etape::create(array('id_quete', 'etape'), array($quete->get_id(), $num_etape))[0];
+				foreach($groupe->get_membre_joueur() as $membre)
+				{
+					if( $membre->get_id() == $this->id )
+						continue;
+					$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $membre->get_id()));
+					if( !$qp && $quete->a_requis($membre) )
+					{
+						$qp = new quete_perso($membre->id, $quete, $etape->get_id());
+						$qp->sauver();
+					}
+				}
 			}
-			$numero_quete = (count($this->liste_quete));
 		}
-		else
+		//Vérifie si le joueur n'a pas déjà pris la quête.
+		$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $this->get_id()));
+		if( $qp )
 		{
-			$numero_quete = 0;
-		}
-		if($valid)
-		{
-			$quete = unserialize($row['objectif']);
-			$count = count($quete);
-			$i = 0;
-			while($i < $count)
-			{
-				$this->liste_quete[$numero_quete]['objectif'][$i]->cible = $quete[$i]->cible;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->requis = $quete[$i]->requis;
-				$this->liste_quete[$numero_quete]['objectif'][$i]->nombre = 0;
-				$this->liste_quete[$numero_quete]['id_quete'] = $row['id'];
-				$i++;
-			}
-			$this->set_quete(serialize($this->liste_quete));
-			$this->sauver();
-			return true;
-		}
-		else
-		{
-      global $G_erreur;
 			$G_erreur = 'Vous avez déjà cette quête en cours !';
 			return false;
 		}
+		// On vérifie que la quête peut être prise
+		if( $quete->a_requis($this) )
+		{
+			if( $etape )
+				$qp = new quete_perso($this->id, $quete, $etape->get_id());
+			else
+				$qp = new quete_perso($this->id, $quete);
+			$qp->sauver();
+			if( !$etape )
+				$etape = $qp->get_etape();
+			$etape->initialiser();
+			return true;
+		}
+		/// @todo loguer triche
+		return false;
+	}
+	/// Ajoute les quête disponibles au bureau des quêtes à la liste des quêtes que possède le personnage.
+	function prend_quete_tout(&$royaume, $fournisseur='bureau_quete')
+	{
+		$quetes = quete::get_quetes_dispos($this, $royaume, $fournisseur);
+		foreach($quetes as $quete)
+		{
+			$qp = new quete_perso($this->id, $quete);
+			$qp->sauver();
+		}
+		return count($quetes);
 	}
 	// @}
 	
@@ -3374,22 +3576,22 @@ class perso extends entite
   /// Renvoie la distance à laquelle le personnage peut attaquer
 	function get_distance_tir()
 	{
-		$arme = $this->inventaire()->main_droite;
 		if(!isset($this->arme)) $this->get_arme();
 		if($this->arme)
 		{
-			$arme = $this->arme->distance_tir;
-			if($this->is_buff('longue_portee')) $bonus = $this->get_buff('longue_portee', 'effet');
-			else $bonus = 0;
-			return ($arme + $bonus + $this->get_bonus_permanents('portee'));
+			$distance = $this->arme->distance_tir;
+			if($this->is_buff('longue_portee') && $this->arme->type == 'arc' )
+				$distance += $this->get_buff('longue_portee', 'effet');
+			return $distance + $this->get_bonus_permanents('portee');
 		}
 		return 0;
 	}
   /// Action effectuées à la fin d'un combat
   function fin_combat(&$perso, $degats=null)
   {
-    $this->objet_ref->set_hp( $this->get_hp() );
-    $this->objet_ref->sauver();
+    /*$this->objet_ref->set_hp( $this->get_hp() );
+    $this->objet_ref->sauver();*/
+    $this->sauver();
   }
   /// Action effectuées à la fin d'un combat PvP
   function fin_combat_pvp(&$ennemi, $defense, $batiment=false)
@@ -3400,8 +3602,9 @@ class perso extends entite
     if( $this->est_mort() )
     {
 			$this->trigger_arene();
-			//On supprime toutes les rez
+			//On supprime toutes les rez et (de)bufffs bâtiments
 			$this->supprime_rez();
+			buff_batiment::suppr_mort_perso($this);
 			//Achievement
 			if($this->get_hp() == 0)
 				$this->unlock_achiev('near_kill');
@@ -3561,8 +3764,8 @@ class perso extends entite
 				$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
 				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
 				$membre->sauver();
-				if($defense && $membre->get_id() == $ennemi->get_id()) verif_action('J'.$row_diplo[0], $membre, 's');
-				else verif_action('J'.$row_diplo[0], $membre, 'g');
+				if($defense && $membre->get_id() == $ennemi->get_id()) quete_perso::verif_action('J'.$row_diplo[0], $membre, 's');
+				else quete_perso::verif_action('J'.$row_diplo[0], $membre, 'g');
 			}
 
 			// Augmentation du compteur de l'achievement
@@ -3596,18 +3799,19 @@ class perso extends entite
   /// Action effectuées à la fin d'un combat pour le défenseur
   function fin_defense(&$perso, &$royaume, $pet, $degats, $batiment)
   {
+  	global $G_no_ambiance_kill_message;
     $msg_xp = $perso->fin_combat_pvp($this, false);
     $msg_xp .= $this->fin_combat_pvp($perso, true, $batiment);
 		if ( $this->est_mort() ) {
 			if (!$G_no_ambiance_kill_message) {
-				echo '<li class="ambiance_kill_message">';
+				$txt = '';
 				if ($this->get_level() < $perso->get_level() - 9)
-					echo 'A vaincre sans péril on triomphe sans gloire.<br />';
+					$txt = 'A vaincre sans péril on triomphe sans gloire.';
 				elseif ($this->get_level() > $perso->get_level() + 9)
-					echo 'Félicitation, tu es venu à bout de '.$this->get_nom().'.<br />';
+					$txt = 'Félicitation, tu es venu à bout de '.$this->get_nom().'.';
 				elseif ($this->get_level() >= $perso->get_level() - 9 AND $this->get_level() <= $perso->get_level() + 9)
-					echo 'Tu as tué '.$this->get_nom().'.<br />';
-				echo '</li>';
+					$txt = 'Tu as tué '.$this->get_nom().'.';
+				interf_base::add_courr( new interf_bal_smpl('p', $txt, false, 'ambiance_kill_message') );
 			}
 		}
     return $msg_xp;
@@ -3715,24 +3919,24 @@ class perso extends entite
 	* @param tinyint(3) beta attribut
 	* @return none
 	*/
-	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
+	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $encombrement=0, $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
+			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, encombrement, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
+				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->encombrement, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
 		{
-			$this->id = $id['id'];
+			$this->id = $id['ID'];
 			$this->mort = $id['mort'];
 			$this->nom = $id['nom'];
 			$this->password = $id['password'];
@@ -3810,7 +4014,8 @@ class perso extends entite
 			$this->id_joueur = $id['id_joueur'];
 			$this->tuto = $id['tuto'];
 			$this->date_creation = $id['date_creation'];
-			}
+			$this->encombrement = $id['encombrement'];
+		}
 		else
 		{
 			$this->mort = $mort;
@@ -3834,6 +4039,7 @@ class perso extends entite
 			$this->inventaire = $inventaire;
 			$this->inventaire_pet = $inventaire_pet;
 			$this->inventaire_slot = $inventaire_slot;
+			$this->encombrement = $encombrement;
 			$this->pa = $pa;
 			$this->dernieraction = $dernieraction;
 			$this->action_a = $action_a;
@@ -3892,6 +4098,7 @@ class perso extends entite
 			$this->joueur = $joueur;
 			$this->date_creation = $date_creation;
 		}
+		$this->type = 'perso';
 
 		$this->applique_bonus();
 	}
@@ -3913,6 +4120,7 @@ class perso extends entite
 				else
 				{
 					$champs = '';
+					$this->champs_modif = array_unique($this->champs_modif);
 					foreach($this->champs_modif as $champ)
 					{
 						$champs[] .= $champ.' = "'.mysql_escape_string($this->{$champ}).'"';
@@ -3972,7 +4180,7 @@ class perso extends entite
 			}
 		}
 
-		$requete = "SELECT id, mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet inventaire_slot, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, tuto, id_joueur, date_creation FROM perso WHERE ".$where." ORDER BY ".$ordre;
+		$requete = "SELECT * FROM perso WHERE ".$where." ORDER BY ".$ordre;
 		$req = $db->query($requete);
 		if($db->num_rows($req) > 0)
 		{
@@ -4074,9 +4282,8 @@ class perso extends entite
 			$achievement->set_id_perso($this->get_id());
 			$achievement->set_id_achiev($achievement_type[0]->get_id());
 			$achievement->sauver();
-			if ($hide_message == false) {
-				echo $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !<br />';
-			}
+			if ($hide_message == false)
+				interf_alerte::enregistre(interf_alerte::msg_info, $this->get_nom().' debloque l\'achievement "'.$achievement_type[0]->get_nom().'" !');
 		}
 	}
 
@@ -4100,12 +4307,85 @@ class perso extends entite
 
 	function get_race_a()
 	{
-		if ($this->camouflage)
+		global $Trace;
+		if( $this->is_buff('potion_apparence') )
+			return $Trace['liste'][ $this->get_buff('potion_apparence', 'effet') ];
+		else if( $this->camouflage )
 			return $this->camouflage;
 		else 
 			return $this->get_race();
 	}
 	// @}
+	
+	static function get_perso_rumeur($champ, $vrai, $cache=false)
+	{
+		global $db;
+		$de = rand(1, 55);
+		$val = 10;
+		$incr = 9;
+		for($i=0; $de > $val; $i++)
+		{
+			$val += $incr;
+			$incr--;
+		}
+		$race = joueur::get_perso()->get_race();
+		$cond = $cache ? ' (cache_stat = 2 OR (cache_stat = 1 AND race != "'.$race.'"))' : ' (cache_stat = 0 OR (cache_stat = 1 AND race = "'.$race.'"))';
+		if( $vrai )
+		{
+			if( $champ == 'artisanat' )
+				$champ = 'SQRT( (architecture + alchimie + forge + indentification) / 10 )';
+			$requete = 'SELECT nom FROM perso WHERE statut = "actif" AND level > 0 AND '.$cond.' ORDER BY '.$champ.' DESC LIMIT '.$i.', 1';
+		}
+		else
+			$requete = 'SELECT nom FROM perso WHERE statut = "actif" AND level > 0 AND '.$cond.' ORDER BY RAND() LIMIT 1';
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row[0];
+	}
+	
+	static function get_royaume_rumeur($info, $plus, $class, $vrai)
+	{
+		global $db, $Trace;
+		if( !$vrai )
+		{
+			$requete = 'SELECT * FROM royaume WHERE id > 0 ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_assoc($req);
+			return new royaume($row);
+		}
+		$sens = $plus ? ' DESC' : ' ASC';
+		$requete = 'SELECT race, SUM('.$info.') AS val FROM perso WHERE statut = "actif" AND level > 0 ORDER BY val'.$sens.' LIMIT '.$class.', 1';
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return new royaume( $Trace[ $row['race'] ]['numrace'] );
+	} 
+	
+	static function get_groupe_rumeur($info, $plus, $vrai)
+	{
+		global $db, $Trace;
+		if( !$vrai )
+		{
+			$requete = 'SELECT nom FROM groupe ORDER BY RAND() LIMIT 1';
+			$req = $db->query($requete);
+			$row = $db->read_array($req);
+			return $row[0];
+		}
+		$de = rand(1, 55);
+		$val = 10;
+		$incr = 9;
+		for($i=0; $de > $val; $i++)
+		{
+			$val += $incr;
+			$incr--;
+		}
+		if( $info == 'artisanat' )
+			$info = 'SQRT( (architecture + alchimie + forge + indentification) / 10 )';
+		$requete = 'SELECT g.nom, SUM('.$info.') AS val FROM perso AS p INNER JOIN groupe AS g ON p.groupe = g.id WHERE statut = "actif" AND level > 0 GROUP BY g.id ORDER BY val'.$sens.' LIMIT '.$val.', 1';
+		$sens = $plus ? ' DESC' : ' ASC';
+		$req = $db->query($requete);
+		$row = $db->read_assoc($req);
+		return $row['nom'];
+	}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }
