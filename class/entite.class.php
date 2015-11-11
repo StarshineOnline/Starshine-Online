@@ -536,7 +536,7 @@ class entite extends placable
 			if($this->is_buff('buff_bouclier'))
 				$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
 			if($this->is_buff('buff_forteresse'))
-				$pp = round($pp * (1 + (($joueur->get_buff('buff_forteresse', 'effet')) / 100)));
+				$pp = round($pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
 			if($this->is_buff('buff_cri_protecteur'))
 				$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
 			if($this->is_buff('debuff_pp'))
