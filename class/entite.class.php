@@ -560,7 +560,7 @@ class entite extends placable
 			if($this->is_buff('buff_barriere'))
 				$pm = round($pm * (1 + ($this->get_buff('buff_barriere', 'effet') / 100)));
 			if($this->is_buff('buff_forteresse'))
-				$pm = round($pm * (1 + (($joueur->get_buff('buff_forteresse', 'effet2')) / 100)));
+				$pm = round($pm * (1 + (($this->get_buff('buff_forteresse', 'effet2')) / 100)));
 			if($this->is_buff('debuff_desespoir'))
 				$pm = round($pm / (1 + (($this->get_buff('debuff_desespoir', 'effet')) / 100)));
 			if($this->is_buff('potion_pm'))
