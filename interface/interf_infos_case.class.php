@@ -84,8 +84,6 @@ class interf_infos_case extends interf_cont
 		}
 	}
 	
-	/// @todo remplacer les entrées/sorties de donjons par les messages de cases
-	
 	/// Afficher le texte d'une case
 	function aff_texte($id_case, $reponse)
 	{
@@ -105,6 +103,40 @@ class interf_infos_case extends interf_cont
 			if($row['action'] != '' && $this->distance == 0)
 			{
 				$div->add( new interf_lien($row['action'], 'map_event.php?poscase='.$id_case) );
+			}
+		}
+		
+		/// @todo remplacer les entrées/sorties de donjons par les messages de cases
+		//Affichage des Donjons
+		$requete = 'SELECT * FROM donjon WHERE (x = '.$this->case->get_x().') AND (y = '.$this->case->get_y().')';
+		$req = $db->query($requete);
+		while($row = $db->read_array($W_query))
+		{
+			//Entrée du donjon
+			// Verifier les conditions de teleport
+			$unlock = verif_tp_donjon($row, $this->perso);
+			if($row['x'] == $this->perso->get_x() && $row['y'] == $this->perso->get_y() && $unlock)
+			{
+				if( !$div )
+					$div = $this->add( new interf_bal_cont('div', false, 'info_case') );
+				else
+					$div->add( new interf_bal_smpl('br') );
+				$div->add( new interf_lien('Entrer dans le donjon', 'interface.php?donjon_id='.$row['id']) );
+			}
+		}
+		//Affichage des sorties de Donjons
+		$requete = 'SELECT * FROM donjon WHERE (x_donjon = '.$this->case->get_x().') AND (y_donjon = '.$this->case->get_y().')';
+		$req = $db->query($requete);
+		while($row = $db->read_array($W_query))
+		{
+			//Sortie du donjon
+			if($row['x_donjon'] == $this->perso->get_x() && $row['y_donjon'] == $this->perso->get_y())
+			{
+				if( !$div )
+					$div = $this->add( new interf_bal_cont('div', false, 'info_case') );
+				else
+					$div->add( new interf_bal_smpl('br') );
+				$div->add( new interf_lien('Sortir du le donjon', 'interface.php?type=sortie&donjon_id='.$row['id']) );
 			}
 		}
 	}
@@ -380,7 +412,7 @@ class interf_infos_case extends interf_cont
 					$texte = 'Ce monstre a le même niveau que vous';
 					break;
 				case 1:
-					$texte = 'Ce monstre a 1 niveau de moins que vous';
+					$texte = 'Ce monstre a 1 niveau de plus que vous';
 					break;
 				default:
 					if( $diff_niv < -1 )

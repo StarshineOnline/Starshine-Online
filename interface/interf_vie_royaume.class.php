@@ -255,7 +255,7 @@ class interf_candidature extends interf_vie_royaume_base
 		else
 		{
 	    $btn = $grp_btn->add( new interf_chp_form('submit', false, false, 'Se présenter', null, 'btn btn-primary') );
-	    $btn->set_attribut('onclick', 'return charger_formulaire(\'vote\');');
+	    $btn->set_attribut('onclick', 'return charger_formulaire(\'candidature\');');
 		}
 	}
 }

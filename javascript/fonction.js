@@ -39,7 +39,6 @@ function affiche_ajax(data, status, jqXHR)
   	case 'javascript':
   		var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
   		script.setAttribute('type', 'text/javascript');
-  		//alert(this.innerHTML);
   	default:
     	$('#'+this.id).html( this.innerHTML );
 			maj_tooltip = true;
@@ -132,6 +131,13 @@ function charger_formulaire_fichier(id_form, id_input)
 
 function decode_texte(texte)
 {
+	texte = texte.replace('<strong>', '<b>');
+	texte = texte.replace('</strong>', '</b>');
+	texte = texte.replace('<em>', '<i>');
+	texte = texte.replace('</em>', '</i>');
+	texte = texte.replace(/<[\/]*div>/g, '');
+	texte = texte.replace(/[\t| ]+/g, ' ');
+	texte = texte.replace(/[\n|\r| ]+/g, '[br]');
 	texte = bbcodeParser.htmlToBBCode(texte);
 	if( texte.substring(texte.length-4) ==  '<br>' )
 		texte = texte.substr(0, texte.length-4);
@@ -185,7 +191,7 @@ function maj_tooltips()
 			if( li.attr("data-suppr") )
 				txt += "<a class='suppr_buff' href='suppbuff.php?id="+li.attr("data-suppr")+"' onclick='return charger(this.href);'>Supprimer le buff</a>";
 			return txt;
-		}});
+		}, trigger:"focus click"});
 	});
 }
 
@@ -672,7 +678,7 @@ function envoiFichier(formulaire, position)
 function chargerPopover(elt, id, pos, url, titre)
 {
   var e = $('#' + elt);
-  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>", container:'body'});
+  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>", container:'body', trigger:'focus click'});
   $.get(url, function(d)
   {
     e.data('bs.popover').options.content = d;

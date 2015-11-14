@@ -63,7 +63,6 @@ class interf_liste_buff extends interf_bal_cont
         }
   		}
     }
-    //$this->code_js("init_buffs_infos();");
   }
   protected function creer_buff_duree(&$elt, &$buff)
   {

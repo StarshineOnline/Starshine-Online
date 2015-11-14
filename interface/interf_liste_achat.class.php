@@ -9,7 +9,7 @@ abstract class interf_liste_achat extends interf_cont
 {
 	protected $tbl;
 	protected $perso;
-	protected $ordre = 3;
+	protected $ordre = 3; ///@todo passer en constante ?
 	protected $categorie = false;
 	const type = false;
 	protected $txt_achat = 'Achat';

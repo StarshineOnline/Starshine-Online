@@ -117,10 +117,11 @@ function detection_distance($posjoueur1, $posjoueur2)
  */ 
 function calcul_distance($posjoueur1, $posjoueur2)
 {
-	$W_coord_joueur1 = convert_in_coord($posjoueur1);
+	/*$W_coord_joueur1 = convert_in_coord($posjoueur1);
 	$W_coord_joueur2 = convert_in_coord($posjoueur2);
 	$R_distance = abs($W_coord_joueur1['x'] - $W_coord_joueur2['x']) + abs($W_coord_joueur1['y'] - $W_coord_joueur2['y']);
-	return $R_distance;
+	return $R_distance;*/
+	return detection_distance($posjoueur1, $posjoueur2);
 }
 
 /**
@@ -134,10 +135,11 @@ function calcul_distance($posjoueur1, $posjoueur2)
  */ 
 function calcul_distance_pytagore($posjoueur1, $posjoueur2)
 {
-	$W_coord_joueur1 = convert_in_coord($posjoueur1);
+	/*$W_coord_joueur1 = convert_in_coord($posjoueur1);
 	$W_coord_joueur2 = convert_in_coord($posjoueur2);
 	$R_distance = ceil(sqrt(pow(abs($W_coord_joueur1['x'] - $W_coord_joueur2['x']), 2) + pow(abs($W_coord_joueur1['y'] - $W_coord_joueur2['y']), 2)));
-	return $R_distance;
+	return $R_distance;*/
+	return detection_distance($posjoueur1, $posjoueur2);
 }
 
 /**

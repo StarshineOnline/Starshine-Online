@@ -34,8 +34,8 @@ abstract class sort extends comp_sort
 	    $facteur = (1 - (($affinite - 5) / 10));
 	    $mp = round($this->mp * $facteur);
 		}
-		if($perso->is_buff('buff_concentration', true))
-			$sortmp = ceil($mp * (1 - ($perso->get_buff('buff_concentration','effet') / 100)));
+		/*if($perso->is_buff('buff_concentration', true))
+			$sortmp = ceil($mp * (1 - ($perso->get_buff('buff_concentration','effet') / 100)));*/
     return $mp;
   }
 

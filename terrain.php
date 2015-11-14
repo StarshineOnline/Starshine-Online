@@ -139,7 +139,7 @@ case 'ameliore_instr':
 case 'chantier':
 	$terrain = new terrain();
 	$terrain = $terrain->recoverByIdJoueur($perso->get_id());
-	$batiment = new terrain_batiment($_GET['construire']);
+	$batiment = new terrain_batiment($_GET['batiment']);
 	$star_point = ceil($_GET['star_point']);
 	$cout_total = $batiment->point_structure * $star_point;
 	if($cout_total > 0)
@@ -168,6 +168,8 @@ case 'chantier':
 		else
 			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de stars.');
 	}
+	else
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous devez rémunérer la construction.');
 	break;
 }
 $interf_princ->set_gauche( $G_interf->creer_terrain($R, $id) );

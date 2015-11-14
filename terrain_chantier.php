@@ -54,8 +54,9 @@ case 'construire':
 		$de_architecture = rand(1, $perso->get_architecture());
 		$taxe = floor(($chantier->star_point * $de_architecture) * $R->get_taxe_diplo($perso->get_race()) / 100);
 		$stars = ($chantier->star_point * $de_architecture) - $taxe;
-		interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous aidez à construire le batiment pour '.$de_architecture.' points de structure.<br />Et vous recevez '.$stars.' stars');
+		$alerte = interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous aidez à construire le batiment pour '.$de_architecture.' points de structure.<br />Et vous recevez '.$stars.' stars');
 		//Augmentation de la compétence d'architecture
+		interf_base::set_courrent($alerte);
 		$augmentation = augmentation_competence('architecture', $perso, 2);
 		if ($augmentation[1] == 1)
 		{

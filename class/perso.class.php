@@ -3438,7 +3438,7 @@ class perso extends entite
   /// renvoie la distance avec un autre joueur
 	function get_distance_joueur($joueur)
 	{
-		return calcul_distance($this->get_pos(), $joueur->get_pos());
+		return detection_distance($this->get_pos(), $joueur->get_pos());
 	}
   /// renvoie la distance pytagorienne avec un autre joueur
 	function get_distance_pytagore($joueur)

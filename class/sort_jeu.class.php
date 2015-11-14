@@ -30,6 +30,14 @@ class sort_jeu extends sort
 		$this->pa = $pa;
 		$this->champs_modif[] = 'pa';
 	}
+  /// envoie le coût en MP en prennant en compte l'affinité
+  function get_mp_final(&$perso)
+  {
+    $mp = parent::get_mp_final($perso);
+		if($perso->is_buff('buff_concentration', true))
+			$mp = ceil( $mp * (1 - $perso->get_buff('buff_concentration','effet') / 100) );
+    return $mp;
+  }
 
   /// Renvoie la portée du sort
 	function get_portee()
@@ -265,7 +273,8 @@ class sort_jeu extends sort
   function lance(&$perso, $cible, $groupe=false, $lanceur_url='', $type_cible='')
   {
     global $db, $G_erreur;
-    $action = false;$cibles = $this->get_liste_cibles($cible, $groupe);
+    $action = false;
+		$cibles = $this->get_liste_cibles($cible, $groupe);
     foreach($cibles as $cible)
 		{
 			//Mis en place du buff

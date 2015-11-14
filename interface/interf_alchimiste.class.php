@@ -103,6 +103,7 @@ class interf_achat_alchimie extends interf_liste_achat
 	{
 		global $db;
 		$this->categorie = 'objet';
+		$this->ordre = 1;
 		$objets = objet::create(null, null, 'prix ASC', false, 'achetable = "y"');
 		parent::__construct($royaume, 'tbl_objet', $objets, $nbr_alertes);
 	}
@@ -119,11 +120,11 @@ class interf_achat_alchimie extends interf_liste_achat
 class interf_achat_recette extends interf_liste_achat
 {
 	const url='alchimiste.php';
-	protected $ordre = 1;
 	function __construct(&$royaume, $nbr_alertes=0)
 	{
 		global $db;
 		$this->categorie = 'recette';
+		$this->ordre = 1;
 		$recettes = alchimie_recette::create(null, null, 'royaume_alchimie ASC', false, 'royaume_alchimie < '.$royaume->get_alchimie());
 		parent::__construct($royaume, 'tbl_recette', $recettes, $nbr_alertes);
 	}

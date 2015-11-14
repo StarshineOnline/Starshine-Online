@@ -38,7 +38,7 @@ class interf_achat_accessoire extends interf_achat_objet
 	{
 		global $db;
 		if( !$niveau )
-			$niveau =  1;//$this->recherche_batiment($royaume, 'accessoire');
+			$niveau =  $this->recherche_batiment($royaume, 'enchanteur');
 		$objets = accessoire::create(null, null, 'prix ASC', false, 'lvl_batiment <='.$niveau.' AND taille = "'.$categorie.'"');
 		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);
 	}

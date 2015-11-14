@@ -17,6 +17,8 @@ else
 	exit();
 }
 
+/// @todo remplacer les entrées/sorties de donjons par les messages de cases
+$tp = false;
 //Si c'est pour entrer dans un donjon
 if(array_key_exists('donjon_id', $_GET))
 {
@@ -50,6 +52,7 @@ if(array_key_exists('donjon_id', $_GET))
 			$joueur->set_x($row['x']);
 			$joueur->set_y($row['y']);
 			$joueur->sauver();
+			$tp = true;
 		}
 	}
 	//Entrée
@@ -60,12 +63,10 @@ if(array_key_exists('donjon_id', $_GET))
 			$joueur->set_x($row['x_donjon']);
 			$joueur->set_y($row['y_donjon']);
 			$joueur->sauver();
+			$tp = true;
 		}
 	}
 }
-
-//Vérifie si le perso est mort
-//verif_mort($joueur, 1);
 
 $joueur->check_perso();
 
@@ -73,4 +74,6 @@ $_SESSION['position'] = convert_in_pos($joueur->get_x(), $joueur->get_y()); // u
 
 $princ = $G_interf->creer_jeu();
 $princ->verif_mort($joueur, false);
+if( $tp )
+	$princ->recharger_interface();
 ?>

@@ -97,7 +97,7 @@ class interf_terrain extends interf_ville_onglets
 		$or_in = $ids_constr ? 'OR (requis IN ('.$ids_constr.') AND type != "agrandissement" )' : '';
 		$ids = implode(', ', $ids);
 		$not_in_ids = $ids ? ' AND id NOT IN ('.$ids.')' : '';
-		$requete = 'SELECT id, nom, point_structure FROM terrain_batiment WHERE ( (requis = 0 '.$not_in.' AND nb_case <= '.$terrain->place_restante().') '.$or_in.' OR ( type = "agrandissement" AND requis='.$terrain->nb_case.') )'.$not_in_ids;
+		$requete = 'SELECT id, nom, point_structure FROM terrain_batiment WHERE ( (requis = 0 '.$not_in_types.' AND nb_case <= '.$terrain->place_restante().') '.$or_in.' OR ( type = "agrandissement" AND requis='.$terrain->nb_case.') )'.$not_in_ids;
 		$req = $db->query($requete);
 		$n_chant = $db->num_rows;
 		// Chantier
@@ -105,17 +105,17 @@ class interf_terrain extends interf_ville_onglets
 		{
 			$div_ch = $this->onglets->add_onglet('Chantiers', '', 'tab_chantiers', 'ecole_mag', !$id);
 			if( !$id )
-			interf_alerte::aff_enregistres($div_ch);
+				interf_alerte::aff_enregistres($div_ch);
 			// agrandissement
 			$div_ch->add( new interf_bal_smpl('p', 'Place restante : '.$terrain->place_restante().' / '.$terrain->nb_case) );
-			if( $aggrandissement )
+			/*if( $aggrandissement )
 			{
 				/// @todo passer à l'objet
 				$requete = "SELECT id, point_structure FROM terrain_batiment WHERE type = 'agrandissement' AND requis = ".$terrain->nb_case;
 				$req2 = $db->query($requete);
-				$row = $db->read_assoc($req);
-				$div_ch->add( new interf_lien('Agrandir', 'terrrain?action=aggrandir', false, 'btn btn-primary') );
-			}
+				$row = $db->read_assoc($req2);
+				$div_ch->add( new interf_lien('Agrandir', 'terrain.php?action=aggrandir', false, 'btn btn-primary') );
+			}*/
 			// Constructions en cours
 			if( $liste )
 			{
@@ -127,7 +127,7 @@ class interf_terrain extends interf_ville_onglets
 			{
 				/// @todo faire dépendre le max 
 				$div_ch->add( new interf_bal_smpl('h4', 'Nouveau chantier :') );
-				$form = $div_ch->add( new interf_form('terrrain.php?action=chantier', 'nouv_chantier') );
+				$form = $div_ch->add( new interf_form('terrain.php?action=chantier', 'nouv_chantier') );
 				$div_sel = $form->add( new interf_bal_cont('div', false, 'input-group') );
 				$div_sel->add( new interf_bal_smpl('span', 'Construire', false, 'input-group-addon') );
 				$sel = $div_sel->add( new interf_select_form('batiment', false, false, 'form-control') );
@@ -137,11 +137,11 @@ class interf_terrain extends interf_ville_onglets
 					$sel->add_option($row['nom'].' ('.$row['point_structure'].' points de structure)', $row['id']);
 				}
 				/// @todo faire dépendre le max des stars du personnage et du nombre de points de structure
-		    $chp1 = $form->add_champ_bs('number', 'stars', null, '0', 'Rémunéreration des travailleurs', 'stars / point');
+		    $chp1 = $form->add_champ_bs('number', 'star_point', null, '0', 'Rémunéreration des travailleurs', 'stars / point');
 		    $chp1->set_attribut('min', 1);
 		    $chp1->set_attribut('step', 1);
 		    $btn = $form->add( new interf_chp_form('submit', false, false, 'Construire', null, 'btn btn-primary') );
-		    $btn->set_attribut('onclick', 'charger_formulaire(\'nouv_chantier\');');
+		    $btn->set_attribut('onclick', 'return charger_formulaire(\'nouv_chantier\');');
 			}
 		}
 		// jauge extérieure
@@ -165,7 +165,7 @@ class interf_coffre extends interf_cont
 		$div = $this->add( new interf_bal_cont('div') );
 		// Objets dans le coffre
 		$div_coffre = $div->add( new interf_bal_cont('div', 'coffre') );
-		$div_coffre->add( new interf_bal_smpl('h6', 'Coffre ('.$coffre_inventaire->get_encombrement().' / '.$batiment->effet.')') );
+		$div_coffre->add( new interf_bal_smpl('h6', 'Coffre ('.$coffre->get_encombrement().' / '.$batiment->effet.')') );
 		$liste_coffre = $div_coffre->add( new interf_bal_cont('ul') );
 		foreach($coffre_inventaire as $index => $objet)
 		{

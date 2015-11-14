@@ -2709,7 +2709,7 @@ text-align: right;
 #journal #page li a
 {
 	color: inherit;
-	height: 100%;
+	/*height: 100%;*/
 }
  
 #journal #page li a:hover

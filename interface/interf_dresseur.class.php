@@ -39,7 +39,7 @@ class interf_achat_dressage extends interf_achat_objet
 	{
 		global $db;
 		if( !$niveau )
-			$niveau =  7;//$this->recherche_batiment($royaume, 'dressage');
+			$niveau =  $this->recherche_batiment($royaume, 'dresseur');
 		$objets = objet_pet::create(null, null, 'dressage ASC', false, 'lvl_batiment <='.$niveau.' AND type = "'.$categorie.'"');
 		parent::__construct($royaume, $categorie, $objets, $nbr_alertes);
 	}

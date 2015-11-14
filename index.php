@@ -2,7 +2,10 @@
 if (file_exists('root.php'))
   include_once('root.php');
 
+
 include_once(root.'inc/fp.php');
+
+
 $site = true;
 $interf_obj = true;
 include_once(root.'haut.php');

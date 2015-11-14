@@ -16,6 +16,14 @@ if(!isset($root)) $root = '';
 session_start();
 ob_start();
 
+if( isset($_SESSION['ID']) && $_SESSION['ID']==0 )
+{
+	unset($_SESSION['ID']);
+	unset($_SESSION['nom']);
+	unset($_SESSION['race']);
+}
+
+
 // Spécifie à la bibliothèque mb qu'on utilise UTF-8
 mb_internal_encoding("UTF-8");
 
