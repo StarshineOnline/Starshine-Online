@@ -137,7 +137,7 @@ function decode_texte(texte)
 	texte = texte.replace('</em>', '</i>');
 	texte = texte.replace(/<[\/]*div>/g, '');
 	texte = texte.replace(/[\t| ]+/g, ' ');
-	texte = texte.replace(/[\n|\r| ]+/g, '[br]');
+	texte = texte.replace(/[\n|\r]+/g, '[br]');
 	texte = bbcodeParser.htmlToBBCode(texte);
 	if( texte.substring(texte.length-4) ==  '<br>' )
 		texte = texte.substr(0, texte.length-4);
