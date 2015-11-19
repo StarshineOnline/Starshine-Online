@@ -103,8 +103,10 @@ function verif_charger(url, texte)
 
 function envoie_texte(dest, id)
 {
-	var texte = $("#"+id).html().trim();
-	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+decode_texte(texte),success:affiche_ajax});
+	var html = $("#"+id).html().trim();
+	var bbcodehtml = decode_texte(html);
+	var texte = $('<div>').html(bbcodehtml).text();
+	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+encodeURIComponent(texte),success:affiche_ajax});
 	return false;
 }
 
