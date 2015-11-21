@@ -10,6 +10,7 @@ class interf_index extends interf_sso
 	{
 		global $estConnexionReussie, $erreur_login, $G_url;
 		parent::__construct($theme);
+    $this->meta('viewport', 'width=device-width, initial-scale=1.0');
     $this->css(static::prefixe_fichiers.'css/site.css');
     $this->css(static::prefixe_fichiers.'css/site-'.$theme.'.css');
     $this->css(static::prefixe_fichiers.'css/jquery.lightbox-0.5.css');
