@@ -129,7 +129,7 @@ class accessoire extends objet_equip
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->taille, $this->get_description(), $this->puissance, $this->prix);
+    $vals = array($this->taille, $this->get_description(), $this->puissance, $this->encombrement, $this->prix);
     return $vals;
   }
 

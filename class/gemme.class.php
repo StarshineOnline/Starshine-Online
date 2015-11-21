@@ -175,7 +175,7 @@ class gemme extends objet_invent
 	 */
 	public function get_noms_infos($complet=true)
   {
-    return array('Type', 'Niveau', 'Description');
+    return array('Type', 'Niveau', 'Description', 'Encombrement');
   }
 
 	/**
@@ -184,7 +184,7 @@ class gemme extends objet_invent
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->type, $this->niveau, $this->description);
+    $vals = array($this->type, $this->niveau, $this->description, $this->encombrement);
     return $vals;
   }
 

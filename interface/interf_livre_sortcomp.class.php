@@ -111,6 +111,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 				$inf = $e->add( new interf_bal_smpl('a', '', false, 'icone icone-info') );
 				$inf->set_tooltip('Afficher/masquer les informations');
 				$inf->set_attribut('onclick', '$(\'#info_'.$type.'_'.$elt->get_id().'\').slideToggle();');
+				$lance_groupe = $this->perso->is_competence('sort_groupe') || $this->perso->is_competence('sort_groupe_'.$elt->get_comp_assoc());
         if( $type == 'sort_jeu' )
         {
         	$sort_groupe = false;
@@ -126,7 +127,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 					}
 					else
 						$cond = (/*$elt->get_cible() == comp_sort::cible_unique ||*/ $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp ) && $elt->get_type() != 'rez';
-	        if( $sort_groupe )
+	        if( $sort_groupe && $lance_groupe && $this_perso->get_groupe() )
 	        {
 	        	$lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=lancer_groupe&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 	        	$grp = $e->add( new interf_lien_cont($lien, false, 'icone') );

@@ -10,9 +10,31 @@ include_once(root.'inc/fp.php');
 
 $perso = joueur::get_perso();
 
+$id_cible = array_key_exists('cible', $_GET) ? $_GET['cible'] : $perso->get_id();
+$type_cible = array_key_exists('type_cible', $_GET) ? $_GET['type_cible'] : 'perso';
+///@todo à améliorer
+$auto_cible = false;
+if($type_cible == 'perso')
+{
+	if( $id_cible == $perso->get_id() )
+	{
+		$auto_cible = true;
+		$cible = &$perso;
+	}
+	else
+		$cible = new perso($id_cible);
+}
+else if($type_cible == 'monstre')
+	$cible = entite::factory('monstre', new map_monstre($id_cible));
+else
+{
+	///TODO : à refaire ?
+	security_block(URL_MANIPULATION, 'Type de cible inconnu');
+}
+
 if(  array_key_exists('type', $_GET) )
 	$type = $_GET['type'];
-else if( $perso->get_facteur_magie() == 1 )
+else if( $perso->get_facteur_magie() == 1 || !$auto_cible )
 	$type = 'sort_jeu';
 else
 	$type = $perso->get_comp_jeu() ? 'comp_jeu' : 'comp_combat';
@@ -46,27 +68,6 @@ else
 	default:
 		$categorie = 'favoris';
 	}
-}
-$id_cible = array_key_exists('cible', $_GET) ? $_GET['cible'] : $perso->get_id();
-$type_cible = array_key_exists('type_cible', $_GET) ? $_GET['type_cible'] : 'perso';
-///@todo à améliorer
-$auto_cible = false;
-if($type_cible == 'perso')
-{
-	if( $id_cible == $perso->get_id() )
-	{
-		$auto_cible = true;
-		$cible = &$perso;
-	}
-	else
-		$cible = new perso($id_cible);
-}
-else if($type_cible == 'monstre')
-	$cible = entite::factory('monstre', new map_monstre($id_cible));
-else
-{
-	///TODO : à refaire ?
-	security_block(URL_MANIPULATION, 'Type de cible inconnu');
 }
 	
 if( array_key_exists('action', $_GET) )

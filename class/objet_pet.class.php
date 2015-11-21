@@ -124,6 +124,7 @@ class objet_pet extends objet_equip
     $noms[] = $Gtrad[$this->type];
     if( $this->type == 'arme' )
     	$noms[] = 'Arme';
+    $noms[] = 'Encombrement';
     $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
     return $noms;
   }
@@ -138,7 +139,8 @@ class objet_pet extends objet_equip
     $vals = array($this->type, $this->dressage, $this->valeur);
     if( $this->type == 'arme' )
     	$noms[] = $Gtrad[explode('_',$this->bonus)[1]];
-    $vals = $this->prix;
+    $vals[] = $this->encombrement;
+    $vals[] = $this->prix;
     return $vals;
   }
 

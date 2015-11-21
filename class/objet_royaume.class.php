@@ -268,6 +268,7 @@ class objet_royaume extends objet_invent
     $noms = array_merge($noms, array('HP', 'PP', 'PM', 'Esquive', 'Caractéristiques', 'Temps de construction (base)', 'Temps de construction minimum'));
     if( $this->type != 'drapeau' )
       $noms[] = 'Points de victoire (si détruit)';
+    $noms[] = 'Encombrement';
     return $noms;
   }
 
@@ -285,6 +286,7 @@ class objet_royaume extends objet_invent
       $bat->get_PM(), $bat->get_esquive(), $bat->get_carac(), transform_min_temp($bat->get_temps_construction()), transform_min_temp($bat->get_temps_construction_min())) );
     if( $this->type != 'drapeau' )
       $vals[] = $bat->get_point_victoire();
+    $vals[] = $this->encombrement;
     return $vals;
   }
 

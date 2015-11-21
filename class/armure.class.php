@@ -150,6 +150,7 @@ class armure extends objet_equip
     	$noms[] = 'Bonus';
     	$noms[] = 'Malus';
 		}
+    $noms[] = 'Encombrement';
     $noms[] = $complet ? 'Prix HT (en magasin)' : 'Stars';
     return $noms;
   }
@@ -166,6 +167,7 @@ class armure extends objet_equip
     	$vals[] = $this->modification->get_descr_bonus();
     	$vals[] = $this->modification->get_descr_malus();
 		}
+    $vals[] = $this->encombrement;
 		$vals[] = $this->prix;
     return $vals;
   }

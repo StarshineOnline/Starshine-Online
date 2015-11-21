@@ -19,6 +19,7 @@ abstract class interf_sso extends interf_html
     $this->meta('language', 'fr');
     $this->meta_http('content-type', 'text/html; charset=utf-8');
     $this->meta_http('content-language', 'fr');
+    $this->meta('viewport', 'width=device-width, initial-scale=1.0');
     // feuilles de style
     $this->css(static::prefixe_fichiers.'css/jquery.ui.all.css');
     $this->css(static::prefixe_fichiers.'css/bootstrap.css');
@@ -29,14 +30,14 @@ abstract class interf_sso extends interf_html
     $this->css(static::prefixe_fichiers.'css/dataTables.bootstrap.css');
     // javascript
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-2.0.2.min.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-ui-1.10.3.custom.min.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.dataTables.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hotkeys.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap.min.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/dataTables.bootstrap.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap-wysiwyg.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/bbcodeParser.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/fonction.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-ui-1.10.3.custom.min.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.dataTables.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hotkeys.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap.min.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/dataTables.bootstrap.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap-wysiwyg.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/bbcodeParser.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/fonction.js', true);
     // icone de favori
     $this->link('icon', 'image/png', 'image/favicon.png');
     

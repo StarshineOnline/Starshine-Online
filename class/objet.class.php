@@ -184,7 +184,7 @@ class objet extends objet_invent
   {
     if($complet)
     {
-      return array('Stack', 'Description', 'Prix HT (en magasin)');
+      return array('Stack', 'Description', 'Encombrement', 'Prix HT (en magasin)');
     }
     else
       return array('Stars');
@@ -196,7 +196,7 @@ class objet extends objet_invent
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->stack, $this->get_description(true), $this->prix);
+    $vals = array($this->stack, $this->get_description(true), $this->encombrement, $this->prix);
     return $vals;
   }
 

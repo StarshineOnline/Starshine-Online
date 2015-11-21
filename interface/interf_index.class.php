@@ -13,7 +13,7 @@ class interf_index extends interf_sso
     $this->css(static::prefixe_fichiers.'css/site.css');
     $this->css(static::prefixe_fichiers.'css/site-'.$theme.'.css');
     $this->css(static::prefixe_fichiers.'css/jquery.lightbox-0.5.css');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.lightbox-0.5.min.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.lightbox-0.5.min.js', true);
 		
     // Barre de menu
     $joueur = joueur::factory();

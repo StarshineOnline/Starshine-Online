@@ -98,6 +98,10 @@ case 'masquer_sujet':
 	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
 	$messagerie->set_thread_masque($_GET['sujet']);
 	break;
+case 'tous_lu':
+	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie->set_thread_lu_all();
+	break;
 }
 
 if( $ajax == 2 )

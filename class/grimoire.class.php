@@ -153,6 +153,7 @@ class grimoire extends objet_invent
       if( $cible->get_requis() && $cible->get_requis() != 999 )
         $noms[] = 'Requiert';
     }
+    $noms[] = 'Encombrement';
     return $noms;
   }
 
@@ -195,6 +196,7 @@ class grimoire extends objet_invent
       $req = new $class($requis);
       $vals[] = $req->get_nom();
     }
+    $vals[] = $this->encombrement;
 
     return $vals;
   }

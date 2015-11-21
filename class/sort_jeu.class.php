@@ -350,7 +350,7 @@ class sort_debuff extends sort_jeu
         $attaque = rand(0, $puissance);
         $defense = rand(0, $protection);
         $interf = interf_base::get_courrent();
-        $interf->add( new interf_debug('Lance sort: '.$attaque.' ('.$puissance.') vs '.$defense.' ('.$protection.')') );
+    		interf_debug::enregistre('Lance sort: '.$attaque.' ('.$puissance.') vs '.$defense.' ('.$protection.')');
         if ($attaque > $defense)
         {
 					$crime = new crime();
@@ -670,7 +670,7 @@ class sort_balance extends sort_jeu
       }
     }
     $pourcent = $total_pourcent / $nbr_membre;
-    interf_base::add_courr( new interf_debug('équilibrage: '.$pourcent) );
+    interf_debug::enregistre('équilibrage: '.$pourcent);
     foreach($cibles as $cible)
     {
       if($cible->get_hp() > 0)

@@ -1374,6 +1374,13 @@ li.info_case div.jauge_case
 	margin: 4px 1px;
 }
 
+#tour .info_case span
+{
+	overflow: hidden;
+	height: 16px;
+	display: block;
+	text-overflow: ellipsis;
+}
 
 /* Informations monstres */
 #infos_monstre span

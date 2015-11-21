@@ -514,9 +514,9 @@ class interf_html extends interf_princ_ob
    * Ajoute un fichier javascript à inclure
    * @param  $fichier   url du fichier javascript.
    */
-  function javascript($fichier)
+  function javascript($fichier, $async=false)
   {
-    $this->entete[] ='<script src="'.$fichier.'"  type="text/javascript"></script>';
+    $this->entete[] ='<script src="'.$fichier.'"  type="text/javascript"'.($async?' async="async"':'').'></script>';
   }
   /**
    * Ajout d'une balise meta
@@ -530,7 +530,7 @@ class interf_html extends interf_princ_ob
    */
   function meta_http($equiv, $contenu)
   {
-    $this->entete[] ='<meta name="'.$nom.'"  content="'.$contenu.'"/>';
+    $this->entete[] ='<meta '.$equiv.'="'.$contenu.'"/>';
   }
   /**
    * Ajout d'une balise meta
