@@ -19,7 +19,6 @@ abstract class interf_sso extends interf_html
     $this->meta('language', 'fr');
     $this->meta_http('content-type', 'text/html; charset=utf-8');
     $this->meta_http('content-language', 'fr');
-    $this->meta('viewport', 'width=device-width, initial-scale=1.0');
     // feuilles de style
     $this->css(static::prefixe_fichiers.'css/jquery.ui.all.css');
     $this->css(static::prefixe_fichiers.'css/bootstrap.css');
