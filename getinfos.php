@@ -10,7 +10,8 @@ include_once(root.'haut_ajax.php');
 if ($check == false)
 {
 	header('HTTP/1.1 403 Forbidden');
-	echo $erreur_login;
+	echo 'Vous n\'êtes pas connecté. ';
+	if($erreur_login) { echo 'Problème lors de l\'identification'.' : '.$erreur_login; }
 	exit (0);
 }
 
