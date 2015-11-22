@@ -277,9 +277,9 @@ function envoi_log(type, message)
 	{
 		$.ajax({type:"post",url:"log.php",data:{type:type, message:message}});
 	}
-	catch(err)
+	catch(e)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+e.message+" ("+ navigator.userAgent+")");
+		alert("Erreur lors de l'envoi d'un log : "+e.message+" ("+ navigator.userAgent+")");
 	}
 }
 
