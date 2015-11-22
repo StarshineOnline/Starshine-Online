@@ -262,11 +262,12 @@ function envoi_erreur_js(err)
 		msg += err.message ? err.message : err;
 		if( err.stack )
 			msg += " - " + err.stack;
+		msg += " - " + navigator.userAgent;
 		envoi_log("bug", msg);
 	}
 	catch(e)
 	{
-		alert("Erreur lors du formatage d'une erreur : "+e.message);
+		alert("Erreur lors du formatage d'une erreur : "+e.message+" ("+ navigator.userAgent+")");
 	}
 }
 
@@ -278,7 +279,7 @@ function envoi_log(type, message)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		alert("Erreur lors de l'envoie d'un log : "+e.message+" ("+ navigator.userAgent+")");
 	}
 }
 
