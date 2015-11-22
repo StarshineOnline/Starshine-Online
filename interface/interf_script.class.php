@@ -287,7 +287,7 @@ class interf_script extends interf_cont
 			{
 				$apt = null;
 				$comp_sort=null;
-				$requete = 'SELECT id, nom, comp_assoc, type FROM comp_combat WHERE id IN ('.str_replace(';', ',', $comps).') ORDER BY comp_assoc, nom';
+				$requete = 'SELECT id, nom, comp_assoc, type FROM comp_combat WHERE id IN ('.str_replace(';', ',', $comps).') ORDER BY comp_assoc, type, comp_requis';
 				$req = $db->query($requete);
 				while( $row = $db->read_array($req) )
 				{

@@ -87,7 +87,7 @@ class interf_accueil extends interf_cont
 			foreach($nouv_annonces as $a)
 			{
 				$div = new interf_bal_cont('div', null, 'message_monde');
-				$div->add( new interf_bal_smpl('span', $a->get_date(), false, 'small') );
+				$div->add( new interf_bal_smpl('span', $a->get_date(), false, 'xsmall') );
 				$div->add( new interf_bal_smpl('p', texte::parse_url($a->get_message())) );
 				$annonces['contenu'][] = $div;
 			}
@@ -177,7 +177,10 @@ class interf_accueil extends interf_cont
 			if( is_array($msg['contenu']) )
 			{
 				foreach($msg['contenu'] as $cont)
+				{
 					$panneau->add( $cont );
+					unset($cont);
+				}
 			}
 			else
 				$panneau->add( new interf_txt($msg['contenu']) );

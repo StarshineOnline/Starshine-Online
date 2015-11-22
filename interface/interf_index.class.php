@@ -181,7 +181,7 @@ N'oubliez pas de reporter les bugs et problèmes, et d'apporter vos suggestions 
 			foreach($ancienne as $a)
 			{
 				$art = $nouv->add( new interf_bal_cont('article') );
-				$art->add( new interf_bal_smpl('span', date('d/m/Y H:i', strtotime($a->get_date())), false, 'small') );
+				$art->add( new interf_bal_smpl('span', date('d/m/Y H:i', strtotime($a->get_date())), false, 'xsmall') );
 				$art->add( new interf_bal_smpl('p', texte::parse_url($a->get_message())) );
 			}
 		}

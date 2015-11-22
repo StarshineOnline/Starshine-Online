@@ -30,7 +30,11 @@ class comp_jeu extends comp
 	}
 	function get_image()
 	{
-		return 'image/buff/'.$this->type.'.png';
+		$img = 'image/buff/'.$this->type.'.png';
+		if( file_exists(root.$img) )
+			return $img;
+		else
+			return null;
 	}
 
   /// Renvoie la portée du sort

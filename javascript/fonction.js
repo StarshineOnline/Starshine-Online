@@ -2,95 +2,122 @@
 
 function affiche_ajax(data, status, jqXHR)
 {
-	aff_ico_sso();
-	$(".tooltip").remove();
-	$(".popover").remove();
-  var maj_tooltip = false;
-  $(data).find('section').each( function()
-  {
-  	switch(this.id)
-  	{
-  	case "modal":
-		  var modal = document.getElementById("modal");
-		  if( !modal )
-		  {
-		    var cont = document.getElementById("contenu");
-		    modal = document.createElement("div");
-		    modal.id = "modal";
-		    modal.className = "modal fade";
-		    modal.setAttribute("role", "dialog");
-		    modal.tabIndex = "-1";
-		    modal.setAttribute("aria-labelledby", "modalLabel");
-		    cont.appendChild(modal);
-		  }
-    	modal.innerHTML =  this.innerHTML;
-			$("#modal").modal('show');
-			maj_tooltip = true;
-  		break;
-  	case 'recharger':
-  		document.location=this.innerHTML.trim();
-  		document.location.reload();
-  	case 'maj_tooltips':
-			maj_tooltip = true;
-  		break;
-  	case 'erreur':
-  		aff_erreur(this.innerHTML, data);
-  		break;
-  	case 'javascript':
-  		var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
-  		script.setAttribute('type', 'text/javascript');
-  	default:
-    	$('#'+this.id).html( this.innerHTML );
-			maj_tooltip = true;
-		}
-  });
-  if( maj_tooltip )
-  	maj_tooltips();
+	try
+	{
+		aff_ico_sso();
+		$(".tooltip").remove();
+		$(".popover").remove();
+	  var maj_tooltip = false;
+	  $(data).find('section').each( function()
+	  {
+	  	switch(this.id)
+	  	{
+	  	case "modal":
+			  var modal = document.getElementById("modal");
+			  if( !modal )
+			  {
+			    var cont = document.getElementById("contenu");
+			    modal = document.createElement("div");
+			    modal.id = "modal";
+			    modal.className = "modal fade";
+			    modal.setAttribute("role", "dialog");
+			    modal.tabIndex = "-1";
+			    modal.setAttribute("aria-labelledby", "modalLabel");
+			    cont.appendChild(modal);
+			  }
+	    	modal.innerHTML =  this.innerHTML;
+				$("#modal").modal('show');
+				maj_tooltip = true;
+	  		break;
+	  	case 'recharger':
+	  		document.location=this.innerHTML.trim();
+	  		document.location.reload();
+	  	case 'maj_tooltips':
+				maj_tooltip = true;
+	  		break;
+	  	case 'erreur':
+	  		aff_erreur(this.innerHTML, data);
+	  		break;
+	  	case 'javascript':
+	  		var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
+	  		script.setAttribute('type', 'text/javascript');
+	  	default:
+	    	$('#'+this.id).html( this.innerHTML );
+				maj_tooltip = true;
+			}
+	  });
+	  if( maj_tooltip )
+	  	maj_tooltips();
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
 }
 
 function aff_erreur(contenu, donnees, icone/*='bug'*/)
 {
-	if( icone == undefined )
-		icone = 'bug';
-	var cont = document.getElementById('contenu_jeu');
-	var alerte = document.createElement('div');
-	alerte.className = 'alert alert-danger alert-dismissable';
-	cont.insertBefore(alerte, cont.firstChild);
-	alerte.style = 'margin-top: 5px;'
-	var btn = document.createElement('button');
-	btn.className = 'close';
-	btn.setAttribute('aria-hidden', 'true');
-	btn.setAttribute('data-dismiss', 'alert');
-	btn.type = 'button';
-	btn.innerHTML = '&times;';
-	alerte.appendChild(btn);
-	var ico = document.createElement('a');
-	ico.className = 'icone icone-'+icone;
-	ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
-	ico.style = 'margin-right: 5px;'
-	alerte.appendChild(ico);
-	var txt = document.createElement('span');
-	txt.innerHTML = contenu;
-	alerte.appendChild(txt);
-	var recept = document.createElement('div');
-	recept.innerHTML = donnees;
-	recept.id = 'erreur_recu';
-	recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
-	alerte.appendChild(recept);
+	try
+	{
+		if( icone == undefined )
+			icone = 'bug';
+		var cont = document.getElementById('contenu_jeu');
+		var alerte = document.createElement('div');
+		alerte.className = 'alert alert-danger alert-dismissable';
+		cont.insertBefore(alerte, cont.firstChild);
+		alerte.style = 'margin-top: 5px;'
+		var btn = document.createElement('button');
+		btn.className = 'close';
+		btn.setAttribute('aria-hidden', 'true');
+		btn.setAttribute('data-dismiss', 'alert');
+		btn.type = 'button';
+		btn.innerHTML = '&times;';
+		alerte.appendChild(btn);
+		var ico = document.createElement('a');
+		ico.className = 'icone icone-'+icone;
+		ico.setAttribute('onclick', '$("#erreur_recu").toggle();');
+		ico.style = 'margin-right: 5px;'
+		alerte.appendChild(ico);
+		var txt = document.createElement('span');
+		txt.innerHTML = contenu;
+		alerte.appendChild(txt);
+		var recept = document.createElement('div');
+		recept.innerHTML = donnees;
+		recept.id = 'erreur_recu';
+		recept.style = 'display: none; border: dashed 1px; margin-top: 5px;';
+		alerte.appendChild(recept);
+	}
+	catch(err)
+	{
+		alert("Erreur : "+contenu+" (+"+err.message+")");
+	}
 }
 
 function charger(page)
 {
-	//alert('charger:'+page);
-	aff_ico_charger();
-  $.get(page, "ajax=1", affiche_ajax);
+	try
+	{
+		aff_ico_charger();
+	  $.get(page, "ajax=1", affiche_ajax);
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
 	return false;
 }
 
 function charger_formulaire(id)
 {
-  var formul = $('#' + id);
-  $.ajax({type:formul.attr("method"),url:formul.attr("action")+"&ajax=1",data:formul.serialize(),success:affiche_ajax});
+	try
+	{
+	  var formul = $('#' + id);
+	  $.ajax({type:formul.attr("method"),url:formul.attr("action")+"&ajax=1",data:formul.serialize(),success:affiche_ajax});
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
 	return false;
 }
 
@@ -103,61 +130,156 @@ function verif_charger(url, texte)
 
 function envoie_texte(dest, id)
 {
-	var html = $("#"+id).html().trim();
-	var bbcodehtml = decode_texte(html);
-	var texte = $('<div>').html(bbcodehtml).text();
-	$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+encodeURIComponent(texte),success:affiche_ajax});
+	try
+	{
+		var html = $("#"+id).html().trim();
+		var bbcodehtml = decode_texte(html);
+		var texte = $('<div>').html(bbcodehtml).text();
+		$.ajax({type:"post",url:dest+"&ajax=1",data:"texte="+encodeURIComponent(texte),success:affiche_ajax});
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
 	return false;
 }
 
 function charger_formulaire_texte(id, id_texte)
 {
-  var formul = $('#' + id);
-	var texte = $("#"+id_texte).html().trim();
-  var donnees = formul.serializeArray();
-  donnees[donnees.length] = {name:"texte", value:decode_texte(texte)};
-  $.ajax({type:"post",url:formul.attr("action")+"&ajax=1",data:donnees,success:affiche_ajax});
+	try
+	{
+	  var formul = $('#' + id);
+		var texte = $("#"+id_texte).html().trim();
+	  var donnees = formul.serializeArray();
+	  donnees[donnees.length] = {name:"texte", value:decode_texte(texte)};
+	  $.ajax({type:"post",url:formul.attr("action")+"&ajax=1",data:donnees,success:affiche_ajax});
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
 	return false;
 }
 
 function charger_formulaire_fichier(id_form, id_input)
 {
-  formul = $('#' + id_form);
-  // Chargement du script permettant l'envoi de fichier
-  jQuery.getScript("./javascript/jquery/fileupload.js", function()
-  { 
-		jQuery.ajaxFileUpload({url:formul.attr("action")+"&ajax=1",data:formul.serialize(), fileElementId:id_input, dataType:"html",secureuri:false,success:affiche_ajax});
-	});
+	try
+	{
+	  formul = $('#' + id_form);
+	  // Chargement du script permettant l'envoi de fichier
+	  jQuery.getScript("./javascript/jquery/fileupload.js", function()
+	  { 
+			jQuery.ajaxFileUpload({url:formul.attr("action")+"&ajax=1",data:formul.serialize(), fileElementId:id_input, dataType:"html",secureuri:false,success:affiche_ajax});
+		});
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
   return false;
 }
 
 function decode_texte(texte)
 {
-	texte = texte.replace('<strong>', '<b>');
-	texte = texte.replace('</strong>', '</b>');
-	texte = texte.replace('<em>', '<i>');
-	texte = texte.replace('</em>', '</i>');
-	texte = texte.replace(/<[\/]*div>/g, '');
-	texte = texte.replace(/[\t| ]+/g, ' ');
-	texte = texte.replace(/[\n|\r]+/g, '[br]');
-	texte = bbcodeParser.htmlToBBCode(texte);
-	if( texte.substring(texte.length-4) ==  '<br>' )
-		texte = texte.substr(0, texte.length-4);
-	while( texte.indexOf('<br>') >= 0 )
+	try
 	{
-		texte = texte.replace('<br>', '[br]');
+		texte = texte.replace('<strong>', '<b>');
+		texte = texte.replace('</strong>', '</b>');
+		texte = texte.replace('<em>', '<i>');
+		texte = texte.replace('</em>', '</i>');
+		texte = texte.replace(/<[\/]*div>/g, '');
+		texte = texte.replace(/[\t| ]+/g, ' ');
+		texte = texte.replace(/[\n|\r]+/g, '[br]');
+		texte = bbcodeParser.htmlToBBCode(texte);
+		if( texte.substring(texte.length-4) ==  '<br>' )
+			texte = texte.substr(0, texte.length-4);
+		while( texte.indexOf('<br>') >= 0 )
+		{
+			texte = texte.replace('<br>', '[br]');
+		}
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
 	}
 	return texte;
 }
 
 function charge_tab(elt, id)
 {
-  var e = $("#"+id);
-  if( !e.html().trim().length )
-  {
-    e.html( getWait() );
-    e.load(elt.getAttribute("data-url"));
-  }
+	try
+	{
+	  var e = $("#"+id);
+	  if( !e.html().trim().length )
+	  {
+	    e.html( getWait() );
+	    e.load(elt.getAttribute("data-url"));
+	  }
+	}
+	catch(err)
+	{
+		envoi_erreur_js(err);
+	}
+}
+
+function envoi_erreur_js(err)
+{
+	try
+	{
+		aff_erreur("Une erreur s'est produite, il se peut que l'interface ne fonctionne pas correctement. L'erreur a été envoyé au serveur afin d'être consultable par les développeurs.", "Type de l'erreur : "+err.name);
+		msg = "Erreur javascript : ";
+		if( err.fileName || err.lineNumber || (envoi_erreur_js.caller && envoi_erreur_js.caller.name) )
+		{
+			msg += "[";
+			if( err.fileName )
+			{
+				msg += err.fileName;
+				if( err.lineNumber )
+					msg += " : ";
+			}
+			if( err.lineNumber )
+				msg += err.lineNumber;
+			if(envoi_erreur_js.caller && envoi_erreur_js.caller.name)
+			{
+				f = envoi_erreur_js.caller;
+				if(err.fileName || err.lineNumber)
+					msg += " - ";
+				msg += f.name;
+				if( f.arguments )
+				{
+					msg += "(";
+					for(i=0; i<f.arguments.length; i++)
+					{
+						if(i)
+							msg += ", ";
+						msg += '"' + f.arguments[i] + '"';
+					}
+					msg += ")";
+				}
+			}
+			msg += "] ";
+		}
+		msg += err.message ? err.message : err;
+		if( err.stack )
+			msg += " - " + err.stack;
+		envoi_log("bug", msg);
+	}
+	catch(e)
+	{
+		alert("Erreur lors du formatage d'une erreur : "+e.message);
+	}
+}
+
+function envoi_log(type, message)
+{
+	try
+	{
+		$.ajax({type:"post",url:"log.php",data:{type:type, message:message}});
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function temps_serveur()
@@ -168,160 +290,239 @@ function temps_serveur()
 
 function maj_tooltips()
 {
-	// on active les tooltip déjà définis
-	$("[data-toggle='tooltip']:not(#modal *)").tooltip({container: 'body'});
-	$("#modal *[data-toggle='tooltip']").tooltip({container: '#modal'});
-	// On crée ceux des buffs ainsi que les popvers
-	$(".buff").each( function()
+	try
 	{
-		var li = $(this);
-		var img = li.children();
-		var nom = img[0].alt;
-		li.tooltip({title:function()
+		// on active les tooltip déjà définis
+		$("[data-toggle='tooltip']:not(#modal *)").tooltip({container: 'body'});
+		$("#modal *[data-toggle='tooltip']").tooltip({container: '#modal'});
+		// On crée ceux des buffs ainsi que les popvers
+		$(".buff").each( function()
 		{
-			return nom + " − Durée : " + formate_duree(li.attr('data-fin') - temps_serveur(), true);
-		},placement:"left",container:"#contenu"});
-		$(img[0]).popover({html:true,placement:"bottom",title:nom,container:"#contenu",content:function()
-		{
-			//var date = new Date();
-			var txt = "<table><tbody>";
-			txt += "<tr><th>Decription</th><td>"+li.attr("data-description")+"</td></tr>";
-			txt += "<tr><th>Durée totale</th><td>"+formate_duree(li.attr("data-duree"), false)+"</td></tr>";
-			txt += "<tr><th>Durée restante</th><td>"+formate_duree(li.attr('data-fin') - temps_serveur(), true)+"</td></tr>";
-			txt += "<tr><th>Fin</th><td>"+formate_date(li.attr('data-fin'))+"</td></tr>";
-			txt += "</tbody></table>";
-			if( li.attr("data-suppr") )
-				txt += "<a class='suppr_buff' href='suppbuff.php?id="+li.attr("data-suppr")+"' onclick='return charger(this.href);'>Supprimer le buff</a>";
-			return txt;
-		}, trigger:"focus click"});
-	});
+			var li = $(this);
+			var img = li.children();
+			var nom = img[0].alt;
+			li.tooltip({title:function()
+			{
+				return nom + " − Durée : " + formate_duree(li.attr('data-fin') - temps_serveur(), true);
+			},placement:"left",container:"#contenu"});
+			$(img[0]).popover({html:true,placement:"bottom",title:nom,container:"#contenu",content:function()
+			{
+				//var date = new Date();
+				var txt = "<table><tbody>";
+				txt += "<tr><th>Decription</th><td>"+li.attr("data-description")+"</td></tr>";
+				txt += "<tr><th>Durée totale</th><td>"+formate_duree(li.attr("data-duree"), false)+"</td></tr>";
+				txt += "<tr><th>Durée restante</th><td>"+formate_duree(li.attr('data-fin') - temps_serveur(), true)+"</td></tr>";
+				txt += "<tr><th>Fin</th><td>"+formate_date(li.attr('data-fin'))+"</td></tr>";
+				txt += "</tbody></table>";
+				if( li.attr("data-suppr") )
+					txt += "<a class='suppr_buff' href='suppbuff.php?id="+li.attr("data-suppr")+"' onclick='return charger(this.href);'>Supprimer le buff</a>";
+				return txt;
+			}, trigger:"focus click"});
+		});
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function aff_ico_charger()
 {
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-charger";
+	try
+	{
+		document.getElementById("icone-sso").className = "navbar-brand icone icone-charger";
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function aff_ico_sso()
 {
-	document.getElementById("icone-sso").className = "navbar-brand icone icone-sso";
+	try
+	{
+		document.getElementById("icone-sso").className = "navbar-brand icone icone-sso";
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function formate_duree(duree, detail)
 {
 	var txt = "";
-	var jours = Math.floor(duree / (3600*24));
-	var heures = Math.floor(duree/3600) % 24;
-	var mins = Math.floor(duree/60) % 60;
-	var sec = duree % 60;
-	if( jours )
-		txt = jours+"j ";
-	if( heures || (txt.length && detail) )
-		txt += heures+"h ";
-	if( mins || (txt.length && detail) )
-		txt += mins+"min ";
-	if(sec || detail)
-		txt += sec+"s";
+	try
+	{
+		var jours = Math.floor(duree / (3600*24));
+		var heures = Math.floor(duree/3600) % 24;
+		var mins = Math.floor(duree/60) % 60;
+		var sec = duree % 60;
+		if( jours )
+			txt = jours+"j ";
+		if( heures || (txt.length && detail) )
+			txt += heures+"h ";
+		if( mins || (txt.length && detail) )
+			txt += mins+"min ";
+		if(sec || detail)
+			txt += sec+"s";
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 	return txt;
 }
 
 function formate_date(date)
 {
-	var d = new Date(date*1000);
-	var jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
-	var mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
-	var txt = jours[d.getDay()] + " " + d.getDate();
-	if( d.getDate() == 1 )
-		txt += "<sup>er</sup>";
-	txt += " " + mois[d.getMonth()] + " " + d.getFullYear() + " ";
-	txt += d.getHours()+"h ";
-	txt += d.getMinutes()+"min ";
-	return txt + d.getSeconds()+"s";
+	try
+	{
+		var d = new Date(date*1000);
+		var jours = ["dimanche", "lundi", "mardi", "mercredi", "jeudi", "vendredi", "samedi"];
+		var mois = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
+		var txt = jours[d.getDay()] + " " + d.getDate();
+		if( d.getDate() == 1 )
+			txt += "<sup>er</sup>";
+		txt += " " + mois[d.getMonth()] + " " + d.getFullYear() + " ";
+		txt += d.getHours()+"h ";
+		txt += d.getMinutes()+"min ";
+		return txt + d.getSeconds()+"s";
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
+	return "erreur";
 }
 
 
 function suppr_buff(elt)
 {
-	var li = $(elt);
-	var img = li.children();
-	var nom = img[0].alt;
-	if(confirm('Voulez vous supprimer '+ nom +' ?'))
+	try
 	{
-		charger('suppbuff.php?id=' + li.attr('data-suppr'));
+		var li = $(elt);
+		var img = li.children();
+		var nom = img[0].alt;
+		if(confirm('Voulez vous supprimer '+ nom +' ?'))
+		{
+			charger('suppbuff.php?id=' + li.attr('data-suppr'));
+		}
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
 }
 
-var filtre_ecole_mag = false;
-$.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
+try
 {
-	//alert(dataIndex + " : " + data);
-	return false;
-});
-$.fn.dataTable.ext.type.detect.unshift( function ( d )
-{
-  return d.indexOf("<img") >= 0 ? 'aptitude' : null;
-} );
-$.fn.dataTable.ext.type.order['aptitude-pre'] = function ( d )
-{
-	var deb = d.indexOf('src=') + 17;
-	var fin = d.indexOf('"', deb) - 4;
-	var aptitude = d.substring(deb, fin);
-	deb = d.indexOf('>', d.indexOf('<span')) + 1;
-	fin = d.indexOf('</span>', deb);
-	var valeur = parseInt(d.substring(deb, fin));
-	switch(aptitude)
+	var filtre_ecole_mag = false;
+	$.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
 	{
-	case 'sort_elem':
-	case 'melee':
-		return 1000+valeur;
-	case 'sort_mort':
-	case 'esquive':
-		return 2000+valeur;
-	case 'sort_vie':
-	case 'distance':
-		return 3000+valeur;
-	case 'blocage':
-	case 'dressage':
-		return 4000+valeur;
-	}
-  return 0;
-};
+		//alert(dataIndex + " : " + data);
+		return false;
+	});
+	$.fn.dataTable.ext.type.detect.unshift( function ( d )
+	{
+	  return d.indexOf("<img") >= 0 ? 'aptitude' : null;
+	} );
+	$.fn.dataTable.ext.type.order['aptitude-pre'] = function ( d )
+	{
+		var deb = d.indexOf('src=') + 17;
+		var fin = d.indexOf('"', deb) - 4;
+		var aptitude = d.substring(deb, fin);
+		deb = d.indexOf('>', d.indexOf('<span')) + 1;
+		fin = d.indexOf('</span>', deb);
+		var valeur = parseInt(d.substring(deb, fin));
+		switch(aptitude)
+		{
+		case 'sort_elem':
+		case 'melee':
+			return 1000+valeur;
+		case 'sort_mort':
+		case 'esquive':
+			return 2000+valeur;
+		case 'sort_vie':
+		case 'distance':
+			return 3000+valeur;
+		case 'blocage':
+		case 'dressage':
+			return 4000+valeur;
+		}
+	  return 0;
+	};
+}
+catch(err)
+{
+	alert("Erreur lors de l'envoie d'un log : "+err.message);
+}
+
 function filtre_table(filtre)
 {
-	filtre_ecole_mag = filtre;
-	alert('Ne fonctionne pas');
-	//tbl_sort_jeu.draw();
+	try
+	{
+		filtre_ecole_mag = filtre;
+		alert('Ne fonctionne pas');
+		//tbl_sort_jeu.draw();
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function toggle(id)
 {
-	$('#'+id).slideToggle();
+	try
+	{
+		$('#'+id).slideToggle();
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 	return false;
 }
 
 function init_bbcode()
 {
-	bbcodeParser.addBBCode('[b]{TEXT}[/b]', '<b>{TEXT}</b>');
-	bbcodeParser.addBBCode('[i]{TEXT}[/i]', '<i>{TEXT}</i>');
-	bbcodeParser.addBBCode('[u]{TEXT}[/u]', '<u>{TEXT}</u>');
-	bbcodeParser.addBBCode('[s]{TEXT}[/s]', '<strike>{TEXT}</strike>');
+	try
+	{
+		bbcodeParser.addBBCode('[b]{TEXT}[/b]', '<b>{TEXT}</b>');
+		bbcodeParser.addBBCode('[i]{TEXT}[/i]', '<i>{TEXT}</i>');
+		bbcodeParser.addBBCode('[u]{TEXT}[/u]', '<u>{TEXT}</u>');
+		bbcodeParser.addBBCode('[s]{TEXT}[/s]', '<strike>{TEXT}</strike>');
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function creer_element(tag, id, classe, pere, contenu, before)
 {
   var elt = document.createElement(tag);
-  if(id)
-    elt.id = id;
-  if(classe)
-    elt.className = classe;
-  if( contenu )
-    elt.innerHTML = contenu;
-  if( pere )
-  {
-	  if( before )
-	    pere.insertBefore(elt, before)
-	  else
-	    pere.appendChild(elt);
+	try
+	{
+	  if(id)
+	    elt.id = id;
+	  if(classe)
+	    elt.className = classe;
+	  if( contenu )
+	    elt.innerHTML = contenu;
+	  if( pere )
+	  {
+		  if( before )
+		    pere.insertBefore(elt, before)
+		  else
+		    pere.appendChild(elt);
+		}
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
   return elt;
 }
@@ -329,84 +530,126 @@ function creer_element(tag, id, classe, pere, contenu, before)
 function creer_bouton(texte, pere, code, style)
 {
   var btn = document.createElement("button");
-  btn.type = "button";
-  btn.className = "btn";
-  btn.innerHTML = texte;
-  btn.setAttribute("onclick", code);
-  if( style )
-    btn.className += " btn-"+style;
-  pere.appendChild(btn);
+  try
+  {
+	  btn.type = "button";
+	  btn.className = "btn";
+	  btn.innerHTML = texte;
+	  btn.setAttribute("onclick", code);
+	  if( style )
+	    btn.className += " btn-"+style;
+	  pere.appendChild(btn);
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
   return btn;
 }
 
 function creer_chp_form(type_chp, nom, valeur, pere)
 {
 	var chp = creer_element("input", null, "form-control", pere);
-	chp.type = type_chp;
-	if( nom )
-		chp.name = nom;
-	if( valeur )
-		chp.value = valeur;
+	try
+	{
+		chp.type = type_chp;
+		if( nom )
+			chp.name = nom;
+		if( valeur )
+			chp.value = valeur;
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 	return chp;
 }
 
 function modif_nom_creature(id)
 {
-	var div = $('#creat_'+id);
-	var lien = div.find('.icone-modifier');
-	var nom = div.find('.nom_creature');
-	nom[0].contentEditable = true;
-	nom.addClass("modifie");
-	nom.keypress( function(evt)
+	try
 	{
-		if( evt.which == 13 )
-			valide_nom_creature(id);
-	});
-	lien.removeClass('icone-modifier');
-	lien.addClass('icone-ok');
-	lien.attr("onclick", "return valide_nom_creature("+id+");");
+		var div = $('#creat_'+id);
+		var lien = div.find('.icone-modifier');
+		var nom = div.find('.nom_creature');
+		nom[0].contentEditable = true;
+		nom.addClass("modifie");
+		nom.keypress( function(evt)
+		{
+			if( evt.which == 13 )
+				valide_nom_creature(id);
+		});
+		lien.removeClass('icone-modifier');
+		lien.addClass('icone-ok');
+		lien.attr("onclick", "return valide_nom_creature("+id+");");
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function valide_nom_creature(id)
 {
-	var div = $('#creat_'+id);
-	var nom = div.find('.nom_creature');
-	charger("gestion_monstre.php?action=modifier&id="+id+"&nom="+nom.html());
+	try
+	{
+		var div = $('#creat_'+id);
+		var nom = div.find('.nom_creature');
+		charger("gestion_monstre.php?action=modifier&id="+id+"&nom="+nom.html());
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function debugs()
 {
-	$('.debug').toggle();
+	try
+	{
+		$('.debug').toggle();
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 	return false;
 }
 
 function carte_royaume(id)
 {
-	var url = '';
-	if( document.URL.search('/roi/') >= 0 )
-		url = '../'
-	var id_img = 'carte_'+id;
-	var svg = document.getElementById('carte_monde');
-	var img = document.getElementById(id_img);
-	if(img)
+	try
 	{
-		svg.removeChild(img);
-	}
-	else
-	{
-		var rect = svg.getElementsByTagName('rect');
-		img = document.createElementNS('http://www.w3.org/2000/svg','image');
-		img.id = id_img;
-		img.setAttribute('width', '450px');
-		img.setAttribute('height', '450px');
-		if( id == 'monstres' )
-			img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_densite_mob.png');
+		var url = '';
+		if( document.URL.search('/roi/') >= 0 )
+			url = '../'
+		var id_img = 'carte_'+id;
+		var svg = document.getElementById('carte_monde');
+		var img = document.getElementById(id_img);
+		if(img)
+		{
+			svg.removeChild(img);
+		}
 		else
-			img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_royaume.png');
-		img.setAttribute('filter', 'url(#filtre_'+id+')');
-		svg.insertBefore(img, rect[0]);
+		{
+			var rect = svg.getElementsByTagName('rect');
+			img = document.createElementNS('http://www.w3.org/2000/svg','image');
+			img.id = id_img;
+			img.setAttribute('width', '450px');
+			img.setAttribute('height', '450px');
+			if( id == 'monstres' )
+				img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_densite_mob.png');
+			else
+				img.setAttributeNS('http://www.w3.org/1999/xlink','href', url+'image/carte_royaume.png');
+			img.setAttribute('filter', 'url(#filtre_'+id+')');
+			svg.insertBefore(img, rect[0]);
+		}
+		$('#opt_'+id).toggleClass('active');
 	}
-	$('#opt_'+id).toggleClass('active');
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 	return false;
 }
 
@@ -417,91 +660,133 @@ var rect_aide_actif = null;
 var elt_aide_aff = null;
 function bascule_aide()
 {
-	var body = document.getElementsByTagName("body")[0];
-	var voile = document.getElementById("voile");
-	if(voile)
+	try
 	{
-		body.removeChild(voile);
-		$("#navbar").show();
-		$("#info_aide").remove();
-		if( elt_aide_aff )
+		var body = document.getElementsByTagName("body")[0];
+		var voile = document.getElementById("voile");
+		if(voile)
 		{
-			elt_aide_aff.popover('hide');
-			elt_aide_aff.removeClass('aide-actif');
-			elt_aide_actif = null;
-			elt_aide_aff = null;
+			body.removeChild(voile);
+			$("#navbar").show();
+			$("#info_aide").remove();
+			if( elt_aide_aff )
+			{
+				elt_aide_aff.popover('hide');
+				elt_aide_aff.removeClass('aide-actif');
+				elt_aide_actif = null;
+				elt_aide_aff = null;
+			}
 		}
+		else
+		{
+			voile = creer_element("div", "voile", false, body, false);
+			voile.setAttribute("onclick", "clique_aide();");
+			voile.setAttribute("onmousemove", "mouv_aide(event);");
+			$("#navbar")[0].style = "display:none !important";
+			$("#barre_menu .container").append("<div id='info_aide'><b>Description de l'interface : </b>Les élements qui s'affiche en surbrillance quand vous passez la souris dessus proposent une aide. Cliquez dessus pour affichez celle-ci. Cliquez ailleurs pour revenir au jeu.</div>");
+			elts_aide = document.getElementsByClassName("aide");
+		}
+		$(body).toggleClass("aide-active");
 	}
-	else
+	catch(err)
 	{
-		voile = creer_element("div", "voile", false, body, false);
-		voile.setAttribute("onclick", "clique_aide();");
-		voile.setAttribute("onmousemove", "mouv_aide(event);");
-		$("#navbar")[0].style = "display:none !important";
-		$("#barre_menu .container").append("<div id='info_aide'><b>Description de l'interface : </b>Les élements qui s'affiche en surbrillance quand vous passez la souris dessus proposent une aide. Cliquez dessus pour affichez celle-ci. Cliquez ailleurs pour revenir au jeu.</div>");
-		elts_aide = document.getElementsByClassName("aide");
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
-	$(body).toggleClass("aide-active");
 	return false;
 }
 
 function mouv_aide(evt)
 {
-	if(elt_aide_aff)
-		return;
-	if( elt_aide_actif )
+	try
 	{
-		$(elt_aide_actif).removeClass('aide-actif');
-		elt_aide_actif = null;
-	}
-	for(var i=0; i<elts_aide.length; i++)
-	{
-		var rect = elts_aide[i].getBoundingClientRect();
-		if( evt.clientX >= rect.left && evt.clientX <= rect.right && evt.clientY >= rect.top && evt.clientY <= rect.bottom )
+		if(elt_aide_aff)
+			return;
+		if( elt_aide_actif )
 		{
-			$(elts_aide[i]).addClass('aide-actif');
-			elt_aide_actif = elts_aide[i];
-			break;
+			$(elt_aide_actif).removeClass('aide-actif');
+			elt_aide_actif = null;
 		}
+		for(var i=0; i<elts_aide.length; i++)
+		{
+			var rect = elts_aide[i].getBoundingClientRect();
+			if( evt.clientX >= rect.left && evt.clientX <= rect.right && evt.clientY >= rect.top && evt.clientY <= rect.bottom )
+			{
+				$(elts_aide[i]).addClass('aide-actif');
+				elt_aide_actif = elts_aide[i];
+				break;
+			}
+		}
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
 }
 
 function clique_aide()
 {
-	if(elt_aide_actif)
+	try
 	{
-		charger("aide.php?id="+elt_aide_actif.id);
-		elt_aide_aff = $(elt_aide_actif);
-		elt_aide_actif = null;
+		if(elt_aide_actif)
+		{
+			charger("aide.php?id="+elt_aide_actif.id);
+			elt_aide_aff = $(elt_aide_actif);
+			elt_aide_actif = null;
+		}
+		else
+			bascule_aide();
 	}
-	else
-		bascule_aide();
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function aide(id)
 {
-	var body = document.getElementsByTagName("body")[0];
-	voile = creer_element("div", "voile", false, body, false);
-	voile.setAttribute("onclick", "fin_aide();");
-	$("#"+id).addClass('aide-actif');
-	charger("aide.php?tuto=1&id="+id);
-	elt_aide_aff = $("#"+id);
+	try
+	{
+		var body = document.getElementsByTagName("body")[0];
+		voile = creer_element("div", "voile", false, body, false);
+		voile.setAttribute("onclick", "fin_aide();");
+		$("#"+id).addClass('aide-actif');
+		charger("aide.php?tuto=1&id="+id);
+		elt_aide_aff = $("#"+id);
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function fin_aide()
 {
-	$("#voile").remove();
-	elt_aide_aff.removeClass('aide-actif');
-	elt_aide_aff.popover('hide');
-	elt_aide_aff = null;
+	try
+	{
+		$("#voile").remove();
+		elt_aide_aff.removeClass('aide-actif');
+		elt_aide_aff.popover('hide');
+		elt_aide_aff = null;
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function aff_sousmenu(elt)
 {
-	if( $(elt.nextSibling.nextSibling).attr('style') != 'display:block' )
+	try
 	{
-		$('.dropdown-submenu>.dropdown-menu').removeClass('show');
-		$('.dropdown-submenu:hover>.dropdown-menu').addClass('show');
+		if( $(elt.nextSibling.nextSibling).attr('style') != 'display:block' )
+		{
+			$('.dropdown-submenu>.dropdown-menu').removeClass('show');
+			$('.dropdown-submenu:hover>.dropdown-menu').addClass('show');
+		}
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
 }
 
@@ -679,15 +964,22 @@ function envoiFichier(formulaire, position)
 
 function chargerPopover(elt, id, pos, url, titre)
 {
-  var e = $('#' + elt);
-  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>", container:'body', trigger:'focus click'});
-  $.get(url, function(d)
-  {
-    e.data('bs.popover').options.content = d;
-    e.popover('show');
-  });
-  e.attr('onclick', '');
-  e.attr('data-toggle', 'popover');
+	try
+	{
+	  var e = $('#' + elt);
+	  e.popover({html:true, placement:pos, title: titre, content:"<div id="+id+" class=\"infos_obj\">"+getWait()+"</div>", container:'body', trigger:'focus click'});
+	  $.get(url, function(d)
+	  {
+	    e.data('bs.popover').options.content = d;
+	    e.popover('show');
+	  });
+	  e.attr('onclick', '');
+	  e.attr('data-toggle', 'popover');
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 }
 
 function getWait()
@@ -845,6 +1137,8 @@ $(function () {
 
 		//$("#debug_log_button").hide();
 
+	try
+	{
 		$(document).ajaxError(function(e, jqxhr, settings, exception)
 		{
 			aff_ico_sso();
@@ -856,6 +1150,11 @@ $(function () {
 		
 		$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});
 		init_bbcode();
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
+	}
 });
 
 function show_debug_log()
@@ -880,27 +1179,34 @@ function findPos(obj)
 
 function suggestion(valeur, cible, origine, race)
 {
-	if(valeur.length == 0)
+	try
 	{
-		$('#'+cible).hide();
-	}
-	else
-	{
-		if( race == undefined )
-			var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+""};
-		else
-			var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+"", race: race};
-		$.post("poste_pseudo.php", param, 
-		function(data)
+		if(valeur.length == 0)
 		{
-     	 	if(data.length >0) 
-        {
-        		var tmp = document.getElementById(cible);
-	        	tmp.innerHTML = data;
-					$('#'+cible).show();
-					$('#'+cible).children('ul').show();
-				}
-    });
+			$('#'+cible).hide();
+		}
+		else
+		{
+			if( race == undefined )
+				var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+""};
+			else
+				var param = {queryString: ""+escape(valeur)+"", origine: ""+origine+"", cible: ""+cible+"", race: race};
+			$.post("poste_pseudo.php", param, 
+			function(data)
+			{
+	     	 	if(data.length >0) 
+	        {
+	        		var tmp = document.getElementById(cible);
+		        	tmp.innerHTML = data;
+						$('#'+cible).show();
+						$('#'+cible).children('ul').show();
+					}
+	    });
+		}
+	}
+	catch(err)
+	{
+		alert("Erreur lors de l'envoie d'un log : "+err.message);
 	}
 }
 

@@ -51,7 +51,17 @@ class objet_royaume extends objet_invent
   function &get_batiment()
   {
     if( !$this->batiment )
-      $this->batiment = new batiment( $this->id_batiment );
+    {
+    	switch($this->type)
+    	{
+    	case 'buff':
+    	case 'debuff':
+      	$this->batiment = new buff_batiment_def( $this->id_batiment );
+    		break;
+    	default:
+      	$this->batiment = new batiment( $this->id_batiment );
+			}
+		}
     return $this->batiment;
   }
 
@@ -234,14 +244,20 @@ class objet_royaume extends objet_invent
 	public function get_image()
   {
     $bat = &$this->get_batiment();
-    if( $bat->get_type() == 'drapeau' )
+    switch($this->get_type())
     {
+    case 'buff':
+    case 'debuff':
+      $image = 'image/buff/'.$bat->get_type().'.png';
+      break;
+    case 'drapeau':
       $race = joueur::get_perso()->get_race();
       $roy = royaume::create('race', $race);
       $image = 'image/drapeaux/'.$bat->get_image().'_'.$roy[0]->get_id().'.png';
-    }
-    else
+      break;
+    default:
       $image = 'image/batiment/'.$bat->get_image().'_04.png';
+		}
     if( file_exists($image) )
       return $image;
     return null;
@@ -263,11 +279,19 @@ class objet_royaume extends objet_invent
 	public function get_noms_infos($complet=true)
   {
     $noms = array('Type', 'Description');
-    if( $this->type != 'drapeau' )
-      $noms[] = 'Entretien';
-    $noms = array_merge($noms, array('HP', 'PP', 'PM', 'Esquive', 'Caractéristiques', 'Temps de construction (base)', 'Temps de construction minimum'));
-    if( $this->type != 'drapeau' )
-      $noms[] = 'Points de victoire (si détruit)';
+  	switch($this->type)
+  	{
+  	case 'buff':
+  	case 'debuff':
+	    $noms[] = 'Durée';
+  		break;
+  	default:
+	    if( $this->type != 'drapeau' )
+	      $noms[] = 'Entretien';
+	    $noms = array_merge($noms, array('HP', 'PP', 'PM', 'Esquive', 'Caractéristiques', 'Temps de construction (base)', 'Temps de construction minimum'));
+	    if( $this->type != 'drapeau' )
+	      $noms[] = 'Points de victoire (si détruit)';
+		}
     $noms[] = 'Encombrement';
     return $noms;
   }
@@ -280,12 +304,20 @@ class objet_royaume extends objet_invent
   {
     $bat = &$this->get_batiment();
     $vals = array($this->type, $bat->get_description());
-    if( $this->type != 'drapeau' )
-      $vals[] = $bat->get_entretien();
-    $vals = array_merge($vals, array($bat->get_hp(), $bat->get_PP(),
-      $bat->get_PM(), $bat->get_esquive(), $bat->get_carac(), transform_min_temp($bat->get_temps_construction()), transform_min_temp($bat->get_temps_construction_min())) );
-    if( $this->type != 'drapeau' )
-      $vals[] = $bat->get_point_victoire();
+  	switch($this->type)
+  	{
+  	case 'buff':
+  	case 'debuff':
+	    $vals[] = transform_min_temp($bat->get_duree());
+  		break;
+  	default:
+	    if( $this->type != 'drapeau' )
+	      $vals[] = $bat->get_entretien();
+	    $vals = array_merge($vals, array($bat->get_hp(), $bat->get_PP(),
+	      $bat->get_PM(), $bat->get_esquive(), $bat->get_carac(), transform_min_temp($bat->get_temps_construction()), transform_min_temp($bat->get_temps_construction_min())) );
+	    if( $this->type != 'drapeau' )
+	      $vals[] = $bat->get_point_victoire();
+		}
     $vals[] = $this->encombrement;
     return $vals;
   }

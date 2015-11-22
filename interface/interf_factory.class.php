@@ -859,7 +859,7 @@ class interf_factory
     include_once(root.'interface/interf_bat_drap.class.php');
   	return new interf_bd_ads($royaume, $x, $y);
 	}
-  function creer_interf_bd_drapeaux(&$royaume, $x=false, $y=false)
+  function creer_bd_drapeaux(&$royaume, $x=false, $y=false)
   {
     include_once(root.'interface/interf_bat_drap.class.php');
   	return new interf_bd_drapeaux($royaume, $x, $y);

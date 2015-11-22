@@ -144,7 +144,8 @@ function transform_min_temp($time)
 		$W_time = $W_time - ($minutes * 60);
 		$string .= ' '.zero_before($minutes, 2).'mins';
 	}
-	if(empty($minutes) && (!empty($heures) || !empty($jours)) ) { $string .= ' '.zero_before($minutes, 2).'mins'; };
+	if( empty($minutes) && empty($heures) && empty($jours) )
+		$string .= ' '.zero_before($minutes, 2).'mins';
 		
 	return $string;
 }

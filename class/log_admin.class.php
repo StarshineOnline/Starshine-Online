@@ -103,7 +103,7 @@ class log_admin_db
 		{
 			$requete = 'INSERT INTO log_admin (id_joueur, type, message, date) VALUES(';
 			$requete .= ''.$this->id_joueur.', "'.mysql_escape_string($this->type).'", "'.mysql_escape_string($this->message).'", NOW())';
-			if($debug) echo $requete.';';
+			$db->query($requete);
 			//Récuperation du dernier ID inséré.
 			$this->id = $db->last_insert_id();
 		}

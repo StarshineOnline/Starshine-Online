@@ -32,7 +32,7 @@ class interf_bat_drap extends interf_onglets
 		$req = $db->query("SELECT COUNT(*) FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190 ORDER BY fin_placement ASC");
 		$row = $db->read_array($req);
 		if( $row[0] > 0 )
-			$this->add_onglet('Drapeaux <span class="badge">'.$row[0].'</span>', $url->get('onglet', 'ads_drapeaux'), 'ongl_drapeaux', 'ongl_gest', $onglet=='drapeaux');
+			$this->add_onglet('Drapeaux <span class="badge">'.$row[0].'</span>', $url->get('onglet', 'drapeaux'), 'ongl_drapeaux', 'ongl_gest', $onglet=='drapeaux');
 		// Liste de vos bâtiments
 		$req = $db->query("SELECT COUNT(*) FROM construction WHERE royaume = ".$royaume->get_id()." AND x <= 190 AND y <= 190 ORDER BY type, date_construction ASC");
 		$row = $db->read_array($req);
@@ -195,7 +195,7 @@ class interf_bd_drapeaux extends interf_bd_liste
 	const titre = 'Liste de vos drapeaux sur territoire ennemi';
 	protected function get_requete(&$royaume)
 	{
-		return "SELECT *, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190 ORDER BY fin_placement ASC";
+		return "SELECT placement.*, map.royaume AS r FROM placement LEFT JOIN map ON (map.y = placement.y AND placement.x = map.x) WHERE placement.type = 'drapeau' AND placement.royaume = ".$royaume->get_id()." AND map.x <= 190 AND map.y <= 190 ORDER BY fin_placement ASC";
 	}
 }
 

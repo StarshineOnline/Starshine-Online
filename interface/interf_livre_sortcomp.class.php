@@ -127,7 +127,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 					}
 					else
 						$cond = (/*$elt->get_cible() == comp_sort::cible_unique ||*/ $elt->get_cible() == comp_sort::cible_autre || $elt->get_cible() == comp_sort::cible_autregrp ) && $elt->get_type() != 'rez';
-	        if( $sort_groupe && $lance_groupe && $this_perso->get_groupe() )
+	        if( $sort_groupe && $lance_groupe && $this->perso->get_groupe() )
 	        {
 	        	$lien = 'livre.php?type='.$type.'&categorie='.$categorie.'&action=lancer_groupe&cible='.$cible->get_id().'&type_cible='.$cible->get_type().'&id='.$elt->get_id();
 	        	$grp = $e->add( new interf_lien_cont($lien, false, 'icone') );
@@ -154,7 +154,9 @@ class interf_livre_sortcomp extends interf_bal_cont
 						break;
 					}
 				}
-				$e->add( new interf_img($elt->get_image()) );
+				$img = $elt->get_image();
+				if( $img )
+					$e->add( new interf_img($img) );
 			}
 			else
 			{

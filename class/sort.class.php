@@ -27,9 +27,10 @@ abstract class sort extends comp_sort
   function get_mp_final(&$perso)
   {
     global $Trace;
-    $mp = $this->mp * $perso->get_facteur_magie();
+    $mp = $this->mp;
     if( !$this->get_special() )
     {
+    	$mp *= $perso->get_facteur_magie();
 	    $affinite = $Trace[$perso->get_race()]['affinite_'.$this->comp_assoc];
 	    $facteur = (1 - (($affinite - 5) / 10));
 	    $mp = round($this->mp * $facteur);
