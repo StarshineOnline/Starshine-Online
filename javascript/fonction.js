@@ -267,7 +267,7 @@ function envoi_erreur_js(err)
 	}
 	catch(e)
 	{
-		alert("Erreur lors du formatage d'une erreur : "+e.message+" ("+ navigator.userAgent+")");
+		envoi_log("bug", "Erreur lors du formatage d'une erreur javascript : "+e.message+" ("+ navigator.userAgent+")");
 	}
 }
 
@@ -279,7 +279,7 @@ function envoi_log(type, message)
 	}
 	catch(e)
 	{
-		alert("Erreur lors de l'envoi d'un log : "+e.message+" ("+ navigator.userAgent+")");
+		aff_erreur("Erreur lors de l'envoi d'un log : "+e.message+" ("+ navigator.userAgent+")", message);
 	}
 }
 
@@ -323,7 +323,7 @@ function maj_tooltips()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -335,7 +335,7 @@ function aff_ico_charger()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -347,7 +347,7 @@ function aff_ico_sso()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -371,7 +371,7 @@ function formate_duree(duree, detail)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return txt;
 }
@@ -393,7 +393,7 @@ function formate_date(date)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return "erreur";
 }
@@ -413,7 +413,7 @@ function suppr_buff(elt)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -457,7 +457,7 @@ try
 }
 catch(err)
 {
-	alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 }
 
 function filtre_table(filtre)
@@ -470,7 +470,7 @@ function filtre_table(filtre)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -482,7 +482,7 @@ function toggle(id)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return false;
 }
@@ -498,7 +498,7 @@ function init_bbcode()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -523,7 +523,7 @@ function creer_element(tag, id, classe, pere, contenu, before)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
   return elt;
 }
@@ -543,7 +543,7 @@ function creer_bouton(texte, pere, code, style)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
   return btn;
 }
@@ -561,7 +561,7 @@ function creer_chp_form(type_chp, nom, valeur, pere)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return chp;
 }
@@ -586,7 +586,7 @@ function modif_nom_creature(id)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -600,7 +600,7 @@ function valide_nom_creature(id)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -612,7 +612,7 @@ function debugs()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return false;
 }
@@ -649,7 +649,7 @@ function carte_royaume(id)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return false;
 }
@@ -691,7 +691,7 @@ function bascule_aide()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 	return false;
 }
@@ -720,7 +720,7 @@ function mouv_aide(evt)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -739,7 +739,7 @@ function clique_aide()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -756,7 +756,7 @@ function aide(id)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -771,7 +771,7 @@ function fin_aide()
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -787,7 +787,7 @@ function aff_sousmenu(elt)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -979,7 +979,7 @@ function chargerPopover(elt, id, pos, url, titre)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
@@ -1154,7 +1154,7 @@ $(function () {
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 });
 
@@ -1207,7 +1207,7 @@ function suggestion(valeur, cible, origine, race)
 	}
 	catch(err)
 	{
-		alert("Erreur lors de l'envoie d'un log : "+err.message);
+		envoi_erreur_js(err);
 	}
 }
 
