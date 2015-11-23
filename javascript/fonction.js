@@ -89,7 +89,6 @@ function aff_erreur(contenu, donnees, icone/*='bug'*/)
 	}
 	catch(err)
 	{
-		alert("Erreur : "+contenu+" (+"+err.message+")");
 	}
 }
 

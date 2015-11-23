@@ -29,14 +29,14 @@ abstract class interf_sso extends interf_html
     $this->css(static::prefixe_fichiers.'css/dataTables.bootstrap.css');
     // javascript
     $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-2.0.2.min.js');
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-ui-1.10.3.custom.min.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.dataTables.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hotkeys.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap.min.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/jquery/dataTables.bootstrap.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap-wysiwyg.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/bbcodeParser.js', true);
-    $this->javascript(static::prefixe_fichiers.'javascript/fonction.js', true);
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery-ui-1.10.3.custom.min.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.dataTables.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/jquery.hotkeys.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap.min.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/jquery/dataTables.bootstrap.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/bootstrap-wysiwyg.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/bbcodeParser.js');
+    $this->javascript(static::prefixe_fichiers.'javascript/fonction.js');
     // icone de favori
     $this->link('icon', 'image/png', 'image/favicon.png');
     
