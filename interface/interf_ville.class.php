@@ -104,11 +104,11 @@ class interf_ville extends interf_gauche
 		if( $batiment )
 		{
 			$quetes = $menu->add( new interf_elt_menu('', 'bureau_quete.php', 'return charger(this.href);') );
-			$carte->get_lien()->add( new interf_img('image/ville/bureau_des_quete.png', 'Quêtes') );
+			$quetes->get_lien()->add( new interf_img('image/ville/bureau_des_quete.png', 'Quêtes') );
 			if($batiment->has_bonus('taverne'))
 			{
 				$tavene = $menu->add( new interf_elt_menu('', 'taverne.php', 'return charger(this.href);') );
-				$carte->get_lien()->add( new interf_img('image/ville/taverne.png', 'Taverne') );
+				$tavene->get_lien()->add( new interf_img('image/ville/taverne.png', 'Taverne') );
 			}
 			if($batiment->has_bonus('ecurie'))
 			{

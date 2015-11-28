@@ -185,6 +185,7 @@ class quete_perso extends table
 	
 	static function verif_action($type_cible, &$perso, $mode, $option=null)
 	{
+		global $db;
 		/// Quêtes du personnage
 		$quetes_perso = quete_perso::create('id_perso', $perso->get_id());
 		$msg = '';

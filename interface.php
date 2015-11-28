@@ -13,7 +13,14 @@ if(array_key_exists('ID', $_SESSION) && !empty($_SESSION['ID']))
 	$joueur = new perso($_SESSION['ID']);
 else
 {
-	echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
+	/// @todo à améliorer
+	if( array_key_exists('ajax', $_GET) && $_GET['ajax'] == 1 )
+	{
+		$princ = $G_interf->creer_jeu();
+		$princ->recharger_interface('index.php');
+	}
+	else
+		echo 'Vous êtes déconnecté, veuillez vous reconnecter.';
 	exit();
 }
 

@@ -301,6 +301,9 @@ class log_admin extends log_admin_db {
 
   static function log($type, $message, $backtrace=false)
   {
+  	$der = log_admin::create(false, false, 'id DESC LIMIT 1', false, '1');
+  	if( $der && $der[0]->get_message() == $message )
+  		return;
     $log = new log_admin();
     if( $backtrace )
       $message .= self::format_backtrace();

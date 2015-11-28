@@ -46,6 +46,7 @@ case 'tp':
 	{
 	case 'ville':
 		/// @todo remplacer cette base par autre chose
+		/// @todo vérifier droits et loguer triche
 		$requete = 'SELECT * FROM teleport WHERE ID = '.sSQL($_GET['id']);
 		$req = $db->query($requete);
 		$row = $db->read_array($req);

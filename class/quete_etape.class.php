@@ -531,7 +531,7 @@ class quete_etape extends table
 			case 'C': // Création d'un bâtiment
 				// le bâtiment existe-t-il déjà ?
 				$constr = construction::create('id_batiment', $param[0]);
-				$agit = count($constr) == 0 || count( quete_etape::create('id_etape', $this->id) ) == 0;
+				$agit = count($constr) == 0 || count( quete_etape::create('etape', $this->id) ) == 0;
 				if( $agit )
 				{
 					// choix de la case

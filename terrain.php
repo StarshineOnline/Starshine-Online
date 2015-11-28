@@ -62,8 +62,8 @@ case 'deposer':
 	$batiment = $construction->get_batiment();
 	$coffre = new coffre($construction->id);
 	$coffre_inventaire = $coffre->get_coffre_inventaire();
-	$item = $perso->get_inventaire_slot_partie($_GET['index']);
-	$objet = objet_invent::factory($objet);
+	$obj = $perso->get_inventaire_slot_partie($_GET['index']);
+	$objet = objet_invent::factory($obj);
 	if($coffre_inventaire->get_encombrement() + $objet->get_encombrement() < $batiment->effet)
 	{
 		//On le met dans le coffre

@@ -111,7 +111,7 @@ case 'deposer_ville':
 	break;
 case 'deposer_terrain':
 	/// @todo passer par des objets & loguer triche
-	$requete = 'SELECT b.effet FROM terrain AS t INNER JOIN terrain_construction AS c ON c.id_terrain = t.id INNER JOIN terrain_batiment AS b ON c.id_batiment = b.id WHERE b.type = "ecurie" AND t.id_joueur = '.$this->perso->get_id();
+	$requete = 'SELECT b.effet FROM terrain AS t INNER JOIN terrain_construction AS c ON c.id_terrain = t.id INNER JOIN terrain_batiment AS b ON c.id_batiment = b.id WHERE b.type = "ecurie" AND t.id_joueur = '.$perso->get_id();
 	$req = $db->query($requete);
 	$row = $db->read_assoc($req);
 	if( $row )

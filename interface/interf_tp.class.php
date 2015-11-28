@@ -53,7 +53,7 @@ class interf_tp extends interf_ville
 			if($row_race['race'] != '')
 			{
 				//Sélection de la diplomatie
-				$requete_diplo = "SELECT ".$row_race['race']." FROM diplomatie WHERE race = '".$royaume->get_race()."'";
+				$requete_diplo = "SELECT ".$row_race['race']." FROM diplomatie WHERE race = '".$perso->get_race()."'";
 				$req_diplo = $db->query($requete_diplo);
 				$row_diplo = $db->read_row($req_diplo);
 				$distance = $perso->calcule_distance($row['posx'], $row['posy']);

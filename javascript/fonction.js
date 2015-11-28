@@ -416,49 +416,6 @@ function suppr_buff(elt)
 	}
 }
 
-try
-{
-	var filtre_ecole_mag = false;
-	$.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
-	{
-		//alert(dataIndex + " : " + data);
-		return false;
-	});
-	$.fn.dataTable.ext.type.detect.unshift( function ( d )
-	{
-	  return d.indexOf("<img") >= 0 ? 'aptitude' : null;
-	} );
-	$.fn.dataTable.ext.type.order['aptitude-pre'] = function ( d )
-	{
-		var deb = d.indexOf('src=') + 17;
-		var fin = d.indexOf('"', deb) - 4;
-		var aptitude = d.substring(deb, fin);
-		deb = d.indexOf('>', d.indexOf('<span')) + 1;
-		fin = d.indexOf('</span>', deb);
-		var valeur = parseInt(d.substring(deb, fin));
-		switch(aptitude)
-		{
-		case 'sort_elem':
-		case 'melee':
-			return 1000+valeur;
-		case 'sort_mort':
-		case 'esquive':
-			return 2000+valeur;
-		case 'sort_vie':
-		case 'distance':
-			return 3000+valeur;
-		case 'blocage':
-		case 'dressage':
-			return 4000+valeur;
-		}
-	  return 0;
-	};
-}
-catch(err)
-{
-		envoi_erreur_js(err);
-}
-
 function filtre_table(filtre)
 {
 	try
@@ -1115,6 +1072,7 @@ var cache_monstre;
 var affiche_royaume = false;
 var show_only = '';
 
+var filtre_ecole_mag = false;
 $(document).ready(function()
 {
 	/*$(".login_nom").focus();
@@ -1147,6 +1105,41 @@ $(function () {
 			else
 				aff_erreur('Erreur : '+jqxhr.statusText+' (statut : '+jqxhr.status+')', jqxhr.responseText);
 		});
+		
+		$.fn.dataTable.ext.search.push( function( settings, data, dataIndex )
+		{
+			//alert(dataIndex + " : " + data);
+			return false;
+		});
+		$.fn.dataTable.ext.type.detect.unshift( function ( d )
+		{
+		  return d.indexOf("<img") >= 0 ? 'aptitude' : null;
+		} );
+		$.fn.dataTable.ext.type.order['aptitude-pre'] = function ( d )
+		{
+			var deb = d.indexOf('src=') + 17;
+			var fin = d.indexOf('"', deb) - 4;
+			var aptitude = d.substring(deb, fin);
+			deb = d.indexOf('>', d.indexOf('<span')) + 1;
+			fin = d.indexOf('</span>', deb);
+			var valeur = parseInt(d.substring(deb, fin));
+			switch(aptitude)
+			{
+			case 'sort_elem':
+			case 'melee':
+				return 1000+valeur;
+			case 'sort_mort':
+			case 'esquive':
+				return 2000+valeur;
+			case 'sort_vie':
+			case 'distance':
+				return 3000+valeur;
+			case 'blocage':
+			case 'dressage':
+				return 4000+valeur;
+			}
+		  return 0;
+		};
 		
 		$(".dropdown input, .dropdown label").click(function(e) { e.stopPropagation();});
 		init_bbcode();

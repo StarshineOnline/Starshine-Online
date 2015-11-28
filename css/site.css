@@ -137,7 +137,7 @@ main
 	{
 		height: 100%;
 	}
-	main.plein
+	main
 	{
 		height: 100%;
 		height: calc( 100% - 200px );
@@ -147,9 +147,17 @@ main
 		height: calc( 100% - 85px );
 		margin-bottom: 25px;
 	}
+	#pub
+	{
+		position:absolute;
+		bottom: 25px;
+	}
 	#partenaires
 	{
-		position: fixed;
+		/*position: fixed;*/
+		background-color: black;
+		position:absolute;
+		bottom: 0;
 	}
 }
 
@@ -173,10 +181,9 @@ main
 
 #pub
 {
-	position:absolute;
 	height: 100px;
 	width: 800px;
-	bottom: 25px;
+	max-width:100%;
 	border: none;
 }
 
@@ -187,14 +194,6 @@ main
 	left: 0;
 	padding-left: 5px;
 	width: 100%;
-}
-
-@media (min-width: 768px)
-{
-	#partenaires
-	{
-		background-color: black;
-	}
 }
 
 a 

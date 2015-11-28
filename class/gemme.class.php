@@ -286,9 +286,10 @@ class gemme_enchassee extends effect
 		if ($this->enchantement_type == 'poison' &&
 				$passif->get_type() != 'batiment') {
 			$de = rand(1, 100);
-			$this->debug('poison: d100 doit être inférieur à '.$this->enchantement_effet.": $de");
+			interf_debug::enregistre('poison: d100 doit être inférieur à '.$this->enchantement_effet.': '.$de);
 			if ($de <= $this->enchantement_effet) {
-				$this->hit($passif->get_nom().' est empoisonné par '.$this->nom);
+				$attaque->get_interface()->effet(37, $this->enchantement_effet, $actif->get_nom(), $passif->get_nom());
+				$attaque->add_log_effet_actif('&ef37~'.$this->enchantement_effet);
 				$this->poison = $this->enchantement_effet2;
 				$passif->etat['poison_lent']['effet'] = $this->enchantement_effet2;
 				$passif->etat['poison_lent']['duree'] = 5;
@@ -299,7 +300,7 @@ class gemme_enchassee extends effect
 		if ($this->enchantement_type == 'vampire') {
 			/* elles sont toutes à 30%, sinon il faudra un effet 2 */
 			$de = rand(1, 100);
-			$this->debug("vampire: d100 doit être inférieur à 30: $de");
+			interf_debug::enregistre('vampire: d100 doit être inférieur à 30: '.$de);
 			if ($de <= 30) {
 				$gain = min($this->enchantement_effet, $attaque->get_degats());
 				if (($actif->get_hp() + $gain) > $actif->get_hp_max())
@@ -320,16 +321,16 @@ class gemme_enchassee extends effect
     $passif = $attaque->get_passif();
 		if ($this->enchantement_type == 'bouclier_epine') {
 			$actif->add_hp(-$this->enchantement_effet);
-			$this->hit($actif->get_nom().' perd '.$this->enchantement_effet.
-								 ' HP par la '.$this->nom.' du bouclier de '.
-								 $passif->get_nom(), true);
+			$attaque->get_interface()->effet(36, $this->enchantement_effet, $actif->get_nom(), $passif->get_nom());
+			$attaque->add_log_effet_actif('&ef36~'.$this->enchantement_effet);
+			
 		}
     if ($this->enchantement_type == 'parade_totale') {
 			$de = rand(1, 100);
-			$this->debug("parade totale: d100 doit être inférieur à $this->enchantement_effet: $de");
+			interf_debug::enregistre('parade totale: d100 doit être inférieur à '.$this->enchantement_effet.': '.$de);
       if ($de <= $this->enchantement_effet) {
-        $this->message('La '.$this->nom.' de <strong>'.$passif->get_nom().
-                       '</strong> pare totalement le coup');
+				$attaque->get_interface()->effet(38, $this->enchantement_effet, $actif->get_nom(), $passif->get_nom());
+				$attaque->add_log_effet_actif('&ef38~'.$this->enchantement_effet);
         $attaque->set_degats(0);
       }
     }

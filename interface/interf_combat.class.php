@@ -311,6 +311,16 @@ class interf_combat extends interf_bal_cont
 			$texte =  $nom_passif.' est désarmé !';
 			$classe = 'effet';
 			break;
+		case 36:  // gemme d'épine
+			$texte =  $nom_actif.' perd '.$effet.' HP par la gemme d\'épine du bouclier de '.$nom_passif;
+			$classe = 'degat';
+		case 37:  // gemme du serpent
+			$texte =  $nom_passif.' est empoisonné par la gemme du serpent.';
+			$classe = 'effet';
+		case 38:  // gemme d'esquive
+			$texte =  'La gemme d\'esquive de <strong>'.$nom_passif.'</strong> pare totalement le coup';
+			$classe = 'effet';
+			break;
 		default:
 			return;
 		}

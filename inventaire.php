@@ -126,19 +126,22 @@ if( !$visu && $action )
   case 'depot':
     $objet = objet_invent::factory( $obj );
     $objet->deposer($perso, $cadre);
-		journal_royaume::ecrire_perso('Petit drapeau', null, $objet->get_nom(), 1);
+		journal_royaume::ecrire_perso('pose_depot', null, $objet->get_nom(), 1);
     break;
   case 'slot_1':
   case 'slot_2':
   case 'slot_3':
-    $objet = objet_invent::factory( $obj );
-    if( $objet->mettre_slot($perso, $cadre, $action[5]) )
+    $ind = $perso->recherche_objet($obj);
+    if( $ind )
     {
-    	$ind = $perso->recherche_objet($obj);
-      $perso->set_inventaire_slot_partie($objet->get_texte(), $ind[1]);
-		  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
-      $perso->sauver();
-    }
+	    $objet = objet_invent::factory( $obj );
+	    if( $objet->mettre_slot($perso, $cadre, $action[5]) )
+	    {
+	      $perso->set_inventaire_slot_partie($objet->get_texte(), $ind[1]);
+			  $perso->set_inventaire_slot( serialize($perso->get_inventaire_slot_partie(false, true)) );
+	      $perso->sauver();
+	    }
+		}
     break;
 	case 'vente_hotel':
     $objet = objet_invent::factory( $obj );

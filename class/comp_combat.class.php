@@ -1084,7 +1084,7 @@ class comp_combat_fleche_enflammee extends comp_combat
     if( $this->test_de(100, $this->get_effet()) )
     {
       $passif = &$attaque->get_passif();
-			$attaque->get_interface()->effet(18, $this->get_effet2(), $actif->get_nom(), $passif->get_nom());
+			$attaque->get_interface()->effet(18, $this->get_effet2(), $attaque->get_actif()->get_nom(), $passif->get_nom());
 			$attaque->add_log_effet_passif('&ef18~'.$this->get_effet2());
       $passif->set_hp( $passif->get_hp() -  $this->get_effet2());
     }
