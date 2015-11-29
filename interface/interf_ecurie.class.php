@@ -47,7 +47,7 @@ class interf_ecurie extends interf_ville
 		$div->add( new interf_bal_smpl('h4', 'Créatures en ville ('.$this->perso->nb_pet_ecurie().' / '.$max_ecurie.')') );
 		$liste = $div->add( new interf_bal_cont('ul', 'ecurie_ville') );
 		/// @todo à améliorer
-		foreach($this->perso->ecurie as $pet)
+		foreach($this->perso->get_ecurie() as $pet)
 		{
 			$this->aff_creature($liste, $pet, true);
 		}
@@ -57,7 +57,7 @@ class interf_ecurie extends interf_ville
 			$div->add( new interf_bal_smpl('h4', 'Créatures dans votre écurie ('.$this->perso->nb_pet_ecurie_self().' / '.$row['effet'].')') );
 			$liste = $div->add( new interf_bal_cont('ul', 'ecurie_terrain') );
 			/// @todo différencier les deux écuries
-			foreach($this->perso->ecurie as $pet)
+			foreach($this->perso->get_ecurie_self() as $pet)
 			{
 				$this->aff_creature($liste, $pet, true);
 			}
