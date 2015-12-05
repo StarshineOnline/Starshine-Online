@@ -385,7 +385,7 @@ class interf_carte extends interf_tableau
     $bats = construction::get_images_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max, $this->grd_img, $cond_bat, $royaumes);
     foreach($bats as $b)
     {
-    	if( $b->quete && !count(quete_perso::create(array('id_etape', 'id_perso'), array($b->quete, $perso->get_id()))) )
+    	if( $b->quete && !count(quete_perso::create(array('id_etape', 'id_perso'), array($b->quete, joueur::get_perso()->get_id()))) )
     			continue;
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');

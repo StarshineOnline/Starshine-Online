@@ -89,8 +89,10 @@ if($db->num_rows > 0)
 				//C'est le roi on l'active, et on met en place la prochaine élection
 				if($i == 0)
 				{
+					$id_eco = $row_c['id_ministre_economie'] ? $row_c['id_ministre_economie'] : '0';
+					$id_mil = $row_c['id_ministre_militaire'] ? $row_c['id_ministre_militaire'] : '0';
 					//Ministres
-					$requete = "UPDATE perso SET rang_royaume = 1 WHERE id = ".$row_c['id_ministre_economie']." OR id = ".$row_c['id_ministre_militaire'];
+					$requete = "UPDATE perso SET rang_royaume = 1 WHERE id = ".$id_eco." OR id = ".$id_mil;
 					$db->query($requete);	
 					
 					$req_m = "SELECT nom FROM perso WHERE id = ".$row_c['id_ministre_economie']." OR id = ".$row_c['id_ministre_militaire'];

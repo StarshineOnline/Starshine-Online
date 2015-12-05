@@ -430,7 +430,7 @@ class quete_etape extends table
 	}
 	function gain_royaume(&$perso)
 	{
-		global $Trace;
+		global $Trace, $db;
 		if( $this->get_gain_royaume() )
 		{
 			$royaume = new royaume( $Trace[$perso->get_race()]['numrace'] );

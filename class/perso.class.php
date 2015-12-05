@@ -3335,6 +3335,7 @@ class perso extends entite
 	{
 		global $db;
 		$quete = new quete($id_quete);
+		my_dump($quete);
 		// quêtes prises pour tout le groupe en même temps
 		$num_etape = 1;
 		$etape = null;
@@ -3367,7 +3368,7 @@ class perso extends entite
 					$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $membre->get_id()));
 					if( !$qp && $quete->a_requis($membre) )
 					{
-						$qp = new quete_perso($membre->id, $quete, $etape[0]->get_id());
+						$qp = new quete_perso($membre->id, $quete, $etape->get_id());
 						$qp->sauver();
 					}
 				}

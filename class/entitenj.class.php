@@ -118,6 +118,11 @@ class entitenj extends entite
 	{
     return $this->incarn->get_date_debut();
   }
+  /// @todo change nom
+  function get_id_joueur()
+  {
+  	return $this->incarn->get_id_joueur();
+	}
 }
 
 ?>

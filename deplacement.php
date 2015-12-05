@@ -275,6 +275,7 @@ if($mouvement)
 				$row = $db->read_row($req);
 				$_SESSION['attaque_donjon'] = 'ok';
 				/// @todo à refaire
+				interf_alerte::enregistre(interf_alerte::msg_info, 'Un monstre vous attaque sauvagement !');
 				//<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id_monstre= echo $row[0]; &type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />			
 			}
 		}
