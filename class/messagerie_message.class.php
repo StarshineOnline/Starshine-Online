@@ -1,8 +1,7 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
-class messagerie_message
+
+
+class messagerie_message extends table
 {
 	public $id_message;
 	public $id_auteur;
@@ -15,30 +14,23 @@ class messagerie_message
 	public $nom_dest;
 	
 	/**	
-	    *  	Constructeur permettant la cr?ation d'un message.
-	    *	Les valeurs par d?faut sont celles de la base de donn?e.
-	    *	Le constructeur accepte plusieurs types d'appels:
-	    *		-messagerie_message() qui construit un message "vide".
-	    *		-messagerie_message($id) qui va chercher le message dont l'id est $id_message dans la base.
-	**/
-	function __construct($id_message = 0, $id_auteur = 0, $id_dest = 0, $titre = 'Sans titre', $message = '', $id_thread = 0, $date = null, $nom_auteur = null, $nom_dest = null)
+	 * Constructeur permettant la création d'un message.
+	 *	Les valeurs par défaut sont celles de la base de donnée.
+	 *	Le constructeur accepte plusieurs types d'appels:
+	 *		-messagerie_message() qui construit un message "vide".
+	 *		-messagerie_message($id) qui va chercher le message dont l'id est $id_message dans la base.
+	 **/
+	function __construct($id = 0, $id_auteur = 0, $id_dest = 0, $titre = 'Sans titre', $message = '', $id_thread = 0, $date = null, $nom_auteur = null, $nom_dest = null)
 	{
-		global $db;
-		if($date == null) $date = date("Y-m-d H:i:s", time());
 		//Verification du nombre et du type d'argument pour construire le message adequat.
-		if( (func_num_args() == 1) && is_numeric($id_message) )
+		if( func_num_args() == 1 )
 		{
-			$requeteSQL = $db->query('SELECT id_auteur, id_dest, titre, message, id_thread, date, nom_auteur, nom_dest FROM messagerie_message WHERE id_message = '.$id_message);
-			//Si le thread est dans la base, on le charge sinon on cr?e un thread vide.
-			if( $db->num_rows($requeteSQL) > 0 )
-			{
-				list($this->id_auteur, $this->id_dest, $this->titre, $this->message, $this->id_thread, $this->date, $this->nom_auteur, $nom_dest) = $db->read_row($requeteSQL);
-			}
-			else
-				$this->__construct();
+			$this->charger($id);
 		}
 		else
 		{
+			if($date == null)
+				$date = date("Y-m-d H:i:s", time());
 			$this->id_auteur = $id_auteur;
 			$this->id_dest = $id_dest;
 			$this->titre = $titre;
@@ -56,48 +48,46 @@ class messagerie_message
 				$this->nom_dest = $auteur['dest'];
 			}
 		}
-		$this->id_message = $id_message;
+		$this->id = $id;
+		$this->id_message = $id;
 	}
 	
-	//Fonction d'ajout/modification.
-	function sauver()
+	/// Renvoie le nom du champ servant d'identifiant
+	protected function get_champ_id()
 	{
-		global $db;
-		if( $this->id_message > 0 )
-		{
-			$requete = 'UPDATE messagerie_message SET ';
-			$requete .= 'id_auteur = '.$this->id_auteur.', id_dest = '.$this->id_dest.', titre = "'.$this->dest.'", message = "'.$this->message.'", id_thread = '.$this->id_thread.', date = "'.$this->date.'", nom_auteur = "'.$this->nom_auteur.'", nom_dest = "'.$this->nom_dest;
-			$requete .= ' WHERE id_message = '.$this->id_message;
-			$db->query($requete);
-		}
-		else
-		{
-			$requete = 'INSERT INTO messagerie_message (id_auteur, id_dest, titre, message, id_thread, date, nom_auteur, nom_dest) VALUES(';
-			$requete .= $this->id_auteur.', '.$this->id_dest.', "'.$this->titre.'", "'.$this->message.'", '.$this->id_thread.', "'.$this->date.'", "'.$this->nom_auteur.'", "'.$this->nom_dest.'")';
-			$db->query($requete);
-			//R?cuperation du dernier ID ins?r?.
-			$this->id_message = $db->last_insert_id();
-		}
+		return 'id_message';
 	}
-	
-	//supprimer le message de la base.
-	function supprimer()
+
+	/**
+	* Initialise les données membres à l'aide d'un tableau
+	* @param array $vals Tableau contenant les valeurs des données.
+	*/
+	protected function init_tab($vals)
 	{
-		global $db;
-		if( $this->id_message > 0 )
-		{
-			//Suppression du message
-			$requete = 'DELETE FROM messagerie_message WHERE id_message = '.$this->id_message;
-			$db->query($requete);
-			//Suppression de tous les ?tats associ?s
-			$requete = 'DELETE FROM messagerie_etat WHERE id_message = '.$this->id_message;
-			$db->query($requete);
-		}
+		table::init_tab($vals);
+		$this->id_message = $vals['id'];
+		$this->id_auteur = $vals['id_quete'];
+		$this->id_dest = $vals['etape'];
+		$this->titre = $vals['variante'];
+		$this->message = $vals['nom'];
+		$this->id_thread = $vals['description'];
+		$this->date = $vals['niveau'];
+		$this->nom_auteur = $vals['nom_auteur'];
+		$this->nom_dest = $dest['nom_dest'];
 	}
-	
-	function __toString()
+
+	/// Renvoie la liste des champs pour une insertion dans la base
+	protected function get_champs()
 	{
-		return $this->id_auteur.', '.$this->id_dest.', '.$this->titre.', '.$this->message.', '.$this->id_thread.', '.$this->date.', '.$this->nom_auteur.', '.$this->nom_dest;
+    $tbl['id_auteur']='i';
+    $tbl['nom_auteur']='s';
+    $tbl['id_dest']='i';
+    $tbl['nom_dest']='s';
+    $tbl['titre']='s';
+    $tbl['message']='s';
+    $tbl['id_thread']='i';
+    $tbl['date']='s';
+		return $tbl;
 	}
 }
 ?>

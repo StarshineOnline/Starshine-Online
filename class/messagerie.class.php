@@ -1,7 +1,5 @@
 <?php
-if (file_exists('../root.php'))
-  include_once('../root.php');
-?><?php
+
 class messagerie
 {
 	public $id_perso;
@@ -255,7 +253,7 @@ class messagerie
 		{
 			if($id != $this->id_perso) $etat = 'non_lu';
 			else $etat = 'lu';
-			$etat_objet = new messagerie_etat_message(0, $message->id_message, $etat, $id, $type_groupe, $type_echange);
+			$etat_objet = new messagerie_etat_message(0, $message->get_id(), $etat, $id, $type_groupe, $type_echange);
 			$etat_objet->sauver();
 		}
 		return $id_thread;
