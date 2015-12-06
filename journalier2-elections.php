@@ -95,7 +95,7 @@ if($db->num_rows > 0)
 					$requete = "UPDATE perso SET rang_royaume = 1 WHERE id = ".$id_eco." OR id = ".$id_mil;
 					$db->query($requete);	
 					
-					$req_m = "SELECT nom FROM perso WHERE id = ".$row_c['id_ministre_economie']." OR id = ".$row_c['id_ministre_militaire'];
+					$req_m = "SELECT nom FROM perso WHERE id = ".$id_eco." OR id = ".$id_mil;
 					$req_m = $db->query($req_m);
 					while($row_m = $db->read_assoc($req_m))
 					{
@@ -119,8 +119,8 @@ if($db->num_rows > 0)
 					$election->sauver();
 					// Ministres
 					$royaume = new royaume( $row['id_royaume'] );
-					$royaume->set_ministre_economie( $row_c["id_ministre_economie"] );
-					$royaume->set_ministre_militaire( $row_c["id_ministre_militaire"] );
+					$royaume->set_ministre_economie( $id_eco );
+					$royaume->set_ministre_militaire( $id_mil );
 					$royaume->sauver();
 					
 					// Message du forum

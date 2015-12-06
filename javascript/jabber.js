@@ -1,7 +1,6 @@
 function jabber_option(ctrl)
 {
 	var val = ctrl.checked ? "1" : "0";
-	alert(ctrl.name);
 	return charger("option.php?action=jabber&option="+ctrl.name+"&valeur="+val);
 }
 
