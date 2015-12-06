@@ -73,16 +73,16 @@ if($db->num_rows > 0)
 		$i = 0;
 		if($db->num_rows > 0)
 		{
-  		//Suppression de l'ancien roi
-  		$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
-  		$db_forum->query($requete);
-		  //Groupe forum
-  		$requete = "UPDATE perso SET rang_royaume = 7 WHERE (rang_royaume = 6 OR rang_royaume = 1) AND race = '$race'";
-  		$db->query($requete);
-  		// Résultat des votes
+			//Suppression de l'ancien roi
+			$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][2]." WHERE group_id = ".$groupe[$race][1];
+			$db_forum->query($requete);
+			//Groupe forum
+			$requete = "UPDATE perso SET rang_royaume = 7 WHERE (rang_royaume = 6 OR rang_royaume = 1) AND race = '$race'";
+			$db->query($requete);
+			// Résultat des votes
 			while($row_v = $db->read_assoc($req_v))
 			{
-				$requete = "SELECT * FROM candidat WHERE id_perso = ".$row_v['id_candidat']." AND id_election = ".$row['id'];
+				$requete = "SELECT * FROM candidat WHERE id = ".$row_v['id_candidat']." AND id_election = ".$row['id'];
 				
 				$req_c = $db->query($requete);
 				$row_c = $db->read_assoc($req_c);
@@ -104,7 +104,7 @@ if($db->num_rows > 0)
 					}
 					
 					//roi
-					$requete = "UPDATE perso SET rang_royaume = 6 WHERE id = ".$row_v['id_candidat'];
+					$requete = "UPDATE perso SET rang_royaume = 6 WHERE id = ".$row_c['id_perso'];
 					$db->query($requete);
 					$requete = "UPDATE punbbusers SET group_id = ".$groupe[$race][1]." WHERE username = '".$row_c['nom']."'";
 					$db_forum->query($requete);
