@@ -3335,7 +3335,6 @@ class perso extends entite
 	{
 		global $db;
 		$quete = new quete($id_quete);
-		my_dump($quete);
 		// quêtes prises pour tout le groupe en même temps
 		$num_etape = 1;
 		$etape = null;
