@@ -3357,7 +3357,7 @@ class perso extends entite
 				$req = $db->query($requete);
 				$row = $db->read_array($req);
 				if( $row )
-					$etape = max($row[0], $etape);
+					$num_etape = max($row[0], $num_etape);
 				
 				$etape = quete_etape::create(array('id_quete', 'etape'), array($quete->get_id(), $num_etape))[0];
 				foreach($groupe->get_membre_joueur() as $membre)

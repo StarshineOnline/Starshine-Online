@@ -1,4 +1,5 @@
 <?php
+/// @deprecated
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -7,7 +8,6 @@ include_once(root.'inc/fp.php');
 
 $interf_princ = $G_interf->creer_jeu();
 
-/// @todo à améliorer
 $perso = joueur::get_perso();
 $groupe = new groupe($perso->get_groupe());
 

@@ -50,7 +50,7 @@ class interf_info_perso extends interf_cont
 						$invit = true;
 					if( $invit )
 					{
-						$sort = $div->add( new interf_lien('', 'invitegroupe.php?id='.$pj->get_id(), false, 'icone icone-inviter') );
+						$sort = $div->add( new interf_lien('', 'infogroupe.php?action=invite&id='.$pj->get_id(), false, 'icone icone-inviter') );
 						$sort->set_tooltip('Inviter ce joueur dans votre groupe', 'bottom', '#information');
 					}
 				}
@@ -59,7 +59,7 @@ class interf_info_perso extends interf_cont
 					$groupe = new groupe($this->perso->get_groupe());
 					if( $groupe->get_id_leader() == $this->perso->get_id() )
 					{
-						$excl = $div->add( new interf_lien('', 'degrouper.php?id='.$pj->get_id(), false, 'icone icone-exclure', 'Voulez vous expulser ce joueur ?') );
+						$excl = $div->add( new interf_lien('', 'infogroupe.php?action=expulser&id='.$pj->get_id(), false, 'icone icone-exclure', 'Voulez vous expulser ce joueur ?') );
 						$excl->set_tooltip('Exclure ce joueur du groupe', 'bottom', '#information');
 					}
 				}

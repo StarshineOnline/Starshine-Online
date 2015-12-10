@@ -1,5 +1,5 @@
 <?php // -*- mode: php; tab-width: 2 -*-
-/// @deprecated (?)
+
 if (file_exists('root.php'))
   include_once('root.php');
 
@@ -10,6 +10,9 @@ if (file_exists('root.php'))
 */
 include_once(root.'inc/fp.php');
 include_once(root.'fonction/mini_jeux.php');
+
+
+$interf_princ = $G_interf->creer_jeu();
 //Récupération des informations du personnage
 $joueur = new perso($_SESSION['ID']);
 
@@ -21,38 +24,54 @@ if ($W_case != $joueur->get_poscase()) {
 
 function showMessage($msg, $titre = null)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
-  echo '<fieldset><legend>'.$titre.'</legend>';
+  /*echo '<fieldset><legend>'.$titre.'</legend>';
   echo '<div id="info_case">';
   echo $msg;
-  echo '</div>';
+  echo '</div>';*/
+  $cont = $interf_princ->set_droite( new interf_cont() );
+  if( $titre )
+  	$cont->add( new interf_bal_smpl('h4', $titre) );
+  $cont->add( new interf_bal_smpl('div', $msg, 'info_case') );
 }
 
 function showImage($url, $titre = null)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
-  echo '<fieldset><legend>'.$titre.'</legend>';
+  /*echo '<fieldset><legend>'.$titre.'</legend>';
   echo '<div id="info_case">';
   echo '<img alt="'.$title.'" title="'.$title.'" src="'.$url.'" />';
-  echo '</div>';
+  echo '</div>';*/
+  $cont = $interf_princ->set_droite( new interf_cont() );
+  if( $titre )
+  	$cont->add( new interf_bal_smpl('h4', $titre) );
+  $div = $cont->add( new interf_bal_cont('div', $msg, 'info_case') );
+  $img = $div->add( new interf_img($url, $title) );
+  $img->set_attribut('title', $title);
 }
 
 function showParchemin($texte, $titre = 'Une page de parchemin',
 											 $image = 'pagenoir.png', $x = 416, $y = 575)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
-  echo '<fieldset><legend>'.$titre.'</legend>';
+  /*echo '<fieldset><legend>'.$titre.'</legend>';
   echo '<div id="info_case" style="background: url(\'image/'.$image
 		.'\'); width: '.($x - 30).'px; height: '.($y - 30).
-		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';
+		'px; padding: 15px;"><div class="parchemin_texte">'.$texte.'</div></div>';*/
+  $cont = $interf_princ->set_droite( new interf_cont() );
+  if( $titre )
+  	$cont->add( new interf_bal_smpl('h4', $titre) );
+  $div = $cont->add( new interf_bal_cont('div', 'info_case') );
+  $div->set_attribut('style', 'background: url(\'image/'.$image.'\'); width: '.($x - 30).'px; height: '.($y - 30).'px; padding: 15px;');
+  $div->add( new interf_bal_smpl('div', $texte, null, 'parchemin_texte') );
 }
 
 function giveRecette(&$joueur, $id_recette, $quiet = false)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
 	$perso = new perso_recette();
 	$perso_recette = $perso->recov($joueur->get_id(), $id_recette);
 	if(!$perso_recette)
@@ -62,9 +81,11 @@ function giveRecette(&$joueur, $id_recette, $quiet = false)
 		$perso_recette->id_recette =$id_recette;
 		$perso_recette->sauver();
 		if ($quiet) {
-			echo '&nbsp;<small>Vous avez acquis une nouvelle recette !</small>';
+			$interf_princ->set_droite( new interf_bal_smpl('small', 'Vous avez acquis une nouvelle recette !') );
+			//echo '&nbsp;<small>Vous avez acquis une nouvelle recette !</small>';
 		} else {
-			echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
+			$interf_princ->set_droite( new interf_alerte(interf_alerte::msg_succes, false, false, 'Vous avez acquis une nouvelle recette !') );
+			//echo '<h6>Vous avez acquis une nouvelle recette !</h6>';
 		}
 		$dontrefresh = true;
 	}
@@ -81,19 +102,22 @@ function checkTpCacheChache(&$joueur)
 
 function checkTpAbo(&$joueur)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
 	$quetes = $joueur->get_liste_quete();
 	$found = false;
 	foreach ($quetes as $q) {
 		if ($q->get_id() == 86) {
 			$found = true;
-				echo '<fieldset><legend>Descente vers les profondeurs</legend>'.
+				/*echo '<fieldset><legend>Descente vers les profondeurs</legend>'.
 					'<div id="info_case">';
 				echo 'Comme vous l\'avait demandé le gobelin, vous descendez explorer'.
-					' les profondeurs. Qui sait ce que vous allez y trouver ?<br/>';
+					' les profondeurs. Qui sait ce que vous allez y trouver ?<br/>';*/
+			  $cont = $interf_princ->set_droite( new interf_cont() );
+			  $cont->add( new interf_bal_smpl('h4', 'Descente vers les profondeurs') );
+			  $cont->add( new interf_bal_smpl('div', 'Comme vous l\'avait demandé le gobelin, vous descendez explorer les profondeurs. Qui sait ce que vous allez y trouver ?', 'info_case') );
 				$q->get_etape()->fin($joueur);
-				echo '</div>';
+				//echo '</div>';
 		}
 	}
 	if (!$found) {
@@ -119,7 +143,7 @@ function checkTpAbo(&$joueur)
 function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 {
   global $db;
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
 	$quetes = $joueur->get_liste_quete();
 	$found = false;
@@ -127,9 +151,12 @@ function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 		if ($q->get_id() == $queteId) {
 			$found = true;
       $qd = $db->query_get_object("select * from quete where id = $queteId");
-      echo '<fieldset><legend>'.$qd->nom.'</legend><div id="info_case">';
+      /*echo '<fieldset><legend>'.$qd->nom.'</legend><div id="info_case">';
       echo 'Comme on vous l\'avait demandé, vous empruntez le passage. '.
-        'Qui sait ce que vous allez y trouver ?<br/>';
+        'Qui sait ce que vous allez y trouver ?<br/>';*/
+		  $cont = $interf_princ->set_droite( new interf_cont() );
+		  $cont->add( new interf_bal_smpl('h4', '$qd->nom') );
+		  $cont->add( new interf_bal_smpl('div', 'Comme on vous l\'avait demandé, vous empruntez le passage. Qui sait ce que vous allez y trouver ?', 'info_case') );
      $q->get_etape()->fin($joueur);
       echo '</div>';
 		}
@@ -156,7 +183,7 @@ function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)
 
 function usePute(&$joueur, $stars, $honneur, $effet, $virtuose)
 {
-  global $dontrefresh;
+  global $dontrefresh, $interf_princ;
   $dontrefresh = true;
   if ($joueur->get_star() < $star || $joueur->get_honneur() < $honneur) {
     showMessage('<h5>Vous n\'avez pas les moyens !</h5>', 'Prostitution');
@@ -186,6 +213,10 @@ function usePute(&$joueur, $stars, $honneur, $effet, $virtuose)
   else
     $res = pute_effets($joueur, $honneur);
   echo '<h6>'.$res.'</h6>Vous gagnez '.$effet.' PV/PM</div>';
+  $cont = $interf_princ->set_droite( new interf_cont() );
+  $cont->add( new interf_bal_smpl('h4', 'Prostitution') );
+	$cont->add( new interf_bal_smpl('div', $res, 'info_case') );
+  $cont->add( new interf_alerte(interf_alerte::msg_succes, false, false, 'Vous gagnez '.$effet.' PV/PM') );
 }
 
 function checkOpenJailGate(&$joueur)

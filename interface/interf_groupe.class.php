@@ -40,7 +40,7 @@ class interf_groupe extends interf_form
 			$chef->set_attribut('disabled', 'disabled');
 			
 		$btns = $this->add( new interf_bal_cont('div', false, 'btn-group') );
-		$btn = $btns->add( new interf_lien_cont('degrouper.php', false, 'btn btn-default') );
+		$btn = $btns->add( new interf_lien_cont($G_url->get('action', 'quitter'), false, 'btn btn-default') );
 		$btn->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez-vous vraiment quitter ce groupe ?\');');
 		$btn->add( new interf_bal_smpl('span', '', false, 'icone icone-exclure') );
 		$btn->add( new interf_bal_smpl('span', 'Quitter le groupe') );

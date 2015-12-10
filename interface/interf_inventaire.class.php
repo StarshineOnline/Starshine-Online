@@ -262,7 +262,7 @@ class interf_objet_invent extends interf_bal_cont
       //$this->add( new interf_txt($infos) );
       $this->add( new interf_bal_smpl('span', $infos, false, 'infos') );
     }
-    if( $objet->est_identifie()/* && $drags*/ )
+    if( $objet->est_identifie() && $drags )
       $this->set_attribut('onclick', 'chargerPopover(\''.$id.'\', \'infos_'.$id.'\', \'left\', \''.'inventaire.php?action=infos&id='.$objet->get_texte().'&equip='.($equip?substr($id, 5):'0').'&elt='.$id.'\', \''.addslashes($objet->get_nom()).'\')');
   }
 }
