@@ -188,7 +188,7 @@ class interf_jabber extends interf_bal_cont
 				if( $row['valeur'] == 0)
 					$options['salons'][$groupe]['auto'] = false;
 				break;
-			case 'jabber_audio':
+			case 'jabber_race':
 				if( $row['valeur'] == 0)
 					$options['salons'][$race]['auto'] = false;
 				break;
