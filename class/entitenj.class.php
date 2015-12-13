@@ -28,7 +28,7 @@ class entitenj extends entite
 		$this->comp = array();
 		$this->x = $incarn->get_x();
 		$this->y = $incarn->get_y();
-		if( !$this->x )
+		if( !$this->x && $perso )
 		{
       $this->x = $perso->get_x();
 		  $this->y = $perso->get_y();

@@ -69,7 +69,7 @@ case 'deposer':
 		//On le met dans le coffre
 		$coffre->depose_objet($objet);
 		//On supprime l'objet
-		$perso->supprime_objet($item, 1);
+		$perso->supprime_objet($obj, 1);
 
 		$coffre_inventaire = $coffre->get_coffre_inventaire();
 		$perso->check_perso();

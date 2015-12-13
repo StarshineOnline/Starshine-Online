@@ -3365,7 +3365,7 @@ class perso extends entite
 					if( $membre->get_id() == $this->id )
 						continue;
 					$qp = quete_perso::create(array('id_quete', 'id_perso'), array($id_quete, $membre->get_id()));
-					if( !$qp && $quete->a_requis($membre) )
+					if( !$qp && $quete->a_requis($membre) && $etape )
 					{
 						$qp = new quete_perso($membre->id, $quete, $etape->get_id());
 						$qp->sauver();

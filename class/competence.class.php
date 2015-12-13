@@ -362,7 +362,7 @@ class botte_crabe extends botte
 			if ( comp_sort::test_de(100, $this->effet) ) {
 				$passif->etat['desarme']['effet'] = true;
 				$passif->etat['desarme']['duree'] = $this->effet2;
-				$attaque->get_interface()->effet(35,  $this->effet, '', $cible->get_nom());
+				$attaque->get_interface()->effet(35,  $this->effet, '', $passif->get_nom());
 				$attaque->add_log_effet_actif('&ef35~'. $this->effet);
 			}
 		}

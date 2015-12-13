@@ -268,15 +268,64 @@ if($mouvement)
 		//Si ya un monstre, paf il attaque le joueur
 		if($vrai_donjon)
 		{
-			$requete = "SELECT id FROM map_monstre WHERE x = ".$x." AND y = ".$y." ORDER BY hp DESC";
+			$requete = "SELECT * FROM map_monstre WHERE x = ".$x." AND y = ".$y." ORDER BY hp DESC";
 			$req = $db->query($requete);
 			if($db->num_rows > 0)
 			{
-				$row = $db->read_row($req);
+				$row = $db->read_assoc($req);
+				$map_monstre = new map_monstre($row);
 				$_SESSION['attaque_donjon'] = 'ok';
-				/// @todo à refaire
-				interf_alerte::enregistre(interf_alerte::msg_info, 'Un monstre vous attaque sauvagement !');
-				//<img src="image/pixel.gif" onLoad="envoiInfo('attaque.php?id_monstre= echo $row[0]; &type=monstre', 'information'); javascript:alert('Un monstre vous attaque sauvagement !');" />			
+				/// attaque
+				$pet_def = false;
+				if($perso->is_buff('defense_pet'))
+				{
+					$pet = $perso->get_pet();
+					if (!$pet || $pet->get_hp() < 1)
+						interf_debug::enregistre('Le pet est mort…');
+					else
+					{
+						$defense = $perso->get_buff('defense_pet', 'effet');
+						$collier = decompose_objet($perso->get_inventaire_partie('cou'));		
+						if ($collier != '')
+						{
+							$requete = "SELECT * FROM armure WHERE ID = ".$collier['id_objet'];
+							//Récupération des infos de l'objet
+							$req = $db->query($requete);
+							$row = $db->read_array($req);
+							$effet = explode('-', $row['effet']);
+							if ($effet[0] == '20')
+							{
+								$defense = $defense + $effet[1];
+							}
+						}
+						$rand = rand(0, 100);
+						//Défense par le pet
+						interf_debug::enregistre('Defense par le pet: '.$rand.' VS '.$defense);
+						if($rand < $defense)
+						{
+							interf_debug::enregistre('Defense par le pet OK');
+							$pet_def = true;
+						}
+					}
+				}
+				if($pet_def)
+					$attaquant = entite::factory('pet', $pet, $perso);
+				else
+					$attaquant = entite::factory('perso', $perso);
+				$map_monstre->check_monstre();
+				$defenseur = entite::factory('monstre', $map_monstre);
+				$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Combat VS '.$defenseur->get_nom()) );
+				$cadre->add( new interf_alerte(interf_alerte::msg_info, false, false, 'Un monstre vous attaque sauvagement !') );
+				$attaque = new attaque($perso, $attaquant, $defenseur);
+		    $interf = $cadre->add( $G_interf->creer_combat() );
+				$attaque->set_interface( $interf );
+				$R = new royaume( $case->get_royaume() );
+		    $attaque->attaque(0, 'monstre', 0, $R, $pet, true);
+				if( interf_debug::doit_aff_bouton() )
+				{
+					$lien = $interf->add( new interf_bal_smpl('a', '', 'debug_droit', 'icone icone-debug') );
+					$lien->set_attribut('onclick', 'return debugs();');
+				}	
 			}
 		}
 	}

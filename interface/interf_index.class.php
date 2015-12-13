@@ -141,6 +141,7 @@ class interf_index extends interf_sso
 		{
 		case 'infos_perso':
 			$this->set_contenu( $G_interf->creer_index_perso($fils) );
+			break;
 		default:
 			log_admin::log('erreur', 'Section inconnue : '.$id);
 			return null;

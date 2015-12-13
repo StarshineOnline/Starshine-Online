@@ -316,7 +316,7 @@ class interf_infos_objet extends interf_infos_popover
 	    	$utilise->add( new interf_bal_smpl('span', 'utiliser') );
 	    	$utilise->set_tooltip('Utiliser l\'objet (coût variable)');
 			}
-			else if( is_subclass_of($obj, 'objet_equip') )
+			else if( is_subclass_of($obj, 'objet_equip') && (get_class($obj) != 'accessoire' || $obj->get_taille() != 'petit') )
 			{
 	    	$equiper = $liens->add( new interf_lien_cont( $G_url->get( array('action'=>$obj->get_emplacement(),'objet'=>$obj->get_texte()) ) ) );
 	    	$equiper->add( new interf_bal_smpl('span', '', false, 'icone icone-ok') );

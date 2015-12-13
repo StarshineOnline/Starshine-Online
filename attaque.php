@@ -105,10 +105,78 @@ if( $ivresse )
 
 switch($type)
 {
-	case 'perso' :
-    if ($_SESSION['ID'] == $_GET['id_perso'])
-      security_block(URL_MANIPULATION, 'Auto-attaque prohibée');
-		if(!$check_pet)
+case 'perso' :
+  if ($_SESSION['ID'] == $_GET['id_perso'])
+    security_block(URL_MANIPULATION, 'Auto-attaque prohibée');
+	if(!$check_pet)
+	{
+		$perso = new perso($_SESSION['ID']);
+		$perso->check_perso();
+		$perso->action_do = $perso->recupaction('attaque');
+		$attaquant = entite::factory('perso', $perso);
+	}
+	else
+	{
+		$attaquant = entite::factory('pet', $perso->get_pet(), $perso, true);
+	}
+	$def = false;
+	$perso_defenseur = new perso($_GET['id_perso']);
+	$perso_defenseur->check_perso(false);
+	//On vérifie que ya pas un buff qui fait défendre par un pet
+	if($perso_defenseur->is_buff('defense_pet'))
+	{
+		$pet = $perso_defenseur->get_pet();
+		if (!$pet || $pet->get_hp() < 1)
+		{
+			$check_pet_def = false;
+			interf_debug::enregistre('Le pet est mort…');
+		}
+		else
+		{
+			$defense = $perso_defenseur->get_buff('defense_pet', 'effet');
+			$collier = decompose_objet($perso_defenseur->get_inventaire_partie('cou'));		
+			if ($collier != '')
+			{
+				$requete = "SELECT * FROM armure WHERE ID = ".$collier['id_objet'];
+				//Récupération des infos de l'objet
+				$req = $db->query($requete);
+				$row = $db->read_array($req);
+				$effet = explode('-', $row['effet']);
+				if ($effet[0] == '20')
+				{
+					$defense = $defense + $effet[1];
+				}
+			}
+			$rand = rand(0, 100);
+			//Défense par le pet
+			interf_debug::enregistre('Defense par le pet: '.$rand.' VS '.$defense);
+			if($rand < $defense)
+			{
+				interf_debug::enregistre('Defense par le pet OK');
+				$check_pet_def = true;
+			}
+		}
+	}
+	//Si il est en train de dresser un mob, le dressage est arrêté
+	if($perso_defenseur->is_buff('dressage'))
+	{
+		$buff_def = $perso_defenseur->get_buff('dressage');
+		$buff_def->supprimer();
+	}
+	if(!$check_pet_def)
+	{
+		$perso_defenseur->action_do = $perso_defenseur->recupaction('defense');
+		$defenseur = entite::factory('perso', $perso_defenseur);
+	}
+	else
+	{
+		$defenseur = entite::factory('pet', $perso_defenseur->get_pet(), $perso_defenseur, false);
+	}
+	break;
+case 'monstre' :
+	if(!$check_pet)
+	{
+		if (!$donj)
 		{
 			$perso = new perso($_SESSION['ID']);
 			$perso->check_perso();
@@ -117,183 +185,115 @@ switch($type)
 		}
 		else
 		{
-			$attaquant = entite::factory('pet', $perso->get_pet(), $perso, true);
-		}
-		$def = false;
-		$perso_defenseur = new perso($_GET['id_perso']);
-		$perso_defenseur->check_perso(false);
-		//On vérifie que ya pas un buff qui fait défendre par un pet
-		if($perso_defenseur->is_buff('defense_pet'))
-		{
-			$pet = $perso_defenseur->get_pet();
-			if (!$pet || $pet->get_hp() < 1)
+			//On vérifie que ya pas un buff qui fait défendre par un pet
+			if($perso->is_buff('defense_pet'))
 			{
-				$check_pet_def = false;
-				interf_debug::enregistre('Le pet est mort…');
-			}
-			else
-			{
-				$defense = $perso_defenseur->get_buff('defense_pet', 'effet');
-				$collier = decompose_objet($perso_defenseur->get_inventaire_partie('cou'));		
-				if ($collier != '')
+				$pet = $perso->get_pet();
+				if (!$pet || $pet->get_hp() < 1)
 				{
-					$requete = "SELECT * FROM armure WHERE ID = ".$collier['id_objet'];
-					//Récupération des infos de l'objet
-					$req = $db->query($requete);
-					$row = $db->read_array($req);
-					$effet = explode('-', $row['effet']);
-					if ($effet[0] == '20')
+					$check_pet_donj = false;
+					interf_debug::enregistre('Le pet est mort ...');
+				}
+				else
+				{
+					$attaque_donj = $perso->get_buff('defense_pet', 'effet');
+					$rand = rand(0, 100);
+					//Défense par le pet
+					interf_debug::enregistre('Defense par le pet: '.$rand.' VS '.$defense);
+					if($rand < $attaque_donj)
 					{
-						$defense = $defense + $effet[1];
+						interf_debug::enregistre('Defense par le pet OK');
+						$check_pet_donj = true;
 					}
 				}
-				$rand = rand(0, 100);
-				//Défense par le pet
-				interf_debug::enregistre('Defense par le pet: '.$rand.' VS '.$defense);
-				if($rand < $defense)
-				{
-					interf_debug::enregistre('Defense par le pet OK');
-					$check_pet_def = true;
-				}
 			}
-		}
-		//Si il est en train de dresser un mob, le dressage est arrêté
-		if($perso_defenseur->is_buff('dressage'))
-		{
-			$buff_def = $perso_defenseur->get_buff('dressage');
-			$buff_def->supprimer();
-		}
-		if(!$check_pet_def)
-		{
-			$perso_defenseur->action_do = $perso_defenseur->recupaction('defense');
-			$defenseur = entite::factory('perso', $perso_defenseur);
-		}
-		else
-		{
-			$defenseur = entite::factory('pet', $perso_defenseur->get_pet(), $perso_defenseur, false);
-		}
-	break;
-	case 'monstre' :
-		if(!$check_pet)
-		{
-			if (!$donj)
+			
+			if(!$check_pet_donj)
 			{
-				$perso = new perso($_SESSION['ID']);
-				$perso->check_perso();
-				$perso->action_do = $perso->recupaction('attaque');
+				$perso->action_do = $perso->recupaction('defense');
 				$attaquant = entite::factory('perso', $perso);
 			}
 			else
 			{
-				//On vérifie que ya pas un buff qui fait défendre par un pet
-				if($perso->is_buff('defense_pet'))
-				{
-					$pet = $perso->get_pet();
-					if (!$pet || $pet->get_hp() < 1)
-					{
-						$check_pet_donj = false;
-						interf_debug::enregistre('Le pet est mort ...');
-					}
-					else
-					{
-						$attaque_donj = $perso->get_buff('defense_pet', 'effet');
-						$rand = rand(0, 100);
-						//Défense par le pet
-						interf_debug::enregistre('Defense par le pet: '.$rand.' VS '.$defense);
-						if($rand < $attaque_donj)
-						{
-							interf_debug::enregistre('Defense par le pet OK');
-							$check_pet_donj = true;
-						}
-					}
-				}
-				
-				if(!$check_pet_donj)
-				{
-					$perso->action_do = $perso->recupaction('defense');
-					$attaquant = entite::factory('perso', $perso);
-				}
-				else
-				{
-					$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
-				}
+				$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
 			}
 		}
-		else
-		{
-			$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
-		}
-		$map_monstre = new map_monstre($_GET['id_monstre']);
-		$map_monstre->check_monstre();
-		if ($map_monstre->nonexistant)
-		{
-			$interf_princ->set_droite( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Ce monstre est déjà au paradis des monstres') );
-			exit (0);
-		}
-		$perso_defenseur = new monstre($map_monstre->get_type());
-		$defenseur = entite::factory('monstre', $map_monstre);
-		$diff_lvl = abs($perso->get_level() - $defenseur->get_level());
+	}
+	else
+	{
+		$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
+	}
+	$map_monstre = new map_monstre($_GET['id_monstre']);
+	$map_monstre->check_monstre();
+	if ($map_monstre->nonexistant)
+	{
+		$interf_princ->set_droite( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Ce monstre est déjà au paradis des monstres') );
+		exit (0);
+	}
+	$perso_defenseur = new monstre($map_monstre->get_type());
+	$defenseur = entite::factory('monstre', $map_monstre);
+	$diff_lvl = abs($perso->get_level() - $defenseur->get_level());
 	break;
-	case 'batiment' :
-		if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
-		$perso = new perso($_SESSION['ID']);
-    $perso->check_perso();
-		if(!$check_pet)
-		{
-			$perso->action_do = $perso->recupaction('attaque');
-			$attaquant = entite::factory('perso', $perso);
-		}
-		else
-		{
-			$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
-		}
-		if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
-		else $map_batiment = new placement($_GET['id_batiment']);
-		$defenseur = entite::factory('batiment', $map_batiment, $perso);
+case 'batiment' :
+	if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
+	$perso = new perso($_SESSION['ID']);
+  $perso->check_perso();
+	if(!$check_pet)
+	{
+		$perso->action_do = $perso->recupaction('attaque');
+		$attaquant = entite::factory('perso', $perso);
+	}
+	else
+	{
+		$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
+	}
+	if($_GET['table'] == 'construction') $map_batiment = new construction($_GET['id_batiment']);
+	else $map_batiment = new placement($_GET['id_batiment']);
+	$defenseur = entite::factory('batiment', $map_batiment, $perso);
 	break;
-	case 'siege' :
-		if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
-		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
-		if($_GET['table'] == 'construction')
-		{
-			$map_batiment = new construction($_GET['id_batiment']);
-			$id_constr = $_GET['id_batiment'];
-			$id_plac = 0;
-		}
-		else
-		{
-			$map_batiment = new placement($_GET['id_batiment']);
-			$id_constr = 0;
-			$id_plac = $_GET['id_batiment'];
-		}
-		/// debuff empêchant la suppression du bâtiment
-		$buff = new buff_batiment_def(1);
-		$buff->lance($id_constr, $id_plac);
-		$perso = new perso($_SESSION['ID']);
-    $perso->check_perso();
-		$siege = new batiment($map_siege->get_id_batiment());
-		$defenseur = entite::factory('batiment', $map_batiment);
-		$attaquant = entite::factory('siege', $map_siege, $perso, true, $defenseur);
+case 'siege' :
+	if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
+	$map_siege = new arme_siege($_GET['id_arme_de_siege']);
+	if($_GET['table'] == 'construction')
+	{
+		$map_batiment = new construction($_GET['id_batiment']);
+		$id_constr = $_GET['id_batiment'];
+		$id_plac = 0;
+	}
+	else
+	{
+		$map_batiment = new placement($_GET['id_batiment']);
+		$id_constr = 0;
+		$id_plac = $_GET['id_batiment'];
+	}
+	/// debuff empêchant la suppression du bâtiment
+	$buff = new buff_batiment_def(1);
+	$buff->lance($id_constr, $id_plac);
+	$perso = new perso($_SESSION['ID']);
+  $perso->check_perso();
+	$siege = new batiment($map_siege->get_id_batiment());
+	$defenseur = entite::factory('batiment', $map_batiment);
+	$attaquant = entite::factory('siege', $map_siege, $perso, true, $defenseur);
 	break;
-	case 'ville' :
-		if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
-		$map_siege = new arme_siege($_GET['id_arme_de_siege']);
-		$perso = new perso($_SESSION['ID']);
-    $perso->check_perso();
-		$map_case = new map_case($_GET['id_ville']);
-		$map_royaume = new royaume($map_case->get_royaume());
-		$map_royaume->verif_hp();
-		$siege = new batiment($map_siege->get_id_batiment());
-		$coord = convert_in_coord($_GET['id_ville']);
-		$map_royaume->x =$coord['x'];
-		$map_royaume->y =$coord['y'];
-		$defenseur = entite::factory('ville', $map_royaume);
-		$attaquant = entite::factory('siege', $map_siege, $perso, true, $defenseur);
-		if ($map_royaume->is_raz())
-		{
-			$interf_princ->set_droite( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Cette ville est déjà mise à sac') );
-			exit (0);
-		}
+case 'ville' :
+	if ($perso->is_buff('debuff_rvr')) $no_rvr = true;
+	$map_siege = new arme_siege($_GET['id_arme_de_siege']);
+	$perso = new perso($_SESSION['ID']);
+  $perso->check_perso();
+	$map_case = new map_case($_GET['id_ville']);
+	$map_royaume = new royaume($map_case->get_royaume());
+	$map_royaume->verif_hp();
+	$siege = new batiment($map_siege->get_id_batiment());
+	$coord = convert_in_coord($_GET['id_ville']);
+	$map_royaume->x =$coord['x'];
+	$map_royaume->y =$coord['y'];
+	$defenseur = entite::factory('ville', $map_royaume);
+	$attaquant = entite::factory('siege', $map_siege, $perso, true, $defenseur);
+	if ($map_royaume->is_raz())
+	{
+		$interf_princ->set_droite( new interf_alerte(interf_alerte::msg_erreur, true, false, 'Cette ville est déjà mise à sac') );
+		exit (0);
+	}
 	break;
 }
 
@@ -308,7 +308,7 @@ $cadre = $interf_princ->set_droite( $G_interf->creer_droite('Combat VS '.$defens
 
 interf_debug::aff_enregistres($cadre);
 
-if( is_donjon($perso->get_x(), $perso->get_y()) && ($perso->in_arene('and donj = 0') == false) && $perso->get_y()>190 )
+/*if( is_donjon($perso->get_x(), $perso->get_y()) && ($perso->in_arene('and donj = 0') == false) && $perso->get_y()>190 )
 {
 	$W_case = convertd_in_pos($defenseur->get_x(), $defenseur->get_y());
 	$distance = detection_distance($W_case, convertd_in_pos($attaquant->get_x(), $attaquant->get_y()));
@@ -320,7 +320,7 @@ if( is_donjon($perso->get_x(), $perso->get_y()) && ($perso->in_arene('and donj =
 		$distance--;
 		if($distance < 0 ) $distance = 0;
 	}
-}
+}*/
 
 $dist_tir_att = $attaquant->get_distance_tir();
 //On vérifie si l'attaquant est sur un batiment offensif
