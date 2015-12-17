@@ -18,6 +18,7 @@ class buff_batiment_def extends comp_sort_buff
 	protected $effet2; ///< Effet secondaire
 	protected $description;  ///< Description du buff
 	protected $debuff; ///< 0 pour un buff,  pour un debuff
+	const id_assiege = 1;
 
 	/// Renvoie l'effet secondaire
 	function get_effet2()
@@ -134,7 +135,30 @@ class buff_batiment_def extends comp_sort_buff
 	 */
 	function lance($id_constr, $id_plac, $id_perso=0)
 	{
-		$buff = new buff_batiment(0, $id_plac, $id_constr, $this->type, $this->effet, $this->effet2, $this->duree, time() + $this->duree, $this->nom, $this->description, $this->debuff, $id_perso);
+		$champ = $id_constr ? 'id_construction' : 'id_placement';
+		$val = $id_constr ? $id_constr : $id_plac;
+		$buff = buff_batiment::create(array($champ, 'type'), array($val, 'assiege'));
+		if( count($buff) )
+		{
+			$buff = $buff[0];
+			if( $this->effet < $buff->get_effet() )
+			{
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'La cible possède déjà un '.($this->debuff?'debuff':'buff').' de plus haut niveau');
+				return false;
+			}
+			$buff->set_fin(time() + $this->duree);
+			// On ne change le reste que si c'est une autre version
+			if( $this->nom != $buff->get_nom() )
+			{
+				$buff->set_nom( $this->nom );
+				$buff->set_description( $this->description );
+				$buff->set_effet( $this->effet );
+				$buff->set_effet2( $this->effet2 );
+				$buff->set_duree( $this->duree );
+			}
+		}
+		else
+			$buff = new buff_batiment(0, $id_plac, $id_constr, $this->type, $this->effet, $this->effet2, $this->duree, time() + $this->duree, $this->nom, $this->description, $this->debuff, $id_perso);
 		$buff->sauver();
 		return $buff;
 	}

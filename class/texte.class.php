@@ -300,6 +300,7 @@ class texte
 			if( $qp->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
 				return null;
 		}
+		return $qp;
 	}
   
   /// Fonction formattant les balises gérant la navigation (par ex. [retour])

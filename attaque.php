@@ -267,7 +267,7 @@ case 'siege' :
 		$id_plac = $_GET['id_batiment'];
 	}
 	/// debuff empêchant la suppression du bâtiment
-	$buff = new buff_batiment_def(1);
+	$buff = new buff_batiment_def( buff_batiment_def::id_assiege );
 	$buff->lance($id_constr, $id_plac);
 	$perso = new perso($_SESSION['ID']);
   $perso->check_perso();
