@@ -152,11 +152,11 @@ class interf_alerte extends interf_bal_cont
    */  
   static function &enregistre($type, $texte=null, $id=null, $ferme=true)
   {
-  	/*$alerte = new interf_alerte($type, $ferme, $id);
+  	$alerte = new interf_alerte($type, $ferme, $id);
   	if($texte)
 			$alerte->add_message( $texte );
   	self::$alertes[] = &$alerte;
-  	return $alerte;*/
+  	return $alerte;
 	}
 	
 	/**
