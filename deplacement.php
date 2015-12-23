@@ -311,7 +311,10 @@ if($mouvement)
 				if($pet_def)
 					$attaquant = entite::factory('pet', $pet, $perso);
 				else
+				{
+					$perso->action_do = $perso->recupaction('defense');
 					$attaquant = entite::factory('perso', $perso);
+				}
 				$map_monstre->check_monstre();
 				$defenseur = entite::factory('monstre', $map_monstre);
 				$cadre = $interf_princ->set_droite( $G_interf->creer_droite('Combat VS '.$defenseur->get_nom()) );

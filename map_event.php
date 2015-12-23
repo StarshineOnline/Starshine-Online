@@ -100,44 +100,41 @@ function checkTpCacheChache(&$joueur)
   // TODO ...
 }
 
-function checkTpAbo(&$joueur)
+/// @todo remplacer par texte avec balises
+function checkTpAbo(&$perso)
 {
   global $dontrefresh, $interf_princ;
   $dontrefresh = true;
-	$quetes = $joueur->get_liste_quete();
-	$found = false;
-	foreach ($quetes as $q) {
-		if ($q->get_id() == 86) {
-			$found = true;
-				/*echo '<fieldset><legend>Descente vers les profondeurs</legend>'.
-					'<div id="info_case">';
-				echo 'Comme vous l\'avait demandé le gobelin, vous descendez explorer'.
-					' les profondeurs. Qui sait ce que vous allez y trouver ?<br/>';*/
-			  $cont = $interf_princ->set_droite( new interf_cont() );
-			  $cont->add( new interf_bal_smpl('h4', 'Descente vers les profondeurs') );
-			  $cont->add( new interf_bal_smpl('div', 'Comme vous l\'avait demandé le gobelin, vous descendez explorer les profondeurs. Qui sait ce que vous allez y trouver ?', 'info_case') );
-				$q->get_etape()->fin($joueur);
-				//echo '</div>';
-		}
+	$quete = quete_perso::create(array('id_perso', 'id_etape'), array($perso->get_id(), 123));
+	if( $quete )
+	{
+	  $cont = $interf_princ->set_droite( new interf_cont() );
+	  $cont->add( new interf_bal_smpl('h4', 'Descente vers les profondeurs') );
+	  $cont->add( new interf_bal_smpl('div', 'Comme vous l\'avait demandé le gobelin, vous descendez explorer les profondeurs. Qui sait ce que vous allez y trouver ?', 'info_case') );
+		$q->get_etape()->fin($perso);
 	}
-	if (!$found) {
-		$quetes_fini = explode(';', $joueur->get_quete_fini());
-		foreach ($quetes_fini as $qf) {
-			if ($qf == 86) {
+	else
+	{
+	
+		$quetes_fini = explode(';', $perso->get_quete_fini());
+		$found = false;
+		foreach ($quetes_fini as $qf)
+		{
+			if ($qf == 86)
+			{
 				$found = true;
-				showMessage('Vous descendez à nouveau dans les profondeurs',
-										'Descente vers les profondeurs');
+				showMessage('Vous descendez à nouveau dans les profondeurs', 'Descente vers les profondeurs');
 			}
 		}
+		if (!$found)
+		{
+			showMessage('Ce puis vous inquiète trop, vous ne voulez pas y entrer', 'Descente vers les profondeurs');
+			return;
+		}
 	}
-	if (!$found) {
-		showMessage('Ce puis vous inquiète trop, vous ne voulez pas y entrer',
-								'Descente vers les profondeurs');
-		return;
-	}
-	$joueur->set_x(20);
-	$joueur->set_y(304);
-	$joueur->sauver();
+	$perso->set_x(20);
+	$perso->set_y(304);
+	$perso->sauver();
 }
 
 function checkTpValidQuest(&$joueur, $queteId, $x, $y, $allowNotQuest = false)

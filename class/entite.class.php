@@ -1479,6 +1479,9 @@ class entite extends placable
 			case 'monstre' :
 				$objet = new map_monstre($this->id);
 				break;
+			case 'pet':
+				$objet = new perso( $this->incarn->get_id_joueur() );
+				break;
 		}
 		return $objet;
 	}

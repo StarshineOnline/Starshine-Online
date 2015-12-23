@@ -287,7 +287,7 @@ class quete_perso extends table
 						{
 							if( $perso->get_groupe() )
 							{
-								$requete = 'SELECT qp.*, p.id AS pid, p.race FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$this->get_perso()->get_groupe().' AND qp.id_quete = '.$qp->get_id_quete();
+								$requete = 'SELECT qp.*, p.id AS pid, p.race FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$perso()->get_groupe().' AND qp.id_quete = '.$qp->get_id_quete();
 								$req = $db->query($requete);
 								while( $row = $db->read_assoc($req) )
 								{
