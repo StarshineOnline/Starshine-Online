@@ -111,7 +111,7 @@ function checkTpAbo(&$perso)
 	  $cont = $interf_princ->set_droite( new interf_cont() );
 	  $cont->add( new interf_bal_smpl('h4', 'Descente vers les profondeurs') );
 	  $cont->add( new interf_bal_smpl('div', 'Comme vous l\'avait demandé le gobelin, vous descendez explorer les profondeurs. Qui sait ce que vous allez y trouver ?', 'info_case') );
-		$q->get_etape()->fin($perso);
+		$quete->get_etape()->fin($perso);
 	}
 	else
 	{
