@@ -717,8 +717,13 @@ class vol_a_la_tire extends comp_comb {
     $vol = rand(1, $this->effet2);
     $attaque->get_interface()->texte($attaque->get_actif()->get_nom().' vole '.$vol.' stars !');
     $obj = $attaque->get_passif()->get_objet();
-    $obj->add_star($vol * -1);
-    $obj->sauver();
+    if( is_object($obj) )
+    {
+	    $obj->add_star($vol * -1);
+	    $obj->sauver();
+		}
+    else
+    	log_admin::log('erreur', 'Objet invalide renvoyé par l\'entité de type '.$attaque->get_passif()->get_type());
     return $degats;
   }
 
