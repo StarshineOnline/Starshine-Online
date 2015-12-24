@@ -30,12 +30,12 @@ class coffre extends terrain_construction
 	function recherche_objet($id_objet)
 	{
 		global $db;
-		$requete = "SELECT id, id_coffre, objet, nombre FROM terrain_coffre WHERE id_coffre = ".$this->id." AND objet = '".$id_objet."' ORDER BY nombre ASC";
+		$requete = "SELECT * FROM terrain_coffre WHERE id_coffre = ".$this->id." AND objet = '".$id_objet."' ORDER BY nombre ASC";
 		$req = $db->query($requete);
 		if($db->num_rows > 0)
 		{
 			$row = $db->read_assoc($req);
-			return new terrain_coffre($row['id'], $row['id_coffre'], $row['objet'], $row['nombre']);
+			return new terrain_coffre($row);
 		}
 		else return false;
 	}
