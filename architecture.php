@@ -58,7 +58,7 @@ case 'construit':
 		
 		
   $fin_min = $entite->get_debut_placement() + $batiment->get_temps_construction_min();
-  if( $fin_min <= time() )
+  if( $fin_min >= $entite->get_fin_placement() )
   {
 		$cadre->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'La construction ne peux plus être accélérée: il reste moins de '.transform_sec_temp($batiment->get_temps_construction_min())) );
 		break;
@@ -85,7 +85,7 @@ case 'construit':
 	if( $fin < $fin_min )
 	{
 		$fin = $fin_min;
-		$secondes = $fin_min - time();
+		$secondes = $entite->get_fin_placement() - $fin_min;
 		$continue = false;
 	}
 	
