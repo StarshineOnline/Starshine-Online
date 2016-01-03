@@ -1473,15 +1473,16 @@ class entite extends placable
 		$objet = null;
 		switch($this->type)
 		{
-			case 'joueur' :
-				$objet = new perso($this->id);
-				break;
-			case 'monstre' :
-				$objet = new map_monstre($this->id);
-				break;
-			case 'pet':
-				$objet = new perso( $this->incarn->get_id_joueur() );
-				break;
+		case 'joueur':
+		case 'perso':
+			$objet = new perso($this->id);
+			break;
+		case 'monstre':
+			$objet = new map_monstre($this->id);
+			break;
+		case 'pet':
+			$objet = new perso( $this->incarn->get_id_joueur() );
+			break;
 		}
 		return $objet;
 	}

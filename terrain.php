@@ -64,6 +64,10 @@ case 'deposer':
 	$coffre_inventaire = $coffre->get_coffre_inventaire();
 	$obj = $perso->get_inventaire_slot_partie($_GET['index']);
 	$objet = objet_invent::factory($obj);
+	if( !$objet )
+	{
+		log_adlin::log('erreur', 'Objet non trouvé dans l\'inventaire : "'.$_GET['index'].'" -> "'.$obj.'"');
+	}
 	if($coffre->get_encombrement() + $objet->get_encombrement() < $batiment->effet)
 	{
 		//On le met dans le coffre
