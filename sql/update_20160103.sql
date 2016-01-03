@@ -3,7 +3,7 @@ ALTER TABLE `messagerie_message`
   DROP `nom_dest`,
   DROP `titre`;
   
-  
+ALTER TABLE `messagerie_thread` ADD `categorie` VARCHAR( 20 ) NOT NULL ;
 
 CREATE TABLE IF NOT EXISTS `messagerie_lus` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
