@@ -367,8 +367,13 @@ class groupe
 
 	function get_id_leader()
 	{
+		return self::recup_id_leader( $this->get_id() );
+	}
+
+	static function recup_id_leader($id_groupe)
+	{
 		global $db;
-		$W_requete = 'SELECT id_joueur FROM groupe_joueur WHERE leader = \'y\' AND id_groupe = '.$this->get_id();
+		$W_requete = 'SELECT id_joueur FROM groupe_joueur WHERE leader = \'y\' AND id_groupe = '.$id_groupe;
 		$W_query = $db->query($W_requete);
 		$W_row = $db->read_array($W_query);
 		return $W_row['id_joueur'];

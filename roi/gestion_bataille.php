@@ -45,15 +45,15 @@ case 'debut':  // Début d'une bataille
 		{
 			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $perso->get_id(), 1, null, $titre);
 			$thread->sauver();
-			$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
-			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$messagerie = new messagerie($perso);
+			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 0, 'royaume');
 			$groupe->set_id_thread($thread->id_thread);
 			$groupe->sauver();
 		}
 		else
 		{
-			$messagerie = new messagerie($joueur->get_id(), $joueur->get_groupe());
-			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$messagerie = new messagerie($perso);
+			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 0, 'royaume');
 		}
 	}
 	break;
@@ -142,15 +142,15 @@ case 'mission';
 		{
 			$thread = new messagerie_thread(0, $groupe->get_id_groupe(), 0, $perso->get_id(), 1, null, $titre);
 			$thread->sauver();
-			$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
-			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$messagerie = new messagerie($perso);
+			$messagerie->envoi_message($thread->id_thread, 0, $titre, $message, $groupe->get_id_groupe(), 0, 'royaume');
 			$groupe->set_id_thread($thread->id_thread);
 			$groupe->sauver();
 		}
 		else
 		{
-			$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
-			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 1);
+			$messagerie = new messagerie($perso);
+			$messagerie->envoi_message($groupe->get_id_thread(), 0, $titre, $message, $groupe->get_id_groupe(), 0, 'royaume');
 		}
 	}
 	$cadre->set_gestion( $G_interf->creer_gerer_bataille($bataille) );

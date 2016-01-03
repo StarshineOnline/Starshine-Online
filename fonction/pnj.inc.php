@@ -85,7 +85,7 @@ function pnj_run_pacte_demoniaque(&$joueur)
 function pnj_run_msg_bienvenue(&$perso)
 {
   global $Trace;
-  $messagerie = new messagerie(0);
+  $messagerie = new messagerie(new perso(0));
   $titre = 'Bienvenue sur Starshine-Online';
   $message = 'Vous faites maintenant parti de la grande aventure Starshine-Online.
 Pour vous aidez plusieurs outils sont a votre disposition :

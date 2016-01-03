@@ -4386,6 +4386,16 @@ class perso extends entite
 		$row = $db->read_assoc($req);
 		return $row['nom'];
 	}
+	
+	static function recup_nom($id)
+	{
+		/// @todo une méthode plus générique
+		global $db;
+		$requete = 'SELECT nom FROM perso WHERE id = '.$id;
+		$req = $db->query($requete);
+		$row = $db->read_array($req);
+		return $row ? $row[0] : false;
+	}
    
 	/** on ne m'aura plus avec les machins déclarés depuis dehors */
 	//function __get($name) { $debug = debug_backtrace(); die('fuck: '.$debug[0]['file'].' line '.$debug[0]['line']); }

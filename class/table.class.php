@@ -6,7 +6,7 @@
 abstract class table
 {
 	protected $id; ///< id de l'élément dans la table.
-	protected $champs_modif;  ///< Liste des champs modifiés.
+	protected $champs_modif=array();  ///< Liste des champs modifiés.
 	
 	/// Renvoie le nom du champ servant d'identifiant
 	protected function get_champ_id()
@@ -62,7 +62,7 @@ abstract class table
 	 */
 	protected function init_tab($vals)
 	{
-		$this->id = $vals['id'];
+		$this->id = $vals[$this->get_champ_id()];
 	}
 	
 	/**
@@ -186,27 +186,7 @@ abstract class table
 		global $db;
 		$return = array();
 		if(!$where)
-		{
-			if(!is_array($champs))
-			{
-				$array_champs[] = $champs;
-				$array_valeurs[] = $valeurs;
-			}
-			else
-			{
-				$array_champs = $champs;
-				$array_valeurs = $valeurs;
-			}
-			foreach($array_champs as $key => $champ)
-			{
-				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
-			}
-			$where = implode(' AND ', $where);
-			if($champs === 0)
-			{
-				$where = ' 1 ';
-			}
-		}
+			$where = self::construit_condition($champs, $valeurs);
 
 		$requete = 'SELECT * FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
 		$req = $db->query($requete);
@@ -233,7 +213,7 @@ abstract class table
 	*                                stockage avec sous tableau en fonction du champ $keys
 	* @return array     Liste d'objets
 	* 
-	* @@todo supprimer ?		
+	* @todo supprimer ?		
 	*/
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{
@@ -312,6 +292,8 @@ abstract class table
 	 * @param array $params Tableau de conditions, de la forme array('nom_champ_table' => 'valeur')
 	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
 	 * @return Object Le premier objet correspondant à la demande, si aucun objet ne correspond la fonction retourne null
+	 * 
+	 * @todo à renommer pour respecter la convetion de nommage utilisée
 	 */
 	public static function findOneBy($params = array(), $orders = array())
 	{
@@ -331,6 +313,8 @@ abstract class table
 	 *
 	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
 	 * @return array[Object] Tableau contenant tous les objets, peut être vide
+	 * 
+	 * @todo à renommer pour respecter la convetion de nommage utilisée
 	 */
 	public static function findAll($orders = array())
 	{
@@ -344,6 +328,8 @@ abstract class table
 	 * @param array $params Tableau de conditions, de la forme array('nom_champ_table' => 'valeur')
 	 * @param array $orders Tableau pour trier la recherche, de la forme array('nom_champ_table' => 'ASC|DESC')
 	 * @return array[Object] Tableau contenant tous les objets correspondants, peut être vide
+	 * 
+	 * @todo à renommer pour respecter la convetion de nommage utilisée
 	 */
 	public static function findBy($params = array(), $orders = array())
 	{
@@ -378,5 +364,100 @@ abstract class table
 		}
 		
 		return $results;
+	}
+	
+	static function calcul_somme($somme, $champs, $valeurs, $groupe=false, $where=false)
+	{
+		global $db;
+		if(!$where)
+			$where = self::construit_condition($champs, $valeurs);
+		if( $groupe )
+		{
+			$sel_grp == $groupe.', ';
+			$group_by = ' GROUP BY '.$groupe;
+		}
+		else
+			$sel_grp = $group_by = '';
+
+		if( is_array($somme) )
+		{
+			$unique = false;
+			foreach($somme as &$s)
+			{
+				$s = 'SUM('.$s.') AS '.$s;
+			}
+			$somme = implode(', ', $somme);
+		}
+		else
+		{
+			$somme = 'SUM('.$somme.')';
+			$unique = true;
+		}
+		$requete = 'SELECT '.$sel_grp.$somme.' FROM '.static::get_table().' WHERE '.$where.$group_by;
+		$req = $db->query($requete);
+		if($groupe)
+		{
+			$res = array();
+			while($row = $db->read_array($req))
+			{
+				$res[ $row[$groupe] ] = $unique ? $row : $row[0];
+			}
+			return $res;
+		}
+		$row = $db->read_array($req);
+		if($unique)
+			return $row[0];
+		return $row;
+	}
+	
+	static function calcul_nombre($champs, $valeurs, $groupe=false, $where=false)
+	{
+		global $db;
+		if(!$where)
+			$where = self::construit_condition($champs, $valeurs);
+		if( $groupe )
+		{
+			$sel_grp == $groupe.', ';
+			$group_by = ' GROUP BY '.$groupe;
+		}
+		else
+			$sel_grp = $group_by = '';
+		$requete = 'SELECT '.$sel_grp.'COUNT(*) AS nbr FROM '.static::get_table().' WHERE '.$where.$group_by;
+		$req = $db->query($requete);
+		if($groupe)
+		{
+			$res = array();
+			while($row = $db->read_assoc($req))
+			{
+				$res[ $row[$groupe] ] = $row['nbr'];
+			}
+			return $res;
+		}
+		$row = $db->read_array($req);
+		return $row[0];
+	}
+	
+	protected function construit_condition($champs, $valeurs)
+	{
+		if(!is_array($champs))
+		{
+			$array_champs[] = $champs;
+			$array_valeurs[] = $valeurs;
+		}
+		else
+		{
+			$array_champs = $champs;
+			$array_valeurs = $valeurs;
+		}
+		foreach($array_champs as $key => $champ)
+		{
+			$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+		}
+		$where = implode(' AND ', $where);
+		if($champs === 0)
+		{
+			$where = ' 1 ';
+		}
+		return $where;
 	}
 }

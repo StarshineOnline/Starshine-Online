@@ -28,19 +28,19 @@ $page = null;
 switch($action)
 {
 case 'ecrire':
-	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie = new messagerie($perso);
 	$msg = /*htmlspecialchars(*/addslashes($_POST['texte'])/*)*/;
 	$sujet = $_GET['sujet'];
 	$sujet_obj = new messagerie_thread($sujet);
-	$id_dest = $sujet_obj->id_dest == $perso->get_id() ? $sujet_obj->id_auteur : $sujet_obj->id_dest;
-	$messagerie->envoi_message($sujet, $id_dest, '', $msg, $sujet_obj->id_groupe);
+	$id_dest = $sujet_obj->get_id_dest() == $perso->get_id() ? $sujet_obj->get_id_auteur() : $sujet_obj->get_id_dest();
+	$messagerie->envoi_message($sujet, $id_dest, '', $msg, $sujet_obj->get_id_groupe(), 0, $sujet_obj->get_categorie());
 	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
 	break;
 case 'suppr_msg':
 	$message = new messagerie_message($_GET['msg']);
 	$message->supprimer();
 case 'lire':
-	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie = new messagerie($perso);
 	$sujet = $_GET['sujet'];
 	$page = array_key_exists('page', $_GET) ? $_GET['page'] : null;
 	$messagerie->set_thread_lu($sujet);
@@ -62,8 +62,9 @@ case 'nouveau_sujet':
 		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de message.');
 		break;
 	}
-	if( $_GET['type'] == 'perso' )
+	switch( $_GET['type'] )
 	{
+	case 'perso':
 		/// @todo passer à l'objet
 		$requete = 'SELECT id FROM perso WHERE nom = "'.$_POST['destinataire'].'"';
 		$req = $db->query($requete);
@@ -75,19 +76,26 @@ case 'nouveau_sujet':
 		}
 		$id_dest = $row[0];
 		$id_groupe = 0;
-	}
-	else if( $_GET['type'] == 'groupe' )
-	{
+		break;
+	case 'groupe':
 		$id_dest = 0;
 		$id_groupe = $perso->get_groupe();
+		break;
+	case 'royaume':
+		/// @todo vérifier que le groupe existe
+		$id_chef = groupe::recup_id_leader( $perso->get_groupe() );
+		$chef = new perso( $id_chef );
+		$id_dest = $Trace[ $chef->get_race() ]['numrace'];
+		$id_groupe = $_POST['destinataire'];
+		break;
+	case 'diplomatie':
+		/// @todo vérifier que le royaume existe
+		$id_dest = $_POST['destinataire'];
+		$id_groupe = 0;
+		break;
 	}
-	/*else if( $_POST['type'] == 'diplo' )
-		$id_dest = $perso->get_groupe();
-	else
-	{
-	}*/
-	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
-	$sujet = $messagerie->envoi_message(0, $id_dest, $_POST['titre'], $_POST['texte'], /*$_GET['type']*/$id_groupe);
+	$messagerie = new messagerie($perso);
+	$sujet = $messagerie->envoi_message(0, $id_dest, $_POST['titre'], $_POST['texte'], /*$_GET['type']*/$id_groupe, 0, $_GET['type']);
 	$page = 1;
 	break;
 case 'suppr_sujet':
@@ -95,18 +103,18 @@ case 'suppr_sujet':
 	$thread->supprimer(true);
 	break;
 case 'masquer_sujet':
-	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie = new messagerie($perso);
 	$messagerie->set_thread_masque($_GET['sujet']);
 	break;
 case 'tous_lu':
-	$messagerie = new messagerie($perso->get_id(), $perso->get_groupe());
+	$messagerie = new messagerie($perso);
 	$messagerie->set_thread_lu_all();
 	break;
 }
 
 if( $ajax == 2 )
 {
-	$interf_princ->add( $G_interf->creer_liste_messages($perso, $type) );
+	$lst = $interf_princ->add( $G_interf->creer_liste_messages($perso, $type) );
 }
 else
 {
