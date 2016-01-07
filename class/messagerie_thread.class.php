@@ -222,10 +222,12 @@ class messagerie_thread extends table
     		"WHERE id_thread = ".$this->get_id()." AND messagerie_etat.id_dest = ".$id_joueur.
 			" AND messagerie_etat.etat NOT LIKE 'non_lu' GROUP BY messagerie_etat.id_message";
     $req = $db->query($requete);
+    $nbr_anc = $db->num_rows;
 		if( !$where )
 			$where = $id_joueur ? 'type_dest = "perso" AND id_dest = '.$id_joueur : '1';
 		$nbr = messagerie_lus::calcul_somme(array('nbr_msg',  'nbr_non_lu'), false, false, false, 'id_thread = '.$this->get_id().' AND '.$where);
-	  return $db->num_rows + $nbr['nbr_msg'] - $nbr['nbr_non_lu'] + 1;
+		
+	  return $nbr_anc + $nbr['nbr_msg'] - $nbr['nbr_non_lu'] + 1;
 	}
 
 	/*function get_titre()
