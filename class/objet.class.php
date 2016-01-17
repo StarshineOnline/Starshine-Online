@@ -244,11 +244,12 @@ class objet extends objet_invent
     case 'potion_buff':
     case 'potion_mana':
       return ($partie == 'utile') ? 0 : false;
+    default:
+    	log_admin::log('erreur', 'type d\'objet ne pouvant être rangé : '.$this->type);
     case 'objet_quete':
     case 'repaation_canalisation':
+    case 'reparation_canalisation':
       return ($partie == 'utile') ? 2 : false;
-    default:
-      return false;
     }
   }
 

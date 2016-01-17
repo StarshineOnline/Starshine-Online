@@ -10,7 +10,7 @@
  */
 class entitenj extends entite
 {
-  private $incarn;  ///< Objet contenant les informations sur une incarnation particulière de l'entité (dérivé de entnj_incarn)
+  protected $incarn;  ///< Objet contenant les informations sur une incarnation particulière de l'entité (dérivé de entnj_incarn)
   private $def;  ///< Objet contenant les informations sur la définition de l'entité (dérivé de entitenj_def)
   
   
