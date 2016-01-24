@@ -3308,8 +3308,6 @@ class perso extends entite
   /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
 	function get_liste_quete()
 	{
-		/*$this->liste_quete = unserialize($this->quete);
-		return $this->liste_quete;*/
 		return quete_perso::create('id_perso', $this->id);
 	}
 	/// Modifie la liste des quêtes que possède le personnage.

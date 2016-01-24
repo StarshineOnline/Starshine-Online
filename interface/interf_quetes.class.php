@@ -156,7 +156,10 @@ class interf_descr_quete extends interf_cont
 				$this->nbr_obj_total += $nbr;
 				break;
 			case 'X': // texte
-				$liste_obj->add( new interf_bal_smpl('li', $type) );
+				$texte = $valeur[0];
+				if($quete_perso && $valeur[1])
+					$texte .= ' : '.$avancement[$obj[0].$valeur[0]].' / '.$nbr;
+				$liste_obj->add( new interf_bal_smpl('li', $texte) );
 				break;
 			case 'C': // case
 				$coords = convert_in_coord($type);
