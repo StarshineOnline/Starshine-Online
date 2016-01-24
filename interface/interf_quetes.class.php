@@ -158,7 +158,10 @@ class interf_descr_quete extends interf_cont
 			case 'X': // texte
 				$texte = $valeur[0];
 				if($quete_perso && $valeur[1])
+				{
 					$texte .= ' : '.$avancement[$obj[0].$valeur[0]].' / '.$valeur[1];
+					$this->nbr_obj_total += $valeur[1];
+				}
 				$liste_obj->add( new interf_bal_smpl('li', $texte) );
 				break;
 			case 'C': // case
