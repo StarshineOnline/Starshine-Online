@@ -292,12 +292,12 @@ class texte
     	$qp = $qp[0];
   	if( count($regs) > 2 && $regs[2][1] == 'e' )
   	{
-			if( $qp->get_id_etape() !=  mb_substr($regs[2], 3) )
+			if( $qp->get_id_etape() !=  mb_substr($regs[2], 2) )
 				return null;
 		}
 		if( count($regs) > 3 && $regs[3][1] == 'v' )
 		{
-			if( $qp->get_etape()->get_variante() !=  mb_substr($regs[3], 3) )
+			if( $qp->get_etape()->get_variante() !=  mb_substr($regs[3], 2) )
 				return null;
 		}
 		return $qp;
