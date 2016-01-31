@@ -210,6 +210,8 @@ class interf_descr_quete extends interf_cont
 					}
 					$liste_recomp->add( new interf_bal_smpl('li', 'Un objet parmi les suivants : '.$txt) );
 				}
+				else if( $gains == '?' )
+					$liste_recomp->add( new interf_bal_smpl('li', 'Un objet aléatoire.') );
 				else
 				{
 					$obj = objet::factory($gains);
