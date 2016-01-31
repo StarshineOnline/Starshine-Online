@@ -164,10 +164,10 @@ class texte
     $quete_fini = explode(';', $this->perso->get_quete_fini());
     while( preg_match('`\[quete_finie:([0-9]*)(-e[0-9]*)?\](.*)\[/quete_finie:(\g1)(\g2)?\]`i', $texte, $regs) )
     {
-    	$qp = $this->get_quete_perso($regs);
+    	$qp = $this->get_quete_perso( array(1=>$regs[1]) );
     	$debut = '[quete_finie:'.$regs[1].$regs[2].']'; 
     	$fin = '[/'.mb_substr($debut, 1);
-    	if( in_array($regs[1], $quete_fini) || ($qp && $regs[2] && $qp->get_etape()->get_etape() > $regs[2]))
+    	if( in_array($regs[1], $quete_fini) || ($qp && $regs[2] && $qp->get_etape()->get_etape() >  mb_substr($regs[2], 2)))
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[3], $texte);
     	else
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
@@ -199,7 +199,7 @@ class texte
     	$qp = $this->get_quete_perso($regs);
     	$debut = '[non_quete:'.$regs[1].$regs[2].$regs[3].']'; 
     	$fin = '[/'.mb_substr($debut, 1);
-    	if( (!$qp && !in_array($regs[1], $quete_fini)) || ($qp && ($qp->get_etape()->get_etape() < $regs[2] || $qp->get_etape()->get_variante() != $regs[3])) )
+    	if( (!$qp && !in_array($regs[1], $quete_fini)) || ($qp && ($regs[2] && $qp->get_etape()->get_etape() < mb_substr($regs[2], 2)) || ($regs[3] && $qp->get_etape()->get_variante() != $regs[3])) )
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', $regs[4], $texte);
     	else
     		$texte = preg_replace('`\\'.$debut.'(.*)\\'.$fin.'`i', '', $texte);
@@ -292,7 +292,7 @@ class texte
     	$qp = $qp[0];
   	if( count($regs) > 2 && $regs[2][1] == 'e' )
   	{
-			if( $qp->get_id_etape() !=  mb_substr($regs[2], 2) )
+			if( $qp->get_etape()->get_etape() !=  mb_substr($regs[2], 2) )
 				return null;
 		}
 		if( count($regs) > 3 && $regs[3][1] == 'v' )

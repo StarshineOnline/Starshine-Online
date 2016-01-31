@@ -9,7 +9,7 @@ if (file_exists('root.php'))
 //Connexion obligatoire
 $connexion = true;
 //Inclusion du haut du document html
-include_once(root.'haut_ajax.php');
+include_once(root.'haut.php');
 //$joueur = new perso($_SESSION['ID']);
 $perso = joueur::get_perso();
 
