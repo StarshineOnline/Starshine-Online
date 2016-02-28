@@ -1,3 +1,4 @@
+ALTER TABLE `perso` ADD `avancement` INT NOT NULL DEFAULT '0' AFTER `level`;
 
 ALTER TABLE `classe_permet` ADD `categorie` TINYINT UNSIGNED NULL DEFAULT '1';
 UPDATE classe_permet SET categorie = 2 WHERE competence = 'dressage';

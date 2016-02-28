@@ -200,7 +200,7 @@ abstract class objet_equip extends objet_invent
       $princ->add( new interf_alerte('danger', true) )->add_message('Echec... l\'objet ne pourra plus être enchâssable.');
     }
     // Augmentation de l'attribut
-		$augmentation = augmentation_competence('forge', $perso, 0.5;
+		$augmentation = augmentation_competence('forge', $perso, 0.5);
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_forge($augmentation[0]);
