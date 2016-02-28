@@ -537,7 +537,7 @@ abstract class objet_invent extends table
 		//On supprime l'objet de l'inventaire
 		$perso->supprime_objet('o2', 1);
 
-		$augmentation = augmentation_competence('identification', $perso, 3);
+		$augmentation = augmentation_competence('identification', $perso, 0.5);
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_comp('identification', $augmentation[0]);

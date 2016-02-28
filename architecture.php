@@ -149,7 +149,7 @@ if( $agit )
 	$lim = $batiment->get_bonus('lim_montee');
 	if( !$lim or $perso->get_architecture() < $lim )
 	{
-		$augmentation = augmentation_competence('architecture', $perso, 1);
+		$augmentation = augmentation_competence('architecture', $perso, 0.4);
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_architecture($augmentation[0]);

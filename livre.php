@@ -357,7 +357,7 @@ if( array_key_exists('action', $_GET) )
 				$perso->supprime_objet('o'.$ingredient->id_ingredient, $ingredient->nombre);
 			}
 		}
-		$difficulte = 3 * 2.65 / sqrt($pa_total);
+		$difficulte = 2 / sqrt($pa_total);
 		$augmentation = augmentation_competence('alchimie', $perso, $difficulte);
 		if ($augmentation[1] == 1)
 		{
@@ -407,7 +407,7 @@ if( array_key_exists('action', $_GET) )
 				$perso->supprime_objet('o'.$ingredient->get_id_ingredient(), $ingredient->get_nombre());
 			}
 		}
-		$difficulte = 3 * 2.65 / sqrt(10);
+		$difficulte = 2 / sqrt(10);
 		$augmentation = augmentation_competence('forge', $perso, $difficulte);
 		if ($augmentation[1] == 1)
 		{
