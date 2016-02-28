@@ -15,6 +15,7 @@ define('BASE', 'http://127.0.0.1:8080/Starshine-Online/Starshine-Online/');
   
   $G_date_debut = 1357254000;
   $G_tps_avanc = array(60,365,700,1000);
+  $G_tps_avanc_min = array(30,90,180,300);
 
 	/// Nombre maximal de perosnnage par joueur
 	$G_nbr_max_persos = 1;

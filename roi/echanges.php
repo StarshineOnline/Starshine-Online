@@ -198,7 +198,7 @@ if( $action && $lieu && $perso->get_hp()>0 )
 $cont = $cadre->set_gestion( new interf_bal_cont('div') );
 interf_alerte::aff_enregistres($cont);
 $cont->add( $G_interf->creer_echange_roy($lieu && $perso->get_hp()>0) );
-$cont->maj_royaume();
+$cadre->maj_royaume();
 $cadre->maj_tooltips();
 
 ?>

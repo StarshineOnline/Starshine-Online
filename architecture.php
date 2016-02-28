@@ -153,6 +153,7 @@ if( $agit )
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_architecture($augmentation[0]);
+			$perso->recalcule_avancement();
 			$perso->sauver();
 		}
 	}

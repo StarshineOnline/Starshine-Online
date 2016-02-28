@@ -541,6 +541,7 @@ abstract class objet_invent extends table
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_comp('identification', $augmentation[0]);
+			$perso->recalcule_avancement();
 		}
 		$perso->sauver(); // On sauve a la fin pour les PA
   }

@@ -198,7 +198,11 @@ default:
 			$buff->set_effet($buff->get_effet() + $rand);
 			$buff->sauver();
 			$augmentation = augmentation_competence('dressage', $perso, 0.5);
-			if ($augmentation[1] == 1) $perso->set_dressage($augmentation[0]);
+			if ($augmentation[1] == 1)
+			{
+				$perso->set_dressage($augmentation[0]);
+				$perso->recalcule_avancement();
+			}
 			$perso->set_pa($perso->get_pa() - 10);
 			$perso->sauver();
 			$cadre->add( new interf_bal_smpl('p', 'Vous apprenez quelques tours à votre animal. Il semble se familiariser de plus en plus à vous.') );

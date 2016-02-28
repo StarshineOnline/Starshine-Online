@@ -61,6 +61,7 @@ case 'construire':
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_architecture($augmentation[0]);
+			$perso->recalcule_avancement();
 		}
 		//Gain de stars et Suppression des PA
     $perso->set_star($perso->get_star() + $stars);

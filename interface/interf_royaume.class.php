@@ -156,7 +156,7 @@ class interf_barre_royaume extends interf_bal_cont
   	$actifs->add( new interf_bal_smpl('span', $this->royaume->get_habitants_actif(), 'actifs') );
   	$facteur = $lst1->add( new interf_bal_cont('li') );
   	$facteur->add( new interf_bal_smpl('strong', 'Facteur d\'entretien : ') );
-  	$facteur->add( new interf_bal_smpl('span', $this->royaume->get_facteur_entretien(), 'facteur') );
+  	$facteur->add( new interf_bal_smpl('span', round($this->royaume->get_facteur_entretien(),2), 'facteur') );
   	if( $this->royaume->get_facteur_entretien_th() > $this->royaume->get_facteur_entretien() )
   		$facteur->add( new interf_bal_smpl('span', '', false, 'icone icone-augmente') )->set_tooltip('devrait augmenter');
   	else if( $this->royaume->get_facteur_entretien_th() < $this->royaume->get_facteur_entretien() )

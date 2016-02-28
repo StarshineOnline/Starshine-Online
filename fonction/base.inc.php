@@ -1657,9 +1657,15 @@ function augmentation_competence($competence, &$joueur, $difficulte)
 			$reussite = ceil(10000 / $G_apprentissage_rate);
 			$numero = rand(1, $reussite);
 			// Valeur seuil
-			if($perso->get_race() == 'humain' OR $perso->get_race() == 'humainnoir') $apprentissage = 1.1; else $apprentissage = 1;
-			if($perso->is_buff('apprenti_vent', true)) $apprentissage = $apprentissage * (1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100));
-			if($val_competence > 0) $chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte); else $chance = 0;
+			$apprentissage = $joueur->get_coeff_montee($competence);
+			if($perso->get_race() == 'humain' OR $perso->get_race() == 'humainnoir')
+				$apprentissage *= 1.1;
+			if($perso->is_buff('apprenti_vent', true))
+				$apprentissage *= 1 + ($perso->get_buff('apprenti_vent', 'effet', true) / 100);
+			if($val_competence > 0)
+				$chance = (10000 * $apprentissage) / (sqrt($val_competence) * $difficulte);
+			else
+				$chance = 0;
 			$R_retour[1] = false;
 			$dbg->add_message('Chances : ');
 			$dbg->add_message('Jet d\'un dé à : '.$reussite.' faces.<br />');
@@ -3630,32 +3636,48 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
  *
  * @return   login
  */
- function pseudo_to_login($pseudo)
- {
-	if(!empty($pseudo))
-	{
-		$login = strtolower($pseudo);
-		$login = str_replace("'","_",$login);
-		$login = str_replace(" ","_",$login);
-		$table = array(
-			'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
-			'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
-			'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
-			'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
-			'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
-			'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
-			'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
-			'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
-			);
-		$login = strtr($login, $table);
-		return $login;
-	}
-	else return 0;
- }
+function pseudo_to_login($pseudo)
+{
+if(!empty($pseudo))
+{
+	$login = strtolower($pseudo);
+	$login = str_replace("'","_",$login);
+	$login = str_replace(" ","_",$login);
+	$table = array(
+		'Š'=>'S', 'š'=>'s', 'Đ'=>'Dj', 'đ'=>'dj', 'Ž'=>'Z', 'ž'=>'z', 'Č'=>'C', 'č'=>'c', 'Ć'=>'C', 'ć'=>'c',
+		'À'=>'A', 'Á'=>'A', 'Â'=>'A', 'Ã'=>'A', 'Ä'=>'A', 'Å'=>'A', 'Æ'=>'A', 'Ç'=>'C', 'È'=>'E', 'É'=>'E',
+		'Ê'=>'E', 'Ë'=>'E', 'Ì'=>'I', 'Í'=>'I', 'Î'=>'I', 'Ï'=>'I', 'Ñ'=>'N', 'Ò'=>'O', 'Ó'=>'O', 'Ô'=>'O',
+		'Õ'=>'O', 'Ö'=>'O', 'Ø'=>'O', 'Ù'=>'U', 'Ú'=>'U', 'Û'=>'U', 'Ü'=>'U', 'Ý'=>'Y', 'Þ'=>'B', 'ß'=>'Ss',
+		'à'=>'a', 'á'=>'a', 'â'=>'a', 'ã'=>'a', 'ä'=>'a', 'å'=>'a', 'æ'=>'a', 'ç'=>'c', 'è'=>'e', 'é'=>'e',
+		'ê'=>'e', 'ë'=>'e', 'ì'=>'i', 'í'=>'i', 'î'=>'i', 'ï'=>'i', 'ð'=>'o', 'ñ'=>'n', 'ò'=>'o', 'ó'=>'o',
+		'ô'=>'o', 'õ'=>'o', 'ö'=>'o', 'ø'=>'o', 'ù'=>'u', 'ú'=>'u', 'û'=>'u', 'ý'=>'y', 'ý'=>'y', 'þ'=>'b',
+		'ÿ'=>'y', 'Ŕ'=>'R', 'ŕ'=>'r',
+		);
+	$login = strtr($login, $table);
+	return $login;
+}
+else return 0;
+}
+
+function ref_avancement()
+{
+	global $G_date_debut, $G_tps_avanc;
+	$tps = (time() - $G_date_debut) / (24*3600);
+	if( $tps <= $G_tps_avanc[0] )
+		return 20 * $tps / $G_tps_avanc[0];
+	else if( $tps <= $G_tps_avanc[1] )
+		return 20 + 25 * ($tps - $G_tps_avanc[0]) / ($G_tps_avanc[1] - $G_tps_avanc[0]);
+	else if( $tps <= $G_tps_avanc[2] )
+		return 45 + 25 * ($tps - $G_tps_avanc[1]) / ($G_tps_avanc[2] - $G_tps_avanc[1]);
+	else if( $tps <= $G_tps_avanc[3] )
+		return 70 + 30 * ($tps - $G_tps_avanc[2]) / ($G_tps_avanc[3] - $G_tps_avanc[2]);
+	else
+		return 100;
+}
 
 function ref_niveau()
 {
-	global $G_date_debut, $G_tps_avanc;
+	/*global $G_date_debut, $G_tps_avanc;
 	$tps = (time() - $G_date_debut) / (24*3600);
 	if( $tps <= $G_tps_avanc[0] )
 		return 4 * $tps / $G_tps_avanc[0];
@@ -3666,7 +3688,8 @@ function ref_niveau()
 	else if( $tps <= $G_tps_avanc[3] )
 		return 14 + 6 * ($tps - $G_tps_avanc[2]) / ($G_tps_avanc[3] - $G_tps_avanc[2]);
 	else
-		return 20;
+		return 20;*/
+	return ceil(ref_avancement() / 5);
 }
 
 function remplace_accents($string)

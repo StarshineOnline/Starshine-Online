@@ -222,7 +222,7 @@ class interf_descr_quete extends interf_cont
 				$liste_recomp->add( new interf_bal_smpl('li', is_array($gains) ? 'Des stars' : $gains.' stars') );
 				break;
 			case 'e':  // expérience
-				$liste_recomp->add( new interf_bal_smpl('li', is_array($gains) ? 'De l\'expérience' : $gains.' points d\'expérience') );
+				//$liste_recomp->add( new interf_bal_smpl('li', is_array($gains) ? 'De l\'expérience' : $gains.' points d\'expérience') );
 				break;
 			case 'h':  // honneur
 				$liste_recomp->add( new interf_bal_smpl('li', is_array($gains) ? 'De l\'honneur' : $gains.' points d\'honneur') );

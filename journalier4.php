@@ -116,8 +116,8 @@ $requete = "SELECT b.id, bp.valeur AS production, bs.valeur AS specialite, bf.ef
 FROM batiment b 
 LEFT JOIN batiment_bonus AS bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
 LEFT JOIN batiment_bonus AS bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
-LEFT JOIN buff_batiment AS bf ON bf.id_construction = bf.id and bf.type = 'buff_prod'
-LEFT JOIN buff_batiment AS db ON db.id_construction = db.id and db.type = 'debuff_prod' 
+LEFT JOIN buff_batiment AS bf ON bf.id_construction = b.id and bf.type = 'buff_prod'
+LEFT JOIN buff_batiment AS db ON db.id_construction = b.id and db.type = 'debuff_prod' 
 where b.type = 'mine'"; // Oui c'est gore
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))

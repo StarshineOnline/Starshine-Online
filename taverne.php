@@ -362,6 +362,7 @@ case 'jouer':
     {
 			$set = 'set_'.$aptitude;
       $perso->$set($augmentation[0]);
+      $perso->recalcule_avancement();
     	$perso->sauver();
 		}
 	}

@@ -13,8 +13,6 @@
  
  class quete extends table
  {
-	
-	protected $id;  ///< id de la quete.
 	protected $nom;  ///< Nom de la quete.
 	protected $fournisseur;  ///< Fournisseur de la quete.
 	protected $type;  ///< type de la quete. g/s/r
@@ -60,7 +58,6 @@
 	protected function init_tab($vals)
 	{
 		table::init_tab($vals);
-		$this->id = $vals['id'];
 		$this->nom = $vals['nom'];
 		$this->fournisseur = $vals['fournisseur'];
 		$this->type = $vals['type'];
@@ -71,19 +68,7 @@
 		$this->nombre_etape = $vals['nombre_etape'];
 		$this->terrain = $vals['terrain'];
 	}
-		
-	// Renvoie le id de l'objet
-	function get_id()
-	{
-		return $this->id;
-	}
 	
-	/// Modifie le id de l'objet
-	function set_id($id)
-	{
-		$this->id = $id;
-		$this->champs_modif[] = 'id';
-	}
 	// Renvoie le nom de l'objet
 	function get_nom()
 	{

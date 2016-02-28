@@ -244,11 +244,17 @@ if( array_key_exists('action', $_GET) )
         $difficulte = diff_sort($comp_sort->get_difficulte() * 1.1, $perso, 'incantation', $cout_pa_base, $cout_mp_base);
         $augmentation = augmentation_competence('incantation', $perso, $difficulte);
         if ($augmentation[1] == 1)
+        {
           $perso->set_incantation($augmentation[0]);
+          $perso->recalcule_avancement();
+				}
         $difficulte = diff_sort($comp_sort->get_difficulte() * 1.1, $perso, $comp_sort->get_comp_assoc(), $cout_pa_base, $cout_mp_base);
         $augmentation = augmentation_competence($comp_sort->get_comp_assoc(), $perso, $difficulte);
         if ($augmentation[1] == 1)
+        {
           $perso->set_comp($comp_sort->get_comp_assoc(), $augmentation[0]);
+          $perso->recalcule_avancement();
+				}
       }
       $perso->sauver();
     	$interf_princ->maj_perso();
@@ -356,6 +362,7 @@ if( array_key_exists('action', $_GET) )
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_alchimie($augmentation[0]);
+			$perso->recalcule_avancement();
 		}
 		$perso->add_pa(-$pa_total);
 		$perso->add_mp(-$mp_total);
@@ -405,6 +412,7 @@ if( array_key_exists('action', $_GET) )
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_alchimie($augmentation[0]);
+			$perso->recalcule_avancement();
 		}
 		$perso->add_pa(-10);
 		$perso->sauver();

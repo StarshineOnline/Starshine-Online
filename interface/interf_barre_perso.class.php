@@ -42,7 +42,8 @@ class interf_barre_perso extends interf_bal_cont
     $this->creer_jauge($this->infos_vie, 'Points de vie', $this->perso->get_hp(), floor($this->perso->get_hp_maximum()), true, /*'danger',*/ 'hp');
     $this->creer_jauge($this->infos_vie, 'Points de mana', $this->perso->get_mp(), floor($this->perso->get_mp_maximum()), true, /*false,*/ 'mp');
     $this->creer_jauge($this->infos_vie, 'Points d\'action', $this->perso->get_pa(), $G_PA_max, true, /*'success',*/ 'pa');
-    $this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())), $this->perso->get_level());
+    //$this->creer_jauge_xp($this->perso->get_exp(), prochain_level($this->perso->get_level()), progression_level(level_courant($this->perso->get_exp())), $this->perso->get_level());
+    $this->creer_jauge_xp($this->perso->get_avancement() + $this->perso->get_corr_avance_artisanat(), $this->perso->get_level());
   }
   protected function creer_infos_perso()
   {
@@ -156,14 +157,16 @@ class interf_barre_perso extends interf_bal_cont
 			$jauge->add( new interf_bal_smpl('div', $valeur.'/'.$maximum, $type, 'bulle_valeur') );*/
 		return $parent->add( new interf_jauge_bulle($nom, $valeur, $maximum, $grand, $type, $grand?'perso_'.$type:false, $grand?'jauge_bulle':'jauge_groupe membre_'.$type) );
 	}
-  protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
+  //protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
+  protected function creer_jauge_xp($valeur, $niv)
   {
     $jauge = $this->infos_vie->add( new interf_bal_cont('div', 'perso_xp', 'jauge_barre progress') );
-    $jauge->set_tooltip('Niveau&nbsp;: '.$niv.' − Points d\'expérience&nbsp;: '.$valeur, 'bottom');
+    //$jauge->set_tooltip('Niveau&nbsp;: '.$niv.' − Points d\'expérience&nbsp;: '.$valeur, 'bottom');
+    $jauge->set_tooltip('Niveau&nbsp;: '.$niv.' − Avancement&nbsp;: '.round($valeur, 1).'%', 'bottom');
     //$barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
     $barre = $jauge->add( new interf_bal_cont('div', null, 'progress-bar progress-bar-warning') );
-    $barre->set_attribut('style', 'width:'.$progression.'%');
-    $jauge->add( new interf_bal_smpl('div', $valeur.' / '.$maximum.' − niv. '.$niv, 'xp', 'barre_valeur') );
+    $barre->set_attribut('style', 'width:'.min($valeur, 100).'%');
+    $jauge->add( new interf_bal_smpl('div', 'Niveau : '.$niv, 'xp', 'barre_valeur') );
   }
 	protected function creer_jauge_mort($parent, $grand=false, $id_membre=null)
 	{
@@ -352,12 +355,13 @@ class interf_barre_perso_shine extends interf_barre_perso
 		$div->set_tooltip($nom.' : '.$valeur.' / '.$maximum);
 		return $div;
 	}
-  protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
+  //protected function creer_jauge_xp($valeur, $maximum, $progression, $niv)
+  protected function creer_jauge_xp($valeur, $niv)
   {
 		$div = $this->infos_vie->add( new interf_bal_smpl('div', 'Niv. : '.$niv, 'perso_'.$type, 'jauge_shine') );
-		$img .= 'exp'.round($progression/100);
+		$img .= 'exp'.round(min($valeur, 100)/10);
 		$div->set_attribut('style', 'background:url(./image/barre/'.$img.'.png) no-repeat scroll center center transparent;');
-		$div->set_tooltip('Expérience : '.$valeur.' / '.$maximum);
+		$div->set_tooltip('Avancement : '.$valeur.'%');
   }
   protected function creer_infos_membre($liste, $membre, $groupe, $index)
   {

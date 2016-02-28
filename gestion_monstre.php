@@ -89,7 +89,10 @@ case 'soin':
 	interf_alerte::enregistre(interf_alerte::msg_succes, 'Vous soignez '.$pet->get_nom().' de '.$heal.' HP et '.$heal_mp.' MP.');
 	$augmentation = augmentation_competence('dressage', $perso, 5);
 	if ($augmentation[1] == 1)
+	{
 		$perso->set_dressage($augmentation[0]);
+		$perso->recalcule_avancement();
+	}
 	$perso->sauver();
 	$pet->sauver();
 	$interf_princ->maj_perso();

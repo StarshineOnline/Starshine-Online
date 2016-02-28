@@ -18,7 +18,6 @@ class perso extends entite
   // @{
 	private $classe;       ///< Nom de la classe.
 	private $classe_id;    ///< Id de la classe.
-	private $exp;          ///< Points d'expérience.
 	private $point_sso;    ///< Points Shines.
 	private $honneur;      ///< Points d'honneur.
 	private $reputation;   ///< Points de réputation.
@@ -147,23 +146,6 @@ class perso extends entite
 	{
 		$this->classe_id = $classe_id;
 		$this->champs_modif[] = 'classe_id';
-	}
-	/// Renvoie les points d'expérience.
-	function get_exp()
-	{
-		return $this->exp;
-	}
-	/// Modifie les points d'expérience.
-	function set_exp($exp)
-	{
-		$this->exp = $exp;
-		$this->champs_modif[] = 'exp';
-	}
-	/// Modifie le niveau
-	function set_level($level)
-	{
-		$this->level = $level;
-		$this->champs_modif[] = 'level';
 	}
 	/// Renvoie les points shines.
 	function get_point_sso()
@@ -565,6 +547,371 @@ class perso extends entite
 	function est_mort()
 	{
 		return ($this->get_hp() <= 0);
+	}
+  // @}
+	/**
+	 * @name Avancement et niveau
+	 * Donnée et méthode sur l'avancement du personnage et son niveau.
+	 */
+  // @{
+	protected $exp;								///< Points d'expérience.
+	protected $avancement;				///< Avancement du personnage.
+	private $rang_classe=null;		///< Rang de la classe.
+	private $nbr_debouches=null;	///< Nombre de débouchées pour la classe actuelle
+	private $ids_debouches;				///< Ids des débouchées pour la classe actuelle
+	private $debouche_max=0;			///< index (dans la liste $nbr_debouches) de la débouché dont on est le plus proche 
+	private $nbr_categories;			///< Nombre de catégories d'aptitudes
+	private $avanc_cat=null;			///< Avancements moyen des categories
+	private $avance_artisanat;		///< Avancement de l'artisanat
+	private $avance_th=null;			///< Avancement théorique
+	
+	/// Renvoie les points d'expérience.
+	function get_exp()
+	{
+		return $this->exp;
+	}
+	/// Modifie les points d'expérience.
+	function set_exp($exp)
+	{
+		$this->exp = $exp;
+		$this->champs_modif[] = 'exp';
+	}
+	
+	/// Modifie le niveau
+	function set_level($level)
+	{
+		$this->level = $level;
+		$this->champs_modif[] = 'level';
+	}
+	
+	function get_avancement()
+	{
+		if( $this->avancement <= 0 )
+		{
+			$this->recalcule_avancement();
+			$this->set_level( ceil($this->avancement / 5) );
+			$this->sauver();
+		}
+		return $this->avancement;
+	} 
+	
+	function set_avancement($valeur)
+	{
+		$this->avancement = $valeur;
+		$this->champs_modif[] = 'avancement';
+	}
+	
+	function maj_avancement($valeur=null)
+	{
+		if( $valeur > $this->avancement )
+		{
+			$this->set_avancement($valeur);
+			$niveau = ceil($valeur/5);
+			if( $niveau > $this->level )
+			{
+				$gain = $niveau - $this->level;
+				$this->set_point_sso($this->get_point_sso() + $gain);
+				$this->set_level( $niveau );
+			}
+			$this->sauver();
+		}
+	}
+	
+	function get_avance_artisanat()
+	{
+		if( !$this->avance_artisanat )
+		{
+			$somme = $this->get_architecture(true) + $this->get_forge(true) + $this->get_alchimie(true) + $this->get_identification(true);
+			$this->avance_artisanat = ($somme - 3) / 5;
+		}
+		return $this->avance_artisanat;
+	}
+	
+	function get_corr_avance_artisanat()
+	{
+		return max($this->get_avance_artisanat() - ref_avancement(), 0) / 4;
+	}
+	
+	function recalcule_avancement()
+	{
+		if( $this->rang_classe === null )
+			$calcule = $this->init_calcul_avance();
+		else
+			$calcule = false;
+		if( !$calcule )
+			 $this->maj_avancement( $this->calcul_avance() );
+	}
+	
+	function get_avance_aptitude($apt, $corr=false)
+	{
+		if( $this->rang_classe === null )
+			$calcule = $this->init_calcul_avance();
+		$avanc = $this->calcul_avanc_apt($apt);
+		if( !$corr || $this->nbr_categories <= 1 )
+			return $avanc;
+		$apt_permet = classe_permet::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
+		if( !$apt_permet || !$apt_permet[0]->get_categorie() )
+			return $avanc;
+		$cat = $apt_permet[0]->get_categorie();
+		if( !$this->avanc_cat )
+			$this->calcul_avance();
+		for($i=1; $i<=$this->nbr_categories; $i++)
+		{
+			if( $i == $cat )
+				continue;
+			$avanc += $this->avanc_cat[$i];
+		}
+		return $avanc / $this->nbr_categories;
+	}
+	
+	protected function calcul_avanc_apt($apt, $debouche=null)
+	{
+		global $Tmaxcomp;
+		if( $this->rang_classe === null )
+			$this->init_calcul_avance();
+		if( $debouche === null )
+			$debouche = $this->debouche_max;
+		$permet = classe_permet::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
+		$val = $this->get_comp($apt);
+		if( $permet )
+		{
+			if( $this->rang_classe < 4 )
+			{
+				$seuil = classe_requis::create(array('id_classe', 'competence'), array($this->ids_debouches[$debouche], $apt));
+				$seuil = $seuil ? $seuil[0]->get_requis() : null;
+			}
+			else
+				$seuil = null;
+			$max = $permet[0]->get_permet();
+			$prct = 25 * $this->rang_classe;
+			$prec = null;
+			if( $this->rang_classe > 1 )
+				$prec = classe_requis::create(array('id_classe', 'competence'), array($this->classe_id, 'classe'));
+			if( $prec )
+				$prec = classe_permet::create(array('id_classe', 'competence'), array($prec[0]->get_requis(), $apt));
+			if( $seuil === null )
+			{
+				if( $prec )
+				{
+					$max_prec = $prec[0]->get_permet();
+					//my_dump($val.' / '.$max.' ; '.$max_prec.' ('.$prct.')');
+					if( $val >= $max_prec )
+						return $prct - 25 + 25 * ($val - $max_prec) / ($max - $max_prec);
+					else
+						return ($prct - 25) * $val / $max_prec;
+				}
+				else
+					return $prct * $val / $max;
+			}
+			else
+			{
+				$min = classe_requis::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
+				if( $min && !$prec )
+					$max_prec = $Tmaxcomp[$apt];
+				else if( $prec )
+					$max_prec = $prec[0]->get_permet();
+				else
+				{
+					$denom = $max * $seuil * ($max - $seuil);
+					$x = ($prct - 5) * $max * $max - $prct * $seuil * $seuil;
+					$x2 = $prct * $seuil - ($prct - 5) * $max;
+					return ($x * $val + $x2 * $val * $val) / $denom;
+				}
+				if( $min )
+				{
+					$min = $min[0]->get_requis();
+					$a = ($prct - 5) * ($val - $max_prec) * ($val - $min) * ($max - $val);
+					$a /= ($seuil - $max_prec) * ($seuil - $min) * ($max - $seuil);
+					$b = $prct * ($val - $max_prec) * ($val - $min) * ($val - $seuil);
+					$b /= ($max - $max_prec) * ($max - $min) * ($max - $seuil);
+					$c = ($prct - 30) * ($max_prec - $val) * ($max - $val) * ($seuil - $val);
+					$c /= ($max_prec - $min) * ($max - $min) * ($seuil - $min);
+					$d = ($prct - 25) * ($val - $min) * ($max - $val) * ($seuil - $val);
+					$d /= ($max_prec - $min) * ($max - $max_prec) * ($seuil - $max_prec);
+					//my_dump($val.' / '.$max.' ; '.$min.' - '.$max_prec.' - '.$seuil.' ('.$prct.') -> '.$a.' + ' .$b.' + '.$c.' + '.$d);
+					return $a + $b +$c +$d;
+				}
+				else
+				{
+					$a = ($prct - 5) * $val * ($val - $max_prec) * ($max - $val);
+					$a /= $seuil * ($seuil - $max_prec) * ($max - $seuil);
+					$b = $prct * $val * ($val - $max_prec) * ($val - $seuil);
+					$b /= $max * ($max - $max_prec) * ($mas - $seuil);
+					$c = ($prct - 25) * $val * ($max - $val) * ($seuil - $val);
+					$c /= $max_prec * ($max - $max_prec) * ($seuil - $max_prec);
+					//my_dump($val.' / '.$max.' ; '.$max_prec.' - '.$seuil.' ('.$prct.' -> '.$a.' +' .$b.' + '.$c);
+					return $a + $b + $c;
+				}
+			}
+		}
+		else
+		{
+			$requis = classe_requis::create(array('id_classe', 'competence'), array($this->ids_debouches[$debouche], $apt));
+			if( $requis )
+			{
+				$max = $Tmaxcomp[$apt];
+				$seuil = $requis[0]->get_requis();
+				$prct = 25 * $this->rang_classe;
+				$denom = $max * $seuil * ($max - $seuil);
+				$x = ($prct - 5) * $max * $max - $prct * $seuil * $seuil;
+				$x2 = $prct * $seuil - ($prct - 5) * $max;
+				return ($x * $val + $x2 * $val * $val) / $denom;
+			}
+			else
+				return 100 * $val / $Tmaxcomp[$apt];
+		}
+	}
+	
+	protected function calcul_avance($debouche=null)
+	{
+		if( $debouche === null )
+			$debouche = $this->debouche_max;
+		$apts = classe_permet::create('id_classe', $this->classe_id);
+		$this->avanc_cat = $n_cats = $cats = array_fill(1, $this->nbr_categories, 0);
+		$avancement = 0;
+		$n = 0;
+		$finis = array('reputation', 'classe');
+		foreach($apts as $a)
+		{
+			$i = $a->get_categorie();
+			if( $i === null )
+				continue;
+			$finis[] = $a->get_competence();
+			$av = $this->calcul_avanc_apt($a->get_competence(), $debouche);
+			//my_dump('[permet] '.$a->get_competence().' : '.$av);
+			$avancement += $av;
+			$n++;
+			if( $i )
+			{
+				$cats[$i] += $av;
+				$n_cats[$i]++;
+			}
+		}
+		// Aptitudes uniquement dans les requis
+		$apts = classe_requis::create('id_classe', $this->ids_debouches[$debouche]);
+		foreach($apts as $a)
+		{
+			$i = $a->get_categorie();
+			$nom = $a->get_competence();;
+			if( $i === null || in_array($nom, $finis) )
+				continue;
+			$av = $this->calcul_avanc_apt($a->get_competence(), $debouche);
+			my_dump('[requis] '.$a->get_competence().' : '.$av);
+			$avancement += $av;
+			$n++;
+			if( $i )
+			{
+				$cats[$i] += $av;
+				$n_cats[$i]++;
+			}
+		}
+		$this->nbr_categories = count($cats);
+		// On finalise les catégories
+		for($i=1; $i<$this->nbr_categories; $i++)
+		{
+			$this->avanc_cat[$i] = $cats[$i] / $n_cats[$i];
+		}
+		return $avancement / $n;
+	}
+	
+	/**
+	 * Initialise le calcule de l'avancement
+	 * Si besoin calcul les avancements possibles suivant les débouchées pour trouver le meilleur.
+	 * 
+	 * @return		true si l'avancement a été calculé au passage, false sinon	 	 	 	
+	 */
+	protected function init_calcul_avance()
+	{
+		$classe = new classe( $this->classe_id );
+		$this->rang_classe = $classe->get_rang();
+		// dernier rang ?
+		if( $this->rang_classe == 4 )
+		{
+			$this->nbr_debouches = 0;
+			return;
+		}
+		// initialisation des avancements
+		$this->avanc_ind = array();
+		// Recherches des débouchées
+		$debouches = classe_requis::create(array('competence', 'requis'), array('classe', $this->classe_id));
+		$this->nbr_debouches = count($debouches);
+		$this->ids_debouches = array();
+		foreach($debouches as $d)
+		{
+			$this->ids_debouches[] = $d->get_id_classe();
+		}
+		// s'ils y a plusieurs debouches on les calcules toutes pour savoir laquelle est la plus proche
+		if( $this->nbr_debouches > 1 )
+		{
+			$this->avanc_debouch = array();
+			$avanc_max = 0;
+			for($i=0; $i<$this->nbr_debouches; $i++)
+			{
+				$av = $this->calcul_avance($i);
+				if( $av > $avanc_max )
+				{
+					$avanc_max = $av;
+					$this->debouche_max = $i;
+					$avanc_cat = $this->avanc_cat;
+					$nbr_categories = $this->nbr_categories;
+				}
+			}
+			$this->maj_avancement( $avanc_max );
+			$this->avanc_cat = $avanc_cat;
+			$this->nbr_categories = $nbr_categories;
+			return true;
+		}
+		else
+			$this->debouche_max = 0;
+		return false;
+	}
+	
+	/// Renvoie l'avancement théorique minimal (dépend de la date de création du personnage)
+	function get_avanc_th_min()
+	{
+		global $G_tps_avanc_min;
+		if( $this->avance_th === null )
+		{
+			$tps = time() - $this->get_date_creation();
+			$tps /= 24 * 3600; // en jours
+			if( $tps <= $G_tps_avanc_min[0] )
+				$avanc_min = 20 * $tps / $G_tps_avanc_min[0];
+			else if( $tps <= $G_tps_avanc_min[1] )
+				$avanc_min = 20 + 25 * ($tps - $G_tps_avanc_min[0]) / ($G_tps_avanc_min[1] - $G_tps_avanc_min[0]);
+			else if( $tps <= $G_tps_avanc[2] )
+				$avanc_min = 45 + 25 * ($tps - $G_tps_avanc_min[1]) / ($G_tps_avanc_min[2] - $G_tps_avanc_min[1]);
+			else if( $tps <= $G_tps_avanc[3] )
+				$avanc_min = 70 + 30 * ($tps - $G_tps_avanc_min[2]) / ($G_tps_avanc_min[3] - $G_tps_avanc_min[2]);
+			else
+				$avanc_min = 100;
+			$this->avance_th = min($avanc_min, ref_avancement());
+		}
+		return $this->avance_th;
+	}
+	
+	// Renvoie le coefficient de montée d'une aptitude (hors artisanat)
+	function get_coeff_montee($aptitude)
+	{
+		switch($aptitude)
+		{
+		case 'architecture':
+		case 'forge':
+		case 'alchimie':
+		case 'identification':
+			$artisanat = $this->get_avance_artisanat();
+			$theorique = $this->get_avanc_th_min();
+			$avancement = $this->get_avancement();
+			$corr = $avancement - $theorique;
+			if( $artisanat < $theorique )
+				return $theorique / $artisanat;
+			else
+				return $theorique / ($artisanat + $corr);
+			break;
+		default:
+			$avancement = $this->get_avance_aptitude($aptitude, true) + $this->get_corr_avance_artisanat();
+			$theorique = $this->get_avanc_th_min();
+			return $theorique / $avancement;
+		}
 	}
   // @}
   
@@ -2551,17 +2898,17 @@ class perso extends entite
    */
 	function check_perso($last_action = true)
 	{
+		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp, $G_date_debut, $G_tps_avanc;
 		$this->check_specials();
 		
 		$modif = false;	 // Indique si le personnage a été modifié.
-		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp;
 		// Passage de niveau
-		if ($this->get_exp() > prochain_level($this->get_level()))
+		/*if ($this->get_exp() > prochain_level($this->get_level()))
 		{
 			$this->set_level($this->get_level() + 1);
 			$this->set_point_sso($this->get_point_sso() + 1);
 			$this->sauver();
-		}
+		}*/
 		// On vérifie que le personnage est vivant
 		if($this->hp > 0)
 		{
@@ -2569,12 +2916,16 @@ class perso extends entite
 			$temps_maj = time() - $this->get_maj_hp(); // Temps écoulé depuis la dernière augmentation de HP.
 			$temps_hp = $G_temps_maj_hp;  // Temps entre deux augmentation de HP.
 
+			$age = $this->get_date_creation() - $G_date_debut;
+			$max = max($G_tps_avanc[3]*24*3600 - $age, 1);
 			if ($temps_maj > $temps_hp && $temps_hp > 0) // Pour ne jamais diviser par 0…
 			{
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_hp);
 				$hp_gagne = $nb_maj * (pow($this->get_vie(true), 0.9) * 1.3);
-				if (($this->get_hp_max(true) + $hp_gagne) < (120*(pow($this->get_vie(true), 0.9))))
+				// Facteur correctif pour aider à rattrapper le retard
+				$hp_gagne *= min(1 + $age / $max / 2, 3);
+				if( $this->get_hp_max(true) + $hp_gagne < 120 * pow($this->get_vie(true), 0.9) )
 				{
 					$this->set_hp_max($this->get_hp_max(true) + $hp_gagne);
 					$this->set_maj_hp($this->get_maj_hp() + $nb_maj * $temps_hp);
@@ -2596,6 +2947,8 @@ class perso extends entite
 				$time = time();
 				$nb_maj = floor($temps_maj / $temps_mp);
 				$mp_gagne = $nb_maj * (pow($this->get_energie(true), 1.2)/10);
+				// Facteur correctif pour aider à rattrapper le retard
+				$mp_gagne *= min(1 + $age / $max / 2, 3);
 				if (($this->get_mp_max(true) + $mp_gagne) < (pow($this->get_energie(true), 1.2)*13))
 				{
 					$this->set_mp_max($this->get_mp_max(true) + $mp_gagne);
@@ -3760,7 +4113,7 @@ class perso extends entite
 				$membre->set_exp($membre->get_exp() + $xp_gagne);
 				$membre->set_honneur($membre->get_honneur() + $honneur_gagne);
 				$membre->set_reputation($membre->get_reputation() + $reputation_gagne);
-				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_gagne.' XP</strong>, <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong>, et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
+				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$honneur_gagne.' points d\'honneur</strong> et <strong class="reward">'.$reputation_gagne.' points de réputation</strong><br />';
 				$membre->sauver();
 				if($defense && $membre->get_id() == $ennemi->get_id()) quete_perso::verif_action('J'.$row_diplo[0], $membre, 's');
 				else quete_perso::verif_action('J'.$row_diplo[0], $membre, 'g');
@@ -3917,17 +4270,17 @@ class perso extends entite
 	* @param tinyint(3) beta attribut
 	* @return none
 	*/
-	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $exp = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $encombrement=0, $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
+	function __construct($id = 0, $mort = 0, $nom = '', $password = '', $email = '', $avancement = 0, $honneur = 0, $reputation = 0, $level = '', $rang_royaume = '', $vie = '', $forcex = '', $dexterite = '', $puissance = '', $volonte = '', $energie = '', $race = '', $classe = '', $classe_id = '', $inventaire = '', $inventaire_pet = '', $inventaire_slot = '', $encombrement=0, $pa = '', $dernieraction = '', $action_a = 0, $action_d = 0, $sort_jeu = '', $sort_combat = '', $comp_combat = '', $comp_jeu = '', $star = '', $x = '', $y = '', $groupe = 0, $hp = '', $hp_max = '', $mp = '', $mp_max = '', $melee = '', $distance = '', $esquive = '', $blocage = '', $incantation = '', $sort_vie = '', $sort_element = '', $sort_mort = '', $identification = '', $craft = '', $alchimie = '', $architecture = '', $forge = '', $survie = '', $dressage = 0, $facteur_magie = '', $facteur_sort_vie = 0, $facteur_sort_mort = 0, $facteur_sort_element = 0, $regen_hp = '', $maj_hp = '', $maj_mp = '', $point_sso = 0, $quete = '', $quete_fini = '', $dernier_connexion = 0, $statut = '', $fin_ban = 0, $frag = 0, $crime = 0, $amende = 0, $teleport_roi = 'false', $cache_classe = 0, $cache_stat = 0, $cache_niveau = 0, $max_pet = 0, $beta = 0, $joueur=null, $tuto = 1, $date_creation = 0)
 	{
 		global $db;
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, encombrement, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
+			$requeteSQL = $db->query("SELECT mort, nom, password, email, exp, honneur, reputation, level, avancement, rang_royaume, vie, forcex, dexterite, puissance, volonte, energie, race, classe, classe_id, inventaire, inventaire_pet, inventaire_slot, encombrement, pa, dernieraction, action_a, action_d, sort_jeu, sort_combat, comp_combat, comp_jeu, star, x, y, groupe, hp, hp_max, mp, mp_max, melee, distance, esquive, blocage, incantation, sort_vie, sort_element, sort_mort, identification, craft, alchimie, architecture, forge, survie, dressage, facteur_magie, facteur_sort_vie, facteur_sort_mort, facteur_sort_element, regen_hp, maj_hp, maj_mp, point_sso, quete, quete_fini, dernier_connexion, statut, fin_ban, frag, crime, amende, teleport_roi, cache_classe, cache_stat, cache_niveau, max_pet, beta, id_joueur, tuto, date_creation FROM perso WHERE id = '$id'");
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
-				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->encombrement, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
+				list($this->mort, $this->nom, $this->password, $this->email, $this->exp, $this->honneur, $this->reputation, $this->level, $this->avancement, $this->rang_royaume, $this->vie, $this->forcex, $this->dexterite, $this->puissance, $this->volonte, $this->energie, $this->race, $this->classe, $this->classe_id, $this->inventaire, $this->inventaire_pet, $this->inventaire_slot, $this->encombrement, $this->pa, $this->dernieraction, $this->action_a, $this->action_d, $this->sort_jeu, $this->sort_combat, $this->comp_combat, $this->comp_jeu, $this->star, $this->x, $this->y, $this->groupe, $this->hp, $this->hp_max, $this->mp, $this->mp_max, $this->melee, $this->distance, $this->esquive, $this->blocage, $this->incantation, $this->sort_vie, $this->sort_element, $this->sort_mort, $this->identification, $this->craft, $this->alchimie, $this->architecture, $this->forge, $this->survie, $this->dressage, $this->facteur_magie, $this->facteur_sort_vie, $this->facteur_sort_mort, $this->facteur_sort_element, $this->regen_hp, $this->maj_hp, $this->maj_mp, $this->point_sso, $this->quete, $this->quete_fini, $this->dernier_connexion, $this->statut, $this->fin_ban, $this->frag, $this->crime, $this->amende, $this->teleport_roi, $this->cache_classe, $this->cache_stat, $this->cache_niveau, $this->max_pet, $this->beta, $this->id_joueur, $this->tuto, $this->date_creation) = $db->read_array($requeteSQL);
 			}
 			else $this->__construct();
 			$this->id = $id;
@@ -3943,6 +4296,7 @@ class perso extends entite
 			$this->honneur = $id['honneur'];
 			$this->reputation = $id['reputation'];
 			$this->level = $id['level'];
+			$this->avancement = $id['avancement'];
 			$this->rang_royaume = $id['rang_royaume'];
 			$this->vie = $id['vie'];
 			$this->forcex = $id['forcex'];

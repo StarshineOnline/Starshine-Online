@@ -1513,5 +1513,7 @@ class entite extends placable
 		return $this->compteur_critique;
 	}
   // @}
+  
+  function recalcule_avancement() {}
 }
 ?>

@@ -246,14 +246,21 @@ class attaque
 		$fiabilite = round(100 / $nbr_barre_total / 2, 2);
 			
 		//Augmentation des compétences liées
+		$gain = false;
 		$augmentation = augmentation_competence('survie', $this->perso, 2);
 		if( $augmentation[1] == 1 )
+		{
+			$gain = true;
 			$this->perso->set_survie($augmentation[0]);
+		}
 		if( $this->attaquant->get_type() == 'pet' )
 		{
 			$augmentation = augmentation_competence('dressage', $this->perso, 0.85);
 			if($augmentation[1] == 1)
+			{
+				$gain = true;
 				$this->perso->set_dressage($augmentation[0]);
+			}
 		}
 		if( $this->defenseur->get_type() == 'pet' )
 		{
@@ -261,7 +268,9 @@ class attaque
 			$augmentation = augmentation_competence('dressage', $perso_defenseur, 0.85);
 			if($augmentation[1] == 1)
 			{
+				$gain = true;
 				$perso_defenseur->set_dressage($augmentation[0]);
+				$perso_defenseur->recalcule_avancement();
 				$perso_defenseur->sauver();
 			}
 		}
@@ -271,9 +280,14 @@ class attaque
 			{
 				$augmentation = augmentation_competence($survie_test, $this->perso, 4);
 				if ($augmentation[1] == 1)
+				{
+					$gain = true;
 					$this->perso->set_comp($survie_test, $augmentation[0]);
+				}
 			}
 		}
+		if( $gain )
+			$this->perso->recalcule_avancement();
 		
 		// Affichage de la fin du combat
 		$this->attaquant->fin_attaque($this->perso, $this->defenseur, $pa_attaque);
@@ -361,9 +375,15 @@ class attaque
 		//Augmentation des compétences liées
 		/// @todo à améliorer
 		if( get_class($this->actif) != 'pet' )
+		{
 			$this->actif = augmentation_competences($augmentations['actif'], $this->actif);
+			$this->actif->recalcule_avancement();
+		}
 		if( get_class($this->passif) != 'pet' )
+		{
 			$this->passif = augmentation_competences($augmentations['passif'], $this->passif);
+			$this->passif->recalcule_avancement();
+		}
 		// Mise à jour de l'entité pour refleter les up
 		$this->attaquant->maj_comp();
 		$this->defenseur->maj_comp();

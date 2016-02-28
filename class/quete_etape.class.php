@@ -312,7 +312,7 @@ class quete_etape extends table
 				break;
 			case 'e':  // expérience
 				$perso->set_exp( $perso->get_exp() + $gains );
-				$texte[] = $gains.' points d\'expérience';
+				//$texte[] = $gains.' points d\'expérience';
 				break;
 			case 'h':  // honneur
 				if($perso->is_buff('moral'))

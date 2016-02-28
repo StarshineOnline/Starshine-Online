@@ -750,7 +750,7 @@ class map_monstre extends entnj_incarn
 					$membre->set_star($membre->get_star() + $star_perso);
 				}
 				else $star_perso = 0;
-				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$xp_perso.' XP</strong> et <strong class="reward">'.$star_perso.' Stars</strong><br />';
+				$msg_xp .= $membre->get_nom().' gagne <strong class="reward">'.$star_perso.' Stars</strong><br />';
 				//Vérification de l'avancement des quêtes solo pour le tueur, groupe pour les autres
 				if($this->get_hp() <= 0)
 				{

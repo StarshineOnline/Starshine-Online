@@ -73,6 +73,7 @@ case 'recherche':
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_alchimie($augmentation[0]);
+			$perso->recalcule_avancement();
 		}
 		$perso->sauver();
 		$interf_princ->maj_perso();

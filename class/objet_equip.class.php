@@ -204,6 +204,7 @@ abstract class objet_equip extends objet_invent
 		if ($augmentation[1] == 1)
 		{
 			$perso->set_forge($augmentation[0]);
+			$perso->recalcule_avancement();
 			$perso->sauver();
 		}
     // on recompose la version textuelle & retire les PA
@@ -277,7 +278,10 @@ abstract class objet_equip extends objet_invent
     // Augmentation de l'attribut
 		$augmentation = augmentation_competence('forge', $perso, 2);
 		if ($augmentation[1] == 1)
+		{
 			$perso->set_forge($augmentation[0]);
+			$perso->recalcule_avancement();
+		}
     // on recompose la version textuelle & retire les PA
     $this->recompose_texte();
 		$perso->set_pa($perso->get_pa() - 20);
