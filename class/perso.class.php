@@ -673,7 +673,7 @@ class perso extends entite
 			$debouche = $this->debouche_max;
 		$permet = classe_permet::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
 		$val = $this->get_comp($apt);
-		if( $permet )
+		/*if( $permet )
 		{
 			if( $this->rang_classe < 4 )
 			{
@@ -759,7 +759,51 @@ class perso extends entite
 			}
 			else
 				return 100 * $val / $Tmaxcomp[$apt];
+		}*/
+		$prct = 25 * $this->rang_classe;
+		$base = array();
+		if( $this->rang_classe > 1 )
+		{
+			$min = classe_requis::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
+			if( $min )
+				$base[ $min[0]->get_requis() ] = $prct - 30;
+			$prec = classe_requis::create(array('id_classe', 'competence'), array($this->classe_id, 'classe'));
+			if( $prec )
+			{
+				$prec = classe_permet::create(array('id_classe', 'competence'), array($prec[0]->get_requis(), $apt));
+				if( $prec )
+					$max_prec = $prec[0]->get_permet();
+				else if( $min )
+					$max_prec = $Tmaxcomp[$apt];
+				else 
+					$max_prec = null;
+				if( $max_prec )
+					$base[ $max_prec ] = $prct - 25;
+			}
 		}
+		$requis = classe_requis::create(array('id_classe', 'competence'), array($this->ids_debouches[$debouche], $apt));
+		if( $requis )
+			$base[ $requis[0]->get_requis() ] = $prct - 5;
+		$permet = classe_permet::create(array('id_classe', 'competence'), array($this->classe_id, $apt));
+		$max = $permet ? $permet[0]->get_permet() : $Tmaxcomp[$apt];
+		$base[ $max ] = $prct;
+		$val_prec = 1;
+		$prct_prec = 0;
+		//my_dump($base);
+		foreach($base as $v=>$p)
+		{
+			if( $val <= $v )
+			{
+				$val_suiv = $v;
+				$prct_suiv = $p;
+				break;
+			}
+			$val_prec = $v;
+			$prct_prec = $p;
+		}
+		$t = ($val - $val_prec) / ($val_suiv - $val_prec);
+		//my_dump($val.' -> '.$t.' ('.$val_prec.' - '.$val_suiv.' ; '.$prct_prec.' - '.$prct_suiv.')');
+		return $prct_prec * (1 - $t) + $prct_suiv * $t;
 	}
 	
 	protected function calcul_avance($debouche=null)
@@ -771,6 +815,7 @@ class perso extends entite
 		$avancement = 0;
 		$n = 0;
 		$finis = array('reputation', 'classe');
+		//my_dump('Debouchée : '.$this->ids_debouches[$debouche]);
 		foreach($apts as $a)
 		{
 			$i = $a->get_categorie();
@@ -796,7 +841,7 @@ class perso extends entite
 			if( $i === null || in_array($nom, $finis) )
 				continue;
 			$av = $this->calcul_avanc_apt($a->get_competence(), $debouche);
-			my_dump('[requis] '.$a->get_competence().' : '.$av);
+			//my_dump('[requis] '.$a->get_competence().' : '.$av);
 			$avancement += $av;
 			$n++;
 			if( $i )
@@ -2900,6 +2945,7 @@ class perso extends entite
 	{
 		global $db, $G_temps_regen_hp, $G_temps_maj_hp, $G_temps_maj_mp, $G_temps_PA, $G_PA_max, $G_pourcent_regen_hp, $G_pourcent_regen_mp, $G_date_debut, $G_tps_avanc;
 		$this->check_specials();
+		//$this->recalcule_avancement();
 		
 		$modif = false;	 // Indique si le personnage a été modifié.
 		// Passage de niveau
