@@ -13,7 +13,7 @@ class armure extends objet_equip
 	protected $PP;  ///< PP de l'armure
 	protected $PM;  ///< PM de l'armure
 	protected $forcex;  ///< force nécessaire pour utiliser l'armure
-	protected $puissance;  ///< Puissance nécessaire pour porter l'objet.
+	protected $niveau;  ///< Niveau nécessaire pour porter l'objet.
 	const code = 'p';   ///< Code de l'objet.
 
 	/// Retourne la force nécessaire pour utiliser l'arme
@@ -57,15 +57,15 @@ class armure extends objet_equip
 	}
 
 	/// Retourne la puissance nécessaire pour porter l'objet.
-	function get_puissance()
+	function get_niveau()
 	{
-		return $this->puissance;
+		return $this->niveau;
 	}
 	/// Modifie la puissance nécessaire pour porter l'objet.
-	function set_puissance($puissance)
+	function set_niveau($valeur)
 	{
-		$this->puissance = $puissance;
-		$this->champs_modif[] = 'puissance';
+		$this->niveau = $valeur;
+		$this->champs_modif[] = 'niveau';
 	}
 
   /// Indique si l'objet est modifiable par la forge
@@ -81,9 +81,9 @@ class armure extends objet_equip
 	 * @param  $pp       	     PP de l'armure.
 	 * @param  $pm       	     PM de l'armure.
 	 * @param  $force	         force nécessaire pour utiliser l'armure
-	 * @param  $puissance	     puissance nécessaire pour porter l'objet.
+	 * @param  $niveau	     puissance nécessaire pour porter l'objet.
 	 */
-	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $pp=0, $pm=0, $force=0, $puissance=0)
+	function __construct($nom='', $type='', $prix=0, $effet=0, $lvl_batiment=9, $pp=0, $pm=0, $force=0, $niveau=0)
 	{
 		//Verification du nombre et du type d'argument pour construire l'objet adequat.
 		if( func_num_args() == 1 )
@@ -100,7 +100,7 @@ class armure extends objet_equip
 			$this->PP = $pp;
 			$this->PM = $pm;
 			$this->forcex = $force;
-			$this->puissance = $puissance;
+			$this->niveau = niveau;
 		}
 	}
 
@@ -114,7 +114,7 @@ class armure extends objet_equip
 		$this->PP = $vals['PP'];
 		$this->PM = $vals['PM'];
 		$this->forcex = $vals['forcex'];
-		$this->puissance = $vals['puissance'];
+		$this->niveau = $vals['niveau'];
 	}
 
 	/// Renvoie la liste des champs pour une insertion dans la base
@@ -124,7 +124,7 @@ class armure extends objet_equip
     $tbl['PP']='i';
     $tbl['PM']='i';
     $tbl['forcex']='i';
-    $tbl['puissance']='i';
+    $tbl['niveau']='i';
 		return $tbl;
 	}
 
@@ -145,6 +145,7 @@ class armure extends objet_equip
   {
     $noms = array('PP', 'PM');
     $noms[] = $complet ? 'Force nécessaire' : 'Force';
+    $noms[] = $complet ? 'Niveau nécessaire' : 'Niv.';
     if( $this->modification )
     {
     	$noms[] = 'Bonus';
@@ -161,12 +162,13 @@ class armure extends objet_equip
 	 */
 	public function get_valeurs_infos($complet=true)
   {
-    $vals = array($this->PP, $this->PM, $this->forcex);
+    $vals = array($this->PP, $this->PM, $this->forcex, $this->niveau);
     if( $this->modification )
     {
     	$vals[] = $this->modification->get_descr_bonus();
     	$vals[] = $this->modification->get_descr_malus();
 		}
+		/// @todo ajouter effet gemmes et effets magiques
     $vals[] = $this->encombrement;
 		$vals[] = $this->prix;
     return $vals;
@@ -193,10 +195,10 @@ class armure extends objet_equip
   
   function peut_utiliser(&$perso, $msg=true)
   {
-    if( $perso->get_puissance() < $this->puissance )
+    if( $perso->get_level() < $this->niveau )
     {
 			if( $msg )
-	    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de puissance.');
+	    	interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas le niveau.');
     	return false;
 		}
     if( $perso->get_force() >= $this->forcex )

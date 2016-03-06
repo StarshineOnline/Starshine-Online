@@ -51,6 +51,7 @@ class interf_achat_armure extends interf_achat_objet
 		$this->tbl->nouv_cell('PP');
 		$this->tbl->nouv_cell('PM');
 		$this->tbl->nouv_cell('Force');
+		$this->tbl->nouv_cell('Niv.');
 	}
 	
 	function aff_cont_col(&$elt)
@@ -59,6 +60,8 @@ class interf_achat_armure extends interf_achat_objet
 		$this->tbl->nouv_cell( $elt->get_pm() );
 		$classe =  $elt->get_force() > $this->perso->get_force() ? 'text-danger' : '';
 		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_force(), false, $classe) );
+		$classe =  $elt->get_niveau() > $this->perso->get_level() ? 'text-danger' : '';
+		$this->tbl->nouv_cell( new interf_bal_smpl('span', $elt->get_niveau(), false, $classe) );
 	}
 }
 
