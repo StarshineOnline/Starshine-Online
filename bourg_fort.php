@@ -19,8 +19,7 @@ $R = new royaume($W_row['royaume']);
 $construction = new construction(sSQL($_GET['id_construction']));
 $construction->check_buff();
 
-if($perso->get_x() == $construction->get_x() && $perso->get_y() == $construction->get_y() && $perso->get_race() == $R->get_race() 
-	&& ( $construction->get_type() == 'bourg' || $construction->get_type() == 'fort' ) )
+if($perso->get_x() == $construction->get_x() && $perso->get_y() == $construction->get_y() && $perso->get_race() == $R->get_race() && ( $construction->get_type() == 'bourg' || $construction->get_type() == 'fort' ) && !$construction->is_buff('assaut') )
 {
 	// Cadre de la partie gauche
 	$cadre = $interf_princ->set_gauche( $G_interf->creer_bourg_fort($construction) );

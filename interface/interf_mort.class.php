@@ -65,9 +65,16 @@ class interf_mort extends interf_gauche
 		else
 		{
 			// Recherche du fort le plus proche
+			///@todo à améliorer
 			$requete = "SELECT *, (ABS(".$perso->get_x()." - cast(x as signed integer)) + ABS(".$perso->get_y()." - cast(y as signed integer))) AS plop FROM `construction` WHERE rez > 0 AND type = 'fort' AND royaume = ".$Trace[$perso->get_race()]['numrace']." ORDER BY plop ASC";
 			$req = $db->query($requete);
-			if( $row = $db->read_assoc($req) )
+			while(  $row = $db->read_assoc($req) )
+			{
+				$constr = new construction( $row );
+				if( !$constr->is_buff('sape') )
+					break;
+			}
+			if( $row )
 			{
 				$pourcent = $row['rez'] + $bonus;
 				$elt = $liste->add( new interf_elt_menu('', 'carte.php?x='.$row['x'].'&y='.$row['y'], 'return charger(this.ref);') );

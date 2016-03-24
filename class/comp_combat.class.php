@@ -281,9 +281,9 @@ class comp_combat extends comp
 
     $attaque->get_interface()->competence($this->get_type(), $actif->get_nom(), $this->get_nom());
     // Test pour toucher
-  	$potentiel_toucher = $actif->get_potentiel_toucher();
+  	$potentiel_toucher = $actif->get_potentiel_toucher( $attaque->is_attaquant_actif() );
     $attaque->applique_effet('calcul_attaque_physique', $potentiel_toucher);
-  	$potentiel_parer = $passif->get_potentiel_parer();
+  	$potentiel_parer = $passif->get_potentiel_parer( false, !$attaque->is_attaquant_actif() );
     $attaque->applique_effet('calcul_defense_physique', $potentiel_parer);
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer, $attaque) )
     {
@@ -326,7 +326,10 @@ class comp_combat extends comp
   	if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
   	if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
 		if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
-  	if($actif->is_buff('buff_cri_victoire')) $buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet'); else $buff_cri_victoire = 0;
+  	if($actif->is_buff('buff_cri_victoire') && $attaque->is_attaquant_actif())
+			$buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet');
+		else
+			$buff_cri_victoire = 0;
   	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('fleche_tranchante', 'effet');
   	if($actif->is_buff('oeil_chasseur') && $passif->get_espece() == 'bete' && $actif->get_arme_type() == 'arc') $degat += $actif->get_buff('oeil_chasseur', 'effet');
   	if($actif->is_buff('potion_inerte') && $passif->get_espece() == 'magique')
@@ -572,7 +575,7 @@ class comp_combat extends comp
     if(array_key_exists('berzeker', $passif->etat)) $buff_berz_bouclier = 1 + (($passif->etat['berzeker']['effet'] * $G_buff['berz_bouclier']) / 100); else $buff_berz_bouclier = 1;
     if(array_key_exists('batiment_pp', $actif->etat)) $buff_batiment_bouclier = 1 + (($actif->etat['batiment_pp']['effet']) / 100); else $buff_batiment_bouclier = 1;
     if(array_key_exists('acide', $passif->etat)) $debuff_acide = 1 + (($passif->etat['acide']['effet2']) / 100); else $debuff_acide = 1;
-    if($passif->etat['posture']['type'] == 'posture_pierre') $aura_pierre = 1 + (($passif->etat['posture']['effet']) / 100); else $aura_pierre = 1;
+    if($passif->etat['aura']['type'] == 'aura_pierre') $aura_pierre = 1 + (($passif->etat['aura']['effet']) / 100); else $aura_pierre = 1;
 	  //Chance de transpercer l'armure
     $transperce = false;
     if($actif->etat['posture']['type'] == 'posture_transperce')
@@ -597,7 +600,7 @@ class comp_combat extends comp
 				$transperce = true;
 			}
 		}
-    $PP = round(($passif->get_pp() * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
+    $PP = round(($passif->get_pp(true, $attaque->is_attaquant_actif()) * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
 
     // Application des effets de PP
     $attaque->applique_effet('calcul_pp', $PP);
@@ -625,7 +628,7 @@ class comp_combat extends comp
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
     global $log_combat;
-  	$actif_chance_critique = $actif->get_potentiel_critique();
+  	$actif_chance_critique = $actif->get_potentiel_critique( $attaque->is_attaquant_actif() );
 
 
     // Application des effets de chance critique
@@ -1083,10 +1086,14 @@ class comp_combat_fleche_enflammee extends comp_combat
     parent::touche($attaque);
     if( $this->test_de(100, $this->get_effet()) )
     {
+    	$feu = $this->get_effet2();
       $passif = &$attaque->get_passif();
-			$attaque->get_interface()->effet(18, $this->get_effet2(), $attaque->get_actif()->get_nom(), $passif->get_nom());
-			$attaque->add_log_effet_passif('&ef18~'.$this->get_effet2());
-      $passif->set_hp( $passif->get_hp() -  $this->get_effet2());
+      if(array_key_exists('silence', $passif->etat))
+				$feu *= 2;
+    	if( $passif )
+			$attaque->get_interface()->effet(18, $feu, $attaque->get_actif()->get_nom(), $passif->get_nom());
+			$attaque->add_log_effet_passif('&ef18~'.$feu);
+      $passif->set_hp( $passif->get_hp() -  $feu);
     }
   }
 }

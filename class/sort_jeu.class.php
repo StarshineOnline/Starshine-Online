@@ -275,10 +275,13 @@ class sort_jeu extends sort
     global $db, $G_erreur;
     $action = false;
 		$cibles = $this->get_liste_cibles($cible, $groupe);
+		$duree = $this->get_duree()
+		if($perso->is_buff('duree_buff', true))
+			$duree = floor( $duree * $perso->get_buff('duree_buff','effet') );
     foreach($cibles as $cible)
 		{
 			//Mis en place du buff
-			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $this->get_duree(), $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
+			if(lance_buff($this->get_type(), $cible->get_id(), $this->get_effet(), $this->get_effet2(), $duree, $this->get_nom(), $this->get_description(true), $cible->get_race()=='neutre'?'monstre':'perso', 0, $cible->get_nb_buff(), $cible->get_grade()->get_nb_buff()))
 			{
 				//Gestion du crime
 				if ($type_cible == 'perso')

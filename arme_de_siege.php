@@ -26,7 +26,7 @@ $R = new royaume( $ads->get_royaume() );
 
 $distance = $perso->calcule_distance($ads->get_x(), $ads->get_y());
 
-if($perso->get_x() == $ads->get_x() && $perso->get_y() == $ads->get_y() && $perso->get_race() == $R->get_race() && $distance <= 3)
+if($perso->get_x() == $ads->get_x() && $perso->get_y() == $ads->get_y() && $perso->get_race() == $R->get_race() && $distance <= 3 && !$ads->is_buff('assaut'))
 {
 	// Cadre de la partie gauche
 	//$cadre = $interf_princ->set_gauche( $G_interf->creer_arme_siege($ads) );

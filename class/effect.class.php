@@ -532,11 +532,13 @@ class empoisonne extends effect {
   function fin_round(&$attaque)
   {
     $actif = $attaque->get_actif();
-		$attaque->get_interface()->effet(static::type_log, $this->vigueur, $actif->get_nom());
-		$attaque->add_log_effet_actif('&ef1~'.$this->vigueur);
-		$actif->set_hp($actif->get_hp() - $this->vigueur);
-		
-		$attaque->add_log_effet_actif("&ef1~".$this->vigueur);
+		$perte_hp = $this->vigueur;
+		/// @todo à améliorer
+		if($actif->etat['putrefaction']['duree'] > 0)
+			$perte_hp = $perte_hp * 7;
+		$attaque->get_interface()->effet(static::type_log, $perte_hp, $actif->get_nom());
+		$attaque->add_log_effet_actif('&ef1~'.$perte_hp);
+		$actif->set_hp($actif->get_hp() - $perte_hp);
 		
 		$actif->etat['empoisonne']['effet'] -= 1;
 		if ($actif->etat['empoisonne']['effet'] < 1)
@@ -758,6 +760,11 @@ class tellurique extends etat {
 		case 'sphere_glace':
       $attaque->add_degats($this->effet);
 		}
+	}
+	
+  function calcul_arme(&$attaque)
+	{
+		$attaque->valeur += $this->effet;
 	}
 }
 

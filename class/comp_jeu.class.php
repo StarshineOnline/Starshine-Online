@@ -181,7 +181,9 @@ class comp_jeu extends comp
       case 'invocation_pet':
         return new comp_invocation_pet($row);
       case 'sabotage':
-        return new comp_sabotage($row);
+      case 'assaut':
+      case 'sape':
+        return new comp_debuff_batiment($row);
       case 'longue_portee':
         return new comp_longue_portee($row);
       default:
@@ -433,7 +435,7 @@ class comp_invocation_pet extends comp_jeu
   }
 }
 
-class comp_sabotage extends comp_jeu
+class comp_debuff_batiment extends comp_jeu
 {
 	/**
 	 * Méthode gérant l'utilisation de la compétence
@@ -443,9 +445,9 @@ class comp_sabotage extends comp_jeu
   {
     global $db;
 		$sql = 'select * from placement where x = '.$perso->get_x().' and y = '.
-			$perso->get_y().' and type = \'arme_de_siege\'';
+			$perso->get_y();
 		$sql2 = 'select * from construction where x = '.$perso->get_x().
-			' and y = '.$perso->get_y().' and type = \'arme_de_siege\'';
+			' and y = '.$perso->get_y();
 		$req = $db->query($sql);
 		if ($req && $db->num_rows($req) > 0) {
 			$type = 'placement';
@@ -460,10 +462,8 @@ class comp_sabotage extends comp_jeu
 		}
 		if ($req && $db->num_rows($req) > 0) {
 			$date_fin = time() + $this->get_duree();
-			$sql3 = "insert into buff_batiment ".
-				"(id_${type}, date_fin, duree, type, effet) values (".
-				$b->id.", $date_fin, ".$this->get_duree().", 'sabotage', 1) ".
-				'ON DUPLICATE KEY UPDATE date_fin = VALUES(date_fin)';
+			$sql3 = 'insert into buff_batiment (id_'.$type.', fin, duree, type, effet, effet2, nom, description, debuff, id_perso) values ('.
+				$b->id.', $date_fin, '.$this->get_duree().', "'.$this->get_type().'", '.$this->get_effet().', '.$this->get_effet2().', '.$this->get_nom().', '.$this->get_description().',1 , '.$perso->id().') ON DUPLICATE KEY UPDATE date_fin = VALUES(date_fin)';
 			$req = $db->query($sql3);
 			if ($req)
 			{

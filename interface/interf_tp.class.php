@@ -83,6 +83,9 @@ class interf_tp extends interf_ville
 				$liste = $div->add( new interf_menu(false, 'lieu', null) );
 		    while($row = $db->read_array($req))
 		    {
+		    	$constr = new construction ($row);
+		    	if( $constr->is_buff('sape') )
+						continue;
 					// Bastien : Si coût = 0 (pas NULL), on saute l'entrée
 	        if ($row['cout'] === '0') continue;
 			    $distance = $perso->calcule_distance($row['x'], $row['y']);

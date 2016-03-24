@@ -3955,7 +3955,7 @@ class perso extends entite
 	function get_reserve($base = false)
 	{
 		if (!isset($this->reserve))
-			$this->reserve = ceil(2.1 * ($this->get_energie() + floor(($this->get_energie() - 8) / 2)));
+			$this->reserve = ceil( 2.1 * ($this->get_energie() + ($this->get_energie() - 8) / 2) );
 		if (!$base) return $this->reserve + $this->get_bonus_permanents('reserve');
 		else return $this->reserve;
 	}

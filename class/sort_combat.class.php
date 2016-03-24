@@ -223,13 +223,10 @@ class sort_combat extends sort
       case 'recuperation':
         return new sort_combat_recuperation($row);
       case 'aura_feu':
-        return new sort_combat_aura($row, 'posture_feu');
       case 'aura_glace':
-        return new sort_combat_aura($row, 'posture_glace');
       case 'aura_vent':
-        return new sort_combat_aura($row, 'posture_vent');
       case 'aura_pierre':
-        return new sort_combat_aura($row, 'posture_pierre');
+        return new sort_combat_aura($row);
       default:
         return new sort_combat($row);
       }
@@ -328,7 +325,7 @@ class sort_combat extends sort
     
     
     // Calcul des potentiels toucher et parer
-    $potentiel_toucher = round($actif->get_volonte() * $actif->get_potentiel_lancer_magique( $this->get_comp_assoc() ));
+    $potentiel_toucher = $actif->get_potentiel_toucher_magique( $this->get_comp_assoc() );
     $potentiel_parer = $passif->get_potentiel_parer_magique($pm);
     // Application des effets de potentiel toucher
     $attaque->applique_effet('calcul_attaque_magique', $potentiel_toucher);
@@ -366,6 +363,8 @@ class sort_combat extends sort
     $degats = $attaque->get_degats();
 		if($actif->is_buff('buff_surpuissance'))
 			$degats += $actif->get_buff('buff_surpuissance', 'effet');
+  	if($actif->is_buff('fleche_tranchante') && $actif->get_arme_type() == 'arc')
+			$degat += $actif->get_buff('fleche_tranchante', 'effet');
   	if($actif->is_buff('potion_inerte') && $passif->get_espece() == 'magique')
 			$degat += $actif->get_buff('potion_inerte', 'effet');
   	if($actif->is_buff('potion_tueuse_homme') && $passif->get_espece() == 'humanoide')
@@ -774,6 +773,8 @@ class sort_combat_silence extends sort_combat
 		$sm = ($actif->get_volonte() * $actif->get_sort_mort());
 		// Calcul du potentiel résister, on utilise bien la PM DE BASE pour le 3eme jet
 		$pm = $passif->get_volonte() * $passif->get_pm_para();
+  	if(array_key_exists('fleche_debilitante', $passif->etat))
+      $pm /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
 		
 		// Lancer des dés
 		$test = $this->test_potentiel($sm, $pm);
@@ -801,10 +802,10 @@ class sort_combat_recuperation extends sort_combat_etat
 class sort_combat_aura extends sort_combat_etat
 {
   protected $posture; ///< Type de posture
-  function __construct($tbl, $posture)
+  function __construct($tbl)
   {
-    parent::__construct($tbl);
-    $this->posture = $posture;
+    parent::__construct($tbl, 'aura');
+    $this->posture = $this->get_type();
   }
   /// Méthode gérant ce qu'il se passe lorsque la coméptence à été utilisé avec succès
   function action(&$attaque)

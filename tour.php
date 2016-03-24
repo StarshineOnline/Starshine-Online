@@ -23,7 +23,7 @@ $R = new royaume($W_row['royaume']);
 $tour = new construction(sSQL($_GET['id_construction']));
 $tour->check_buff();
 
-if($perso->get_x() == $tour->get_x() && $perso->get_y() == $tour->get_y() && $perso->get_race() == $R->get_race())
+if($perso->get_x() == $tour->get_x() && $perso->get_y() == $tour->get_y() && $perso->get_race() == $R->get_race() && !$tour->is_buff('assaut'))
 {
 	// Cadre de la partie gauche
 	$cadre = $interf_princ->set_gauche( $G_interf->creer_tour($tour) );

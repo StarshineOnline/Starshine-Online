@@ -114,6 +114,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
       $bonus_para = 1 + $res_para / 100;
     }
 		$resist_para = $bonus_para*((1+pow($joueur->get_pm_para(), 0.62))*pow($joueur->get_volonte(),1.6)) + ($joueur->etat['paralysie']['cpt']-1)*1000 + 500;
+  	if(array_key_exists('fleche_debilitante', $joueur->etat))
+      $resist_para /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
 		$sm = ($ennemi->get_volonte() * $ennemi->get_sort_mort());
 							
 		$att = rand(0, $sm);
@@ -364,14 +366,13 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 							// Si le joueur a assez de reserve on indique l'action à effectuer
 							if($joueur->get_rm_restant() >= $mp_need)
 							{
-								$effectue[0] = 'lance_sort';
-								$effectue[1] = $id_sort;
+								$effectue[0] = array('lance_sort', $id_sort, $row['type']);
 								$action = true;
 							}
 						}
 						else
 						{
-							$effectue[0] = 'attaque';
+							$effectue = array('attaque', 0, 'attaque');
 							$action = true;
 						}
 					}
@@ -410,39 +411,42 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 								$arme_requis = explode(';', $row['arme_requis']);
 								if(in_array($joueur->get_arme_type(), $arme_requis) OR in_array($joueur->get_bouclier_type(), $arme_requis) OR $row['arme_requis'] == '')
 								{
-									$effectue[0] = 'lance_comp';
-									$effectue[1] = $id_sort;
+									$effectue = array('lance_comp', $id_sort, $row['type']);
 									$action = true;
 								}
 							}
 						}
 						else
 						{
-							$effectue[0] = 'attaque';
+							$effectue = array('attaque', 0, 'attaque');
 							$action = true;
 						}
 					}
 					// Attaque simple
 					if($solution == '!')
 					{
-						$effectue[0] = 'attaque';
+						$effectue = array('attaque', 0, 'attaque');
 						$action = true;
 					}
 				}
 				$i++;
 			} // Fin de la revue des actions (boucle while)
 			// Si aucune action n'est définie on indique une attaque par défaut
-			if(!$action) $effectue[0] = 'attaque';
+			if(!$action)
+				$effectue = array('attaque', 0, 'attaque');;
 			
 			// Anticipation (si l'ennemi anticipe alors échec de l'action)
-			if($effectue[0] == 'attaque') $id = 0;
-			else $id = $effectue[1];
 			//Si il y a déjà eu une attaque de ce type, alors risque d'échec
-			if(array_key_exists('anticipation', $joueur) AND array_key_exists($effectue[0], $joueur->anticipation) AND array_key_exists($id, $joueur->anticipation[$effectue[0]]) AND $joueur->anticipation[$effectue[0]][$id] > 0)
+			if( array_key_exists('anticipation', $joueur) && array_key_exists($effectue[2], $joueur->anticipation) && $joueur->anticipation[$effectue[2]] > 0)
 			{
-				// On récupère le nombre d'utilisations et calcul des chances de réussite
+				// On récupère le nombre d'utilisations et calcul l'anticipation
 				$nbr_utilisation = $joueur->anticipation[$effectue[0]][$id];
-				$chance_reussite = 100 - ($nbr_utilisation * $nbr_utilisation);
+				$anticipation = $nbr_utilisation * $nbr_utilisation;
+				// Si flèche magnétique, on multiplie l'anticipation par 4
+				if( $effectue[2] == 'fleche_magnetique' )
+					$anticipation *= 4;
+				// on calcul des chances de réussite
+				$chance_reussite = 100 - $nbr_utilisation;
 				// Si l'adversaire est de niveau < 5, alors il a moins de chances d'anticiper
 				if($ennemi->get_level() < 5)
 				{

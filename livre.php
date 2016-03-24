@@ -165,8 +165,14 @@ if( array_key_exists('action', $_GET) )
 	    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous êtes trop loin !');
 			break;
 		}
-		// Vérification que le joueur a le droit aux sorts de groupe	
-    if( $groupe && !($perso->is_competence('sort_groupe') || $perso->is_competence('sort_groupe_'.$comp_sort->get_comp_assoc())) )
+		// Vérification que le joueur a le droit aux sorts de groupe
+		if( $this->perso->is_competence('sort_groupe') )
+			$sort_groupe = $this->perso->get_comp_perso('sort_groupe');
+		else if( $this->perso->is_competence('sort_groupe_'.$elt->get_comp_assoc()) )
+			$sort_groupe = $this->perso->get_comp_perso( 'sort_groupe_'.$elt->get_comp_assoc() );
+		else
+			$sort_groupe = false;	
+    if( $groupe && !$sort_groupe )
     {
     	///TODO : à refaire ?
     	security_block(URL_MANIPULATION, 'Sort de groupe non autorisé');
@@ -195,10 +201,27 @@ if( array_key_exists('action', $_GET) )
     $cout_pa_base = $cout_pa = $comp_sort->get_pa($perso);
     $cout_mp_base = $cout_mp = $comp_sort->get_mp_final($perso);
     if($groupe)
-			$cout_mp = ceil($cout_mp * 1.5);
+			$cout_mp = ceil($cout_mp * (2.5 - .5*$sort_groupe));
     if( $perso->is_buff('buff_contagion') )
 		{
-      if( mb_ereg('^maladie_', $comp_sort->get_type()) )
+			/// @todo à améliorer
+      if( mb_ereg('^maladie_', $comp_sort->get_type()) || mb_ereg('^debuff_', $comp_sort->get_type()) )
+      	$debuff = true;
+      else
+      {
+      	switch($comp_sort->get_type())
+      	{
+      	case 'blizzard':
+      	case 'deluge':
+      	case 'engloutissement':
+      	case 'lente_agonie':
+      	case 'orage_magnetique':
+      		$debuff = true;
+      	default:
+      		$debuff = false;
+				}
+			}
+      if( $debuff )
 			{
         $contagion = $perso->get_buff('buff_contagion');
         $dbg = 'réduction de coût par la contagion (depuis '.$cout_pa.'/'.$cout_mp.') -> ';

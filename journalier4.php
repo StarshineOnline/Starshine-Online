@@ -112,12 +112,10 @@ while($row = $db->read_assoc($req))
 //Ressource mine
 //On récupère la liste des batiments de type mine
 $batiment = array();
-$requete = "SELECT b.id, bp.valeur AS production, bs.valeur AS specialite, bf.effet AS buff, db.effet AS debuff 
+$requete = "SELECT b.id, bp.valeur AS production, bs.valeur AS specialite 
 FROM batiment b 
 LEFT JOIN batiment_bonus AS bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
 LEFT JOIN batiment_bonus AS bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
-LEFT JOIN buff_batiment AS bf ON bf.id_construction = b.id and bf.type = 'buff_prod'
-LEFT JOIN buff_batiment AS db ON db.id_construction = b.id and db.type = 'debuff_prod' 
 where b.type = 'mine'"; // Oui c'est gore
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
@@ -125,10 +123,15 @@ while($row = $db->read_assoc($req))
 	$batiment[$row['id']] = $row;
 }
 ///@TODO gérer les mines dans construction
-$requete = "SELECT * FROM construction LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) WHERE construction.type = 'mine'";
+$requete = "SELECT c.*, map.*, bf.effet AS buff, db.effet AS debuff, s.effet AS sape FROM construction AS c LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) LEFT JOIN buff_batiment AS bf ON bf.id_construction = c.id and bf.type = 'buff_prod' LEFT JOIN buff_batiment AS db ON db.id_construction = c.id and db.type = 'debuff_prod' LEFT JOIN buff_batiment AS s ON s.id_construction = c.id and s.type = 'sape' WHERE construction.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
+	if( $row['sape'] )
+	{
+		echo 'Bâtiment #'.$row['id_batiment'].' ('.$row['nom'].') : sape\n';
+		continue;
+	}
 	$terrain = type_terrain($row['info']);
 	$ress_terrain = $ress[ $terrain[1] ];
 	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
@@ -176,6 +179,7 @@ while($row = $db->read_assoc($req))
 		if (!array_key_exists($royaume['race'], $Trace)) {
 			continue;
 		}
+		echo 'Bâtiment #'.$row['id_batiment'].' ('.$row['nom'].') : '.$key.' + '.$value.'\n';
 		$ressource_final[$royaume['race']][$key] += $value;
 		if($key == 'Nourriture') $tot_nou += $value;
 	}

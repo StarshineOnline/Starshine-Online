@@ -77,10 +77,11 @@ case 'prendre':
 		/// @todo  passer par les objets
 		$requete = "SELECT * FROM classe_permet WHERE id_classe = '".sSQL($_GET['id'])."'";
 		$req = $db->query($requete);
-		$new = array();
+		$nouveaux = array();
 		while($row = $db->read_array($req))
 		{
-			if($row['new'] == 'yes') $new[] = $row['competence'];
+			if($row['new'] == 'yes')
+				$nouveaux[$row['competence']] = $row['permet'];
 			if($row['competence'] == 'facteur_magie')
 				$perso->set_facteur_magie($row['permet']);
 			if($row['competence'] == 'sort_vie+')
@@ -88,12 +89,20 @@ case 'prendre':
 			if($row['competence'] == 'max_pet')
 				$perso->set_max_pet($row['permet']);
 		}
-		$newi = 0;
-		while($newi < count($new))
+		foreach($nouveaux as $apt => $permet)
 		{
-			$requete = "INSERT INTO comp_perso VALUES(null, '1', '".$new[$newi]."', 1, ".$_SESSION['ID'].")";
+			switch($apt)
+			{
+			case 'sort_groupe':
+			case 'sort_groupe_sort_element':
+			case 'sort_groupe_sort_mort':
+			case 'sort_groupe_sort_vie':
+				$val = $permet;
+			default:
+				$val = 1;
+			}
+			$requete = 'INSERT INTO comp_perso VALUES(null, '.$val.', "'.$apt.'", 1, '.$_SESSION['ID'].')';
 			$req = $db->query($requete);
-			$newi++;
 		}
 		$comp_combat = explode(';', $perso->get_comp_combat());
 		if($comp_combat[0] == '') $comp_combat = array();

@@ -620,7 +620,7 @@ function cout_pa2($coutpa, $joueur, $case, $diagonale)
 	if($joueur->is_buff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_buff('plus_cout_deplacement', 'effet'));
 	if($joueur->is_buff('debuff_enracinement')) $coutpa = $coutpa + $joueur->get_buff('debuff_enracinement', 'effet');
 	//Bâtiment qui augmente le coût de PA
-	if($batiment = batiment_map($case->get_x(), $case->get_y()))
+	if($batiment = batiment_map($case->get_x(), $case->get_y(), true))
 	{
 		if($batiment['augmentation_pa'] > 1)
 		{
@@ -1424,16 +1424,21 @@ function recupbatiment($ID, $table)
  * @param $coordy   Coordonnée y de la case.
  * 
  * @return  ID du bâtiment s'il en a un, false sinon.
+ *  
+ * @todo à refaire ou remplacer 
  */
-function batiment_map($coordx, $coordy)
+function batiment_map($coordx, $coordy, $verif_sape=false)
 {
 	global $db;
 	$coords = convert_in_pos($coordx, $coordy);
-	$requete = "SELECT id_batiment FROM construction WHERE x = ".$coordx." AND y = ".$coordy;
+	$requete = "SELECT id, id_batiment FROM construction WHERE x = ".$coordx." AND y = ".$coordy;
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{
 		$row = $db->read_row($req);
+		$constr = new construction(id);
+		if( $verif_sape && $constr->is_buff('sape') )
+			return false;
 		return recupbatiment($row[0], 'none');
 	}
 	else
@@ -2954,7 +2959,7 @@ function verif_ville($x, $y, $r = false)
 function verif_batiment($x, $y, $r)
 {
 	global $db;
-	$requete = "SELECT nom, type, id_batiment FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$r;
+	$requete = "SELECT id, nom, type, id_batiment FROM construction WHERE x = ".$x." AND y = ".$y." AND royaume = ".$r;
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{

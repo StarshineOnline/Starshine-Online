@@ -23,6 +23,7 @@ class attaque
   private $type_degats;  ///< Type de dégâts infligés.
   private $distance;  ///< Distance entre les protagonistes.
   private $round;
+  private $attaquant_actif;
 
   public $valeur;  ///< Variable utilisé pour transmettre le résultat de l'application des effets (voir function applique_effet)
 
@@ -132,6 +133,11 @@ class attaque
   function get_round()
   {
     return $this->round;
+	}
+	//
+	function is_attaquant_actif()
+	{
+		return $this->attaquant_actif;
 	}
   // @}
 
@@ -323,6 +329,7 @@ class attaque
   /// Méthode gérant une passe
   function gere_passe($attaquant)
   {
+  	$this->$attaquant_actif = $attaquant;
   	$mode = $attaquant ? 'attaquant' : 'defenseur';
   	$this->init_passe($mode);
   	

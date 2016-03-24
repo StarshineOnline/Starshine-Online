@@ -227,20 +227,24 @@ class interf_infos_case extends interf_cont
 					$repar->set_tooltip('Réparer (30 PA)', 'bottom', '#information');
 				}
 				/// TODO : à améliorer ?
-				switch( $bat->get_type() )
+				$lien = false
+				if( !$constr->is_buff('assaut') )
 				{
-				case 'fort':
-				case 'bourg':
-					if( $this->distance == 0 )
-						$lien = 'bourg_fort.php?id_construction='.$constr->get_id();
-					break;
-				case 'tour':
-					if( $this->distance == 0 )
-						$lien = 'tour.php?id_construction='.$constr->get_id();
-					break;
-				case 'arme_de_siege':
-					$lien = 'arme_de_siege.php?id_construction='.$constr->get_id();
-					break;
+					switch( $bat->get_type() )
+					{
+					case 'fort':
+					case 'bourg':
+						if( $this->distance == 0 )
+							$lien = 'bourg_fort.php?id_construction='.$constr->get_id();
+						break;
+					case 'tour':
+						if( $this->distance == 0 )
+							$lien = 'tour.php?id_construction='.$constr->get_id();
+						break;
+					case 'arme_de_siege':
+						$lien = 'arme_de_siege.php?id_construction='.$constr->get_id();
+						break;
+					}
 				}
 			}
 			$diplo = 'diplo'.$royaume->get_diplo( $this->perso->get_race() );

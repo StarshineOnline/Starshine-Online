@@ -111,7 +111,12 @@ class interf_livre_sortcomp extends interf_bal_cont
 				$inf = $e->add( new interf_bal_smpl('a', '', false, 'icone icone-info') );
 				$inf->set_tooltip('Afficher/masquer les informations');
 				$inf->set_attribut('onclick', '$(\'#info_'.$type.'_'.$elt->get_id().'\').slideToggle();');
-				$lance_groupe = $this->perso->is_competence('sort_groupe') || $this->perso->is_competence('sort_groupe_'.$elt->get_comp_assoc());
+				if( $this->perso->is_competence('sort_groupe') )
+					$lance_groupe = $this->perso->get_comp_perso('sort_groupe');
+				else if( $this->perso->is_competence('sort_groupe_'.$elt->get_comp_assoc()) )
+					$lance_groupe = $this->perso->get_comp_perso( 'sort_groupe_'.$elt->get_comp_assoc() );
+				else
+					$lance_groupe = false;
         if( $type == 'sort_jeu' )
         {
         	$sort_groupe = false;
@@ -133,7 +138,7 @@ class interf_livre_sortcomp extends interf_bal_cont
 	        	$grp = $e->add( new interf_lien_cont($lien, false, 'icone') );
 	        	$grp->add( new interf_bal_smpl('div', '', false, 'icone-groupe'));
 	        	$grp->set_tooltip('Lancer sur '.$Gtrad['cible_ex'.comp_sort::cible_groupe]);
-	        	$grp->add( new interf_bal_smpl('span', ceil($cout_mp*1.5).' MP', false, 'xsmall'));
+	        	$grp->add( new interf_bal_smpl('span', ceil($cout_mp * (2.5 - .5*$lance_groupe) ).' MP', false, 'xsmall'));
 					}
 				}
 				if( $cond )

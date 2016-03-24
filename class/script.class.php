@@ -410,7 +410,8 @@ abstract class condition
 		$etats['silence'] = 'sous Silence';
 		$etats['dissimulation'] = 'Dissimulé';
 		$etats['glace'] = 'Glacé';
-		$etats['posture'] = 'En posture / Aura';
+		$etats['posture'] = 'En posture';
+		$etats['aura'] = 'En aura';
 		$etats['berzeker'] = 'Berzerk';
 		$etats['appel_foret'] = 'Appel de la forêt';
 		$etats['appel_tenebre'] = 'Appel des ténêbres';

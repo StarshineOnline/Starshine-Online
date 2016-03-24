@@ -376,13 +376,13 @@ else
 			$defenseur_en_defense = true;
 		}
 		//On vérifie si le défenseur est sur un batiment défensif
+		if( !$defenseur->is_buff('sape') )
+		{}
 		/// @todo passer à l'objet
-		$requete = "SELECT id_batiment FROM construction WHERE x = ".$defenseur->get_x()." AND y = ".$defenseur->get_y()." AND royaume = ".$Trace[$defenseur->get_race()]['numrace'];
-		$req = $db->query($requete);
-		if($db->num_rows > 0)
+		$constr = construction::create(array('x','y','royaume'), array($defenseur->get_x(), $defenseur->get_y(), $Trace[$defenseur->get_race()]['numrace']))
+		if( $constr && !$constr[0]->is_buff('sape') )
 		{
-			$row = $db->read_row($req);
-			$batiment_def = new batiment($row[0]);
+			$batiment_def = new batiment( $constr[0]->get_id() );
 			//Augmentation des chances d'esquiver
 			if ($batiment_def->has_bonus('batiment_esquive'))
 				$defenseur->add_buff('batiment_esquive', $batiment_def->get_bonus('batiment_esquive'));

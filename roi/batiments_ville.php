@@ -17,12 +17,14 @@ if( ($perso->get_rang() != 6 && $royaume->get_ministre_economie() != $perso->get
 }
 
 $lieu = verif_ville($perso->get_x(), $perso->get_y(), $royaume->get_id());
+/// @todo à améliorer
 if( !$lieu && $batiment = verif_batiment($perso->get_x(), $perso->get_y(), $royaume->get_id()) )
 {
 	if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg')
 	{
 		$bourg = new batiment($batiment['id_batiment']);
-		$lieu = $bourg->has_bonus('royaume');
+		$constr = new construction($batiment['id_batiment'])
+		$lieu = $bourg->has_bonus('royaume') && !$constr->is_buff('assaut');
 	}
 }
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : null;
