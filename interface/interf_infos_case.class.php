@@ -190,6 +190,8 @@ class interf_infos_case extends interf_cont
 			$avanc->set_tooltip(transform_sec_temp($plac->get_fin_placement() - time()).' avant fin de construction', 'bottom', '#contenu');
 			$hp = $div2->add( new interf_jauge_bulle('HP', $plac->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
 			$hp->add( new interf_bal_smpl('div', round($plac->get_hp() / $bat->get_hp() * 100).'%', false, 'bulle_valeur') );
+			$div2->add( new interf_liste_buff($plac, false) );
+			$div2->add( new interf_liste_buff($plac, true) );
 		}
 		
 		// Bâtiments construits

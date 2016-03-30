@@ -174,6 +174,7 @@ $Gtrad['survie_bete'] = 'Connaissance des bêtes';
 $Gtrad['sort_groupe'] = 'Sorts de groupe';
 $Gtrad['sort_groupe_sort_mort'] = 'Sorts de nécromancie de groupe';
 $Gtrad['sort_groupe_sort_element'] = 'Sorts élémentaires de groupe';
+$Gtrad['sort_groupe_sort_vie'] = 'Sorts de magie de la vie de groupe';
 $Gtrad['craft'] = 'Fabrication d\'objets';
 $Gtrad['artisanat'] = 'Artisanat';
 $Gtrad['forge'] = 'Forge';

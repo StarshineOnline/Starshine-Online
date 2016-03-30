@@ -463,11 +463,11 @@ class comp_debuff_batiment extends comp_jeu
 		if ($req && $db->num_rows($req) > 0) {
 			$date_fin = time() + $this->get_duree();
 			$sql3 = 'insert into buff_batiment (id_'.$type.', fin, duree, type, effet, effet2, nom, description, debuff, id_perso) values ('.
-				$b->id.', $date_fin, '.$this->get_duree().', "'.$this->get_type().'", '.$this->get_effet().', '.$this->get_effet2().', '.$this->get_nom().', '.$this->get_description().',1 , '.$perso->id().') ON DUPLICATE KEY UPDATE date_fin = VALUES(date_fin)';
+				$b->id.', '.$date_fin.', '.$this->get_duree().', "'.$this->get_type().'", '.$this->get_effet().', '.$this->get_effet2().', "'.$this->get_nom().'", "'.$this->get_description().'", 1 , '.$perso->get_id().') ON DUPLICATE KEY UPDATE fin = VALUES(fin)';
 			$req = $db->query($sql3);
 			if ($req)
 			{
-				interf_base::add_courr( new interf_alerte(interf_alerte::msg_succes, false, false, 'Bâtiment saboté.') );
+				interf_base::add_courr( new interf_alerte(interf_alerte::msg_succes, false, false, 'Bâtiment débuffé.') );
 				return true;
 			}
 			else

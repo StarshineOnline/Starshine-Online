@@ -262,11 +262,25 @@ UPDATE comp_jeu SET description = 'Augmente les chances de critique physique de 
 UPDATE comp_jeu SET description = 'Augmente l''esquive de %effet%% quand vous attaquez.' WHERE type = 'buff_cri_detresse';
 UPDATE comp_jeu SET description = 'Augmente la protection physique de %effet%% quand vous attaquez.' WHERE type = 'buff_cri_protecteur';
 
+-- debuffs
+UPDATE sort_jeu SET duree = 43200 WHERE (type LIKE 'debuff_%' OR type LIKE 'maladie_%' OR type IN ('blizzard', 'deluge', 'engloutissement', 'orage_magnetique')) AND duree < 43200;
+UPDATE sort_jeu SET description = 'Augmente le cout en PA pour attaquer de %effet%.' WHERE type = 'debuff_ralentissement';
+UPDATE sort_jeu SET effet = 2 WHERE id = 61; -- Ralentissement 2
+UPDATE sort_jeu SET effet = 3 WHERE id = 62; -- Ralentissement 3
+UPDATE sort_jeu SET description = 'Augmente de %effet% heures la durée des débuffs que vous lancez.' WHERE type = 'souffrance_extenuante';
+UPDATE sort_jeu SET effet = 3 WHERE id = 120; -- Souffrance extenuante
+UPDATE sort_jeu SET effet = 6 WHERE id = 121; -- Souffrance extenuante 2
+UPDATE sort_jeu SET effet = 12 WHERE id = 122; -- Souffrance extenuante 3
+UPDATE sort_jeu SET description = 'Réduit la durée restante d''un débuff au hasard d''une valeur aléatoire allant jusqu''à %effet% heures.' WHERE type = 'guerison';
+UPDATE sort_jeu SET effet = 4 WHERE id = 142; -- Guérison
+UPDATE sort_jeu SET effet = 8 WHERE id = 142; -- Guérison 2
+UPDATE sort_jeu SET effet = 12 WHERE id = 144; -- Guérison 3
+
 -- Compétences et sorts de rang 4
 UPDATE sort_jeu SET incantation = 600, comp_requis = 300, requis = '79', difficulte = 1200, lvl_batiment = 6, special = 0, prix = 7200 WHERE id = 152; -- Retour en ville de groupe
 UPDATE sort_jeu SET nom = 'Puissance divine', description = 'Multiplie par deux la durée des sorts de buff.', type = 'duree_buff', effet = 2, duree = 86400 WHERE id = 153; -- ex Faveur divine
 UPDATE sort_jeu SET description = 'Réduit le coût des sorts de debuffs de %effet% PA et %effet2% MP.' WHERE id = 155; -- Contagion
-UPDATE sort_jeu SET nom = 'Sape', description = 'Désactive les bonus et effets passifs du bâtiment.', type = 'sape', mp = 80, pa = 10, effet = 1, duree = 172800, cible = 1 WHERE id = 94; -- ex Charisme
+UPDATE comp_jeu SET nom = 'Sape', description = 'Désactive les bonus et effets passifs du bâtiment.', type = 'sape', mp = 80, pa = 10, effet = 1, duree = 172800, cible = 1 WHERE id = 94; -- ex Charisme
 UPDATE comp_jeu SET comp_requis = 600, requis = '', lvl_batiment = 6, prix = 14400 WHERE id = 95; -- Pour la gloire
 UPDATE comp_jeu SET description = 'Empêche la réparation et l''accélération du bâtiment', mp = 50, pa = 10 WHERE id = 96; -- Sabotage
 INSERT INTO comp_jeu (nom, description, mp, pa, type, comp_assoc, carac_assoc, effet, duree, cible, requis, lvl_batiment) VALUES ('Assaut', 'Empêche d''accéder au bâtiment et à ses services.', 30, 5, 'assaut', 'melee', 'force', 1, 86400, 1, 'classe:titan', 9);

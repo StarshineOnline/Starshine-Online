@@ -362,7 +362,7 @@ class sort_debuff extends sort_jeu
 					$crime->crime_debuff($perso, $cible, $type_cible);
           $duree = $this->get_duree();
           if( $soufr_ext = $perso->get_buff('souffrance_extenuante') )
-            $duree *= $soufr_ext->get_effet();
+            $duree += $soufr_ext->get_effet() * 3600;
           // Malus de forge
           if( $mod = $cible->get_bonus_permanents('duree_debuff_subis') )
           {
@@ -811,7 +811,7 @@ class sort_guerison extends sort_jeu
           }
         }
       }
-      $min = ($cible->get_vie() + $perso->get_puissance())*60;
+      $min = ($cible->get_vie() + $perso->get_puissance())*120;
       $max = $this->get_effet()*3600;
       if ($type_cible == 'joueur')
 	  {
