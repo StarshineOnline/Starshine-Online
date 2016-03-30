@@ -379,7 +379,7 @@ else
 		if( !$defenseur->is_buff('sape') )
 		{}
 		/// @todo passer à l'objet
-		$constr = construction::create(array('x','y','royaume'), array($defenseur->get_x(), $defenseur->get_y(), $Trace[$defenseur->get_race()]['numrace']))
+		$constr = construction::create(array('x','y','royaume'), array($defenseur->get_x(), $defenseur->get_y(), $Trace[$defenseur->get_race()]['numrace']));
 		if( $constr && !$constr[0]->is_buff('sape') )
 		{
 			$batiment_def = new batiment( $constr[0]->get_id() );

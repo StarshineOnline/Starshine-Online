@@ -258,7 +258,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 									$use = 'attaque';
 								}
 								// Récupération du nombre d'utilisation
-								$param = $joueur->anticipation[$use][substr($solution, 1)];
+								$param = $joueur->utilisations[$use][substr($solution, 1)];
 							break;
 							//Dernière action
 							case '15' :
@@ -366,7 +366,7 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 							// Si le joueur a assez de reserve on indique l'action à effectuer
 							if($joueur->get_rm_restant() >= $mp_need)
 							{
-								$effectue[0] = array('lance_sort', $id_sort, $row['type']);
+								$effectue = array('lance_sort', $id_sort, $row['type']);
 								$action = true;
 							}
 						}
@@ -440,13 +440,13 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 			if( array_key_exists('anticipation', $joueur) && array_key_exists($effectue[2], $joueur->anticipation) && $joueur->anticipation[$effectue[2]] > 0)
 			{
 				// On récupère le nombre d'utilisations et calcul l'anticipation
-				$nbr_utilisation = $joueur->anticipation[$effectue[0]][$id];
+				$nbr_utilisation = $joueur->anticipation[$effectue[2]];
 				$anticipation = $nbr_utilisation * $nbr_utilisation;
 				// Si flèche magnétique, on multiplie l'anticipation par 4
 				if( $effectue[2] == 'fleche_magnetique' )
 					$anticipation *= 4;
 				// on calcul des chances de réussite
-				$chance_reussite = 100 - $nbr_utilisation;
+				$chance_reussite = 100 - $anticipation;
 				// Si l'adversaire est de niveau < 5, alors il a moins de chances d'anticiper
 				if($ennemi->get_level() < 5)
 				{
@@ -488,7 +488,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
 				}
 			}
 			//On incrémente l'anticipation de la compétence de l'attaque classique ou du sort.
-			$joueur->anticipation[$effectue[0]][$id]++;
+			$joueur->anticipation[$effectue[2]]++;
+			$joueur->utilisations[$effectue[0]][$effectue[1]]++;
 			$effectue[2] = $joueur;
 			return $effectue;
 		}

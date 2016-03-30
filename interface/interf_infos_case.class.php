@@ -227,7 +227,7 @@ class interf_infos_case extends interf_cont
 					$repar->set_tooltip('Réparer (30 PA)', 'bottom', '#information');
 				}
 				/// TODO : à améliorer ?
-				$lien = false
+				$lien = false;
 				if( !$constr->is_buff('assaut') )
 				{
 					switch( $bat->get_type() )

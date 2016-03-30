@@ -166,12 +166,15 @@ if( array_key_exists('action', $_GET) )
 			break;
 		}
 		// Vérification que le joueur a le droit aux sorts de groupe
-		if( $this->perso->is_competence('sort_groupe') )
-			$sort_groupe = $this->perso->get_comp_perso('sort_groupe');
-		else if( $this->perso->is_competence('sort_groupe_'.$elt->get_comp_assoc()) )
-			$sort_groupe = $this->perso->get_comp_perso( 'sort_groupe_'.$elt->get_comp_assoc() );
-		else
-			$sort_groupe = false;	
+		if( $type == 'sort_jeu' )
+		{
+			if( $perso->is_competence('sort_groupe') )
+				$sort_groupe = $perso->get_comp_perso('sort_groupe')->get_valeur();
+			else if( $perso->is_competence('sort_groupe_'.$elt->get_comp_assoc()) )
+				$sort_groupe = $perso->get_comp_perso( 'sort_groupe_'.$elt->get_comp_assoc() )->get_valeur();
+			else
+				$sort_groupe = false;	
+		}
     if( $groupe && !$sort_groupe )
     {
     	///TODO : à refaire ?

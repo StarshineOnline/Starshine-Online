@@ -329,7 +329,7 @@ class attaque
   /// Méthode gérant une passe
   function gere_passe($attaquant)
   {
-  	$this->$attaquant_actif = $attaquant;
+  	$this->attaquant_actif = $attaquant;
   	$mode = $attaquant ? 'attaquant' : 'defenseur';
   	$this->init_passe($mode);
   	

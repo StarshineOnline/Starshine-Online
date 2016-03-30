@@ -275,7 +275,7 @@ class sort_jeu extends sort
     global $db, $G_erreur;
     $action = false;
 		$cibles = $this->get_liste_cibles($cible, $groupe);
-		$duree = $this->get_duree()
+		$duree = $this->get_duree();
 		if($perso->is_buff('duree_buff', true))
 			$duree = floor( $duree * $perso->get_buff('duree_buff','effet') );
     foreach($cibles as $cible)
@@ -348,6 +348,8 @@ class sort_debuff extends sort_jeu
         if($cible->is_buff('bulle_sanctuaire', true)) $protection *= $cible->get_buff('bulle_sanctuaire','effet');
         if($cible->is_buff('bulle_dephasante', true)) $protection *= $cible->get_buff('bulle_dephasante','effet');
         $puissance = $perso->get_volonte() * $perso->get_comp($this->get_comp_assoc());
+        if($perso->is_buff('buff_damnation', true))
+					$puissance *= 1 + $cible->get_buff('buff_damnation','effet') / 100;
         if($perso->is_buff('potion_debuff', true))
 					$puissance *= $cible->get_buff('potion_debuff','effet');
         $attaque = rand(0, $puissance);
