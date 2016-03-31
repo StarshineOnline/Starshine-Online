@@ -289,11 +289,11 @@ INSERT INTO sort_jeu (nom, description, mp, pa, type, comp_assoc, carac_assoc, e
 UPDATE perso SET sort_jeu = CONCAT(sort_jeu, '; ', LAST_INSERT_ID()) WHERE classe_id = 22;
 
 -- Pré-requis des dagues
-UPDATE arme SET melee = 260, coefficient = 2600 WHERE id = 8; -- Brise Lame
-UPDATE arme SET melee = 410, coefficient = 4100 WHERE id = 9; -- Dague d'assassin
-UPDATE arme SET melee = 650, coefficient = 6500 WHERE id = 74; -- Lame d assassin
-UPDATE arme SET melee = 320, coefficient = 3200 WHERE id = 52; -- Dague [Main Gauche]
-UPDATE arme SET melee = 606, coefficient = 6060 WHERE id = 53; -- Lame [Main Gauche]
+UPDATE arme SET coefficient = 2600 WHERE id = 8; -- Brise Lame
+UPDATE arme SET coefficient = 4100 WHERE id = 9; -- Dague d'assassin
+UPDATE arme SET coefficient = 6500 WHERE id = 74; -- Lame d assassin
+UPDATE arme SET coefficient = 3200 WHERE id = 52; -- Dague [Main Gauche]
+UPDATE arme SET coefficient = 6060 WHERE id = 53; -- Lame [Main Gauche]
 
 -- Sorts de groupe
 UPDATE classe_permet SET permet = 2 WHERE competence IN ('sort_groupe', 'sort_groupe_sort_element', 'sort_groupe_sort_mort');
