@@ -123,7 +123,7 @@ while($row = $db->read_assoc($req))
 	$batiment[$row['id']] = $row;
 }
 ///@TODO gérer les mines dans construction
-$requete = "SELECT c.*, map.*, bf.effet AS buff, db.effet AS debuff, s.effet AS sape FROM construction AS c LEFT JOIN map ON (map.y = construction.y AND construction.x = map.x) LEFT JOIN buff_batiment AS bf ON bf.id_construction = c.id and bf.type = 'buff_prod' LEFT JOIN buff_batiment AS db ON db.id_construction = c.id and db.type = 'debuff_prod' LEFT JOIN buff_batiment AS s ON s.id_construction = c.id and s.type = 'sape' WHERE c.type = 'mine'";
+$requete = "SELECT c.*, map.*, bf.effet AS buff, db.effet AS debuff, s.effet AS sape FROM construction AS c LEFT JOIN map ON (map.y = c.y AND c.x = map.x) LEFT JOIN buff_batiment AS bf ON bf.id_construction = c.id and bf.type = 'buff_prod' LEFT JOIN buff_batiment AS db ON db.id_construction = c.id and db.type = 'debuff_prod' LEFT JOIN buff_batiment AS s ON s.id_construction = c.id and s.type = 'sape' WHERE c.type = 'mine'";
 $req = $db->query($requete);
 while($row = $db->read_assoc($req))
 {
