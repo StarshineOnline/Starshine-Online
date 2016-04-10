@@ -176,7 +176,11 @@ case 'perso' :
 case 'monstre' :
 	if(!$check_pet)
 	{
-		if (!$donj)
+		$perso = new perso($_SESSION['ID']);
+		$perso->check_perso();
+		$perso->action_do = $perso->recupaction('attaque');
+		$attaquant = entite::factory('perso', $perso);
+		/*if (!$donj)
 		{
 			$perso = new perso($_SESSION['ID']);
 			$perso->check_perso();
@@ -217,7 +221,7 @@ case 'monstre' :
 			{
 				$attaquant = entite::factory('pet', $perso->get_pet(), $perso);
 			}
-		}
+		}*/
 	}
 	else
 	{
@@ -375,9 +379,6 @@ else
 			$defenseur->add_buff('batiment_esquive', 50);
 			$defenseur_en_defense = true;
 		}
-		//On vérifie si le défenseur est sur un batiment défensif
-		if( !$defenseur->is_buff('sape') )
-		{}
 		/// @todo passer à l'objet
 		$constr = construction::create(array('x','y','royaume'), array($defenseur->get_x(), $defenseur->get_y(), $Trace[$defenseur->get_race()]['numrace']));
 		if( $constr && !$constr[0]->is_buff('sape') )

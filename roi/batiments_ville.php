@@ -23,7 +23,7 @@ if( !$lieu && $batiment = verif_batiment($perso->get_x(), $perso->get_y(), $roya
 	if($batiment['type'] == 'fort' OR $batiment['type'] == 'bourg')
 	{
 		$bourg = new batiment($batiment['id_batiment']);
-		$constr = new construction($batiment['id_batiment'])
+		$constr = new construction($batiment['id_batiment']);
 		$lieu = $bourg->has_bonus('royaume') && !$constr->is_buff('assaut');
 	}
 }

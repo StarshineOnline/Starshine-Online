@@ -457,13 +457,13 @@ class interf_enchasser extends interf_dialogBS
     if( $objet->get_enchantement() )
     {
       interf_dialogBS::__construct('Enlever une gemme');
-      $this->add( new interf_bal_smpl('span', 'Permet de récupérer une gemme enchasser dans un objet.', null, 'small') );
+      $this->add( new interf_bal_smpl('span', 'Permet de récupérer une gemme enchassée dans un objet.', null, 'small') );
       $alert = $this->add( new interf_alerte('info', false) );
       $alert->add( new interf_bal_smpl('b', 'Attention, ') );
       $alert->add_message( 'l\'objet sera détruit !' );
       $this->add( new interf_bal_smpl('span', 'Chance de succès : '.$chances.' %.', null, 'small') );
       $this->ajout_btn('Annuler', 'fermer');
-      $this->ajout_btn('Enlever', '$(\'#modal\').modal(\'hide\');charger(\'inventaire.php?action=recup_gemme&objet'.$index.'\');', 'primary');
+      $this->ajout_btn('Enlever', '$(\'#modal\').modal(\'hide\');charger(\'inventaire.php?action=recup_gemme&objet='.$index.'\');', 'primary');
     }
     else if( $niveau )
     {

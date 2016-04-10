@@ -1,9 +1,9 @@
 <?php // -*- tab-width:2; mode: php -*-  
-if (file_exists('../root.php')) {
+if (file_exists('../root.php'))
   include_once('../root.php');
-}
 
-include_once(root.'haut_ajax.php');
+//Inclusion du haut du document html
+include_once(root.'inc/fp.php');
 
 $echelle = 3; // La carte est 3x plus grande
 

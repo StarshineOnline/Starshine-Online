@@ -76,9 +76,9 @@ abstract class sort extends comp_sort
   	if( !$incant && $txt_action !== false )
   	{
   		if( $txt_action && $txt_action !== true )
-  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation pour '.$txt_action.' ce sort.');
+  			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incantation().' en incantation pour '.$txt_action.' ce sort.');
   		else
-				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incatation().' en incantation.');
+				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut '.$this->get_incantation().' en incantation.');
 		}
   	$aptitude = $this->get_comp_assoc();
   	$methode = 'get_'.$aptitude;
