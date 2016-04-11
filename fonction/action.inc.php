@@ -117,10 +117,8 @@ function sub_script_action($joueur, $ennemi, $mode, &$attaque)
   	if(array_key_exists('fleche_debilitante', $joueur->etat))
       $resist_para /= 1 + ($this->etat['fleche_debilitante']['effet'] / 100);
 		$sm = ($ennemi->get_volonte() * $ennemi->get_sort_mort());
-							
-		$att = rand(0, $sm);
-		$def = rand(0, $resist_para);
-		if( comp_sort::test_potentiel($att, $def) )
+		
+		if( comp_sort::test_potentiel($sm, $resist_para) )
 		{
 			unset($joueur->etat['paralysie']['cpt']);
 			$joueur->etat['paralysie']['duree'] = 0;
