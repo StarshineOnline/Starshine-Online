@@ -444,11 +444,15 @@ class sort_combat extends sort
     global $db;
     if(isset($actif->enchantement) && isset($actif->enchantement['degat_magie']))
     {
-      $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".$actif->enchantement['degat_magie']['gemme_id'];
-      $req = $db->query($requete);
-      $row = $db->read_assoc($req);
-      $degat += $row['enchantement_effet'];
-      $dbg_msg .= "La ".$row['nom'].' augmente les dégâts de '. $row['enchantement_effet'].'<br />';
+    	$ids = array_count_values( explode(';', $actif->enchantement['degat_magie']['gemme_id']) );
+    	foreach($ids as $id=>$nbr)
+    	{
+	      $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = "$id.;
+	      $req = $db->query($requete);
+	      $row = $db->read_assoc($req);
+	      $degat += $row['enchantement_effet']*$nbr;
+	      $dbg_msg .= "La ".$row['nom'].' augmente les dégâts de '. $row['enchantement_effet'].' x '.$nbr.'<br />';
+			}
     }
 	
     $get_carac_assoc = 'get_'.$this->get_carac_assoc();
