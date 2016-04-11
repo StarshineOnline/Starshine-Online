@@ -447,7 +447,7 @@ class sort_combat extends sort
     	$ids = array_count_values( explode(';', $actif->enchantement['degat_magie']['gemme_id']) );
     	foreach($ids as $id=>$nbr)
     	{
-	      $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = "$id.;
+	      $requete = "SELECT nom, enchantement_effet FROM gemme WHERE id = ".$id;
 	      $req = $db->query($requete);
 	      $row = $db->read_assoc($req);
 	      $degat += $row['enchantement_effet']*$nbr;
