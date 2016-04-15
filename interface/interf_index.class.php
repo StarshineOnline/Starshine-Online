@@ -286,7 +286,7 @@ class interf_index_perso extends interf_bal_cont
 		global $db, $Gtrad, $G_url;
 		parent::__construct('div', false, 'container-fluid');
 		$div_row0 = $this->add( new interf_bal_cont('div', false, 'row') );
-		$div_row0->add( new interf_bal_smpl('h3', 'Création du pesonnage', false, 'row') );
+		$div_row0->add( new interf_bal_smpl('h3', 'Création du personnage', false, 'row') );
 		interf_alerte::aff_enregistres($div_row0);
 		$div_row1 = $this->add( new interf_bal_cont('div', false, 'row') );
 		$div_form = $div_row1->add( new interf_bal_cont('div', false, 'col-sm-6') );
