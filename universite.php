@@ -53,7 +53,9 @@ case 'prendre':
 			$requete = "SELECT * FROM classe WHERE id = ".$row['requis'];
 			$req_classe = $db->query($requete);
 			$row_classe = $db->read_array($req_classe);
-			if(mb_strtolower($row_classe['nom']) != mb_strtolower($perso->get_classe()))
+			$classe_requis = mb_strtolower($row_classe['nom']);
+			$classe_perso = mb_strtolower($perso->get_classe());
+			if( $classe_requis != $classe_perso && str_replace('\'', ' ', $classe_requis) != str_replace('\'', ' ', $classe_perso) )
 			{
 				interf_alerte::enregistre(interf_alerte::msg_erreur, 'Il vous faut être un '.$row_classe['nom']);
 				$fin = true;

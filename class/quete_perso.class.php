@@ -307,7 +307,7 @@ class quete_perso extends table
 								$qp->perso = &$perso;
 								$suiv = $qp->fin($option);
 							}
-							if( $this->get_quete()->get_type() == 'royaume' )
+							if( $qp->get_quete()->get_type() == 'royaume' )
 							{
 								if( $suiv )
 								{ 
