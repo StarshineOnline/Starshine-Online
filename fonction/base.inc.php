@@ -1672,6 +1672,7 @@ function augmentation_competence($competence, &$joueur, $difficulte)
 			else
 				$chance = 0;
 			$R_retour[1] = false;
+			$dbg->add_message('Apprentissage : '.$apprentissage);
 			$dbg->add_message('Chances : ');
 			$dbg->add_message('Jet d\'un dé à : '.$reussite.' faces.<br />');
 			$dbg->add_message('Le résultat doit être inférieur à <b>'.round($chance,0).'</b>');

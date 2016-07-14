@@ -953,9 +953,11 @@ class perso extends entite
 				return $theorique / ($artisanat + $corr);
 			break;
 		default:
-			$avancement = $this->get_avance_aptitude($aptitude, true) + $this->get_corr_avance_artisanat();
+			$avancement_apt = $this->get_avance_aptitude($aptitude, true);
+			$avancement_art = $this->get_corr_avance_artisanat();
 			$theorique = $this->get_avanc_th_min();
-			return $theorique / $avancement;
+			//interf_debug::enregistre($theorique.' / ('.$avancement_apt.' + '.$avancement_art.')', 'dbg_apt');
+			return $avancement_apt ? $theorique / ($avancement_apt + $avancement_art) : 1;
 		}
 	}
   // @}
