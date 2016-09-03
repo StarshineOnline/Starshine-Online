@@ -72,7 +72,7 @@ class interf_arme_siege extends interf_cont
 			}
 		}
 		// Bâtiments en construction
-		$order = 'ABS(x-'.$this->perso->get_x().') + ABS(x-'.$this->perso->get_y().')';
+		$order = 'ABS(CAST(x AS SIGNED)-'.$this->perso->get_x().') + ABS(CAST(y AS SIGNED)-'.$this->perso->get_y().')';
 		$cond = 'x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max;
 		$cibles = placement::create(false, false, $order, false, $cond);
 		if( count($cibles) )
