@@ -31,7 +31,7 @@ if($perso->get_race() == $R->get_race() && $distance <= 3 && !$ads->is_buff('ass
 	// Cadre de la partie gauche
 	//$cadre = $interf_princ->set_gauche( $G_interf->creer_arme_siege($ads) );
 	$cadre = $interf_princ->set_droite( $G_interf->creer_droite($ads->get_nom()) );
-	$cadre->add( $G_interf->creer_arme_siege($ads) );
+	$cadre->add( $G_interf->creer_arme_siege($ads, $distance == 0) );
 	$interf_princ->maj_tooltips();
 }
 else

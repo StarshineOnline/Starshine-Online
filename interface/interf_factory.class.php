@@ -2,7 +2,7 @@
 /// @addtogroup Interface
 /**
  * @file interf_factory.class.php
- * Fabrique (abstraite) pour les classes de l'interface
+ * Fabrique pour les classes de l'interface
  */
  
 include_once(root.'interface/interface.class.php');
@@ -188,9 +188,9 @@ class interf_factory
     return new interf_bourg_fort($construction);
 	}
 	/// Armes de sièges
-	function creer_arme_siege(&$construction)
+	function creer_arme_siege(&$construction, $actions=true)
 	{
-    return new interf_arme_siege($construction);
+    return new interf_arme_siege($construction, $actions);
 	}
 	/// livres de sorts/compétences/artisanat
 	function creer_livre($type, &$cible, $categorie, $actions)

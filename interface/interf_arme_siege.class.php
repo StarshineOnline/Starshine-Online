@@ -13,7 +13,7 @@ class interf_arme_siege extends interf_cont
 	protected $peut_tirer = false;
 	protected $cout_pa;
 	
-	function __construct(&$arme)
+	function __construct(&$arme, $actions=true)
 	{
 		global $db, $Trace;
 		$this->arme = $arme;
@@ -31,7 +31,7 @@ class interf_arme_siege extends interf_cont
 		if( $arme->peut_attaquer() )
 		{
 			$tps = 'Pret à tirer !';
-			$this->peut_tirer = true;
+			$this->peut_tirer = $actions;
 		}
 		else
 			$tps = transform_sec_temp($tps_restant);
