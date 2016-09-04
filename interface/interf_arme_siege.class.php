@@ -51,12 +51,12 @@ class interf_arme_siege extends interf_cont
 		
 		// Liste des cibles
 		$div = $this->add( new interf_bal_cont('div') );
-		$x_min = $this->perso->get_x() - $batiment->get_bonus('portee');
-		$x_max = $this->perso->get_x() + $batiment->get_bonus('portee');
-		$y_min = $this->perso->get_y() - $batiment->get_bonus('portee');
-		$y_max = $this->perso->get_y() + $batiment->get_bonus('portee');
+		$x_min = $this->arme->get_x() - $batiment->get_bonus('portee');
+		$x_max = $this->arme->get_x() + $batiment->get_bonus('portee');
+		$y_min = $this->arme->get_y() - $batiment->get_bonus('portee');
+		$y_max = $this->arme->get_y() + $batiment->get_bonus('portee');
 		// Bâtiments déjà construits
-		$order = 'ABS(CAST(x AS SIGNED)-'.$this->perso->get_x().') + ABS(CAST(y AS SIGNED)-'.$this->perso->get_y().')';
+		$order = 'ABS(CAST(x AS SIGNED)-'.$this->arme->get_x().') + ABS(CAST(y AS SIGNED)-'.$this->arme->get_y().')';
 		$cond = 'x >= '.$x_min.' AND x <= '.$x_max.' AND y >= '.$y_min.' AND y <= '.$y_max;
 		$cibles = construction::create(false, false, $order, false, $cond);
 		if( count($cibles) )
