@@ -38,13 +38,13 @@ class interf_onglets extends interf_bal_cont
    * @param  $id          id de la balise du contenu.
    * @param  $selection   indique si l'onglet est sélectionné
    */
-  function add_onglet($nom, $adresse, $id, $classe='', $selection=false, $menu=false)
+  function add_onglet($nom, $adresse, $id, $classe='', $selection=false, $menu=false, $classe_ongl=null, $id_ongl=null)
   {
     $classe .= ' tab-pane';
     /*if( $selection )
       $classe .= ' active';*/
     //$li = $this->haut->add( new interf_elt_menu($nom, '', 'charge_tab(this, \''.$this->id.'\');') );
-    $li = new interf_elt_menu($nom, '#'.$id, $adresse ? 'charge_tab(this, \''.$id.'\');' : false);
+    $li = new interf_elt_menu($nom, '#'.$id, $adresse ? 'charge_tab(this, \''.$id.'\');' : false, $id_ongl, $classe_ongl);
     if( $menu )
     {
     	if( array_key_exists($menu, $this->menus) )

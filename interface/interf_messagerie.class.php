@@ -51,7 +51,7 @@ class interf_liste_messages extends interf_cont
 		global $G_url;
 		$G_url->add('type', $type);
 		//parent::__construct('liste_msg_'.$type, '', false, false, false, 350, -4);
-		$tbl = $this->add( new interf_data_tbl('liste_msg_'.$type, '', false, false, false, 350, -4) );
+		$tbl = $this->add( new interf_data_tbl('liste_msg_'.$type, '', false, false, false, /*350,*/ -3) );
 		$tbl->nouv_cell('Titre');
 		$tbl->nouv_cell('# msg');
 		$tbl->nouv_cell('Interloc.');
@@ -62,11 +62,9 @@ class interf_liste_messages extends interf_cont
 		$lien->set_tooltip('Marquer tous les messages comme lus.');
 		$tbl->nouv_cell($lien);
 		
-		if( !$messagerie )
-			$messagerie = new messagerie($perso);
-		$messagerie->get_threads($type, 'ASC', false, 1);
+		$threads = $this->get_sujets($perso, $type, $messagerie);
 		$nbr_msg_tot = 0;
-		foreach($messagerie->threads as $cle => $sujet)
+		foreach($threads as $cle => $sujet)
 		{
 			$url = clone $G_url;
 			$url->add('sujet', $sujet->get_id());
@@ -134,6 +132,14 @@ class interf_liste_messages extends interf_cont
 			$achiev->sauver();
 				
 		}
+	}
+	
+	protected function &get_sujets(&$perso, $type, &$messagerie=null)
+	{
+		if( !$messagerie )
+			$messagerie = new messagerie($perso);
+		$messagerie->get_threads($type, 'ASC', false, 1);
+		return $messagerie->threads;
 	}
 }
 

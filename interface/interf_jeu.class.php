@@ -273,6 +273,18 @@ class interf_jeu_ajax extends interf_princ_ob
 		$fils->add_js();
     return $cont->add($fils);
 	}
+	function set_categorie($fils)
+	{
+    $cont = $this->add( new interf_bal_cont('section', 'forum_categorie') );
+		$fils->add_js();
+    return $cont->add($fils);
+	}
+	function set_sujet($fils)
+	{
+    $cont = $this->add( new interf_bal_cont('section', 'forum_sujet') );
+		$fils->add_js();
+    return $cont->add($fils);
+	}
 	function add_section($id, $fils)
 	{
     $cont = $this->add( new interf_bal_cont('section', $id) );

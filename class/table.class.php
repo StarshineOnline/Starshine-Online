@@ -36,7 +36,6 @@ abstract class table
 	 */
 	protected function charger($id)
 	{
-		global $db;
 		if( is_array($id) )
 		{
 			$this->init_tab( $id );
@@ -44,10 +43,10 @@ abstract class table
 		else
 		{
 			$requete = 'SELECT * FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$id.'"';
-			$req = $db->query($requete);
-			if( $db->num_rows($req) )
+			$req = $this->get_db()->query($requete);
+			if( $this->get_db()->num_rows($req) )
 			{
-				$this->init_tab( $db->read_assoc($req) );
+				$this->init_tab( $this->get_db()->read_assoc($req) );
 			}
 			else
 			{
@@ -74,7 +73,6 @@ abstract class table
 	 */
 	function sauver($force = false)
 	{
-		global $db;
 		if( $this->id > 0 )
 		{
 			if( $force || count($this->champs_modif) > 0 )
@@ -109,7 +107,7 @@ abstract class table
 				}
 				$champs = implode(', ', $champs);
 				$requete = 'UPDATE '.$this->get_table().' SET '.$champs.' WHERE '.$this->get_champ_id().' = "'.$this->id.'"';
-				$db->param_query($requete, $params, $types);
+				$this->get_db()->param_query($requete, $params, $types);
 				$this->champs_modif = array();
 			}
 		}
@@ -129,9 +127,9 @@ abstract class table
 			$champs = implode(', ', array_keys($liste));
 			$vals = implode(', ', $vals);
 			$requete = 'INSERT INTO '.$this->get_table().' ('.$champs.') VALUES('.$vals.')';
-			$db->param_query($requete, $params, $types);
+			$this->get_db()->param_query($requete, $params, $types);
 			//Récuperation du dernier ID inséré.
-			$this->id = $db->last_insert_id();
+			$this->id = $this->get_db()->last_insert_id();
 		}
 	}
 
@@ -162,11 +160,10 @@ abstract class table
 	/// Supprime l'élément de la base de donnée
 	function supprimer()
 	{
-		global $db;
 		if( $this->id > 0 )
 		{
 			$requete = 'DELETE FROM '.$this->get_table().' WHERE '.$this->get_champ_id().' = "'.$this->id.'"';
-			$db->query($requete);
+			$this->get_db()->query($requete);
 		}
 	}
 
@@ -183,17 +180,16 @@ abstract class table
 	 */
 	static function create($champs, $valeurs, $ordre = 'id ASC', $keys = false, $where = false, $key_unique=false)
 	{
-		global $db;
 		$return = array();
 		if(!$where)
 			$where = self::construit_condition($champs, $valeurs);
 
 		$requete = 'SELECT * FROM '.static::get_table().' WHERE '.$where.' ORDER BY '.$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
+		$req = static::get_db()->query($requete);
+		if(static::get_db()->num_rows($req) > 0)
 		{
 		  $classe = get_called_class();
-			while($row = $db->read_assoc($req))
+			while($row = static::get_db()->read_assoc($req))
 			{
 				if(!$keys) $return[] = new $classe($row);
 				elseif($key_unique) $return[$row[$keys]] = new $classe($row);
@@ -217,14 +213,13 @@ abstract class table
 	*/
 	static function gen_create($classe, $table, $cond, $keys = false)
 	{
-		global $db;
 		$return = array();
 		
 		$requete = 'SELECT * FROM '.$table.' WHERE '.$cond;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
+		$req = static::$db->query($requete);
+		if(static::get_db()->num_rows($req) > 0)
 		{
-			while($row = $db->read_assoc($req))
+			while($row = static::get_db()->read_assoc($req))
 			{
 				if(!$keys)
 					$return[] = new $classe($row);
@@ -239,7 +234,6 @@ abstract class table
 	
 	static function get_valeurs($champs, $cond, $rangement=true)
 	{
-		global $db;
 		if( is_array($champs) )
 			$champs = implode(',', $champs);
 		if( is_string($rangement) )
@@ -253,15 +247,15 @@ abstract class table
 		
 		
 		$requete = 'SELECT '.$champs.' FROM '.static::get_table().' WHERE '.$cond.$ordre;
-		$req = $db->query($requete);
-		if($db->num_rows($req) > 0)
+		$req = static::get_db()->query($requete);
+		if(static::get_db()->num_rows($req) > 0)
 		{
 			if( $rangement === false )
-				return $db->read_object($req);
+				return static::get_db()->read_object($req);
 			else if( is_array($rangement) )
 			{
 				$liste = array();
-				while( $row = $db->read_assoc($req) )
+				while( $row = static::get_db()->read_assoc($req) )
 				{
 					$liste[ $row['get_valeurs_cle'] ] = $row;
 				}
@@ -269,7 +263,7 @@ abstract class table
 			else
 			{
 				$liste = array();
-				while( $row = $db->read_assoc($req) )
+				while( $row = static::get_db()->read_assoc($req) )
 				{
 					$liste[] = $row;
 				}
@@ -297,7 +291,6 @@ abstract class table
 	 */
 	public static function findOneBy($params = array(), $orders = array())
 	{
-		global $db;
 		$result = null;
 		
 		$className = get_called_class();
@@ -333,7 +326,6 @@ abstract class table
 	 */
 	public static function findBy($params = array(), $orders = array())
 	{
-		global $db;
 		$results = array();
 		
 		$requete = '';
@@ -355,10 +347,10 @@ abstract class table
 			}
 		}
 		
-		$req = $db->query($requete);
+		$req = static::get_db()->query($requete);
 		
 		$className = get_called_class();
-		while($row = $db->read_assoc($req))
+		while($row = static::get_db()->read_assoc($req))
 		{
 			$results[] = new $className($row);
 		}
@@ -368,7 +360,6 @@ abstract class table
 	
 	static function calcul_somme($somme, $champs, $valeurs, $groupe=false, $where=false)
 	{
-		global $db;
 		if(!$where)
 			$where = self::construit_condition($champs, $valeurs);
 		if( $groupe )
@@ -394,17 +385,17 @@ abstract class table
 			$unique = true;
 		}
 		$requete = 'SELECT '.$sel_grp.$somme.' FROM '.static::get_table().' WHERE '.$where.$group_by;
-		$req = $db->query($requete);
+		$req = static::get_db()->query($requete);
 		if($groupe)
 		{
 			$res = array();
-			while($row = $db->read_array($req))
+			while($row = static::get_db()->read_array($req))
 			{
 				$res[ $row[$groupe] ] = $unique ? $row : $row[0];
 			}
 			return $res;
 		}
-		$row = $db->read_array($req);
+		$row = static::get_db()->read_array($req);
 		if($unique)
 			return $row[0];
 		return $row;
@@ -412,7 +403,6 @@ abstract class table
 	
 	static function calcul_nombre($champs, $valeurs, $groupe=false, $where=false)
 	{
-		global $db;
 		if(!$where)
 			$where = self::construit_condition($champs, $valeurs);
 		if( $groupe )
@@ -423,17 +413,17 @@ abstract class table
 		else
 			$sel_grp = $group_by = '';
 		$requete = 'SELECT '.$sel_grp.'COUNT(*) AS nbr FROM '.static::get_table().' WHERE '.$where.$group_by;
-		$req = $db->query($requete);
+		$req = static::get_db()->query($requete);
 		if($groupe)
 		{
 			$res = array();
-			while($row = $db->read_assoc($req))
+			while($row = static::get_db()->read_assoc($req))
 			{
 				$res[ $row[$groupe] ] = $row['nbr'];
 			}
 			return $res;
 		}
-		$row = $db->read_array($req);
+		$row = static::get_db()->read_array($req);
 		return $row[0];
 	}
 	
@@ -451,7 +441,10 @@ abstract class table
 		}
 		foreach($array_champs as $key => $champ)
 		{
-			$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
+			if( $array_valeurs[$key] === null )
+				$where[] = $champ .' IS NULL';
+			else
+				$where[] = $champ .' = "'.mysql_escape_string($array_valeurs[$key]).'"';
 		}
 		$where = implode(' AND ', $where);
 		if($champs === 0)
@@ -459,5 +452,11 @@ abstract class table
 			$where = ' 1 ';
 		}
 		return $where;
+	}
+	
+	static protected function &get_db()
+	{
+		global $db;
+		return $db;
 	}
 }
