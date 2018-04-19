@@ -439,7 +439,7 @@ class arenes_joueur extends table
     $perso->sauver();
     $this->sauver();
     // Journal
-    $requete = 'INSERT INTO journal VALUES("", '.$perso->get_id().', "teleport", "'.mysql_escape_string($admin).'", "'.mysql_escape_string($perso->get_nom()).'", NOW(), "'.$lieu.'", 0, 0, 0)';
+    $requete = 'INSERT INTO journal VALUES(NULL, '.$perso->get_id().', "teleport", "'.mysql_escape_string($admin).'", "'.mysql_escape_string($perso->get_nom()).'", NOW(), "'.$lieu.'", 0, 0, 0)';
     $db->query($requete);
   }
   

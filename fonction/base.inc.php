@@ -1907,7 +1907,7 @@ function prend_recette($id_recette, $joueur)
 	else
 	{
 	  // On ajoute la recette avec une utilsation de 1
-		$requete = "INSERT INTO perso_recette VALUES('', ".$id_reel_recette.", ".$joueur->get_id().", 1)";
+		$requete = "INSERT INTO perso_recette VALUES(NULL, ".$id_reel_recette.", ".$joueur->get_id().", 1)";
 	}
 	$db->query($requete);
 }

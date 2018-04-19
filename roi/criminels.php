@@ -66,7 +66,7 @@ case 'modifier':
 	}
 	else
 	{
-  	$requete = "INSERT INTO amende(id, id_joueur, id_royaume, montant, acces_ville, respawn_ville, statut) VALUES ('', ".$criminel->get_id().", ".$Trace[$criminel->get_race()]['numrace'].", ".sSQL($_GET['montant']).", '".$acces_ville."', '".$spawn_ville."', '".sSQL($_GET['statut'])."')";
+  	$requete = "INSERT INTO amende(id, id_joueur, id_royaume, montant, acces_ville, respawn_ville, statut) VALUES (NULL, ".$criminel->get_id().", ".$Trace[$criminel->get_race()]['numrace'].", ".sSQL($_GET['montant']).", '".$acces_ville."', '".$spawn_ville."', '".sSQL($_GET['statut'])."')";
   	if($db->query($requete))
   	{
       	$amende = recup_amende($criminel->get_id());

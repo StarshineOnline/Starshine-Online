@@ -58,7 +58,7 @@ case 'prime':
 				$requete = "UPDATE perso SET star = star - ".$prime." WHERE ID = ".$perso->get_id();
 				$db->query($requete);
 				//On ajoute la prime dans la liste des primes
-				$requete = "INSERT INTO prime_criminel VALUES('', ".$row['id_joueur'].", ".$perso->get_id().", ".$id.", ".$prime.")";
+				$requete = "INSERT INTO prime_criminel VALUES(NULL, ".$row['id_joueur'].", ".$perso->get_id().", ".$id.", ".$prime.")";
 				$db->query($requete);
 				//On totalise la prime avec les autres
 				$requete = "UPDATE amende SET prime = prime + ".$prime." WHERE id = ".$id;

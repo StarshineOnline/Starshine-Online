@@ -54,7 +54,7 @@ class titre extends perso
 		}
 		else
 		{
-			$requete = 'INSERT INTO options (id, id_perso, nom, valeur) VALUES("",';
+			$requete = 'INSERT INTO options (id, id_perso, nom, valeur) VALUES(NULL,';
 			$requete .= '"'.$this->id_perso.'", "titre",  "'.$id_titre.'")';
 			$db->query($requete);
 			$this->titre = $id_titre;		

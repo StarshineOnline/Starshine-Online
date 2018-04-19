@@ -78,7 +78,7 @@ else
 		if(!array_key_exists('id', $_POST))
 		{
 			//Création de la gemme
-			$requete = "INSERT INTO gemme VALUES ('', '".$_POST['nom_gemme']."', '".$_POST['type']."', ".$_POST['niveau'].", '', '".$_POST['enchantement']."', '".$_POST['description']."', '', '')";
+			$requete = "INSERT INTO gemme VALUES (NULL, '".$_POST['nom_gemme']."', '".$_POST['type']."', ".$_POST['niveau'].", '', '".$_POST['enchantement']."', '".$_POST['description']."', '', '')";
 			$db->query($requete);
 			$id = $db->last_insert_id();
 		}

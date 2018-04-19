@@ -194,7 +194,7 @@
 		if($royaume->get_star() >= $this->get_star_royaume())
 		{
 			//Ajout de la quête dans la liste des quêtes du royaume
-			$requete = "INSERT INTO quete_royaume VALUES('', ".$royaume->get_id().", ".$this->get_id().")";
+			$requete = "INSERT INTO quete_royaume VALUES(NULL, ".$royaume->get_id().", ".$this->get_id().")";
 			$req = $db->query($requete);
 			//Mis a jour des stars du royaume
 			$requete = "UPDATE royaume SET star = star - ".$this->get_star_royaume()." WHERE ID = ".$royaume->get_id();

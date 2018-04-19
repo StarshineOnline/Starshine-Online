@@ -66,7 +66,7 @@ if($_GET['action'] == 'paye_amende')
 			foreach($persos as $p)
 			{
 				//Inscription dans son journal de l'amende
-				$requete = 'INSERT INTO journal VALUES("", '.$p['ID'].', "r_amende", "'.$p['nom'].'", "'.$perso->get_nom().'", NOW(), "'.$star_joueur.'", 0, 0, 0)';
+				$requete = 'INSERT INTO journal VALUES(NULL, '.$p['ID'].', "r_amende", "'.$p['nom'].'", "'.$perso->get_nom().'", NOW(), "'.$star_joueur.'", 0, 0, 0)';
 				$db->query($requete);
 			}
 		}

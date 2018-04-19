@@ -294,7 +294,7 @@ class sort_jeu extends sort
 				//Insertion du buff dans le journal du receveur
 				if( $cible->get_id() != $perso->get_id() && $cible->get_race() != 'neutre' )
 				{
-  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", '".($groupe?'rgbuff':'rbuff')."', '".addslashes($cible->get_nom())."', '".addslashes($perso->get_nom())."', NOW(), '".addslashes($this->get_nom())."', 0, 0, 0)";
+  				$requete = "INSERT INTO journal VALUES(NULL, ".$cible->get_id().", '".($groupe?'rgbuff':'rbuff')."', '".addslashes($cible->get_nom())."', '".addslashes($perso->get_nom())."', NOW(), '".addslashes($this->get_nom())."', 0, 0, 0)";
   				$db->query($requete);
 				}
 			}
@@ -1087,7 +1087,7 @@ class sort_rez extends sort_jeu
 		
 		$action = true;
         //Mis en place de la résurection
-        $requete = "INSERT INTO rez VALUES('', ".$cible->get_id().", ".$perso->get_id().", '".$perso->get_nom()."', ".$this->get_effet().", ".$this->get_effet2().", ".$this->get_duree().", NOW())";
+        $requete = "INSERT INTO rez VALUES(NULL, ".$cible->get_id().", ".$perso->get_id().", '".$perso->get_nom()."', ".$this->get_effet().", ".$this->get_effet2().", ".$this->get_duree().", NOW())";
         $db->query($requete);
 
         // Augmentation du compteur de l'achievement

@@ -212,7 +212,7 @@ class comp_jeu extends comp
 				//Insertion du buff dans le journal du receveur
 				if( count($cibles)>1 && $cible->get_id() != $perso->get_id() )
 				{
-  				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+  				$requete = "INSERT INTO journal VALUES(NULL, ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
   				$db->query($requete);
         }
 			}
@@ -233,7 +233,7 @@ class comp_jeu extends comp
 			}
 		if( $action )
 		{
-			$requete = "INSERT INTO journal VALUES('', ".$perso->get_id().", '".(count($cibles)>1?"gbuff":"buff")."', '".$perso->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+			$requete = "INSERT INTO journal VALUES(NULL, ".$perso->get_id().", '".(count($cibles)>1?"gbuff":"buff")."', '".$perso->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
 			$db->query($requete);
     }
 		return $action;
@@ -260,7 +260,7 @@ class comp_preparation_camp extends comp_jeu
 				$action = true;
 				interf_base::add_courr( new interf_txt($cible->get_nom().' a bien reçu le buff<br />') );
 				//Insertion du buff dans le journal du receveur
-				$requete = "INSERT INTO journal VALUES('', ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
+				$requete = "INSERT INTO journal VALUES(NULL, ".$cible->get_id().", 'rgbuff', '".$cible->get_nom()."', '".$perso->get_nom()."', NOW(), '".$this->get_nom()."', 0, 0, 0)";
 				$db->query($requete);
 			}
 			else

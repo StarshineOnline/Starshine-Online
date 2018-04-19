@@ -31,7 +31,7 @@ if($_GET['action'] == 'achat')
 	if($R['star'] >= $row['star_royaume'])
 	{
 		//Ajout de la quête dans la liste des quêtes du royaume
-		$requete = "INSERT INTO quete_royaume VALUES('', ".$R['ID'].", ".$row['id'].")";
+		$requete = "INSERT INTO quete_royaume VALUES(NULL, ".$R['ID'].", ".$row['id'].")";
 		$req = $db->query($requete);
 		//Mis a jour des stars du royaume
 		$requete = "UPDATE royaume SET star = star - ".$row['star_royaume']." WHERE ID = ".$R['ID'];
