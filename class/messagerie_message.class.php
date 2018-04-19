@@ -3,13 +3,12 @@
 
 class messagerie_message extends table
 {
-	protected $id_message;
 	protected $id_auteur;
 	protected $id_dest;
 	protected $message;
 	protected $id_thread;
 	protected $date;
-	protected $nom_auteur=null;
+	protected $nom_auteur = null;
 	
 	/// renvoie l'id du destinataire
 	function get_id_dest()
@@ -83,28 +82,28 @@ class messagerie_message extends table
 	 *	Les valeurs par défaut sont celles de la base de donnée.
 	 *	Le constructeur accepte plusieurs types d'appels:
 	 *		-messagerie_message() qui construit un message "vide".
-	 *		-messagerie_message($id) qui va chercher le message dont l'id est $id_message dans la base.
+	 *		-messagerie_message($id) qui va chercher le message dont l'id est $id dans la base.
 	 **/
 	function __construct($id = 0, $id_auteur = 0, $id_dest = 0, $message = '', $id_thread = 0, $date = null)
 	{
-		//Verification du nombre et du type d'argument pour construire le message adequat.
+		// Vérification du nombre et du type d'argument pour construire le message adéquat.
 		if( func_num_args() == 1 )
 		{
 			$this->charger($id);
 		}
 		else
 		{
+			parent::__construct($id);
+			
 			if($date == null)
 				$date = date("Y-m-d H:i:s", time());
+			
 			$this->id_auteur = $id_auteur;
 			$this->id_dest = $id_dest;
 			$this->message = $message;
 			$this->id_thread = $id_thread;
 			$this->date = $date;
 		}
-		/// @todo à amééliorer
-		$this->id = $id;
-		$this->id_message = $id;
 	}
 	
 	/// Renvoie le nom du champ servant d'identifiant
@@ -119,8 +118,8 @@ class messagerie_message extends table
 	*/
 	protected function init_tab($vals)
 	{
-		table::init_tab($vals);
-		$this->id_message = $vals['id_message'];
+		parent::init_tab($vals);
+		
 		$this->id_auteur = $vals['id_auteur'];
 		$this->id_dest = $vals['id_dest'];
 		$this->message = $vals['message'];
@@ -131,11 +130,11 @@ class messagerie_message extends table
 	/// Renvoie la liste des champs pour une insertion dans la base
 	protected function get_champs()
 	{
-    $tbl['id_auteur']='i';
-    $tbl['id_dest']='i';
-    $tbl['message']='s';
-    $tbl['id_thread']='i';
-    $tbl['date']='s';
+		$tbl['id_auteur']='i';
+		$tbl['id_dest']='i';
+		$tbl['message']='s';
+		$tbl['id_thread']='i';
+		$tbl['date']='s';
 		return $tbl;
 	}
 	

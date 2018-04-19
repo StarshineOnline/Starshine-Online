@@ -30,6 +30,11 @@ abstract class table
 		$this->id = $id;
 	}
 	
+	function __construct($id)
+	{
+		$this->id = $id;
+	}
+	
 	/**
 	 * Charge un élément de la base de donnée ou directement à partid d'un tableau
 	 * @param $id    Id (clé primaire) de l'élément dans la table ou tableau contenant les valeurs des données.
@@ -50,7 +55,6 @@ abstract class table
 			}
 			else
 			{
-				$this->__construct();
 				$this->id = $id;
 			}
 		}
