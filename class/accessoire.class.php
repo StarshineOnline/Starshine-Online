@@ -104,12 +104,12 @@ class accessoire extends objet_equip
 
 	/// Méthode renvoyant l'image de l'objet
 	public function get_image()
-  {
-    $image = 'image/accessoire/accessoire'.$this->get_id().'.png';
-    if( file_exists($image) )
-      return $image;
-    return null;
-  }
+	{
+		$image = 'image/accessoire/accessoire'.$this->get_id().'.png';
+		if( file_exists(root.$image) )
+			return $image;
+		return null;
+	}
 
 	/**
 	 * Méthode renvoyant les noms des informations sur l'objet

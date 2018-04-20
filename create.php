@@ -233,11 +233,11 @@ function switch_classe()
 	{
 		if($race == $race_1) $style = ''; else $style = 'display : none;';
 		$image = 'image/personnage/'.$race;
-		if (file_exists($image.'_guerrier.png')) $image .= '_guerrier.png';
-		elseif(file_exists($image.'_guerrier.gif')) $image .= '_guerrier.gif';
-		elseif (file_exists($image.'_mage.png')) $image .= '_mage.png';
-		elseif(file_exists($image.'_mage.gif')) $image .= '_mage.gif';
-		elseif (file_exists($image.'.png')) $image .= '.png';
+		if (file_exists(root.$image.'_guerrier.png')) $image .= '_guerrier.png';
+		elseif (file_exists(root.$image.'_guerrier.gif')) $image .= '_guerrier.gif';
+		elseif (file_exists(root.$image.'_mage.png')) $image .= '_mage.png';
+		elseif (file_exists(root.$image.'_mage.gif')) $image .= '_mage.gif';
+		elseif (file_exists(root.$image.'.png')) $image .= '.png';
 		else $image .= '.gif';
 		echo '
 		<div id="'.$race.'" style="'.$style.'">

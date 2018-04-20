@@ -167,11 +167,11 @@ $coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 						$rep_type = 'personnage/'.$case['info'];
 						$image = 'image/'.$rep_type.'/'.$case['info'];
 						//Vérification image classe
-						if (file_exists($image.'_'.$case['info_classe'].'.png')) $image .= '_'.$case['info_classe'].'.png';
-						elseif(file_exists($image.'_'.$case['info_classe'].'.gif')) $image .= '_'.$case['info_classe'].'.gif';
-						elseif (file_exists($image.'.png')) $image .= '.png';
+						if (file_exists(root.$image.'_'.$case['info_classe'].'.png')) $image .= '_'.$case['info_classe'].'.png';
+						elseif (file_exists(root.$image.'_'.$case['info_classe'].'.gif')) $image .= '_'.$case['info_classe'].'.gif';
+						elseif (file_exists(root.$image.'.png')) $image .= '.png';
 						else $image .= '.gif';
-						if (!file_exists($image)) $on = 'style="width : 50px; height : 50px;"';
+						if (!file_exists(root.$image)) $on = 'style="width : 50px; height : 50px;"';
 						echo'<img src="'.$image.'" alt="'.$case['info'].'" style="vertical-align : middle; margin:10px;" '.$on.'/>';
 					}
 
@@ -187,11 +187,11 @@ $coord['y'] = $ymin + round(($ymax - $ymin) / 2);
 				{
 					$rep_type = 'personnage/'.$case['info'];
 					$image = 'image/'.$rep_type.'/'.$case['info'];
-					if (file_exists($image.'_'.$case['info_classe'].'.png')) $image .= '_'.$case['info_classe'].'.png';
-					elseif(file_exists($image.'_'.$case['info_classe'].'.gif')) $image .= '_'.$case['info_classe'].'.gif';
-					elseif (file_exists($image.'.png')) $image .= '.png';
+					if (file_exists(root.$image.'_'.$case['info_classe'].'.png')) $image .= '_'.$case['info_classe'].'.png';
+					elseif (file_exists(root.$image.'_'.$case['info_classe'].'.gif')) $image .= '_'.$case['info_classe'].'.gif';
+					elseif (file_exists(root.$image.'.png')) $image .= '.png';
 					else $image .= '.gif';
-					if (!file_exists($image)) $on = 'style="width : 50px; height : 50px;"';
+					if (!file_exists(root.$image)) $on = 'style="width : 50px; height : 50px;"';
 					echo'<img src="'.$image.'" alt="'.$case['info'].'" style="vertical-align : middle; margin : 10px;" '.$on.'/>';
 				}
 			}

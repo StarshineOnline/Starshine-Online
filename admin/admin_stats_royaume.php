@@ -119,7 +119,7 @@ else
         $graph->Add($lineplot);
       }
       $img = 'images/stat.jpg';
-      if(file_exists($img))
+      if(file_exists(root.$img))
         unlink($img);
   	  $graph->Stroke($img);
       echo '<img src="'.$img.'" />';*/

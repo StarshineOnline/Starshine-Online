@@ -390,7 +390,7 @@ class interf_infos_case extends interf_cont
 			$lien = $li->add( new interf_lien_cont('info_monstre.php?id='.$row->id, false, 'info_elt') );
 			/// @todo à améliorer
 			$image = 'image/monstre/'.$row->lib;
-			$image .= file_exists($image.'_low.png') ? '_low.png' : '.png';
+			$image .= file_exists(root.$image.'_low.png') ? '_low.png' : '.png';
 			$lien->add( new interf_img($image) );
 			/// @todo à améliorer
 			$niveau = $row->level > 0 ? $row->level : 1;

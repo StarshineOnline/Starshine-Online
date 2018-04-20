@@ -242,26 +242,26 @@ class objet_royaume extends objet_invent
 
 	/// Méthode renvoyant l'image de l'objet
 	public function get_image()
-  {
-    $bat = &$this->get_batiment();
-    switch($this->get_type())
-    {
-    case 'buff':
-    case 'debuff':
-      $image = 'image/buff/'.$bat->get_type().'.png';
-      break;
-    case 'drapeau':
-      $race = joueur::get_perso()->get_race();
-      $roy = royaume::create('race', $race);
-      $image = 'image/drapeaux/'.$bat->get_image().'_'.$roy[0]->get_id().'.png';
-      break;
-    default:
-      $image = 'image/batiment/'.$bat->get_image().'_04.png';
+	{
+		$bat = &$this->get_batiment();
+		switch($this->get_type())
+		{
+			case 'buff':
+			case 'debuff':
+				$image = 'image/buff/'.$bat->get_type().'.png';
+				break;
+			case 'drapeau':
+				$race = joueur::get_perso()->get_race();
+				$roy = royaume::create('race', $race);
+				$image = 'image/drapeaux/'.$bat->get_image().'_'.$roy[0]->get_id().'.png';
+				break;
+			default:
+				$image = 'image/batiment/'.$bat->get_image().'_04.png';
 		}
-    if( file_exists($image) )
-      return $image;
-    return null;
-  }
+		if( file_exists(root.$image) )
+			return $image;
+		return null;
+	}
   
   /// Méthode renvoyant l'objet (bâtiment ou definition de buff) correspondant
   public function get_objet()

@@ -663,12 +663,12 @@ class zone_invent extends objet_invent
 
 	/// Méthode renvoyant l'image de l'objet
 	public function get_image()
-  {
-    $image = 'image/inventaire/'.$this->type.'.png';
-    if( file_exists($image) )
-      return $image;
-    return null;
-  }
+	{
+		$image = 'image/inventaire/'.$this->type.'.png';
+		if( file_exists(root.$image) )
+			return $image;
+		return null;
+	}
 
   public function get_noms_infos($complet=true) {}
   public function get_valeurs_infos($complet=true) {}

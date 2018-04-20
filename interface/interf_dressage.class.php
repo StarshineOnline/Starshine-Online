@@ -80,7 +80,7 @@ class interf_dressage extends interf_cont
 					$jauge->set_tooltip('HP : '.$longueur.'% ± '.$fiabilite.'%', 'bottom', '#contenu');
 					/// @todo à améliorer
 					$image = 'image/monstre/'.$row->lib;
-					$image .= file_exists($image.'_low.png') ? '_low.png' : '.png';
+					$image .= file_exists(root.$image.'_low.png') ? '_low.png' : '.png';
 					$lien->add( new interf_img($image) );
 					$nom = $lien->add( new interf_bal_smpl('span', $row->nom) );
 				}

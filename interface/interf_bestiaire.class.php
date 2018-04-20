@@ -67,7 +67,7 @@ class interf_liste_monstres extends interf_data_tbl
 				$type_terrain[] = $tab[$t];
 			}
 			$type_terrain = implode(', ', $type_terrain);
-			if (file_exists($image.'.png')) $image .= '.png';
+			if (file_exists(root.$image.'.png')) $image .= '.png';
 			else $image .= '.gif';
 			
 			$this->nouv_cell( new interf_img($image, $row['lib']) );
