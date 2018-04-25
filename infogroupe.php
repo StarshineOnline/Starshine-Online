@@ -65,7 +65,7 @@ case 'invite':
 		if( $groupe->get_place_libre() > 0 )
 		{
 			//Si il est déjà groupé
-			if( $invite->get_groupe() == 0 )
+			if( $invite->get_id_groupe() == 0 )
 			{
 				//Vérifie qu'il n'est pas déprimé
 				if($invite->is_buff('debuff_groupe', true))
