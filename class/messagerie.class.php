@@ -16,7 +16,7 @@ class messagerie
 		$this->perso = &$perso;
 		if( $perso->get_rang() == 6 || $perso->get_rang() == 1 )
 		{
-			$royaume = royaume::create('race', $perso->get_race())[0];
+			$royaume = $perso->get_royaume();
 			$this->id_royaume = $royaume->get_id();
 			if( $perso->get_rang() == 6 )
 				$this->special = 'roi';
@@ -103,7 +103,7 @@ class messagerie
 			$id_perso = $Trace[$this->perso->get_race()]['numrace'];
 			break;
 		}
-		$this->threads = messagerie_thread::create(false, false, 'important DESC, dernier_message DESC, id_thread DESC', false, '(id_groupe = '.$this->perso->get_groupe().' OR id_dest = '.$id_perso.' OR id_auteur = '.$id_perso.') AND categorie = "'.$categorie.'"');
+		$this->threads = messagerie_thread::create(false, false, 'important DESC, dernier_message DESC, id_thread DESC', false, '(id_groupe = '.$this->perso->get_id_groupe().' OR id_dest = '.$id_perso.' OR id_auteur = '.$id_perso.') AND categorie = "'.$categorie.'"');
 		if( $liste_message )
 		{
 			foreach($this->threads as &$thread)
@@ -115,7 +115,7 @@ class messagerie
 		/*switch($categorie)
 		{
 		case 'groupe' :
-			$where = 'id_groupe = '.$this->perso->get_groupe().' AND id_groupe != 0';
+			$where = 'id_groupe = '.$this->perso->get_id_groupe().' AND id_groupe != 0';
 			break;
 		case 'perso' :
 			$where = '(id_dest = '.$id_perso.' OR (id_auteur = '.$id_perso.' AND id_groupe = 0)) AND (titre NOT LIKE "%vous propose un échange" AND titre NOT LIKE "Finalisation de l\'échange avec%")';
@@ -215,7 +215,7 @@ class messagerie
 			/*if ($this->thread->get_id_dest() != $this->perso->get_id() &&
 					$this->thread->get_id_auteur() != $this->perso->get_id() &&
 					($this->thread->get_id_groupe() == 0 ||
-					 $this->thread->get_id_groupe() != $this->perso->get_groupe()) &&
+					 $this->thread->get_id_groupe() != $this->perso->get_id_groupe()) &&
 					$this->id_perso != 0 /* magic id /)
 				security_block(URL_MANIPULATION);*/
 			if($numero_page == 'last')
@@ -315,7 +315,7 @@ class messagerie
 			}
 			else
 			{
-				$groupe = new groupe( $this->perso->get_groupe() );
+				$groupe = new groupe( $this->perso->get_id_groupe() );
 				$ids_dest = array(array('id'=>$id_dest,'type'=>'roi'), array('id'=>$id_dest,'type'=>'eco'), array('id'=>$id_dest,'type'=>'mil'));
 			}
 			$groupe->get_membre();

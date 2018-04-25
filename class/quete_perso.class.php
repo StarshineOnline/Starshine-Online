@@ -255,8 +255,8 @@ class quete_perso extends table
 					{
 						/// @todo à améliorer
 						$requete = 'SELECT p.* FROM perso AS p INNER JOIN quete_perso AS qp ON qp.id_perso = p.id WHERE p.race = "'.$perso->get_race().'" AND qp.id_etape = '.$qp->get_id_etape().' AND ';
-						if( $perso->get_groupe() )
-							$requete .= 'p.groupe != '.$perso->get_groupe();
+						if( $perso->get_id_groupe() )
+							$requete .= 'p.groupe != '.$perso->get_id_groupe();
 						else
 							$requete .= 'p.id != '.$perso->get_id();
 						$req = $db->query($requete);
@@ -285,9 +285,9 @@ class quete_perso extends table
 					case 'groupe':
 						if( $mode == 's' )
 						{
-							if( $perso->get_groupe() )
+							if( $perso->get_id_groupe() )
 							{
-								$requete = 'SELECT qp.*, p.id AS pid, p.race FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$perso->get_groupe().' AND qp.id_quete = '.$qp->get_id_quete();
+								$requete = 'SELECT qp.*, p.id AS pid, p.race FROM quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso WHERE p.groupe = '.$perso->get_id_groupe().' AND qp.id_quete = '.$qp->get_id_quete();
 								$req = $db->query($requete);
 								while( $row = $db->read_assoc($req) )
 								{
@@ -312,8 +312,8 @@ class quete_perso extends table
 								if( $suiv )
 								{ 
 									// si c'est une quête de royaume on avance pour les autres (hors membres du groupe pour qui c'est déjà fait)
-									if( $perso->get_groupe() )
-										$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.groupe != '.$perso->get_groupe();
+									if( $perso->get_id_groupe() )
+										$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.groupe != '.$perso->get_id_groupe();
 									else
 										$requete = 'UPDATE quete_perso AS qp INNER JOIN perso AS p ON p.id = qp.id_perso SET id_etape = '.$suiv.' WHERE p.race = "'.$perso->get_race().'" AND qp.id_quete = '.$this->id_quete.' AND p.id_perso != '.$this->id_perso;
 									$req = $db->query($requete);

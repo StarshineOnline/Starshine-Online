@@ -41,9 +41,9 @@ class interf_info_perso extends interf_cont
 				// invitation
 				if($distance <= 3 && !$this->perso->is_buff('debuff_groupe', true))
 				{
-					if($this->perso->get_groupe())
+					if($this->perso->get_id_groupe())
 					{
-						$groupe = new groupe($this->perso->get_groupe());
+						$groupe = new groupe($this->perso->get_id_groupe());
 						$invit = $groupe->get_id_leader() == $this->perso->get_id() && $groupe->get_place_libre();
 					}
 					else
@@ -54,9 +54,9 @@ class interf_info_perso extends interf_cont
 						$sort->set_tooltip('Inviter ce joueur dans votre groupe', 'bottom', '#information');
 					}
 				}
-				if( $this->perso->get_groupe() && $this->perso->get_groupe() == $this->pj->get_groupe() )
+				if( $this->perso->get_id_groupe() && $this->perso->get_id_groupe() == $this->pj->get_id_groupe() )
 				{
-					$groupe = new groupe($this->perso->get_groupe());
+					$groupe = new groupe($this->perso->get_id_groupe());
 					if( $groupe->get_id_leader() == $this->perso->get_id() )
 					{
 						$excl = $div->add( new interf_lien('', 'infogroupe.php?action=expulser&id='.$pj->get_id(), false, 'icone icone-exclure', 'Voulez vous expulser ce joueur ?') );
@@ -207,7 +207,7 @@ class interf_info_perso extends interf_cont
 			$div_mort->add( new interf_bal_cont('span', false, 'icone icone-mort') );
 			$div_mort->set_tooltip('Ce personnage est mort', 'bottom');
 		}
-		if( $this->pj->get_groupe() && $this->pj->get_groupe() == $this->perso->get_groupe() )
+		if( $this->pj->get_id_groupe() && $this->pj->get_id_groupe() == $this->perso->get_id_groupe() )
 		{
 			if( !$this->pj->est_mort() )
 			{
@@ -227,7 +227,7 @@ class interf_info_perso extends interf_cont
 	  $div2->add( new interf_bal_smpl('span', $txt, 'pos_pj') );
 		// buffs
 	  $buffs = $div2->add( new interf_bal_cont('div',  'buffs_pj') );
-		if( $this->pj->get_groupe() && $this->pj->get_groupe() == $this->perso->get_groupe() )
+		if( $this->pj->get_id_groupe() && $this->pj->get_id_groupe() == $this->perso->get_id_groupe() )
 		{
 	  	$buffs->add( new interf_liste_buff($this->pj, false) );
 		}

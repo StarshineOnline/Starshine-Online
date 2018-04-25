@@ -382,8 +382,8 @@ class map_monstre extends entnj_incarn
 			// César
 		case 180:
 			$perso->unlock_achiev('brutus');
-			if ($perso->get_groupe()) {
-				$groupe = new groupe($perso->get_groupe());
+			if ($perso->get_id_groupe()) {
+				$groupe = new groupe($perso->get_id_groupe());
 				$groupe->get_membre();
 				foreach($groupe->membre_joueur as $membre) {
 					$membre->unlock_achiev('brutus');
@@ -643,7 +643,7 @@ class map_monstre extends entnj_incarn
 		if($gains_xp)
 		{
 			//Niveau du groupe
-			if($perso->get_groupe() == 0)
+			if($perso->get_id_groupe() == 0)
 			{
 				$groupe = new groupe();
 				$groupe->level_groupe = $perso->get_level();
@@ -654,7 +654,7 @@ class map_monstre extends entnj_incarn
 			}
 			else
 			{
-				$groupe = new groupe($perso->get_groupe());
+				$groupe = new groupe($perso->get_id_groupe());
 				$groupe->get_membre();
 			}
 			//Gain d'expérience
@@ -687,7 +687,7 @@ class map_monstre extends entnj_incarn
 
 		if($gains_drop)
 		{
-			$this->check_boss_loot($perso, $perso->get_groupe() ? $groupe : null);
+			$this->check_boss_loot($perso, $perso->get_id_groupe() ? $groupe : null);
 
 			//Drop d'un objet ?
 			$objets = '';

@@ -390,9 +390,9 @@ abstract class comp_sort extends comp_sort_buff
         else
           return map_monstre::create(array('x', 'y'), array($cible->get_x(), $cible->get_y()));
       }
-      else if($groupe && $cible->get_groupe() != 0)
+      else if($groupe && $cible->get_id_groupe() != 0)
       {
-        $groupe_cible = new groupe( $cible->get_groupe() );
+        $groupe_cible = new groupe( $cible->get_id_groupe() );
         $cibles = array();
 				foreach($groupe_cible->get_membre() as $membre)
 				{

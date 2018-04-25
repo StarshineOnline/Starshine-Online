@@ -4,7 +4,7 @@ if (file_exists('../root.php'))
 
 class groupe_joueur
 {
-/**
+	/**
     * @access private
     * @var int(10)
     */
@@ -146,6 +146,7 @@ class groupe_joueur
 	{
 		global $db;
 		$return = array();
+		
 		if(!$where)
 		{
 			if(!is_array($champs))
@@ -179,7 +180,7 @@ class groupe_joueur
 				else $return[$row[$keys]][] = new groupe_joueur($row);
 			}
 		}
-		else $return = false;
+		
 		return $return;
 	}
 

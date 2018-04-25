@@ -28,7 +28,7 @@ case 'general':
 	$carte = $div->add( $G_interf->creer_carte_monde() );
 	$carte->aff_options();
 	$carte->aff_svg();
-	$carte->aff_groupe( joueur::get_perso()->get_groupe() );
+	$carte->aff_groupe( joueur::get_perso()->get_id_groupe() );
 	if( array_key_exists('x', $_GET) && array_key_exists('y', $_GET) )
 		$carte->aff_pos($_GET['x'], $_GET['y']);
 	break;

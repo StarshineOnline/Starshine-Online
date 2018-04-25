@@ -79,11 +79,11 @@ case 'nouveau_sujet':
 		break;
 	case 'groupe':
 		$id_dest = 0;
-		$id_groupe = $perso->get_groupe();
+		$id_groupe = $perso->get_id_groupe();
 		break;
 	case 'royaume':
 		/// @todo vérifier que le groupe existe
-		$id_chef = groupe::recup_id_leader( $perso->get_groupe() );
+		$id_chef = $perso->get_groupe()->get_id_leader();
 		$chef = new perso( $id_chef );
 		$id_dest = $Trace[ $chef->get_race() ]['numrace'];
 		$id_groupe = $_POST['destinataire'];

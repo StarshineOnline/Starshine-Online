@@ -226,9 +226,9 @@ class texte
     //Validation de la quête de groupe
     if(preg_match('`\[quetegroupe(:[[:alnum:]]+)?]`i', $texte))
     {
-      if ($this->perso->get_groupe() > 0)
+      if ($this->perso->get_id_groupe() > 0)
       {
-        $groupe = new groupe($this->perso->get_groupe());
+        $groupe = new groupe($this->perso->get_id_groupe());
         foreach($groupe->get_membre_joueur() as $pj)
           quete_perso::verif_action($this->id, $pj, 'g', $regs[1]);
       }

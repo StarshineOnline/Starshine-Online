@@ -160,7 +160,7 @@ class interf_jabber extends interf_bal_cont
 	static function get_options_perso(&$perso)
 	{
   	global $db;
-		$groupe = 'groupe_'.$perso->get_groupe();
+		$groupe = 'groupe_'.$perso->get_id_groupe();
 		$race = $perso->get_race();
 		$options = array('salons'=>array());
 		$options['style'] = true;

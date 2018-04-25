@@ -142,7 +142,7 @@ class interf_barre_perso extends interf_bal_cont
     $pos = $this->add( new interf_lien_cont('carte.php', 'perso_position', 'aide') );
     $carte = $pos->add( $G_interf->creer_carte_monde() );
     $carte->aff_svg(12);
-		$carte->aff_groupe( $this->perso->get_groupe() );
+		$carte->aff_groupe( $this->perso->get_id_groupe() );
 		/*$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
 		$carte->aff_batiments($royaume, 12);*/
   }
@@ -188,9 +188,9 @@ class interf_barre_perso extends interf_bal_cont
 		$nombre_joueur_groupe = 1;
 		$div = $this->add( new interf_bal_cont('div', 'perso_groupe', 'aide') );
 		$liste = $div->add( new interf_bal_cont('ul') );
-  	if( $this->perso->get_groupe() )
+  	if( $this->perso->get_id_groupe() )
   	{
-			$groupe = new groupe($this->perso->get_groupe());
+			$groupe = new groupe($this->perso->get_id_groupe());
 			
 			// Membres du groupe
 			foreach($groupe->get_membre_joueur() as $membre)

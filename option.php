@@ -82,7 +82,7 @@ case 'suppr':
 	$perso->set_statut('ban');
 	$perso->set_fin_ban(time() + 3600 * 24 * 36500);
 	$perso->sauver();
-	$groupe = $perso->get_groupe();
+	$groupe = $perso->get_id_groupe();
 	if($groupe != 0)
 		degroup($perso->get_id(), $groupe);
 	require_once('connect_forum.php');

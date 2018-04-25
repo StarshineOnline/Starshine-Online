@@ -18,7 +18,7 @@ class interf_messagerie extends interf_onglets
 		switch( $type )
 		{
 		case null:
-			$onglet = $type = $perso->get_groupe() ? 'groupe' : 'perso';
+			$onglet = $type = $perso->get_id_groupe() ? 'groupe' : 'perso';
 			break;
 		case 'perso':
 		case 'groupe':
@@ -29,10 +29,10 @@ class interf_messagerie extends interf_onglets
 			$onglet = 'royaume';
 		}
 		
-		if( $perso->get_groupe() )
+		if( $perso->get_id_groupe() )
 			$this->add_onglet('Groupe'.($non_lu['groupe']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'groupe'), 'onglet_groupe', 'invent', $onglet=='groupe');
 		$this->add_onglet('Perso'.($non_lu['perso']?' <span class="badge">'.$non_lu['perso'].'<span>':''), $url->get('type', 'perso'), 'onglet_perso', 'invent', $onglet=='perso');
-		/*if( $perso->get_groupe() || $perso->get_rang() == 6 || $perso->get_rang() == 1 )
+		/*if( $perso->get_id_groupe() || $perso->get_rang() == 6 || $perso->get_rang() == 1 )
 			$this->add_onglet('Royaume'.($non_lu['royaume']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'royaume'), 'onglet_royaume', 'invent', $onglet=='royaume');
 		if( $perso->get_rang() == 6 || $perso->get_rang() == 1 )
 			$this->add_onglet('Diplomatie'.($non_lu['diplomatie']?' <span class="badge">'.$non_lu['groupe'].'<span>':''), $url->get('type', 'diplomatie'), 'onglet_diplomatie', 'invent', $onglet=='diplomatie');*/
@@ -99,20 +99,20 @@ class interf_liste_messages extends interf_cont
 				$tbl->nouv_cell( $nom_interlocuteur );
 				$tbl->nouv_cell( $date );
 				$cell = $tbl->nouv_cell();
-				/*if( $groupe->get_leader() && $type == 'groupe' )
+				/*if( $groupe->get_id_leader() && $type == 'groupe' )
 				{
 					if($thread->important) $important_etat = 0;
 					else $important_etat = 1;
 					//$options = '<a href="thread_modif?id_thread='.$thread->id_thread.'&important='.$important_etat.'" onclick="return envoiInfo(this.href, \'\');">(i)</a>';
 				}*/
-				if( $groupe->get_leader() == $perso->get_id() && $type == 'groupe' || $sujet->get_id_auteur() == $perso->get_id() || $sujet->get_id_dest() == $perso->get_id() )
+				if( $groupe->get_id_leader() == $perso->get_id() && $type == 'groupe' || $sujet->get_id_auteur() == $perso->get_id() || $sujet->get_id_dest() == $perso->get_id() )
 				{
 					$lien = $cell->add( new interf_bal_smpl('a', '', false, 'icone icone-moins') );
 					$lien->set_attribut('href', $url->get('action', 'masquer_sujet'));
 					$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sûr de vouloir masquer ce sujet ?\');');
 					$lien->set_tooltip('Masquer ce sujet.');
 				}
-				if( $groupe->get_leader() == $perso->get_id() && $type == 'groupe' || $sujet->get_id_auteur() == $perso->get_id() && $nbr_msg <= 1 )
+				if( $groupe->get_id_leader() == $perso->get_id() && $type == 'groupe' || $sujet->get_id_auteur() == $perso->get_id() && $nbr_msg <= 1 )
 				{
 					$lien = $cell->add( new interf_bal_smpl('a', '', false, 'icone icone-poubelle') );
 					$lien->set_attribut('href', $url->get('action', 'suppr_sujet'));
@@ -250,7 +250,7 @@ class interf_nouveau_message extends interf_form
 				}
 			}
 			else
-				$this->add( new interf_chp_form('hidden', 'destinataire', false, $perso->get_groupe()) );
+				$this->add( new interf_chp_form('hidden', 'destinataire', false, $perso->get_id_groupe()) );
 			break;
 		case 'diplomatie':
 			$perso = joueur::get_perso();

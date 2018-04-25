@@ -378,7 +378,7 @@ class arenes_joueur extends table
 		$this->x = $perso->get_x();
 		$this->y = $perso->get_y();
 		if($groupe !== null)
-		  $this->groupe = $perso->get_groupe();
+		  $this->groupe = $perso->get_id_groupe();
     else
       $this->groupe = null;
 		$this->hp = $perso->get_hp();
@@ -399,7 +399,7 @@ class arenes_joueur extends table
         if($mbr_grp)
           $mbr_grp[0]->supprimer();
       }
-      $perso->set_groupe( $groupe?$groupe->get_id():0 );
+      $perso->set_id_groupe( $groupe?$groupe->get_id():0 );
     }
 	
 	// Supression des buffs et débuffs

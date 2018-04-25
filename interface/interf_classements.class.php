@@ -146,7 +146,7 @@ class interf_classement_groupes extends interf_pills
 		$tbl->nouv_cell('Moyenne');
 		
 		// Corps du tableau
-		$groupe = joueur::get_perso()->get_groupe();
+		$groupe = joueur::get_perso()->get_id_groupe();
 		$i = 1;
 		while( $row = $db->read_array($req) )
 		{

@@ -38,7 +38,7 @@ $pj->check_materiel();
 //Calcul de la distance qui sépare les personnages
 $distance = $perso->calcule_distance($pj);
 /// @todo à améliorer
-if( ($perso->get_groupe() == 0 || $perso->get_groupe() != $pj->get_groupe() ) && ($distance > 3 || ($distance == 3 &&  $perso->get_y() > 190)) )
+if( ($perso->get_id_groupe() == 0 || $perso->get_id_groupe() != $pj->get_id_groupe() ) && ($distance > 3 || ($distance == 3 &&  $perso->get_y() > 190)) )
 	exit();
 
 // nom

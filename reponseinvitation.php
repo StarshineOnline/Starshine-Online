@@ -29,7 +29,7 @@ elseif ($W_reponse == 'oui')
 	$dlg->ajout_btn('Ok', 'fermer');
 
 	//Vérifie avant si l'utilisateur n'a pas déjà de groupe (problème rencontré si la personne clic très rapidement sur le lien)
-	if ($joueur->get_groupe() > 0)
+	if ($joueur->get_id_groupe() > 0)
 		 $dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Vous êtes déjà groupé.') );
 	elseif(count($groupe->get_membre()) >= 5)
 		$dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Le groupe a atteint son maximum de membres.') );
@@ -40,7 +40,7 @@ elseif ($W_reponse == 'oui')
 			//Ajoute le membre au groupe
 			$groupe_joueur = new groupe_joueur(-1, $joueur->get_id(), $groupe->get_id(), 'n');
 			//echo $groupe_joueur;
-			$joueur->set_groupe($groupe->get_id());
+			$joueur->set_id_groupe($groupe->get_id());
 			
 			$invitation->supprimer();
 			$groupe_joueur->sauver();

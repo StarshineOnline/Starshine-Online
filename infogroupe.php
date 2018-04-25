@@ -15,7 +15,7 @@ $perso = joueur::get_perso();
 // Cadre de la partie droite
 $ajax = array_key_exists('ajax', $_GET) ? $_GET['ajax'] : 0;
 $action = array_key_exists('action', $_GET) ? $_GET['action'] : 'infos';
-$groupe = new groupe( $perso->get_groupe() );
+$groupe = new groupe( $perso->get_id_groupe() );
 
 switch( $action )
 {
@@ -26,7 +26,7 @@ case 'quitter':
 case 'expulser':
 	$autre = new perso($_GET['id']);
 	/// @todo loguer triche
-	if( $autre->get_groupe() == $groupe->get_id() && $perso->get_id() == $groupe->get_leader() )
+	if( $autre->get_id_groupe() == $groupe->get_id() && $perso->get_id() == $groupe->get_id_leader() )
 	{
 		// On debloque l'achievement
 		$autre->unlock_achiev('etre_expulse');
@@ -44,7 +44,7 @@ case 'invite':
 		{
 			$groupe = new groupe('', 'r', $perso->get_id(), 'groupe_'.$perso->get_id());
 			$groupe->sauver();
-			$perso->set_groupe($groupe->get_id());
+			$perso->set_id_groupe($groupe->get_id());
 			$perso->sauver();
 			$groupe_joueur = new groupe_joueur('', $perso->get_id(), $groupe->get_id(), 'y');
 			$groupe_joueur->sauver();
@@ -55,7 +55,7 @@ case 'invite':
 	}
 	else
 	{
-		$groupe = new groupe($perso->get_groupe());
+		$groupe = new groupe($perso->get_id_groupe());
 		$groupe_joueur = new groupe_joueur($groupe->get_id(), $perso->get_id());
 	}
 	// Regarde si le personnage est le chef du groupe
@@ -77,7 +77,7 @@ case 'invite':
 	
 					if(count($invitations) == 0)
 					{
-						$invit = new invitation(-1, $perso->get_id(), $invite->get_id(), time(), $perso->get_groupe());
+						$invit = new invitation(-1, $perso->get_id(), $invite->get_id(), time(), $perso->get_id_groupe());
 						$invit->sauver();
 						if($invit->get_id() >= 0)
 						{

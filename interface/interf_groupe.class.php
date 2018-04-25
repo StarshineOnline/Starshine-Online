@@ -10,7 +10,7 @@ class interf_groupe extends interf_form
 	{
 		global $G_url, $Gtrad;
 		parent::__construct($G_url->get( array('action'=>'modifier_infos', 'id'=>$groupe->get_id()) ), $id, 'get', 'invent');
-		$modif = $groupe->get_leader() == joueur::get_perso()->get_id();
+		$modif = $groupe->get_id_leader() == joueur::get_perso()->get_id();
 		$nom = $this->add_champ_bs('text', 'nom', null, $groupe->get_nom(), 'Nom');
 		if( !$modif )
 			$nom->set_attribut('disabled', 'disabled');
@@ -34,7 +34,7 @@ class interf_groupe extends interf_form
 		foreach($membres as $m)
 		{
 			$p = new perso( $m->get_id_joueur() );
-			$chef->add_option($p->get_nom(), $p->get_id(), $groupe->get_leader()==$p->get_id());
+			$chef->add_option($p->get_nom(), $p->get_id(), $groupe->get_id_leader()==$p->get_id());
 		}
 		if( !$modif )
 			$chef->set_attribut('disabled', 'disabled');
@@ -107,7 +107,7 @@ class interf_batailles extends interf_bal_cont//interf_accordeon
 						$type = $repere->get_repere_type();
 						$div = $panneau->add( new interf_bal_cont('div', false, 'info_case') );
 						$G_url->add('id', $repere_groupe->get_id());
-						if($repere_groupe->accepter == 0 && joueur::get_perso()->get_id() == $groupe->get_leader())						{
+						if($repere_groupe->accepter == 0 && joueur::get_perso()->get_id() == $groupe->get_id_leader())						{
 							$lien = $div->add( new interf_lien('', $G_url->get('action', 'accepter'), false, 'icone icone-ok') );
 							$lien->set_tooltip('Accepter');
 						}

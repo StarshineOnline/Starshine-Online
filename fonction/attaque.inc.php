@@ -649,7 +649,7 @@ function loot_item(&$joueur, &$groupe, $item)
 	
 	$msg .= 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" ! ';
 	//Si le joueur a un groupe
-	if ($joueur->get_groupe() > 0 AND $type_obj != 'quete')
+	if ($joueur->get_id_groupe() > 0 AND $type_obj != 'quete')
 	{
 		//Répartition en fonction du mode de distribution
 		switch ($groupe->get_partage())

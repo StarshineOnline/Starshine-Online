@@ -50,9 +50,9 @@ if( array_key_exists('pos', $_GET) && $_GET['pos'] == 'groupe' )
 	$y_fin = $perso_y + 2;
 	imagefilledrectangle($img2, $perso_x-$pos_x, $perso_y-$pos_y, $x_fin-$pos_x, $y_fin-$pos_y, $rouge);
 	//Positionnement des membres du groupe
-	if($perso->get_groupe() > 0)
+	if($perso->get_id_groupe() > 0)
 	{
-		$groupe = new groupe($perso->get_groupe());
+		$groupe = new groupe($perso->get_id_groupe());
 		$groupe->get_membre_joueur();
 		foreach($groupe->membre_joueur as $membre)
 		{

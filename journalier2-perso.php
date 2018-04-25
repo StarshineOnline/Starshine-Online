@@ -26,7 +26,7 @@ $db->query($requete);
 	while($row = $db->read_array($req))
 	{	
 		$perso = new perso($row[0]);
-		$groupe = new groupe($perso->get_groupe());
+		$groupe = new groupe($perso->get_id_groupe());
 		$groupe->get_membre_joueur();
 		foreach($groupe->membre_joueur as $membre_id)
 		{

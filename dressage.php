@@ -111,9 +111,9 @@ case 'fin':
 				$p_loot = $cadre->add( new interf_bal_cont('p') );
 				$p_suc->add( new interf_txt( 'Vous fouillez le corps du monstre et découvrez "'.$objet_nom.'" !<br />') );
 				//Si le joueur a un groupe
-				if($perso->get_groupe() > 0)
+				if($perso->get_id_groupe() > 0)
 				{
-					$groupe = new groupe($perso->get_groupe());
+					$groupe = new groupe($perso->get_id_groupe());
 					$groupe->get_membre();
 					//Répartition en fonction du mode de distribution
 					switch($groupe->get_partage())

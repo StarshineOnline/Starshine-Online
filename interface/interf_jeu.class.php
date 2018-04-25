@@ -30,7 +30,7 @@ class interf_jeu extends interf_sso_int
     $req = $db->query($requete);
     $nbr_echg = $db->read_row($req)[0];
     $ech->get_lien()->add( new interf_bal_smpl('span', $nbr_echg ? $nbr_echg : '', 'nbr_echg', 'badge') );
-    if( $perso->get_groupe() )
+    if( $perso->get_id_groupe() )
     	$this->menu->add_elt( new interf_elt_menu('Groupe', 'infogroupe.php', 'return charger(this.href);') );
     /// @todo à améliorer
 		if( $perso->get_grade()->get_rang() >= 7 )

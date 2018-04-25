@@ -36,7 +36,25 @@ class groupe
 	/**
 	 * @access private
 	 */
-	 private $lvl;
+	private $lvl;
+	
+	/**
+    * @access public
+    * @var array[groupe_joueur]
+	*
+	* Un tableau des "groupe_joueur" du "groupe".
+	* Sachant qu'un "groupe_joueur" représente l'id d'un "perso" et le poste du "perso" dans le "groupe".
+    */
+	public $membre;
+	
+	/**
+    * @access public
+    * @var array[perso]
+	*
+	* Un tableau des "perso" du "groupe".
+    */
+	public $membre_joueur;
+	
 	
 	/**
 	* @access public
@@ -59,7 +77,6 @@ class groupe
 			{
 				list($this->partage, $this->prochain_loot, $this->nom) = $db->read_array($requeteSQL);
 			}
-			else $this->__construct();
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )
@@ -322,12 +339,12 @@ class groupe
 	
 	function get_share_xp($pos = false, $niv_adv=1)
 	{
-		if(!isset($this->membre_joueur)) $this->get_membre_joueur();
 		$this->share_xp = 0;
-		foreach($this->membre_joueur as $membre)
+		$membre_joueurs = $this->get_membre_joueur();
+		foreach($membre_joueurs as $perso)
 		{
-			$distance = calcul_distance_pytagore($pos, $membre->get_pos());
-			$ratio = $membre->get_level()? min(3+$membre->get_level(), 3+$niv_adv) / max(3+$membre->get_level(), 3+$niv_adv) : 0;
+			$distance = calcul_distance_pytagore($pos, $perso->get_pos());
+			$ratio = $perso->get_level()? min(3+$perso->get_level(), 3+$niv_adv) / max(3+$perso->get_level(), 3+$niv_adv) : 0;
 			if($distance <= 10)
 			{
 				$share_xp = 100 * $ratio;
@@ -337,7 +354,7 @@ class groupe
 				$tmp = (100 - $distance * 2) * $ratio;
 				$share_xp = (($tmp) > 0 ? $tmp : 0);
 			}
-			$membre->share_xp = $share_xp;
+			$perso->share_xp = $share_xp;
 			$this->share_xp += $share_xp;
 		}
 		return $this->share_xp;
@@ -350,50 +367,47 @@ class groupe
 
 	function get_membre()
 	{
-		$this->membre = groupe_joueur::create('id_groupe', $this->id, 'leader ASC, id_joueur ASC');
+		if( !isset($this->membre) )
+			$this->membre = groupe_joueur::create('id_groupe', $this->id, 'leader ASC, id_joueur ASC');
 		return $this->membre;
 	}
 
 	function get_membre_joueur()
 	{
-		if(!isset($this->membre)) $this->get_membre();
-		$this->membre_joueur = array();
-		foreach($this->membre as $membre)
+		if( !isset($this->membre_joueur) )
 		{
-			$this->membre_joueur[] = new perso($membre->get_id_joueur());
+			$this->membre_joueur = array();
+			$membres = $this->get_membre();
+			foreach($membres as $membre)
+			{
+				$this->membre_joueur[] = new perso($membre->get_id_joueur());
+			}
 		}
 		return $this->membre_joueur;
 	}
 
+	/**
+	 * Retourne l'id du perso leader du groupe.
+	 */
 	function get_id_leader()
 	{
-		return self::recup_id_leader( $this->get_id() );
-	}
-
-	static function recup_id_leader($id_groupe)
-	{
-		global $db;
-		$W_requete = 'SELECT id_joueur FROM groupe_joueur WHERE leader = \'y\' AND id_groupe = '.$id_groupe;
-		$W_query = $db->query($W_requete);
-		$W_row = $db->read_array($W_query);
-		return $W_row['id_joueur'];
-	}
-	
-	function get_leader()
-	{
-		return $this->get_id_leader();
+		foreach($this->get_membre() as $groupe_joueur){
+			if( $groupe_joueur->get_leader() == 'y' )
+				return $groupe_joueur->get_id_joueur();
+		}
+		return 0;
 	}
 	
 	function trouve_position_joueur($id_perso)
 	{
-		if(!isset($this->membre)) $this->get_membre();
+		$membres = $this->get_membre();
 		$poursuite = true;
 		
 		$pos = 0;
 		$i = 0;
-		while($poursuite && $i < count($this->membre))
+		while($poursuite && $i < count($membres))
 		{
-			if($this->membre[$i]->get_id_joueur() == $id_perso)
+			if($membres[$i]->get_id_joueur() == $id_perso)
 			{
 				$pos = $i;
 				$poursuite = false;

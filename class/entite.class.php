@@ -13,8 +13,40 @@ class entite extends placable
 {
 	/// Pour compatibilité (le temps de refaire la hiérarchie)
 
-
 	static function get_table() { return ''; }
+	
+	/**
+     * @access private
+     * @var royaume
+	 *
+	 * Le royaume de l'entité.
+	 * Propriété avec "lazy loading" basique donc il faut toujours la get avec le getter (même dans le contexte de la classe entite)
+     */
+	private $royaume;
+	
+	/**
+	 * @return royaume
+	 */
+	public function get_royaume()
+	{
+		if( $this->royaume instanceof undefined ){
+			$this->royaume = royaume::create('race', $this->race)[0];
+		}
+		return $this->royaume;
+	}
+	
+	/**
+	 * @param $royaume Un objet de la class royaume
+	 * @return none
+	 */
+	public function set_royaume($royaume)
+	{
+		$this->royaume = $royaume;
+		if( $royaume instanceof royaume ){
+			$this->set_race($royaume->get_race());
+		}
+	}
+	
 	/**
 	 * @name Informations générales.
 	 * Donnée et méthode sur les inforamations "générales" : classe, rang, niveau,
@@ -32,6 +64,12 @@ class entite extends placable
 	function get_race()
 	{
 		return $this->race;
+	}
+	/// Modifie la race
+	function set_race($race)
+	{
+		$this->race = $race;
+		$this->set_royaume(new undefined());
 	}
 	/// Renvoie le grade de l'entité au sein de son royaume.
 	function get_rang_royaume()
@@ -655,9 +693,9 @@ class entite extends placable
 	 */
   // @{
   /// Renvoie l'id du groupe du personnage.
-	function get_groupe()
+	function get_id_groupe()
 	{
-		if ($this->type == 'joueur') return $this->objet_ref->get_groupe();
+		if ($this->type == 'joueur') return $this->objet_ref->get_id_groupe();
 		else return null;
 	}
   /// Renvoie la liste des quêtes que possède le personnage sous forme de tableau.
@@ -1111,6 +1149,7 @@ class entite extends placable
    */
 	function __construct($type=null, &$objet=null)
 	{
+		$this->set_royaume(new undefined()); // lazy loaded property
 		$this->objet_effet = array();
 		$this->type = $type;
 		$this->objet_ref = &$objet;

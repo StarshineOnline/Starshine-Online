@@ -430,7 +430,7 @@ class objet extends objet_invent
 		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de points de mana.');
 		    break;
 			}
-			$groupe = new groupe( $perso->get_groupe() );
+			$groupe = new groupe( $perso->get_id_groupe() );
 			$gain = round($this->effet / (count($groupe->get_membre()) - 1));
 			foreach($groupe->get_membre() as $membre)
 			{
@@ -449,7 +449,7 @@ class objet extends objet_invent
 		    interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas assez de points de vie.');
 		    break;
 			}
-			$groupe = new groupe( $perso->get_groupe() );
+			$groupe = new groupe( $perso->get_id_groupe() );
 			$gain = round($this->effet / (count($groupe->get_membre()) - 1));
 			foreach($groupe->get_membre() as $membre)
 			{

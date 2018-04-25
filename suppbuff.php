@@ -20,11 +20,11 @@ $ok = $_SESSION['ID'] == $buff->get_id_perso();
 if( !$ok )
 {
 	$perso = joueur::get_perso();
-	$groupe = $perso->get_groupe();
+	$groupe = $perso->get_id_groupe();
 	if($groupe)
 	{
 		$cible = new perso($buff->get_id_perso());
-		$ok = $groupe == $cible->get_groupe();
+		$ok = $groupe == $cible->get_id_groupe();
 	}
 }
 if( $ok )
