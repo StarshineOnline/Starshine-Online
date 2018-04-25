@@ -100,7 +100,10 @@ case 'nouveau_sujet':
 	break;
 case 'suppr_sujet':
 	$thread = new messagerie_thread($_GET['sujet']);
-	$thread->supprimer(true);
+	if( joueur::is_granted('suppr', $thread) )
+	{
+		$thread->supprimer(true);
+	}
 	break;
 case 'masquer_sujet':
 	$messagerie = new messagerie($perso);

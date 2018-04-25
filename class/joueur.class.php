@@ -254,7 +254,32 @@ class joueur extends table
 	{
 		return 'login = "'.mysql_escape_string($this->login).'", mdp = "'.$this->mdp.'", pseudo = "'.mysql_escape_string($this->pseudo).'", droits = "'.$this->droits.'", email = "'.mysql_escape_string($this->email).'", mdp_forum = "'.mysql_escape_string($this->mdp_forum).'", mdp_jabber = "'.mysql_escape_string($this->mdp_jabber).'"';
 	}
-
+	
+	/**
+     * On vérifie que l'utilisateur a la permission de type $attribute sur l'objet $subject .
+	 * Inspiré du système des Voters de l'AuthorizationChecker de Symfony.
+	 *
+     * @param string $attribute Chaîne de caractères représentant le type de permission à tester. Exemple : 'view', 'edit', 'del'
+	 * 							Voir le "voter" associé au $subject pour avoir la liste des $attribute valides.
+	 * @param object $subject L'objet sur lequel on veut tester la permission $attribute.
+	 *
+     * @return boolean
+     */
+	static function is_granted($attribute, $subject)
+	{
+		$voter = null;
+		// On associe un "voter" à un type de $subject donné
+		if( $subject instanceof messagerie_thread ){
+			$voter = new voter_thread();
+		}
+		
+		// On retourne la réponse si le "voter" est correct
+		if( !is_null($voter) && $voter->supports($attribute, $subject) )
+		{
+			return $voter->voteOnAttribute($attribute, $subject);
+		}
+		return false;
+	}
 }
 
 ?>

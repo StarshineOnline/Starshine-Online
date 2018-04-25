@@ -63,6 +63,7 @@ class interf_liste_messages extends interf_cont
 		$tbl->nouv_cell($lien);
 		
 		$threads = $this->get_sujets($perso, $type, $messagerie);
+		$groupe = new groupe($perso->get_id_groupe());
 		$nbr_msg_tot = 0;
 		foreach($threads as $cle => $sujet)
 		{
@@ -70,7 +71,6 @@ class interf_liste_messages extends interf_cont
 			$url->add('sujet', $sujet->get_id());
 			$nbr_msg = $sujet->get_message_total($perso->get_id(), $messagerie->get_condition());
 			$nbr_msg_tot += $nbr_msg;
-			$groupe = new groupe($perso->get_groupe(), '');
 			// Si y'a au moins un message dans le thread, et que ce thread n'est pas masqué par le joueur
 			if($nbr_msg > 0 && $nbr_msg != $messagerie->get_thread_masque($sujet->get_id()))
 			{
@@ -112,7 +112,7 @@ class interf_liste_messages extends interf_cont
 					$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sûr de vouloir masquer ce sujet ?\');');
 					$lien->set_tooltip('Masquer ce sujet.');
 				}
-				if( $groupe->get_id_leader() == $perso->get_id() && $type == 'groupe' || $sujet->get_id_auteur() == $perso->get_id() && $nbr_msg <= 1 )
+				if( joueur::is_granted('suppr', $sujet) )
 				{
 					$lien = $cell->add( new interf_bal_smpl('a', '', false, 'icone icone-poubelle') );
 					$lien->set_attribut('href', $url->get('action', 'suppr_sujet'));

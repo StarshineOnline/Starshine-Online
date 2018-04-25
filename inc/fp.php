@@ -87,8 +87,10 @@ include_once(root.$root.'fonction/print.inc.php');
 function __autoload($class_name)
 {
 	global $root;
-	if( substr_compare($class_name, 'interf', 0, 6) == 0 )
+	if( substr_compare($class_name, 'interf', 0, 6) === 0 )
 		$file = root.'interface/'.$class_name.'.class.php';
+	elseif( substr_compare($class_name, 'voter', 0, 5) === 0  )
+		$file = root.'class/voter/'.$class_name.'.class.php';
 	else
 		$file = root.'class/'.$class_name.'.class.php';
 	require_once($file);
