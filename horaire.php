@@ -59,7 +59,7 @@ if($db->num_rows > 0)
 //Il n'existe pas, on le recréé
 else
 {
-	$requete = 'INSERT INTO map_monstre VALUES("",56,'.$x.','.$y.',1,'.(time() + 360000).')';
+	$requete = 'INSERT INTO map_monstre VALUES(NULL,56,'.$x.','.$y.',1,'.(time() + 360000).')';
 }
 $db->query($requete);
 echo 'Sworling déplacé en '.$x.' / '.$y."\n";
