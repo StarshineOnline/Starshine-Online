@@ -135,7 +135,7 @@ else if( $action == 'carte' )
 
 $cadre = $interf_princ->set_droite( $G_interf->creer_droite('Groupe') );
 $onglets = $cadre->add( new interf_onglets('onglets_groupe', 'groupe') );
-
+interf_alerte::aff_enregistres($cadre);
 
 $onglets->add_onglet('Infos groupe', 'infogroupe.php?action=infos&ajax=2', 'ongl_infos', false, $action=='infos' || $action == 'modifier_infos' || $action == 'suppr_invit');
 $onglets->add_onglet('Batailles', 'infogroupe.php?action=batailles&ajax=2', 'ongl_batailles', 'invent', $action=='batailles' || $action == 'accepter');
