@@ -38,7 +38,10 @@ case 'ecrire':
 	break;
 case 'suppr_msg':
 	$message = new messagerie_message($_GET['msg']);
-	$message->supprimer();
+	if( joueur::is_granted('suppr', $message) )
+	{
+		$message->supprimer();
+	}
 case 'lire':
 	$messagerie = new messagerie($perso);
 	$sujet = $_GET['sujet'];

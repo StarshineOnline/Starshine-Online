@@ -130,7 +130,6 @@ class interf_liste_messages extends interf_cont
 			$achiev = $perso->get_compteur('messages');
 			$achiev->set_compteur($nbr_msg_tot);
 			$achiev->sauver();
-				
 		}
 	}
 	
@@ -187,7 +186,7 @@ class interf_messages extends interf_cont
 		// entete
 		$classe = 'entete'.($this->perso->get_id() == $message->get_id_auteur() ? ' soi' : '');
 		$entete = $div->add( new interf_bal_cont('div', false, $classe) );
-		if( $this->perso->get_id() == $message->get_id_auteur() )
+		if( joueur::is_granted('suppr', $message) )
 		{
 			$lien = $entete->add( new interf_bal_smpl('a', '', false, 'icone icone-poubelle') );
 			$lien->set_attribut('href', $url->get('action', 'suppr_msg'));

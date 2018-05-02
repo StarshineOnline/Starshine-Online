@@ -272,6 +272,9 @@ class joueur extends table
 		if( $subject instanceof messagerie_thread ){
 			$voter = new voter_thread();
 		}
+		elseif( $subject instanceof messagerie_message ){
+			$voter = new voter_message();
+		}
 		
 		// On retourne la réponse si le "voter" est correct
 		if( !is_null($voter) && $voter->supports($attribute, $subject) )
