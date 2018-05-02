@@ -105,7 +105,7 @@ case 'suppr_sujet':
 	$thread = new messagerie_thread($_GET['sujet']);
 	if( joueur::is_granted('suppr', $thread) )
 	{
-		$thread->supprimer(true);
+		$thread->supprimer();
 	}
 	break;
 case 'masquer_sujet':
