@@ -1,11 +1,8 @@
 <?php
 /**
- * @file interf_infos_case.class.php
+ * @file interf_tour.class.php
  * Permet l'affichage des informations d'une tour.
  */
- 
-         
-
 class interf_tour extends interf_batiment
 {
 	protected $distance;
@@ -152,5 +149,3 @@ class interf_tour extends interf_batiment
 		}
 	}
 }
-
-?>

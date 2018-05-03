@@ -14,11 +14,11 @@ class interf_infos_case extends interf_cont
 	protected $reduc_pa;
 	protected $royaume;
 	
-	function __construct(&$case, $distance, $id_case, $reponse)
+	function __construct(&$case, $reponse)
 	{
 		$this->perso = &joueur::get_perso();
 		$this->case = &$case;
-		$this->distance = $distance;
+		$this->distance = $this->perso->calcule_distance($case);
 		$this->royaume = new royaume($case->get_royaume());
 		
 		// réduction du coût en PA des attaques
@@ -28,7 +28,7 @@ class interf_infos_case extends interf_cont
 		
 		$this->aff_descr();
 		if( $distance <= 1 )
-			$this->aff_texte($id_case, $reponse);
+			$this->aff_texte($case->get_id(), $reponse);
 		$this->aff_batiments();
 		$this->aff_persos();
 		$this->aff_monstres();

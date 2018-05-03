@@ -53,10 +53,7 @@ if( map::is_masked_coordinates($case->get_x(), $case->get_y()) )
 }
 // Cadre de la partie droite
 $cadre = $interf_princ->set_droite( $G_interf->creer_droite('X : '.$coord_x.' | Y : '.$coord_y) );
-$cadre->add( $G_interf->creer_infos_case($case, $distance, $id_case, $reponse) );
+$cadre->add( $G_interf->creer_infos_case($case, $reponse) );
 $interf_princ->code_js('maj_tooltips();');
 
 check_son_ambiance();
-
-?>
-

@@ -161,10 +161,9 @@ class interf_factory
     return new interf_mort();
 	}
 	/// Information sur les cases
-	function creer_infos_case(&$case, $distance, $id_case, $reponse)
+	function creer_infos_case(&$case, $reponse)
 	{
-    include_once(root.'interface/interf_infos_case.class.php');
-    return new interf_infos_case($case, $distance, $id_case, $reponse);
+		return new interf_infos_case($case, $reponse);
 	}
 	/// Information sur les monstres
 	function creer_monstre($entite, $actions)
@@ -983,4 +982,3 @@ class interf_factory_shine extends interf_factory
   	return new interf_gest_diplo_shine($royaume, $change);
 	}
 }
-?>
