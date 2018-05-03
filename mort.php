@@ -168,9 +168,7 @@ $rez = false;
 else
 {
 	$interf_princ->verif_mort($joueur, false);
-	if( array_key_exists('raffraichir', $_GET) && $_GET['raffraichir']=='tout' )
+	if( array_key_exists('rafraichir', $_GET) && $_GET['rafraichir']=='tout' )
 		$interf_princ->maj_perso(true);
 }
  
-?>
-

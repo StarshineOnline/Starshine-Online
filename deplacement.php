@@ -180,7 +180,7 @@ case 'tous_monstres':
 	// niveau maximum des monstres
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'niv_max_monstres', 255)";
 	$db->query($requete);
-case 'raffraichir':
+case 'rafraichir':
 	$complet = true;
 default:
 	$mouvement = false;
