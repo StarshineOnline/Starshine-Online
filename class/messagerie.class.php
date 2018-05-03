@@ -191,16 +191,23 @@ class messagerie
 		else return false;
 	}
 	
-	//Marque comme masque tous les message d'un thread
+	// Marque comme masqué tous les messages d'un thread
 	function set_thread_masque($id_thread)
 	{
 		global $db;
-		if($id_thread != 0)
+		
+		if( $id_thread != 0 )
 		{
-			$requete = "UPDATE messagerie_etat, messagerie_message SET messagerie_etat.etat = 'masque' WHERE messagerie_etat.id_message = messagerie_message.id_message AND messagerie_message.id_thread = ".$id_thread." AND messagerie_etat.id_dest = ".$this->id_perso;
+			$requete =
+				"UPDATE messagerie_etat, messagerie_message
+				SET messagerie_etat.etat = 'masque'
+				WHERE messagerie_etat.id_message = messagerie_message.id_message AND messagerie_message.id_thread = ".$id_thread." AND messagerie_etat.id_dest = ".$this->perso->get_id()
+			;
 			$req = $db->query($requete);
+			return $req;
 		}
-		else return false;
+		else
+			return false;
 	}
 	
 	//Récupère le thread et les états de message
