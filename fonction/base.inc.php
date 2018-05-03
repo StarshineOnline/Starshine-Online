@@ -584,12 +584,12 @@ function cout_pa($info, $race)
 }
 
 /**
- * Ajuste le coût en PA d'un déplacement en fonction de tous les parmètres qui le modifient.
- * Prend en compte la diagonale, le royaume de la case, les buffs et les débuffs.
+ * Ajuste le coût en PA d'un déplacement en fonction de tous les paramètres qui le modifient.
+ * Prend en compte la diagonale, le royaume de la case, les buffs et les débuffs, les bâtiments.
  * Le coût minimal est de 3 en diagonal et 2 sinon. 
  * 
  * @param $coutpa     coût en PA de base.
- * @param $joueur     taleau contenant les informaton sur le joueur
+ * @param $joueur     tableau contenant les informations sur le joueur
  * @param $case       position compressée de la ville.
  * @param $diagonale  true si le déplacement est en diagonal, false sinon.
  * 
@@ -598,42 +598,71 @@ function cout_pa($info, $race)
 function cout_pa2($coutpa, $joueur, $case, $diagonale)
 {
 	global $Trace;
-	//Si on est sur son royaume => Cout en PA réduit de 1, minimum 2
-	if($case->get_royaume() == $Trace[$joueur->get_race()]['numrace'])
-	{
-		if($coutpa > 2) $coutpa -= 1;
+	
+	// Coût minimal de déplacement
+	$coutMin = ($diagonale) ? 3 : 2;
+	
+	// - L'ordre des buffs/débuffs dans le calcul a de l'importance.
+	// - Une fois qu'on a choisi l'ordre comme on veut il faut s'assurer :
+	// * que le coût en PA > 0 avant les buffs qui multiplient ou divisent, pour qu'ils impactent vraiment le calcul.
+	// * que l'on n'a pas arrondi les divisions, pour que les buff qui divisent n'aient pas moins d'impact que ceux qui multiplient.
+	// * que l'on a retransformé le coût en PA en entier à la fin, en arrondissant de sorte à avoir un coût de déplacement diagonal et horizontal différent.
+	// * que l'on respecte le coût minimal à la fin.
+	
+	// Si on est sur son royaume => Coût en PA réduit de 1
+	if( $case->get_royaume() == $Trace[$joueur->get_race()]['numrace'] ){
+		if( $coutpa > 2 )
+			$coutpa -= 1;
 	}
-	//Buff rapide comme le vent
-	if($joueur->is_buff('rapide_vent', true) or $joueur->is_enchantement('course') OR $joueur->is_buff('buff_rush', true))
-	{
-		if($coutpa > 2) $coutpa -= 1;
+	// Buff rapide comme le vent
+	if( $joueur->is_buff('rapide_vent', true) or $joueur->is_enchantement('course') OR $joueur->is_buff('buff_rush', true) ){
+		if( $coutpa > 2 )
+			$coutpa -= 1;
+	}
+	// Si on se déplace en diagonal => coût en PA augmenté de 1
+	if( $diagonale ){
+		$coutpa += 1;
 	}
 	
-	if ($diagonale) $coutpa++;
-	//Mal de rez
-	if($joueur->is_buff('debuff_rez'))
-	{
+	// Ici le coût en PA > 0.
+	
+	// Mal de rez
+	if( $joueur->is_buff('debuff_rez') ){
 		$coutpa = $coutpa * $joueur->get_buff('debuff_rez', 'effet');
 	}
-	//Maladies
-	if($joueur->is_buff('cout_deplacement')) $coutpa = ceil($coutpa / $joueur->get_buff('cout_deplacement', 'effet'));
-	if($joueur->is_buff('plus_cout_deplacement')) $coutpa = ceil($coutpa * $joueur->get_buff('plus_cout_deplacement', 'effet'));
-	if($joueur->is_buff('debuff_enracinement')) $coutpa = $coutpa + $joueur->get_buff('debuff_enracinement', 'effet');
-	//Bâtiment qui augmente le coût de PA
-	if($batiment = batiment_map($case->get_x(), $case->get_y(), true))
+	// Maladies
+	if( $joueur->is_buff('cout_deplacement') ){
+		$coutpa = ($coutpa / $joueur->get_buff('cout_deplacement', 'effet'));
+	}
+	if( $joueur->is_buff('plus_cout_deplacement') ){
+		$coutpa = ($coutpa * $joueur->get_buff('plus_cout_deplacement', 'effet'));
+	}
+	if( $joueur->is_buff('debuff_enracinement') ){
+		$coutpa = $coutpa + $joueur->get_buff('debuff_enracinement', 'effet');
+	}
+	// Bâtiment qui augmente le coût en PA
+	if( $batiment = batiment_map($case->get_x(), $case->get_y(), true) )
 	{
-		if($batiment['augmentation_pa'] > 1)
+		if( $batiment['augmentation_pa'] > 1 )
 		{
-			//Si on est pas sur son royaume augmentation de PA
-			if($case->get_royaume() != $Trace[$joueur->get_race()]['numrace'])
+			// Si on n'est pas sur son royaume -> augmentation de PA
+			if( $case->get_royaume() != $Trace[$joueur->get_race()]['numrace'] )
 			{
 				$coutpa = $coutpa * $batiment['augmentation_pa'];
 			}
 		}
-	}	
-	if (($joueur->get_tuto() != 0 ) AND ($joueur->get_x() < 276 ) AND ($joueur->get_x() >199 ) AND ($joueur->get_y() < 186 ) AND ($joueur->get_y() > 49)){
-		$coutpa=2;}
-	return $coutpa;
+	}
+	
+	// On retransforme le coût en PA en entier, en arrondissant de sorte à avoir un coût de déplacement diagonal et horizontal différent
+	$coutpa = $diagonale ? ceil($coutpa) : floor($coutpa);
+	
+	// Cas particulier du tuto
+	if( ($joueur->get_tuto() != 0 ) AND ($joueur->get_x() < 276 ) AND ($joueur->get_x() > 199 ) AND ($joueur->get_y() < 186 ) AND ($joueur->get_y() > 49) ){
+		$coutpa = 2;
+	}
+	
+	// On respecte le coût minimal
+	return max($coutMin, $coutpa);
 }
 
 /**
@@ -3511,61 +3540,83 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
   if(rand(1, 100) <= $pourcent_risque)
   {
     //Liste des maladies possibles (Identifiants dans la bdd)
-    $liste_maladie = array();
-    $liste_maladie[0]['nom'] = 'Crise cardiaque';
-    $liste_maladie[0]['description'] = '
-								En sortant de la taverne, vous vous sentez faible. Très faible.<br />
-								Vous vous apercevez trop tard que vous vous êtes trop démené.<br />
-								Vous vous écroulez par terre, et n\'arrivez plus à respirer.<br />
-								Vous mourez seul et abandonné de tous.';
-    $liste_maladie[0]['effets'] = 'mort';
-    $liste_maladie[1]['nom'] = 'Lumbago';
-    $liste_maladie[1]['description'] = '
-								A la sortie de la taverne, un violent mal de dos vous surprend.<br />
-								Vous n\'auriez pas du tester la dernière position à la mode.<br />
-								Votre corps n\'était pas prêt pour ca.';
-    $liste_maladie[1]['effets'] = 'bloque_deplacement-12';
-    $liste_maladie[2]['nom'] = 'Foulure du poignet';
-    $liste_maladie[2]['description'] = '
-								En sortant de la taverne, vous regrettez vos ébats physiques.<br />Vous n\'auriez pas du essayer de prouver votre force et de soulever le lit à une main pour impressioner votre partenaire, vous vous êtes foulé le poignet.';
-    $liste_maladie[2]['effets'] = 'bloque_attaque-12;cout_deplacement-2.';
-    $liste_maladie[0]['nom'] = 'Extinction de voix';
-    $liste_maladie[3]['description'] = '
-								En sortant de la taverne, vous ne pouvez plus parler.<br />
-								L\'orgasme fut violent, tellement violent que le cri que vous avez poussé vous a déchiré l\'organe vocal.';
-    $liste_maladie[3]['effets'] = 'bloque_sort-12';
-    $liste_maladie[3]['nom'] = 'Vulnérabilité';
-    $liste_maladie[4]['description'] = '
-								En sortant de la taverne, vous vous sentez fragiles, très fragiles.<br />
-								La fille que vous avez honoré vous a certainement refilé une maladie.<br />
-								Les prochains combats vont être difficiles.';
-    $liste_maladie[4]['effets'] = 'suppr_defense-12';
-    $liste_maladie[4]['nom'] = 'Dernier sursaut';
-    $liste_maladie[5]['description'] = '
-								En sortant de la taverne, vous vous sentez revivre, vous vous sentez fort, très fort, trop fort.<br />
-								Vous pensez qu\'il faut vite profiter de cet état de grace car le retour du baton va être violent.';
-    $liste_maladie[5]['effets'] = 'cout_deplacement-2;cout_attaque-2;mort_regen';
-    $liste_maladie[5]['nom'] = 'Grosse fatigue';
-    $liste_maladie[6]['description'] = '
-								En sortant de la taverne, vous vous sentez las.<br />
-								Cet effort vous a épuisé, vous n\'auriez pas du faire cette partie de jambe en l\'air, ce n\'est plus de votre âge.';
-    $liste_maladie[6]['effets'] = 'plus_cout_deplacement-2;plus_cout_attaque-2';
-    $liste_maladie[7]['nom'] = 'Foulure de la cheville';
-    $liste_maladie[7]['description'] = '
-								En sortant de la taverne, vous appercevez que vous avez des difficultées à marcher.<br />
-								Vous avez du vous fouler la cheville pendant l\'acte.<br />
-								Decidement, mauvaise journée.';
-    $liste_maladie[7]['effets'] = 'plus_cout_deplacement-2;cout_attaque-2';
-    $liste_maladie[8]['nom'] = 'Hémoragie';
-    $liste_maladie[8]['description'] = '
-								En sortant de la taverne, vous vous mettez à saigner abondament.<br />
-								Cette vile coquine a du vous mordre trop violement.';
-    $liste_maladie[8]['effets'] = 'regen_negative-3';
-    $liste_maladie[9]['nom'] = 'Régénération';
-    $liste_maladie[9]['description'] = '
-								En sortant de la taverne, vous vous sentez faible et fragile, mais vous sentez clairement que ca ira mieux à l\'avenir.<br />
-								C\'est juste une mauvaise passe. ';
-    $liste_maladie[9]['effets'] = 'low_hp;high_regen-3';
+	$liste_maladie = array(
+		0 => array(
+			'nom' => 'Crise cardiaque'
+			, 'effets' => 'mort'
+			, 'description' =>
+				'En sortant de la taverne, vous vous sentez faible. Très faible.<br />
+				Vous vous apercevez trop tard que vous vous êtes trop démené.<br />
+				Vous vous écroulez par terre, et n\'arrivez plus à respirer.<br />
+				Vous mourez seul et abandonné de tous.'
+		)
+		, 1 => array(
+			'nom' => 'Lumbago'
+			, 'effets' => 'bloque_deplacement-12'
+			, 'description' =>
+				'A la sortie de la taverne, un violent mal de dos vous surprend.<br />
+				Vous n\'auriez pas dû tester la dernière position à la mode.<br />
+				Votre corps n\'était pas prêt pour ça.'
+		)
+		, 2 => array(
+			'nom' => 'Foulure du poignet'
+			, 'effets' => 'bloque_attaque-12;cout_deplacement-2.'
+			, 'description' =>
+				'En sortant de la taverne, vous regrettez vos ébats physiques.<br />
+				Vous n\'auriez pas dû essayer de prouver votre force et de soulever le lit à une main pour impressionner votre partenaire, vous vous êtes foulé le poignet.'
+		)
+		, 3 => array(
+			'nom' => 'Extinction de voix'
+			, 'effets' => 'bloque_sort-12'
+			, 'description' =>
+				'En sortant de la taverne, vous ne pouvez plus parler.<br />
+				L\'orgasme fut violent, tellement violent que le cri que vous avez poussé vous a déchiré l\'organe vocal.'
+		)
+		, 4 => array(
+			'nom' => 'Vulnérabilité'
+			, 'effets' => 'suppr_defense-12'
+			, 'description' =>
+				'En sortant de la taverne, vous vous sentez fragile, très fragile.<br />
+				La fille que vous avez honoré vous a certainement refilé une maladie.<br />
+				Les prochains combats vont être difficiles.'
+		)
+		, 5 => array(
+			'nom' => 'Dernier sursaut'
+			, 'effets' => 'cout_deplacement-2;cout_attaque-2;mort_regen'
+			, 'description' =>
+				'En sortant de la taverne, vous vous sentez revivre, vous vous sentez fort, très fort, trop fort.<br />
+				Vous pensez qu\'il faut vite profiter de cet état de grâce car le retour du bâton va être violent.'
+		)
+		, 6 => array(
+			'nom' => 'Grosse fatigue'
+			, 'effets' => 'plus_cout_deplacement-2;plus_cout_attaque-2'
+			, 'description' =>
+				'En sortant de la taverne, vous vous sentez las.<br />
+				Cet effort vous a épuisé, vous n\'auriez pas dû faire cette partie de jambe en l\'air, ce n\'est plus de votre âge.'
+		)
+		, 7 => array(
+			'nom' => 'Foulure de la cheville'
+			, 'effets' => 'plus_cout_deplacement-2;cout_attaque-2'
+			, 'description' =>
+				'En sortant de la taverne, vous apercevez que vous avez des difficultés à marcher.<br />
+				Vous avez dû vous fouler la cheville pendant l\'acte.<br />
+				Décidément, mauvaise journée.'
+		)
+		, 8 => array(
+			'nom' => 'Hémoragie'
+			, 'effets' => 'regen_negative-3'
+			, 'description' =>
+				'En sortant de la taverne, vous vous mettez à saigner abondamment.<br />
+				Cette vile coquine a dû vous mordre trop violemment.'
+		)
+		, 9 => array(
+			'nom' => 'Régénération'
+			, 'effets' => 'low_hp;high_regen-3'
+			, 'description' =>
+				'En sortant de la taverne, vous vous sentez faible et fragile, mais vous sentez clairement que ça ira mieux à l\'avenir.<br />
+				C\'est juste une mauvaise passe.'
+		)
+	);
     //Tirage au sort de quel maladie lancer
     $total_maladie = count($liste_maladie);
     $tirage = rand(0, $total_maladie);
@@ -3590,7 +3641,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'cout_deplacement' :
           $duree = 12 * 60 * 60;
-          lance_buff('cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacements sont divisés par 2', array()), 'perso', 1, 0, 0);
+          lance_buff('cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos coûts en déplacement sont divisés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'bloque_sort' :
           $duree = $effet_explode[1] * 60 * 60;
@@ -3602,7 +3653,7 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'cout_attaque' :
           $duree = 12 * 60 * 60;
-          lance_buff('cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts pour attaquer sont divisés par 2', array()), 'perso', 1, 0, 0);
+          lance_buff('cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos coûts pour attaquer sont divisés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'mort_regen' :
           $duree = $effet_explode[1] * 60 * 60;
@@ -3610,15 +3661,15 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           break;
         case 'plus_cout_attaque' :
           $duree = 12 * 60 * 60;
-          lance_buff('plus_cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en attaque sont multipliés par 2', array()), 'perso', 1, 0, 0);
+          lance_buff('plus_cout_attaque', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos coûts en attaque sont multipliés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'plus_cout_deplacement' :
           $duree = 12 * 60 * 60;
-          lance_buff('plus_cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos couts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
+          lance_buff('plus_cout_deplacement', $joueur->get_id(), 2, 0, $duree, $maladie['nom'], description('Vos coûts en déplacement sont multipliés par 2', array()), 'perso', 1, 0, 0);
           break;
         case 'regen_negative' :
           $duree = 24 * 60 * 60;
-          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénérations vous fait perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
+          lance_buff('regen_negative', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Vos 3 prochaines regénérations vous font perdre des HP / MP au lieu d\'en regagner.', array()), 'perso', 1, 0, 0);
           break;
         case 'low_hp' :
           $joueur->set_hp(1);
@@ -3626,8 +3677,8 @@ function pute_effets(&$joueur, $honneur_need, $specials = null, $specials_det = 
           $bloque_regen = true;
           break;
         case 'high_regen' :
-          $duree = 4 * 60 * 60;
-          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Votre  prochaine regénération vous font gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
+          $duree = 8 * 60 * 60;
+          lance_buff('high_regen', $joueur->get_id(), $effet_explode[1], 0, $duree, $maladie['nom'], description('Votre prochaine regénération vous fait gagner 3 fois plus de HP / MP', array()), 'perso', 1, 0, 0);
           break;
       }
     }
