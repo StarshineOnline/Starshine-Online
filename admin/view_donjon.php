@@ -5,9 +5,9 @@ if (file_exists('../root.php'))
 $admin = true;
 
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 
 if (!array_key_exists('xmin', $_GET) &&
 		!array_key_exists('ymin', $_GET))

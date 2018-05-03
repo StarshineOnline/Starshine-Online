@@ -9,7 +9,7 @@ setlocale(LC_ALL, 'fr_FR');
 add_data_to_head('<link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css" />');
 include_once(root.'admin/admin_haut.php');
 
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 
 
 if (isset($_GET['direction'])) $direction = $_GET['direction'];

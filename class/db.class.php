@@ -823,7 +823,7 @@ class db
     }
   }
 
-  function param_query($sql, $params, $types = null) {
+  function param_query($sql, $params = array(), $types = null) {
     $this->last_is_param = true;
     $this->stmt = $this->prepare($sql);
     if ($types == null)
@@ -832,7 +832,8 @@ class db
     foreach ($params as &$p) {
       $array[] = &$p;
     }
-    call_user_func_array(array($this->stmt, 'bind_param'), $array);
+	if( !empty($params) )
+		call_user_func_array(array($this->stmt, 'bind_param'), $array);
     $this->execute();
     return $this->stmt;
   }

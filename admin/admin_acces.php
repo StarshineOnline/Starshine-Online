@@ -4,12 +4,12 @@ if (file_exists('../root.php'))
 $admin = true;
 
 $textures = false;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 if ($G_maintenance)
 {
-	echo 'Starshine-online est actuellement en cours de mis ? jour.<br />
+	echo 'Starshine-online est actuellement en cours de mise à jour.<br />
 	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
 }
 else
@@ -19,7 +19,7 @@ else
 	<div id="contenu">
 	<div id="centre3">
 	<div class="titre">
-		Cr?ation acc?s au serveur test
+		Création accès au serveur test
 	</div>
 	<?php
 	$cfg_apache["sql"]['host'] = "localhost";
@@ -45,6 +45,5 @@ else
 		<input type="submit" value="Créer" />
 	</form>
 	<?php
-	include_once(root.'bas.php');
+	include_once(root.'admin/admin_bas.php');
 }
-?>

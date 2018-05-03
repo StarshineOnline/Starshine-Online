@@ -7,7 +7,7 @@ $textures = false;
 include_once(root.'admin/admin_haut.php');
 
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 
 $script = array_key_exists('script', $_GET) ? $_GET['script'] : 'journalier';
@@ -54,5 +54,5 @@ if( joueur::factory()->get_droits() & joueur::droit_admin )
 	</div>
 <?php
 }
-include_once(root.'bas.php');
+include_once(root.'admin/admin_bas.php');
 ?>

@@ -31,7 +31,7 @@ exit(0);
 
 include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 
 include_once(root.'admin/menu_admin.php');
 echo '<div style="margin-left: 200px">';

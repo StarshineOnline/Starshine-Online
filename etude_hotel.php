@@ -9,7 +9,7 @@ include_once(root.'haut_site.php');
 
 if ($G_maintenance)
 {
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
+	echo 'Starshine-online est actuellement en cours de mise à jour.<br />
 	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
 }
 else

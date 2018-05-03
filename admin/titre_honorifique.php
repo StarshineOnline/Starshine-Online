@@ -8,7 +8,7 @@ include_once(root.'inc/fp.php');
 $textures = false;
 include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 if(!array_key_exists('titre', $_GET))
 {

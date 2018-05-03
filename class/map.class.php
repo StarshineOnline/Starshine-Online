@@ -153,8 +153,6 @@ class map extends table
 
 			echo '<div class="div_map" style="width : '.round(17 + ($taille_cellule * $this->case_affiche)).'px;height:'.round(17 + ($taille_cellule * $this->case_affiche)).'px;">';
 			{//-- Affichage du bord haut (bh) de la map
-				include_once(root."deplacementjeu.php");
-				
 				echo "<ul id=\"".$classe_css['map_bord_haut']."\">
 					   <li id=\"".$classe_css['map_bord_haut_gauche']."\" >&nbsp;</li>";
 				for ($bh = $this->xmin; $bh <= $this->xmax; $bh++)

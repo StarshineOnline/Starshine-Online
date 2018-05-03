@@ -12,7 +12,7 @@ add_css_to_head('http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/j
 
 include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 
 $rows = array();

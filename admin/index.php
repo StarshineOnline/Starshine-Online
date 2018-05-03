@@ -7,14 +7,14 @@ $textures = false;
 include_once(root.'admin/admin_haut.php');
 
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 include_once(root.'admin/menu_admin.php');
 
 ?>
 <div id="site"><?php
 if ($G_maintenance)
 {
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
+	echo 'Starshine-online est actuellement en cours de mise à jour.<br />
 	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
 }
 else
@@ -33,9 +33,13 @@ else
 				<?php
 					$joueur = joueur::factory();
 					$admin = $joueur->get_droits() & joueur::droit_admin;
-					$fich = fopen($G_logs.'journalier.txt', 'r');
-					if( $fich )
-					{
+					
+					$fileName = $G_logs.'journalier.txt';
+					$fich = @fopen($fileName, 'r');
+					if( !$fich ){
+						echo $fileName.' introuvable'.'<br/>';
+					}
+					else{
 						echo '<b>Journaliers</b><br/>';
 						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
@@ -50,11 +54,16 @@ else
 						echo ($admin?'<a href="logs_scripts.php?script=journalier2">Journalier 2</a> : ':'Journalier 2 : ').($infos['journalier2']==0?'ok':'erreur').'<br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=journalier3">Journalier 3</a> : ':'Journalier 3 : ').($infos['journalier3']==0?'ok':'erreur').'<br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=journalier4">Journalier 4</a> : ':'Journalier 4 : ').($infos['journalier4']==0?'ok':'erreur').'<br/>';
+						
+						fclose($fich);
 					}
-					fclose($fich);
-					$fich = fopen($G_logs.'horaire.txt', 'r');
-					if( $fich )
-					{
+					
+					$fileName = $G_logs.'horaire.txt';
+					$fich = @fopen($fileName, 'r');
+					if( !$fich ){
+						echo $fileName.' introuvable'.'<br/>';
+					}
+					else{
 						echo '<b>Horaire</b><br/>';
 						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
@@ -66,11 +75,16 @@ else
 						if( $admin )
 							echo 'Dossier : <i>'.$infos['dossier'].'</i><br/>';
 						echo ($admin?'<a href="logs_scripts.php?script=horaire">Horaire</a> : ':'Horaire : ').($infos['horaire']==0?'ok':'erreur').'<br/>';
+						
+						fclose($fich);
 					}
-					fclose($fich);
-					$fich = fopen($G_logs.'calendrier.txt', 'r');
-					if( $fich )
-					{
+					
+					$fileName = $G_logs.'calendrier.txt';
+					$fich = @fopen($fileName, 'r');
+					if( !$fich ){
+						echo $fileName.' introuvable'.'<br/>';
+					}
+					else{
 						echo '<b>Horaire</b><br/>';
 						echo 'Date : <i>'.fgets($fich).'</i><br/>';
 						$infos = array();
@@ -80,13 +94,18 @@ else
 							$infos[ $lgn[0] ] = $lgn[1];
 						}
 						echo ($admin?'<a href="logs_scripts.php?script=calendrier">Calendrier</a> : ':'Calendrier : ').($infos['calendrier']==0?'ok':'erreur').'<br/>';
+						
+						fclose($fich);
 					}
-					fclose($fich);
+					
 					if( $admin )
 					{
-						$fich = fopen($G_logs.'sauvegarde.txt', 'r');
-						if( $fich )
-						{
+						$fileName = $G_logs.'sauvegarde.txt';
+						$fich = @fopen($fileName, 'r');
+						if( !$fich ){
+							echo $fileName.' introuvable'.'<br/>';
+						}
+						else{
 							echo '<b>Sauvegarde</b><br/>';
 							echo 'Date : <i>'.fgets($fich).'</i><br/>';
 							$infos = array();
@@ -167,8 +186,9 @@ else
 								$suppr = explode(',', $infos_mois['Suppression']);
 								echo 'Ancien supprimé ('.$suppr[0].') : '.$suppr[1].'<br/>';
 							}
+							
+							fclose($fich);
 						}
-						fclose($fich);
 					}
 				?>
 		</div>
@@ -213,6 +233,6 @@ else
 		</div>
 	</div>
 	<?php
-	include_once(root.'bas.php');
+	include_once(root.'admin/admin_bas.php');
 }
 ?>

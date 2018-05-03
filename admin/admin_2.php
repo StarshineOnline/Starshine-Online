@@ -4,12 +4,12 @@ if (file_exists('../root.php'))
 
 $textures = false;
 $admin = true;
-include_once(root.'haut.php');
+include_once(root.'admin/admin_haut.php');
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 if ($G_maintenance)
 {
-	echo 'Starshine-online est actuellement en cours de mis à jour.<br />
+	echo 'Starshine-online est actuellement en cours de mise à jour.<br />
 	le forum est toujours disponible <a href="punbb/">ici - Forum</a>';
 }
 else
@@ -63,6 +63,6 @@ else
 	?>
 		</div>
 	<?php
-	include_once(root.'bas.php');
+	include_once(root.'admin/admin_bas.php');
 
 ?>

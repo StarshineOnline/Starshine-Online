@@ -141,7 +141,7 @@ add_raw_css_to_head('.casetype { font-size: 0.5em; color: black; background-colo
 include_once(root.'admin/admin_haut.php');
 
 setlocale(LC_ALL, 'fr_FR');
-include_once(root.'haut_site.php');
+// include_once(root.'haut_site.php');
 
 global $xmin;
 global $xmax;
