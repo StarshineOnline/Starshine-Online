@@ -30,7 +30,7 @@ case 'creer_joueur':
 	//Verification sécuritaire
 	if( !$pseudo )
 	{
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saissi de nom.');
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de nom.');
 		$page = 'creer_compte';
 		break;
 	}
@@ -42,13 +42,13 @@ case 'creer_joueur':
 	}
 	if( !$mdp )
 	{
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saissi de mot de passe.');
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas saisi de mot de passe.');
 		$page = 'creer_compte';
 		break;
 	}
 	if( $mdp != $mdp2 )
 	{
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les mots de passes sont différents.');
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Les mots de passe sont différents.');
 		$page = 'creer_compte';
 		break;
 	}
@@ -59,7 +59,7 @@ case 'creer_joueur':
     $req = $db->query($requete);
     if( $db->num_rows($req) )
     {
-			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous avez déjà un compte joueur, il est interdit d\'en avoir plusieurs ou d\'en changer sans l\'accord des administraeurs.<br/>\nSi vous voulez changer de personnage, supprimez l\'ancien (en allant dans les options).');
+			interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous avez déjà un compte joueur, il est interdit d\'en avoir plusieurs ou d\'en changer sans l\'accord des administrateurs.<br/>\nSi vous voulez changer de personnage, supprimez l\'ancien (en allant dans les options).');
 			$page = 'creer_compte';
 			break;
     }
@@ -79,7 +79,7 @@ case 'creer_joueur':
   $identification = new identification();
   if( $identification->connexion($login, md5($mdp), false) !== 0 )
   {
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur inconnue, veuiller contacter un admin.');
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Erreur inconnue, veuillez contacter un admin.');
 		$page = 'creer_compte';
 		break;
 	}
@@ -113,7 +113,7 @@ case 'creer_perso':
 	}
 	if (!$race)
 	{
-		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas chois de race et de classe !');
+		interf_alerte::enregistre(interf_alerte::msg_erreur, 'Vous n\'avez pas choisi de race et de classe !');
 		$page = 'creer_perso';
 		break;
 	}
@@ -230,9 +230,9 @@ case 'creer_perso':
 	$_SESSION['ID'] = $perso->get_id();
 	
 	$txt = '<p>Vous venez de créer un '.$Gtrad[$race].' '.$classe.' du nom de '.$pseudo.'.<p>
-		<p>Vous allez commencer vos aventures dans une zone tutorielle située dans votre capitale, dans celle vous pourrez non seulement vous familiariser avec l\'interface du jeu mais aussi chasser et réaliser de petites quêtes en toute sécurité. Vous pouvez sortir de cette zone à tout moment en suivant les chemins et/ou les sorties spécifiques à l\'endroit ou vous vous trouverez. Vous pourrez alors y revenir à partir de votre capitale (aller sur une case de celle-ci, cliquez sur la case où vous êtes et sur le lien qui va bien) tant que vous aurez moins de 75 en esquive.</p>
+		<p>Vous allez commencer vos aventures dans une zone tutorielle située dans votre capitale. Dans celle-ci vous pourrez non seulement vous familiariser avec l\'interface du jeu mais aussi chasser et réaliser de petites quêtes en toute sécurité. Vous pouvez sortir de cette zone à tout moment en suivant les chemins et/ou les sorties spécifiques à l\'endroit où vous vous trouverez. Vous pourrez alors y revenir à partir de votre capitale (allez sur une case de celle-ci, cliquez sur la case où vous êtes et sur le lien qui va bien) tant que vous aurez moins de 75 en esquive.</p>
 		<p>N\'hésitez pas à aller voir régulièrement les informations fournies dans votre forum de race, et à lire le message de votre roi.</p>
-		<p><em>Pour accéder au jeu cliquer sur "jeu" dans la barre de navigation en haut de la page.</em></p>
+		<p><em>Pour accéder au jeu, cliquez sur "jeu" dans la barre de navigation en haut de la page.</em></p>
 		<p>Bon jeu !</p>';
 	$G_interf->creer_index()->set_contenu( $texte = new interf_bal_smpl('div', $txt, 'nouv_perso') );
 	/*$G_interf->creer_index()->set_contenu( $texte = new interf_bal_cont('div', 'nouv_perso') );
@@ -285,7 +285,7 @@ case 'oubli_mdp':
 	$cle = md5($sel.$joueur->get_mdp().$date);
 	$lien = $G_url->get( array('page'=>'reinit_mdp', 'date'=>$date, 'cle'=>$cle, 'login'=>$joueur->get_login()) );
 	$sujet = 'Starshine Online - réinitialisation du mot de passe';
-	$message = '<html><head><title>'.$sujet.'</title></head><body>Bonjour,<p>Vous recevez cet e-mail car vous demandé la réinitialisation de votre mot de passe sur le site <a href="'.root_url.'">Starshine Online</a>.</p><p>Pour effectuer cette réinitialisation, veuillez cliquer <a href="'.root_url.$lien.'">sur ce lien</a>. Ce lien ne sera valable que 48h.</p><p>Si vous n\'avez pas demandé la réinitialisation de votre mot de passe, merci de contacter un admininstrateur.';
+	$message = '<html><head><title>'.$sujet.'</title></head><body>Bonjour,<p>Vous recevez cet e-mail car vous avez demandé la réinitialisation de votre mot de passe sur le site <a href="'.root_url.'">Starshine Online</a>.</p><p>Pour effectuer cette réinitialisation, veuillez cliquer <a href="'.root_url.$lien.'">sur ce lien</a>. Ce lien ne sera valable que 48h.</p><p>Si vous n\'avez pas demandé la réinitialisation de votre mot de passe, merci de contacter un administrateur.';
 	$headers  = 'MIME-Version: 1.0'."\r\n";
   $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
 	$headers .= 'From: bot@starshine-online.com';
@@ -403,4 +403,3 @@ function replace_all($string)
   return replace_accents($string);
   //return strtolower(replace_accents($string));
 }
-?>

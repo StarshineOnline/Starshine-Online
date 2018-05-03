@@ -296,7 +296,7 @@ class interf_index_perso extends interf_bal_cont
   	$nom = $div_nom->add( new interf_chp_form('text', 'nom', false, false, false, 'form-control') );
 		$nom->set_attribut('placeholder', 'nom');
 		$nom->set_attribut('tabindex', '5');
-		$div_nom->add( new interf_bal_smpl('span', '(peut etre identique au nom de votre compte joueur)', false, 'small') );
+		$div_nom->add( new interf_bal_smpl('span', '(peut être identique au nom de votre compte joueur)', false, 'small') );
   	$div_btn = $form->add( new interf_bal_cont('div', false, 'form-group') );
   	$btn = $div_btn->add( new interf_chp_form('submit', false, false, 'Créer', false, 'btn btn-default') );
 		$btn->set_attribut('tabindex', '6');
@@ -389,5 +389,3 @@ class interf_index_infos_perso extends interf_cont
 	}
 }
 
-
-?>
