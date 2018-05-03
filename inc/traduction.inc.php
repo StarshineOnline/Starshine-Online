@@ -160,13 +160,13 @@ $Gtrad['melee'] = 'Mêlée';
 $Gtrad['esquive'] = 'Esquive';
 $Gtrad['blocage'] = 'Blocage';
 $Gtrad['incantation'] = 'Incantation';
-$Gtrad['maitrise_critique'] = 'Maitrise du critique';
+$Gtrad['maitrise_critique'] = 'Maîtrise du critique';
 $Gtrad['art_critique'] = 'Art du critique';
-$Gtrad['maitrise_arc'] = 'Maitrise de l\'arc';
-$Gtrad['maitrise_dague'] = 'Maitrise de la dague';
-$Gtrad['maitrise_epee'] = 'Maitrise de l\'épée';
-$Gtrad['maitrise_hache'] = 'Maitrise de la hache';
-$Gtrad['maitrise_bouclier'] = 'Maitrise du bouclier';
+$Gtrad['maitrise_arc'] = 'Maîtrise de l\'arc';
+$Gtrad['maitrise_dague'] = 'Maîtrise de la dague';
+$Gtrad['maitrise_epee'] = 'Maîtrise de l\'épée';
+$Gtrad['maitrise_hache'] = 'Maîtrise de la hache';
+$Gtrad['maitrise_bouclier'] = 'Maîtrise du bouclier';
 $Gtrad['survie'] = 'Survie';
 $Gtrad['survie_humanoide'] = 'Connaissance des humanoïdes';
 $Gtrad['survie_magique'] = 'Connaissance des créatures magiques';
@@ -182,7 +182,7 @@ $Gtrad['architecture'] = 'Architecture';
 $Gtrad['alchimie'] = 'Alchimie';
 $Gtrad['survie'] = 'Survie';
 $Gtrad['identification'] = 'Identification d\'objets';
-$Gtrad['sort_vie+'] = 'Apprend magie de la vie a';
+$Gtrad['sort_vie+'] = 'Apprend magie de la vie à';
 $Gtrad['facteur_magie'] = 'Réduction PA des sorts';
 $Gtrad['dressage'] = 'Dressage';
 $Gtrad['max_pet'] = 'Nombre de créatures';
@@ -216,7 +216,7 @@ $Gtrad['diplo6'] = 'Mauvais termes';
 $Gtrad['diplo7'] = 'Guerre';
 $Gtrad['diplo8'] = 'Guerre durable';
 $Gtrad['diplo9'] = 'Ennemis';
-$Gtrad['diplo10'] = 'Ennemis eternels';
+$Gtrad['diplo10'] = 'Ennemis éternels';
 $Gtrad['diplo127'] = 'Votre royaume';
 //@}
 
@@ -226,7 +226,7 @@ $Gtrad['diplo127'] = 'Votre royaume';
  * Traduction des affinités.
  * @{  
  */
-$Gtrad['affinite1'] = 'Execrable';
+$Gtrad['affinite1'] = 'Exécrable';
 $Gtrad['affinite2'] = 'Très mauvaise';
 $Gtrad['affinite3'] = 'Mauvaise';
 $Gtrad['affinite4'] = 'Moyenne';
@@ -254,7 +254,7 @@ $Gtrad['cible_ex2'] = '';
 $Gtrad['cible_ex3'] = 'votre groupe';
 $Gtrad['cible_ex4'] = '';
 $Gtrad['cible_ex5'] = 'le groupe de ';
-$Gtrad['cible_ex6'] = 'les personnages de votre cases';
+$Gtrad['cible_ex6'] = 'les personnages de votre case';
 $Gtrad['cible_ex7'] = 'les bâtiments sur votre case';
 $Gtrad['cible_ex8'] = 'les personnages autour de vous';
 //@}
@@ -324,11 +324,11 @@ $GPluriels['voleur'] = 'voleurs';
 $GPluriels['paladin'] = 'paladins';
 $GPluriels['champion'] = 'champions';
 $GPluriels['assassin'] = 'assassins';
-$GPluriels['archer d élite'] = 'archers d élite';
+$GPluriels['archer d élite'] = 'archers d\'élite';
 $GPluriels['paladin+'] = 'paladins+';
 $GPluriels['champion+'] = 'champions+';
 $GPluriels['assassin+'] = 'assassins+';
-$GPluriels['archer d élite+'] = 'archers d élite+';
+$GPluriels['archer d élite+'] = 'archers d\'élite+';
 $GPluriels['mage'] = 'mages';
 $GPluriels['sorcier'] = 'sorciers';
 $GPluriels['nécromancien'] = 'nécromanciens';
@@ -337,7 +337,7 @@ $GPluriels['grand sorcier'] = 'grands sorciers';
 $GPluriels['grand nécromancien'] = 'grands nécromanciens';
 $GPluriels['prêtre'] = 'prêtres';
 $GPluriels['sage'] = 'sages';
-$GPluriels['elémentaliste'] = 'elémentalistes';
+$GPluriels['elémentaliste'] = 'élémentalistes';
 $GPluriels['pestimancien'] = 'pestimanciens';
 //@}
 
@@ -354,4 +354,3 @@ function traduit($mot) {
     return $Gtrad[$mot];
   return $mot;
 }
-?>

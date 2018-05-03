@@ -5,7 +5,7 @@ if (file_exists('../root.php'))
  * @file race.inc.php
  * Description des races. 
  * Pour les affinités les valeurs sont :
- * - 1 : excécrable
+ * - 1 : exécrable
  * - 2 : très mauvaise
  * - 3 : mauvaise
  * - 4 : moyenne
@@ -26,7 +26,7 @@ $Trace['barbare']['dexterite'] = 11;  ///< Dextérité des Barbares.
 $Trace['barbare']['puissance'] = 10;  ///< Puissance des Barbares.
 $Trace['barbare']['volonte'] = 10;  ///< Volonté des Barbares.
 $Trace['barbare']['energie'] = 11;  ///< Energie des Barbares.
-$Trace['barbare']['passif'] = '+30% de Protection physique et +10 de base<br /> +40% de dégâtss physiques sur les batiments.<br />+10% de dégâtss avec les armes de siège.';  ///< Description des bonus des Barbares.
+$Trace['barbare']['passif'] = '+30% de Protection physique et +10 de base<br /> +40% de dégâts physiques sur les bâtiments.<br />+10% de dégâts avec les armes de siège.';  ///< Description des bonus des Barbares.
 $Trace['barbare']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de la mort des Barbares.
 $Trace['barbare']['affinite_sort_element'] = 4;  ///< Afinité avec la magie élémentaire des Barbares.
 $Trace['barbare']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Barbares.
@@ -161,7 +161,7 @@ $Trace['mortvivant']['dexterite'] = 11;  ///< Dextérité des Morts-Vivants.
 $Trace['mortvivant']['puissance'] = 13;  ///< Puissance des Morts-Vivants.
 $Trace['mortvivant']['volonte'] = 13;  ///< Volonté des Morts-Vivants.
 $Trace['mortvivant']['energie'] = 14;  ///< Energie des Morts-Vivants.
-$Trace['mortvivant']['passif'] = '+10% HP / MP lorsqu\'ils ressucitent<br /> +30% Protection physique et +15% magique le matin et soir';  ///< Description des bonus des Morts-Vivants.
+$Trace['mortvivant']['passif'] = '+10% HP / MP lorsqu\'ils ressuscitent<br /> +30% Protection physique et +15% magique le matin et soir';  ///< Description des bonus des Morts-Vivants.
 $Trace['mortvivant']['affinite_sort_mort'] = 7;  ///< Affinité avec la magie de la mort des Morts-Vivants.
 $Trace['mortvivant']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Morts-Vivants.
 $Trace['mortvivant']['affinite_sort_vie'] = 1;  ///< Affinité avec la magie de la vie des Morts-Vivants.
@@ -242,7 +242,7 @@ $Trace['scavenger']['dexterite'] = 16;  ///< Dextérité des Scavengers.
 $Trace['scavenger']['puissance'] = 12;  ///< Puissance des Scavengers.
 $Trace['scavenger']['volonte'] = 12;  ///< Volonté des Scavengers.
 $Trace['scavenger']['energie'] = 12;  ///< Energie des Scavengers.
-$Trace['scavenger']['passif'] = '+15% Protection physique et +5% protection magique<br /> +40% de chance de réussite en forge et alchimie, +20% en architecture<br />+20% pour soigner ses créatures.';  ///< Description des bonus des Scavengers.
+$Trace['scavenger']['passif'] = '+15% Protection physique et +5% Protection magique<br /> +40% de chance de réussite en forge et alchimie, +20% en architecture<br />+20% pour soigner ses créatures.';  ///< Description des bonus des Scavengers.
 $Trace['scavenger']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de la mort des Scavengers.
 $Trace['scavenger']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Scavengers.
 $Trace['scavenger']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Scavengers.
@@ -312,4 +312,3 @@ $Trace['vampire']['spawn_c_y'] = 118;
 $Trace['vampire']['couleur'] = "#cccccc";  ///< Couleur des Vampires.
 $Trace['vampire']['forum_id'] = 40;   ///< ID du forum des Vampires.
 //@}
-?>
