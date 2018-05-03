@@ -2201,8 +2201,8 @@ div#amende.panel
 .ecole_mag
 {
 	margin-left: 2px;
-  width: 441px;
-  height: 408px;
+	width: 441px;
+	height: 408px;
 }
 
 #achat_magie
@@ -2638,6 +2638,11 @@ input#ville_bas
 #tab_laboratoire h6
 {
 	text-align: center;
+}
+
+#tab_repos
+{
+	overflow-y: auto;
 }
  
  

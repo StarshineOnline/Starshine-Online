@@ -89,10 +89,10 @@ case 'achat':
 				{
 					$perso->set_honneur($perso->get_honneur() - $honneur_need);
 				}
-				else $perso->set_honneur(0);
-			
-        $texte .= pute_effets($perso, $honneur_need);
-      }
+				else
+					$perso->set_honneur(0);
+				$texte .= pute_effets($perso, $honneur_need);
+			}
 			if($valid)
 			{
 				$perso->set_star($perso->get_star() - $cout);

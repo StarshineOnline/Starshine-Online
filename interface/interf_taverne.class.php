@@ -83,12 +83,13 @@ class interf_taverne extends interf_ville_onglets
 		if( quete::get_nombre_quetes($perso, $royaume, 'taverne') )
 			$this->onglets->add_onglet('Quêtes', 'taverne.php?type=quetes&ajax=2', 'tab_quetes', 'ecole_mag', $onglet=='quetes');
 		
+		interf_alerte::aff_enregistres( $this->onglets->get_onglet('tab_'.$onglet) );
 		$this->onglets->get_onglet('tab_'.$onglet)->add( $interf );
 	}
 }
 
 /// Classe  pour les listes d'achats de services de repos
-class interf_taverne_repos extends interf_tableau//interf_liste_achat
+class interf_taverne_repos extends interf_tableau //interf_liste_achat
 {	
 	//const url = 'taverne.php';
 	protected $royaume;
@@ -1076,4 +1077,3 @@ class interf_taverne_jeux extends interf_cont
 	}
 }
 
-?>
