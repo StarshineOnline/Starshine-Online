@@ -390,7 +390,7 @@ class interf_carte extends interf_tableau
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
       $race = $this->races[$b->royaume];
-      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
+      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'tooltip_diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
   }
 
@@ -403,7 +403,7 @@ class interf_carte extends interf_tableau
       $div = $this->cases[$b->y][$b->x]->insert( new interf_bal_cont('div', null, 'carte_contenu') );
       $div->set_attribut('style', 'background-image: url(\''.$this->doss_prefixe.$b->image.'\');');
       $race = $this->races[$b->royaume];
-      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
+      $this->infos[$b->y][$b->x] .= '<li><span class=\'info_batiment\'>'.$b->nom.'</span> <span class=\'tooltip_diplo'.$this->diplos[$race].'\'>'.$Gtrad[$race].'</span></li>';
     }
   }
 
@@ -423,7 +423,7 @@ class interf_carte extends interf_tableau
       $p = new perso($row);
       $cle = $row['x'].'_'.$row['y'];
       $niv = $p->get_cache_niveau() ? ' - Niv. '.$p->get_level() : '';
-      $this->infos[$p->get_y()][$p->get_x()] .= '<li><span class=\'info_perso\'>'.$p->get_nom().'</span> <span class=\'diplo'.$this->diplos[$p->get_race()].'\'>'.$Gtrad[$p->get_race()].'</span>'.$niv.'</li>';
+      $this->infos[$p->get_y()][$p->get_x()] .= '<li><span class=\'info_perso\'>'.$p->get_nom().'</span> <span class=\'tooltip_diplo'.$this->diplos[$p->get_race()].'\'>'.$Gtrad[$p->get_race()].'</span>'.$niv.'</li>';
       if( !array_key_exists($cle, $pos) )
       {
       	$pos[$cle] = true;
@@ -614,4 +614,3 @@ class interf_carte extends interf_tableau
 		return $options;
 	}
 }
-?>

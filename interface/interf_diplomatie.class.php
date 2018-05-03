@@ -40,35 +40,34 @@ class interf_diplomatie extends interf_tableau
 				if( !is_numeric($row[$field]) )
 				{
 					$this->set_entete(true);
-					$this->nouv_cell( $row[$field] );
+					$this->nouv_cell( $Gtrad[$row[$field]] );
 					$this->set_entete(false);
 				}
 				else if( $row[$field] < 4 )
 				{
-					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'success');
+					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'fond_diplo'.$row[$field]);
 					$total += $row[$field];
 				}
 				else if( $row[$field] < 7 )
 				{
-					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'warning');
+					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'fond_diplo'.$row[$field]);
 					$total += $row[$field];
 				}
 				else if( $row[$field] < 11)
 				{
-					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'danger');
+					$this->nouv_cell($Gtrad['diplo'.$row[$field]], false, 'fond_diplo'.$row[$field]);
 					$total += $row[$field];
 				}
 				else
-					$this->nouv_cell('X', false, 'info');
+					$this->nouv_cell('X', false, 'fond_diplo'.$row[$field]);
 			}
 			if($total > 55)
-				$this->nouv_cell('Belliqueux', false, 'danger');
+				$this->nouv_cell('Belliqueux', false, 'fond_diplo10');
 			else if($total < 45)
-				$this->nouv_cell('Pacifiques', false, 'success');
+				$this->nouv_cell('Pacifiques', false, 'fond_diplo0');
 			else
-				$this->nouv_cell('Normal', false, 'warning');
+				$this->nouv_cell('Normal', false, 'fond_diplo5');
 		}
 	}
 }
 
-?>

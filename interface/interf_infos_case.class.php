@@ -70,7 +70,7 @@ class interf_infos_case extends interf_cont
 			$par1 = $div->add( new interf_bal_cont('p') );
 			$par1->add( new interf_bal_smpl('span', $Gtrad[$this->royaume->get_race()], 'royaume') );
 			$par1->add( new interf_txt(' − ') );
-			$par1->add( new interf_bal_smpl('span', $Gtrad['diplo'.$this->royaume->get_diplo($this->perso->get_race())], 'diplomatie') );
+			$par1->add( new interf_bal_smpl('span', $Gtrad['diplo'.$this->royaume->get_diplo($this->perso->get_race())], 'diplomatie', 'diplo'.$this->royaume->get_diplo($this->perso->get_race())) );
 			$par1->add( new interf_txt(' − Taxe : ') );
 			$par1->add( new interf_bal_smpl('span', $this->royaume->get_taxe_diplo($this->perso->get_race()).'%', 'taxe') );
 		}
@@ -152,7 +152,7 @@ class interf_infos_case extends interf_cont
 		foreach($placements as $plac)
 		{
 			$bat = $plac->get_def();
-    	if( $bat->get_quete() && !count(quete_perso::create(array('id_etape', 'id_perso'), array($bat->get_quete(), $perso->get_id()))) )
+			if( $bat->get_quete() && !count(quete_perso::create(array('id_etape', 'id_perso'), array($bat->get_quete(), $perso->get_id()))) )
     			continue;
 			$royaume = new royaume(  $plac->get_royaume() );
 			
@@ -185,8 +185,10 @@ class interf_infos_case extends interf_cont
 			$nom = $div2->add( new interf_bal_cont('span') );
 			$nom->add( new interf_bal_smpl('span', $plac->get_nom()) );
 			$nom->add( new interf_txt(' − ') );
-			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, $diplo) );
-			$nom->set_tooltip($bat->get_nom().' − '.$Gtrad[$diplo], 'bottom');
+			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, false) );
+			$spanTooltip = new interf_bal_smpl('span', $Gtrad[$diplo], false, 'tooltip_'.$diplo);
+			$nom->set_tooltip($bat->get_nom().' − '.htmlspecialchars($spanTooltip->get_contenu()), 'bottom');
+			$nom->set_attribut('data-html', 'true');
 			$avanc = $div2->add( new interf_jauge_bulle(false, time() - $plac->get_debut_placement(), $plac->get_fin_placement() - $plac->get_debut_placement(), false, 'avance', false, 'jauge_case') );
 			$avanc->add( new interf_bal_smpl('div', round((time() - $plac->get_debut_placement()) / ($plac->get_fin_placement() - $plac->get_debut_placement()) * 100).'%', false, 'bulle_valeur') );
 			$avanc->set_tooltip(transform_sec_temp($plac->get_fin_placement() - time()).' avant fin de construction', 'bottom', '#contenu');
@@ -262,8 +264,10 @@ class interf_infos_case extends interf_cont
 			$nom = $div2->add( new interf_bal_cont('span') );
 			$nom->add( new interf_bal_smpl('span', $constr->get_nom()) );
 			$nom->add( new interf_txt(' − ') );
-			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, $diplo) );
-			$nom->set_tooltip($bat->get_nom().' − '.$Gtrad[$diplo], 'bottom');
+			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, false) );
+			$spanTooltip = new interf_bal_smpl('span', $Gtrad[$diplo], false, 'tooltip_'.$diplo);
+			$nom->set_tooltip($bat->get_nom().' − '.htmlspecialchars($spanTooltip->get_contenu()), 'bottom');
+			$nom->set_attribut('data-html', 'true');
 			$div2->add( new interf_liste_buff($constr, false) );
 			$div2->add( new interf_liste_buff($constr, true) );
 		}
@@ -273,6 +277,7 @@ class interf_infos_case extends interf_cont
 	function aff_persos()
 	{
 		global $Gtrad, $Trace, $Tclasse, $db;
+		
 		$div = $this->add( new interf_bal_cont('div', 'liste_gauche', 'liste_case') );
 		$div->add( new interf_bal_smpl('span', 'Personnages', false, 'xsmall') );
 		$lst = $div->add( new interf_bal_cont('ul') );
@@ -295,26 +300,32 @@ class interf_infos_case extends interf_cont
 		}
 		
 		$royaume = new royaume( $Trace[$this->perso->get_race()]['numrace'] );
-    /// @todo à améliorer
-    $requete = 'SELECT * FROM perso AS p INNER JOIN diplomatie AS d ON p.race = d.race WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif" ORDER BY d.'.$this->perso->get_race().' DESC, level DESC';
-    $req = $db->query($requete);
-    while($row = $db->read_assoc($req))
+		/// @todo à améliorer
+		$requete =
+			'SELECT *
+			FROM perso AS p
+			INNER JOIN diplomatie AS d ON p.race = d.race
+			WHERE x = '.$this->case->get_x().' AND y = '.$this->case->get_y().' AND statut="actif"
+			ORDER BY d.'.$this->perso->get_race().' DESC, level DESC'
+		;
+		$req = $db->query($requete);
+		while($row = $db->read_assoc($req))
 		{
-      $pj = new perso($row);
+			$pj = new perso($row);
 			$li = $lst->add( new interf_bal_cont('li', false, 'info_case pj') );
 			$lien = $li->add( new interf_lien_cont('infoperso.php?id='.$pj->get_id(), false, 'info_elt') );
-    	/// @todo à améliorer
-      // Cache sa classe ?
-      if( $pj->get_cache_classe() == 2 )
-        $classe = 'combattant';
-      else if($pj->get_cache_classe() == 1 && $pj->get_race() != $this->perso->get_race())
-        $classe = 'combattant';
-      else
-        $classe = $pj->get_classe();
-      // Camouflage
-      $pj->check_specials();
-      $race = $pj->get_race_a();
-      $img = 'image/personnage/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
+			/// @todo à améliorer
+			// Cache sa classe ?
+			if( $pj->get_cache_classe() == 2 )
+				$classe = 'combattant';
+			else if($pj->get_cache_classe() == 1 && $pj->get_race() != $this->perso->get_race())
+				$classe = 'combattant';
+			else
+				$classe = $pj->get_classe();
+			// Camouflage
+			$pj->check_specials();
+			$race = $pj->get_race_a();
+			$img = 'image/personnage/'.$race.'/'.$race.'_'.$Tclasse[$classe]['type'].'.png';
 			$lien->add( new interf_img(/*$pj->get_image()*/$img) );
 			if( $pj->get_id() == $this->perso->get_id() )
 			{
@@ -360,7 +371,9 @@ class interf_infos_case extends interf_cont
 					$div_mort->set_tooltip('Ce personnage est mort', 'bottom');
 				}
 				$nom = $lien->add( new interf_bal_smpl('span', $pj->get_nom(), false, $diplo_classe) );
-				$nom->set_tooltip($Gtrad[$pj->get_race()].($pj->get_level()?'':' (PNJ)').' : '.$diplo_txt.' − honneur/réputation : '.($facteur_honneur * 100).'%', 'bottom');
+				$spanTooltip = new interf_bal_smpl('span', $diplo_txt, false, 'tooltip_diplo'.$diplo);
+				$nom->set_tooltip($Gtrad[$pj->get_race()].($pj->get_level()?'':' (PNJ)').' : '.htmlspecialchars($spanTooltip->get_contenu()).' − honneur/réputation : '.($facteur_honneur * 100).'%', 'bottom');
+				$nom->set_attribut('data-html', 'true');
 			}
 		} 
 	}

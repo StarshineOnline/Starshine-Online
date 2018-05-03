@@ -333,6 +333,11 @@ class interf_bal_smpl extends interf_smpl
   {
     $this->balise($this->balise, $this->inter, $this->attributs);
   }
+  /// Retourne le contenu de l'élément
+  function get_contenu()
+  {
+    return $this->texte_balise($this->balise, $this->inter, $this->attributs);
+  }
   /**
    * Définit la valeur d'un attribut.
    * @param  $nom   nom de l'attribut.
@@ -1102,4 +1107,4 @@ class url
 		return $this->base;
 	}
 }
-?>
+
