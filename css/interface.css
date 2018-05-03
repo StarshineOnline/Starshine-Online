@@ -1307,45 +1307,6 @@ li.info_case div.jauge_case
 	font-style: italic;
 }
 
-.diplo0 { color:#3c763d; }/*#449D44*/
-.diplo1 { color:#3c763d; }
-.diplo2 { color:#3c763d; }
-.diplo3 { color:#3c763d; }
-.diplo4 { color:#8a6d3b; }/*rgb(192, 123, 25)*/
-.diplo5 { color:#8a6d3b; }
-.diplo6 { color:#8a6d3b; }
-.diplo7 { color:#A94442; }/*#C9302C*/
-.diplo8 { color:#A94442; }
-.diplo9 { color:#A94442; }
-.diplo10 { color:#A94442; }
-.diplo127 { color:#31708f; }
-
-.tooltip_diplo0 { color:#77bb7c; }
-.tooltip_diplo1 { color:#77bb7c; }
-.tooltip_diplo2 { color:#77bb7c; }
-.tooltip_diplo3 { color:#77bb7c; }
-.tooltip_diplo4 { color:#ba985e; }
-.tooltip_diplo5 { color:#ba985e; }
-.tooltip_diplo6 { color:#ba985e; }
-.tooltip_diplo7 { color:#d23f3c; }
-.tooltip_diplo8 { color:#d23f3c; }
-.tooltip_diplo9 { color:#d23f3c; }
-.tooltip_diplo10 { color:#d23f3c; }
-.tooltip_diplo127 { color:#549fc4; }
-
-.fond_diplo0 { background-color:#dff0d8; }
-.fond_diplo1 { background-color:#dff0d8; }
-.fond_diplo2 { background-color:#dff0d8; }
-.fond_diplo3 { background-color:#dff0d8; }
-.fond_diplo4 { background-color:#fcf8e3; }
-.fond_diplo5 { background-color:#fcf8e3; }
-.fond_diplo6 { background-color:#fcf8e3; }
-.fond_diplo7 { background-color:#f2dede; }
-.fond_diplo8 { background-color:#f2dede; }
-.fond_diplo9 { background-color:#f2dede; }
-.fond_diplo10 { background-color:#f2dede; }
-.fond_diplo127 { background-color:#d9edf7; }
-
 .niv-5{ color:#0000ff; }
 .niv-4{ color:#0072ff; }
 .niv-3{ color:#0072ff; }
