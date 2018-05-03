@@ -231,18 +231,18 @@ if($mouvement)
 		$cout -= $perso->get_buff('potion_montagne', 'effet');
 	if( $perso->is_buff('potion_terres_maudites') && $type_terrain == 'terre_maudite' )
 		$cout -= $perso->get_buff('potion_terres_maudites', 'effet');
-	//Si le joueur a un buff ou débuff qui l'empèche de bouger
+	//Si le joueur a un buff ou débuff qui l'empêche de bouger
 	if($perso->is_buff('buff_forteresse') OR $perso->is_buff('buff_position') OR $perso->is_buff('debuff_enracinement') OR $perso->is_buff('bloque_deplacement') OR $perso->is_buff('dressage') OR $perso->is_buff('petrifie'))
 	{
 		$peu_bouger = false;
-		$cause = 'Un buff vous empèche de bouger';
+		$cause = 'Un buff vous empêche de bouger';
 	}
   if ($perso->is_buff('debuff_bloque_deplacement_alea'))
   {
     if (is_bloque_Deplacement_alea(
           $perso->get_buff('debuff_bloque_deplacement_alea', 'effet'),
           $perso->get_buff('debuff_bloque_deplacement_alea', 'effet2'))) {
-      $cause = 'Un buff vous empèche de bouger';
+      $cause = 'Un buff vous empêche de bouger';
       $peu_bouger = false;
     }
   }
@@ -376,4 +376,3 @@ if( $action )
 else
 	$carte = $interf_princ->set_gauche();
 $interf_princ->maj_tooltips();
-?>

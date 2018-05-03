@@ -1338,7 +1338,7 @@ function recupmonstre($ID, $map_monstre = true)
  * Récupère les informations sur un bâtiment.
  * Les informations peuvent être réparties dans deux bases, "batiment" pour tous
  * et "placement" pour les bâtiments en constructions ou "rechargement" pour ceux
- * qui ont u temps de rechargment (armes de siège). 
+ * qui ont un temps de rechargement (armes de siège). 
  * 
  * @param $ID       ID du bâtiment.
  * @param $table    Table complémentaire de la base de donnée dans laquelle est le bâtiment, 'none' s'il n'y en a pas.
@@ -1405,7 +1405,7 @@ function recupbatiment($ID, $table)
 	$R_monstre['esquive'] = $facteur * ceil($coeff * $row['carac']);
 	$R_monstre['PP'] = $row['PP'];
 	$R_monstre['PM'] = $row['PM'];
-	$R_monstre['augmentation_pa'] = $row['augmentation_pa'];  // Facteur multiplicateur augmentant les PA des déplacement sur le bâtiment.
+	$R_monstre['augmentation_pa'] = $row['augmentation_pa'];  // Facteur multiplicateur augmentant les PA des déplacements sur le bâtiment.
 	$R_monstre['bouclier'] = false;
 	$R_monstre['competences'] = array();
 	$R_monstre['buff'] = array();
@@ -1430,16 +1430,17 @@ function recupbatiment($ID, $table)
 function batiment_map($coordx, $coordy, $verif_sape=false)
 {
 	global $db;
+	
 	$coords = convert_in_pos($coordx, $coordy);
 	$requete = "SELECT id, id_batiment FROM construction WHERE x = ".$coordx." AND y = ".$coordy;
 	$req = $db->query($requete);
 	if($db->num_rows > 0)
 	{
-		$row = $db->read_row($req);
-		$constr = new construction(id);
+		$row = $db->read_assoc($req);
+		$constr = new construction($row['id']);
 		if( $verif_sape && $constr->is_buff('sape') )
 			return false;
-		return recupbatiment($row[0], 'none');
+		return recupbatiment($row['id_batiment'], 'none');
 	}
 	else
 	{

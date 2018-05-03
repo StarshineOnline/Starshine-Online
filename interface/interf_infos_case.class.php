@@ -34,16 +34,17 @@ class interf_infos_case extends interf_cont
 		$this->aff_monstres();
 	}
 	
-	/// Affiche la description de la case (type de terrain, appartenance, …)
+	/// Affiche la description de la case (type de terrain, appartenance...)
 	function aff_descr()
 	{
 		global $Trace, $Gtrad;
+		
 		$type_terrain = type_terrain($this->case->get_info());
 		$coutpa = cout_pa($type_terrain[0], $this->perso->get_race());
 		$coutpa_base = $coutpa;
 		$coutpa_diagonale = cout_pa2($coutpa, $this->perso, $this->case, true);
 		$coutpa = cout_pa2($coutpa, $this->perso, $this->case, false);
-			
+		
 		$infos_cases = $this->add( new interf_bal_cont('div', 'descr_case', 'info_case') );
 		if( $this->distance == 1 && $coutpa_base <= 49 )
 		{
@@ -60,7 +61,8 @@ class interf_infos_case extends interf_cont
 		//Si c'est la capitale
 		/*if($this->case->get_x() == $Trace[$R->get_race()]['spawn_x'] && $this->case->get_y() == $Trace[$R->get_race()]['spawn_y'])
 			echo $titre_case .= ' − Capitale '.$R->get_capitale();
-		else*/ if( $this->case->get_type() == 3 ) // ou un point exceptionnel
+		else*/
+		if( $this->case->get_type() == 3 ) // ou un point exceptionnel
 			echo $titre_case .= ' − Point exceptionnel';
 		$div->add( new interf_bal_smpl('h4', $titre_case) );
 		if( $this->case->get_royaume() )
@@ -97,8 +99,8 @@ class interf_infos_case extends interf_cont
 			$row = $db->read_array($req);
 			$div->add( new interf_bal_smpl('h4', $row['titre']) );
 			$texte = new texte($row['description'], texte::cases);
-      $texte->set_liens('informationcase.php?case='.$id_case, $id_case, true);
-      $texte->set_id_objet('C'.$id_case);
+			$texte->set_liens('informationcase.php?case='.$id_case, $id_case, true);
+			$texte->set_id_objet('C'.$id_case);
 			$div->add( new interf_bal_smpl('div', $texte->parse($reponse)) );
 			if($row['action'] != '' && $this->distance == 0)
 			{
@@ -437,4 +439,3 @@ class interf_infos_case extends interf_cont
 		}
 	}
 }
-?>
