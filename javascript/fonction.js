@@ -7,47 +7,48 @@ function affiche_ajax(data, status, jqXHR)
 		aff_ico_sso();
 		$(".tooltip").remove();
 		$(".popover").remove();
-	  var maj_tooltip = false;
-	  $(data).find('section').each( function()
-	  {
-	  	switch(this.id)
-	  	{
-	  	case "modal":
-			  var modal = document.getElementById("modal");
-			  if( !modal )
-			  {
-			    var cont = document.getElementById("contenu");
-			    modal = document.createElement("div");
-			    modal.id = "modal";
-			    modal.className = "modal fade";
-			    modal.setAttribute("role", "dialog");
-			    modal.tabIndex = "-1";
-			    modal.setAttribute("aria-labelledby", "modalLabel");
-			    cont.appendChild(modal);
-			  }
-	    	modal.innerHTML =  this.innerHTML;
+		var maj_tooltip = false;
+		$(data).find('section').each( function()
+		{
+			switch(this.id)
+			{
+			case "modal":
+				var modal = document.getElementById("modal");
+				if( !modal )
+				{
+					var cont = document.getElementById("contenu");
+					modal = document.createElement("div");
+					modal.id = "modal";
+					modal.className = "modal fade";
+					modal.setAttribute("role", "dialog");
+					modal.tabIndex = "-1";
+					modal.setAttribute("aria-labelledby", "modalLabel");
+					cont.appendChild(modal);
+				}
+				modal.innerHTML =  this.innerHTML;
 				$("#modal").modal('show');
 				maj_tooltip = true;
-	  		break;
-	  	case 'recharger':
-	  		document.location=this.innerHTML.trim();
-	  		document.location.reload();
-	  	case 'maj_tooltips':
+				break;
+			case 'recharger':
+				document.location=this.innerHTML.trim();
+				document.location.reload();
+			case 'maj_tooltips':
 				maj_tooltip = true;
-	  		break;
-	  	case 'erreur':
-	  		aff_erreur(this.innerHTML, data);
-	  		break;
-	  	case 'javascript':
-	  		var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
-	  		script.setAttribute('type', 'text/javascript');
-	  	default:
-	    	$('#'+this.id).html( this.innerHTML );
+				break;
+			case 'erreur':
+				aff_erreur(this.innerHTML, data);
+				break;
+			case 'javascript':
+				var script = creer_element("script", false, false, document.getElementsByTagName("body")[0], this.innerHTML);
+				script.setAttribute('type', 'text/javascript');
+			default:
+				$('#'+this.id).html( this.innerHTML );
 				maj_tooltip = true;
+				break;
 			}
-	  });
-	  if( maj_tooltip )
-	  	maj_tooltips();
+		});
+		if( maj_tooltip )
+			maj_tooltips();
 	}
 	catch(err)
 	{
@@ -97,7 +98,7 @@ function charger(page)
 	try
 	{
 		aff_ico_charger();
-	  $.get(page, "ajax=1", affiche_ajax);
+		$.get(page, "ajax=1", affiche_ajax);
 	}
 	catch(err)
 	{

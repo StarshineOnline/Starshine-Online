@@ -202,7 +202,7 @@ class interf_cadre_carte extends interf_gauche
 		$this->ajout_option('jour', interf_carte::aff_jour, 'lune', 'jour-non', 'les effets liés à l\'heure', true);
 		$this->ajout_option('meteo', interf_carte::aff_atmosphere, 'nuage', 'meteo-non', 'les effets atmosphériques', true);
 		$this->ajout_option('son', interf_carte::act_sons, 'son-fort', 'son-coupe', 'les effets sonores', true, false);
-		$this->ajout_option('ads', interf_carte::aff_ads, 'ads', 'ads-non', 'l\'appartenance des armes de siège');
+		$this->ajout_option('adsiege', interf_carte::aff_ads, 'ads', 'ads-non', 'l\'appartenance des armes de siège');
 		// Options supplémentaires
 		$li = $this->menu->add( new interf_bal_cont('li') );
 		$lien = $li->add( new interf_bal_cont('a', 'opt_carte') );

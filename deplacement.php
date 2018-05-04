@@ -121,7 +121,7 @@ case 'monstres':
 	$db->query($requete);
 	$action = false;
 	break;
-case 'ads':
+case 'adsiege':
 	$mouvement = false;
 	$val = sSQL($_GET['valeur'], SSQL_INTEGER);
 	$requete = "REPLACE INTO options(id_perso, nom, valeur) VALUES(".$_SESSION['ID'].", 'affiche_roy_ads', $val)";
