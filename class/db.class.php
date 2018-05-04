@@ -148,12 +148,12 @@ class db
 		return $this->sql;
 	}
 
-  function query_error($query) {
-
-    trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")\n".$this->backtrace(),E_USER_ERROR);
-    if ($this->locked) $this->unlock();
-    exit ();
-  }
+	function query_error($query) {
+		trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")\n".$this->backtrace(),E_USER_ERROR);
+		if ($this->locked)
+			$this->unlock();
+		exit ();
+	}
 
   function lock($name)
   {
@@ -815,11 +815,11 @@ class db
   }
 
   private $_meta = array();
-  function execute($stmt = null) {
+  function execute($stmt = null, $query = '', $params = array()) {
     if ($stmt == null)
       $stmt = $this->stmt;
     if (!mysqli_stmt_execute($stmt)) {
-      $this->stmt_error($stmt);
+      $this->stmt_error($stmt, $query, $params);
     }
   }
 
@@ -834,7 +834,7 @@ class db
     }
 	if( !empty($params) )
 		call_user_func_array(array($this->stmt, 'bind_param'), $array);
-    $this->execute();
+    $this->execute($this->stmt, $sql, $params);
     return $this->stmt;
   }
 
@@ -935,16 +935,21 @@ class db
     return $values;
   }
 
-  function stmt_error($stmt) {
-
-    if (function_exists("userErrorHandler"))
-    {
-      set_error_handler("userErrorHandler");
-      trigger_error("Erreur 'SQL_QUERY': ".basename($_SERVER["PHP_SELF"])."?".$_SERVER["QUERY_STRING"]."\nQuery: ".$query."\nErreur:".mysqli_errno($this->lnk)." (".mysqli_error($this->lnk).")\n".$this->backtrace(),E_USER_ERROR);
-    }
-    if ($this->locked) $this->unlock();
-    exit ();
-  }
+	function stmt_error($stmt, $query = '', $params = array()) {
+		$errorMsg = 'Erreur \'SQL_QUERY\': ';
+		$errorMsg .= basename($_SERVER["PHP_SELF"]).'?'.$_SERVER["QUERY_STRING"]."\n";
+		if($query)
+			$errorMsg .= 'Query: '.$query."\n";
+		if($params)
+			$errorMsg .= ' with params '.'['.implode(', ', $params).']'."\n";
+		$errorMsg .= 'Erreur: '.mysqli_stmt_errno($stmt).' ('.mysqli_stmt_error($stmt).')'."\n";
+		$errorMsg .= $this->backtrace();
+		trigger_error($errorMsg ,E_USER_ERROR);
+		
+		if ($this->locked)
+			$this->unlock();
+		exit ();
+	}
 
 
 }
