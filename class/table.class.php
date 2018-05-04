@@ -150,7 +150,11 @@ abstract class table
 		$liste = explode(',', $this->get_liste_champs());
 		foreach($liste as $champ)
 		{
-			$champs[trim($champ)] = 's';
+			$champ = trim($champ);
+			if( is_bool($this->get_champ($champ)) )
+				$champs[$champ] = 'i';
+			else
+				$champs[$champ] = 's';
 		}
 		return $champs;
 	}
