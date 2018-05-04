@@ -183,7 +183,7 @@ class interf_infos_case extends interf_cont
 			$div2->add( new interf_img($plac->get_image()) );
 			//$div2->add( new interf_bal_smpl('span', $plac->get_nom().' ('.$bat->get_nom().' '.$Gtrad[$this->royaume->get_race()].')', false, '') );
 			$nom = $div2->add( new interf_bal_cont('span') );
-			$nom->add( new interf_bal_smpl('span', $plac->get_nom()) );
+			$nom->add( new interf_bal_smpl('span', $plac->get_nom(), false, $diplo) );
 			$nom->add( new interf_txt(' − ') );
 			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, false) );
 			$spanTooltip = new interf_bal_smpl('span', $Gtrad[$diplo], false, 'tooltip_'.$diplo);
@@ -262,7 +262,7 @@ class interf_infos_case extends interf_cont
 			$hp = $div2->add( new interf_jauge_bulle('HP', $constr->get_hp(), $bat->get_hp(), false, 'hp', false, 'jauge_case') );
 			$hp->add( new interf_bal_smpl('div', round($constr->get_hp() / $bat->get_hp() * 100).'%', false, 'bulle_valeur') );
 			$nom = $div2->add( new interf_bal_cont('span') );
-			$nom->add( new interf_bal_smpl('span', $constr->get_nom()) );
+			$nom->add( new interf_bal_smpl('span', $constr->get_nom(), false, $diplo) );
 			$nom->add( new interf_txt(' − ') );
 			$nom->add( new interf_bal_smpl('span', $Gtrad[$royaume->get_race()], false, false) );
 			$spanTooltip = new interf_bal_smpl('span', $Gtrad[$diplo], false, 'tooltip_'.$diplo);
