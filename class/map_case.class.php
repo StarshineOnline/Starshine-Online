@@ -354,49 +354,62 @@ class map_case
 		if(!isset($this->coord)) $this->coord();
 		return $this->coord['y'];
 	}
-
+	
 	/**
-	 * Vérifie les modifications de la case.
+	 * Vérifie les modifications à effectuer sur un ensemble de cases.
+	 * La zone de cases est définit par 4 coordonnées qui peuvent être nulles indépendamment les unes des autres pour spécifier une limite infinie dans une direction donnée.
 	 * 
-	 */ 
-	function check_case($check = false)
+	 * @param integer $x_min Valeur minimale de la coordonnée x
+	 * @param integer $x_max Valeur maximale de la coordonnée x
+	 * @param integer $y_min Valeur minimale de la coordonnée y
+	 * @param integer $y_max Valeur maximale de la coordonnée y
+	 */
+	static function check_zone($x_min = null, $x_max = null, $y_min = null, $y_max = null)
 	{
 		global $db;
 		
-		// Toutes les cases, certaines cases ou seulement une en particulier ?
-		$where = '';
-		if($check == 'all')
-		{
-			$where .= '1';
+		// Les limites de la zone
+		$where = '1';
+		if( !is_null($x_min) && $x_min == $x_max ){
+			$where .= ' AND '.'x = '.$x_min;
 		}
-		elseif(is_int($check))
-		{
-			$where .= 'x >= '.($this->get_x() - $check).' AND x <= '.($this->get_x() + $check).'';
-			$where .= ' AND y >= '.($this->get_y() - $check).' AND y <= '.($this->get_y() + $check).'';
+		else{
+			if( !is_null($x_min) )
+				$where .= ' AND '.'x >= '.$x_min;
+			if( !is_null($x_max) )
+				$where .= ' AND '.'x <= '.$x_max;
 		}
-		else
-			$where .= '(x = '.$this->get_x().') AND (y = '.$this->get_y().')';
+		if( !is_null($y_min) && $y_min == $y_max ){
+			$where .= ' AND '.'y = '.$y_min;
+		}
+		else{
+			if( !is_null($y_min) )
+				$where .= ' AND '.'y >= '.$y_min;
+			if( !is_null($y_max) )
+				$where .= ' AND '.'y <= '.$y_max;
+		}
+		
 		// Recherche des constructions terminées
 		$requete = "SELECT * FROM placement WHERE ".$where." AND fin_placement <= ".time();
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-			//Si c'est un drapeau, on transforme le royaume
+			// Si c'est un drapeau, on transforme le royaume
 			if($row['type'] == 'drapeau')
 			{
-				//Mis à jour de la carte
+				// Mis à jour de la carte
 				$requete = "UPDATE map SET royaume = ".$row['royaume']." WHERE x = ".$row['x']." and y = ".$row['y'];
 				$db->query($requete);
-				//Suppression du drapeau
+				// Suppression du drapeau
 				$requete = "DELETE FROM placement WHERE id = ".$row['id'];
 				$db->query($requete);
 			}
-			//Si c'est un bâtiment ou une arme de siège, on le construit
+			// Si c'est un bâtiment ou une arme de siège, on le construit
 			elseif($row['type'] == 'fort' OR $row['type'] == 'tour' OR $row['type'] == 'bourg' OR $row['type'] == 'mur' OR $row['type'] == 'arme_de_siege' OR $row['type'] == 'mine')
 			{
 				$construction = new construction();
 				$construction->set_rechargement(time());
-				//Cas spécifique des mines
+				// Cas spécifique des mines
 				if($row['type'] == 'mine')
 				{
 					$construction->set_rechargement($row['rez']);
@@ -412,13 +425,45 @@ class map_case
 				$construction->set_rez($row['rez']);
 				$construction->set_date_construction(time());
 				$construction->set_point_victoire($row['point_victoire']);
-				//Insertion de la construction
+				// Insertion de la construction
 				$construction->sauver();
-				//Suppression du placement
+				// Suppression du placement
 				$requete = "DELETE FROM placement WHERE id = ".$row['id'];
 				$db->query($requete);
 			}
 		}
+	}
+	
+	/**
+	 * Vérifie les modifications à effectuer sur un ensemble de cases.
+	 *
+	 * @param $check ['all', (integer)]
+	 * 				'all' pour toutes les cases.
+	 * 				un entier pour définir un champ de vision autour de la 'map_case'.
+	 * 				ou rien pour définir la 'map_case' elle-même.
+	 */
+	function check_case($check = false)
+	{
+		if( $check == 'all' )
+		{
+			$x_min = $x_max = $y_min = $y_max = null;
+		}
+		elseif( is_int($check) )
+		{
+			$x_min = $this->get_x() - $check;
+			$x_max = $this->get_x() + $check;
+			$y_min = $this->get_y() - $check;
+			$y_max = $this->get_y() + $check;
+		}
+		else
+		{
+			$x_min = $this->get_x();
+			$x_max = $this->get_x();
+			$y_min = $this->get_y();
+			$y_max = $this->get_y();
+		}
+		
+		self::check_zone($x_min, $x_max, $y_min, $y_max);
 	}
 
 	function is_ville($bourg = false, $bonus = false, &$royaume=null)
@@ -447,4 +492,3 @@ class map_case
 		}
 	}
 }
-?>

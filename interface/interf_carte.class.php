@@ -73,11 +73,6 @@ class interf_carte extends interf_tableau
 		$this->y_min = $y - $champ_vision;
 		$this->y_max = $y + $champ_vision;
 		
-		// Vérification des modifications à effectuer sur les cases avant de les afficher.
-		// Notamment, transformation des 'placement' en 'construction' si nécessaire.
-		$casePerso = new map_case($perso->get_x(), $perso->get_y());
-		$casePerso->check_case($champ_vision);
-		
 		// Bordure de carte
 		if( $this->x_min <= 0 )
 		{
@@ -99,8 +94,13 @@ class interf_carte extends interf_tableau
 			$this->y_min -= $this->y_max - $G_max_y;
 			$this->y_max = $G_max_y;
 		}
-
+		
+		// Vérification des modifications à effectuer sur les cases avant de les afficher.
+		// Notamment, transformation des 'placement' en 'construction' si nécessaire.
+		map_case::check_zone($this->x_min, $this->x_max, $this->y_min, $this->y_max);
+		
 		// Nysin
+		// Coordonnées cachées
 		$cache = 75 <= $x && $x <= 100 && 288 <= $y && $y <= 305;
 		// Bord haut
 		$this->nouv_cell('&nbsp;', 'carte_bord_haut_gauche');
