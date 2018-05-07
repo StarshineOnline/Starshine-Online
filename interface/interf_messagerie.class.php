@@ -58,7 +58,7 @@ class interf_liste_messages extends interf_cont
 		$tbl->nouv_cell('Date');
 		$lien = new interf_bal_smpl('a', '', false, 'icone icone-moins');
 		$lien->set_attribut('href', $G_url->get('action', 'tous_lu'));
-		$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sûr de vouloir marquer tous les messages comme lus ?\');');
+		$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir marquer tous les messages comme lus ?\');');
 		$lien->set_tooltip('Marquer tous les messages comme lus.');
 		$tbl->nouv_cell($lien);
 		
@@ -75,6 +75,8 @@ class interf_liste_messages extends interf_cont
 			if($nbr_msg > 0 && $nbr_msg != $messagerie->get_thread_masque($sujet->get_id()))
 			{
 				$date = date("d-m-y H:i", strtotime($sujet->get_dernier_message()));
+				// Pour pouvoir trier le tableau en javascript selon la date 
+				$dateForDateOrdering = date("YmdHis", strtotime($sujet->get_dernier_message()));
 				//Recherche du destinataire
 				if($sujet->get_id_dest() != 0)
 				{
@@ -97,7 +99,8 @@ class interf_liste_messages extends interf_cont
 				$tbl->nouv_cell( new interf_lien($titre, $url->get('action', 'lire')) );
 				$tbl->nouv_cell( $nbr_msg.($non_lu>0 ? ' <span class="badge">'.$non_lu.'</span>' : '') );
 				$tbl->nouv_cell( $nom_interlocuteur );
-				$tbl->nouv_cell( $date );
+				$dateCell = $tbl->nouv_cell( $date );
+				$dateCell->set_attribut('data-order', $dateForDateOrdering);
 				$cell = $tbl->nouv_cell();
 				/*if( $groupe->get_id_leader() && $type == 'groupe' )
 				{
@@ -109,7 +112,7 @@ class interf_liste_messages extends interf_cont
 				{
 					$lien = $cell->add( new interf_bal_smpl('a', '', false, 'icone icone-moins') );
 					$lien->set_attribut('href', $url->get('action', 'masquer_sujet'));
-					$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes vous sûr de vouloir masquer ce sujet ?\');');
+					$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Êtes-vous sûr de vouloir masquer ce sujet ?\');');
 					$lien->set_tooltip('Masquer ce sujet.');
 				}
 				if( joueur::is_granted('suppr', $sujet) )
@@ -190,7 +193,7 @@ class interf_messages extends interf_cont
 		{
 			$lien = $entete->add( new interf_bal_smpl('a', '', false, 'icone icone-poubelle') );
 			$lien->set_attribut('href', $url->get('action', 'suppr_msg'));
-			$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez vous supprimer ce message ?\');');
+			$lien->set_attribut('onclick', 'return verif_charger(this.href, \'Voulez-vous supprimer ce message ?\');');
 			$lien->set_tooltip('Supprimer ce message.');
 		}
 		$entete->add( new interf_bal_smpl('span', $message->get_nom_auteur(), false, 'auteur') );
