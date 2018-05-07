@@ -248,8 +248,8 @@ function nb_habitant($race)
 }
 
 /**
- * Renvoi le type de terrain, et le type de terrain affichable.
- * Le "type de terrain affichable" coreespond à ce qui est affiché dans le jeu.
+ * Renvoie le type de terrain, et le type de terrain affichable.
+ * Le "type de terrain affichable" correspond à ce qui est affiché dans le jeu.
  * 
  * @param $info Numéro du type de terrain
  * 
@@ -258,7 +258,7 @@ function nb_habitant($race)
  */ 
 function type_terrain($info)
 {
-	//Initialise les variables de terrain
+	// Initialise les variables de terrain
 	$typeterrain[1][0] = 'plaine';
 	$typeterrain[1][1] = 'Plaine';
 	$typeterrain[22][0] = 'plaine';
@@ -332,23 +332,23 @@ function type_terrain($info)
 	$typeterrain[96][0] = 'mur_donjon';
 	$typeterrain[96][1] = 'Mur de Donjon';
 	$typeterrain[101][0] = 'mer';
-  $typeterrain[101][1] = 'Zone innondée';
+	$typeterrain[101][1] = 'Zone inondée';
 	$typeterrain[105][0] = 'taverne_donjon';
-  $typeterrain[105][1] = 'Repère des renegats';
+	$typeterrain[105][1] = 'Repère des renégats';
 	$typeterrain[106][0] = 'taverne_donjon';
-  $typeterrain[106][1] = 'Repère des renegats';
+	$typeterrain[106][1] = 'Repère des renégats';
 	$typeterrain[135][0] = 'donjon_aqua_level_1';
-  $typeterrain[135][1] = 'Donjon';
+	$typeterrain[135][1] = 'Donjon';
 	$typeterrain[145][0] = 'donjon_aqua_level_1';
-  $typeterrain[145][1] = 'Donjon';
+	$typeterrain[145][1] = 'Donjon';
 	$typeterrain[155][0] = 'donjon_aqua_level_1';
-  $typeterrain[155][1] = 'Donjon';
+	$typeterrain[155][1] = 'Donjon';
 	$typeterrain[165][0] = 'donjon_aqua_level_1';
-  $typeterrain[165][1] = 'Donjon';
+	$typeterrain[165][1] = 'Donjon';
 	$typeterrain[175][0] = 'donjon_aqua_level_1';
-  $typeterrain[175][1] = 'Donjon';
+	$typeterrain[175][1] = 'Donjon';
 	$typeterrain[185][0] = 'donjon_aqua_level_1';
-  $typeterrain[185][1] = 'Donjon';
+	$typeterrain[185][1] = 'Donjon';
 	$typeterrain[195][0] = 'donjon';
 	$typeterrain[195][1] = 'Donjon';
 	$typeterrain[196][0] = 'mur_donjon';
@@ -370,28 +370,29 @@ function type_terrain($info)
 	$typeterrain[236][0] = 'mur_donjon';
 	$typeterrain[236][1] = 'Mur de Donjon';
 	$typeterrain[296][0] = 'donjon_aqua_level_1';
-  $typeterrain[296][1] = 'Donjon';
+	$typeterrain[296][1] = 'Donjon';
 	$typeterrain[469][0] = 'donjon_aqua_level_1';
-  $typeterrain[469][1] = 'Donjon';
+	$typeterrain[469][1] = 'Donjon';
 	$typeterrain[470][0] = 'donjon_aqua_level_1';
-  $typeterrain[470][1] = 'Donjon';
+	$typeterrain[470][1] = 'Donjon';
 	$typeterrain[481][0] = 'donjon_aqua_level_1';
-  $typeterrain[481][1] = 'Donjon';
+	$typeterrain[481][1] = 'Donjon';
 	$typeterrain[482][0] = 'donjon_aqua_level_1';
-  $typeterrain[482][1] = 'Donjon';
+	$typeterrain[482][1] = 'Donjon';
 	/* TEMPLATE
 	$typeterrain[][0] = '';
 	$typeterrain[][1] = '';
 	*/
-	//Type de terrain
+	// Type de terrain
 	$return[0] = $typeterrain[$info][0];
-	//Type de terrain en texte a affiché
+	// Type de terrain en texte à afficher
 	$return[1] = $typeterrain[$info][1];
+	
 	return $return;
 }
 
 /**
- * Renvoi la liste des ressource produite par ce terrain.
+ * Renvoie la liste des ressources produites par ce terrain.
  * 
  * @param $terrain Nom du type de terrain
  * 
