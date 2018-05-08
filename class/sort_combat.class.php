@@ -1030,7 +1030,7 @@ class sort_combat_cri_abom extends sort_combat
 			if ($final < $row['effet2'] && $rand != 20)
 			{
     		$attaque->get_interface()->texte('<strong>'.$spectateur->get_nom().'</strong> est effray&eacute; par ce spectacle, et se glace de terreur !', 'effet');
-				lance_buff('debuff_enracinement', $row_persos['id'], '10', '0', 86400, 'Terreur',
+				lance_buff('bloque_deplacement', $row_persos['id'], '10', '0', 86400, 'Terreur',
 									 'Vous etes terroris&eacute; par l\'affreux spectacle du supplice de '.$passif->get_nom(), 'perso', 1, 0, 0, 0);
 			}
 		}
@@ -1043,7 +1043,7 @@ class sort_combat_cri_abom extends sort_combat
 		}
 
 		if ($passif->get_hp() > 3)
-			lance_buff('debuff_enracinement', $passif->get_id(), '10', '0', 86400, 'Terreur',
+			lance_buff('bloque_deplacement', $passif->get_id(), '10', '0', 86400, 'Terreur',
 								 'Vous etes terroris&eacute; par l\'attaque de la cr&eacute;ature', 'perso', 1, 0, 0, 0);
 		lance_buff('lente_agonie', $passif->get_id(), 1, 0, 2678400, 'Marque de l\\\'abomination',
 							 'Les blessures engendrées par l\'épine de l\'abomination vous laissent dans une souffrance atroce. Il vous faudra du temps pour vous en remettre', 'perso', 1, 0, 0, 0);

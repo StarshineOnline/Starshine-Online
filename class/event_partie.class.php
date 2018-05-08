@@ -470,7 +470,7 @@ class event_partie_dte_rte extends event_partie
           $db->query($requete);
           if( $tps_buff )
           {
-            $requete = 'INSERT INTO buff (`type`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`) VALUES ("debuff_enracinement", '.$fin_buff.', '.$fin_buff.'-UNIX_TIMESTAMP(), '.$perso->get_id_perso().', "Enracinnement", "Vous ne pouvez bouger avant le début du combat", 1, 0)';
+            $requete = 'INSERT INTO buff (`type`, `fin`, `duree`, `id_perso`, `nom`, `description`, `debuff`, `supprimable`) VALUES ("bloque_deplacement", '.$fin_buff.', '.$fin_buff.'-UNIX_TIMESTAMP(), '.$perso->get_id_perso().', "Bloqué", "Vous ne pouvez bouger avant le début du combat", 1, 0)';
             $db->query($requete);
           }
         }

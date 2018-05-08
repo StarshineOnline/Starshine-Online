@@ -232,7 +232,7 @@ if($mouvement)
 	if( $perso->is_buff('potion_terres_maudites') && $type_terrain == 'terre_maudite' )
 		$cout -= $perso->get_buff('potion_terres_maudites', 'effet');
 	//Si le joueur a un buff ou débuff qui l'empêche de bouger
-	if($perso->is_buff('buff_forteresse') OR $perso->is_buff('buff_position') OR $perso->is_buff('debuff_enracinement') OR $perso->is_buff('bloque_deplacement') OR $perso->is_buff('dressage') OR $perso->is_buff('petrifie'))
+	if($perso->is_buff('buff_forteresse') OR $perso->is_buff('buff_position') OR $perso->is_buff('bloque_deplacement') OR $perso->is_buff('dressage') OR $perso->is_buff('petrifie'))
 	{
 		$peu_bouger = false;
 		$cause = 'Un buff vous empêche de bouger';

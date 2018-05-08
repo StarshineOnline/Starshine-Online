@@ -2621,7 +2621,7 @@ function image_sort($type)
 			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'debuff_enracinement' :
-			return '<img src="image/buff/debuff_ralentissement.png" alt="" style="vertical-align : middle;" width="32px" />';
+			return '<img src="image/buff/debuff_enracinement.png" alt="" style="vertical-align : middle;" width="32px" />';
 		break;
 		case 'engloutissement' :
 			return '<img src="image/buff/engloutissement.png" alt="" style="vertical-align : middle;" width="32px" />';
