@@ -1,6 +1,6 @@
 <?php
 if (file_exists('../root.php'))
-  include_once('../root.php');
+	include_once('../root.php');
 /**
  * @file race.inc.php
  * Description des races. 
@@ -14,7 +14,20 @@ if (file_exists('../root.php'))
  * - 7 : superbe        
  */
  
-$Trace['liste'] = array('', 'barbare', 'elfebois', 'troll', 'scavenger', '', 'orc', 'nain', 'mortvivant', 'humainnoir', 'humain', 'elfehaut', 'vampire');
+$Trace['liste'] = array(
+	1 => 'barbare'
+	, 2 => 'elfebois'
+	, 3 => 'troll'
+	, 4 => 'scavenger'
+	, 6 => 'orc'
+	, 7 => 'nain'
+	, 8 => 'mortvivant'
+	, 9 => 'humainnoir'
+	, 10 => 'humain'
+	, 11 => 'elfehaut'
+	, 12 => 'vampire'
+);
+
 /**
  * @name Barbares
  * Caractéristiques des Barbares
@@ -31,14 +44,14 @@ $Trace['barbare']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de la
 $Trace['barbare']['affinite_sort_element'] = 4;  ///< Afinité avec la magie élémentaire des Barbares.
 $Trace['barbare']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Barbares.
 $Trace['barbare']['numrace'] = 1;  ///< Numéro des Barbares. 
-$Trace['barbare']['spawn_x'] = 79;
-$Trace['barbare']['spawn_y'] = 137;
-$Trace['barbare']['spawn_tutocx'] = 230;
-$Trace['barbare']['spawn_tutocy'] = 55;
-$Trace['barbare']['spawn_tutomx'] = 230;
-$Trace['barbare']['spawn_tutomy'] = 55;
-$Trace['barbare']['spawn_c_x'] = 63;
-$Trace['barbare']['spawn_c_y'] = 140;
+$Trace['barbare']['spawn_x'] = 79;  ///< x Spawn pour perso normal
+$Trace['barbare']['spawn_y'] = 137;  ///< y Spawn pour perso normal
+$Trace['barbare']['spawn_c_x'] = 63;  ///< x Spawn pour perso criminel
+$Trace['barbare']['spawn_c_y'] = 140;  ///< y Spawn pour perso criminel
+$Trace['barbare']['spawn_tutocx'] = 230;  ///< x Spawn du Tuto pour combattant
+$Trace['barbare']['spawn_tutocy'] = 55;  ///< y Spawn du Tuto pour combattant
+$Trace['barbare']['spawn_tutomx'] = 230;  ///< x Spawn du Tuto pour magicien
+$Trace['barbare']['spawn_tutomy'] = 55;  ///< y Spawn du Tuto pour magicien
 $Trace['barbare']['couleur'] = "#0068ff";  ///< Couleur des Barbares.
 $Trace['barbare']['forum_id'] = 20;   ///< ID du forum des Barbares.
 //@}
@@ -58,14 +71,14 @@ $Trace['elfebois']['affinite_sort_mort'] = 1;  ///< Affinité avec la magie de l
 $Trace['elfebois']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Elfes des Bois.
 $Trace['elfebois']['affinite_sort_vie'] = 7;  ///< Affinité avec la magie de la vie des Elfes des Bois.
 $Trace['elfebois']['numrace'] = 2;  ///< Numéro des Elfes des Bois.
-$Trace['elfebois']['spawn_x'] = 44;
-$Trace['elfebois']['spawn_y'] = 90;
-$Trace['elfebois']['spawn_tutocx'] = 203;
-$Trace['elfebois']['spawn_tutocy'] = 97;
-$Trace['elfebois']['spawn_tutomx'] = 203;
-$Trace['elfebois']['spawn_tutomy'] = 97;
-$Trace['elfebois']['spawn_c_x'] = 49;
-$Trace['elfebois']['spawn_c_y'] = 79;
+$Trace['elfebois']['spawn_x'] = 44;  ///< x Spawn pour perso normal
+$Trace['elfebois']['spawn_y'] = 90;  ///< y Spawn pour perso normal
+$Trace['elfebois']['spawn_c_x'] = 49;  ///< x Spawn pour perso criminel
+$Trace['elfebois']['spawn_c_y'] = 79;  ///< y Spawn pour perso criminel
+$Trace['elfebois']['spawn_tutocx'] = 203;  ///< x Spawn du Tuto pour combattant
+$Trace['elfebois']['spawn_tutocy'] = 97;  ///< y Spawn du Tuto pour combattant
+$Trace['elfebois']['spawn_tutomx'] = 203;  ///< x Spawn du Tuto pour magicien
+$Trace['elfebois']['spawn_tutomy'] = 97;  ///< y Spawn du Tuto pour magicien
 $Trace['elfebois']['couleur'] = "#009900";  ///< Couleur des Elfes des Bois.
 $Trace['elfebois']['forum_id'] = 22;   ///< ID du forum des Elfes des Bois.
 //@}
@@ -85,14 +98,14 @@ $Trace['elfehaut']['affinite_sort_mort'] = 1;  ///< Affinité avec la magie de l
 $Trace['elfehaut']['affinite_sort_element'] = 7;  ///< Affinité avec la magie élémentaire des Hauts Elfes.
 $Trace['elfehaut']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Hauts Elfes.
 $Trace['elfehaut']['numrace'] = 11;  ///< Numéro des Hauts Elfes.
-$Trace['elfehaut']['spawn_x'] = 72;
-$Trace['elfehaut']['spawn_y'] = 12;
-$Trace['elfehaut']['spawn_tutocx'] = 200;
-$Trace['elfehaut']['spawn_tutocy'] = 111;
-$Trace['elfehaut']['spawn_tutomx'] = 200;
-$Trace['elfehaut']['spawn_tutomy'] = 111;
-$Trace['elfehaut']['spawn_c_x'] = 66;
-$Trace['elfehaut']['spawn_c_y'] = 1;
+$Trace['elfehaut']['spawn_x'] = 72;  ///< x Spawn pour perso normal
+$Trace['elfehaut']['spawn_y'] = 12;  ///< y Spawn pour perso normal
+$Trace['elfehaut']['spawn_c_x'] = 66;  ///< x Spawn pour perso criminel
+$Trace['elfehaut']['spawn_c_y'] = 1;  ///< y Spawn pour perso criminel
+$Trace['elfehaut']['spawn_tutocx'] = 200;  ///< x Spawn du Tuto pour combattant
+$Trace['elfehaut']['spawn_tutocy'] = 111;  ///< y Spawn du Tuto pour combattant
+$Trace['elfehaut']['spawn_tutomx'] = 200;  ///< x Spawn du Tuto pour magicien
+$Trace['elfehaut']['spawn_tutomy'] = 111;  ///< y Spawn du Tuto pour magicien
 $Trace['elfehaut']['couleur'] = "#ffffff";  ///< Couleur des Hauts Elfes.
 $Trace['elfehaut']['forum_id'] = 23;   ///< ID du forum des Hauts Elfes.
 //@}
@@ -112,14 +125,14 @@ $Trace['humain']['affinite_sort_mort'] = 3;  ///< Affinité avec la magie de la 
 $Trace['humain']['affinite_sort_element'] = 5;  ///< Affinité avec la magie élémentaire des Humains.
 $Trace['humain']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Humains.
 $Trace['humain']['numrace'] = 10;  ///< Numéro des Humains.
-$Trace['humain']['spawn_x'] = 26;
-$Trace['humain']['spawn_y'] = 137;
-$Trace['humain']['spawn_tutocx'] = 254;
-$Trace['humain']['spawn_tutocy'] = 59;
-$Trace['humain']['spawn_tutomx'] = 259;
-$Trace['humain']['spawn_tutomy'] = 156;
-$Trace['humain']['spawn_c_x'] = 140;
-$Trace['humain']['spawn_c_y'] = 9;
+$Trace['humain']['spawn_x'] = 26;  ///< x Spawn pour perso normal
+$Trace['humain']['spawn_y'] = 137;  ///< y Spawn pour perso normal
+$Trace['humain']['spawn_c_x'] = 9;  ///< x Spawn pour perso criminel
+$Trace['humain']['spawn_c_y'] = 140;  ///< y Spawn pour perso criminel
+$Trace['humain']['spawn_tutocx'] = 254;  ///< x Spawn du Tuto pour combattant
+$Trace['humain']['spawn_tutocy'] = 59;  ///< y Spawn du Tuto pour combattant
+$Trace['humain']['spawn_tutomx'] = 259;  ///< x Spawn du Tuto pour magicien
+$Trace['humain']['spawn_tutomy'] = 156;  ///< y Spawn du Tuto pour magicien
 $Trace['humain']['couleur'] = "#0000ff";  ///< Couleur des Humains.
 $Trace['humain']['forum_id'] = 26;   ///< ID du forum des Humains.
 //@}
@@ -139,14 +152,14 @@ $Trace['humainnoir']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de
 $Trace['humainnoir']['affinite_sort_element'] = 5;  ///< Affinité avec la magie élémentaire des Corrompus.
 $Trace['humainnoir']['affinite_sort_vie'] = 3;  ///< Affinité avec la magie de la vie des Corrompus.
 $Trace['humainnoir']['numrace'] = 9;  ///< Numéro des Corrompus.
-$Trace['humainnoir']['spawn_x'] = 103;
-$Trace['humainnoir']['spawn_y'] = 97;
-$Trace['humainnoir']['spawn_tutocx'] = 244;
-$Trace['humainnoir']['spawn_tutocy'] = 174;
-$Trace['humainnoir']['spawn_tutomx'] = 244;
-$Trace['humainnoir']['spawn_tutomy'] = 174;
-$Trace['humainnoir']['spawn_c_x'] = 95;
-$Trace['humainnoir']['spawn_c_y'] = 90;
+$Trace['humainnoir']['spawn_x'] = 103;  ///< x Spawn pour perso normal
+$Trace['humainnoir']['spawn_y'] = 97;  ///< y Spawn pour perso normal
+$Trace['humainnoir']['spawn_c_x'] = 95;  ///< x Spawn pour perso criminel
+$Trace['humainnoir']['spawn_c_y'] = 90;  ///< y Spawn pour perso criminel
+$Trace['humainnoir']['spawn_tutocx'] = 244;  ///< x Spawn du Tuto pour combattant
+$Trace['humainnoir']['spawn_tutocy'] = 174;  ///< y Spawn du Tuto pour combattant
+$Trace['humainnoir']['spawn_tutomx'] = 244;  ///< x Spawn du Tuto pour magicien
+$Trace['humainnoir']['spawn_tutomy'] = 174;  ///< y Spawn du Tuto pour magicien
 $Trace['humainnoir']['couleur'] = "#000000";  ///< Couleur des Corrompus.
 $Trace['humainnoir']['forum_id'] = 27;   ///< ID du forum des Corrompus.
 //@}
@@ -166,14 +179,14 @@ $Trace['mortvivant']['affinite_sort_mort'] = 7;  ///< Affinité avec la magie de
 $Trace['mortvivant']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Morts-Vivants.
 $Trace['mortvivant']['affinite_sort_vie'] = 1;  ///< Affinité avec la magie de la vie des Morts-Vivants.
 $Trace['mortvivant']['numrace'] = 8;  ///< Numéro des Morts-Vivants.
-$Trace['mortvivant']['spawn_x'] = 11;
-$Trace['mortvivant']['spawn_y'] = 68;
-$Trace['mortvivant']['spawn_tutocx'] = 203;
-$Trace['mortvivant']['spawn_tutocy'] = 77;
-$Trace['mortvivant']['spawn_tutomx'] = 203;
-$Trace['mortvivant']['spawn_tutomy'] = 77;
-$Trace['mortvivant']['spawn_c_x'] = 57;
-$Trace['mortvivant']['spawn_c_y'] = 3;
+$Trace['mortvivant']['spawn_x'] = 11;  ///< x Spawn pour perso normal
+$Trace['mortvivant']['spawn_y'] = 68;  ///< y Spawn pour perso normal
+$Trace['mortvivant']['spawn_c_x'] = 3;  ///< x Spawn pour perso criminel
+$Trace['mortvivant']['spawn_c_y'] = 57;  ///< y Spawn pour perso criminel
+$Trace['mortvivant']['spawn_tutocx'] = 203;  ///< x Spawn du Tuto pour combattant
+$Trace['mortvivant']['spawn_tutocy'] = 77;  ///< y Spawn du Tuto pour combattant
+$Trace['mortvivant']['spawn_tutomx'] = 203;  ///< x Spawn du Tuto pour magicien
+$Trace['mortvivant']['spawn_tutomy'] = 77;  ///< y Spawn du Tuto pour magicien
 $Trace['mortvivant']['couleur'] = "#5c1e00";  ///< Couleur des Morts-Vivants.
 $Trace['mortvivant']['forum_id'] = 30;   ///< ID du forum des Morts-Vivants.
 //@}
@@ -193,14 +206,14 @@ $Trace['nain']['affinite_sort_mort'] = 1;  ///< Affinité avec la magie de la mo
 $Trace['nain']['affinite_sort_element'] = 3;  ///< Affinité avec la magie élémentaire des Nains.
 $Trace['nain']['affinite_sort_vie'] = 6;  ///< Affinité avec la magie de la vie des Nains.
 $Trace['nain']['numrace'] = 7;  ///< Numéro des Nains.
-$Trace['nain']['spawn_x'] = 16;
-$Trace['nain']['spawn_y'] = 12;
-$Trace['nain']['spawn_tutocx'] = 215;
-$Trace['nain']['spawn_tutocy'] = 152;
-$Trace['nain']['spawn_tutomx'] = 225;
-$Trace['nain']['spawn_tutomy'] = 156;
-$Trace['nain']['spawn_c_x'] = 5;
-$Trace['nain']['spawn_c_y'] = 6;
+$Trace['nain']['spawn_x'] = 16;  ///< x Spawn pour perso normal
+$Trace['nain']['spawn_y'] = 12;  ///< y Spawn pour perso normal
+$Trace['nain']['spawn_c_x'] = 5;  ///< x Spawn pour perso criminel
+$Trace['nain']['spawn_c_y'] = 6;  ///< y Spawn pour perso criminel
+$Trace['nain']['spawn_tutocx'] = 215;  ///< x Spawn du Tuto pour combattant
+$Trace['nain']['spawn_tutocy'] = 152;  ///< y Spawn du Tuto pour combattant
+$Trace['nain']['spawn_tutomx'] = 225;  ///< x Spawn du Tuto pour magicien
+$Trace['nain']['spawn_tutomy'] = 156;  ///< y Spawn du Tuto pour magicien
 $Trace['nain']['couleur'] = "#ffa500";  ///< Couleur des Nains.
 $Trace['nain']['forum_id'] = 32;   ///< ID du forum des Nains.
 //@}
@@ -220,14 +233,14 @@ $Trace['orc']['affinite_sort_mort'] = 3;  ///< Affinité avec la magie de la mor
 $Trace['orc']['affinite_sort_element'] = 5;  ///< Affinité avec la magie élémentaire des Orcs.
 $Trace['orc']['affinite_sort_vie'] = 2;  ///< Affinité avec la magie de la vie des Orcs.
 $Trace['orc']['numrace'] = 6;  ///< Numéro des Orcs.
-$Trace['orc']['spawn_x'] = 125;
-$Trace['orc']['spawn_y'] = 54;
-$Trace['orc']['spawn_tutocx'] = 260;
-$Trace['orc']['spawn_tutocy'] = 75;
-$Trace['orc']['spawn_tutomx'] = 271;
-$Trace['orc']['spawn_tutomy'] = 74;
-$Trace['orc']['spawn_c_x'] = 135;
-$Trace['orc']['spawn_c_y'] = 55;
+$Trace['orc']['spawn_x'] = 125;  ///< x Spawn pour perso normal
+$Trace['orc']['spawn_y'] = 54;  ///< y Spawn pour perso normal
+$Trace['orc']['spawn_c_x'] = 135;  ///< x Spawn pour perso criminel
+$Trace['orc']['spawn_c_y'] = 55;  ///< y Spawn pour perso criminel
+$Trace['orc']['spawn_tutocx'] = 260;  ///< x Spawn du Tuto pour combattant
+$Trace['orc']['spawn_tutocy'] = 75;  ///< y Spawn du Tuto pour combattant
+$Trace['orc']['spawn_tutomx'] = 271;  ///< x Spawn du Tuto pour magicien
+$Trace['orc']['spawn_tutomy'] = 74;  ///< y Spawn du Tuto pour magicien
 $Trace['orc']['couleur'] = "#ffcccc";  ///< Couleur des Orcs.
 $Trace['orc']['forum_id'] = 33;   ///< ID du forum des Scavengers.
 //@}
@@ -247,14 +260,14 @@ $Trace['scavenger']['affinite_sort_mort'] = 4;  ///< Affinité avec la magie de 
 $Trace['scavenger']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Scavengers.
 $Trace['scavenger']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Scavengers.
 $Trace['scavenger']['numrace'] = 4;  ///< Numéro des Scavengers.
-$Trace['scavenger']['spawn_x'] = 136;
-$Trace['scavenger']['spawn_y'] = 22;
-$Trace['scavenger']['spawn_tutocx'] = 261;
-$Trace['scavenger']['spawn_tutocy'] = 88;
-$Trace['scavenger']['spawn_tutomx'] = 261;
-$Trace['scavenger']['spawn_tutomy'] = 88;
-$Trace['scavenger']['spawn_c_x'] = 145;
-$Trace['scavenger']['spawn_c_y'] = 10;
+$Trace['scavenger']['spawn_x'] = 136;  ///< x Spawn pour perso normal
+$Trace['scavenger']['spawn_y'] = 22;  ///< y Spawn pour perso normal
+$Trace['scavenger']['spawn_c_x'] = 145;  ///< x Spawn pour perso criminel
+$Trace['scavenger']['spawn_c_y'] = 10;  ///< y Spawn pour perso criminel
+$Trace['scavenger']['spawn_tutocx'] = 261;  ///< x Spawn du Tuto pour combattant
+$Trace['scavenger']['spawn_tutocy'] = 88;  ///< y Spawn du Tuto pour combattant
+$Trace['scavenger']['spawn_tutomx'] = 261;  ///< x Spawn du Tuto pour magicien
+$Trace['scavenger']['spawn_tutomy'] = 88;  ///< y Spawn du Tuto pour magicien
 $Trace['scavenger']['couleur'] = "#ffff00";  ///< Couleur des Scavengers.
 $Trace['scavenger']['forum_id'] = 36;   ///< ID du forum des Scavengers.
 //@}
@@ -274,14 +287,14 @@ $Trace['troll']['affinite_sort_mort'] = 2;  ///< Affinité avec la magie de la m
 $Trace['troll']['affinite_sort_element'] = 4;  ///< Affinité avec la magie élémentaire des Trolls.
 $Trace['troll']['affinite_sort_vie'] = 4;  ///< Affinité avec la magie de la vie des Trolls.
 $Trace['troll']['numrace'] = 3;  ///< Numéro des Trolls.
-$Trace['troll']['spawn_x'] = 62;
-$Trace['troll']['spawn_y'] = 48;
-$Trace['troll']['spawn_tutocx'] = 218;
-$Trace['troll']['spawn_tutocy'] = 177;
-$Trace['troll']['spawn_tutomx'] = 230;
-$Trace['troll']['spawn_tutomy'] = 178;
-$Trace['troll']['spawn_c_x'] = 54;
-$Trace['troll']['spawn_c_y'] = 30;
+$Trace['troll']['spawn_x'] = 62;  ///< x Spawn pour perso normal
+$Trace['troll']['spawn_y'] = 48;  ///< y Spawn pour perso normal
+$Trace['troll']['spawn_c_x'] = 54;  ///< x Spawn pour perso criminel
+$Trace['troll']['spawn_c_y'] = 30;  ///< y Spawn pour perso criminel
+$Trace['troll']['spawn_tutocx'] = 218;  ///< x Spawn du Tuto pour combattant
+$Trace['troll']['spawn_tutocy'] = 177;  ///< y Spawn du Tuto pour combattant
+$Trace['troll']['spawn_tutomx'] = 230;  ///< x Spawn du Tuto pour magicien
+$Trace['troll']['spawn_tutomy'] = 178;  ///< y Spawn du Tuto pour magicien
 $Trace['troll']['couleur'] = "#ff0000";  ///< Couleur des Trolls.
 $Trace['troll']['forum_id'] = 37;   ///< ID du forum des Trolls.
 //@}
@@ -301,14 +314,14 @@ $Trace['vampire']['affinite_sort_mort'] = 6;  ///< Affinité avec la magie de la
 $Trace['vampire']['affinite_sort_element'] = 6;  ///< Affinité avec la magie élémentaire des Vampires.
 $Trace['vampire']['affinite_sort_vie'] = 3;  ///< Affinité avec la magie de la vie des Vampires.
 $Trace['vampire']['numrace'] = 12;  ///< Numéro des Vampires.
-$Trace['vampire']['spawn_x'] = 135;
-$Trace['vampire']['spawn_y'] = 133;
-$Trace['vampire']['spawn_tutocx'] = 213;
-$Trace['vampire']['spawn_tutocy'] = 144;
-$Trace['vampire']['spawn_tutomx'] = 213;
-$Trace['vampire']['spawn_tutomy'] = 144;
-$Trace['vampire']['spawn_c_x'] = 124;
-$Trace['vampire']['spawn_c_y'] = 118;
+$Trace['vampire']['spawn_x'] = 135;  ///< x Spawn pour perso normal
+$Trace['vampire']['spawn_y'] = 133;  ///< y Spawn pour perso normal
+$Trace['vampire']['spawn_c_x'] = 124;  ///< x Spawn pour perso criminel
+$Trace['vampire']['spawn_c_y'] = 118;  ///< y Spawn pour perso criminel
+$Trace['vampire']['spawn_tutocx'] = 213;  ///< x Spawn du Tuto pour combattant
+$Trace['vampire']['spawn_tutocy'] = 144;  ///< y Spawn du Tuto pour combattant
+$Trace['vampire']['spawn_tutomx'] = 213;  ///< x Spawn du Tuto pour magicien
+$Trace['vampire']['spawn_tutomy'] = 144;  ///< y Spawn du Tuto pour magicien
 $Trace['vampire']['couleur'] = "#cccccc";  ///< Couleur des Vampires.
 $Trace['vampire']['forum_id'] = 40;   ///< ID du forum des Vampires.
 //@}
