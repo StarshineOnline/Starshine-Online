@@ -54,9 +54,6 @@ include_once(root.$root.'inc/classe.inc.php');
 //Inclusion du fichier contenant les traductions
 include_once(root.$root.'inc/traduction.inc.php');
 
-//Inclusion du fichier contenant toutes les variables du terrain (nom, pa)
-include_once(root.$root.'inc/type_terrain.inc.php');
-
 //Inclusion du fichier contenant toutes les fonctions de base
 include_once(root.$root.'fonction/base.inc.php');
 

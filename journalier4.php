@@ -25,9 +25,6 @@ include_once(root.'inc/variable.inc.php');
 //Inclusion du fichier contenant toutes les informations sur les races
 include_once(root.'inc/race.inc.php');
 
-//Inclusion du fichier contenant toutes les variables du terrain (nom, pa)
-include_once(root.'inc/type_terrain.inc.php');
-
 include_once(root.'inc/ressource.inc.php');
 //Inclusion du fichier contenant toutes les fonctions de base
 include_once(root.'fonction/base.inc.php');
