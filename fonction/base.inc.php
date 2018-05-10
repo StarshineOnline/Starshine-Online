@@ -248,17 +248,19 @@ function nb_habitant($race)
 }
 
 /**
- * Renvoie le type de terrain, et le type de terrain affichable.
- * Le "type de terrain affichable" correspond à ce qui est affiché dans le jeu.
+ * Renvoie un tableau des types de terrain, indexé par id
+ * Un type de terrain est de la forme array(0 => 'identifiant_textuel', 1 => 'nom_pour_affichage')
  * 
- * @param $info Numéro du type de terrain
- * 
- * @return [0] type de terrain (usage interne).
- * @return [1] type de terrain (pour afficher).
+ * @return array Tableau des types de terrain
  */ 
-function type_terrain($info)
+function type_terrain_find_all()
 {
-	// Initialise les variables de terrain
+	/* TEMPLATE
+	$typeterrain[id][0] = 'identifiant_textuel';
+	$typeterrain[id][1] = 'nom_pour_affichage';
+	*/
+	$typeterrain = array();
+	
 	$typeterrain[1][0] = 'plaine';
 	$typeterrain[1][1] = 'Plaine';
 	$typeterrain[22][0] = 'plaine';
@@ -379,16 +381,24 @@ function type_terrain($info)
 	$typeterrain[481][1] = 'Donjon';
 	$typeterrain[482][0] = 'donjon_aqua_level_1';
 	$typeterrain[482][1] = 'Donjon';
-	/* TEMPLATE
-	$typeterrain[][0] = '';
-	$typeterrain[][1] = '';
-	*/
-	// Type de terrain
-	$return[0] = $typeterrain[$info][0];
-	// Type de terrain en texte à afficher
-	$return[1] = $typeterrain[$info][1];
 	
-	return $return;
+	return $typeterrain;
+}
+
+/**
+ * Renvoie, pour un type de terrain donné, le type de terrain et le type de terrain affichable.
+ * Le "type de terrain affichable" correspond à ce qui est affiché dans le jeu.
+ * 
+ * @param $info Numéro du type de terrain
+ * 
+ * @return [0] type de terrain (usage interne).
+ * @return [1] type de terrain (pour afficher).
+ */ 
+function type_terrain($info)
+{
+	$typeterrains = type_terrain_find_all();
+	
+	return $typeterrains[$info];
 }
 
 /**
