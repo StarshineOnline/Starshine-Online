@@ -6,7 +6,7 @@
 include_once(root.'inc/ressource.inc.php');
 
 		
-//Créer l'interface de gestion des quetes pour les rois
+// Créer l'interface de gestion des quêtes pour les rois
 class interf_quete_royaume extends interf_cont
 {
 	function __construct(&$royaume)
@@ -17,12 +17,12 @@ class interf_quete_royaume extends interf_cont
 	
 	protected function aff_tableau(&$royaume)
 	{
-		global $db, $ress, $G_url, $Gtrad;
+		global $db, $G_url, $Gtrad;
 		$tbl = $this->add( new interf_data_tbl('tbl_quete', '', false, false, false, 3	) );
-		$tbl->nouv_cell('Quete');
+		$tbl->nouv_cell('Quête');
 		//$tbl->nouv_cell('Type');
 		$tbl->nouv_cell('Fournisseur');
-		$tbl->nouv_cell('Repetable');
+		$tbl->nouv_cell('Répétable');
 		$tbl->nouv_cell('Cout');
 		$tbl->nouv_cell('Achat');
 		
@@ -74,7 +74,7 @@ class interf_infos_quete extends interf_dialogBS
 				$req = array();
 				switch($r[0])
 				{
-				case 'q':  // une quete doit être finies avant la présente
+				case 'q':  // une quête doit être finie avant la présente
 					$txt = 'Quête ';
 					if( $val[0] == '!' )
 					{

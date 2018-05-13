@@ -17,7 +17,7 @@ class interf_ressources extends interf_cont
 	}
 	protected function aff_tableau()
 	{
-		global $db, $ress;
+		global $db, $Gress;
 		$tbl = $this->add( new interf_data_tbl('tbl_ressources', '', false, false) );
 		$tbl->nouv_cell('Ressource');
 		$tbl->nouv_cell('Gain hier');
@@ -51,7 +51,7 @@ class interf_ressources extends interf_cont
 				$this->terrain_ress[$typeterrain[1]] += $row['tot_terrain'];
 		}
 		//Ressource normale
-		foreach($ress as $key_terr => $terr)
+		foreach($Gress as $key_terr => $terr)
 		{
 			foreach($terr as $key => $res)
 			{
@@ -78,7 +78,7 @@ class interf_ressources extends interf_cont
 		while($row = $db->read_assoc($req))
 		{
 			$terrain = type_terrain($row['info']);
-			$ress_terrain = $ress[$terrain[1]];
+			$ress_terrain = $Gress[$terrain[1]];
 			if($batiment[$row['id_batiment']]['specialite'] != 0)
 			{
 				switch($batiment[$row['id_batiment']]['specialite'])

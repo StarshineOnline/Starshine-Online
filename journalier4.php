@@ -38,7 +38,7 @@ $ressources = array();
 /// Liste des royaumes
 $lst_roy = array_keys($Trace);
 /// Liste des ressources
-$lst_rsrc = array_keys($ress['Plaine']);
+$lst_rsrc = array_keys($Gress['Plaine']);
 
 //On initialise le tableau de ressources des royaumes
 foreach($lst_roy as $royaume)
@@ -61,7 +61,7 @@ while($row = $db->read_assoc($req))
 	}
 }
 
-//print_r($ress);
+//print_r($Gress);
 //Ressource normale
 $tot_nou = 0;
 foreach($ressources as $royaume=>$packs)
@@ -78,7 +78,7 @@ foreach($ressources as $royaume=>$packs)
     if( $terr == 'Bâtiment' || $terr == 'Donjon' )
       continue;
     $msg_gains = '';
-		$gains_pack = $ress[$terr];
+		$gains_pack = $Gress[$terr];
 		foreach($gains_pack as $rsrc=>$gain)
 		{
 		  if( $msg_gains )
@@ -130,7 +130,7 @@ while($row = $db->read_assoc($req))
 		continue;
 	}
 	$terrain = type_terrain($row['info']);
-	$ress_terrain = $ress[ $terrain[1] ];
+	$ress_terrain = $Gress[ $terrain[1] ];
 	$royaume = get_royaume_info($row['royaume'], $row['royaume']);
 	$buff = (1 + $batiment[$row['id_batiment']]['buff']/100) / (1 + $batiment[$row['id_batiment']]['debuff']/100);
 	if($batiment[$row['id_batiment']]['specialite'] != 0)
