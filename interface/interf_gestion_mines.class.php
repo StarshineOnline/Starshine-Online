@@ -150,7 +150,7 @@ class interf_bourg_case extends interf_dialogBS
 		$bourg->get_placements();
 		if($bourg->get_mine_max() <= $bourg->get_mine_total())
 		{
-			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, ce bourg ne peut plus avoir de mine associée') );
+			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, ce bourg ne peut plus avoir de mine associée.') );
 			return;
 		}
 		//On vérifie que la case appartient bien au royaume
@@ -159,7 +159,7 @@ class interf_bourg_case extends interf_dialogBS
 		$db->query($requete);
 		if($db->num_rows == 0)
 		{
-			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, ce terrain ne vous appartient pas') );
+			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, ce terrain ne vous appartient pas.') );
 			return;
 		}
 		$row = $db->read_assoc($req);
@@ -169,7 +169,7 @@ class interf_bourg_case extends interf_dialogBS
 		$db->query($requete);
 		if($db->num_rows > 0)
 		{
-			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, il y a déjà un batiment') );
+			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, il y a déjà un bâtiment.') );
 			return;
 		}
 		//On vérifie qu'il y a pas déjà une construction sur cette case
@@ -178,7 +178,7 @@ class interf_bourg_case extends interf_dialogBS
 		$db->query($requete);
 		if($db->num_rows > 0)
 		{
-			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, il y a déjà un batiment en construction') );
+			$this->add( new interf_alerte(interf_alerte::msg_erreur, false, false, 'Construction impossible, il y a déjà un bâtiment en construction.') );
 			return;
 		}
 		//On peut construire une mine
