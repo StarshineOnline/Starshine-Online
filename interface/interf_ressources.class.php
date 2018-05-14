@@ -45,12 +45,11 @@ class interf_ressources extends interf_cont
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
-	
-				$typeterrain = type_terrain($row['info']);
-				$ressources[$typeterrain[1]] += $row['tot_terrain']/10;
-				$this->terrain_ress[$typeterrain[1]] += $row['tot_terrain'];
+			$typeterrain = type_terrain($row['info']);
+			$ressources[$typeterrain[1]] += $row['tot_terrain']/10;
+			$this->terrain_ress[$typeterrain[1]] += $row['tot_terrain'];
 		}
-		//Ressource normale
+		// Ressource normale
 		foreach($Gress as $key_terr => $terr)
 		{
 			foreach($terr as $key => $res)
@@ -59,14 +58,16 @@ class interf_ressources extends interf_cont
 				$ress_terrain[$key_terr][$key] +=  $res * floor($ressources[$key_terr]);
 			}
 		}
-		//Ressource mine
-		//On récupère la liste des batiments de type mine
+		// Ressource mine
+		// On récupère la liste des bâtiments de type mine
 		$batiment = array();
-		$requete = "SELECT b.id, bp.valeur production, bs.valeur specialite 
-	FROM batiment b 
-	LEFT JOIN batiment_bonus bp ON bp.id_batiment = b.id and bp.bonus = 'production' 
-	LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite' 
-	where b.type = 'mine'";
+		$requete =
+			"SELECT b.id, bp.valeur production, bs.valeur specialite
+			FROM batiment b
+			LEFT JOIN batiment_bonus bp ON bp.id_batiment = b.id and bp.bonus = 'production'
+			LEFT JOIN batiment_bonus bs ON bs.id_batiment = b.id and bs.bonus = 'specialite'
+			WHERE b.type = 'mine'"
+		;
 		$req = $db->query($requete);
 		while($row = $db->read_assoc($req))
 		{
@@ -171,10 +172,12 @@ class interf_ressources extends interf_cont
 
 class interf_ressource_graph extends interf_dialogBS
 {
-	function __construct(&$royaume, $rsrc)
+	function __construct(&$royaume, $nomRessource)
 	{
 		global $db;
-		parent::__construct($rsrc, true, 'dlg_ressources');
+		
+		parent::__construct($nomRessource, true, 'dlg_ressources');
+		
 		include_once(root."pChart/pData.class");
 		include_once(root."pChart/pChart.class");
 		$date_semaine = date("Y-m-d", mktime(0, 0, 0, date("m") , date("d") - 7, date("Y")));
@@ -185,9 +188,9 @@ class interf_ressource_graph extends interf_dialogBS
 		while($row = $db->read_assoc($req))
 		{
 			$stat_race = $row[$royaume->get_race()];
-			$explode = explode(';', $stat_race);
+			$tab_stat_race = explode(';', $stat_race);
+			$data[] = $tab_stat_race[getIndexStatRaceByNomRessource($nomRessource)];
 			$dates[] = $row['date'];
-			$data[] = $explode[ressource($_GET['ress'])];
 		}
 	
 		$DataSet = new pData();
@@ -196,7 +199,7 @@ class interf_ressource_graph extends interf_dialogBS
 		$DataSet->AddPoint($dates, "dates");
 		$DataSet->SetAbsciseLabelSerie("dates");
 	
-		//Graph
+		// Graph
 		$graph = new pChart(900, 400);
 		$graph->setFontProperties("../pChart/fonts/tahoma.ttf",8);
 		$graph->setGraphArea(70,30,880,375);
@@ -216,10 +219,8 @@ class interf_ressource_graph extends interf_dialogBS
 		
 		// Finish the graph  
 		$graph->setFontProperties("../pChart/fonts/tahoma.ttf",12);
-		$graph->drawTitle(50,22,$_GET['ress'].' dans la semaine',50,50,50,585);
-		$graph->Render('../image/'.$royaume->get_race().'_'.$_GET['ress'].'.png');
-		$this->add( new interf_img('../image/'.$royaume->get_race().'_'.$_GET['ress'].'.png') );
+		$graph->drawTitle(50,22,$nomRessource.' dans la semaine',50,50,50,585);
+		$graph->Render('../image/'.$royaume->get_race().'_'.$nomRessource.'.png');
+		$this->add( new interf_img('../image/'.$royaume->get_race().'_'.$nomRessource.'.png') );
 	}
 }
-
-?>
