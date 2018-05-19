@@ -88,8 +88,8 @@ case 'creer_joueur':
 case 'creer_perso':
 	interf_sso::change_url();
 	$pseudo = $_POST['nom'];
-  $race = $_POST['race'];
-  $classe = $_POST['classe'];
+	$race = $_POST['race'];
+	$classe = $_POST['classe'];
   
 	//Config punbb groups
 	$punbb['elfebois'] = 6;
@@ -208,10 +208,11 @@ case 'creer_perso':
 	$perso->set_tuto(1);
 	$perso->set_date_creation(time());
 
+	$perso->set_dernier_connexion(time());
 	$perso->set_statut('actif');
 	$perso->set_dernieraction(time());
-  $perso->set_id_joueur( $_SESSION['id_joueur'] );
-  $perso->set_password( $joueur->get_mdp_jabber() );
+	$perso->set_id_joueur( $_SESSION['id_joueur'] );
+	$perso->set_password( $joueur->get_mdp_jabber() );
 
 	$perso->sauver();
 	$jid = replace_all($perso->get_nom()).'@jabber.starshine-online.com';
@@ -221,9 +222,9 @@ case 'creer_perso':
 		//Création de l'utilisateur dans le forum
 		$requete = "INSERT INTO punbbusers(`group_id`, `username`, `password`, `language`, `style`, `registered`, `jabber`, `email`) VALUES('".$punbb[$race]."', '".$perso->get_nom()."', '".$joueur->get_mdp_forum()."', 'French', 'SSO', '".time()."', '$jid', '".$joueur->get_email()."')";
 		$db_forum->query($requete);	
-  }
+	}
 
-  // variables de session
+	// variables de session
 	$_SESSION['nom'] = $perso->get_nom();
 	$_SESSION['race'] = $perso->get_race();
 	$_SESSION['grade'] = $perso->get_grade();
