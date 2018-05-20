@@ -77,6 +77,7 @@ class groupe
 			{
 				list($this->partage, $this->prochain_loot, $this->nom) = $db->read_array($requeteSQL);
 			}
+			else $this->__construct();
 			$this->id = $id;
 		}
 		elseif( (func_num_args() == 1) && is_array($id) )

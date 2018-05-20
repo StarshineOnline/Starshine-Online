@@ -55,6 +55,7 @@ abstract class table
 			}
 			else
 			{
+				$this->__construct();
 				$this->id = $id;
 			}
 		}
