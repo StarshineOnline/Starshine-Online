@@ -41,11 +41,11 @@ class groupe_joueur
 	function __construct($id = -1, $id_joueur = 0, $id_groupe = 0, $leader = 'n')
 	{
 		global $db;
-		//Verification nombre et du type d'argument pour construire l'etat adequat.
-		if( (func_num_args() == 1) && is_numeric($id) )
+		// Vérification du nombre et du type d'argument pour construire l'état adéquat.
+		if( func_num_args() == 1 && is_numeric($id) )
 		{
 			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id = ".$id);
-			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
+			// Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
 				list($this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
@@ -53,20 +53,21 @@ class groupe_joueur
 			else $this->__construct();
 			$this->id = $id;
 		}
-		elseif( (func_num_args() == 1) && is_array($id) )
+		elseif( func_num_args() == 1 && is_array($id) )
 		{
 			$this->id = $id['id'];
 			$this->id_joueur = $id['id_joueur'];
 			$this->id_groupe = $id['id_groupe'];
 			$this->leader = $id['leader'];
 		}
-		elseif( (func_num_args() == 2) )
+		elseif( func_num_args() == 2 )
 		{
-			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id.' AND id_joueur = '.$id_joueur);
+			$id_groupe = $id;
+			
+			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id_groupe.' AND id_joueur = '.$id_joueur);
 			if( $db->num_rows($requeteSQL) > 0 )
 				list($this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
 			else $this->__construct();
-			$this->id = $id;
 		}
 		else
 		{
