@@ -20,44 +20,30 @@ define('SSQL_NONE', -1);
 // Fonction générique de protection des entrées SQL
 function sSQL($data, $type = SSQL_NONE)
 {
-  global $db;
+	global $db;
 
-  // On vire les magic quote si elles sont là
-  if (get_magic_quotes_gpc()) {
-    if (ini_get('magic_quotes_sybase')) {
-      $data = str_replace("''", "'", $data);
-    } else {
-      $data = stripslashes($data);
-    }
-  } else {
-    $data = $data;
-  }
+	switch ($type)
+	{
+		case SSQL_INTEGER:
+			validate_integer_value($data);
+			$data = intval($data);
+			break;
+		case SSQL_FLOAT:
+			validate_numeric_value($data);
+			$data = floatval($data);
+			break;
+		case SSQL_STRING:
+			validate_sql_value($data);
+			$data = strval($data);
+			break;
+		case SSQL_NONE:
+			break; // No type test
+	}
 
-  switch ($type)
-  {
-    case SSQL_INTEGER:
-      validate_integer_value($data);
-      $data = intval($data);
-      break;
-    case SSQL_FLOAT:
-      validate_numeric_value($data);
-      $data = floatval($data);
-      break;
-    case SSQL_STRING:
-      validate_sql_value($data);
-      $data = strval($data);
-      break;
-    case SSQL_NONE:
-      break; // No type test
-  }
-  
-  // On protège
-  $res = $db->escape($data);
-  if ($res === FALSE) {
-    echo $db->error();
-    exit (1);
-  }
-  return $res;
+	// On protège
+	$res = $db->escape($data);
+	
+	return $res;
 }
 
 // Si on veut faire des tests génériques
