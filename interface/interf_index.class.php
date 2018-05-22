@@ -108,7 +108,7 @@ class interf_index extends interf_sso
 		{
 			$dlg = $this->set_dialogue( new interf_dialogBS('Erreur', true) );
 			$dlg->add( new interf_alerte(interf_alerte::msg_erreur, false, false, $erreur_login) );
-			$dlg->ajout_btn('Ok', 'ferme');
+			$dlg->ajout_btn('Ok', 'fermer');
 		}
 		// Partenaires
 		$part = $this->add( new interf_bal_cont('div', 'partenaires') );
