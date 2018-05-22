@@ -97,7 +97,7 @@ class texte
     	$texte = $this->texte;
     $texte = preg_replace("/(\r\n|\r|\n)/", '', $texte);
     if( $this->options & self::html )
-      $texte = htmlspecialchars( stripslashes($texte) );
+      $texte = htmlspecialchars( $texte );
     $texte = nl2br($texte);
     if( $this->options & self::bbcode )
       $texte = $this->parse_bbcode($texte);

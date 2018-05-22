@@ -29,7 +29,7 @@ switch($action)
 {
 case 'ecrire':
 	$messagerie = new messagerie($perso);
-	$msg = /*htmlspecialchars(*/addslashes($_POST['texte'])/*)*/;
+	$msg = $_POST['texte'];
 	$sujet = $_GET['sujet'];
 	$sujet_obj = new messagerie_thread($sujet);
 	$id_dest = $sujet_obj->get_id_dest() == $perso->get_id() ? $sujet_obj->get_id_auteur() : $sujet_obj->get_id_dest();
