@@ -298,7 +298,7 @@ class messagerie
 		$message = new messagerie_message(0, $this->perso->get_id(), $id_dest, $message, $id_thread, null);
 		$message->sauver();
 		//On modifie le thread
-		$thread->dernier_message = date("Y-m-d H:i:s", time());
+		$thread->set_dernier_message( date("Y-m-d H:i:s", time()) );
 		$thread->sauver();
 
 		switch($categorie)
