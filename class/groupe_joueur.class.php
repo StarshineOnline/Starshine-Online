@@ -44,7 +44,7 @@ class groupe_joueur
 		// Vérification du nombre et du type d'argument pour construire l'état adéquat.
 		if( func_num_args() == 1 && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id = ".sSQL($id, SSQL_INTEGER));
 			// Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
@@ -64,7 +64,7 @@ class groupe_joueur
 		{
 			$id_groupe = $id;
 			
-			$requeteSQL = $db->query("SELECT id, id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id_groupe.' AND id_joueur = '.$id_joueur);
+			$requeteSQL = $db->query("SELECT id, id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".sSQL($id_groupe, SSQL_INTEGER).' AND id_joueur = '.sSQL($id_joueur, SSQL_INTEGER));
 			if( $db->num_rows($requeteSQL) > 0 )
 				list($this->id, $this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
 			else $this->__construct();

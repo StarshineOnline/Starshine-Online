@@ -81,7 +81,7 @@ case 'invite':
 						$invit->sauver();
 						if($invit->get_id() >= 0)
 						{
-							interf_alerte::enregistre(interf_alerte::msg_erreur, 'Invitation bien envoyée !');
+							interf_alerte::enregistre(interf_alerte::msg_succes, 'Invitation bien envoyée !');
 							
 							// Augmentation du compteur de l'achievement
 							$achiev = $perso->get_compteur('invitation_groupe');
@@ -143,21 +143,36 @@ $onglets->add_onglet('Batailles', 'infogroupe.php?action=batailles&ajax=2', 'ong
 switch($action)
 {
 case 'modifier_infos':
-	$groupe->set_nom(sSQL($_GET['nom']));
-	$groupe->set_partage(sSQL($_GET['partage']));
-	$groupe->sauver();
-	/// @todo passer à l'objet
-	$requete = "UPDATE groupe_joueur SET leader = 'n' WHERE id_groupe = ".sSQL($_GET['id']);
-	$db->query($requete);
-	$requete = "UPDATE groupe_joueur SET leader = 'y' WHERE id_joueur = ".sSQL($_GET['chef']);
-	$db->query($requete);
+	$groupe_joueur = new groupe_joueur($groupe->get_id(), $perso->get_id());
+	if( $groupe_joueur->is_leader() )
+	{
+		$groupe->set_nom(sSQL($_GET['nom']));
+		$groupe->set_partage(sSQL($_GET['partage']));
+		$groupe->sauver();
+		
+		if( $_GET['chef'] != $perso->get_id() )
+		{
+			$groupe_joueur_nouveau_chef = new groupe_joueur($groupe->get_id(), $_GET['chef']);
+			// Test nécessaire tant qu'on ne peut pas vérifier si le groupe_joueur a été trouvé dans la base ou non
+			if( $groupe_joueur_nouveau_chef->get_id_groupe() == $groupe->get_id() && $groupe_joueur_nouveau_chef->get_id_joueur() == $_GET['chef'] )
+			{
+				$groupe_joueur->set_leader('n');
+				$groupe_joueur->sauver();
+				
+				$groupe_joueur_nouveau_chef->set_leader('y');
+				$groupe_joueur_nouveau_chef->sauver();
+			}
+		}
+	}
 case 'infos':
 	$onglets->get_onglet('ongl_infos')->add( $G_interf->creer_groupe('infos_groupe', $groupe) );
 	break;
 case 'suppr_invit':
-	/// @todo passer à l'objet
-	$requete = "DELETE FROM invitation WHERE ID = ".sSQL($_GET['id']);
-	$db->query($requete);
+	$invitation = invitation::findOneById($_GET['id']);
+	if( $invitation && $invitation->get_groupe() == $groupe->get_id() )
+	{
+		$invitation->supprimer();
+	}
 	$onglets->get_onglet('ongl_infos')->add( $G_interf->creer_groupe('infos_groupe', $groupe) );
 	break;
 case 'accepter':

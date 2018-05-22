@@ -9,7 +9,7 @@ class interf_groupe extends interf_form
 	function __construct($id, &$groupe)
 	{
 		global $G_url, $Gtrad;
-		parent::__construct($G_url->get( array('action'=>'modifier_infos', 'id'=>$groupe->get_id()) ), $id, 'get', 'invent');
+		parent::__construct($G_url->get( array('action'=>'modifier_infos') ), $id, 'get', 'invent');
 		$modif = $groupe->get_id_leader() == joueur::get_perso()->get_id();
 		$nom = $this->add_champ_bs('text', 'nom', null, $groupe->get_nom(), 'Nom');
 		if( !$modif )

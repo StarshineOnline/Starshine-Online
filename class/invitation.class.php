@@ -48,7 +48,7 @@ class invitation
 		//Verification nombre et du type d'argument pour construire l'etat adequat.
 		if( (func_num_args() == 1) && is_numeric($id) )
 		{
-			$requeteSQL = $db->query("SELECT inviteur, receveur, time, groupe FROM invitation WHERE id = ".$id);
+			$requeteSQL = $db->query("SELECT inviteur, receveur, time, groupe FROM invitation WHERE id = ".sSQL($id, SSQL_INTEGER));
 			//Si le thread est dans la base, on le charge sinon on crée un thread vide.
 			if( $db->num_rows($requeteSQL) > 0 )
 			{
@@ -187,6 +187,30 @@ class invitation
 		}
 		else $return = array();
 		return $return;
+	}
+
+	/**
+	* Récupère un élément de la table invitation à partir de son $id
+	* @access static
+	* @param int $id identifiant de l'invitation
+	* @return invitation|null L'invitation d'identifiant $id (ou null si introuvable)
+	*/
+	static function findOneById($id)
+	{
+		global $db;
+		$invitation = null;
+		
+		$requeteSQL = $db->query(
+			"SELECT id, inviteur, receveur, time, groupe
+			FROM invitation
+			WHERE id = ".sSQL($id, SSQL_INTEGER)
+		);
+		if( $db->num_rows($requeteSQL) > 0 )
+		{
+			$invitation = new invitation($db->read_array($requeteSQL));
+		}
+		
+		return $invitation;
 	}
 
 	/**
