@@ -64,9 +64,9 @@ class groupe_joueur
 		{
 			$id_groupe = $id;
 			
-			$requeteSQL = $db->query("SELECT id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id_groupe.' AND id_joueur = '.$id_joueur);
+			$requeteSQL = $db->query("SELECT id, id_joueur, id_groupe, leader FROM groupe_joueur WHERE id_groupe = ".$id_groupe.' AND id_joueur = '.$id_joueur);
 			if( $db->num_rows($requeteSQL) > 0 )
-				list($this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
+				list($this->id, $this->id_joueur, $this->id_groupe, $this->leader) = $db->read_array($requeteSQL);
 			else $this->__construct();
 		}
 		else
