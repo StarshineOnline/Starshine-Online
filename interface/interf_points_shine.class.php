@@ -161,7 +161,7 @@ class interf_bonus_shine_config extends interf_dialogBS
 				if( array_key_exists(24, $bonus) )
 				{
 					$form->add( new interf_editeur('texte_descr') );
-					$code = 'return charger_formulaire_texte("config_bonus", "texte_descr");';
+					$code = 'return charger_formulaire_texte(\'config_bonus\', \'texte_descr\');';
 				}
 				else
 				{
