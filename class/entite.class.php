@@ -566,7 +566,7 @@ class entite extends placable
 		return $this->bouclier() ? 'bouclier' : '';
 	}
 	/// Renvoie la PP
-	function get_pp($base = false, $attaquant=false)
+	function get_pp($base = false, $attaquant = false)
 	{
 		$pp = $this->pp;
 		if( !$base )
@@ -575,7 +575,7 @@ class entite extends placable
 				$pp = round($pp * (1 + ($this->get_buff('buff_bouclier', 'effet') / 100)));
 			if($this->is_buff('buff_forteresse'))
 				$pp = round($pp * (1 + (($this->get_buff('buff_forteresse', 'effet')) / 100)));
-			if($this->is_buff('buff_cri_protecteur') && $attaquant)
+			if( $this->is_buff('buff_cri_protecteur') && $attaquant )
 				$pp = round($pp * (1 + ($this->get_buff('buff_cri_protecteur', 'effet') / 100)));
 			if($this->is_buff('debuff_pp'))
 				$pp = round($pp / (1 + (($this->get_buff('debuff_pp', 'effet')) / 100)));
@@ -837,13 +837,13 @@ class entite extends placable
    * Calcul et renvoie le potentiel parer physique
    * @param  $esquive   Valeur de la compétence esquive à prendre en compte si elle est différente de celle de l'entité (sinon false).
    */
-	function get_potentiel_parer($esquive = false, $attaquant=false)
+	function get_potentiel_parer($esquive = false, $attaquant = false)
 	{
 		global $G_buff, $G_debuff;
     if( isset($this->potentiel_parer) && $this->potentiel_parer )
       return $this->potentiel_parer;
 
-		if(!$esquive) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
+		if( $esquive === false ) $this->potentiel_parer = round($this->get_esquive() + ($this->get_esquive() * ((pow($this->get_dexterite(), 2)) / 1000)));
 		else $this->potentiel_parer = round($esquive + ($esquive * ((pow($this->get_dexterite(), 2)) / 1000)));
 		if ($this->get_arme_type() == 'hache')
 			$this->potentiel_parer *= $this->malus_hache;
@@ -855,7 +855,7 @@ class entite extends placable
   	if($this->etat['posture']['type'] == 'posture_esquive') $this->potentiel_parer *= 1 + (($this->etat['posture']['effet']) / 100);
   	if($this->etat['aura']['type'] == 'aura_vent') $this->potentiel_parer *= 1 + (($this->etat['aura']['effet']) / 100);
   	if($this->is_buff('buff_evasion')) $this->potentiel_parer *= 1 + ($this->get_buff('buff_evasion', 'effet') / 100);
-  	if($this->is_buff('buff_cri_detresse') && $attaquant)
+  	if( $this->is_buff('buff_cri_detresse') && $attaquant )
 			$this->potentiel_parer *= 1 + $this->get_buff('buff_cri_detresse', 'effet') / 100;
   	if(array_key_exists('glace', $this->etat)) $this->potentiel_parer /= 1.5;
   	if(array_key_exists('botte_chat', $this->etat)) $this->potentiel_parer *= 1 + $this->etat['botte_chat']['effet'] / 100;
@@ -894,7 +894,7 @@ class entite extends placable
 		$this->potentiel_bloquer = $valeur;
 	}
 	/// Modifie le potentiel critique physique
-	function get_potentiel_critique($attaquant=false)
+	function get_potentiel_critique($attaquant = false)
 	{
 		global $G_buff;
     if( isset($this->potentiel_critique) && $this->potentiel_critique )
@@ -905,7 +905,7 @@ class entite extends placable
     $this->potentiel_critique /= ( 1 + $this->get_bonus_permanents('div_pot_critique')/100);
   	//Buff du critique
   	if($this->is_buff('buff_critique', true)) $this->potentiel_critique *= 1 + (($this->get_buff('buff_critique', 'effet', true)) / 100);
-  	if($this->is_buff('buff_cri_rage', true) && $attaquant)
+  	if( $this->is_buff('buff_cri_rage', true) && $attaquant )
 			$this->potentiel_critique *= 1 + $this->get_buff('buff_cri_rage', 'effet') / 100;
   	if(array_key_exists('benediction', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['benediction']['effet'] * $G_buff['bene_critique']) / 100);;
   	if(array_key_exists('tir_vise', $this->etat)) $this->potentiel_critique *= 1 + (($this->etat['tir_vise']['effet'] * 5) / 100);

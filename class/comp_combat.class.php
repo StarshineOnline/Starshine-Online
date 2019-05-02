@@ -281,9 +281,9 @@ class comp_combat extends comp
 
     $attaque->get_interface()->competence($this->get_type(), $actif->get_nom(), $this->get_nom());
     // Test pour toucher
-  	$potentiel_toucher = $actif->get_potentiel_toucher( $attaque->is_attaquant_actif() );
+  	$potentiel_toucher = $actif->get_potentiel_toucher( $attaque->is_attaquant($actif) );
     $attaque->applique_effet('calcul_attaque_physique', $potentiel_toucher);
-  	$potentiel_parer = $passif->get_potentiel_parer( false, !$attaque->is_attaquant_actif() );
+  	$potentiel_parer = $passif->get_potentiel_parer( false, $attaque->is_attaquant($passif) );
     $attaque->applique_effet('calcul_defense_physique', $potentiel_parer);
     if( $this->test_potentiel($potentiel_toucher, $potentiel_parer, $attaque) )
     {
@@ -326,7 +326,7 @@ class comp_combat extends comp
   	if(array_key_exists('berzeker', $passif->etat)) $buff_berz_degat_r = $passif->etat['berzeker']['effet'] * $G_buff['berz_degat_recu']; else $buff_berz_degat_r = 0;
   	if($actif->etat['posture']['type'] == 'posture_degat') $buff_posture_degat = $actif->etat['posture']['effet']; else $buff_posture_degat = 0;
 		if($actif->is_buff('buff_force')) $buff_force = $actif->get_buff('buff_force', 'effet'); else $buff_force = 0;
-  	if($actif->is_buff('buff_cri_victoire') && $attaque->is_attaquant_actif())
+  	if( $actif->is_buff('buff_cri_victoire') && $attaque->is_attaquant($actif) )
 			$buff_cri_victoire = $actif->get_buff('buff_cri_victoire', 'effet');
 		else
 			$buff_cri_victoire = 0;
@@ -600,7 +600,7 @@ class comp_combat extends comp
 				$transperce = true;
 			}
 		}
-    $PP = round(($passif->get_pp(true, $attaque->is_attaquant_actif()) * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
+    $PP = round(($passif->get_pp( false, $attaque->is_attaquant($passif) ) * $buff_bene_bouclier * $buff_batiment_bouclier * $aura_pierre) / ($buff_berz_bouclier * $debuff_acide));
 
     // Application des effets de PP
     $attaque->applique_effet('calcul_pp', $PP);
@@ -628,7 +628,7 @@ class comp_combat extends comp
     $passif = &$attaque->get_passif();
     $effets = &$attaque->get_effets();
     global $log_combat;
-  	$actif_chance_critique = $actif->get_potentiel_critique( $attaque->is_attaquant_actif() );
+  	$actif_chance_critique = $actif->get_potentiel_critique( $attaque->is_attaquant($actif) );
 
 
     // Application des effets de chance critique
@@ -739,9 +739,9 @@ class comp_combat_toucher extends comp_combat
   function lance(/*&$actif, &$passif, &$effets*/&$attaque)
   {
     $actif = &$attaque->get_actif();
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
-      $actif->set_potentiel_critique($actif->get_potentiel_critique() * (1 + ($this->get_effet2() / 100)));
+      $actif->set_potentiel_critique($actif->get_potentiel_critique( $attaque->is_attaquant($actif) ) * (1 + ($this->get_effet2() / 100)));
     return parent::lance($attaque);
   }
 }
@@ -755,7 +755,7 @@ class comp_combat_degats extends comp_combat
     $actif = &$attaque->get_actif();
     $actif->degat_sup = $this->get_effet();
     if( $this->get_effet2() )
-      $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 - ($this->get_effet2() / 100)));
+      $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 - ($this->get_effet2() / 100)));
     return parent::lance($attaque);
   }
 }
@@ -994,10 +994,10 @@ class comp_combat_pot extends comp_combat
   {
     $actif = &$attaque->get_actif();
     $passif = &$attaque->get_passif();
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() * (1 + ($this->get_effet() / 100)));
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + ($this->get_effet() / 100)));
     if( $this->get_effet2() )
       $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet3() / 100)));
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet2() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique( $attaque->is_attaquant($actif) ) / (1 + ($this->get_effet2() / 100)));
     return parent::lance($attaque);
   }
 }
@@ -1012,7 +1012,7 @@ class comp_combat_deg_pot extends comp_combat
     $passif = &$attaque->get_passif();
     $actif->degat_sup = $this->get_effet();
     $passif->set_potentiel_bloquer($passif->get_potentiel_bloquer() * (1 + ($this->get_effet2() / 100)));
-    $actif->set_potentiel_critique($actif->get_potentiel_critique() / (1 + ($this->get_effet3() / 100)));
+    $actif->set_potentiel_critique($actif->get_potentiel_critique( $attaque->is_attaquant($actif) ) / (1 + ($this->get_effet3() / 100)));
     return parent::lance($attaque);
   }
 }
@@ -1053,7 +1053,7 @@ class comp_combat_coup_bouclier extends comp_combat_degat_etat
 
 		$att = $degat + $actif->get_force();
     $attaque->applique_effet('coup_bouclier', $att);
-		$def = $passif->get_vie() + round($passif->get_pp() / 100);
+		$def = $passif->get_vie() + round($passif->get_pp( false, $attaque->is_attaquant($passif) ) / 100);
     $attaque->applique_effet('resite_etourdissement', $def);
 		//Hop ca étourdit
 		if( $this->test_potentiel($att, $def) )

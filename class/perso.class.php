@@ -2509,7 +2509,7 @@ class perso extends entite
    * Appelle get_armure si elle n'a pas déjà été calculée.
    * @param  $base    true pour avoir la PP de base (sans modificateurs), false pour avoir la totale.
    */
-	function get_pp($base = false)
+	function get_pp($base = false, $attaquant = false)
 	{
 		if(!isset($this->pp))
 		{
@@ -2517,7 +2517,7 @@ class perso extends entite
 		}
 		/*if(!$base) return $this->pp;
 		else return $this->pp_base;*/
-		return entite::get_pp($base);
+		return entite::get_pp($base, $attaquant);
 	}
 	
 	/**

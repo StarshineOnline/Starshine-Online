@@ -91,8 +91,8 @@ class botte_enchainement extends effet_forge
     $actif = $attaque->get_actif();
 		if( isset($actif->precedent['touche']) && $actif->precedent['touche'] )
 		{
-			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
-			$actif->set_potentiel_critique( $actif->get_potentiel_critique() * (1 + $this->effet/100) );
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + $this->effet/100) );
+			$actif->set_potentiel_critique( $actif->get_potentiel_critique( $attaque->is_attaquant($actif) ) * (1 + $this->effet/100) );
 		}
   }
 }

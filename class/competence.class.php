@@ -178,7 +178,7 @@ class maitrise_dague extends competence
   function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) *
       (1 + ($actif->get_competence2('maitrise_dague')->get_valeur() / 1000)));
   }
 
@@ -204,7 +204,7 @@ class maitrise_epee extends competence
   function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) *
       (1 + ($actif->get_competence2('maitrise_epee')->get_valeur() / 1000)));
   }
 
@@ -230,7 +230,7 @@ class maitrise_hache extends competence
   function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) *
       (1 + ($actif->get_competence2('maitrise_hache')->get_valeur() / 1000)));
   }
 
@@ -256,7 +256,7 @@ class maitrise_arc extends competence
   function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
     $this->used = true;
-    $actif->set_potentiel_toucher($actif->get_potentiel_toucher() *
+    $actif->set_potentiel_toucher($actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) *
       (1 + ($actif->get_competence2('maitrise_arc')->get_valeur() / 1000)));
   }
 
@@ -375,7 +375,7 @@ class botte_aigle extends botte
   function debut_round(&$attaque) {
     $actif = $attaque->get_actif();
 		if ($this->peut_agir($actif, 'esquive'))
-			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + $this->effet/100) );
 	}
 }
 
@@ -420,7 +420,7 @@ class botte_tortue extends botte
   {
     $actif = $attaque->get_actif();
 		if( $this->peut_agir($actif, 'bloque') )
-			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + $this->effet/100) );
   }
 }
 
@@ -445,7 +445,7 @@ class botte_tigre extends botte
   {
     $actif = $attaque->get_actif();
 		if( $this->peut_agir($actif, 'touche') )
-			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher() * (1 + $this->effet/100) );
+			$actif->set_potentiel_toucher( $actif->get_potentiel_toucher( $attaque->is_attaquant($actif) ) * (1 + $this->effet/100) );
   }
 }
 
