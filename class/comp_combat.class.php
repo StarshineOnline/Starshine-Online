@@ -513,7 +513,6 @@ class comp_combat extends comp
 			$blocage = rand(0, $passif->get_potentiel_bloquer());
 			$dbg = interf_debug::enregistre();
 			$dbg->add_message( 'Potentiel bloquer défenseur : '.$passif->get_potentiel_bloquer() );
-			$dbg->add_message( 'Potentiel bloquer défenseur : '.$passif->get_potentiel_bloquer() );
 			$dbg->add_message( 'Attaque : '.$jet_toucher );
 			$dbg->add_message( 'Résultat => '.$blocage.' VS '.$jet_toucher );
 			//Si le joueur bloque
